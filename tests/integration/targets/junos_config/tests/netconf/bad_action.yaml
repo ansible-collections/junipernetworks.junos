@@ -1,0 +1,17 @@
+---
+- debug: msg="START netconf/bad_action.yaml on connection={{ ansible_connection
+    }}"
+
+- name: configure single bad_action command
+  register: result
+  ignore_errors: true
+  junipernetworks.junos.junos_config:
+    lines:
+      - invalid system foo
+    provider: '{{ netconf }}'
+
+- assert:
+    that:
+      - result.failed == true
+
+- debug: msg="END netconf/bad_action.yaml on connection={{ ansible_connection }}"

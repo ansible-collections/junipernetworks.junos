@@ -1,0 +1,66 @@
+---
+- debug: msg="START netconf_json/output.yaml on connection={{ ansible_connection
+    }}"
+
+- name: get output for single command
+  register: result
+  junipernetworks.junos.junos_command:
+    commands:
+      - show version
+    format: json
+    provider: '{{ netconf }}'
+
+- assert:
+    that:
+      - result.changed == false
+      - result.stdout is defined
+      - result.stdout_lines is defined
+
+- name: get output for multiple commands
+  register: result
+  junipernetworks.junos.junos_command:
+    commands:
+      - show version
+      - show route
+    format: json
+    provider: '{{ netconf }}'
+
+- assert:
+    that:
+      - result.changed == false
+      - result.stdout is defined
+      - result.stdout_lines is defined
+
+- name: get output for single command with cli transport
+  register: result
+  connection: ansible.netcommon.network_cli
+  junipernetworks.junos.junos_command:
+    commands:
+      - show version | display json
+    provider:
+      transport: cli
+
+- assert:
+    that:
+      - result.changed == false
+      - result.stdout is defined
+      - result.stdout_lines is defined
+
+- name: get output for multiple commands with cli transport
+  register: result
+  connection: ansible.netcommon.network_cli
+  junipernetworks.junos.junos_command:
+    commands:
+      - show version
+      - show route
+    format: json
+    provider:
+      transport: cli
+
+- assert:
+    that:
+      - result.changed == false
+      - result.stdout is defined
+      - result.stdout_lines is defined
+
+- debug: msg="END netconf_json/output.yaml on connection={{ ansible_connection }}"

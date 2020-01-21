@@ -1,0 +1,140 @@
+---
+- debug: msg="START junos_lldp netconf/basic.yaml on connection={{ ansible_connection
+    }}"
+
+- name: get supported protocols
+  register: result
+  ignore_errors: true
+  junipernetworks.junos.junos_command:
+    commands: show lldp
+
+- name: lldp supported
+  set_fact:
+    lldp_supported: true
+  when: not result.failed
+
+- name: lldp not supported
+  set_fact:
+    lldp_supported: false
+  when: result.failed
+
+- block:
+
+    - name: setup - Disable lldp and remove it's configuration
+      junipernetworks.junos.junos_lldp:
+        state: absent
+        provider: '{{ netconf }}'
+
+    - name: Enable lldp
+      register: result
+      junipernetworks.junos.junos_lldp:
+        state: present
+        provider: '{{ netconf }}'
+
+    - assert:
+        that:
+          - result.changed == true
+
+    - name: Enable lldp (idempotent)
+      register: result
+      junipernetworks.junos.junos_lldp:
+        state: present
+        provider: '{{ netconf }}'
+
+    - assert:
+        that:
+          - result.changed == false
+
+    - name: configure lldp parameters and enable lldp
+      register: result
+      junipernetworks.junos.junos_lldp:
+        interval: 10
+        hold_multiplier: 5
+        transmit_delay: 2
+        state: present
+        provider: '{{ netconf }}'
+
+    - assert:
+        that:
+          - result.changed == true
+          - result.diff.prepared is search("\+ *advertisement-interval 10")
+          - result.diff.prepared is search("\+ *transmit-delay 2")
+          - result.diff.prepared is search("\+ *hold-multiplier 5")
+
+    - name: configure lldp parameters and enable lldp(idempotent)
+      register: result
+      junipernetworks.junos.junos_lldp:
+        interval: 10
+        hold_multiplier: 5
+        transmit_delay: 2
+        state: present
+        provider: '{{ netconf }}'
+
+    - assert:
+        that:
+          - result.changed == false
+
+    - name: configure lldp parameters and disable lldp
+      register: result
+      junipernetworks.junos.junos_lldp:
+        interval: 10
+        hold_multiplier: 5
+        transmit_delay: 2
+        state: disabled
+        provider: '{{ netconf }}'
+
+    - assert:
+        that:
+          - result.changed == true
+          - result.diff.prepared is search("\+ *disable")
+          - "'advertisement-interval 10;' not in result.diff.prepared"
+          - "'transmit-delay 2;' not in result.diff.prepared"
+          - "'hold-multiplier 5;' not in result.diff.prepared"
+
+    - name: configure lldp parameters and enable lldp
+      register: result
+      junipernetworks.junos.junos_lldp:
+        interval: 10
+        hold_multiplier: 5
+        transmit_delay: 2
+        state: enabled
+        provider: '{{ netconf }}'
+
+    - assert:
+        that:
+          - result.changed == true
+          - result.diff.prepared is search("\- *disable")
+          - "'advertisement-interval 10;' not in result.diff.prepared"
+          - "'transmit-delay 2;' not in result.diff.prepared"
+          - "'hold-multiplier 5;' not in result.diff.prepared"
+
+    - name: Remove lldp configuration and diable lldp
+      register: result
+      junipernetworks.junos.junos_lldp:
+        interval: 10
+        hold_multiplier: 5
+        transmit_delay: 2
+        state: absent
+        provider: '{{ netconf }}'
+
+    - assert:
+        that:
+          - result.changed == true
+          - result.diff.prepared is search("\+ *disable")
+          - result.diff.prepared is search("\- *advertisement-interval 10")
+          - result.diff.prepared is search("\- *transmit-delay 2")
+          - result.diff.prepared is search("\- *hold-multiplier 5")
+
+    - name: Remove lldp (idempotent)
+      register: result
+      junipernetworks.junos.junos_lldp:
+        state: absent
+        provider: '{{ netconf }}'
+
+    - assert:
+        that:
+          - result.changed == false
+  when: lldp_supported
+
+- debug: msg="END junos_lldp netconf/basic.yaml on connection={{ ansible_connection
+    }}"

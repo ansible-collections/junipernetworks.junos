@@ -1,0 +1,36 @@
+---
+- debug: msg="START junos netconf/net_system.yaml on connection={{ ansible_connection
+    }}"
+
+- name: setup - remove hostname
+  ansible.netcommon.net_system:
+    hostname: vsrx01
+    state: absent
+    provider: '{{ netconf }}'
+
+- name: Set hostname using platform agnostic module
+  register: result
+  ansible.netcommon.net_system:
+    hostname: vsrx01
+    state: present
+    provider: '{{ netconf }}'
+
+- name: Get running configuration
+  register: config
+  junipernetworks.junos.junos_rpc:
+    rpc: get-configuration
+    provider: '{{ netconf }}'
+
+- assert:
+    that:
+      - result.changed == true
+      - "'<host-name>vsrx01</host-name>' in config.xml"
+
+- name: teardown - remove hostname
+  ansible.netcommon.net_system:
+    hostname: vsrx01
+    state: absent
+    provider: '{{ netconf }}'
+
+- debug: msg="END junos netconf/net_system.yaml on connection={{ ansible_connection
+    }}"
