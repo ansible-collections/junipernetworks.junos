@@ -1,0 +1,13 @@
+---
+- debug:
+    msg: Start junos_lacp deleted remove lacp config ansible_connection={{ ansible_connection
+      }}
+
+- name: Setup - remove lacp config
+  junipernetworks.junos.junos_config:
+    lines:
+      - delete chassis aggregated-devices ethernet lacp
+
+- debug:
+    msg: End junos_lacp deleted remove lacp config ansible_connection={{ ansible_connection
+      }}
