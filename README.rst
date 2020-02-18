@@ -1,4 +1,4 @@
-ansible_collections.junipernetworks.junos
-=========================================
+junipernetworks.junos
+=====================
 
 An Ansible collection for the Juniper JunOS network appliance.
