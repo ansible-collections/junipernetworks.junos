@@ -25,7 +25,8 @@
 """
 The arg spec for the junos_acls module
 """
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 
@@ -37,119 +38,159 @@ class AclsArgs(object):  # pylint: disable=R0903
         pass
 
     argument_spec = {
-        'config': {
-            'elements': 'dict',
-            'type': 'list',
-            'options': {
-                'afi': {
-                    'required': True,
-                    'choices': ['ipv4', 'ipv6'],
-                    'type': 'str'},
-                'acls': {
-                    'elements': 'dict',
-                    'type': 'list',
-                    'options': {
-                        'name': {
-                            'required': True,
-                            'type': 'str'},
-                        'aces': {
-                            'elements': 'dict',
-                            'type': 'list',
-                            'options': {
-                                'name': {
-                                    'required': True,
-                                    'type': 'str',
-                                },
-                                'source': {
-                                    'type': 'dict',
-                                    'options': {
-                                        'address': {'type': 'str'},
-                                        'prefix_list': {'type': 'str'},
-                                        'port_protocol': {
-                                            'type': 'dict',
-                                            'options': {
-                                                'eq': {'type': 'str'},
-                                                'range': {
-                                                    'type': 'dict',
-                                                    'options': {
-                                                        'start': {'type': 'int'},
-                                                        'end': {'type': 'int'},
+        "config": {
+            "elements": "dict",
+            "type": "list",
+            "options": {
+                "afi": {
+                    "required": True,
+                    "choices": ["ipv4", "ipv6"],
+                    "type": "str",
+                },
+                "acls": {
+                    "elements": "dict",
+                    "type": "list",
+                    "options": {
+                        "name": {"required": True, "type": "str"},
+                        "aces": {
+                            "elements": "dict",
+                            "type": "list",
+                            "options": {
+                                "name": {"required": True, "type": "str"},
+                                "source": {
+                                    "type": "dict",
+                                    "options": {
+                                        "address": {"type": "str"},
+                                        "prefix_list": {"type": "str"},
+                                        "port_protocol": {
+                                            "type": "dict",
+                                            "options": {
+                                                "eq": {"type": "str"},
+                                                "range": {
+                                                    "type": "dict",
+                                                    "options": {
+                                                        "start": {
+                                                            "type": "int"
+                                                        },
+                                                        "end": {"type": "int"},
                                                     },
                                                 },
                                             },
                                         },
                                     },
                                 },
-                                'destination': {
-                                    'type': 'dict',
-                                    'options': {
-                                        'address': {'type': 'str'},
-                                        'prefix_list': {'type': 'str'},
-                                        'port_protocol': {
-                                            'type': 'dict',
-                                            'options': {
-                                                'eq': {'type': 'str'},
-                                                'range': {
-                                                    'type': 'dict',
-                                                    'options': {
-                                                        'start': {'type': 'int'},
-                                                        'end': {'type': 'int'},
+                                "destination": {
+                                    "type": "dict",
+                                    "options": {
+                                        "address": {"type": "str"},
+                                        "prefix_list": {"type": "str"},
+                                        "port_protocol": {
+                                            "type": "dict",
+                                            "options": {
+                                                "eq": {"type": "str"},
+                                                "range": {
+                                                    "type": "dict",
+                                                    "options": {
+                                                        "start": {
+                                                            "type": "int"
+                                                        },
+                                                        "end": {"type": "int"},
                                                     },
                                                 },
                                             },
                                         },
                                     },
                                 },
-                                'protocol': {
-                                    'type': 'str',
-                                },
-                                'protocol_options': {
-                                    'type': 'dict',
-                                    'options': {
-                                        'icmp': {
-                                            'type': 'dict',
-                                            'options': {
-                                                'dod_host_prohibited': {'type': 'bool'},
-                                                'dod_net_prohibited': {'type': 'bool'},
-                                                'echo': {'type': 'bool'},
-                                                'echo_reply': {'type': 'bool'},
-                                                'host_tos_unreachable': {'type': 'bool'},
-                                                'host_redirect': {'type': 'bool'},
-                                                'host_tos_redirect': {'type': 'bool'},
-                                                'host_unknown': {'type': 'bool'},
-                                                'host_unreachable': {'type': 'bool'},
-                                                'net_redirect': {'type': 'bool'},
-                                                'net_tos_redirect': {'type': 'bool'},
-                                                'network_unknown': {'type': 'bool'},
-                                                'port_unreachable': {'type': 'bool'},
-                                                'protocol_unreachable': {'type': 'bool'},
-                                                'reassembly_timeout': {'type': 'bool'},
-                                                'redirect': {'type': 'bool'},
-                                                'router_advertisement': {'type': 'bool'},
-                                                'router_solicitation': {'type': 'bool'},
-                                                'source_route_failed': {'type': 'bool'},
-                                                'time_exceeded': {'type': 'bool'},
-                                                'ttl_exceeded': {'type': 'bool'},
+                                "protocol": {"type": "str"},
+                                "protocol_options": {
+                                    "type": "dict",
+                                    "options": {
+                                        "icmp": {
+                                            "type": "dict",
+                                            "options": {
+                                                "dod_host_prohibited": {
+                                                    "type": "bool"
+                                                },
+                                                "dod_net_prohibited": {
+                                                    "type": "bool"
+                                                },
+                                                "echo": {"type": "bool"},
+                                                "echo_reply": {"type": "bool"},
+                                                "host_tos_unreachable": {
+                                                    "type": "bool"
+                                                },
+                                                "host_redirect": {
+                                                    "type": "bool"
+                                                },
+                                                "host_tos_redirect": {
+                                                    "type": "bool"
+                                                },
+                                                "host_unknown": {
+                                                    "type": "bool"
+                                                },
+                                                "host_unreachable": {
+                                                    "type": "bool"
+                                                },
+                                                "net_redirect": {
+                                                    "type": "bool"
+                                                },
+                                                "net_tos_redirect": {
+                                                    "type": "bool"
+                                                },
+                                                "network_unknown": {
+                                                    "type": "bool"
+                                                },
+                                                "port_unreachable": {
+                                                    "type": "bool"
+                                                },
+                                                "protocol_unreachable": {
+                                                    "type": "bool"
+                                                },
+                                                "reassembly_timeout": {
+                                                    "type": "bool"
+                                                },
+                                                "redirect": {"type": "bool"},
+                                                "router_advertisement": {
+                                                    "type": "bool"
+                                                },
+                                                "router_solicitation": {
+                                                    "type": "bool"
+                                                },
+                                                "source_route_failed": {
+                                                    "type": "bool"
+                                                },
+                                                "time_exceeded": {
+                                                    "type": "bool"
+                                                },
+                                                "ttl_exceeded": {
+                                                    "type": "bool"
+                                                },
                                             },
-                                        },
+                                        }
                                     },
                                 },
-                                'grant': {'type': 'str', "choices": ["permit", "deny"]},
+                                "grant": {
+                                    "type": "str",
+                                    "choices": ["permit", "deny"],
+                                },
                             },
                         },
                     },
                 },
             },
         },
-        'state': {
-            'choices': [
-                'merged',
-                'replaced',
-                'overridden',
-                'deleted',
-                'gathered'],
-            'default': 'merged',
-            'type': 'str'
+        "state": {
+            "choices": [
+                "merged",
+                "replaced",
+                "overridden",
+                "deleted",
+                "gathered",
+            ],
+            "default": "merged",
+            "type": "str",
         },
     }
+
+
 # pylint: disable=C0301

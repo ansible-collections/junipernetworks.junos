@@ -22,7 +22,9 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     Interfaces,
     OFacts,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.acls.acls import AclsFacts
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.acls.acls import (
+    AclsFacts,
+)
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.interfaces.interfaces import (
     InterfacesFacts,
 )

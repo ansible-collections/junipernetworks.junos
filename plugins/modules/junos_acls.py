@@ -27,12 +27,13 @@ The module file for junos_acls
 """
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
-    'metadata_version': '1.1',
-    'status': ['preview'],
-    'supported_by': 'network'
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "network",
 }
 
 DOCUMENTATION = """
@@ -286,8 +287,12 @@ commands:
 
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.acls.acls import AclsArgs
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.acls.acls import Acls
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.acls.acls import (
+    AclsArgs,
+)
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.acls.acls import (
+    Acls,
+)
 
 
 def main():
@@ -296,12 +301,13 @@ def main():
 
     :returns: the result form module invocation
     """
-    module = AnsibleModule(argument_spec=AclsArgs.argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(
+        argument_spec=AclsArgs.argument_spec, supports_check_mode=True
+    )
 
     result = Acls(module).execute_module()
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
