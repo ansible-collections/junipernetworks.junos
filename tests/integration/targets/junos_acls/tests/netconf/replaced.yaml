@@ -23,11 +23,17 @@
                   protocol: tcp
               name: initial_acl
             - aces:
+                    - name: twelve_dot
+                      source:
+                        address: 12.0.0.0/8
+                        port_protocol:
+                          eq: bgp
+                      protocol: tcp
                 - name: ace_20
                   grant: permit
                   protocol: igmp
                   source:
-                    address: 192.168.1.100
+                    address: 192.168.1.100/32
                 - name: ace_21
                   grant: permit
                   protocol: tcp
@@ -42,7 +48,6 @@
                       eq: "631"
               name: initial_acl6
           afi: ipv6
-
 
   - name: Replace the specified ACL with given config
     junos_acls: &replaced

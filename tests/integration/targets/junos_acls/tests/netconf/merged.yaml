@@ -34,7 +34,7 @@
                 - name: ssh_rule
                   source:
                     port_protocol:
-                      eq: "22"
+                      eq: ssh
                   protocol: tcp
               name: allow_ssh_acl
           afi: ipv4
@@ -58,7 +58,7 @@
             - name: ssh_rule
               source:
                 port_protocol:
-                  eq: 22
+                  eq: ssh
               protocol: tcp
       state: merged
     register: result

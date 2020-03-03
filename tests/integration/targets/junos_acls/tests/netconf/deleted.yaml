@@ -86,13 +86,6 @@
   - name: Assert changed
     assert: *changed
 
-  - name: Delete all ACLs under one AFI
-    junos_acls:
-      config:
-        - afi: ipv6
-      state: deleted
-    register: result
-
   - set_fact:
       config:
         - acls:
@@ -106,16 +99,23 @@
               name: initial_acl
           afi: ipv4
 
+  - name: Delete all ACLs under one AFI
+    junos_acls:
+      config:
+        - afi: ipv6
+      state: deleted
+    register: result
+
   - name: Assert changed
     assert: *changed
+
+  - set_fact:
+      config: []
 
   - name: Delete all ACLs from the device
     junos_acls:
       state: deleted
     register: result
-
-  - set_fact:
-      config: []
 
   - name: Assert changed
     assert: *changed
