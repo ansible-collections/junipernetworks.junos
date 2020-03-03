@@ -286,8 +286,8 @@ commands:
 
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.network.junos.argspec.acls.acls import AclsArgs
-from ansible.module_utils.network.junos.config.acls.acls import Acls
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.acls.acls import AclsArgs
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.acls.acls import Acls
 
 
 def main():
