@@ -75,7 +75,7 @@ EXAMPLES = """
     domain-search:
       - ansible.com
       - redhat.com
-      - juniper.com
+      - juniper.net
 
 - name: remove configuration
   junos_system:
