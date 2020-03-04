@@ -1,0 +1,128 @@
+---
+- debug:
+    msg: "START junos_acls deleted integration tests on connection={{ ansible_connection }}"
+
+- block:
+    - include_tasks: _reset_config.yaml
+
+    - set_fact:
+        config:
+          - acls:
+              - aces:
+                  - name: ten_dot
+                    source:
+                      address: 10.0.0.0/8
+                      port_protocol:
+                        eq: bgp
+                    protocol: tcp
+                name: initial_acl
+              - aces:
+                  - name: twelve_dot
+                    source:
+                      address: 12.0.0.0/8
+                      port_protocol:
+                        eq: bgp
+                    protocol: tcp
+                name: second_acl
+            afi: ipv4
+          - acls:
+              - aces:
+                  - name: colon_eleven
+                    source:
+                      address: ::11/128
+                      port_protocol:
+                        eq: "631"
+                name: initial_acl6
+            afi: ipv6
+
+    - name: Delete a single ACE
+      junos_acls:
+        config:
+          - afi: ipv4
+            acls:
+              - name: initial_acl
+                aces:
+                  - name: eleven_dot
+        state: deleted
+      register: result
+
+    - name: Assert changed
+      assert: &changed
+        that:
+          - result.changed == True
+          - "{{ config|symmetric_difference(result.after) == [] }}"
+
+    - set_fact:
+        config:
+          - acls:
+              - aces:
+                  - name: ten_dot
+                    source:
+                      address: 10.0.0.0/8
+                      port_protocol:
+                        eq: bgp
+                    protocol: tcp
+                name: initial_acl
+            afi: ipv4
+          - acls:
+              - aces:
+                  - name: colon_eleven
+                    source:
+                      address: ::11/128
+                      port_protocol:
+                        eq: "631"
+                name: initial_acl6
+            afi: ipv6
+
+    - name: Delete a whole ACL
+      junos_acls:
+        config:
+          - afi: ipv4
+            acls:
+              - name: second_acl
+        state: deleted
+      register: result
+
+    - name: Assert changed
+      assert: *changed
+
+    - set_fact:
+        config:
+          - acls:
+              - aces:
+                  - name: ten_dot
+                    source:
+                      address: 10.0.0.0/8
+                      port_protocol:
+                        eq: bgp
+                    protocol: tcp
+                name: initial_acl
+            afi: ipv4
+
+    - name: Delete all ACLs under one AFI
+      junos_acls:
+        config:
+          - afi: ipv6
+        state: deleted
+      register: result
+
+    - name: Assert changed
+      assert: *changed
+
+    - set_fact:
+        config: []
+
+    - name: Delete all ACLs from the device
+      junos_acls:
+        state: deleted
+      register: result
+
+    - name: Assert changed
+      assert: *changed
+
+  tags: deleted
+  always:
+    - include_tasks: _reset_config.yaml
+
+- debug:
+    msg: "END junos_acls deleted integration tests on connection={{ ansible_connection }}"

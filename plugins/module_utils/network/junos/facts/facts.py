@@ -22,6 +22,9 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     Interfaces,
     OFacts,
 )
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.acls.acls import (
+    AclsFacts,
+)
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.interfaces.interfaces import (
     InterfacesFacts,
 )
@@ -57,6 +60,7 @@ FACT_LEGACY_SUBSETS = dict(
     default=Default, hardware=Hardware, config=Config, interfaces=Interfaces
 )
 FACT_RESOURCE_SUBSETS = dict(
+    acls=AclsFacts,
     interfaces=InterfacesFacts,
     lacp=LacpFacts,
     lacp_interfaces=Lacp_interfacesFacts,
