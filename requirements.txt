@@ -1,1 +1,6 @@
 ansible
+jxmlease
+ncclient
+paramiko
+scp
+xmltodict
