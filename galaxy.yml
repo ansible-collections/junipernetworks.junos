@@ -8,3 +8,4 @@ name: junos
 namespace: junipernetworks
 readme: README.rst
 repository: https://github.com/ansible-collections/junos
+tags: [juniper, junipernetworks, junos, networking, security, netconf]
