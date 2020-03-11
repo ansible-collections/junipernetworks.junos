@@ -1,0 +1,44 @@
+---
+- debug:
+    msg: "START junos_acl_interfaces replaced integration tests on connection={{ ansible_connection }}"
+
+- block:
+    - include_tasks: _reset_config.yaml
+    - include_tasks: _initial_config.yaml
+
+    - set_fact:
+        config:
+          - name: ge-1/0/0
+            access_groups:
+              - afi: ipv4
+                acls:
+                  - name: initial_acl
+                    direction: in
+                  - name: second_acl
+                    direction: out
+                  - name: initial_acl
+                    direction: out
+
+    - name: Replace configuration of ACL
+      junos_acl_interfaces:
+        config:
+          - name: ge-1/0/0
+            access_groups:
+              - afi: ipv4
+                acls:
+                  - name: initial_acl
+                    direction: out
+        state: replaced
+      register: result
+
+    - name: Assert configuration
+      assert:
+        that:
+          - "{{ config|symmetric_difference(result.after) == [] }}"
+
+  tags: replaced
+  always:
+    - include_tasks: _reset_config.yaml
+
+- debug:
+    msg: "END junos_acl_interfaces replaced integration tests on connection={{ ansible_connection }}"
