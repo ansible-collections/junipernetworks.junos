@@ -7,5 +7,5 @@ license_file: LICENSE
 name: junos
 namespace: junipernetworks
 readme: README.rst
-repository: https://github.com/ansible-collections/junos
+repository: https://github.com/ansible-collections/junipernetworks.junos
 tags: [juniper, junipernetworks, junos, networking, security, netconf]
