@@ -59,6 +59,10 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     Static_routesFacts,
 )
 
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.ospf.ospf import (
+    OspfFacts,
+)
+
 FACT_LEGACY_SUBSETS = dict(
     default=Default, hardware=Hardware, config=Config, interfaces=Interfaces
 )
@@ -73,6 +77,7 @@ FACT_RESOURCE_SUBSETS = dict(
     l3_interfaces=L3_interfacesFacts,
     lldp_global=Lldp_globalFacts,
     lldp_interfaces=Lldp_interfacesFacts,
+    ospf=OspfFacts,
     vlans=VlansFacts,
     static_routes=Static_routesFacts,
 )
