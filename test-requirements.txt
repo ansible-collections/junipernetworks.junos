@@ -3,3 +3,5 @@ flake8
 mock
 pytest-xdist
 yamllint
+pytest-xdist
+mock
