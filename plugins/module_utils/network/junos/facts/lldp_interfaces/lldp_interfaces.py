@@ -68,10 +68,7 @@ class Lldp_interfacesFacts(object):
             config_filter = """
                 <configuration>
                     <protocols>
-                        <lldp>
-                            <interface>
-                            </interface>
-                        </lldp>
+                        <lldp/>
                     </protocols>
                 </configuration>
                 """
