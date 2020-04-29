@@ -100,7 +100,8 @@ class L3_interfacesFacts(object):
             interface["name"] = iface.find("name").text
             if iface.find("description") is not None:
                 interface["description"] = iface.find("description").text
-            interface["unit"] = iface.find("unit/name").text
+            if iface.find("unit") is not None:
+                interface["unit"] = iface.find("unit/name").text
             family = iface.find("unit/family/")
             if family is not None and family.tag != "ethernet-switching":
                 ipv4 = iface.findall("unit/family/inet/address")
