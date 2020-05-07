@@ -79,10 +79,14 @@ class Vlans(ConfigBase):
         :returns: The result from module execution
         """
         result = {"changed": False}
+        state = self._module.params["state"]
         warnings = list()
 
         existing_vlans_facts = self.get_vlans_facts()
         config_xmls = self.set_config(existing_vlans_facts)
+
+        if state == "gathered":
+            result["gathered"] = existing_vlans_facts
 
         with locked_config(self._module):
             for config_xml in to_list(config_xmls):
