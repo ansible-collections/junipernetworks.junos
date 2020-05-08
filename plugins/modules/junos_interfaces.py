@@ -30,14 +30,13 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "network",
-}
+ANSIBLE_METADATA = {"metadata_version": "1.1", "supported_by": "network"}
 
-DOCUMENTATION = """module: junos_interfaces
-short_description: Manages interface attributes of Juniper Junos OS network devices.
+DOCUMENTATION = """
+---
+module: junos_interfaces
+version_added: "1.0.0"
+short_description: Junos Interfaces resource module
 description: This module manages the interfaces on Juniper Junos OS network devices.
 author: Ganesh Nalawade (@ganeshrn)
 options:
@@ -99,6 +98,7 @@ options:
     - replaced
     - overridden
     - deleted
+    - gathered
     default: merged
     description:
     - The state of the configuration after module completion
