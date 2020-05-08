@@ -30,17 +30,13 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "network",
-}
+ANSIBLE_METADATA = {"metadata_version": "1.1", "supported_by": "network"}
 
 DOCUMENTATION = """
 ---
 module: junos_acl_interfaces
-version_added: "2.10"
-short_description: Manage adding and removing Access Control Lists (ACLs) from interfaces on devices running Juniper JUNOS.
+version_added: "1.0.0"
+short_description: Junos Access Control Lists (ACLs) interface resource module
 description:
   - This module manages adding and removing Access Control Lists (ACLs) from interfaces on devices running Juniper JUNOS.
 author: Daniel Mellado (@dmellado)
