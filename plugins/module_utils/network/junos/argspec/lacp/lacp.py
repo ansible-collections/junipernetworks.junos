@@ -49,7 +49,7 @@ class LacpArgs(object):
             },
         },
         "state": {
-            "choices": ["merged", "replaced", "deleted"],
+            "choices": ["merged", "replaced", "deleted", "gathered"],
             "default": "merged",
             "type": "str",
         },

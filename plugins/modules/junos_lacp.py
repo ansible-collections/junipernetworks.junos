@@ -30,15 +30,13 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "network",
-}
+ANSIBLE_METADATA = {"metadata_version": "1.1", "supported_by": "network"}
 
-DOCUMENTATION = """module: junos_lacp
-short_description: Manage Global Link Aggregation Control Protocol (LACP) on Juniper
-  Junos devices
+DOCUMENTATION = """
+---
+module: junos_lacp
+version_added: "1.0.0"
+short_description: Global Link Aggregation Control Protocol (LACP) Junos resource module
 description: This module provides declarative management of global LACP on Juniper
   Junos network devices.
 author: Ganesh Nalawade (@ganeshrn)
@@ -68,6 +66,7 @@ options:
     - merged
     - replaced
     - deleted
+    - gathered
     default: merged
 requirements:
 - ncclient (>=v0.6.4)
