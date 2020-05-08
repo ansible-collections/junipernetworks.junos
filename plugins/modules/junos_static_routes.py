@@ -29,14 +29,10 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "network",
-}
+ANSIBLE_METADATA = {"metadata_version": "1.1", "supported_by": "network"}
 
 DOCUMENTATION = """module: junos_static_routes
-short_description: Manage static routes on Juniper JUNOS devices
+short_description: Static routes Junos resource module
 description: This module provides declarative management of static routes on Juniper
   JUNOS devices
 author: Daniel Mellado (@dmellado)
@@ -104,6 +100,7 @@ options:
     - replaced
     - overridden
     - deleted
+    - gathered
     default: merged
 """
 
