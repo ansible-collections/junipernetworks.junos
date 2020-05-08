@@ -71,11 +71,15 @@ class L3_interfaces(ConfigBase):
         :returns: The result from module execution
         """
         result = {"changed": False}
+        state = self._module.params["state"]
         warnings = list()
 
         existing_interfaces_facts = self.get_l3_interfaces_facts()
-
         config_xmls = self.set_config(existing_interfaces_facts)
+
+        if state == "gathered":
+            result["gathered"] = existing_interfaces_facts
+
         with locked_config(self._module):
             for config_xml in to_list(config_xmls):
                 diff = load_config(self._module, config_xml, warnings)
