@@ -71,10 +71,14 @@ class Static_routes(ConfigBase):
         :returns: The result from module execution
         """
         result = {"changed": False}
+        state = self._module.params["state"]
         warnings = list()
 
         existing_static_routes_facts = self.get_static_routes_facts()
         config_xmls = self.set_config(existing_static_routes_facts)
+
+        if state == "gathered":
+            result["gathered"] = existing_static_routes_facts
 
         with locked_config(self._module):
             for config_xml in to_list(config_xmls):
