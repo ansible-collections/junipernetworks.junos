@@ -1,2 +1,12 @@
+# Bytecompiled Python
+*.py[cod]
+
+# C extensions
+*.so
+
+# Integration tests
 .tox
 __pycache__
+
+# Files created by releasenotes build
+releasenotes/build

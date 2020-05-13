@@ -1,0 +1,37 @@
+---
+notesdir: fragments
+prelude_section_name: release_summary
+sections:
+  - ['major_changes', 'Major Changes']
+  - ['minor_changes', 'Minor Changes']
+  - ['breaking_changes', 'Breaking Changes / Porting Guide']
+  - ['deprecated_features', 'Deprecated Features']
+  - ['removed_features', 'Removed Features (previously deprecated)']
+  - ['security_fixes', 'Security Fixes']
+  - ['bugfixes', 'Bugfixes']
+  - ['known_issues', 'Known Issues']
+template: |
+          major_changes:
+            - |
+              List major changes here, or remove this section
+          minor_changes:
+            - |
+              List minor changes here, or remove this section
+          breaking_changes:
+            - |
+              List breaking changes here, or remove this section
+          deprecated_features:
+            - |
+              List deprecated features here, or remove this section
+          removed_features:
+            - |
+              List removed features here, or remove this section
+          security_fixes:
+            - |
+              List security fixes here, or remove this section
+          bugfixes:
+            - |
+              List bugfixes here, or remove this section
+          known_issues:
+            - |
+              List known issues here, or remove this section
