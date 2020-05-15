@@ -8,13 +8,11 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "network",
-}
 
-DOCUMENTATION = """module: junos_ping
+DOCUMENTATION = """
+---
+module: junos_ping
+version_added: "1.0.0"
 short_description: Tests reachability using ping from devices running Juniper JUNOS
 description:
 - Tests reachability using ping from devices running Juniper JUNOS to a remote destination.

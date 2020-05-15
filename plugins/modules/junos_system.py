@@ -9,14 +9,10 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "network",
-}
-
-
-DOCUMENTATION = """module: junos_system
+DOCUMENTATION = """
+---
+module: junos_system
+version_added: "1.0.0"
 author: Ganesh Nalawade (@ganeshrn)
 short_description: Manage the system attributes on Juniper JUNOS devices
 description:

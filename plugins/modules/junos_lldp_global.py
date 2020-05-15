@@ -30,12 +30,12 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {"metadata_version": "1.1", "supported_by": "network"}
 
 DOCUMENTATION = """
 ---
 module: junos_lldp_global
 short_description: Link layer discovery protocol (LLDP) JUNOS resource module
+version_added: "1.0.0"
 description:
 - This module manages link layer discovery protocol (LLDP) attributes on Juniper JUNOS
   devices.
