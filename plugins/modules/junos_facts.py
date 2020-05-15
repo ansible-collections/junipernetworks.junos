@@ -9,14 +9,10 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "network",
-}
-
-
-DOCUMENTATION = """module: junos_facts
+DOCUMENTATION = """
+---
+module: junos_facts
+version_added: "1.0.0"
 author: Nathaniel Case (@Qalthos)
 short_description: Collect facts from remote devices running Juniper Junos
 description:
