@@ -76,41 +76,41 @@ extends_documentation_fragment:
 
 EXAMPLES = """
 - name: configure VLAN ID and name
-  junos_vlan:
+  junipernetworks.junos.junos_vlan:
     name: test
     vlan_id: 20
 
 - name: Link to logical layer 3 interface
-  junos_vlan:
+  junipernetworks.junos.junos_vlan:
     name: test
     vlan_id: 20
     l3-interface: vlan.20
 
 - name: remove VLAN configuration
-  junos_vlan:
+  junipernetworks.junos.junos_vlan:
     name: test
     state: absent
 
 - name: deactive VLAN configuration
-  junos_vlan:
+  junipernetworks.junos.junos_vlan:
     name: test
     state: present
     active: False
 
 - name: activate VLAN configuration
-  junos_vlan:
+  junipernetworks.junos.junos_vlan:
     name: test
     state: present
     active: True
 
 - name: Create vlan configuration using aggregate
-  junos_vlan:
+  junipernetworks.junos.junos_vlan:
     aggregate:
       - { vlan_id: 159, name: test_vlan_1, description: test vlan-1 }
       - { vlan_id: 160, name: test_vlan_2, description: test vlan-2 }
 
 - name: Delete vlan configuration using aggregate
-  junos_vlan:
+  junipernetworks.junos.junos_vlan:
     aggregate:
       - { vlan_id: 159, name: test_vlan_1 }
       - { vlan_id: 160, name: test_vlan_2 }

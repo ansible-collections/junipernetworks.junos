@@ -74,21 +74,21 @@ EXAMPLES = """
 # the required set of connection arguments have been purposely left off
 # the examples for brevity
 - name: upload local file to home directory on remote device
-  junos_scp:
+  junipernetworks.junos.junos_scp:
     src: test.tgz
 
 - name: upload local file to tmp directory on remote device
-  junos_scp:
+  junipernetworks.junos.junos_scp:
     src: test.tgz
     dest: /tmp/
 
 - name: download file from remote device
-  junos_scp:
+  junipernetworks.junos.junos_scp:
     src: test.tgz
     remote_src: true
 
 - name: ssh config file path for jumphost config
-  junos_scp:
+  junipernetworks.junos.junos_scp:
     src: test.tgz
     remote_src: true
     ssh_config: /home/user/customsshconfig

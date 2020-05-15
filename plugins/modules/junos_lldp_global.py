@@ -95,7 +95,7 @@ EXAMPLES = """
 # user@junos01# # show protocols lldp
 #
 - name: Merge provided configuration with device configuration
-  junos_lldp_global:
+  junipernetworks.junos.junos_lldp_global:
     config:
       interval: 10000
       address: 10.1.1.1
@@ -121,7 +121,7 @@ EXAMPLES = """
 # hold-multiplier 10;
 
 - name: Replace provided configuration with device configuration
-  junos_lldp_global:
+  junipernetworks.junos.junos_lldp_global:
     config:
       address: 20.2.2.2
       hold_multiplier: 30
@@ -143,7 +143,7 @@ EXAMPLES = """
 # hold-multiplier 30;
 
 - name: Delete lldp configuration (this will by default remove all lldp configuration)
-  junos_lldp_global:
+  junipernetworks.junos.junos_lldp_global:
     state: deleted
 
 # After state:

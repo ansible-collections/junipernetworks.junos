@@ -219,7 +219,7 @@ EXAMPLES = """
 # admin# show protocols ospf
 
 - name: Merge Junos OSPF config
-  junos_ospf:
+  junipernetworks.junos.junos_ospf:
     config:
       - router_id: 10.200.16.75
         reference_bandwidth: 10g

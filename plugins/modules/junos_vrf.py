@@ -85,7 +85,7 @@ extends_documentation_fragment:
 
 EXAMPLES = """
 - name: Configure vrf configuration
-  junos_vrf:
+  junipernetworks.junos.junos_vrf:
     name: test-1
     description: test-vrf-1
     interfaces:
@@ -96,7 +96,7 @@ EXAMPLES = """
     state: present
 
 - name: Remove vrf configuration
-  junos_vrf:
+  junipernetworks.junos.junos_vrf:
     name: test-1
     description: test-vrf-1
     interfaces:
@@ -107,7 +107,7 @@ EXAMPLES = """
     state: absent
 
 - name: Deactivate vrf configuration
-  junos_vrf:
+  junipernetworks.junos.junos_vrf:
     name: test-1
     description: test-vrf-1
     interfaces:
@@ -118,7 +118,7 @@ EXAMPLES = """
     active: False
 
 - name: Activate vrf configuration
-  junos_vrf:
+  junipernetworks.junos.junos_vrf:
     name: test-1
     description: test-vrf-1
     interfaces:
@@ -129,7 +129,7 @@ EXAMPLES = """
     active: True
 
 - name: Create vrf using aggregate
-  junos_vrf:
+  junipernetworks.junos.junos_vrf:
     aggregate:
     - name: test-1
       description: test-vrf-1

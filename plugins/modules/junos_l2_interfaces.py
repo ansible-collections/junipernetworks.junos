@@ -132,7 +132,7 @@ EXAMPLES = """
 #    }
 
 - name: "Delete L2 attributes of given interfaces (Note: This won't delete the interface itself)."
-  junos_l2_interfaces:
+  junipernetworks.junos.junos_l2_interfaces:
     config:
       - name: ge-0/0/1
       - name: ge-0/0/2
@@ -178,7 +178,7 @@ EXAMPLES = """
 # }
 
 - name: "Merge provided configuration with device configuration (default operation is merge)"
-  junos_l2_interfaces:
+  junipernetworks.junos.junos_l2_interfaces:
     config:
       - name: ge-0/0/3
         access:
@@ -253,7 +253,7 @@ EXAMPLES = """
 # }
 
 - name: "Override provided configuration with device configuration"
-  junos_l2_interfaces:
+  junipernetworks.junos.junos_l2_interfaces:
     config:
       - name: ge-0/0/3
         access:
@@ -315,7 +315,7 @@ EXAMPLES = """
 # }
 
 - name: "Replace provided configuration with device configuration"
-  junos_l2_interfaces:
+  junipernetworks.junos.junos_l2_interfaces:
     config:
       - name: ge-0/0/3
         access:
