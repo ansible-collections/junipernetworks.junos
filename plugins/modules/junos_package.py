@@ -113,16 +113,16 @@ EXAMPLES = """
 # the examples for brevity
 
 - name: install local package on remote device
-  junos_package:
+  junipernetworks.junos.junos_package:
     src: junos-vsrx-12.1X46-D10.2-domestic.tgz
 
 - name: install local package on remote device without rebooting
-  junos_package:
+  junipernetworks.junos.junos_package:
     src: junos-vsrx-12.1X46-D10.2-domestic.tgz
     reboot: no
 
 - name: install local package on remote device with jumpost
-  junos_package:
+  junipernetworks.junos.junos_package:
     src: junos-vsrx-12.1X46-D10.2-domestic.tgz
     ssh_config: /home/user/customsshconfig
 """

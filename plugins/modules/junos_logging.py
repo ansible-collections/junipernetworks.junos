@@ -84,31 +84,31 @@ extends_documentation_fragment:
 
 EXAMPLES = """
 - name: configure console logging
-  junos_logging:
+  junipernetworks.junos.junos_logging:
     dest: console
     facility: any
     level: critical
 
 - name: remove console logging configuration
-  junos_logging:
+  junipernetworks.junos.junos_logging:
     dest: console
     state: absent
 
 - name: configure file logging
-  junos_logging:
+  junipernetworks.junos.junos_logging:
     dest: file
     name: test
     facility: pfe
     level: error
 
 - name: configure logging parameter
-  junos_logging:
+  junipernetworks.junos.junos_logging:
     files: 30
     size: 65536
     rotate_frequency: 10
 
 - name: Configure file logging using aggregate
-  junos_logging:
+  junipernetworks.junos.junos_logging:
     dest: file
     aggregate:
     - name: test-1
@@ -120,7 +120,7 @@ EXAMPLES = """
     active: True
 
 - name: Delete file logging using aggregate
-  junos_logging:
+  junipernetworks.junos.junos_logging:
     aggregate:
     - { dest: file, name: test-1,  facility: pfe, level: critical }
     - { dest: file, name: test-2,  facility: kernel, level: emergency }

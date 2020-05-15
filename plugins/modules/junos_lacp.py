@@ -88,7 +88,7 @@ EXAMPLES = """
 # }
 
 - name: Delete global LACP attributes
-  junos_lacp:
+  junipernetworks.junos.junos_lacp:
     state: deleted
 
 # After state:
@@ -105,7 +105,7 @@ EXAMPLES = """
 #
 
 - name: Merge global LACP attributes
-  junos_lacp:
+  junipernetworks.junos.junos_lacp:
     config:
       system_priority: 63
       link_protection: revertive
@@ -131,7 +131,7 @@ EXAMPLES = """
 # }
 
 - name: Replace global LACP attributes
-  junos_lacp:
+  junipernetworks.junos.junos_lacp:
     config:
       system_priority: 30
       link_protection: non-revertive

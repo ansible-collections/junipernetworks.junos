@@ -96,7 +96,7 @@ EXAMPLES = """
 # }
 
 - name: Merge JUNOS vlan
-  junos_vlans:
+  junipernetworks.junos.junos_vlans:
     config:
       - name: vlan-1
         vlan-id: 1
@@ -135,7 +135,7 @@ EXAMPLES = """
 # }
 
 - name: Replace JUNOS vlan
-  junos_vlans:
+  junipernetworks.junos.junos_vlans:
     config:
       - name: vlan-1
         vlan-id: 10
@@ -176,7 +176,7 @@ EXAMPLES = """
 # }
 
 - name: Override JUNOS vlan
-  junos_vlans:
+  junipernetworks.junos.junos_vlans:
     config:
       - name: vlan-4
         vlan-id: 100
@@ -214,7 +214,7 @@ EXAMPLES = """
 # }
 
 - name: Delete JUNOS vlan
-  junos_vlans:
+  junipernetworks.junos.junos_vlans:
     config:
       - name: vlan-1
   state: deleted

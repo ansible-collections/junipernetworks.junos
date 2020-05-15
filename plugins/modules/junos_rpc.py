@@ -59,18 +59,18 @@ notes:
 
 EXAMPLES = """
 - name: collect interface information using rpc
-  junos_rpc:
+  junipernetworks.junos.junos_rpc:
     rpc: get-interface-information
     args:
       interface-name: em0
       media: True
 
 - name: get system information
-  junos_rpc:
+  junipernetworks.junos.junos_rpc:
     rpc: get-system-information
 
 - name: load configuration
-  junos_rpc:
+  junipernetworks.junos.junos_rpc:
     rpc: load-configuration
     attrs:
       action: override

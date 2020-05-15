@@ -152,7 +152,7 @@ EXAMPLES = """
 # }
 
 - name: Merge provided configuration with device configuration
-  junos_lacp_interfaces:
+  junipernetworks.junos.junos_lacp_interfaces:
     config:
       - name: ae0
         period: fast
@@ -250,7 +250,7 @@ EXAMPLES = """
 # }
 
 - name: Replace device LACP interfaces configuration with provided configuration
-  junos_lacp_interfaces:
+  junipernetworks.junos.junos_lacp_interfaces:
     config:
       - name: ae0
         period: slow
@@ -334,7 +334,7 @@ EXAMPLES = """
 # }
 
 - name: Overrides all device LACP interfaces configuration with provided configuration
-  junos_lacp_interfaces:
+  junipernetworks.junos.junos_lacp_interfaces:
     config:
       - name: ae0
         system:
@@ -436,7 +436,7 @@ EXAMPLES = """
 # }
 
 - name: "Delete LACP interfaces attributes of given interfaces (Note: This won't delete the interface itself)"
-  junos_lacp_interfaces:
+  junipernetworks.junos.junos_lacp_interfaces:
     config:
       - name: ae0
       - name: ge-0/0/3

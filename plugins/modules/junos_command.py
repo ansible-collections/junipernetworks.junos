@@ -98,22 +98,22 @@ notes:
 
 EXAMPLES = """
 - name: run show version on remote devices
-  junos_command:
+  junipernetworks.junos.junos_command:
     commands: show version
 
 - name: run show version and check to see if output contains Juniper
-  junos_command:
+  junipernetworks.junos.junos_command:
     commands: show version
     wait_for: result[0] contains Juniper
 
 - name: run multiple commands on remote nodes
-  junos_command:
+  junipernetworks.junos.junos_command:
     commands:
       - show version
       - show interfaces
 
 - name: run multiple commands and evaluate the output
-  junos_command:
+  junipernetworks.junos.junos_command:
     commands:
       - show version
       - show interfaces
@@ -122,17 +122,17 @@ EXAMPLES = """
       - result[1] contains Loopback0
 
 - name: run commands and specify the output format
-  junos_command:
+  junipernetworks.junos.junos_command:
     commands: show version
     display: json
 
 - name: run rpc on the remote device
-  junos_command:
+  junipernetworks.junos.junos_command:
     commands: show configuration
     display: set
 
 - name: run rpc on the remote device
-  junos_command:
+  junipernetworks.junos.junos_command:
     rpcs: get-software-information
 """
 

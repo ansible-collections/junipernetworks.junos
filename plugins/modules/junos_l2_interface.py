@@ -95,7 +95,7 @@ extends_documentation_fragment:
 
 EXAMPLES = """
 - name: Configure interface in access mode
-  junos_l2_interface:
+  junipernetworks.junos.junos_l2_interface:
     name: ge-0/0/1
     description: interface-access
     mode: access
@@ -104,7 +104,7 @@ EXAMPLES = """
     state: present
 
 - name: Configure interface in trunk mode
-  junos_l2_interface:
+  junipernetworks.junos.junos_l2_interface:
     name: ge-0/0/1
     description: interface-trunk
     mode: trunk
@@ -116,7 +116,7 @@ EXAMPLES = """
     state: present
 
 - name: Configure interface in access and trunk mode using aggregate
-  junos_l2_interface:
+  junipernetworks.junos.junos_l2_interface:
     aggregate:
     - name: ge-0/0/1
       description: test-interface-access

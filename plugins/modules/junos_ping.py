@@ -70,23 +70,23 @@ extends_documentation_fragment:
 
 EXAMPLES = """
 - name: Test reachability to 10.10.10.10
-  junos_ping:
+  junipernetworks.junos.junos_ping:
     dest: 10.10.10.10
 
 - name: Test reachability to 10.20.20.20 using source and size set
-  junos_ping:
+  junipernetworks.junos.junos_ping:
     dest: 10.20.20.20
     size: 1024
     ttl: 128
 
 - name: Test unreachability to 10.30.30.30 using interval
-  junos_ping:
+  junipernetworks.junos.junos_ping:
     dest: 10.30.30.30
     interval: 3
     state: absent
 
 - name: Test reachability to 10.40.40.40 setting count and interface
-  junos_ping:
+  junipernetworks.junos.junos_ping:
     dest: 10.40.40.40
     interface: fxp0
     count: 20

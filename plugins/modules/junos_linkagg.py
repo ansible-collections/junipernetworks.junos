@@ -89,7 +89,7 @@ extends_documentation_fragment:
 
 EXAMPLES = """
 - name: configure link aggregation
-  junos_linkagg:
+  junipernetworks.junos.junos_linkagg:
     name: ae11
     members:
       - ge-0/0/5
@@ -100,7 +100,7 @@ EXAMPLES = """
     state: present
 
 - name: delete link aggregation
-  junos_linkagg:
+  junipernetworks.junos.junos_linkagg:
     name: ae11
     members:
       - ge-0/0/5
@@ -111,7 +111,7 @@ EXAMPLES = """
     state: delete
 
 - name: deactivate link aggregation
-  junos_linkagg:
+  junipernetworks.junos.junos_linkagg:
     name: ae11
     members:
       - ge-0/0/5
@@ -123,7 +123,7 @@ EXAMPLES = """
     active: False
 
 - name: Activate link aggregation
-  junos_linkagg:
+  junipernetworks.junos.junos_linkagg:
     name: ae11
     members:
       - ge-0/0/5
@@ -135,12 +135,12 @@ EXAMPLES = """
     active: True
 
 - name: Disable link aggregation
-  junos_linkagg:
+  junipernetworks.junos.junos_linkagg:
     name: ae11
     state: down
 
 - name: Enable link aggregation
-  junos_linkagg:
+  junipernetworks.junos.junos_linkagg:
     name: ae11
     state: up
 """

@@ -119,7 +119,7 @@ EXAMPLES = """
 # }
 
 - name: Delete provided configuration (default operation is merge)
-  junos_static_routes:
+  junipernetworks.junos.junos_static_routes:
     config:
       - address_families:
         - afi: 'ipv4'
@@ -150,7 +150,7 @@ EXAMPLES = """
 # }
 
 - name: Merge provided configuration with device configuration (default operation is merge)
-  junos_static_routes:
+  junipernetworks.junos.junos_static_routes:
     config:
       - address_families:
           - afi: 'ipv4'
@@ -182,7 +182,7 @@ EXAMPLES = """
 # }
 
 - name: Override provided configuration with device configuration (default operation is merge)
-  junos_static_routes:
+  junipernetworks.junos.junos_static_routes:
     config:
       - address_families:
         - afi: 'ipv4'
@@ -212,7 +212,7 @@ EXAMPLES = """
 # }
 
 - name: Replace provided configuration with device configuration (default operation is merge)
-  junos_static_routes:
+  junipernetworks.junos.junos_static_routes:
     config:
       - address_families:
         - afi: 'ipv4'
