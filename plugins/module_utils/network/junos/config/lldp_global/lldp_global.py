@@ -67,9 +67,13 @@ class Lldp_global(ConfigBase):
         :returns: The result from module execution
         """
         result = {"changed": False}
+        state = self._module.params["state"]
 
         existing_lldp_global_facts = self.get_lldp_global_facts()
         config_xmls = self.set_config(existing_lldp_global_facts)
+
+        if state == "gathered":
+            result["gathered"] = existing_lldp_global_facts
 
         with locked_config(self._module):
             for config_xml in to_list(config_xmls):

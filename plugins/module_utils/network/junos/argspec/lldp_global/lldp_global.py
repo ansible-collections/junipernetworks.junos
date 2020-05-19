@@ -49,7 +49,7 @@ class Lldp_globalArgs(object):
             "type": "dict",
         },
         "state": {
-            "choices": ["merged", "replaced", "deleted"],
+            "choices": ["merged", "replaced", "deleted", "gathered"],
             "default": "merged",
             "type": "str",
         },
