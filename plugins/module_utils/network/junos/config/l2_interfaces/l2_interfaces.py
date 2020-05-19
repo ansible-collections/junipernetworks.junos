@@ -76,10 +76,14 @@ class L2_interfaces(ConfigBase):
         :returns: The result from module execution
         """
         result = {"changed": False}
+        state = self._module.params["state"]
 
         existing_l2_interfaces_facts = self.get_l2_interfaces_facts()
-
         config_xmls = self.set_config(existing_l2_interfaces_facts)
+
+        if state == "gathered":
+            result["gathered"] = existing_l2_interfaces_facts
+
         with locked_config(self._module):
             for config_xml in to_list(config_xmls):
                 diff = load_config(self._module, config_xml, [])
