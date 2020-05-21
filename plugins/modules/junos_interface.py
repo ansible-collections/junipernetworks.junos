@@ -14,7 +14,7 @@ DOCUMENTATION = """
 module: junos_interface
 version_added: "1.0.0"
 author: Ganesh Nalawade (@ganeshrn)
-short_description: Manage Interface on Juniper JUNOS network devices
+short_description: (deprecated) Manage Interface on Juniper JUNOS network devices
 description:
 - This module provides declarative management of Interfaces on Juniper JUNOS network
   devices.
@@ -102,6 +102,7 @@ notes:
 - This module also works with C(local) connections for legacy playbooks.
 extends_documentation_fragment:
 - junipernetworks.junos.junos
+
 """
 
 EXAMPLES = """
@@ -118,24 +119,24 @@ EXAMPLES = """
 - name: make interface down
   junipernetworks.junos.junos_interface:
     name: ge-0/0/1
-    enabled: False
+    enabled: false
 
 - name: make interface up
   junipernetworks.junos.junos_interface:
     name: ge-0/0/1
-    enabled: True
+    enabled: true
 
 - name: Deactivate interface config
   junipernetworks.junos.junos_interface:
     name: ge-0/0/1
     state: present
-    active: False
+    active: false
 
 - name: Activate interface config
   junipernetworks.junos.junos_interface:
     name: ge-0/0/1
     state: present
-    active: True
+    active: true
 
 - name: Configure interface speed, mtu, duplex
   junipernetworks.junos.junos_interface:
@@ -148,10 +149,10 @@ EXAMPLES = """
 - name: Create interface using aggregate
   junipernetworks.junos.junos_interface:
     aggregate:
-      - name: ge-0/0/1
-        description: test-interface-1
-      - name: ge-0/0/2
-        description: test-interface-2
+    - name: ge-0/0/1
+      description: test-interface-1
+    - name: ge-0/0/2
+      description: test-interface-2
     speed: 1g
     duplex: full
     mtu: 512
@@ -159,8 +160,8 @@ EXAMPLES = """
 - name: Delete interface using aggregate
   junipernetworks.junos.junos_interface:
     aggregate:
-      - name: ge-0/0/1
-      - name: ge-0/0/2
+    - name: ge-0/0/1
+    - name: ge-0/0/2
     state: absent
 
 - name: Check intent arguments

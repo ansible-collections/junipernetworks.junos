@@ -77,6 +77,7 @@ options:
     - deleted
     - gathered
     default: merged
+
 """
 
 EXAMPLES = """
@@ -97,137 +98,30 @@ EXAMPLES = """
 - name: Merge JUNOS vlan
   junipernetworks.junos.junos_vlans:
     config:
-      - name: vlan-1
-        vlan-id: 1
+    - name: vlan-1
+      vlan-id: 1
   state: merged
-
-# After State
-# -----------
-#
-# admin# show vlans
-# vlan-1 {
-#     vlan-id 1;
-# }
-# vlan-2 {
-#     vlan-id 2;
-# }
-# vlan-3 {
-#     vlan-id 3;
-# }
-
-
-# Using replaced
-################
-
-# Before State
-# ------------
-#
-# admin# show vlans
-# vlan-1 {
-#     vlan-id 1;
-# }
-# vlan-2 {
-#     vlan-id 2;
-# }
-# vlan-3 {
-#     vlan-id 3;
-# }
-
 - name: Replace JUNOS vlan
   junipernetworks.junos.junos_vlans:
     config:
-      - name: vlan-1
-        vlan-id: 10
-      - name: vlan-3
-        vlan-id: 30
+    - name: vlan-1
+      vlan-id: 10
+    - name: vlan-3
+      vlan-id: 30
   state: replaced
-
-# After State
-# -----------
-#
-# admin# show vlans
-# vlan-1 {
-#     vlan-id 10;
-# }
-# vlan-2 {
-#     vlan-id 2;
-# }
-# vlan-3 {
-#     vlan-id 30;
-# }
-
-
-# Using overridden
-##################
-
-# Before State
-# ------------
-#
-# admin# show vlans
-# vlan-1 {
-#     vlan-id 1;
-# }
-# vlan-2 {
-#     vlan-id 2;
-# }
-# vlan-3 {
-#     vlan-id 3;
-# }
-
 - name: Override JUNOS vlan
   junipernetworks.junos.junos_vlans:
     config:
-      - name: vlan-4
-        vlan-id: 100
-      - name: vlan-2
-        vlan-id: 200
+    - name: vlan-4
+      vlan-id: 100
+    - name: vlan-2
+      vlan-id: 200
   state: overridden
-
-# After State
-# -----------
-#
-# admin# show vlans
-# vlan-2 {
-#     vlan-id 200;
-# }
-# vlan-4 {
-#     vlan-id 100;
-# }
-
-
-#Using deleted
-##############
-
-# Before State
-# ------------
-#
-# admin# show vlans
-# vlan-1 {
-#     vlan-id 1;
-# }
-# vlan-2 {
-#     vlan-id 2;
-# }
-# vlan-3 {
-#     vlan-id 3;
-# }
-
 - name: Delete JUNOS vlan
   junipernetworks.junos.junos_vlans:
     config:
-      - name: vlan-1
+    - name: vlan-1
   state: deleted
-
-# After State
-# -----------
-#
-# admin# show vlans
-# vlan-2 {
-#     vlan-id 2;
-# }
-# vlan-3 {
-#     vlan-id 3;
-# }
 """
 
 RETURN = """

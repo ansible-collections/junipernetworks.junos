@@ -66,6 +66,7 @@ options:
     - deleted
     - gathered
     default: merged
+
 """
 EXAMPLES = """
 # Using merged
@@ -78,9 +79,9 @@ EXAMPLES = """
 - name: Merge provided configuration with device configuration
   junipernetworks.junos.junos_lldp_interfaces:
     config:
-      - name: ge-0/0/1
-      - name: ge-0/0/2
-        enabled: False
+    - name: ge-0/0/1
+    - name: ge-0/0/2
+      enabled: false
     state: merged
 
 # After state:
@@ -107,10 +108,10 @@ EXAMPLES = """
 - name: Replace provided configuration with device configuration
   junipernetworks.junos.junos_lldp_interfaces:
     config:
-      - name: ge-0/0/2
-        disable: False
-      - name: ge-0/0/3
-        enabled: False
+    - name: ge-0/0/2
+      disable: false
+    - name: ge-0/0/3
+      enabled: false
     state: replaced
 
 # After state:
@@ -138,8 +139,8 @@ EXAMPLES = """
 - name: Override provided configuration with device configuration
   junipernetworks.junos.junos_lldp_interfaces:
     config:
-      - name: ge-0/0/2
-        enabled: False
+    - name: ge-0/0/2
+      enabled: false
     state: overridden
 
 # After state:

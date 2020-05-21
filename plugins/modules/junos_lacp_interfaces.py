@@ -115,6 +115,7 @@ options:
     - deleted
     - gathered
     default: merged
+
 """
 EXAMPLES = """
 # Using merged
@@ -152,16 +153,16 @@ EXAMPLES = """
 - name: Merge provided configuration with device configuration
   junipernetworks.junos.junos_lacp_interfaces:
     config:
-      - name: ae0
-        period: fast
-        sync_reset: enable
-        system:
-          priority: 100
-          mac:
-            address: 00:00:00:00:00:02
-      - name: ge-0/0/3
-        port_priority: 100
-        force_up: True
+    - name: ae0
+      period: fast
+      sync_reset: enable
+      system:
+        priority: 100
+        mac:
+          address: 00:00:00:00:00:02
+    - name: ge-0/0/3
+      port_priority: 100
+      force_up: true
     state: merged
 
 # After state:
@@ -250,8 +251,8 @@ EXAMPLES = """
 - name: Replace device LACP interfaces configuration with provided configuration
   junipernetworks.junos.junos_lacp_interfaces:
     config:
-      - name: ae0
-        period: slow
+    - name: ae0
+      period: slow
     state: replaced
 
 # After state:
@@ -334,14 +335,14 @@ EXAMPLES = """
 - name: Overrides all device LACP interfaces configuration with provided configuration
   junipernetworks.junos.junos_lacp_interfaces:
     config:
-      - name: ae0
-        system:
-          priority: 300
-          mac:
-            address: 00:00:00:00:00:03
-      - name: ge-0/0/2
-        port_priority: 200
-        force_up: False
+    - name: ae0
+      system:
+        priority: 300
+        mac:
+          address: 00:00:00:00:00:03
+    - name: ge-0/0/2
+      port_priority: 200
+      force_up: false
     state: overridden
 
 # After state:
@@ -436,9 +437,9 @@ EXAMPLES = """
 - name: "Delete LACP interfaces attributes of given interfaces (Note: This won't delete the interface itself)"
   junipernetworks.junos.junos_lacp_interfaces:
     config:
-      - name: ae0
-      - name: ge-0/0/3
-      - name: ge-0/0/2
+    - name: ae0
+    - name: ge-0/0/3
+    - name: ge-0/0/2
     state: deleted
 
 # After state:

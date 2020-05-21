@@ -104,10 +104,10 @@ options:
     - deleted
     - gathered
     default: merged
+
 """
 
 EXAMPLES = """
----
 # Using deleted
 
 # Before state
@@ -123,12 +123,12 @@ EXAMPLES = """
 - name: Delete provided configuration (default operation is merge)
   junipernetworks.junos.junos_static_routes:
     config:
-      - address_families:
-        - afi: 'ipv4'
-          routes:
-            - dest: 10.200.16.75/24
-              next_hop:
-                - forward_router_address: 10.200.16.2
+    - address_families:
+      - afi: ipv4
+        routes:
+        - dest: 10.200.16.75/24
+          next_hop:
+          - forward_router_address: 10.200.16.2
     state: deleted
 
 # After state:
@@ -154,12 +154,12 @@ EXAMPLES = """
 - name: Merge provided configuration with device configuration (default operation is merge)
   junipernetworks.junos.junos_static_routes:
     config:
-      - address_families:
-          - afi: 'ipv4'
-            routes:
-              - dest: 10.200.16.75/24
-                next_hop:
-                  - forward_router_address: 10.200.16.2
+    - address_families:
+      - afi: ipv4
+        routes:
+        - dest: 10.200.16.75/24
+          next_hop:
+          - forward_router_address: 10.200.16.2
     state: merged
 
 # After state:
@@ -186,12 +186,12 @@ EXAMPLES = """
 - name: Override provided configuration with device configuration (default operation is merge)
   junipernetworks.junos.junos_static_routes:
     config:
-      - address_families:
-        - afi: 'ipv4'
-          routes:
-            - dest: 10.200.16.75/24
-              next_hop:
-                - forward_router_address: 10.200.16.2
+    - address_families:
+      - afi: ipv4
+        routes:
+        - dest: 10.200.16.75/24
+          next_hop:
+          - forward_router_address: 10.200.16.2
     state: overridden
 
 # After state:
@@ -216,12 +216,12 @@ EXAMPLES = """
 - name: Replace provided configuration with device configuration (default operation is merge)
   junipernetworks.junos.junos_static_routes:
     config:
-      - address_families:
-        - afi: 'ipv4'
-          routes:
-            - dest: 192.168.47.0/24
-              next_hop:
-                - forward_router_address: 10.200.16.2
+    - address_families:
+      - afi: ipv4
+        routes:
+        - dest: 192.168.47.0/24
+          next_hop:
+          - forward_router_address: 10.200.16.2
     state: replaced
 
 # After state:

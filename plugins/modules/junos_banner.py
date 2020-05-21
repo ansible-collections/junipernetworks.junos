@@ -44,7 +44,7 @@ options:
     description:
     - Specifies whether or not the configuration is active or deactivated
     type: bool
-    default: 'yes'
+    default: yes
 requirements:
 - ncclient (>=v0.5.2)
 notes:
@@ -59,7 +59,7 @@ extends_documentation_fragment:
 
 EXAMPLES = """
 - name: configure the login banner
-  junos_banner:
+  junipernetworks.junos.junos_banner:
     banner: login
     text: |
       this is my login banner
@@ -68,25 +68,25 @@ EXAMPLES = """
     state: present
 
 - name: remove the motd banner
-  junos_banner:
+  junipernetworks.junos.junos_banner:
     banner: motd
     state: absent
 
 - name: deactivate the motd banner
-  junos_banner:
+  junipernetworks.junos.junos_banner:
     banner: motd
     state: present
-    active: False
+    active: false
 
 - name: activate the motd banner
-  junos_banner:
+  junipernetworks.junos.junos_banner:
     banner: motd
     state: present
-    active: True
+    active: true
 
 - name: Configure banner from file
-  junos_banner:
-    banner:  motd
+  junipernetworks.junos.junos_banner:
+    banner: motd
     text: "{{ lookup('file', './config_partial/raw_banner.cfg') }}"
     state: present
 """

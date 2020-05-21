@@ -105,17 +105,17 @@ EXAMPLES = """
 - name: run multiple commands on remote nodes
   junipernetworks.junos.junos_command:
     commands:
-      - show version
-      - show interfaces
+    - show version
+    - show interfaces
 
 - name: run multiple commands and evaluate the output
   junipernetworks.junos.junos_command:
     commands:
-      - show version
-      - show interfaces
+    - show version
+    - show interfaces
     wait_for:
-      - result[0] contains Juniper
-      - result[1] contains Loopback0
+    - result[0] contains Juniper
+    - result[1] contains Loopback0
 
 - name: run commands and specify the output format
   junipernetworks.junos.junos_command:

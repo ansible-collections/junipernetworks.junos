@@ -128,8 +128,8 @@ EXAMPLES = """
 - name: "Delete LAG attributes of given interfaces (Note: This won't delete the interface itself)"
   junipernetworks.junos.junos_lag_interfaces:
     config:
-      - name: ae0
-      - name: ae1
+    - name: ae0
+    - name: ae1
     state: deleted
 
 # After state:
@@ -158,12 +158,12 @@ EXAMPLES = """
 - name: Merge provided configuration with device configuration
   junipernetworks.junos.junos_lag_interfaces:
     config:
-      - name: ae0
-        members:
-          - member: ge-0/0/1
-            link_type: primary
-          - member: ge-0/0/2
-            link_type: backup
+    - name: ae0
+      members:
+      - member: ge-0/0/1
+        link_type: primary
+      - member: ge-0/0/2
+        link_type: backup
     state: merged
 
 # After state:
@@ -216,13 +216,13 @@ EXAMPLES = """
 - name: Overrides all device LAG configuration with provided configuration
   junipernetworks.junos.junos_lag_interfaces:
     config:
-      - name: ae0
-        members:
-          - member: ge-0/0/2
-      - name: ae1
-        members:
-          - member: ge-0/0/1
-        mode: passive
+    - name: ae0
+      members:
+      - member: ge-0/0/2
+    - name: ae1
+      members:
+      - member: ge-0/0/1
+      mode: passive
     state: overridden
 
 # After state:
@@ -270,10 +270,10 @@ EXAMPLES = """
 - name: Replace device LAG configuration with provided configuration
   junipernetworks.junos.junos_lag_interfaces:
     config:
-      - name: ae0
-        members:
-          - member: ge-0/0/1
-        mode: active
+    - name: ae0
+      members:
+      - member: ge-0/0/1
+      mode: active
     state: replaced
 
 # After state:

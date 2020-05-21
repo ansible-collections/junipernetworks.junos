@@ -131,12 +131,12 @@ EXAMPLES = """
 - name: "Delete given options for the interface (Note: This won't delete the interface itself if any other values are configured for interface)"
   junipernetworks.junos.junos_interfaces:
     config:
-      - name: ge-0/0/1
-        description: 'Configured by Ansible-1'
-        speed: 1g
-        mtu: 1800
-      - name: ge-0/0/2
-        description: 'Configured by Ansible -2'
+    - name: ge-0/0/1
+      description: Configured by Ansible-1
+      speed: 1g
+      mtu: 1800
+    - name: ge-0/0/2
+      description: Configured by Ansible -2
     state: deleted
 
 # After state:
@@ -159,16 +159,16 @@ EXAMPLES = """
 #    speed 1g;
 # }
 
-- name: "Merge provided configuration with device configuration (default operation is merge)"
+- name: Merge provided configuration with device configuration (default operation is merge)
   junipernetworks.junos.junos_interfaces:
     config:
-      - name: ge-0/0/1
-        description: 'Configured by Ansible-1'
-        enabled: True
-        mtu: 1800
-      - name: ge-0/0/2
-        description: 'Configured by Ansible-2'
-        enabled: False
+    - name: ge-0/0/1
+      description: Configured by Ansible-1
+      enabled: true
+      mtu: 1800
+    - name: ge-0/0/2
+      description: Configured by Ansible-2
+      enabled: false
     state: merged
 
 # After state:
@@ -206,15 +206,15 @@ EXAMPLES = """
 #    description "Configured by Ansible-11";
 # }
 
-- name: "Override device configuration of all interfaces with provided configuration"
+- name: Override device configuration of all interfaces with provided configuration
   junipernetworks.junos.junos_interfaces:
     config:
-      - name: ge-0/0/2
-        description: 'Configured by Ansible-2'
-        enabled: False
-        mtu: 2800
-      - name: ge-0/0/3
-        description: 'Configured by Ansible-3'
+    - name: ge-0/0/2
+      description: Configured by Ansible-2
+      enabled: false
+      mtu: 2800
+    - name: ge-0/0/3
+      description: Configured by Ansible-3
     state: overridden
 
 # After state:
@@ -253,15 +253,15 @@ EXAMPLES = """
 #    description "Configured by Ansible-11";
 # }
 
-- name: "Replaces device configuration of listed interfaces with provided configuration"
+- name: Replaces device configuration of listed interfaces with provided configuration
   junipernetworks.junos.junos_interfaces:
     config:
-      - name: ge-0/0/2
-        description: 'Configured by Ansible-2'
-        enabled: False
-        mtu: 2800
-      - name: ge-0/0/3
-        description: 'Configured by Ansible-3'
+    - name: ge-0/0/2
+      description: Configured by Ansible-2
+      enabled: false
+      mtu: 2800
+    - name: ge-0/0/3
+      description: Configured by Ansible-3
     state: replaced
 
 # After state:

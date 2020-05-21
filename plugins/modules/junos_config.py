@@ -77,7 +77,7 @@ options:
       set the I(update) argument to C(replace). This argument will be removed in a
       future release. The C(replace) and C(update) argument is mutually exclusive.
     type: bool
-    default: 'no'
+    default: no
   backup:
     description:
     - This argument will cause the module to create a full backup of the current C(running-config)
@@ -86,7 +86,7 @@ options:
       playbook root directory or role root directory, if playbook is part of an ansible
       role. If the directory does not exist, it is created.
     type: bool
-    default: 'no'
+    default: no
   update:
     description:
     - This argument will decide how to load the configuration data particularly when
@@ -114,14 +114,14 @@ options:
     - This argument will execute commit operation on remote device. It can be used
       to confirm a previous commit.
     type: bool
-    default: 'no'
+    default: no
   check_commit:
     description:
     - This argument will check correctness of syntax; do not apply changes.
     - Note that this argument can be used to confirm verified configuration done via
       commit confirmed operation
     type: bool
-    default: 'no'
+    default: no
   backup_options:
     description:
     - This is a dict object containing configurable options related to backup file
@@ -167,16 +167,16 @@ EXAMPLES = """
 - name: load configure lines into device
   junipernetworks.junos.junos_config:
     lines:
-      - set interfaces ge-0/0/1 unit 0 description "Test interface"
-      - set vlans vlan01 description "Test vlan"
+    - set interfaces ge-0/0/1 unit 0 description "Test interface"
+    - set vlans vlan01 description "Test vlan"
     comment: update config
 
 - name: Set routed VLAN interface (RVI) IPv4 address
   junipernetworks.junos.junos_config:
     lines:
-      - set vlans vlan01 vlan-id 1
-      - set interfaces irb unit 10 family inet address 10.0.0.1/24
-      - set vlans vlan01 l3-interface irb.10
+    - set vlans vlan01 vlan-id 1
+    - set interfaces irb unit 10 family inet address 10.0.0.1/24
+    - set vlans vlan01 l3-interface irb.10
 
 - name: Check correctness of commit configuration
   junipernetworks.junos.junos_config:
@@ -193,9 +193,11 @@ EXAMPLES = """
 - name: Set VLAN access and trunking
   junipernetworks.junos.junos_config:
     lines:
-      - set vlans vlan02 vlan-id 6
-      - set interfaces ge-0/0/6.0 family ethernet-switching interface-mode access vlan members vlan02
-      - set interfaces ge-0/0/6.0 family ethernet-switching interface-mode trunk vlan members vlan02
+    - set vlans vlan02 vlan-id 6
+    - set interfaces ge-0/0/6.0 family ethernet-switching interface-mode access vlan
+      members vlan02
+    - set interfaces ge-0/0/6.0 family ethernet-switching interface-mode trunk vlan
+      members vlan02
 
 - name: confirm a previous commit
   junipernetworks.junos.junos_config:
@@ -205,7 +207,7 @@ EXAMPLES = """
   junipernetworks.junos.junos_config:
     lines:
       # - set int ge-0/0/1 unit 0 desc "Test interface"
-      - set interfaces ge-0/0/1 unit 0 description "Test interface"
+    - set interfaces ge-0/0/1 unit 0 description "Test interface"
 
 - name: configurable backup path
   junipernetworks.junos.junos_config:

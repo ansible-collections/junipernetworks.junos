@@ -14,7 +14,8 @@ DOCUMENTATION = """
 module: junos_lldp
 version_added: "1.0.0"
 author: Ganesh Nalawade (@ganeshrn)
-short_description: Manage LLDP configuration on Juniper JUNOS network devices
+short_description: (deprecated) Manage LLDP configuration on Juniper JUNOS network
+  devices
 description:
 - This module provides declarative management of LLDP service on Juniper JUNOS network
   devices.
@@ -63,6 +64,7 @@ notes:
 - This module also works with C(local) connections for legacy playbooks.
 extends_documentation_fragment:
 - junipernetworks.junos.junos
+
 """
 
 EXAMPLES = """
