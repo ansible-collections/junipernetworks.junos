@@ -14,7 +14,7 @@ DOCUMENTATION = """
 module: junos_l3_interface
 version_added: "1.0.0"
 author: Ganesh Nalawade (@ganeshrn)
-short_description: Manage L3 interfaces on Juniper JUNOS network devices
+short_description: (deprecated) Manage L3 interfaces on Juniper JUNOS network devices
 description:
 - This module provides declarative management of L3 interfaces on Juniper JUNOS network
   devices.
@@ -72,6 +72,7 @@ notes:
 - This module also works with C(local) connections for legacy playbooks.
 extends_documentation_fragment:
 - junipernetworks.junos.junos
+
 """
 
 EXAMPLES = """

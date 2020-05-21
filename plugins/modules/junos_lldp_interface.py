@@ -14,7 +14,7 @@ DOCUMENTATION = """
 module: junos_lldp_interface
 author: Ganesh Nalawade (@ganeshrn)
 version_added: "1.0.0"
-short_description: Manage LLDP interfaces configuration on Juniper JUNOS network devices
+short_description: (deprecated) Manage LLDP interfaces configuration on Juniper JUNOS network devices
 description:
 - This module provides declarative management of LLDP interfaces configuration on
   Juniper JUNOS network devices.
@@ -53,6 +53,7 @@ notes:
 - This module also works with C(local) connections for legacy playbooks.
 extends_documentation_fragment:
 - junipernetworks.junos.junos
+
 """
 
 EXAMPLES = """
@@ -80,13 +81,13 @@ EXAMPLES = """
   junipernetworks.junos.junos_lldp_interface:
     name: ge-0/0/5
     state: present
-    active: False
+    active: false
 
 - name: Activate LLDP on specific interfaces
   junipernetworks.junos.junos_lldp_interface:
     name: ge-0/0/5
     state: present
-    active: True
+    active: true
 """
 
 RETURN = """

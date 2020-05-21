@@ -14,7 +14,8 @@ DOCUMENTATION = """
 module: junos_linkagg
 version_added: "1.0.0"
 author: Ganesh Nalawade (@ganeshrn)
-short_description: Manage link aggregation groups on Juniper JUNOS network devices
+short_description: (deprecated) Manage link aggregation groups on Juniper JUNOS network
+  devices
 description:
 - This module provides declarative management of link aggregation groups on Juniper
   JUNOS network devices.
@@ -36,8 +37,8 @@ options:
       disable LACP.
     default: false
     choices:
-    - 'on'
-    - 'off'
+    - on
+    - off
     - active
     - passive
   members:
@@ -81,6 +82,7 @@ notes:
 - This module also works with C(local) connections for legacy playbooks.
 extends_documentation_fragment:
 - junipernetworks.junos.junos
+
 """
 
 EXAMPLES = """
@@ -88,9 +90,9 @@ EXAMPLES = """
   junipernetworks.junos.junos_linkagg:
     name: ae11
     members:
-      - ge-0/0/5
-      - ge-0/0/6
-      - ge-0/0/7
+    - ge-0/0/5
+    - ge-0/0/6
+    - ge-0/0/7
     lacp: active
     device_count: 4
     state: present
@@ -99,9 +101,9 @@ EXAMPLES = """
   junipernetworks.junos.junos_linkagg:
     name: ae11
     members:
-      - ge-0/0/5
-      - ge-0/0/6
-      - ge-0/0/7
+    - ge-0/0/5
+    - ge-0/0/6
+    - ge-0/0/7
     lacp: active
     device_count: 4
     state: delete
@@ -110,25 +112,25 @@ EXAMPLES = """
   junipernetworks.junos.junos_linkagg:
     name: ae11
     members:
-      - ge-0/0/5
-      - ge-0/0/6
-      - ge-0/0/7
+    - ge-0/0/5
+    - ge-0/0/6
+    - ge-0/0/7
     lacp: active
     device_count: 4
     state: present
-    active: False
+    active: false
 
 - name: Activate link aggregation
   junipernetworks.junos.junos_linkagg:
     name: ae11
     members:
-      - ge-0/0/5
-      - ge-0/0/6
-      - ge-0/0/7
+    - ge-0/0/5
+    - ge-0/0/6
+    - ge-0/0/7
     lacp: active
     device_count: 4
     state: present
-    active: True
+    active: true
 
 - name: Disable link aggregation
   junipernetworks.junos.junos_linkagg:

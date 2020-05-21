@@ -13,8 +13,10 @@ DOCUMENTATION = """
 ---
 module: junos_l2_interface
 version_added: "1.0.0"
+module: junos_l2_interface
 author: Ganesh Nalawade (@ganeshrn)
-short_description: Manage Layer-2 interface on Juniper JUNOS network devices
+short_description: (deprecated) Manage Layer-2 interface on Juniper JUNOS network
+  devices
 description:
 - This module provides declarative management of Layer-2 interface on Juniper JUNOS
   network devices.
@@ -87,6 +89,7 @@ notes:
 - This module also works with C(local) connections for legacy playbooks.
 extends_documentation_fragment:
 - junipernetworks.junos.junos
+
 """
 
 EXAMPLES = """
@@ -96,7 +99,7 @@ EXAMPLES = """
     description: interface-access
     mode: access
     access_vlan: red
-    active: True
+    active: true
     state: present
 
 - name: Configure interface in trunk mode
@@ -108,7 +111,7 @@ EXAMPLES = """
     - blue
     - green
     native_vlan: 100
-    active: True
+    active: true
     state: present
 
 - name: Configure interface in access and trunk mode using aggregate
@@ -125,7 +128,7 @@ EXAMPLES = """
       - blue
       - green
       native_vlan: 100
-    active: True
+    active: true
     state: present
 """
 

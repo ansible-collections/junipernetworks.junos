@@ -33,14 +33,14 @@ options:
     description:
     - The C(recursive) argument enables recursive transfer of files and directories.
     type: bool
-    default: 'no'
+    default: no
   remote_src:
     description:
     - The C(remote_src) argument enables the download of files (I(scp get)) from the
       remote device. The default behavior is to upload files (I(scp put)) to the remote
       device.
     type: bool
-    default: 'no'
+    default: no
   ssh_private_key_file:
     description:
     - The C(ssh_private_key_file) argument is path to the SSH private key file. This

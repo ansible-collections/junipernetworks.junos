@@ -32,12 +32,11 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_l2_interfaces
-version_added: "1.0.0"
-short_description: JUNOS L2 interfaces resource module
+short_description: L2 interfaces resource module
 description: This module provides declarative management of a Layer-2 interface on
   Juniper JUNOS devices.
+version_added: 1.0.0
 author: Ganesh Nalawade (@ganeshrn)
 options:
   config:
@@ -102,6 +101,7 @@ notes:
   being managed.
 - Tested against vSRX JUNOS version 18.4R1.
 - This module works with connection C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
+
 """
 EXAMPLES = """
 # Using deleted
@@ -133,8 +133,8 @@ EXAMPLES = """
 - name: "Delete L2 attributes of given interfaces (Note: This won't delete the interface itself)."
   junipernetworks.junos.junos_l2_interfaces:
     config:
-      - name: ge-0/0/1
-      - name: ge-0/0/2
+    - name: ge-0/0/1
+    - name: ge-0/0/2
     state: deleted
 
 # After state:
@@ -176,17 +176,17 @@ EXAMPLES = """
 #    }
 # }
 
-- name: "Merge provided configuration with device configuration (default operation is merge)"
+- name: Merge provided configuration with device configuration (default operation is merge)
   junipernetworks.junos.junos_l2_interfaces:
     config:
-      - name: ge-0/0/3
-        access:
-          vlan: v101
-      - name: ge-0/0/4
-        trunk:
-          allowed_vlans:
-            - vlan30
-          native_vlan: 50
+    - name: ge-0/0/3
+      access:
+        vlan: v101
+    - name: ge-0/0/4
+      trunk:
+        allowed_vlans:
+        - vlan30
+        native_vlan: 50
     state: merged
 
 # After state:
@@ -251,17 +251,17 @@ EXAMPLES = """
 #    }
 # }
 
-- name: "Override provided configuration with device configuration"
+- name: Override provided configuration with device configuration
   junipernetworks.junos.junos_l2_interfaces:
     config:
-      - name: ge-0/0/3
-        access:
-          vlan: v101
-      - name: ge-0/0/4
-        trunk:
-          allowed_vlans:
-            - vlan30
-          native_vlan: 50
+    - name: ge-0/0/3
+      access:
+        vlan: v101
+    - name: ge-0/0/4
+      trunk:
+        allowed_vlans:
+        - vlan30
+        native_vlan: 50
     state: overridden
 
 # After state:
@@ -313,17 +313,17 @@ EXAMPLES = """
 #    }
 # }
 
-- name: "Replace provided configuration with device configuration"
+- name: Replace provided configuration with device configuration
   junipernetworks.junos.junos_l2_interfaces:
     config:
-      - name: ge-0/0/3
-        access:
-          vlan: v101
-      - name: ge-0/0/4
-        trunk:
-          allowed_vlans:
-            - vlan30
-          native_vlan: 50
+    - name: ge-0/0/3
+      access:
+        vlan: v101
+    - name: ge-0/0/4
+      trunk:
+        allowed_vlans:
+        - vlan30
+        native_vlan: 50
     state: replaced
 
 # After state:

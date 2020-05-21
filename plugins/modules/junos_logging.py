@@ -113,13 +113,13 @@ EXAMPLES = """
     - name: test-2
       facility: kernel
       level: emergency
-    active: True
+    active: true
 
 - name: Delete file logging using aggregate
   junipernetworks.junos.junos_logging:
     aggregate:
-    - { dest: file, name: test-1,  facility: pfe, level: critical }
-    - { dest: file, name: test-2,  facility: kernel, level: emergency }
+    - {dest: file, name: test-1, facility: pfe, level: critical}
+    - {dest: file, name: test-2, facility: kernel, level: emergency}
     state: absent
 """
 
