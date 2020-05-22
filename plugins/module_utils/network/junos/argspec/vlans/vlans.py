@@ -48,7 +48,13 @@ class VlansArgs(object):  # pylint: disable=R0903
             "type": "list",
         },
         "state": {
-            "choices": ["merged", "replaced", "overridden", "deleted"],
+            "choices": [
+                "merged",
+                "replaced",
+                "overridden",
+                "deleted",
+                "gathered",
+            ],
             "default": "merged",
             "type": "str",
         },
