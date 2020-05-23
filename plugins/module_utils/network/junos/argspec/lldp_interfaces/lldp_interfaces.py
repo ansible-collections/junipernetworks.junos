@@ -47,7 +47,13 @@ class Lldp_interfacesArgs(object):
             "type": "list",
         },
         "state": {
-            "choices": ["merged", "replaced", "deleted", "overridden"],
+            "choices": [
+                "merged",
+                "replaced",
+                "deleted",
+                "overridden",
+                "gathered",
+            ],
             "default": "merged",
             "type": "str",
         },
