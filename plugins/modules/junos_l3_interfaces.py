@@ -30,14 +30,13 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "network",
-}
+ANSIBLE_METADATA = {"metadata_version": "1.1", "supported_by": "network"}
 
-DOCUMENTATION = """module: junos_l3_interfaces
-short_description: Manage Layer 3 interface on Juniper JUNOS devices
+DOCUMENTATION = """
+---
+module: junos_l3_interfaces
+version_added: "1.0.0"
+short_description: Junos L3 Interfaces resource module
 description: This module provides declarative management of a Layer 3 interface on
   Juniper JUNOS devices
 author: Daniel Mellado (@dmellado)
@@ -98,6 +97,7 @@ options:
     - replaced
     - overridden
     - deleted
+    - gathered
     default: merged
 """
 EXAMPLES = """
