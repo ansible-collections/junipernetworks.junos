@@ -30,14 +30,13 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "network",
-}
+ANSIBLE_METADATA = {"metadata_version": "1.1", "supported_by": "network"}
 
-DOCUMENTATION = """module: junos_lag_interfaces
-short_description: Manage Link Aggregation on Juniper JUNOS devices.
+DOCUMENTATION = """
+---
+module: junos_lag_interfaces
+version_added: "1.0.0"
+short_description: Link Aggregation Juniper JUNOS resource module
 description: This module manages properties of Link Aggregation Group on Juniper JUNOS
   devices.
 author: Ganesh Nalawade (@ganeshrn)
@@ -92,6 +91,7 @@ options:
     - replaced
     - overridden
     - deleted
+    - gathered
     default: merged
 requirements:
 - ncclient (>=v0.6.4)
