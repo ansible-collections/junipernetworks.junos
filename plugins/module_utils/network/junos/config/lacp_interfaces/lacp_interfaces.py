@@ -70,9 +70,13 @@ class Lacp_interfaces(ConfigBase):
         :returns: The result from module execution
         """
         result = {"changed": False}
+        state = self._module.params["state"]
 
         existing_lacp_interfaces_facts = self.get_lacp_interfaces_facts()
         config_xmls = self.set_config(existing_lacp_interfaces_facts)
+
+        if state == "gathered":
+            result["gathered"] = existing_lacp_interfaces_facts
 
         with locked_config(self._module):
             for config_xml in to_list(config_xmls):
