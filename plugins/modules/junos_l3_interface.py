@@ -9,14 +9,10 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["deprecated"],
-    "supported_by": "network",
-}
-
-
-DOCUMENTATION = """module: junos_l3_interface
+DOCUMENTATION = """
+---
+module: junos_l3_interface
+version_added: "1.0.0"
 author: Ganesh Nalawade (@ganeshrn)
 short_description: Manage L3 interfaces on Juniper JUNOS network devices
 description:

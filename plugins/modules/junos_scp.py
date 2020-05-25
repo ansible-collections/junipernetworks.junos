@@ -9,14 +9,10 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "network",
-}
-
-
-DOCUMENTATION = """module: junos_scp
+DOCUMENTATION = """
+---
+module: junos_scp
+version_added: "1.0.0"
 author: Christian Giese (@GIC-de)
 short_description: Transfer files from or to remote devices running Junos
 description:

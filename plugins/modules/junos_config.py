@@ -9,14 +9,10 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "network",
-}
-
-
-DOCUMENTATION = """module: junos_config
+DOCUMENTATION = """
+---
+module: junos_config
+version_added: "1.0.0"
 author: Peter Sprygada (@privateip)
 short_description: Manage configuration on devices running Juniper JUNOS
 description:

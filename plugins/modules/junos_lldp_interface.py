@@ -9,15 +9,11 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["deprecated"],
-    "supported_by": "network",
-}
-
-
-DOCUMENTATION = """module: junos_lldp_interface
+DOCUMENTATION = """
+---
+module: junos_lldp_interface
 author: Ganesh Nalawade (@ganeshrn)
+version_added: "1.0.0"
 short_description: Manage LLDP interfaces configuration on Juniper JUNOS network devices
 description:
 - This module provides declarative management of LLDP interfaces configuration on

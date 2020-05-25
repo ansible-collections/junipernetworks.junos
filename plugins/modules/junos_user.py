@@ -9,14 +9,10 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "network",
-}
-
-
-DOCUMENTATION = """module: junos_user
+DOCUMENTATION = """
+---
+module: junos_user
+version_added: "1.0.0"
 author: Peter Sprygada (@privateip)
 short_description: Manage local user accounts on Juniper JUNOS devices
 description:
