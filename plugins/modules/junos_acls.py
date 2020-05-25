@@ -32,19 +32,18 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_acls
 version_added: "1.0.0"
 short_description: Junos ACLs resource module
 description: This module provides declarative management of acls/filters on Juniper JUNOS devices
 author: Daniel Mellado (@dmellado)
 requirements:
-  - ncclient (>=v0.6.4)
-  - xmltodict (>=0.12.0)
+- ncclient (>=v0.6.4)
+- xmltodict (>=0.12.0)
 notes:
-  - This module requires the netconf system service be enabled on the device being managed.
-  - This module works with connection C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
-  - Tested against JunOS v18.4R1
+- This module requires the netconf system service be enabled on the device being managed.
+- This module works with connection C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
+- Tested against JunOS v18.4R1
 options:
   config:
     description: A dictionary of acls options
@@ -53,113 +52,113 @@ options:
     suboptions:
       afi:
         description:
-          - Protocol family to use by the acl filter
+        - Protocol family to use by the acl filter
         type: str
         required: true
         choices:
-          - ipv4
-          - ipv6
+        - ipv4
+        - ipv6
       acls:
         description:
-          - List of Access Control Lists (ACLs).
+        - List of Access Control Lists (ACLs).
         type: list
         elements: dict
         suboptions:
           name:
             description:
-              - Name to use for the acl filter
+            - Name to use for the acl filter
             type: str
             required: true
           aces:
             description:
-              - List of Access Control Entries (ACEs) for this Access Control List (ACL).
+            - List of Access Control Entries (ACEs) for this Access Control List (ACL).
             type: list
             elements: dict
             suboptions:
               name:
                 description:
-                  - Filter term name
+                - Filter term name
                 type: str
                 required: true
               grant:
                 description:
-                  - Action to take after matching condition (allow, discard/reject)
+                - Action to take after matching condition (allow, discard/reject)
                 type: str
-                choices: ['permit', 'deny']
+                choices: [permit, deny]
               source:
                 type: dict
                 description:
-                  - Specifies the source for the filter
+                - Specifies the source for the filter
                 suboptions:
                   address:
                     description:
-                      - IP source address to use for the filter
+                    - IP source address to use for the filter
                     type: str
                   prefix_list:
                     description:
-                      - IP source prefix list to use for the filter
+                    - IP source prefix list to use for the filter
                     type: str
                   port_protocol:
                     description:
-                      - Specify the source port or protocol.
+                    - Specify the source port or protocol.
                     type: dict
                     suboptions:
                       eq:
                         description:
-                          - Match only packets on a given port number.
+                        - Match only packets on a given port number.
                         type: str
                       range:
                         description:
-                          - Match only packets in the range of port numbers
+                        - Match only packets in the range of port numbers
                         type: dict
                         suboptions:
                           start:
                             description:
-                              - Specify the start of the port range
+                            - Specify the start of the port range
                             type: int
                           end:
                             description:
-                              - Specify the end of the port range
+                            - Specify the end of the port range
                             type: int
               destination:
                 type: dict
                 description:
-                  - Specifies the destination for the filter
+                - Specifies the destination for the filter
                 suboptions:
                   address:
                     description:
-                      - Match IP destination address
+                    - Match IP destination address
                     type: str
                   prefix_list:
                     description:
-                      - Match IP destination prefixes in named list
+                    - Match IP destination prefixes in named list
                     type: str
                   port_protocol:
                     description:
-                      - Specify the destination port or protocol.
+                    - Specify the destination port or protocol.
                     type: dict
                     suboptions:
                       eq:
                         description:
-                          - Match only packets on a given port number.
+                        - Match only packets on a given port number.
                         type: str
                       range:
                         description:
-                          - Match only packets in the range of port numbers
+                        - Match only packets in the range of port numbers
                         type: dict
                         suboptions:
                           start:
                             description:
-                              - Specify the start of the port range
+                            - Specify the start of the port range
                             type: int
                           end:
                             description:
-                              - Specify the end of the port range
+                            - Specify the end of the port range
                             type: int
               protocol:
                 description:
-                  - Specify the protocol to match.
-                  - Refer to vendor documentation for valid values.
+                - Specify the protocol to match.
+                - Refer to vendor documentation for valid values.
                 type: str
               protocol_options:
                 description: All possible suboptions for the protocol chosen.
@@ -243,19 +242,43 @@ options:
     - deleted
     - gathered
     default: merged
+
 """
 EXAMPLES = """
+# Using merged
 
+# Before state:
+# -------------
+#
+# admin# show firewall
 
+- name: Merge JUNOS acl
+  junipernetworks.junos.junos_acls:
+    config:
+    - afi: ipv4
+      acls:
+      - name: allow_ssh_acl
+        aces:
+        - name: ssh_rule
+          source:
+            port_protocol:
+              eq: ssh
+          protocol: tcp
+      state: merged
 
-
-
-
-
-
-
-
-
+# After state:
+# -------------
+# admin# show firewall
+# family inet {
+#     filter allow_ssh_acl {
+#         term ssh_rule {
+#             from {
+#                 protocol tcp;
+#                 source-port ssh;
+#             }
+#         }
+#     }
+# }
 
 """
 RETURN = """

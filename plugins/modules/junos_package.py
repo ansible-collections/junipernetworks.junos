@@ -42,27 +42,27 @@ options:
       updated package has been installed. If disabled or the remote package does not
       need to be changed, the device will not be started.
     type: bool
-    default: 'yes'
+    default: yes
   no_copy:
     description:
     - The I(no_copy) argument is responsible for instructing the remote device on
       where to install the package from.  When enabled, the package is transferred
       to the remote device prior to installing.
     type: bool
-    default: 'no'
+    default: no
   validate:
     description:
     - The I(validate) argument is responsible for instructing the remote device to
       skip checking the current device configuration compatibility with the package
       being installed. When set to false validation is not performed.
     type: bool
-    default: 'yes'
+    default: yes
   force:
     description:
     - The I(force) argument instructs the module to bypass the package version check
       and install the packaged identified in I(src) on the remote device.
     type: bool
-    default: 'no'
+    default: no
   force_host:
     description:
     - The I(force_host) argument controls the way software package or bundle is added

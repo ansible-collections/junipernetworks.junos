@@ -13,6 +13,7 @@ DOCUMENTATION = """
 ---
 module: junos_rpc
 version_added: "1.0.0"
+module: junos_rpc
 author: Peter Sprygada (@privateip)
 short_description: Runs an arbitrary RPC over NetConf on an Juniper JUNOS device
 description:
@@ -59,7 +60,7 @@ EXAMPLES = """
     rpc: get-interface-information
     args:
       interface-name: em0
-      media: True
+      media: true
 
 - name: get system information
   junipernetworks.junos.junos_rpc:

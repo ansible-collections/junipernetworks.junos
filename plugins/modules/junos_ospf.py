@@ -32,20 +32,19 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_ospf
-version_added: "1.0.0"
-short_description: Junos OSPFv2 resource module.
+short_description: OSPF resource module
 description:
-  - This module manages global OSPFv2 configuration on devices running Juniper JUNOS.
+- This module manages global OSPFv2 configuration on devices running Juniper JUNOS.
+version_added: 1.0.0
 author: Daniel Mellado (@dmellado)
 requirements:
-  - ncclient (>=v0.6.4)
-  - xmltodict (>=0.12.0)
+- ncclient (>=v0.6.4)
+- xmltodict (>=0.12.0)
 notes:
-  - This module requires the netconf system service be enabled on the device being managed.
-  - This module works with connection C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
-  - Tested against JunOS v18.4R1
+- This module requires the netconf system service be enabled on the device being managed.
+- This module works with connection C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
+- Tested against JunOS v18.4R1
 options:
   config:
     description: A list of OSPF process configuration.
@@ -54,40 +53,40 @@ options:
     suboptions:
       router_id:
         description:
-          - The OSPF router id.
+        - The OSPF router id.
         type: str
-        required: True
+        required: true
       areas:
         description:
-          - A list of OSPF areas' configuration.
+        - A list of OSPF areas' configuration.
         type: list
         elements: dict
         suboptions:
           area_id:
             description:
-              - The Area ID as an integer or IP Address.
+            - The Area ID as an integer or IP Address.
             type: str
-            required: True
+            required: true
           area_range:
             description:
-              - Configure an address range for the area.
+            - Configure an address range for the area.
             type: str
           stub:
             description:
-              - Settings for configuring the area as a stub.
+            - Settings for configuring the area as a stub.
             type: dict
             suboptions:
               default_metric:
                 description:
-                  - Metric for the default route in this area.
+                - Metric for the default route in this area.
                 type: int
               set:
                 description:
-                  - Configure the area as a stub.
+                - Configure the area as a stub.
                 type: bool
           interfaces:
             description:
-              - List of interfaces in this area.
+            - List of interfaces in this area.
             type: list
             elements: dict
             suboptions:
@@ -96,7 +95,7 @@ options:
                 suboptions:
                   type:
                     description:
-                      - Type of authentication to use.
+                    - Type of authentication to use.
                     type: dict
               bandwidth_based_metrics:
                 type: list
@@ -104,28 +103,28 @@ options:
                 suboptions:
                   bandwidth:
                     description:
-                      - BW to apply metric to.
+                    - BW to apply metric to.
                     type: str
-                    choices: ['1g', '10g']
+                    choices: [1g, 10g]
                   metric:
                     description:
                     type: int
               name:
                 description:
-                  - Name of the interface.
+                - Name of the interface.
                 type: str
-                required: True
+                required: true
               priority:
                 description:
-                  - Priority for the interface.
+                - Priority for the interface.
                 type: int
               metric:
                 description:
-                  - Metric applied to the interface.
+                - Metric applied to the interface.
                 type: int
               flood_reduction:
                 description:
-                  - Enable flood reduction.
+                - Enable flood reduction.
                 type: bool
               passive:
                 type: bool
@@ -134,72 +133,72 @@ options:
                 suboptions:
                   dead_interval:
                     description:
-                      - Dead interval (seconds).
+                    - Dead interval (seconds).
                     type: int
                   hello_interval:
                     description:
-                      - Hello interval (seconds).
+                    - Hello interval (seconds).
                     type: int
                   poll_interval:
                     description:
-                      - Poll interval (seconds).
+                    - Poll interval (seconds).
                     type: int
                   retransmit_interval:
                     description:
-                      - Retransmit interval (seconds).
+                    - Retransmit interval (seconds).
                     type: int
                   transit_delay:
                     description:
-                      - Transit delay (seconds).
+                    - Transit delay (seconds).
                     type: int
       external_preference:
         description:
-          - Preference of external routes.
+        - Preference of external routes.
         type: int
       overload:
         type: dict
         suboptions:
           timeout:
             description:
-              - Time after which overload mode is reset (seconds).
+            - Time after which overload mode is reset (seconds).
             type: int
       preference:
         description:
-          - Preference of internal routes.
+        - Preference of internal routes.
         type: int
       prefix_export_limit:
         description:
-          - Maximum number of external prefixes that can be exported.
+        - Maximum number of external prefixes that can be exported.
         type: int
       reference_bandwidth:
         description:
-          - Bandwidth for calculating metric defaults.
+        - Bandwidth for calculating metric defaults.
         type: str
-        choices: ['1g', '10g']
+        choices: [1g, 10g]
       rfc1583compatibility:
         description:
-          - Set RFC1583 compatibility
+        - Set RFC1583 compatibility
         type: bool
       spf_options:
         description:
-          - Configure options for SPF.
+        - Configure options for SPF.
         type: dict
         suboptions:
           delay:
             description:
-              - Time to wait before running an SPF (seconds).
+            - Time to wait before running an SPF (seconds).
             type: int
           holddown:
             description:
-              - Time to hold down before running an SPF (seconds).
+            - Time to hold down before running an SPF (seconds).
             type: int
           rapid_runs:
             description:
-              - Number of maximum rapid SPF runs before holddown (seconds).
+            - Number of maximum rapid SPF runs before holddown (seconds).
             type: int
   state:
     description:
-      - The state the configuration should be left in.
+    - The state the configuration should be left in.
     type: str
     choices:
     - merged
@@ -208,6 +207,7 @@ options:
     - deleted
     - gathered
     default: merged
+
 """
 EXAMPLES = """
 # Using merged
@@ -220,31 +220,31 @@ EXAMPLES = """
 - name: Merge Junos OSPF config
   junipernetworks.junos.junos_ospf:
     config:
-      - router_id: 10.200.16.75
-        reference_bandwidth: 10g
-        areas:
-          - area_id: 0.0.0.100
-            area_range: 10.200.16.0/24
-            stub:
-              default_metric: 100
-              set: true
-            interfaces:
-              - name: so-0/0/0.0
-                priority: 3
-                metric: 5
-                flood_reduction: false
-                passive: true
-                bandwidth_based_metrics:
-                  - bandwidth: 1g
-                    metric: 5
-                  - bandwidth: 10g
-                    metric: 40
-                timers:
-                  dead_interval: 4
-                  hello_interval: 2
-                  poll_interval: 2
-                  retransmit_interval: 2
-        rfc1583compatibility: false
+    - router_id: 10.200.16.75
+      reference_bandwidth: 10g
+      areas:
+      - area_id: 0.0.0.100
+        area_range: 10.200.16.0/24
+        stub:
+          default_metric: 100
+          set: true
+        interfaces:
+        - name: so-0/0/0.0
+          priority: 3
+          metric: 5
+          flood_reduction: false
+          passive: true
+          bandwidth_based_metrics:
+          - bandwidth: 1g
+            metric: 5
+          - bandwidth: 10g
+            metric: 40
+          timers:
+            dead_interval: 4
+            hello_interval: 2
+            poll_interval: 2
+            retransmit_interval: 2
+      rfc1583compatibility: false
     state: merged
 
 # After state

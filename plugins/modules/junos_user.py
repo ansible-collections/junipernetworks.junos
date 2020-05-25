@@ -63,7 +63,7 @@ options:
       absolute.  It will remove any previously configured users on the device with
       the exception of the current defined set of aggregate.
     type: bool
-    default: 'no'
+    default: no
   state:
     description:
     - The C(state) argument configures the state of the user definitions as it relates
@@ -78,7 +78,7 @@ options:
     description:
     - Specifies whether or not the configuration is active or deactivated
     type: bool
-    default: 'yes'
+    default: yes
 requirements:
 - ncclient (>=v0.5.2)
 notes:
@@ -91,41 +91,41 @@ notes:
 
 EXAMPLES = """
 - name: create new user account
-  junos_user:
+  junipernetworks.junos.junos_user:
     name: ansible
     role: super-user
     sshkey: "{{ lookup('file', '~/.ssh/ansible.pub') }}"
     state: present
 
 - name: remove a user account
-  junos_user:
+  junipernetworks.junos.junos_user:
     name: ansible
     state: absent
 
 - name: remove all user accounts except ansible
-  junos_user:
+  junipernetworks.junos.junos_user:
     aggregate:
     - name: ansible
     purge: yes
 
 - name: set user password
-  junos_user:
+  junipernetworks.junos.junos_user:
     name: ansible
     role: super-user
     encrypted_password: "{{ 'my-password' | password_hash('sha512') }}"
     state: present
 
 - name: Create list of users
-  junos_user:
+  junipernetworks.junos.junos_user:
     aggregate:
-      - {name: test_user1, full_name: test_user2, role: operator, state: present}
-      - {name: test_user2, full_name: test_user2, role: read-only, state: present}
+    - {name: test_user1, full_name: test_user2, role: operator, state: present}
+    - {name: test_user2, full_name: test_user2, role: read-only, state: present}
 
 - name: Delete list of users
-  junos_user:
+  junipernetworks.junos.junos_user:
     aggregate:
-      - {name: test_user1, full_name: test_user2, role: operator, state: absent}
-      - {name: test_user2, full_name: test_user2, role: read-only, state: absent}
+    - {name: test_user1, full_name: test_user2, role: operator, state: absent}
+    - {name: test_user2, full_name: test_user2, role: read-only, state: absent}
 """
 
 RETURN = """

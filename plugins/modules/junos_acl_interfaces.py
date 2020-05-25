@@ -32,20 +32,20 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_acl_interfaces
 version_added: "1.0.0"
 short_description: Junos Access Control Lists (ACLs) interface resource module
 description:
-  - This module manages adding and removing Access Control Lists (ACLs) from interfaces on devices running Juniper JUNOS.
+- This module manages adding and removing Access Control Lists (ACLs) from interfaces
+  on devices running Juniper JUNOS.
 author: Daniel Mellado (@dmellado)
 requirements:
-  - ncclient (>=v0.6.4)
-  - xmltodict (>=0.12.0)
+- ncclient (>=v0.6.4)
+- xmltodict (>=0.12.0)
 notes:
-  - This module requires the netconf system service be enabled on the device being managed.
-  - This module works with connection C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
-  - Tested against JunOS v18.4R1
+- This module requires the netconf system service be enabled on the device being managed.
+- This module works with connection C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
+- Tested against JunOS v18.4R1
 options:
   config:
     description: A dictionary of ACL options for interfaces.
@@ -54,37 +54,38 @@ options:
     suboptions:
       name:
         description:
-          - Name/Identifier for the interface.
+        - Name/Identifier for the interface.
         type: str
       access_groups:
         type: list
         elements: dict
         description:
-          - Specifies ACLs attached to the interface.
+        - Specifies ACLs attached to the interface.
         suboptions:
           afi:
             description:
-              - Specifies the AFI for the ACL(s) to be configured on this interface.
+            - Specifies the AFI for the ACL(s) to be configured on this interface.
             type: str
-            choices: ['ipv4', 'ipv6']
+            choices: [ipv4, ipv6]
           acls:
             type: list
             description:
-              - Specifies the ACLs for the provided AFI.
+            - Specifies the ACLs for the provided AFI.
             elements: dict
             suboptions:
               name:
                 description:
-                  - Specifies the name of the IPv4/IPv4 ACL for the interface.
+                - Specifies the name of the IPv4/IPv4 ACL for the interface.
                 type: str
               direction:
                 description:
-                  - Specifies the direction of packets that the ACL will be applied on.
+                - Specifies the direction of packets that the ACL will be applied
+                  on.
                 type: str
-                choices: ['in', 'out']
+                choices: [in, out]
   state:
     description:
-      - The state the configuration should be left in.
+    - The state the configuration should be left in.
     type: str
     choices:
     - merged
@@ -93,6 +94,7 @@ options:
     - deleted
     - gathered
     default: merged
+
 """
 EXAMPLES = """
 # Using deleted
@@ -118,15 +120,15 @@ EXAMPLES = """
 - name: Delete JUNOS L3 interface filter
   junipernetworks.junos.junos_acl_interfaces:
     config:
-      - name: ge-1/0/0
-        access_groups:
-          - afi: ipv4
-            acls:
-              - name: inbound_acl
-                direction: in
-              - name: outbound_acl
-                direction: out
-        state: deleted
+    - name: ge-1/0/0
+      access_groups:
+      - afi: ipv4
+        acls:
+        - name: inbound_acl
+          direction: in
+        - name: outbound_acl
+          direction: out
+      state: deleted
 
 # After state:
 # -------------
@@ -162,15 +164,15 @@ EXAMPLES = """
 - name: Merge JUNOS L3 interface filter
   junipernetworks.junos.junos_acl_interfaces:
     config:
-      - name: ge-1/0/0
-        access_groups:
-          - afi: ipv4
-            acls:
-              - name: inbound_acl
-                direction: in
-              - name: outbound_acl
-                direction: out
-        state: merged
+    - name: ge-1/0/0
+      access_groups:
+      - afi: ipv4
+        acls:
+        - name: inbound_acl
+          direction: in
+        - name: outbound_acl
+          direction: out
+      state: merged
 
 # After state:
 # -------------
@@ -213,15 +215,15 @@ EXAMPLES = """
 - name: Override JUNOS L3 interface filter
   junipernetworks.junos.junos_acl_interfaces:
     config:
-      - name: ge-1/0/0
-        access_groups:
-          - afi: ipv4
-            acls:
-              - name: inbound_acl
-                direction: in
-              - name: outbound_acl
-                direction: out
-        state: overridden
+    - name: ge-1/0/0
+      access_groups:
+      - afi: ipv4
+        acls:
+        - name: inbound_acl
+          direction: in
+        - name: outbound_acl
+          direction: out
+      state: overridden
 
 # After state:
 # -------------
@@ -265,13 +267,13 @@ EXAMPLES = """
 - name: Replace JUNOS L3 interface filter
   junipernetworks.junos.junos_acl_interfaces:
     config:
-      - name: ge-1/0/0
-        access_groups:
-          - afi: ipv4
-            acls:
-              - name: inbound_acl
-                direction: in
-        state: replaced
+    - name: ge-1/0/0
+      access_groups:
+      - afi: ipv4
+        acls:
+        - name: inbound_acl
+          direction: in
+      state: replaced
 
 # After state:
 # -------------

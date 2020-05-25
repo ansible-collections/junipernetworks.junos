@@ -98,6 +98,7 @@ options:
     - deleted
     - gathered
     default: merged
+
 """
 EXAMPLES = """
 # Using deleted
@@ -129,8 +130,8 @@ EXAMPLES = """
 - name: Delete JUNOS L3 logical interface
   junipernetworks.junos.junos_l3_interfaces:
     config:
-      - name: ge-0/0/1
-      - name: ge-0/0/2
+    - name: ge-0/0/1
+    - name: ge-0/0/2
   state: deleted
 
 # After state:
@@ -175,14 +176,14 @@ EXAMPLES = """
 - name: Merge provided configuration with device configuration (default operation is merge)
   junipernetworks.junos.junos_l3_interfaces:
     config:
-      - name: ge-0/0/1
-        ipv4:
-           - address: 192.168.1.10/24
-        ipv6:
-           - address: 8d8d:8d01::1/64
-      - name: ge-0/0/2
-        ipv4:
-           - address: dhcp
+    - name: ge-0/0/1
+      ipv4:
+      - address: 192.168.1.10/24
+      ipv6:
+      - address: 8d8d:8d01::1/64
+    - name: ge-0/0/2
+      ipv4:
+      - address: dhcp
     state: merged
 
 # After state:
@@ -245,14 +246,14 @@ EXAMPLES = """
 - name: Override provided configuration with device configuration
   junipernetworks.junos.junos_l3_interfaces:
     config:
-      - name: ge-0/0/1
-        ipv4:
-           - address: 192.168.1.10/24
-        ipv6:
-           - address: 8d8d:8d01::1/64
-      - name: ge-0/0/2
-        ipv6:
-           - address: 2001:db8:3000::/64
+    - name: ge-0/0/1
+      ipv4:
+      - address: 192.168.1.10/24
+      ipv6:
+      - address: 8d8d:8d01::1/64
+    - name: ge-0/0/2
+      ipv6:
+      - address: 2001:db8:3000::/64
     state: overridden
 
 # After state:
@@ -314,14 +315,14 @@ EXAMPLES = """
 - name: Replace provided configuration with device configuration
   junipernetworks.junos.junos_l3_interfaces:
     config:
-      - name: ge-0/0/1
-        ipv4:
-           - address: 192.168.1.10/24
-        ipv6:
-           - address: 8d8d:8d01::1/64
-      - name: ge-0/0/2
-        ipv4:
-           - address: dhcp
+    - name: ge-0/0/1
+      ipv4:
+      - address: 192.168.1.10/24
+      ipv6:
+      - address: 8d8d:8d01::1/64
+    - name: ge-0/0/2
+      ipv4:
+      - address: dhcp
     state: replaced
 
 # After state:

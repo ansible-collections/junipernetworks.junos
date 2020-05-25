@@ -14,7 +14,7 @@ DOCUMENTATION = """
 module: junos_static_route
 version_added: "1.0.0"
 author: Ganesh Nalawade (@ganeshrn)
-short_description: Manage static IP routes on Juniper JUNOS network devices
+short_description: (deprecated) Manage static IP routes on Juniper JUNOS network devices
 description:
 - This module provides declarative management of static IP routes on Juniper JUNOS
   network devices.
@@ -69,6 +69,7 @@ notes:
 - This module also works with C(local) connections for legacy playbooks.
 extends_documentation_fragment:
 - junipernetworks.junos.junos
+
 """
 
 EXAMPLES = """
@@ -94,7 +95,7 @@ EXAMPLES = """
     qualified_next_hop: 10.0.0.2
     qualified_preference: 3
     state: present
-    active: False
+    active: false
 
 - name: activate static route configuration
   junipernetworks.junos.junos_static_route:
@@ -104,13 +105,13 @@ EXAMPLES = """
     qualified_next_hop: 10.0.0.2
     qualified_preference: 3
     state: present
-    active: True
+    active: true
 
 - name: Configure static route using aggregate
   junipernetworks.junos.junos_static_route:
     aggregate:
-    - { address: 4.4.4.0/24, next_hop: 3.3.3.3, qualified_next_hop: 5.5.5.5, qualified_preference: 30 }
-    - { address: 5.5.5.0/24, next_hop: 6.6.6.6, qualified_next_hop: 7.7.7.7, qualified_preference: 12 }
+    - {address: 4.4.4.0/24, next_hop: 3.3.3.3, qualified_next_hop: 5.5.5.5, qualified_preference: 30}
+    - {address: 5.5.5.0/24, next_hop: 6.6.6.6, qualified_next_hop: 7.7.7.7, qualified_preference: 12}
     preference: 10
 
 - name: Delete static route using aggregate

@@ -14,7 +14,7 @@ DOCUMENTATION = """
 module: junos_vlan
 version_added: "1.0.0"
 author: Ganesh Nalawade (@ganeshrn)
-short_description: Manage VLANs on Juniper JUNOS network devices
+short_description: (deprecated) Manage VLANs on Juniper JUNOS network devices
 description:
 - This module provides declarative management of VLANs on Juniper JUNOS network devices.
 deprecated:
@@ -69,6 +69,7 @@ notes:
 - This module also works with C(local) connections for legacy playbooks.
 extends_documentation_fragment:
 - junipernetworks.junos.junos
+
 """
 
 EXAMPLES = """
@@ -92,25 +93,25 @@ EXAMPLES = """
   junipernetworks.junos.junos_vlan:
     name: test
     state: present
-    active: False
+    active: false
 
 - name: activate VLAN configuration
   junipernetworks.junos.junos_vlan:
     name: test
     state: present
-    active: True
+    active: true
 
 - name: Create vlan configuration using aggregate
   junipernetworks.junos.junos_vlan:
     aggregate:
-      - { vlan_id: 159, name: test_vlan_1, description: test vlan-1 }
-      - { vlan_id: 160, name: test_vlan_2, description: test vlan-2 }
+    - {vlan_id: 159, name: test_vlan_1, description: test vlan-1}
+    - {vlan_id: 160, name: test_vlan_2, description: test vlan-2}
 
 - name: Delete vlan configuration using aggregate
   junipernetworks.junos.junos_vlan:
     aggregate:
-      - { vlan_id: 159, name: test_vlan_1 }
-      - { vlan_id: 160, name: test_vlan_2 }
+    - {vlan_id: 159, name: test_vlan_1}
+    - {vlan_id: 160, name: test_vlan_2}
     state: absent
 """
 
