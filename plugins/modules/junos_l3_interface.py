@@ -80,17 +80,17 @@ extends_documentation_fragment:
 
 EXAMPLES = """
 - name: Set ge-0/0/1 IPv4 address
-  junos_l3_interface:
+  junipernetworks.junos.junos_l3_interface:
     name: ge-0/0/1
     ipv4: 192.168.0.1
 
 - name: Remove ge-0/0/1 IPv4 address
-  junos_l3_interface:
+  junipernetworks.junos.junos_l3_interface:
     name: ge-0/0/1
     state: absent
 
 - name: Set ipv4 address using aggregate
-  junos_l3_interface:
+  junipernetworks.junos.junos_l3_interface:
     aggregate:
     - name: ge-0/0/1
       ipv4: 192.0.2.1
@@ -99,7 +99,7 @@ EXAMPLES = """
       ipv6: fd5d:12c9:2201:2::2
 
 - name: Delete ipv4 address using aggregate
-  junos_l3_interface:
+  junipernetworks.junos.junos_l3_interface:
     aggregate:
     - name: ge-0/0/1
       ipv4: 192.0.2.1

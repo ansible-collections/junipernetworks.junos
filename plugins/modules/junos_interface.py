@@ -110,39 +110,39 @@ extends_documentation_fragment:
 
 EXAMPLES = """
 - name: configure interface
-  junos_interface:
+  junipernetworks.junos.junos_interface:
     name: ge-0/0/1
     description: test-interface
 
 - name: remove interface
-  junos_interface:
+  junipernetworks.junos.junos_interface:
     name: ge-0/0/1
     state: absent
 
 - name: make interface down
-  junos_interface:
+  junipernetworks.junos.junos_interface:
     name: ge-0/0/1
     enabled: False
 
 - name: make interface up
-  junos_interface:
+  junipernetworks.junos.junos_interface:
     name: ge-0/0/1
     enabled: True
 
 - name: Deactivate interface config
-  junos_interface:
+  junipernetworks.junos.junos_interface:
     name: ge-0/0/1
     state: present
     active: False
 
 - name: Activate interface config
-  net_interface:
+  junipernetworks.junos.junos_interface:
     name: ge-0/0/1
     state: present
     active: True
 
 - name: Configure interface speed, mtu, duplex
-  junos_interface:
+  junipernetworks.junos.junos_interface:
     name: ge-0/0/1
     state: present
     speed: 1g
@@ -150,7 +150,7 @@ EXAMPLES = """
     duplex: full
 
 - name: Create interface using aggregate
-  junos_interface:
+  junipernetworks.junos.junos_interface:
     aggregate:
       - name: ge-0/0/1
         description: test-interface-1
@@ -161,28 +161,28 @@ EXAMPLES = """
     mtu: 512
 
 - name: Delete interface using aggregate
-  junos_interface:
+  junipernetworks.junos.junos_interface:
     aggregate:
       - name: ge-0/0/1
       - name: ge-0/0/2
     state: absent
 
 - name: Check intent arguments
-  junos_interface:
+  junipernetworks.junos.junos_interface:
     name: "{{ name }}"
     state: up
     tx_rate: ge(0)
     rx_rate: le(0)
 
 - name: Check neighbor intent
-  junos_interface:
+  junipernetworks.junos.junos_interface:
     name: xe-0/1/1
     neighbors:
     - port: Ethernet1/0/1
       host: netdev
 
 - name: Config + intent
-  junos_interface:
+  junipernetworks.junos.junos_interface:
     name: "{{ name }}"
     enabled: False
     state: down

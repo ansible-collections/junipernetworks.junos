@@ -61,33 +61,33 @@ extends_documentation_fragment:
 
 EXAMPLES = """
 - name: Configure LLDP on specific interfaces
-  junos_lldp_interface:
+  junipernetworks.junos.junos_lldp_interface:
     name: ge-0/0/5
     state: present
 
 - name: Disable LLDP on specific interfaces
-  junos_lldp_interface:
+  junipernetworks.junos.junos_lldp_interface:
     name: ge-0/0/5
     state: disabled
 
 - name: Enable LLDP on specific interfaces
-  junos_lldp_interface:
+  junipernetworks.junos.junos_lldp_interface:
     name: ge-0/0/5
     state: enabled
 
 - name: Delete LLDP configuration on specific interfaces
-  junos_lldp_interface:
+  junipernetworks.junos.junos_lldp_interface:
     name: ge-0/0/5
     state: present
 
 - name: Deactivate LLDP on specific interfaces
-  junos_lldp_interface:
+  junipernetworks.junos.junos_lldp_interface:
     name: ge-0/0/5
     state: present
     active: False
 
 - name: Activate LLDP on specific interfaces
-  junos_lldp_interface:
+  junipernetworks.junos.junos_lldp_interface:
     name: ge-0/0/5
     state: present
     active: True

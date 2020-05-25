@@ -69,7 +69,7 @@ extends_documentation_fragment:
 
 EXAMPLES = """
 - name: configure hostname and domain name
-  junos_system:
+  junipernetworks.junos.junos_system:
     hostname: junos01
     domain_name: test.example.com
     domain-search:
@@ -78,11 +78,11 @@ EXAMPLES = """
       - juniper.net
 
 - name: remove configuration
-  junos_system:
+  junipernetworks.junos.junos_system:
     state: absent
 
 - name: configure name servers
-  junos_system:
+  junipernetworks.junos.junos_system:
     name_servers:
       - 8.8.8.8
       - 8.8.4.4

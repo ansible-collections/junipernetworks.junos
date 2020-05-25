@@ -71,22 +71,22 @@ extends_documentation_fragment:
 
 EXAMPLES = """
 - name: Enable LLDP service
-  junos_lldp:
+  junipernetworks.junos.junos_lldp:
     state: enabled
 
 - name: Disable LLDP service
-  junos_lldp:
+  junipernetworks.junos.junos_lldp:
     state: disabled
 
 - name: Set LLDP parameters
-  junos_lldp:
+  junipernetworks.junos.junos_lldp:
     interval: 10
     hold_multiplier: 5
     transmit_delay: 30
     state: present
 
 - name: Delete LLDP parameters
-  junos_lldp:
+  junipernetworks.junos.junos_lldp:
     interval: 10
     hold_multiplier: 5
     transmit_delay: 30

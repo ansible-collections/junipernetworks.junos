@@ -130,7 +130,7 @@ EXAMPLES = """
 # }
 
 - name: "Delete given options for the interface (Note: This won't delete the interface itself if any other values are configured for interface)"
-  junos_interfaces:
+  junipernetworks.junos.junos_interfaces:
     config:
       - name: ge-0/0/1
         description: 'Configured by Ansible-1'
@@ -161,7 +161,7 @@ EXAMPLES = """
 # }
 
 - name: "Merge provided configuration with device configuration (default operation is merge)"
-  junos_interfaces:
+  junipernetworks.junos.junos_interfaces:
     config:
       - name: ge-0/0/1
         description: 'Configured by Ansible-1'
@@ -208,7 +208,7 @@ EXAMPLES = """
 # }
 
 - name: "Override device configuration of all interfaces with provided configuration"
-  junos_interfaces:
+  junipernetworks.junos.junos_interfaces:
     config:
       - name: ge-0/0/2
         description: 'Configured by Ansible-2'
@@ -255,7 +255,7 @@ EXAMPLES = """
 # }
 
 - name: "Replaces device configuration of listed interfaces with provided configuration"
-  junos_interfaces:
+  junipernetworks.junos.junos_interfaces:
     config:
       - name: ge-0/0/2
         description: 'Configured by Ansible-2'

@@ -77,7 +77,7 @@ extends_documentation_fragment:
 
 EXAMPLES = """
 - name: configure static route
-  junos_static_route:
+  junipernetworks.junos.junos_static_route:
     address: 192.168.2.0/24
     next_hop: 10.0.0.1
     preference: 10
@@ -86,12 +86,12 @@ EXAMPLES = """
     state: present
 
 - name: delete static route
-  junos_static_route:
+  junipernetworks.junos.junos_static_route:
     address: 192.168.2.0/24
     state: absent
 
 - name: deactivate static route configuration
-  junos_static_route:
+  junipernetworks.junos.junos_static_route:
     address: 192.168.2.0/24
     next_hop: 10.0.0.1
     preference: 10
@@ -101,7 +101,7 @@ EXAMPLES = """
     active: False
 
 - name: activate static route configuration
-  junos_static_route:
+  junipernetworks.junos.junos_static_route:
     address: 192.168.2.0/24
     next_hop: 10.0.0.1
     preference: 10
@@ -111,14 +111,14 @@ EXAMPLES = """
     active: True
 
 - name: Configure static route using aggregate
-  junos_static_route:
+  junipernetworks.junos.junos_static_route:
     aggregate:
     - { address: 4.4.4.0/24, next_hop: 3.3.3.3, qualified_next_hop: 5.5.5.5, qualified_preference: 30 }
     - { address: 5.5.5.0/24, next_hop: 6.6.6.6, qualified_next_hop: 7.7.7.7, qualified_preference: 12 }
     preference: 10
 
 - name: Delete static route using aggregate
-  junos_static_route:
+  junipernetworks.junos.junos_static_route:
     aggregate:
     - address: 4.4.4.0/24
     - address: 5.5.5.0/24

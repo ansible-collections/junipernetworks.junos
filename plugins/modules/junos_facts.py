@@ -86,14 +86,14 @@ notes:
 
 EXAMPLES = """
 - name: collect default set of facts
-  junos_facts:
+  junipernetworks.junos.junos_facts:
 
 - name: collect default set of facts and configuration
-  junos_facts:
+  junipernetworks.junos.junos_facts:
     gather_subset: config
 
 - name: Gather legacy and resource facts
-  junos_facts:
+  junipernetworks.junos.junos_facts:
     gather_subset: all
     gather_network_resources: all
 """

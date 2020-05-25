@@ -59,12 +59,12 @@ notes:
 
 EXAMPLES = """
 - name: enable netconf service on port 830
-  junos_netconf:
+  junipernetworks.junos.junos_netconf:
     listens_on: 830
     state: present
 
 - name: disable netconf service
-  junos_netconf:
+  junipernetworks.junos.junos_netconf:
     state: absent
 """
 

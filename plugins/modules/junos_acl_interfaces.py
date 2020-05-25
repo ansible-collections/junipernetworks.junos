@@ -117,7 +117,7 @@ EXAMPLES = """
 #     }
 
 - name: Delete JUNOS L3 interface filter
-  junos_acl_interfaces:
+  junipernetworks.junos.junos_acl_interfaces:
     config:
       - name: ge-1/0/0
         access_groups:
@@ -161,7 +161,7 @@ EXAMPLES = """
 #     }
 
 - name: Merge JUNOS L3 interface filter
-  junos_acl_interfaces:
+  junipernetworks.junos.junos_acl_interfaces:
     config:
       - name: ge-1/0/0
         access_groups:
@@ -212,7 +212,7 @@ EXAMPLES = """
 #     }
 
 - name: Override JUNOS L3 interface filter
-  junos_acl_interfaces:
+  junipernetworks.junos.junos_acl_interfaces:
     config:
       - name: ge-1/0/0
         access_groups:
@@ -264,7 +264,7 @@ EXAMPLES = """
 #     }
 
 - name: Replace JUNOS L3 interface filter
-  junos_acl_interfaces:
+  junipernetworks.junos.junos_acl_interfaces:
     config:
       - name: ge-1/0/0
         access_groups:
