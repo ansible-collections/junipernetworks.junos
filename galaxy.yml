@@ -9,3 +9,4 @@ namespace: junipernetworks
 readme: README.md
 repository: https://github.com/ansible-collections/junipernetworks.junos
 tags: [juniper, junipernetworks, junos, networking, security, netconf]
+version: null
