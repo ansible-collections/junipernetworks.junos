@@ -1,12 +1,12 @@
 
-.. _junipernetworks.junos.junos_ospf_:
+.. _junipernetworks.junos.junos_ospfv2_:
 
 
 *****
-junipernetworks.junos.junos_ospf
+junipernetworks.junos.junos_ospfv2
 *****
 
-**OSPF resource module**
+**OSPFv2 resource module**
 
 
 Version added: 1.0.0
@@ -174,7 +174,7 @@ Parameters
                                             <div>Type of authentication to use.</div>
                                                         </td>
             </tr>
-                    
+
                                                 <tr>
                                                     <td class="elbow-placeholder"></td>
                                     <td class="elbow-placeholder"></td>
@@ -240,7 +240,7 @@ Parameters
                                             <div>None</div>
                                                         </td>
             </tr>
-                    
+
                                                 <tr>
                                                     <td class="elbow-placeholder"></td>
                                     <td class="elbow-placeholder"></td>
@@ -472,8 +472,8 @@ Parameters
                                             <div>Transit delay (seconds).</div>
                                                         </td>
             </tr>
-                    
-                                    
+
+
                                                 <tr>
                                                     <td class="elbow-placeholder"></td>
                                     <td class="elbow-placeholder"></td>
@@ -537,8 +537,8 @@ Parameters
                                             <div>Configure the area as a stub.</div>
                                                         </td>
             </tr>
-                    
-                                    
+
+
                                                 <tr>
                                                     <td class="elbow-placeholder"></td>
                                                 <td colspan="4">
@@ -593,7 +593,7 @@ Parameters
                                             <div>Time after which overload mode is reset (seconds).</div>
                                                         </td>
             </tr>
-                    
+
                                                 <tr>
                                                     <td class="elbow-placeholder"></td>
                                                 <td colspan="4">
@@ -767,8 +767,8 @@ Parameters
                                             <div>Number of maximum rapid SPF runs before holddown (seconds).</div>
                                                         </td>
             </tr>
-                    
-                                    
+
+
                                                 <tr>
                                                                 <td colspan="5">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
@@ -812,7 +812,7 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    
+
     # Using merged
     #
     # Before state
@@ -821,7 +821,7 @@ Examples
     # admin# show protocols ospf
 
     - name: Merge Junos OSPF config
-      junipernetworks.junos.junos_ospf:
+      junipernetworks.junos.junos_ospfv2:
         config:
         - router_id: 10.200.16.75
           reference_bandwidth: 10g

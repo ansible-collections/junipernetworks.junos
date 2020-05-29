@@ -16,7 +16,7 @@
 
 
 """
-The junos ospf fact class
+The junos_ospfv2 fact class
 It is in this file the configuration is collected from the device
 for a given resource, parsed, and the facts tree is populated
 based on the configuration.

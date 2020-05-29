@@ -15,7 +15,7 @@
 
 
 """
-The junos_ospf class
+The junos_ospfv2 class
 It is in this file where the current configuration (as dict)
 is compared to the provided configuration (as dict) and the command set
 necessary to bring the current configuration to it's desired end-state is
@@ -47,7 +47,7 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.n
 
 class Ospf(ConfigBase):
     """
-    The junos_ospf class
+    The junos_ospfv2 class
     """
 
     gather_subset = ["!all", "!min"]

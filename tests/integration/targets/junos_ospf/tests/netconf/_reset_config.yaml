@@ -1,6 +1,6 @@
 ---
 - debug:
-    msg: "START junos_ospf reset config on connection={{ ansible_connection }}"
+    msg: "START junos_ospfv2 reset config on connection={{ ansible_connection }}"
 
 - name: Reset configuration for ospf and routing-options
   junos_config:
@@ -8,4 +8,4 @@
       - delete protocols ospf
       - delete routing-options
 - debug:
-    msg: "END junos_ospf reset config on connection={{ ansible_connection }}"
+    msg: "END junos_ospfv2 reset config on connection={{ ansible_connection }}"

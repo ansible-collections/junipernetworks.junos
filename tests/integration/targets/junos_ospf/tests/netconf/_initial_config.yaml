@@ -1,9 +1,9 @@
 ---
 - debug:
-    msg: "START junos_ospf initial config on connection={{ ansible_connection }}"
+    msg: "START junos_ospfv2 initial config on connection={{ ansible_connection }}"
 
 - name: Set initial configuration for ospf
-  junos_ospf:
+  junos_ospfv2:
     config:
       - router_id: 10.200.16.75
         areas:
@@ -15,4 +15,4 @@
               - name: ge-2/2/0.0
 
 - debug:
-    msg: "END junos_ospf initial config on connection={{ ansible_connection }}"
+    msg: "END junos_ospfv2 initial config on connection={{ ansible_connection }}"
