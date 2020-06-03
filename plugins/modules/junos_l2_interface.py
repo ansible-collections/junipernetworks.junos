@@ -13,7 +13,6 @@ DOCUMENTATION = """
 ---
 module: junos_l2_interface
 version_added: "1.0.0"
-module: junos_l2_interface
 author: Ganesh Nalawade (@ganeshrn)
 short_description: (deprecated) Manage Layer-2 interface on Juniper JUNOS network
   devices
