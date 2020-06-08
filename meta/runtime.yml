@@ -90,9 +90,9 @@ plugin_routing:
       redirect: junipernetworks.junos.junos
     netconf:
       redirect: junipernetworks.junos.junos
-    junos_ospf:
+    junos_ospfv2:
       redirect: junipernetworks.junos.junos
-    ospf:
+    ospfv2:
       redirect: junipernetworks.junos.junos
     junos_package:
       redirect: junipernetworks.junos.junos
@@ -154,40 +154,34 @@ plugin_routing:
     interface:
       redirect: junipernetworks.junos.junos_interface
       deprecation:
-        warning_text: junipernetworks.junos.interface has been deprecated and will
-          be removed in a release after 2022-6-01. See the plugin documentation for
-          more details
+        removal_date: '2022-06-01'
+        warning_text: See the plugin documentation for more details
     junos_interface:
       deprecation:
-        warning_text: junipernetworks.junos.junos_interface has been deprecated and
-          will be removed in a release after 2022-6-01. See the plugin documentation
-          for more details
+        removal_date: '2022-06-01'
+        warning_text: See the plugin documentation for more details
     interfaces:
       redirect: junipernetworks.junos.junos_interfaces
     l2_interface:
       redirect: junipernetworks.junos.junos_l2_interface
       deprecation:
-        warning_text: junipernetworks.junos.l2_interface has been deprecated and will
-          be removed in a release after 2022-6-01. See the plugin documentation for
-          more details
+        removal_date: '2022-06-01'
+        warning_text: See the plugin documentation for more details
     junos_l2_interface:
       deprecation:
-        warning_text: junipernetworks.junos.junos_l2_interface has been deprecated
-          and will be removed in a release after 2022-6-01. See the plugin documentation
-          for more details
+        removal_date: '2022-06-01'
+        warning_text: See the plugin documentation for more details
     l2_interfaces:
       redirect: junipernetworks.junos.junos_l2_interfaces
     l3_interface:
       redirect: junipernetworks.junos.junos_l3_interface
       deprecation:
-        warning_text: junipernetworks.junos.l3_interface has been deprecated and will
-          be removed in a release after 2022-6-01. See the plugin documentation for
-          more details
+        removal_date: '2022-06-01'
+        warning_text: See the plugin documentation for more details
     junos_l3_interface:
       deprecation:
-        warning_text: junipernetworks.junos.junos_l3_interface has been deprecated
-          and will be removed in a release after 2022-6-01. See the plugin documentation
-          for more details
+        removal_date: '2022-06-01'
+        warning_text: See the plugin documentation for more details
     l3_interfaces:
       redirect: junipernetworks.junos.junos_l3_interfaces
     lacp:
@@ -199,45 +193,40 @@ plugin_routing:
     linkagg:
       redirect: junipernetworks.junos.junos_linkagg
       deprecation:
-        warning_text: junipernetworks.junos.linkagg has been deprecated and will be
-          removed in a release after 2022-6-01. See the plugin documentation for more
-          details
+        removal_date: '2022-06-01'
+        warning_text: See the plugin documentation for more details
     junos_linkagg:
       deprecation:
-        warning_text: junipernetworks.junos.junos_linkagg has been deprecated and
-          will be removed in a release after 2022-6-01. See the plugin documentation
-          for more details
+        removal_date: '2022-06-01'
+        warning_text: See the plugin documentation for more details
     lldp:
       redirect: junipernetworks.junos.junos_lldp
       deprecation:
-        warning_text: junipernetworks.junos.lldp has been deprecated and will be removed
-          in a release after 2022-6-01. See the plugin documentation for more details
+        removal_date: '2022-06-01'
+        warning_text: See the plugin documentation for more details
     junos_lldp:
       deprecation:
-        warning_text: junipernetworks.junos.junos_lldp has been deprecated and will
-          be removed in a release after 2022-6-01. See the plugin documentation for
-          more details
+        removal_date: '2022-06-01'
+        warning_text: See the plugin documentation for more details
     lldp_global:
       redirect: junipernetworks.junos.junos_lldp_global
     lldp_interface:
       redirect: junipernetworks.junos.junos_lldp_interface
       deprecation:
-        warning_text: junipernetworks.junos.lldp_interface has been deprecated and
-          will be removed in a release after 2022-6-01. See the plugin documentation
-          for more details
+        removal_date: '2022-06-01'
+        warning_text: See the plugin documentation for more details
     junos_lldp_interface:
       deprecation:
-        warning_text: junipernetworks.junos.junos_lldp_interface has been deprecated
-          and will be removed in a release after 2022-6-01. See the plugin documentation
-          for more details
+        removal_date: '2022-06-01'
+        warning_text: See the plugin documentation for more details
     lldp_interfaces:
       redirect: junipernetworks.junos.junos_lldp_interfaces
     logging:
       redirect: junipernetworks.junos.junos_logging
     netconf:
       redirect: junipernetworks.junos.junos_netconf
-    ospf:
-      redirect: junipernetworks.junos.junos_ospf
+    ospfv2:
+      redirect: junipernetworks.junos.junos_ospfv2
     package:
       redirect: junipernetworks.junos.junos_package
     ping:
@@ -249,14 +238,12 @@ plugin_routing:
     static_route:
       redirect: junipernetworks.junos.junos_static_route
       deprecation:
-        warning_text: junipernetworks.junos.static_route has been deprecated and will
-          be removed in a release after 2022-6-01. See the plugin documentation for
-          more details
+        removal_date: '2022-06-01'
+        warning_text: See the plugin documentation for more details
     junos_static_route:
       deprecation:
-        warning_text: junipernetworks.junos.junos_static_route has been deprecated
-          and will be removed in a release after 2022-6-01. See the plugin documentation
-          for more details
+        removal_date: '2022-06-01'
+        warning_text: See the plugin documentation for more details
     static_routes:
       redirect: junipernetworks.junos.junos_static_routes
     system:
@@ -266,13 +253,12 @@ plugin_routing:
     vlan:
       redirect: junipernetworks.junos.junos_vlan
       deprecation:
-        warning_text: junipernetworks.junos.vlan has been deprecated and will be removed
-          in a release after 2022-6-01. See the plugin documentation for more details
+        removal_date: '2022-06-01'
+        warning_text: See the plugin documentation for more details
     junos_vlan:
       deprecation:
-        warning_text: junipernetworks.junos.junos_vlan has been deprecated and will
-          be removed in a release after 2022-6-01. See the plugin documentation for
-          more details
+        removal_date: '2022-06-01'
+        warning_text: See the plugin documentation for more details
     vlans:
       redirect: junipernetworks.junos.junos_vlans
     vrf:
