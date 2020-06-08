@@ -1,6 +1,6 @@
 ---
 - debug:
-    msg: "START junos_ospf deleted integration tests on connection={{ ansible_connection }}"
+    msg: "START junos_ospfv2 deleted integration tests on connection={{ ansible_connection }}"
 
 - block:
     - include_tasks: _reset_config.yaml
@@ -15,7 +15,7 @@
                   - name: ge-2/2/0.0
 
     - name: Delete an area
-      junos_ospf:
+      junos_ospfv2:
         config:
           - router_id: 10.200.16.75
             areas:
@@ -41,7 +41,7 @@
         config: []
 
     - name: Delete all ospf config from the device
-      junos_ospf:
+      junos_ospfv2:
         state: deleted
       register: result
 
@@ -53,4 +53,4 @@
     - include_tasks: _reset_config.yaml
 
 - debug:
-    msg: "END junos_ospf deleted integration tests on connection={{ ansible_connection }}"
+    msg: "END junos_ospfv2 deleted integration tests on connection={{ ansible_connection }}"

@@ -1,6 +1,6 @@
 ---
 - debug:
-    msg: "START junos_ospf replaced integration tests on connection={{ ansible_connection }}"
+    msg: "START junos_ospfv2 replaced integration tests on connection={{ ansible_connection }}"
 
 - block:
     - include_tasks: _reset_config.yaml
@@ -18,7 +18,7 @@
                   - name: so-0/0/0.0
 
     - name: Replace configuration
-      junos_ospf:
+      junos_ospfv2:
         config:
           - router_id: 10.200.16.75
             areas:
@@ -38,4 +38,4 @@
     - include_tasks: _reset_config.yaml
 
 - debug:
-    msg: "END junos_ospf replaced integration tests on connection={{ ansible_connection }}"
+    msg: "END junos_ospfv2 replaced integration tests on connection={{ ansible_connection }}"

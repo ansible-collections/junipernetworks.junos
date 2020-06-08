@@ -23,7 +23,7 @@
 #############################################
 
 """
-The module file for junos_ospf
+The module file for junos_ospfv2
 """
 
 from __future__ import absolute_import, division, print_function
@@ -32,8 +32,8 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
-module: junos_ospf
-short_description: OSPF resource module
+module: junos_ospfv2
+short_description: OSPFv2 resource module
 description:
 - This module manages global OSPFv2 configuration on devices running Juniper JUNOS.
 version_added: 1.0.0
@@ -47,18 +47,18 @@ notes:
 - Tested against JunOS v18.4R1
 options:
   config:
-    description: A list of OSPF process configuration.
+    description: A list of OSPFv2 process configuration.
     type: list
     elements: dict
     suboptions:
       router_id:
         description:
-        - The OSPF router id.
+        - The OSPFv2 router id.
         type: str
         required: true
       areas:
         description:
-        - A list of OSPF areas' configuration.
+        - A list of OSPFv2 areas' configuration.
         type: list
         elements: dict
         suboptions:
@@ -217,8 +217,8 @@ EXAMPLES = """
 #
 # admin# show protocols ospf
 
-- name: Merge Junos OSPF config
-  junipernetworks.junos.junos_ospf:
+- name: Merge Junos OSPFv2 config
+  junipernetworks.junos.junos_ospfv2:
     config:
     - router_id: 10.200.16.75
       reference_bandwidth: 10g

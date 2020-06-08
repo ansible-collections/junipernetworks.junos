@@ -15,12 +15,12 @@
 
 
 """
-The arg spec for the junos_ospf module
+The arg spec for the junos_ospfv2 module
 """
 
 
 class OspfArgs(object):  # pylint: disable=R0903
-    """The arg spec for the junos_ospf module
+    """The arg spec for the junos_ospfv2 module
     """
 
     def __init__(self, **kwargs):

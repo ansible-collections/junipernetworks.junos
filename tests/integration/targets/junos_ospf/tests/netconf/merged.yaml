@@ -1,6 +1,6 @@
 ---
 - debug:
-    msg: "START junos_ospf merged integration tests on connection={{ ansible_connection }}"
+    msg: "START junos_ospfv2 merged integration tests on connection={{ ansible_connection }}"
 
 - block:
     - include_tasks: _reset_config.yaml
@@ -19,7 +19,7 @@
             router_id: 10.200.16.75
 
     - name: Merge the provided configuration with the exisiting running configuration
-      junos_ospf: &merged
+      junos_ospfv2: &merged
         config:
           - router_id: 10.200.16.75
             areas:
@@ -41,7 +41,7 @@
           - "{{ config|symmetric_difference(result.after) == [] }}"
 
     - name: Merge the provided configuration with the existing running configuration (IDEMPOTENT)
-      junos_ospf: *merged
+      junos_ospfv2: *merged
       register: result
 
     - name: Assert that the previous task was idempotent
@@ -54,4 +54,4 @@
     - include_tasks: _reset_config.yaml
 
 - debug:
-    msg: "END junos_ospf merged integration tests on connection={{ ansible_connection }}"
+    msg: "END junos_ospfv2 merged integration tests on connection={{ ansible_connection }}"

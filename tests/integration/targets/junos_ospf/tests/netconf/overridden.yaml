@@ -1,6 +1,6 @@
 ---
 - debug:
-    msg: "START junos_ospf overridden integration tests on connection={{ ansible_connection }}"
+    msg: "START junos_ospfv2 overridden integration tests on connection={{ ansible_connection }}"
 
 - block:
     - include_tasks: _reset_config.yaml
@@ -26,7 +26,7 @@
                   - name: ge-2/2/0.0
 
     - name: Override Junos OSPF config
-      junos_ospf:
+      junos_ospfv2:
         config:
           - router_id: 10.200.16.75
             areas:
@@ -61,4 +61,4 @@
     - include_tasks: _reset_config.yaml
 
 - debug:
-    msg: "END junos_ospf overridden integration tests on connection={{ ansible_connection }}"
+    msg: "END junos_ospfv2 overridden integration tests on connection={{ ansible_connection }}"
