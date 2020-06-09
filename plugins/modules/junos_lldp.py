@@ -65,7 +65,6 @@ extends_documentation_fragment:
 - junipernetworks.junos.junos
 
 
-
 """
 
 EXAMPLES = """
