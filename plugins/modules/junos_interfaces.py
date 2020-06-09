@@ -32,11 +32,10 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_interfaces
-version_added: "1.0.0"
 short_description: Junos Interfaces resource module
 description: This module manages the interfaces on Juniper Junos OS network devices.
+version_added: 1.0.0
 author: Ganesh Nalawade (@ganeshrn)
 options:
   config:
@@ -128,7 +127,8 @@ EXAMPLES = """
 #    }
 # }
 
-- name: "Delete given options for the interface (Note: This won't delete the interface itself if any other values are configured for interface)"
+- name: "Delete given options for the interface (Note: This won't delete the interface\
+    \         itself if any other values are configured for interface)"
   junipernetworks.junos.junos_interfaces:
     config:
     - name: ge-0/0/1
@@ -159,7 +159,8 @@ EXAMPLES = """
 #    speed 1g;
 # }
 
-- name: Merge provided configuration with device configuration (default operation is merge)
+- name: Merge provided configuration with device configuration (default operation
+    is merge)
   junipernetworks.junos.junos_interfaces:
     config:
     - name: ge-0/0/1

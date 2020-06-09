@@ -10,9 +10,7 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_rpc
-version_added: "1.0.0"
 author: Peter Sprygada (@privateip)
 short_description: Runs an arbitrary RPC over NetConf on an Juniper JUNOS device
 description:
@@ -20,6 +18,7 @@ description:
   using the NetConf transport.  The reply is then returned to the playbook in the
   C(xml) key.  If an alternate output format is requested, the reply is transformed
   to the requested output.
+version_added: 1.0.0
 extends_documentation_fragment:
 - junipernetworks.junos.junos
 options:

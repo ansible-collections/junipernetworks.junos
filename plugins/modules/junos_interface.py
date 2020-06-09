@@ -10,18 +10,18 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_interface
-version_added: "1.0.0"
 author: Ganesh Nalawade (@ganeshrn)
-short_description: (deprecated) Manage Interface on Juniper JUNOS network devices
+short_description: (deprecated, removed after 2022-06-01) (deprecated, removed after
+  2022-06-01) Manage Interface on Juniper JUNOS network devices
 description:
 - This module provides declarative management of Interfaces on Juniper JUNOS network
   devices.
+version_added: 1.0.0
 deprecated:
-  removed_in: '2.13'
   why: Updated modules released with more functionality
   alternative: Use M(junos_interfaces) instead.
+  removed_at_date: '2022-06-01'
 options:
   name:
     description:
@@ -103,6 +103,8 @@ notes:
 extends_documentation_fragment:
 - junipernetworks.junos.junos
 
+
+
 """
 
 EXAMPLES = """
@@ -166,7 +168,7 @@ EXAMPLES = """
 
 - name: Check intent arguments
   junipernetworks.junos.junos_interface:
-    name: "{{ name }}"
+    name: '{{ name }}'
     state: up
     tx_rate: ge(0)
     rx_rate: le(0)
@@ -180,8 +182,8 @@ EXAMPLES = """
 
 - name: Config + intent
   junipernetworks.junos.junos_interface:
-    name: "{{ name }}"
-    enabled: False
+    name: '{{ name }}'
+    enabled: false
     state: down
 """
 

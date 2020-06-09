@@ -32,12 +32,11 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_l3_interfaces
-version_added: "1.0.0"
-short_description: Junos L3 Interfaces resource module
+short_description: L3 interfaces resource module
 description: This module provides declarative management of a Layer 3 interface on
   Juniper JUNOS devices
+version_added: 1.0.0
 author: Daniel Mellado (@dmellado)
 requirements:
 - ncclient (>=v0.6.4)
@@ -99,6 +98,7 @@ options:
     - gathered
     default: merged
 
+
 """
 EXAMPLES = """
 # Using deleted
@@ -133,47 +133,8 @@ EXAMPLES = """
     - name: ge-0/0/1
     - name: ge-0/0/2
   state: deleted
-
-# After state:
-# ------------
-#
-# admin# show interfaces
-# ge-0/0/1 {
-#     description "deleted L3 interface";
-# }
-# ge-0/0/2 {
-#     description "non L3 interface";
-#     unit 0 {
-#         family ethernet-switching {
-#             interface-mode access;
-#             vlan {
-#                 members 2;
-#             }
-#         }
-#     }
-# }
-
-
-# Using merged
-
-# Before state
-# ------------
-#
-# admin# show interfaces
-# ge-0/0/1 {
-#     description "L3 interface";
-#     unit 0 {
-#         family inet {
-#             address 10.200.16.10/24;
-#         }
-#     }
-# }
-# ge-0/0/2 {
-#     description "non configured interface";
-#     unit 0;
-# }
-
-- name: Merge provided configuration with device configuration (default operation is merge)
+- name: Merge provided configuration with device configuration (default operation
+    is merge)
   junipernetworks.junos.junos_l3_interfaces:
     config:
     - name: ge-0/0/1

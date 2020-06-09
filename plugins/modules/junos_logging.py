@@ -10,13 +10,12 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_logging
-version_added: "1.0.0"
 author: Ganesh Nalawade (@ganeshrn)
 short_description: Manage logging on network devices
 description:
 - This module provides declarative management of logging on Juniper JUNOS devices.
+version_added: 1.0.0
 options:
   dest:
     description:

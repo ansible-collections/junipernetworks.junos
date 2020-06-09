@@ -10,14 +10,13 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_vrf
-version_added: "1.0.0"
 author: Ganesh Nalawade (@ganeshrn)
 short_description: Manage the VRF definitions on Juniper JUNOS devices
 description:
 - This module provides declarative management of VRF definitions on Juniper JUNOS
   devices.  It allows playbooks to manage individual or the entire VRF collection.
+version_added: 1.0.0
 options:
   name:
     description:

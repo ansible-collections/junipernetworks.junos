@@ -130,7 +130,8 @@ EXAMPLES = """
 #        }
 #    }
 
-- name: "Delete L2 attributes of given interfaces (Note: This won't delete the interface itself)."
+- name: "Delete L2 attributes of given interfaces (Note: This won't delete the interface\
+    \             itself)."
   junipernetworks.junos.junos_l2_interfaces:
     config:
     - name: ge-0/0/1
@@ -176,7 +177,8 @@ EXAMPLES = """
 #    }
 # }
 
-- name: Merge provided configuration with device configuration (default operation is merge)
+- name: Merge provided configuration with device configuration (default operation
+    is merge)
   junipernetworks.junos.junos_l2_interfaces:
     config:
     - name: ge-0/0/3

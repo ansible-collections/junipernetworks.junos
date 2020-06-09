@@ -10,15 +10,14 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_package
-version_added: "1.0.0"
 author: Peter Sprygada (@privateip)
 short_description: Installs packages on remote devices running Junos
 description:
 - This module can install new and updated packages on remote devices running Junos.  The
   module will compare the specified package with the one running on the remote device
   and install the specified version if there is a mismatch
+version_added: 1.0.0
 extends_documentation_fragment:
 - junipernetworks.junos.junos
 options:

@@ -33,9 +33,10 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 module: junos_acls
-version_added: "1.0.0"
-short_description: Junos ACLs resource module
-description: This module provides declarative management of acls/filters on Juniper JUNOS devices
+short_description: ACLs resource module
+description: This module provides declarative management of acls/filters on Juniper
+  JUNOS devices
+version_added: 1.0.0
 author: Daniel Mellado (@dmellado)
 requirements:
 - ncclient (>=v0.6.4)
@@ -242,6 +243,7 @@ options:
     - deleted
     - gathered
     default: merged
+
 
 """
 EXAMPLES = """
