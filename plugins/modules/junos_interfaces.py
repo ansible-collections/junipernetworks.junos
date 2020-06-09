@@ -127,8 +127,8 @@ EXAMPLES = """
 #    }
 # }
 
-- name: "Delete given options for the interface (Note: This won't delete the interface\
-    \         itself if any other values are configured for interface)"
+- name: "Delete given options for the interface (Note: This won't delete the interface itself if 
+    any other values are configured for interface)"
   junipernetworks.junos.junos_interfaces:
     config:
     - name: ge-0/0/1

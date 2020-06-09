@@ -434,8 +434,7 @@ EXAMPLES = """
 #     }
 # }
 
-- name: "Delete LACP interfaces attributes of given interfaces (Note: This won't delete\
-    \             the interface itself)"
+- name: "Delete LACP interfaces attributes of given interfaces (Note: This won't delete the interface itself)"
   junipernetworks.junos.junos_lacp_interfaces:
     config:
     - name: ae0

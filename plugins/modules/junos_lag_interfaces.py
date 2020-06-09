@@ -124,8 +124,7 @@ EXAMPLES = """
 #     description "lag interface 1";
 # }
 
-- name: "Delete LAG attributes of given interfaces (Note: This won't delete the interface\
-    \             itself)"
+- name: "Delete LAG attributes of given interfaces (Note: This won't delete the interface itself)"
   junipernetworks.junos.junos_lag_interfaces:
     config:
     - name: ae0

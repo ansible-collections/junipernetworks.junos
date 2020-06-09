@@ -12,9 +12,8 @@ __metaclass__ = type
 DOCUMENTATION = """
 module: junos_l2_interface
 author: Ganesh Nalawade (@ganeshrn)
-short_description: (deprecated, removed after 2022-06-01) (deprecated, removed after
-  2022-06-01) (deprecated, removed after 2022-06-01) (deprecated, removed after 2022-06-01)
-  Manage Layer-2 interface on Juniper JUNOS network devices
+short_description: (deprecated, removed after 2022-06-01) Manage L2 Interface on Juniper
+  JUNOS network devices
 description:
 - This module provides declarative management of Layer-2 interface on Juniper JUNOS
   network devices.
@@ -88,6 +87,7 @@ notes:
 - This module also works with C(local) connections for legacy playbooks.
 extends_documentation_fragment:
 - junipernetworks.junos.junos
+
 
 
 
