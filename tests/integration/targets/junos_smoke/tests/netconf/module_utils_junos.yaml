@@ -50,7 +50,7 @@
     state: present
     provider: "{{ netconf }}"
   register: result
-  check_mode: yes
+  check_mode: true
 
 - assert:
     that:

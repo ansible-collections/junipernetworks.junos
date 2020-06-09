@@ -4,7 +4,7 @@
     prompt:
       - Reboot the system?
     answer:
-     - y
+      - y
 
 - wait_for_connection:
     delay: 20
