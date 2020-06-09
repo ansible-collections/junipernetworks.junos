@@ -13,7 +13,6 @@ DOCUMENTATION = """
 ---
 module: junos_rpc
 version_added: "1.0.0"
-module: junos_rpc
 author: Peter Sprygada (@privateip)
 short_description: Runs an arbitrary RPC over NetConf on an Juniper JUNOS device
 description:
