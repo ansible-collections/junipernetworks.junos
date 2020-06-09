@@ -17,6 +17,9 @@
 """
 The arg spec for the junos_ospfv2 module
 """
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
 
 
 class OspfArgs(object):  # pylint: disable=R0903
