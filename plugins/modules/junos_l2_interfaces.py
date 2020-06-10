@@ -101,7 +101,6 @@ notes:
   being managed.
 - Tested against vSRX JUNOS version 18.4R1.
 - This module works with connection C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
-
 """
 EXAMPLES = """
 # Using deleted

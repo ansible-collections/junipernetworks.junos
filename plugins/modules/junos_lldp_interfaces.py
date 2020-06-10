@@ -65,8 +65,6 @@ options:
     - deleted
     - gathered
     default: merged
-
-
 """
 EXAMPLES = """
 # Using merged

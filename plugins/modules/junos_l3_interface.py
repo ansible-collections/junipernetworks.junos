@@ -72,8 +72,6 @@ notes:
 - This module also works with C(local) connections for legacy playbooks.
 extends_documentation_fragment:
 - junipernetworks.junos.junos
-
-
 """
 
 EXAMPLES = """
