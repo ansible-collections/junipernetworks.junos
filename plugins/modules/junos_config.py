@@ -149,7 +149,8 @@ requirements:
 notes:
 - This module requires the netconf system service be enabled on the remote device
   being managed.
-- Abbreviated commands are NOT idempotent, see L(Network FAQ,../network/user_guide/faq.html#why-do-the-config-modules-always-return-changed-true-with-abbreviated-commands).
+- Abbreviated commands are NOT idempotent, see L(Network FAQ,../network/user_guide/faq.html
+  #why-do-the-config-modules-always-return-changed-true-with-abbreviated-commands).
 - Loading JSON-formatted configuration I(json) is supported starting in Junos OS Release
   16.1 onwards.
 - Update C(override) not currently compatible with C(set) notation.
