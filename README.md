@@ -164,9 +164,6 @@ Name | Description
 Name | Description
 --- | ---
 [junipernetworks.junos.junos](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos.rst)|Use junos netconf plugin to run netconf commands on Juniper JUNOS platform
-## Terminal plugins
-Name | Description
---- | ---
 ## Modules
 Name | Description
 --- | ---
