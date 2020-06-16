@@ -32,12 +32,11 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_l3_interfaces
-version_added: "1.0.0"
-short_description: Junos L3 Interfaces resource module
+short_description: L3 interfaces resource module
 description: This module provides declarative management of a Layer 3 interface on
   Juniper JUNOS devices
+version_added: 1.0.0
 author: Daniel Mellado (@dmellado)
 requirements:
 - ncclient (>=v0.6.4)
@@ -98,7 +97,6 @@ options:
     - deleted
     - gathered
     default: merged
-
 """
 EXAMPLES = """
 # Using deleted
@@ -152,10 +150,7 @@ EXAMPLES = """
 #         }
 #     }
 # }
-
-
 # Using merged
-
 # Before state
 # ------------
 #
@@ -172,7 +167,6 @@ EXAMPLES = """
 #     description "non configured interface";
 #     unit 0;
 # }
-
 - name: Merge provided configuration with device configuration (default operation is merge)
   junipernetworks.junos.junos_l3_interfaces:
     config:

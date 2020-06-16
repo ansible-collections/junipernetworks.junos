@@ -10,15 +10,14 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_user
-version_added: "1.0.0"
 author: Peter Sprygada (@privateip)
 short_description: Manage local user accounts on Juniper JUNOS devices
 description:
 - This module manages locally configured user accounts on remote network devices running
   the JUNOS operating system.  It provides a set of arguments for creating, removing
   and updating locally defined accounts
+version_added: 1.0.0
 extends_documentation_fragment:
 - junipernetworks.junos.junos
 options:

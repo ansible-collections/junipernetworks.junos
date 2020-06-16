@@ -101,7 +101,6 @@ notes:
   being managed.
 - Tested against vSRX JUNOS version 18.4R1.
 - This module works with connection C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
-
 """
 EXAMPLES = """
 # Using deleted
@@ -130,7 +129,8 @@ EXAMPLES = """
 #        }
 #    }
 
-- name: "Delete L2 attributes of given interfaces (Note: This won't delete the interface itself)."
+- name: "Delete L2 attributes of given interfaces (Note: This won't delete the
+    interface itself)."
   junipernetworks.junos.junos_l2_interfaces:
     config:
     - name: ge-0/0/1
@@ -176,7 +176,8 @@ EXAMPLES = """
 #    }
 # }
 
-- name: Merge provided configuration with device configuration (default operation is merge)
+- name: Merge provided configuration with device configuration (default operation
+    is merge)
   junipernetworks.junos.junos_l2_interfaces:
     config:
     - name: ge-0/0/3

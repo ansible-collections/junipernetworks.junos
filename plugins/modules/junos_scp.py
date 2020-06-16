@@ -10,13 +10,12 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_scp
-version_added: "1.0.0"
 author: Christian Giese (@GIC-de)
 short_description: Transfer files from or to remote devices running Junos
 description:
 - This module transfers files via SCP from or to remote devices running Junos.
+version_added: 1.0.0
 extends_documentation_fragment:
 - junipernetworks.junos.junos
 options:

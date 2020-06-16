@@ -10,9 +10,7 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_ping
-version_added: "1.0.0"
 short_description: Tests reachability using ping from devices running Juniper JUNOS
 description:
 - Tests reachability using ping from devices running Juniper JUNOS to a remote destination.
@@ -20,6 +18,7 @@ description:
 - For a general purpose network module, see the M(net_ping) module.
 - For Windows targets, use the M(win_ping) module instead.
 - For targets running Python, use the M(ping) module instead.
+version_added: 1.0.0
 author:
 - Nilashish Chakraborty (@NilashishC)
 options:

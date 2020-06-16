@@ -10,15 +10,14 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_config
-version_added: "1.0.0"
 author: Peter Sprygada (@privateip)
 short_description: Manage configuration on devices running Juniper JUNOS
 description:
 - This module provides an implementation for working with the active configuration
   running on Juniper JUNOS devices.  It provides a set of arguments for loading configuration,
   performing rollback operations and zeroing the active configuration on the device.
+version_added: 1.0.0
 extends_documentation_fragment:
 - junipernetworks.junos.junos
 options:

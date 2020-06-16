@@ -10,19 +10,18 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_linkagg
-version_added: "1.0.0"
 author: Ganesh Nalawade (@ganeshrn)
-short_description: (deprecated) Manage link aggregation groups on Juniper JUNOS network
-  devices
+short_description: (deprecated, removed after 2022-06-01) Manage link aggregation
+  groups on Juniper JUNOS network devices
 description:
 - This module provides declarative management of link aggregation groups on Juniper
   JUNOS network devices.
+version_added: 1.0.0
 deprecated:
-  removed_in: '2.13'
   why: Updated modules released with more functionality
   alternative: Use M(junos_lag_interfaces) instead.
+  removed_at_date: '2022-06-01'
 options:
   name:
     description:
@@ -82,7 +81,6 @@ notes:
 - This module also works with C(local) connections for legacy playbooks.
 extends_documentation_fragment:
 - junipernetworks.junos.junos
-
 """
 
 EXAMPLES = """

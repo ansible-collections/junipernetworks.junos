@@ -31,12 +31,11 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_static_routes
-version_added: "1.0.0"
-short_description: Static routes Junos resource module
+short_description: Static routes resource module
 description: This module provides declarative management of static routes on Juniper
   JUNOS devices
+version_added: 1.0.0
 author: Daniel Mellado (@dmellado)
 requirements:
 - ncclient (>=v0.6.4)
@@ -104,7 +103,6 @@ options:
     - deleted
     - gathered
     default: merged
-
 """
 
 EXAMPLES = """
@@ -151,7 +149,8 @@ EXAMPLES = """
 #     route 192.168.16.0/24 next-hop 172.16.1.2;
 # }
 
-- name: Merge provided configuration with device configuration (default operation is merge)
+- name: Merge provided configuration with device configuration (default operation
+    is merge)
   junipernetworks.junos.junos_static_routes:
     config:
     - address_families:
@@ -183,7 +182,8 @@ EXAMPLES = """
 #     route 192.168.16.0/24 next-hop 172.16.0.1;
 # }
 
-- name: Override provided configuration with device configuration (default operation is merge)
+- name: Override provided configuration with device configuration (default operation
+    is merge)
   junipernetworks.junos.junos_static_routes:
     config:
     - address_families:
@@ -213,7 +213,8 @@ EXAMPLES = """
 #     route 192.168.16.0/24 next-hop 172.16.1.2;
 # }
 
-- name: Replace provided configuration with device configuration (default operation is merge)
+- name: Replace provided configuration with device configuration (default operation
+    is merge)
   junipernetworks.junos.junos_static_routes:
     config:
     - address_families:

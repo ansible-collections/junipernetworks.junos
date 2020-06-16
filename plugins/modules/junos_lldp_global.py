@@ -33,11 +33,11 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 module: junos_lldp_global
-short_description: Link layer discovery protocol (LLDP) JUNOS resource module
-version_added: "1.0.0"
+short_description: LLDP resource module
 description:
 - This module manages link layer discovery protocol (LLDP) attributes on Juniper JUNOS
   devices.
+version_added: 1.0.0
 author: Ganesh Nalawade (@ganeshrn)
 options:
   config:
@@ -84,7 +84,6 @@ notes:
   being managed.
 - Tested against vSRX JUNOS version 18.4R1.
 - This module works with connection C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
-
 """
 EXAMPLES = """
 # Using merged

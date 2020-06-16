@@ -10,9 +10,7 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_command
-version_added: "1.0.0"
 author: Peter Sprygada (@privateip)
 short_description: Run arbitrary commands on an Juniper JUNOS device
 description:
@@ -20,6 +18,7 @@ description:
   from the device.  This module includes an argument that will cause the module to
   wait for a specific condition before returning or timing out if the condition is
   not met.
+version_added: 1.0.0
 extends_documentation_fragment:
 - junipernetworks.junos.junos
 options:

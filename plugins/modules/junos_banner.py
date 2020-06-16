@@ -10,14 +10,13 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_banner
-version_added: "1.0.0"
 author: Ganesh Nalawade (@ganeshrn)
 short_description: Manage multiline banners on Juniper JUNOS devices
 description:
 - This will configure both login and motd banners on network devices. It allows playbooks
   to add or remote banner text from the active running configuration.
+version_added: 1.0.0
 options:
   banner:
     description:

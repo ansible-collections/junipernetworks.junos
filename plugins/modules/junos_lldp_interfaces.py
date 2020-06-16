@@ -32,13 +32,12 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_lldp_interfaces
-version_added: "1.0.0"
-short_description: Link layer discovery protocol (LLDP) interfaces Junos resource module
+short_description: LLDP interfaces resource module
 description:
 - This module manages link layer discovery protocol (LLDP) attributes of interfaces
   on Juniper JUNOS devices.
+version_added: 1.0.0
 author: Ganesh Nalawade (@ganeshrn)
 options:
   config:
@@ -66,7 +65,6 @@ options:
     - deleted
     - gathered
     default: merged
-
 """
 EXAMPLES = """
 # Using merged

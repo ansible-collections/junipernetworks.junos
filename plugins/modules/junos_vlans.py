@@ -32,20 +32,19 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_vlans
-version_added: "1.0.0"
-short_description: Junos VLANs resource module.
+short_description: VLANs resource module
 description:
-  - This module creates and manages VLAN configurations on Junos OS.
+- This module creates and manages VLAN configurations on Junos OS.
+version_added: 1.0.0
 author: Daniel Mellado (@dmellado)
 requirements:
-  - ncclient (>=v0.6.4)
+- ncclient (>=v0.6.4)
 notes:
-  - This module requires the netconf system service be enabled on the remote device
-    being managed
-  - Tested against Junos OS 18.4R1
-  - This module works with connection C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
+- This module requires the netconf system service be enabled on the remote device
+  being managed
+- Tested against Junos OS 18.4R1
+- This module works with connection C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
 options:
   config:
     description: A dictionary of Vlan options
@@ -77,7 +76,6 @@ options:
     - deleted
     - gathered
     default: merged
-
 """
 
 EXAMPLES = """

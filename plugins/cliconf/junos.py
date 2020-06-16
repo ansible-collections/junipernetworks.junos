@@ -21,14 +21,13 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 DOCUMENTATION = """
----
 author: Ansible Networking Team
 cliconf: junos
 short_description: Use junos cliconf to run command on Juniper Junos OS platform
 description:
-  - This junos plugin provides low level abstraction apis for
-    sending and receiving CLI commands from Juniper Junos OS network devices.
-version_added: "2.4"
+- This junos plugin provides low level abstraction apis for sending and receiving
+  CLI commands from Juniper Junos OS network devices.
+version_added: 1.0.0
 """
 
 import json

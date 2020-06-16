@@ -32,12 +32,12 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_lacp
-version_added: "1.0.0"
-short_description: Global Link Aggregation Control Protocol (LACP) Junos resource module
+short_description: Global Link Aggregation Control Protocol (LACP) Junos resource
+  module
 description: This module provides declarative management of global LACP on Juniper
   Junos network devices.
+version_added: 1.0.0
 author: Ganesh Nalawade (@ganeshrn)
 options:
   config:

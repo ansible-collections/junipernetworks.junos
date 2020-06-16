@@ -20,13 +20,15 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-DOCUMENTATION = """author: Ansible Networking Team
+DOCUMENTATION = """
+author: Ansible Networking Team
 netconf: junos
 short_description: Use junos netconf plugin to run netconf commands on Juniper JUNOS
   platform
 description:
 - This junos plugin provides low level abstraction apis for sending and receiving
   netconf commands from Juniper JUNOS network devices.
+version_added: 1.0.0
 options:
   ncclient_device_handler:
     type: str

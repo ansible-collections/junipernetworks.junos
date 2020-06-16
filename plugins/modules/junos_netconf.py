@@ -10,9 +10,7 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_netconf
-version_added: "1.0.0"
 author: Peter Sprygada (@privateip)
 short_description: Configures the Junos Netconf system service
 description:
@@ -21,6 +19,7 @@ description:
   Netconf API. Netconf provides a programmatic interface for working with configuration
   and state resources as defined in RFC 6242. If the C(netconf_port) is not mentioned
   in the task by default netconf will be enabled on port 830 only.
+version_added: 1.0.0
 extends_documentation_fragment:
 - junipernetworks.junos.junos
 options:

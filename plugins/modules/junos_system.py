@@ -10,15 +10,14 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_system
-version_added: "1.0.0"
 author: Ganesh Nalawade (@ganeshrn)
 short_description: Manage the system attributes on Juniper JUNOS devices
 description:
 - This module provides declarative management of node system attributes on Juniper
   JUNOS devices.  It provides an option to configure host system parameters or remove
   those parameters from the device active configuration.
+version_added: 1.0.0
 options:
   hostname:
     description:

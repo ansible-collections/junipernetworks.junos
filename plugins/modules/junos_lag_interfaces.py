@@ -32,12 +32,11 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_lag_interfaces
-version_added: "1.0.0"
 short_description: Link Aggregation Juniper JUNOS resource module
 description: This module manages properties of Link Aggregation Group on Juniper JUNOS
   devices.
+version_added: 1.0.0
 author: Ganesh Nalawade (@ganeshrn)
 options:
   config:

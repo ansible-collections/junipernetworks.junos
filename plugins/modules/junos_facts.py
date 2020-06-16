@@ -10,9 +10,7 @@ __metaclass__ = type
 
 
 DOCUMENTATION = """
----
 module: junos_facts
-version_added: "1.0.0"
 author: Nathaniel Case (@Qalthos)
 short_description: Collect facts from remote devices running Juniper Junos
 description:
@@ -20,6 +18,7 @@ description:
   default, the module will collect basic fact information from the device to be included
   with the hostvars. Additional fact information can be collected based on the configured
   set of arguments.
+version_added: 1.0.0
 extends_documentation_fragment:
 - junipernetworks.junos.junos
 options:
