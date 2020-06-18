@@ -9,7 +9,6 @@ junipernetworks.junos.junos
 **Use junos netconf plugin to run netconf commands on Juniper JUNOS platform**
 
 
-Version added: 1.0.0
 
 .. contents::
    :local:
