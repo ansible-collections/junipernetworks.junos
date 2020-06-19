@@ -1,5 +1,3 @@
-:orphan:
-
 .. _junipernetworks.junos.junos_l2_interfaces_module:
 
 

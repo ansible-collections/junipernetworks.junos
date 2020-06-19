@@ -1,5 +1,3 @@
-:orphan:
-
 .. _junipernetworks.junos.junos_lldp_interfaces_module:
 
 
