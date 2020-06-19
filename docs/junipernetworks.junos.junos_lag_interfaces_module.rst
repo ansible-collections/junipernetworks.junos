@@ -1,5 +1,3 @@
-:orphan:
-
 .. _junipernetworks.junos.junos_lag_interfaces_module:
 
 

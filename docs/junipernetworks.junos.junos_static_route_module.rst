@@ -1,5 +1,3 @@
-:orphan:
-
 .. _junipernetworks.junos.junos_static_route_module:
 
 

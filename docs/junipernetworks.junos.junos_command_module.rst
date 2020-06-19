@@ -1,5 +1,3 @@
-:orphan:
-
 .. _junipernetworks.junos.junos_command_module:
 
 

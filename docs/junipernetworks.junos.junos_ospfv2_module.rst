@@ -1,5 +1,3 @@
-:orphan:
-
 .. _junipernetworks.junos.junos_ospfv2_module:
 
 
@@ -822,7 +820,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                     <b>after</b>
                     <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
                     <div style="font-size: small">
-                      <span style="color: purple">-</span>
+                      <span style="color: purple">dictionary</span>
                                           </div>
                                     </td>
                 <td>when changed</td>
@@ -840,7 +838,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                     <b>before</b>
                     <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
                     <div style="font-size: small">
-                      <span style="color: purple">-</span>
+                      <span style="color: purple">dictionary</span>
                                           </div>
                                     </td>
                 <td>always</td>
