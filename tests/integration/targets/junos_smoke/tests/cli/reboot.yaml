@@ -1,0 +1,21 @@
+---
+- debug:
+    msg: START cli/cli_reboot.yaml on connection={{ ansible_connection }}
+- block:
+
+    - ansible.netcommon.cli_command:
+        command: request system reboot
+        prompt:
+          - Reboot the system?
+        answer:
+          - y
+
+    - wait_for_connection:
+        delay: 30
+        sleep: 20
+
+    - ansible.netcommon.cli_command:
+        command: show version
+  when: ansible_connection == 'ansible.netcommon.network_cli'
+
+- debug: msg="END cli/reboot.yaml on connection={{ ansible_connection }}"
