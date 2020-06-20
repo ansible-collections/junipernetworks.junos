@@ -20,7 +20,6 @@
 #   builder template.
 #
 #############################################
-# pylint: skip-file
 
 """
 The module file for junos_static_routes
