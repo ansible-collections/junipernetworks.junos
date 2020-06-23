@@ -4,4 +4,4 @@ ncclient
 paramiko
 scp
 xmltodict
-ansible-pylibssh==0.0.1a2.dev0
+ansible-pylibssh
