@@ -1,8 +1,4 @@
 plugins/action/junos.py action-plugin-docs # base class for deprecated network platform modules using `connection: local`
-plugins/doc_fragments/junos.py future-import-boilerplate
-plugins/doc_fragments/junos.py metaclass-boilerplate
-plugins/module_utils/network/junos/junos.py future-import-boilerplate
-plugins/module_utils/network/junos/junos.py metaclass-boilerplate
 plugins/modules/junos_banner.py validate-modules:doc-choices-do-not-match-spec
 plugins/modules/junos_banner.py validate-modules:doc-default-does-not-match-spec
 plugins/modules/junos_banner.py validate-modules:doc-missing-type
@@ -134,11 +130,3 @@ plugins/modules/junos_vrf.py validate-modules:doc-missing-type
 plugins/modules/junos_vrf.py validate-modules:missing-suboption-docs
 plugins/modules/junos_vrf.py validate-modules:parameter-type-not-in-doc
 plugins/modules/junos_vrf.py validate-modules:undocumented-parameter
-tests/unit/mock/path.py future-import-boilerplate
-tests/unit/mock/path.py metaclass-boilerplate
-tests/unit/mock/yaml_helper.py future-import-boilerplate
-tests/unit/mock/yaml_helper.py metaclass-boilerplate
-tests/unit/modules/conftest.py future-import-boilerplate
-tests/unit/modules/conftest.py metaclass-boilerplate
-tests/unit/modules/utils.py future-import-boilerplate
-tests/unit/modules/utils.py metaclass-boilerplate
