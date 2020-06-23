@@ -1,6 +1,6 @@
-===================================
-Junipernetworks.Junos Release Notes
-===================================
+==============================================
+Junipernetworks Junos Collection Release Notes
+==============================================
 
 .. contents:: Topics
 
