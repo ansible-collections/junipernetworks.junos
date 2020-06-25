@@ -1,0 +1,126 @@
+ancestor: null
+releases:
+  1.0.0:
+    modules:
+    - description: ACL interfaces resource module
+      name: junos_acl_interfaces
+      namespace: ''
+    - description: ACLs resource module
+      name: junos_acls
+      namespace: ''
+    - description: Manage multiline banners on Juniper JUNOS devices
+      name: junos_banner
+      namespace: ''
+    - description: Run arbitrary commands on an Juniper JUNOS device
+      name: junos_command
+      namespace: ''
+    - description: Manage configuration on devices running Juniper JUNOS
+      name: junos_config
+      namespace: ''
+    - description: Collect facts from remote devices running Juniper Junos
+      name: junos_facts
+      namespace: ''
+    - description: (deprecated, removed after 2022-06-01) Manage Interface on Juniper
+        JUNOS network devices
+      name: junos_interface
+      namespace: ''
+    - description: Junos Interfaces resource module
+      name: junos_interfaces
+      namespace: ''
+    - description: (deprecated, removed after 2022-06-01) Manage L2 Interface on Juniper
+        JUNOS network devices
+      name: junos_l2_interface
+      namespace: ''
+    - description: L2 interfaces resource module
+      name: junos_l2_interfaces
+      namespace: ''
+    - description: (deprecated, removed after 2022-06-01) Manage L3 interfaces on
+        Juniper JUNOS network devices
+      name: junos_l3_interface
+      namespace: ''
+    - description: L3 interfaces resource module
+      name: junos_l3_interfaces
+      namespace: ''
+    - description: Global Link Aggregation Control Protocol (LACP) Junos resource
+        module
+      name: junos_lacp
+      namespace: ''
+    - description: LACP interfaces resource module
+      name: junos_lacp_interfaces
+      namespace: ''
+    - description: Link Aggregation Juniper JUNOS resource module
+      name: junos_lag_interfaces
+      namespace: ''
+    - description: (deprecated, removed after 2022-06-01) Manage link aggregation
+        groups on Juniper JUNOS network devices
+      name: junos_linkagg
+      namespace: ''
+    - description: (deprecated, removed after 2022-06-01) Manage LLDP configuration
+        on Juniper JUNOS network devices
+      name: junos_lldp
+      namespace: ''
+    - description: LLDP resource module
+      name: junos_lldp_global
+      namespace: ''
+    - description: (deprecated, removed after 2022-06-01) Manage LLDP interfaces configuration
+        on Juniper JUNOS network devices
+      name: junos_lldp_interface
+      namespace: ''
+    - description: LLDP interfaces resource module
+      name: junos_lldp_interfaces
+      namespace: ''
+    - description: Manage logging on network devices
+      name: junos_logging
+      namespace: ''
+    - description: Configures the Junos Netconf system service
+      name: junos_netconf
+      namespace: ''
+    - description: OSPFv2 resource module
+      name: junos_ospfv2
+      namespace: ''
+    - description: Installs packages on remote devices running Junos
+      name: junos_package
+      namespace: ''
+    - description: Tests reachability using ping from devices running Juniper JUNOS
+      name: junos_ping
+      namespace: ''
+    - description: Runs an arbitrary RPC over NetConf on an Juniper JUNOS device
+      name: junos_rpc
+      namespace: ''
+    - description: Transfer files from or to remote devices running Junos
+      name: junos_scp
+      namespace: ''
+    - description: (deprecated, removed after 2022-06-01) Manage static IP routes
+        on Juniper JUNOS network devices
+      name: junos_static_route
+      namespace: ''
+    - description: Static routes resource module
+      name: junos_static_routes
+      namespace: ''
+    - description: Manage the system attributes on Juniper JUNOS devices
+      name: junos_system
+      namespace: ''
+    - description: Manage local user accounts on Juniper JUNOS devices
+      name: junos_user
+      namespace: ''
+    - description: (deprecated, removed after 2022-06-01) Manage VLANs on Juniper
+        JUNOS network devices
+      name: junos_vlan
+      namespace: ''
+    - description: VLANs resource module
+      name: junos_vlans
+      namespace: ''
+    - description: Manage the VRF definitions on Juniper JUNOS devices
+      name: junos_vrf
+      namespace: ''
+    plugins:
+      cliconf:
+      - description: Use junos cliconf to run command on Juniper Junos OS platform
+        name: junos
+        namespace: null
+      netconf:
+      - description: Use junos netconf plugin to run netconf commands on Juniper JUNOS
+          platform
+        name: junos
+        namespace: null
+    release_date: '2020-06-23'
