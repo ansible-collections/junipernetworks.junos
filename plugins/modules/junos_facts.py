@@ -27,7 +27,7 @@ options:
     - When supplied, this argument will restrict the facts collected to a given subset.  Possible
       values for this argument include all, hardware, config, and interfaces.  Can
       specify a list of values to include a larger subset.  Values can also be used
-      with an initial C(M(!)) to specify that a specific subset should not be collected.
+      with an initial C(!) to specify that a specific subset should not be collected.
       To maintain backward compatibility old style facts can be retrieved by explicitly
       adding C(ofacts)  to value, this requires junos-eznc to be installed as a prerequisite.
       Valid value of gather_subset are default, hardware, config, interfaces, ofacts.
@@ -58,7 +58,7 @@ options:
     - When supplied, this argument will restrict the facts collected to a given subset.
       Possible values for this argument include all and the resources like interfaces,
       vlans etc. Can specify a list of values to include a larger subset. Values can
-      also be used with an initial C(M(!)) to specify that a specific subset should
+      also be used with an initial C(!) to specify that a specific subset should
       not be collected. Valid subsets are 'all', 'interfaces', 'lacp', 'lacp_interfaces',
       'lag_interfaces', 'l2_interfaces', 'l3_interfaces', 'lldp_global', 'lldp_interfaces',
       'vlans'.

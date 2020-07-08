@@ -15,9 +15,9 @@ short_description: Tests reachability using ping from devices running Juniper JU
 description:
 - Tests reachability using ping from devices running Juniper JUNOS to a remote destination.
 - Tested against Junos (17.3R1.10)
-- For a general purpose network module, see the M(net_ping) module.
-- For Windows targets, use the M(win_ping) module instead.
-- For targets running Python, use the M(ping) module instead.
+- For a general purpose network module, see the M(ansible.netcommon.net_ping) module.
+- For Windows targets, use the M(ansible.windows.win_ping) module instead.
+- For targets running Python, use the M(ansible.builtin.ping) module instead.
 version_added: 1.0.0
 author:
 - Nilashish Chakraborty (@NilashishC)
@@ -57,9 +57,9 @@ options:
     - present
     default: present
 notes:
-- For a general purpose network module, see the M(net_ping) module.
-- For Windows targets, use the M(win_ping) module instead.
-- For targets running Python, use the M(ping) module instead.
+- For a general purpose network module, see the M(ansible.netcommon..net_ping) module.
+- For Windows targets, use the M(ansible.windows.win_ping) module instead.
+- For targets running Python, use the M(ansible.builtin.ping) module instead.
 - This module works only with connection C(network_cli).
 extends_documentation_fragment:
 - junipernetworks.junos.junos

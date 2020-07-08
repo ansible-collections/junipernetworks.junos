@@ -19,7 +19,7 @@ description:
 version_added: 1.0.0
 deprecated:
   why: Updated modules released with more functionality
-  alternative: Use M(junos_vlans) instead.
+  alternative: Use M(junipernetworks.junos.junos_vlans) instead.
   removed_at_date: '2022-06-01'
 options:
   name:
