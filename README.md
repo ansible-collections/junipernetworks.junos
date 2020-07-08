@@ -26,50 +26,50 @@ The Juniper Networks Junos collection supports ``network_cli`` and ``netconf`` c
 ### Cliconf plugins
 Name | Description
 --- | ---
-[junipernetworks.junos.junos](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_cliconf.rst)|Use junos cliconf to run command on Juniper Junos OS platform
+[junipernetworks.junos.junos](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_cliconf.rst)|Use junos cliconf to run command on Juniper Junos OS platform
 
 ### Netconf plugins
 Name | Description
 --- | ---
-[junipernetworks.junos.junos](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_netconf.rst)|Use junos netconf plugin to run netconf commands on Juniper JUNOS platform
+[junipernetworks.junos.junos](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_netconf.rst)|Use junos netconf plugin to run netconf commands on Juniper JUNOS platform
 
 ### Modules
 Name | Description
 --- | ---
-[junipernetworks.junos.junos_acl_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_acl_interfaces_module.rst)|ACL interfaces resource module
-[junipernetworks.junos.junos_acls](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_acls_module.rst)|ACLs resource module
-[junipernetworks.junos.junos_banner](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_banner_module.rst)|Manage multiline banners on Juniper JUNOS devices
-[junipernetworks.junos.junos_command](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_command_module.rst)|Run arbitrary commands on an Juniper JUNOS device
-[junipernetworks.junos.junos_config](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_config_module.rst)|Manage configuration on devices running Juniper JUNOS
-[junipernetworks.junos.junos_facts](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_facts_module.rst)|Collect facts from remote devices running Juniper Junos
-[junipernetworks.junos.junos_interface](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_interface_module.rst)|(deprecated, removed after 2022-06-01) Manage Interface on Juniper JUNOS network devices
-[junipernetworks.junos.junos_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_interfaces_module.rst)|Junos Interfaces resource module
-[junipernetworks.junos.junos_l2_interface](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_l2_interface_module.rst)|(deprecated, removed after 2022-06-01) Manage L2 Interface on Juniper JUNOS network devices
-[junipernetworks.junos.junos_l2_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_l2_interfaces_module.rst)|L2 interfaces resource module
-[junipernetworks.junos.junos_l3_interface](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_l3_interface_module.rst)|(deprecated, removed after 2022-06-01) Manage L3 interfaces on Juniper JUNOS network devices
-[junipernetworks.junos.junos_l3_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_l3_interfaces_module.rst)|L3 interfaces resource module
-[junipernetworks.junos.junos_lacp](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_lacp_module.rst)|Global Link Aggregation Control Protocol (LACP) Junos resource module
-[junipernetworks.junos.junos_lacp_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_lacp_interfaces_module.rst)|LACP interfaces resource module
-[junipernetworks.junos.junos_lag_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_lag_interfaces_module.rst)|Link Aggregation Juniper JUNOS resource module
-[junipernetworks.junos.junos_linkagg](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_linkagg_module.rst)|(deprecated, removed after 2022-06-01) Manage link aggregation groups on Juniper JUNOS network devices
-[junipernetworks.junos.junos_lldp](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_lldp_module.rst)|(deprecated, removed after 2022-06-01) Manage LLDP configuration on Juniper JUNOS network devices
-[junipernetworks.junos.junos_lldp_global](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_lldp_global_module.rst)|LLDP resource module
-[junipernetworks.junos.junos_lldp_interface](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_lldp_interface_module.rst)|(deprecated, removed after 2022-06-01) Manage LLDP interfaces configuration on Juniper JUNOS network devices
-[junipernetworks.junos.junos_lldp_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_lldp_interfaces_module.rst)|LLDP interfaces resource module
-[junipernetworks.junos.junos_logging](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_logging_module.rst)|Manage logging on network devices
-[junipernetworks.junos.junos_netconf](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_netconf_module.rst)|Configures the Junos Netconf system service
-[junipernetworks.junos.junos_ospfv2](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_ospfv2_module.rst)|OSPFv2 resource module
-[junipernetworks.junos.junos_package](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_package_module.rst)|Installs packages on remote devices running Junos
-[junipernetworks.junos.junos_ping](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_ping_module.rst)|Tests reachability using ping from devices running Juniper JUNOS
-[junipernetworks.junos.junos_rpc](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_rpc_module.rst)|Runs an arbitrary RPC over NetConf on an Juniper JUNOS device
-[junipernetworks.junos.junos_scp](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_scp_module.rst)|Transfer files from or to remote devices running Junos
-[junipernetworks.junos.junos_static_route](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_static_route_module.rst)|(deprecated, removed after 2022-06-01) Manage static IP routes on Juniper JUNOS network devices
-[junipernetworks.junos.junos_static_routes](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_static_routes_module.rst)|Static routes resource module
-[junipernetworks.junos.junos_system](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_system_module.rst)|Manage the system attributes on Juniper JUNOS devices
-[junipernetworks.junos.junos_user](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_user_module.rst)|Manage local user accounts on Juniper JUNOS devices
-[junipernetworks.junos.junos_vlan](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_vlan_module.rst)|(deprecated, removed after 2022-06-01) Manage VLANs on Juniper JUNOS network devices
-[junipernetworks.junos.junos_vlans](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_vlans_module.rst)|VLANs resource module
-[junipernetworks.junos.junos_vrf](https://github.com/ansible-collections/junipernetworks.junos/blob/master/docs/junipernetworks.junos.junos_vrf_module.rst)|Manage the VRF definitions on Juniper JUNOS devices
+[junipernetworks.junos.junos_acl_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_acl_interfaces_module.rst)|ACL interfaces resource module
+[junipernetworks.junos.junos_acls](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_acls_module.rst)|ACLs resource module
+[junipernetworks.junos.junos_banner](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_banner_module.rst)|Manage multiline banners on Juniper JUNOS devices
+[junipernetworks.junos.junos_command](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_command_module.rst)|Run arbitrary commands on an Juniper JUNOS device
+[junipernetworks.junos.junos_config](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_config_module.rst)|Manage configuration on devices running Juniper JUNOS
+[junipernetworks.junos.junos_facts](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_facts_module.rst)|Collect facts from remote devices running Juniper Junos
+[junipernetworks.junos.junos_interface](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_interface_module.rst)|(deprecated, removed after 2022-06-01) Manage Interface on Juniper JUNOS network devices
+[junipernetworks.junos.junos_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_interfaces_module.rst)|Junos Interfaces resource module
+[junipernetworks.junos.junos_l2_interface](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_l2_interface_module.rst)|(deprecated, removed after 2022-06-01) Manage L2 Interface on Juniper JUNOS network devices
+[junipernetworks.junos.junos_l2_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_l2_interfaces_module.rst)|L2 interfaces resource module
+[junipernetworks.junos.junos_l3_interface](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_l3_interface_module.rst)|(deprecated, removed after 2022-06-01) Manage L3 interfaces on Juniper JUNOS network devices
+[junipernetworks.junos.junos_l3_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_l3_interfaces_module.rst)|L3 interfaces resource module
+[junipernetworks.junos.junos_lacp](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_lacp_module.rst)|Global Link Aggregation Control Protocol (LACP) Junos resource module
+[junipernetworks.junos.junos_lacp_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_lacp_interfaces_module.rst)|LACP interfaces resource module
+[junipernetworks.junos.junos_lag_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_lag_interfaces_module.rst)|Link Aggregation Juniper JUNOS resource module
+[junipernetworks.junos.junos_linkagg](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_linkagg_module.rst)|(deprecated, removed after 2022-06-01) Manage link aggregation groups on Juniper JUNOS network devices
+[junipernetworks.junos.junos_lldp](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_lldp_module.rst)|(deprecated, removed after 2022-06-01) Manage LLDP configuration on Juniper JUNOS network devices
+[junipernetworks.junos.junos_lldp_global](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_lldp_global_module.rst)|LLDP resource module
+[junipernetworks.junos.junos_lldp_interface](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_lldp_interface_module.rst)|(deprecated, removed after 2022-06-01) Manage LLDP interfaces configuration on Juniper JUNOS network devices
+[junipernetworks.junos.junos_lldp_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_lldp_interfaces_module.rst)|LLDP interfaces resource module
+[junipernetworks.junos.junos_logging](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_logging_module.rst)|Manage logging on network devices
+[junipernetworks.junos.junos_netconf](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_netconf_module.rst)|Configures the Junos Netconf system service
+[junipernetworks.junos.junos_ospfv2](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_ospfv2_module.rst)|OSPFv2 resource module
+[junipernetworks.junos.junos_package](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_package_module.rst)|Installs packages on remote devices running Junos
+[junipernetworks.junos.junos_ping](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_ping_module.rst)|Tests reachability using ping from devices running Juniper JUNOS
+[junipernetworks.junos.junos_rpc](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_rpc_module.rst)|Runs an arbitrary RPC over NetConf on an Juniper JUNOS device
+[junipernetworks.junos.junos_scp](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_scp_module.rst)|Transfer files from or to remote devices running Junos
+[junipernetworks.junos.junos_static_route](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_static_route_module.rst)|(deprecated, removed after 2022-06-01) Manage static IP routes on Juniper JUNOS network devices
+[junipernetworks.junos.junos_static_routes](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_static_routes_module.rst)|Static routes resource module
+[junipernetworks.junos.junos_system](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_system_module.rst)|Manage the system attributes on Juniper JUNOS devices
+[junipernetworks.junos.junos_user](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_user_module.rst)|Manage local user accounts on Juniper JUNOS devices
+[junipernetworks.junos.junos_vlan](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_vlan_module.rst)|(deprecated, removed after 2022-06-01) Manage VLANs on Juniper JUNOS network devices
+[junipernetworks.junos.junos_vlans](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_vlans_module.rst)|VLANs resource module
+[junipernetworks.junos.junos_vrf](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_vrf_module.rst)|Manage the VRF definitions on Juniper JUNOS devices
 
 <!--end collection content-->
 
