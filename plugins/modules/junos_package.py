@@ -27,6 +27,7 @@ options:
       on the remote device in the advent of a version mismatch. The I(src) argument
       can be either a localized path or a full path to the package file to install.
     required: true
+    type: path
     aliases:
     - package
   version:
@@ -34,6 +35,7 @@ options:
     - The I(version) argument can be used to explicitly specify the version of the
       package that should be installed on the remote device.  If the I(version) argument
       is not specified, then the version is extracts from the I(src) filename.
+    type: str
   reboot:
     description:
     - In order for a package to take effect, the remote device must be restarted.  When
@@ -174,7 +176,6 @@ def main():
         no_copy=dict(default=False, type="bool"),
         validate=dict(default=True, type="bool"),
         force=dict(type="bool", default=False),
-        transport=dict(default="netconf", choices=["netconf"]),
         force_host=dict(type="bool", default=False),
         issu=dict(type="bool", default=False),
         ssh_private_key_file=dict(type="path"),

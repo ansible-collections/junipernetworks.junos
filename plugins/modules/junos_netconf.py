@@ -31,12 +31,14 @@ options:
     default: 830
     aliases:
     - listens_on
+    type: int
   state:
     description:
     - Specifies the state of the C(junos_netconf) resource on the remote device.  If
       the I(state) argument is set to I(present) the netconf service will be configured.  If
       the I(state) argument is set to I(absent) the netconf service will be removed
       from the configuration.
+    type: str
     required: false
     default: present
     choices:

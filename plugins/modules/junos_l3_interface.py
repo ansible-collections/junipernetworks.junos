@@ -26,33 +26,90 @@ options:
   name:
     description:
     - Name of the L3 interface.
+    type: str
   ipv4:
     description:
     - IPv4 of the L3 interface.
+    type: str
   ipv6:
     description:
     - IPv6 of the L3 interface.
+    type: str
   unit:
     description:
     - Logical interface number.
+    type: int
     default: 0
   filter_input:
     description:
     - The name of input filter.
+    type: str
   filter_output:
     description:
     - The name of output filter.
+    type: str
   filter6_input:
     description:
     - The name of input filter for ipv6.
+    type: str
   filter6_output:
     description:
     - The name of output filter for ipv6.
+    type: str
   aggregate:
     description: List of L3 interfaces definitions
+    type: list
+    elements: dict
+    suboptions:
+      name:
+        description:
+        - Name of the L3 interface.
+        required: true
+        type: str
+      ipv4:
+        description:
+        - IPv4 of the L3 interface.
+        type: str
+      ipv6:
+        description:
+        - IPv6 of the L3 interface.
+        type: str
+      unit:
+        description:
+        - Logical interface number.
+        type: int
+        default: 0
+      filter_input:
+        description:
+        - The name of input filter.
+        type: str
+      filter_output:
+        description:
+        - The name of output filter.
+        type: str
+      filter6_input:
+        description:
+        - The name of input filter for ipv6.
+        type: str
+      filter6_output:
+        description:
+        - The name of output filter for ipv6.
+        type: str
+      state:
+        description:
+        - State of the L3 interface configuration.
+        type: str
+        choices:
+        - present
+        - absent
+      active:
+        description:
+        - Specifies whether or not the configuration is active or deactivated
+        type: bool
   state:
     description:
     - State of the L3 interface configuration.
+    type: str
     default: present
     choices:
     - present
@@ -154,7 +211,9 @@ def main():
         filter6_input=dict(),
         filter6_output=dict(),
         unit=dict(default=0, type="int"),
-        state=dict(default="present", choices=["present", "absent"]),
+        state=dict(
+            type="str", default="present", choices=["present", "absent"]
+        ),
         active=dict(default=True, type="bool"),
     )
 

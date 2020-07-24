@@ -27,21 +27,26 @@ options:
     - The C(rpc) argument specifies the RPC call to send to the remote devices to
       be executed.  The RPC Reply message is parsed and the contents are returned
       to the playbook.
+    type: str
     required: true
   args:
     description:
     - The C(args) argument provides a set of arguments for the RPC call and are encoded
       in the request message.  This argument accepts a set of key=value arguments.
+    type: dict
   attrs:
     description:
     - The C(attrs) arguments defines a list of attributes and their values to set
       for the RPC call. This accepts a dictionary of key-values.
+    type: dict
   output:
     description:
     - The C(output) argument specifies the desired output of the return data.  This
       argument accepts one of C(xml), C(text), or C(json).  For C(json), the JUNOS
       device must be running a version of software that supports native JSON output.
     default: xml
+    type: str
+    choices: ["xml", "json", "text"]
 requirements:
 - ncclient (>=v0.5.2)
 notes:

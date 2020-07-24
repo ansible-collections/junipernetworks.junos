@@ -23,6 +23,7 @@ options:
     - Specifies which banner that should be configured on the remote device. Value
       C(login) indicates system login message prior to authenticating, C(motd) is
       login announcement after successful authentication.
+    type: str
     required: true
     choices:
     - login
@@ -31,10 +32,12 @@ options:
     description:
     - The banner text that should be present in the remote device running configuration.  This
       argument accepts a multiline string, with no empty lines. Requires I(state=present).
+    type: str
   state:
     description:
     - Specifies whether or not the configuration is present in the current devices
       active running configuration.
+    type: str
     default: present
     choices:
     - present

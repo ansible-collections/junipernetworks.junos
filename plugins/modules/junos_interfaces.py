@@ -41,6 +41,7 @@ options:
   config:
     description: The provided configuration
     type: list
+    elements: dict
     suboptions:
       name:
         description:
@@ -89,7 +90,7 @@ options:
       speed:
         description:
         - Interface link speed. Applicable for Ethernet interfaces only.
-        type: int
+        type: str
   state:
     choices:
     - merged

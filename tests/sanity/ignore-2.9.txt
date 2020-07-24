@@ -1,132 +1,17 @@
 plugins/action/junos.py action-plugin-docs # base class for deprecated network platform modules using `connection: local`
-plugins/modules/junos_banner.py validate-modules:doc-choices-do-not-match-spec
-plugins/modules/junos_banner.py validate-modules:doc-default-does-not-match-spec
-plugins/modules/junos_banner.py validate-modules:doc-missing-type
-plugins/modules/junos_banner.py validate-modules:undocumented-parameter
-plugins/modules/junos_command.py validate-modules:doc-default-does-not-match-spec
-plugins/modules/junos_command.py validate-modules:doc-missing-type
-plugins/modules/junos_command.py validate-modules:parameter-type-not-in-doc
-plugins/modules/junos_command.py validate-modules:doc-choices-do-not-match-spec
-plugins/modules/junos_command.py validate-modules:undocumented-parameter
-plugins/modules/junos_config.py validate-modules:doc-choices-do-not-match-spec
-plugins/modules/junos_config.py validate-modules:doc-default-does-not-match-spec
-plugins/modules/junos_config.py validate-modules:doc-missing-type
-plugins/modules/junos_config.py validate-modules:parameter-type-not-in-doc
-plugins/modules/junos_config.py validate-modules:undocumented-parameter
-plugins/modules/junos_facts.py validate-modules:doc-choices-do-not-match-spec
-plugins/modules/junos_facts.py validate-modules:doc-default-does-not-match-spec
-plugins/modules/junos_facts.py validate-modules:doc-missing-type
-plugins/modules/junos_facts.py validate-modules:parameter-type-not-in-doc
-plugins/modules/junos_facts.py validate-modules:undocumented-parameter
-plugins/modules/junos_interfaces.py validate-modules:doc-type-does-not-match-spec
-plugins/modules/junos_interface.py validate-modules:deprecation-mismatch
-plugins/modules/junos_interface.py validate-modules:doc-choices-do-not-match-spec
-plugins/modules/junos_interface.py validate-modules:doc-default-does-not-match-spec
-plugins/modules/junos_interface.py validate-modules:doc-missing-type
-plugins/modules/junos_interface.py validate-modules:invalid-documentation
-plugins/modules/junos_interface.py validate-modules:missing-suboption-docs
-plugins/modules/junos_interface.py validate-modules:parameter-type-not-in-doc
-plugins/modules/junos_interface.py validate-modules:undocumented-parameter
-plugins/modules/junos_vlan.py validate-modules:deprecation-mismatch
-plugins/modules/junos_vlan.py validate-modules:doc-choices-do-not-match-spec
-plugins/modules/junos_vlan.py validate-modules:doc-default-does-not-match-spec
-plugins/modules/junos_vlan.py validate-modules:doc-missing-type
-plugins/modules/junos_vlan.py validate-modules:invalid-documentation
-plugins/modules/junos_vlan.py validate-modules:missing-suboption-docs
-plugins/modules/junos_vlan.py validate-modules:parameter-type-not-in-doc
-plugins/modules/junos_vlan.py validate-modules:undocumented-parameter
-plugins/modules/junos_l2_interface.py validate-modules:deprecation-mismatch
-plugins/modules/junos_l2_interface.py validate-modules:doc-choices-do-not-match-spec
-plugins/modules/junos_l2_interface.py validate-modules:doc-default-does-not-match-spec
-plugins/modules/junos_l2_interface.py validate-modules:doc-missing-type
-plugins/modules/junos_l2_interface.py validate-modules:invalid-documentation
-plugins/modules/junos_l2_interface.py validate-modules:missing-suboption-docs
-plugins/modules/junos_l2_interface.py validate-modules:parameter-type-not-in-doc
-plugins/modules/junos_l2_interface.py validate-modules:undocumented-parameter
-plugins/modules/junos_l3_interface.py validate-modules:deprecation-mismatch
-plugins/modules/junos_l3_interface.py validate-modules:doc-choices-do-not-match-spec
-plugins/modules/junos_l3_interface.py validate-modules:doc-default-does-not-match-spec
-plugins/modules/junos_l3_interface.py validate-modules:doc-missing-type
-plugins/modules/junos_l3_interface.py validate-modules:invalid-documentation
-plugins/modules/junos_l3_interface.py validate-modules:missing-suboption-docs
-plugins/modules/junos_l3_interface.py validate-modules:parameter-type-not-in-doc
-plugins/modules/junos_l3_interface.py validate-modules:undocumented-parameter
-plugins/modules/junos_linkagg.py validate-modules:deprecation-mismatch
-plugins/modules/junos_linkagg.py validate-modules:doc-choices-do-not-match-spec
-plugins/modules/junos_linkagg.py validate-modules:doc-default-does-not-match-spec
-plugins/modules/junos_linkagg.py validate-modules:doc-missing-type
-plugins/modules/junos_linkagg.py validate-modules:invalid-documentation
-plugins/modules/junos_linkagg.py validate-modules:missing-suboption-docs
-plugins/modules/junos_linkagg.py validate-modules:parameter-type-not-in-doc
-plugins/modules/junos_linkagg.py validate-modules:undocumented-parameter
-plugins/modules/junos_lldp.py validate-modules:deprecation-mismatch
-plugins/modules/junos_lldp.py validate-modules:doc-default-does-not-match-spec
-plugins/modules/junos_lldp.py validate-modules:invalid-documentation
-plugins/modules/junos_lldp.py validate-modules:doc-choices-do-not-match-spec
-plugins/modules/junos_lldp.py validate-modules:doc-missing-type
-plugins/modules/junos_lldp.py validate-modules:parameter-type-not-in-doc
-plugins/modules/junos_lldp.py validate-modules:undocumented-parameter
-plugins/modules/junos_lldp_interface.py validate-modules:deprecation-mismatch
-plugins/modules/junos_lldp_interface.py validate-modules:doc-choices-do-not-match-spec
-plugins/modules/junos_lldp_interface.py validate-modules:doc-default-does-not-match-spec
-plugins/modules/junos_lldp_interface.py validate-modules:doc-missing-type
-plugins/modules/junos_lldp_interface.py validate-modules:invalid-documentation
-plugins/modules/junos_lldp_interface.py validate-modules:undocumented-parameter
-plugins/modules/junos_ospfv2.py validate-modules:invalid-documentation
-plugins/modules/junos_lag_interfaces.py validate-modules:doc-missing-type
-plugins/modules/junos_logging.py validate-modules:doc-choices-do-not-match-spec
-plugins/modules/junos_logging.py validate-modules:doc-default-does-not-match-spec
-plugins/modules/junos_logging.py validate-modules:doc-missing-type
-plugins/modules/junos_logging.py validate-modules:missing-suboption-docs
-plugins/modules/junos_logging.py validate-modules:parameter-type-not-in-doc
-plugins/modules/junos_logging.py validate-modules:undocumented-parameter
-plugins/modules/junos_static_route.py validate-modules:deprecation-mismatch
-plugins/modules/junos_static_route.py validate-modules:doc-choices-do-not-match-spec
-plugins/modules/junos_static_route.py validate-modules:doc-default-does-not-match-spec
-plugins/modules/junos_static_route.py validate-modules:doc-missing-type
-plugins/modules/junos_static_route.py validate-modules:invalid-documentation
-plugins/modules/junos_static_route.py validate-modules:missing-suboption-docs
-plugins/modules/junos_static_route.py validate-modules:parameter-type-not-in-doc
-plugins/modules/junos_static_route.py validate-modules:undocumented-parameter
-plugins/modules/junos_netconf.py validate-modules:doc-choices-do-not-match-spec
-plugins/modules/junos_netconf.py validate-modules:doc-default-does-not-match-spec
-plugins/modules/junos_netconf.py validate-modules:doc-missing-type
-plugins/modules/junos_netconf.py validate-modules:parameter-type-not-in-doc
-plugins/modules/junos_netconf.py validate-modules:undocumented-parameter
-plugins/modules/junos_package.py validate-modules:doc-choices-do-not-match-spec
-plugins/modules/junos_package.py validate-modules:doc-default-does-not-match-spec
-plugins/modules/junos_package.py validate-modules:doc-missing-type
-plugins/modules/junos_package.py validate-modules:parameter-type-not-in-doc
-plugins/modules/junos_package.py validate-modules:undocumented-parameter
-plugins/modules/junos_ping.py validate-modules:doc-choices-do-not-match-spec
-plugins/modules/junos_ping.py validate-modules:doc-default-does-not-match-spec
-plugins/modules/junos_ping.py validate-modules:doc-missing-type
-plugins/modules/junos_ping.py validate-modules:parameter-type-not-in-doc
-plugins/modules/junos_ping.py validate-modules:undocumented-parameter
-plugins/modules/junos_rpc.py validate-modules:doc-choices-do-not-match-spec
-plugins/modules/junos_rpc.py validate-modules:doc-default-does-not-match-spec
-plugins/modules/junos_rpc.py validate-modules:doc-missing-type
-plugins/modules/junos_rpc.py validate-modules:parameter-type-not-in-doc
-plugins/modules/junos_rpc.py validate-modules:undocumented-parameter
-plugins/modules/junos_scp.py validate-modules:doc-choices-do-not-match-spec
-plugins/modules/junos_scp.py validate-modules:doc-default-does-not-match-spec
-plugins/modules/junos_scp.py validate-modules:doc-missing-type
-plugins/modules/junos_scp.py validate-modules:parameter-type-not-in-doc
-plugins/modules/junos_scp.py validate-modules:undocumented-parameter
-plugins/modules/junos_system.py validate-modules:doc-choices-do-not-match-spec
-plugins/modules/junos_system.py validate-modules:doc-default-does-not-match-spec
-plugins/modules/junos_system.py validate-modules:doc-missing-type
-plugins/modules/junos_system.py validate-modules:parameter-type-not-in-doc
-plugins/modules/junos_system.py validate-modules:undocumented-parameter
-plugins/modules/junos_user.py validate-modules:doc-choices-do-not-match-spec
-plugins/modules/junos_user.py validate-modules:doc-default-does-not-match-spec
-plugins/modules/junos_user.py validate-modules:doc-missing-type
-plugins/modules/junos_user.py validate-modules:missing-suboption-docs
-plugins/modules/junos_user.py validate-modules:parameter-type-not-in-doc
-plugins/modules/junos_user.py validate-modules:undocumented-parameter
-plugins/modules/junos_vrf.py validate-modules:doc-choices-do-not-match-spec
-plugins/modules/junos_vrf.py validate-modules:doc-default-does-not-match-spec
-plugins/modules/junos_vrf.py validate-modules:doc-missing-type
-plugins/modules/junos_vrf.py validate-modules:missing-suboption-docs
-plugins/modules/junos_vrf.py validate-modules:parameter-type-not-in-doc
-plugins/modules/junos_vrf.py validate-modules:undocumented-parameter
+plugins/modules/junos_interface.py validate-modules:deprecation-mismatch # 2.9 expects METADATA
+plugins/modules/junos_interface.py validate-modules:invalid-documentation # removed_at_date not supported in `deprecated` dict
+plugins/modules/junos_l2_interface.py validate-modules:deprecation-mismatch # 2.9 expects METADATA
+plugins/modules/junos_l2_interface.py validate-modules:invalid-documentation # removed_at_date not supported in `deprecated` dict
+plugins/modules/junos_l3_interface.py validate-modules:deprecation-mismatch # 2.9 expects METADATA
+plugins/modules/junos_l3_interface.py validate-modules:invalid-documentation # removed_at_date not supported in `deprecated` dict
+plugins/modules/junos_linkagg.py validate-modules:deprecation-mismatch # 2.9 expects METADATA
+plugins/modules/junos_linkagg.py validate-modules:invalid-documentation # removed_at_date not supported in `deprecated` dict
+plugins/modules/junos_lldp.py validate-modules:deprecation-mismatch # 2.9 expects METADATA
+plugins/modules/junos_lldp.py validate-modules:invalid-documentation # removed_at_date not supported in `deprecated` dict
+plugins/modules/junos_lldp_interface.py validate-modules:deprecation-mismatch # 2.9 expects METADATA
+plugins/modules/junos_lldp_interface.py validate-modules:invalid-documentation # removed_at_date not supported in `deprecated` dict
+plugins/modules/junos_static_route.py validate-modules:deprecation-mismatch # 2.9 expects METADATA
+plugins/modules/junos_static_route.py validate-modules:invalid-documentation # removed_at_date not supported in `deprecated` dict
+plugins/modules/junos_vlan.py validate-modules:deprecation-mismatch # 2.9 expects METADATA
+plugins/modules/junos_vlan.py validate-modules:invalid-documentation # removed_at_date not supported in `deprecated` dict

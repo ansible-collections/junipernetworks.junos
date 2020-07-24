@@ -28,17 +28,23 @@ options:
       resulting output from the command is returned.  If the I(wait_for) argument
       is provided, the module is not returned until the condition is satisfied or
       the number of I(retries) has been exceeded.
+    type: list
+    elements: str
   rpcs:
     description:
     - The C(rpcs) argument accepts a list of RPCs to be executed over a netconf session
       and the results from the RPC execution is return to the playbook via the modules
       results dictionary.
+    type: list
+    elements: str
   wait_for:
     description:
     - Specifies what to evaluate from the output of the command and what conditionals
       to apply.  This argument will cause the task to wait for a particular conditional
       to be true before moving forward.   If the conditional is not true by the configured
       retries, the task fails.  See examples.
+    type: list
+    elements: str
     aliases:
     - waitfor
   match:
@@ -47,6 +53,7 @@ options:
       specify the match policy.  Valid values are C(all) or C(any).  If the value
       is set to C(all) then all conditionals in the I(wait_for) must be satisfied.  If
       the value is set to C(any) then only one of the values must be satisfied.
+    type: str
     default: all
     choices:
     - any
@@ -56,12 +63,14 @@ options:
     - Specifies the number of retries a command should be tried before it is considered
       failed.  The command is run on the target device every retry and evaluated against
       the I(wait_for) conditionals.
+    type: int
     default: 10
   interval:
     description:
     - Configures the interval in seconds to wait between retries of the command.  If
       the command does not pass the specified conditional, the interval indicates
       how to long to wait before trying the command again.
+    type: int
     default: 1
   display:
     description:
@@ -70,7 +79,7 @@ options:
       result set. For I(rpcs) argument default display is C(xml) and for I(commands)
       argument default display is C(text). Value C(set) is applicable only for fetching
       configuration from device.
-    default: depends on input argument I(rpcs) or I(commands)
+    type: str
     aliases:
     - format
     - output
@@ -350,13 +359,13 @@ def main():
     """entry point for module execution
     """
     argument_spec = dict(
-        commands=dict(type="list"),
-        rpcs=dict(type="list"),
+        commands=dict(type="list", elements="str"),
+        rpcs=dict(type="list", elements="str"),
         display=dict(
             choices=["text", "json", "xml", "set"],
             aliases=["format", "output"],
         ),
-        wait_for=dict(type="list", aliases=["waitfor"]),
+        wait_for=dict(type="list", aliases=["waitfor"], elements="str"),
         match=dict(default="all", choices=["all", "any"]),
         retries=dict(default=10, type="int"),
         interval=dict(default=1, type="int"),

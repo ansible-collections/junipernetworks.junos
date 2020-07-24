@@ -26,7 +26,7 @@ options:
   name:
     description:
     - Name of the link aggregation group.
-    required: true
+    type: str
   mode:
     description:
     - Mode of the link aggregation group. A value of C(on) will enable LACP in C(passive)
@@ -34,32 +34,83 @@ options:
       of the link, or it can be configured in C(passive) mode ie. send link state
       information only when received them from another link. A value of C(off) will
       disable LACP.
-    default: false
-    choices:
-    - on
-    - off
-    - active
-    - passive
+    type: str
+    default: "on"
+    choices: ["on", "off", "active", "passive"]
   members:
     description:
     - List of members interfaces of the link aggregation group. The value can be single
       interface or list of interfaces.
-    required: true
+    type: list
+    elements: str
   min_links:
     description:
     - Minimum members that should be up before bringing up the link aggregation group.
+    type: int
   device_count:
     description:
     - Number of aggregated ethernet devices that can be configured. Acceptable integer
       value is between 1 and 128.
+    type: int
   description:
     description:
     - Description of Interface.
+    type: str
   aggregate:
     description: List of link aggregation definitions.
+    type: list
+    elements: dict
+    suboptions:
+      name:
+        description:
+        - Name of the link aggregation group.
+        type: str
+        required: true
+      mode:
+        description:
+        - Mode of the link aggregation group. A value of C(on) will enable LACP in C(passive)
+          mode. C(active) configures the link to actively information about the state
+          of the link, or it can be configured in C(passive) mode ie. send link state
+          information only when received them from another link. A value of C(off) will
+          disable LACP.
+        type: str
+        choices: ["on", "off", "active", "passive"]
+      members:
+        description:
+        - List of members interfaces of the link aggregation group. The value can be single
+          interface or list of interfaces.
+        type: list
+        elements: str
+      min_links:
+        description:
+        - Minimum members that should be up before bringing up the link aggregation group.
+        type: int
+      device_count:
+        description:
+        - Number of aggregated ethernet devices that can be configured. Acceptable integer
+          value is between 1 and 128.
+        type: int
+      description:
+        description:
+        - Description of Interface.
+        type: str
+      state:
+        description:
+        - State of the link aggregation group.
+        type: str
+        choices:
+        - present
+        - absent
+        - up
+        - down
+      active:
+        description:
+        - Specifies whether or not the configuration is active or deactivated
+        type: bool
   state:
     description:
     - State of the link aggregation group.
+    type: str
     default: present
     choices:
     - present
@@ -311,7 +362,7 @@ def main():
     element_spec = dict(
         name=dict(),
         mode=dict(default="on", choices=["on", "off", "active", "passive"]),
-        members=dict(type="list"),
+        members=dict(type="list", elements="str"),
         min_links=dict(type="int"),
         device_count=dict(type="int"),
         description=dict(),

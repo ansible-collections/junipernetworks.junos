@@ -55,7 +55,6 @@ options:
         description:
         - IEEE 802.1q VLAN identifier for VLAN (1..4094).
         type: int
-        required: true
       name:
         description:
         - Name of VLAN.

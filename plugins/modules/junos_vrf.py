@@ -23,41 +23,106 @@ options:
     - The name of the VRF definition to be managed on the remote IOS device.  The
       VRF definition name is an ASCII string name used to uniquely identify the VRF.  This
       argument is mutually exclusive with the C(aggregate) argument
+    type: str
   description:
     description:
     - Provides a short description of the VRF definition in the current active configuration.  The
       VRF definition value accepts alphanumeric characters used to provide additional
       information about the VRF.
+    type: str
   rd:
     description:
     - The router-distinguisher value uniquely identifies the VRF to routing processes
       on the remote IOS system.  The RD value takes the form of C(A:B) where C(A)
       and C(B) are both numeric values.
+    type: list
+    elements: str
   interfaces:
     description:
     - Identifies the set of interfaces that should be configured in the VRF. Interfaces
       must be routed interfaces in order to be placed into a VRF.
+    type: list
+    elements: str
   target:
     description:
     - It configures VRF target community configuration. The target value takes the
       form of C(target:A:B) where C(A) and C(B) are both numeric values.
+    type: list
+    elements: str
   table_label:
     description:
     - Causes JUNOS to allocate a VPN label per VRF rather than per VPN FEC. This allows
       for forwarding of traffic to directly connected subnets, COS Egress filtering
       etc.
+    default: true
     type: bool
   aggregate:
     description:
     - The set of VRF definition objects to be configured on the remote JUNOS device.  Ths
       list entries can either be the VRF name or a hash of VRF definitions and attributes.  This
       argument is mutually exclusive with the C(name) argument.
+    type: list
+    elements: dict
+    suboptions:
+      name:
+        description:
+        - The name of the VRF definition to be managed on the remote IOS device.  The
+          VRF definition name is an ASCII string name used to uniquely identify the VRF.  This
+          argument is mutually exclusive with the C(aggregate) argument
+        required: true
+        type: str
+      description:
+        description:
+        - Provides a short description of the VRF definition in the current active configuration.  The
+          VRF definition value accepts alphanumeric characters used to provide additional
+          information about the VRF.
+        type: str
+      rd:
+        description:
+        - The router-distinguisher value uniquely identifies the VRF to routing processes
+          on the remote IOS system.  The RD value takes the form of C(A:B) where C(A)
+          and C(B) are both numeric values.
+        type: list
+        elements: str
+      interfaces:
+        description:
+        - Identifies the set of interfaces that should be configured in the VRF. Interfaces
+          must be routed interfaces in order to be placed into a VRF.
+        type: list
+        elements: str
+      target:
+        description:
+        - It configures VRF target community configuration. The target value takes the
+          form of C(target:A:B) where C(A) and C(B) are both numeric values.
+        type: list
+        elements: str
+      table_label:
+        description:
+        - Causes JUNOS to allocate a VPN label per VRF rather than per VPN FEC. This allows
+          for forwarding of traffic to directly connected subnets, COS Egress filtering
+          etc.
+        type: bool
+      state:
+        description:
+        - Configures the state of the VRF definition as it relates to the device operational
+          configuration.  When set to I(present), the VRF should be configured in the
+          device active configuration and when set to I(absent) the VRF should not be
+          in the device active configuration
+        type: str
+        choices:
+        - present
+        - absent
+      active:
+        description:
+        - Specifies whether or not the configuration is active or deactivated
+        type: bool
   state:
     description:
     - Configures the state of the VRF definition as it relates to the device operational
       configuration.  When set to I(present), the VRF should be configured in the
       device active configuration and when set to I(absent) the VRF should not be
       in the device active configuration
+    type: str
     default: present
     choices:
     - present
@@ -192,9 +257,9 @@ def main():
     element_spec = dict(
         name=dict(),
         description=dict(),
-        rd=dict(type="list"),
-        interfaces=dict(type="list"),
-        target=dict(type="list"),
+        rd=dict(type="list", elements="str"),
+        interfaces=dict(type="list", elements="str"),
+        target=dict(type="list", elements="str"),
         state=dict(default="present", choices=["present", "absent"]),
         active=dict(default=True, type="bool"),
         table_label=dict(default=True, type="bool"),

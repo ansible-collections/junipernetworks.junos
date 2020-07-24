@@ -26,30 +26,71 @@ options:
   address:
     description:
     - Network address with prefix of the static route.
-    required: true
+    type: str
     aliases:
     - prefix
   next_hop:
     description:
     - Next hop IP of the static route.
-    required: true
+    type: str
   qualified_next_hop:
     description:
     - Qualified next hop IP of the static route. Qualified next hops allow to associate
       preference with a particular next-hop address.
+    type: str
   preference:
     description:
     - Global admin preference of the static route.
+    type: int
     aliases:
     - admin_distance
   qualified_preference:
     description:
     - Assign preference for qualified next hop.
+    type: int
   aggregate:
     description: List of static route definitions
+    type: list
+    elements: dict
+    suboptions:
+      address:
+        description:
+        - Network address with prefix of the static route.
+        type: str
+      next_hop:
+        description:
+        - Next hop IP of the static route.
+        type: str
+      qualified_next_hop:
+        description:
+        - Qualified next hop IP of the static route. Qualified next hops allow to associate
+          preference with a particular next-hop address.
+        type: str
+      preference:
+        description:
+        - Global admin preference of the static route.
+        type: int
+        aliases:
+        - admin_distance
+      qualified_preference:
+        description:
+        - Assign preference for qualified next hop.
+        type: int
+      state:
+        description:
+        - State of the static route configuration.
+        type: str
+        choices:
+        - present
+        - absent
+      active:
+        description:
+        - Specifies whether or not the configuration is active or deactivated
+        type: bool
   state:
     description:
     - State of the static route configuration.
+    type: str
     default: present
     choices:
     - present
@@ -184,8 +225,7 @@ def main():
     remove_default_spec(aggregate_spec)
 
     argument_spec = dict(
-        aggregate=dict(type="list", elements="dict", options=aggregate_spec),
-        purge=dict(default=False, type="bool"),
+        aggregate=dict(type="list", elements="dict", options=aggregate_spec)
     )
 
     argument_spec.update(element_spec)

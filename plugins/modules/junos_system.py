@@ -22,25 +22,32 @@ options:
   hostname:
     description:
     - Configure the device hostname parameter. This option takes an ASCII string value.
+    type: str
   domain_name:
     description:
     - Configure the IP domain name on the remote device to the provided value. Value
       should be in the dotted name form and will be appended to the C(hostname) to
       create a fully-qualified domain name.
+    type: str
   domain_search:
     description:
     - Provides the list of domain suffixes to append to the hostname for the purpose
       of doing name resolution. This argument accepts a list of names and will be
       reconciled with the current active configuration on the running node.
+    type: list
+    elements: str
   name_servers:
     description:
     - List of DNS name servers by IP address to use to perform name resolution lookups.  This
       argument accepts either a list of DNS servers See examples.
+    type: list
+    elements: str
   state:
     description:
     - State of the configuration values in the device's current active configuration.  When
       set to I(present), the values should be configured in the device active configuration
       and when set to I(absent) the values should not be in the device active configuration
+    type: str
     default: present
     choices:
     - present
@@ -132,8 +139,8 @@ def main():
     argument_spec = dict(
         hostname=dict(),
         domain_name=dict(),
-        domain_search=dict(type="list"),
-        name_servers=dict(type="list"),
+        domain_search=dict(type="list", elements="str"),
+        name_servers=dict(type="list", elements="str"),
         state=dict(choices=["present", "absent"], default="present"),
         active=dict(default=True, type="bool"),
     )

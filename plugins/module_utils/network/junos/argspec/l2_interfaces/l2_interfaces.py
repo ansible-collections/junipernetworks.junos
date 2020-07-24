@@ -49,7 +49,7 @@ class L2_interfacesArgs(object):
                 "trunk": {
                     "type": "dict",
                     "options": {
-                        "allowed_vlans": {"type": "list"},
+                        "allowed_vlans": {"elements": "str", "type": "list"},
                         "native_vlan": {"type": "str"},
                     },
                 },
