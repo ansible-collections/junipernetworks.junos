@@ -48,7 +48,6 @@ options:
     description:
     - Interface link status.
     type: str
-    default: auto
     choices:
     - full
     - half
@@ -352,7 +351,7 @@ def main():
         enabled=dict(default=True, type="bool"),
         speed=dict(type="str"),
         mtu=dict(type="int"),
-        duplex=dict(choices=["full", "half", "auto"], default="auto"),
+        duplex=dict(choices=["full", "half", "auto"]),
         tx_rate=dict(),
         rx_rate=dict(),
         neighbors=dict(type="list", elements="dict", options=neighbors_spec),
