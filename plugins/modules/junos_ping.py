@@ -25,6 +25,7 @@ options:
   dest:
     description:
     - The IP Address or hostname (resolvable by the device) of the remote node.
+    type: str
     required: true
   count:
     description:
@@ -34,9 +35,11 @@ options:
   source:
     description:
     - The IP Address to use while sending the ping packet(s).
+    type: str
   interface:
     description:
     - The source interface to use while sending the ping packet(s).
+    type: str
   ttl:
     description:
     - The time-to-live value for the ICMP packet(s).
@@ -52,6 +55,7 @@ options:
   state:
     description:
     - Determines if the expected result is success or fail.
+    type: str
     choices:
     - absent
     - present

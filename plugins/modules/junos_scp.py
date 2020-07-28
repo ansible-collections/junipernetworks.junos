@@ -24,9 +24,12 @@ options:
     - The C(src) argument takes a single path, or a list of paths to be transferred.
       The argument C(recursive) must be C(true) to transfer directories.
     required: true
+    type: list
+    elements: str
   dest:
     description:
     - The C(dest) argument specifies the path in which to receive the files.
+    type: path
     default: .
   recursive:
     description:
@@ -126,13 +129,12 @@ def main():
     """ Main entry point for Ansible module execution
     """
     argument_spec = dict(
-        src=dict(type="list", required=True),
+        src=dict(type="list", required=True, elements="str"),
         dest=dict(type="path", required=False, default="."),
         recursive=dict(type="bool", default=False),
         remote_src=dict(type="bool", default=False),
         ssh_private_key_file=dict(type="path"),
         ssh_config=dict(type="path"),
-        transport=dict(default="netconf", choices=["netconf"]),
     )
 
     argument_spec.update(junos_argument_spec)

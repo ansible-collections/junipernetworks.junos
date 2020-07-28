@@ -26,12 +26,14 @@ options:
   name:
     description:
     - Name of the interface LLDP should be configured on.
+    type: str
   state:
     description:
     - Value of C(present) ensures given LLDP configured on given I(interfaces) and
       is enabled, for value of C(absent) LLDP configuration on given I(interfaces)
       deleted. Value C(enabled) ensures LLDP protocol is enabled on given I(interfaces)
       and for value of C(disabled) it ensures LLDP is disabled on given I(interfaces).
+    type: str
     default: present
     choices:
     - present

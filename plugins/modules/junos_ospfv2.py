@@ -91,6 +91,7 @@ options:
             elements: dict
             suboptions:
               authentication:
+                description: Specify authentication type
                 type: dict
                 suboptions:
                   type:
@@ -98,6 +99,7 @@ options:
                     - Type of authentication to use.
                     type: dict
               bandwidth_based_metrics:
+                description: Specify list of bandwidth based metrics
                 type: list
                 elements: dict
                 suboptions:
@@ -107,7 +109,7 @@ options:
                     type: str
                     choices: [1g, 10g]
                   metric:
-                    description:
+                    description: Specify metric
                     type: int
               name:
                 description:
@@ -127,8 +129,10 @@ options:
                 - Enable flood reduction.
                 type: bool
               passive:
+                description: Specify passive
                 type: bool
               timers:
+                description: Specify timers
                 type: dict
                 suboptions:
                   dead_interval:
@@ -156,6 +160,7 @@ options:
         - Preference of external routes.
         type: int
       overload:
+        description: Specify time for overload mode reset
         type: dict
         suboptions:
           timeout:

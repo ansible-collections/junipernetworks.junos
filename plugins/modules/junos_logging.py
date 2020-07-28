@@ -19,51 +19,115 @@ version_added: 1.0.0
 options:
   dest:
     description:
-    - Destination of the logs.
+      - Destination of the logs.
     choices:
-    - console
-    - host
-    - file
-    - user
+      - console
+      - host
+      - file
+      - user
+    type: str
   name:
     description:
-    - If value of C(dest) is I(file) it indicates file-name, for I(user) it indicates
-      username and for I(host) indicates the host name to be notified.
+      - If value of C(dest) is I(file) it indicates file-name, for I(user) it indicates
+        username and for I(host) indicates the host name to be notified.
+    type: str
   facility:
     description:
-    - Set logging facility.
+      - Set logging facility.
+    type: str
   level:
     description:
-    - Set logging severity levels.
+      - Set logging severity levels.
+    type: str
   aggregate:
-    description: List of logging definitions.
+    description:
+      - List of logging definitions.
+    type: list
+    elements: dict
+    suboptions:
+      dest:
+        description:
+          - Destination of the logs.
+        choices:
+          - console
+          - host
+          - file
+          - user
+        type: str
+      name:
+        description:
+          - If value of C(dest) is I(file) it indicates file-name, for I(user) it indicates
+            username and for I(host) indicates the host name to be notified.
+        type: str
+      facility:
+        description:
+          - Set logging facility.
+        type: str
+      level:
+        description:
+          - Set logging severity levels.
+        type: str
+      state:
+        description:
+          - State of the logging configuration.
+        type: str
+        choices:
+          - present
+          - absent
+      active:
+        description:
+          - Specifies whether or not the configuration is active or deactivated
+        type: bool
+      rotate_frequency:
+        description:
+          - Rotate log frequency in minutes, this is applicable if value of I(dest) is C(file).
+            The acceptable value is in range of 1 to 59. This controls the frequency after
+            which log file is rotated.
+        type: int
+        required: false
+      size:
+        description:
+          - Size of the file in archive, this is applicable if value of I(dest) is C(file).
+            The acceptable value is in range from 65536 to 1073741824 bytes.
+        type: int
+        required: false
+      files:
+        description:
+          - Number of files to be archived, this is applicable if value of I(dest) is C(file).
+            The acceptable value is in range from 1 to 1000.
+        type: int
+        required: false
   state:
     description:
-    - State of the logging configuration.
+      - State of the logging configuration.
     default: present
+    type: str
     choices:
-    - present
-    - absent
+      - present
+      - absent
   active:
     description:
-    - Specifies whether or not the configuration is active or deactivated
+      - Specifies whether or not the configuration is active or deactivated
     default: true
     type: bool
   rotate_frequency:
     description:
-    - Rotate log frequency in minutes, this is applicable if value of I(dest) is C(file).
-      The acceptable value is in range of 1 to 59. This controls the frequency after
-      which log file is rotated.
+      - Rotate log frequency in minutes, this is applicable if value of I(dest) is C(file).
+        The acceptable value is in range of 1 to 59. This controls the frequency after
+        which log file is rotated.
+    type: int
     required: false
   size:
     description:
-    - Size of the file in archive, this is applicable if value of I(dest) is C(file).
-      The acceptable value is in range from 65536 to 1073741824 bytes.
+      - Size of the file in archive, this is applicable if value of I(dest) is C(file).
+        The acceptable value is in range from 65536 to 1073741824 bytes.
     required: false
+    type: int
   files:
     description:
-    - Number of files to be archived, this is applicable if value of I(dest) is C(file).
-      The acceptable value is in range from 1 to 1000.
+      - Number of files to be archived, this is applicable if value of I(dest) is C(file).
+        The acceptable value is in range from 1 to 1000.
+    type: int
     required: false
 requirements:
 - ncclient (>=v0.5.2)
@@ -198,7 +262,6 @@ def main():
         rotate_frequency=dict(type="int"),
         size=dict(type="int"),
         files=dict(type="int"),
-        src_addr=dict(),
         state=dict(default="present", choices=["present", "absent"]),
         active=dict(default=True, type="bool"),
     )

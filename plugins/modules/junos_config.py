@@ -26,17 +26,23 @@ options:
     - This argument takes a list of C(set) or C(delete) configuration lines to push
       into the remote device.  Each line must start with either C(set) or C(delete).  This
       argument is mutually exclusive with the I(src) argument.
+    type: list
+    aliases:
+    - commands
+    elements: str
   src:
     description:
     - The I(src) argument provides a path to the configuration file to load into the
       remote system. The path can either be a full system path to the configuration
       file if the value starts with / or relative to the root of the implemented role
       or playbook. This argument is mutually exclusive with the I(lines) argument.
+    type: path
   src_format:
     description:
     - The I(src_format) argument specifies the format of the configuration found int
       I(src).  If the I(src_format) argument is not provided, the module will attempt
       to determine the format of the configuration file specified in I(src).
+    type: str
     choices:
     - xml
     - set
@@ -48,6 +54,7 @@ options:
       to the identifier specified in the argument.  If the specified rollback identifier
       does not exist on the remote device, the module will fail.  To rollback to the
       most recent commit, set the C(rollback) argument to 0.
+    type: int
   zeroize:
     description:
     - The C(zeroize) argument is used to completely sanitize the remote device configuration
@@ -60,6 +67,7 @@ options:
       to be confirmed before it is automatically rolled back.  If the C(confirm) argument
       is set to False, this argument is silently ignored.  If the value for this argument
       is set to 0, the commit is confirmed immediately.
+    type: int
     default: 0
   comment:
     description:
@@ -67,6 +75,7 @@ options:
       configuration.  If the C(confirm) argument is set to False, this argument is
       silently ignored.
     default: configured by junos_config
+    type: str
   replace:
     description:
     - The C(replace) argument will instruct the remote device to replace the current
@@ -102,6 +111,7 @@ options:
       and the existing committed configuration. It then only notifies system processes
       responsible for the changed portions of the configuration, and only marks the
       actual configuration changes as 'changed'.
+    type: str
     default: merge
     choices:
     - merge
@@ -132,6 +142,7 @@ options:
         - The filename to be used to store the backup configuration. If the filename
           is not given it will be generated based on the hostname, current time and
           date in format defined by <hostname>_config.<current-date>@<current-time>
+        type: str
       dir_path:
         description:
         - This option provides the path ending with directory name in which the backup
@@ -378,7 +389,7 @@ def main():
     """
     backup_spec = dict(filename=dict(), dir_path=dict(type="path"))
     argument_spec = dict(
-        lines=dict(aliases=["commands"], type="list"),
+        lines=dict(aliases=["commands"], type="list", elements="str"),
         src=dict(type="path"),
         src_format=dict(choices=["xml", "text", "set", "json"]),
         # update operations

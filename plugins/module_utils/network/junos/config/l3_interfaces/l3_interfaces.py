@@ -224,33 +224,28 @@ class L3_interfaces(ConfigBase):
         for config in want:
             if config["name"] not in existing_l3_intfs:
                 continue
-            else:
-                root_node, unit_node = self._get_common_xml_node(
-                    config["name"]
-                )
-                build_child_xml_node(unit_node, "name", str(config["unit"]))
-                family = build_child_xml_node(unit_node, "family")
-                ipv4 = build_child_xml_node(family, "inet")
-                intf = next(
-                    (intf for intf in have if intf["name"] == config["name"]),
-                    None,
-                )
-                if "ipv4" in intf:
-                    if "dhcp" in [
-                        x["address"]
-                        for x in intf.get("ipv4")
-                        if intf.get("ipv4") is not None
-                    ]:
-                        build_child_xml_node(
-                            ipv4, "dhcp", None, {"delete": "delete"}
-                        )
-                    else:
-                        build_child_xml_node(
-                            ipv4, "address", None, {"delete": "delete"}
-                        )
-                ipv6 = build_child_xml_node(family, "inet6")
-                build_child_xml_node(
-                    ipv6, "address", None, {"delete": "delete"}
-                )
+            root_node, unit_node = self._get_common_xml_node(config["name"])
+            build_child_xml_node(unit_node, "name", str(config["unit"]))
+            family = build_child_xml_node(unit_node, "family")
+            ipv4 = build_child_xml_node(family, "inet")
+            intf = next(
+                (intf for intf in have if intf["name"] == config["name"]), None
+            )
+            if "ipv4" in intf:
+                if "dhcp" in [
+                    x["address"]
+                    for x in intf.get("ipv4")
+                    if intf.get("ipv4") is not None
+                ]:
+                    build_child_xml_node(
+                        ipv4, "dhcp", None, {"delete": "delete"}
+                    )
+                else:
+                    build_child_xml_node(
+                        ipv4, "address", None, {"delete": "delete"}
+                    )
+            ipv6 = build_child_xml_node(family, "inet6")
+            build_child_xml_node(ipv6, "address", None, {"delete": "delete"})
+
             intf_xml.append(root_node)
         return intf_xml

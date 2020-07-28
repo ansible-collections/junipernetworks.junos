@@ -25,32 +25,84 @@ options:
   name:
     description:
     - Name of the VLAN.
-    required: true
+    type: str
   vlan_id:
     description:
     - ID of the VLAN. Range 1-4094.
-    required: true
+    type: int
   l3_interface:
     description:
     - Name of logical layer 3 interface.
+    type: str
   filter_input:
     description:
     - The name of input filter.
+    type: str
   filter_output:
     description:
     - The name of output filter.
+    type: str
   description:
     description:
     - Text description of VLANs.
+    type: str
   interfaces:
     description:
     - List of interfaces to check the VLAN has been configured correctly.
+    type: list
+    elements: str
   aggregate:
     description: List of VLANs definitions.
+    type: list
+    elements: dict
+    suboptions:
+      name:
+        description:
+        - Name of the VLAN.
+        type: str
+        required: true
+      vlan_id:
+        description:
+        - ID of the VLAN. Range 1-4094.
+        required: true
+        type: int
+      l3_interface:
+        description:
+        - Name of logical layer 3 interface.
+        type: str
+      filter_input:
+        description:
+        - The name of input filter.
+        type: str
+      filter_output:
+        description:
+        - The name of output filter.
+        type: str
+      description:
+        description:
+        - Text description of VLANs.
+        type: str
+      interfaces:
+        description:
+        - List of interfaces to check the VLAN has been configured correctly.
+        type: list
+        elements: str
+      state:
+        description:
+        - State of the VLAN configuration.
+        type: str
+        choices:
+        - present
+        - absent
+      active:
+        description:
+        - Specifies whether or not the configuration is active or deactivated
+        type: bool
   state:
     description:
     - State of the VLAN configuration.
     default: present
+    type: str
     choices:
     - present
     - absent
@@ -174,7 +226,7 @@ def main():
         name=dict(),
         vlan_id=dict(type="int"),
         description=dict(),
-        interfaces=dict(),
+        interfaces=dict(type="list", elements="str"),
         l3_interface=dict(),
         filter_input=dict(),
         filter_output=dict(),

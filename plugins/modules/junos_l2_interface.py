@@ -26,30 +26,99 @@ options:
   name:
     description:
     - Name of the interface excluding any logical unit number.
+    type: str
   description:
     description:
     - Description of Interface.
+    type: str
   aggregate:
     description:
     - List of Layer-2 interface definitions.
+    type: list
+    elements: dict
+    suboptions:
+      name:
+        description:
+        - Name of the interface excluding any logical unit number.
+        type: str
+        required: true
+      description:
+        description:
+        - Description of Interface.
+        type: str
+      mode:
+        description:
+        - Mode in which interface needs to be configured.
+        choices:
+        - access
+        - trunk
+        type: str
+      access_vlan:
+        description:
+        - Configure given VLAN in access port. The value of C(access_vlan) should be vlan
+          name.
+        type: str
+      trunk_vlans:
+        description:
+        - List of VLAN names to be configured in trunk port. The value of C(trunk_vlans)
+          should be list of vlan names.
+        type: list
+        elements: str
+      native_vlan:
+        description:
+        - Native VLAN to be configured in trunk port. The value of C(native_vlan) should
+          be vlan id.
+        type: int
+      enhanced_layer:
+        description:
+        - True if your device has Enhanced Layer 2 Software (ELS).
+        type: bool
+      unit:
+        description:
+        - Logical interface number. Value of C(unit) should be of type integer.
+        type: int
+      filter_input:
+        description:
+        - The name of input filter of ethernet-switching.
+        type: str
+      filter_output:
+        description:
+        - The name of output filter of ethernet-switching.
+        type: str
+      state:
+        description:
+        - State of the Layer-2 Interface configuration.
+        type: str
+        choices:
+        - present
+        - absent
+      active:
+        description:
+        - Specifies whether or not the configuration is active or deactivated
+        type: bool
   mode:
     description:
     - Mode in which interface needs to be configured.
     choices:
     - access
     - trunk
+    type: str
   access_vlan:
     description:
     - Configure given VLAN in access port. The value of C(access_vlan) should be vlan
       name.
+    type: str
   trunk_vlans:
     description:
     - List of VLAN names to be configured in trunk port. The value of C(trunk_vlans)
       should be list of vlan names.
+    type: list
+    elements: str
   native_vlan:
     description:
     - Native VLAN to be configured in trunk port. The value of C(native_vlan) should
       be vlan id.
+    type: int
   enhanced_layer:
     description:
     - True if your device has Enhanced Layer 2 Software (ELS).
@@ -59,15 +128,19 @@ options:
     description:
     - Logical interface number. Value of C(unit) should be of type integer.
     default: 0
+    type: int
   filter_input:
     description:
     - The name of input filter of ethernet-switching.
+    type: str
   filter_output:
     description:
     - The name of output filter of ethernet-switching.
+    type: str
   state:
     description:
     - State of the Layer-2 Interface configuration.
+    type: str
     default: present
     choices:
     - present
@@ -198,7 +271,7 @@ def main():
         mode=dict(choices=["access", "trunk"]),
         access_vlan=dict(),
         native_vlan=dict(type="int"),
-        trunk_vlans=dict(type="list"),
+        trunk_vlans=dict(type="list", elements="str"),
         unit=dict(default=0, type="int"),
         filter_input=dict(),
         filter_output=dict(),

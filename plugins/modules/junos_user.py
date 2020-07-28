@@ -30,19 +30,78 @@ options:
     aliases:
     - users
     - collection
+    type: list
+    elements: dict
+    suboptions:
+      name:
+        description:
+        - The C(name) argument defines the username of the user to be created on the system.  This
+          argument must follow appropriate usernaming conventions for the target device
+          running JUNOS.  This argument is mutually exclusive with the C(aggregate) argument.
+        required: true
+        type: str
+      full_name:
+        description:
+        - The C(full_name) argument provides the full name of the user account to be created
+          on the remote device.  This argument accepts any text string value.
+        type: str
+      role:
+        description:
+        - The C(role) argument defines the role of the user account on the remote system.  User
+          accounts can have more than one role configured.
+        type: str
+        choices:
+        - operator
+        - read-only
+        - super-user
+        - unauthorized
+      sshkey:
+        description:
+        - The C(sshkey) argument defines the public SSH key to be configured for the user
+          account on the remote system.  This argument must be a valid SSH key
+        type: str
+      encrypted_password:
+        description:
+        - The C(encrypted_password) argument set already hashed password for the user
+          account on the remote system.
+        type: str
+      purge:
+        description:
+        - The C(purge) argument instructs the module to consider the users definition
+          absolute.  It will remove any previously configured users on the device with
+          the exception of the current defined set of aggregate.
+        type: bool
+        default: no
+      state:
+        description:
+        - The C(state) argument configures the state of the user definitions as it relates
+          to the device operational configuration.  When set to I(present), the user should
+          be configured in the device active configuration and when set to I(absent) the
+          user should not be in the device active configuration
+        type: str
+        choices:
+          - present
+          - absent
+      active:
+        description:
+         - Specifies whether or not the configuration is active or deactivated
+        type: bool
   name:
     description:
     - The C(name) argument defines the username of the user to be created on the system.  This
       argument must follow appropriate usernaming conventions for the target device
       running JUNOS.  This argument is mutually exclusive with the C(aggregate) argument.
+    type: str
   full_name:
     description:
     - The C(full_name) argument provides the full name of the user account to be created
       on the remote device.  This argument accepts any text string value.
+    type: str
   role:
     description:
     - The C(role) argument defines the role of the user account on the remote system.  User
       accounts can have more than one role configured.
+    type: str
     choices:
     - operator
     - read-only
@@ -52,23 +111,26 @@ options:
     description:
     - The C(sshkey) argument defines the public SSH key to be configured for the user
       account on the remote system.  This argument must be a valid SSH key
+    type: str
   encrypted_password:
     description:
     - The C(encrypted_password) argument set already hashed password for the user
       account on the remote system.
+    type: str
   purge:
     description:
     - The C(purge) argument instructs the module to consider the users definition
       absolute.  It will remove any previously configured users on the device with
       the exception of the current defined set of aggregate.
     type: bool
-    default: no
+    default: false
   state:
     description:
     - The C(state) argument configures the state of the user definitions as it relates
       to the device operational configuration.  When set to I(present), the user should
       be configured in the device active configuration and when set to I(absent) the
       user should not be in the device active configuration
+    type: str
     default: present
     choices:
     - present
@@ -332,6 +394,7 @@ def main():
         encrypted_password=dict(no_log=True),
         sshkey=dict(),
         state=dict(choices=["present", "absent"], default="present"),
+        purge=dict(type="bool", default=False),
         active=dict(type="bool", default=True),
     )
 

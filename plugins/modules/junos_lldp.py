@@ -26,14 +26,17 @@ options:
   interval:
     description:
     - Frequency at which LLDP advertisements are sent (in seconds).
+    type: int
   transmit_delay:
     description:
     - Specify the number of seconds the device waits before sending advertisements
       to neighbors after a change is made in local system.
+    type: int
   hold_multiplier:
     description:
     - Specify the number of seconds that LLDP information is held before it is discarded.
       The multiplier value is used in combination with the C(interval) value.
+    type: int
   state:
     description:
     - Value of C(present) ensures given LLDP configuration is present on device and
@@ -43,6 +46,7 @@ options:
       it ensures LLDP protocol is disabled any LLDP configuration if any is still
       present.
     default: present
+    type: str
     choices:
     - present
     - absent

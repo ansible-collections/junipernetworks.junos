@@ -72,6 +72,7 @@ options:
             - List of VLANs to be configured in trunk port. It's used as the VLAN
               range to ADD or REMOVE from the trunk.
             type: list
+            elements: str
           native_vlan:
             description:
             - Native VLAN to be configured in trunk port. It is used as the trunk

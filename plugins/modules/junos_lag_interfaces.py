@@ -42,6 +42,7 @@ options:
   config:
     description: A list of link aggregation group configurations.
     type: list
+    elements: dict
     suboptions:
       name:
         description:
@@ -53,6 +54,7 @@ options:
         - LAG mode. A value of C(passive) will enable LACP in C(passive) mode that
           is it will respond to LACP packets and C(active) configures the link to
           initiate transmission of LACP packets.
+        type: str
         choices:
         - active
         - passive
@@ -67,6 +69,7 @@ options:
         - List of member interfaces of the link aggregation group. The value can be
           single interface or list of interfaces.
         type: list
+        elements: dict
         suboptions:
           member:
             description:
@@ -77,6 +80,7 @@ options:
             - The value of this options configures the member link as either C(primary)
               or C(backup). Value C(primary) configures primary interface for link-protection
               mode and C(backup) configures backup interface for link-protection mode.
+            type: str
             choices:
             - primary
             - backup

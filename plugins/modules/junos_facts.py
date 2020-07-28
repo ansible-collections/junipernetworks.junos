@@ -38,6 +38,8 @@ options:
     required: false
     default:
     - '!config'
+    type: list
+    elements: str
   config_format:
     description:
     - The I(config_format) argument specifies the format of the configuration when
@@ -46,6 +48,7 @@ options:
       by the junos version running on device. This value is not applicable while fetching
       old style facts that is when C(ofacts) value is present in value if I(gather_subset)
       value. This option is valid only for C(gather_subset) values.
+    type: str
     required: false
     default: text
     choices:
@@ -63,6 +66,8 @@ options:
       'lag_interfaces', 'l2_interfaces', 'l3_interfaces', 'lldp_global', 'lldp_interfaces',
       'vlans'.
     required: false
+    type: list
+    elements: str
 requirements:
 - ncclient (>=v0.5.2)
 notes:

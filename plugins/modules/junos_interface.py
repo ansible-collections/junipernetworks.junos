@@ -26,24 +26,28 @@ options:
   name:
     description:
     - Name of the Interface.
-    required: true
+    type: str
   description:
     description:
     - Description of Interface.
+    type: str
   enabled:
     description:
     - Configure interface link status.
     type: bool
+    default: True
   speed:
     description:
     - Interface link speed.
+    type: str
   mtu:
     description:
     - Maximum size of transmit packet.
+    type: int
   duplex:
     description:
     - Interface link status.
-    default: auto
+    type: str
     choices:
     - full
     - half
@@ -53,34 +57,121 @@ options:
     - Transmit rate in bits per second (bps).
     - This is state check parameter only.
     - Supports conditionals, see L(Conditionals in Networking Modules,../network/user_guide/network_working_with_command_output.html)
+    type: str
   rx_rate:
     description:
     - Receiver rate in bits per second (bps).
     - This is state check parameter only.
     - Supports conditionals, see L(Conditionals in Networking Modules,../network/user_guide/network_working_with_command_output.html)
+    type: str
   neighbors:
     description:
     - Check the operational state of given interface C(name) for LLDP neighbor.
     - The following suboptions are available.
+    type: list
+    elements: dict
     suboptions:
       host:
         description:
         - LLDP neighbor host for given interface C(name).
+        type: str
       port:
         description:
         - LLDP neighbor port to which given interface C(name) is connected.
+        type: str
   delay:
     description:
     - Time in seconds to wait before checking for the operational state on remote
       device. This wait is applicable for operational state argument which are I(state)
       with values C(up)/C(down), I(tx_rate) and I(rx_rate).
+    type: int
     default: 10
   aggregate:
     description: List of Interfaces definitions.
+    type: list
+    elements: dict
+    suboptions:
+      name:
+        description:
+        - Name of the Interface.
+        required: true
+        type: str
+      description:
+        description:
+        - Description of Interface.
+        type: str
+      enabled:
+        description:
+        - Configure interface link status.
+        type: bool
+      speed:
+        description:
+        - Interface link speed.
+        type: str
+      mtu:
+        description:
+        - Maximum size of transmit packet.
+        type: int
+      duplex:
+        description:
+        - Interface link status.
+        type: str
+        choices:
+        - full
+        - half
+        - auto
+      tx_rate:
+        description:
+        - Transmit rate in bits per second (bps).
+        - This is state check parameter only.
+        - Supports conditionals, see L(Conditionals in Networking Modules,../network/user_guide/network_working_with_command_output.html)
+        type: str
+      rx_rate:
+        description:
+        - Receiver rate in bits per second (bps).
+        - This is state check parameter only.
+        - Supports conditionals, see L(Conditionals in Networking Modules,../network/user_guide/network_working_with_command_output.html)
+        type: str
+      neighbors:
+        description:
+        - Check the operational state of given interface C(name) for LLDP neighbor.
+        - The following suboptions are available.
+        type: list
+        elements: dict
+        suboptions:
+          host:
+            description:
+            - LLDP neighbor host for given interface C(name).
+            type: str
+          port:
+            description:
+            - LLDP neighbor port to which given interface C(name) is connected.
+            type: str
+      delay:
+        description:
+        - Time in seconds to wait before checking for the operational state on remote
+          device. This wait is applicable for operational state argument which are I(state)
+          with values C(up)/C(down), I(tx_rate) and I(rx_rate).
+        type: int
+      state:
+        description:
+        - State of the Interface configuration, C(up) indicates present and operationally
+          up and C(down) indicates present and operationally C(down)
+        type: str
+        choices:
+        - present
+        - absent
+        - up
+        - down
+      active:
+        description:
+        - Specifies whether or not the configuration is active or deactivated
+        type: bool
   state:
     description:
     - State of the Interface configuration, C(up) indicates present and operationally
       up and C(down) indicates present and operationally C(down)
+    type: str
     default: present
     choices:
     - present
@@ -258,7 +349,7 @@ def main():
         name=dict(),
         description=dict(),
         enabled=dict(default=True, type="bool"),
-        speed=dict(),
+        speed=dict(type="str"),
         mtu=dict(type="int"),
         duplex=dict(choices=["full", "half", "auto"]),
         tx_rate=dict(),
