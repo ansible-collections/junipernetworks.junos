@@ -137,6 +137,7 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
+                                            <div>Specify authentication type</div>
                                                         </td>
             </tr>
                                                             <tr>
@@ -174,6 +175,7 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
+                                            <div>Specify list of bandwidth based metrics</div>
                                                         </td>
             </tr>
                                                             <tr>
@@ -215,7 +217,7 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
-                                            <div>None</div>
+                                            <div>Specify metric</div>
                                                         </td>
             </tr>
                     
@@ -296,6 +298,7 @@ Parameters
                                                                                     </ul>
                                                                             </td>
                                                                 <td>
+                                            <div>Specify passive</div>
                                                         </td>
             </tr>
                                 <tr>
@@ -331,6 +334,7 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
+                                            <div>Specify timers</div>
                                                         </td>
             </tr>
                                                             <tr>
@@ -518,6 +522,7 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
+                                            <div>Specify time for overload mode reset</div>
                                                         </td>
             </tr>
                                                             <tr>
