@@ -97,7 +97,6 @@ options:
     - replaced
     - overridden
     - deleted
-    - gathered
     default: merged
     description:
     - The state of the configuration after module completion
