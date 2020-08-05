@@ -353,7 +353,131 @@ EXAMPLES = """
 #        }
 #    }
 # }
-
+# Using gathered
+# Before state:
+# ------------
+#
+# user@junos01# show interfaces
+# ge-0/0/1 {
+#     description "Configured by Ansible";
+#     disable;
+#     speed 100m;
+#     mtu 1024;
+#     hold-time up 2000 down 2200;
+#     link-mode full-duplex;
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode access;
+#             vlan {
+#                 members vlan100;
+#             }
+#         }
+#     }
+# }
+# ge-0/0/2 {
+#     description "Configured by Ansible";
+#     native-vlan-id 400;
+#     speed 10m;
+#     mtu 2048;
+#     hold-time up 3000 down 3200;
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode trunk;
+#             vlan {
+#                 members [ vlan200 vlan300 ];
+#             }
+#         }
+#     }
+# }
+# em1 {
+#     description TEST;
+# }
+# fxp0 {
+#     description ANSIBLE;
+#     speed 1g;
+#     link-mode automatic;
+#     unit 0 {
+#         family inet {
+#             address 10.8.38.38/24;
+#         }
+#     }
+# }
+- name: Gather junos layer 2 interfaces as in given arguments
+  junipernetworks.junos.junos_l2_interfaces:
+    state: gathered
+# Task Output (redacted)
+# -----------------------
+#
+# "gathered": [
+#         {
+#             "access": {
+#                 "vlan": "vlan100"
+#             },
+#             "enhanced_layer": true,
+#             "name": "ge-0/0/1",
+#             "unit": 0
+#         },
+#         {
+#             "enhanced_layer": true,
+#             "name": "ge-0/0/2",
+#             "trunk": {
+#                 "allowed_vlans": [
+#                     "vlan200",
+#                     "vlan300"
+#                 ],
+#                 "native_vlan": "400"
+#             },
+#             "unit": 0
+#         }
+#     ]
+# After state:
+# ------------
+#
+# user@junos01# show interfaces
+# ge-0/0/1 {
+#     description "Configured by Ansible";
+#     disable;
+#     speed 100m;
+#     mtu 1024;
+#     hold-time up 2000 down 2200;
+#     link-mode full-duplex;
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode access;
+#             vlan {
+#                 members vlan100;
+#             }
+#         }
+#     }
+# }
+# ge-0/0/2 {
+#     description "Configured by Ansible";
+#     native-vlan-id 400;
+#     speed 10m;
+#     mtu 2048;
+#     hold-time up 3000 down 3200;
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode trunk;
+#             vlan {
+#                 members [ vlan200 vlan300 ];
+#             }
+#         }
+#     }
+# }
+# em1 {
+#     description TEST;
+# }
+# fxp0 {
+#     description ANSIBLE;
+#     speed 1g;
+#     link-mode automatic;
+#     unit 0 {
+#         family inet {
+#             address 10.8.38.38/24;
+#         }
+#     }
+# }
 
 """
 RETURN = """
