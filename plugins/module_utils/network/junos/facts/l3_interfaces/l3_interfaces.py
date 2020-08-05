@@ -98,8 +98,6 @@ class L3_interfacesFacts(object):
         for iface in l3_if_resources:
             interface = {}
             interface["name"] = iface.find("name").text
-            if iface.find("description") is not None:
-                interface["description"] = iface.find("description").text
             if iface.find("unit") is not None:
                 interface["unit"] = iface.find("unit/name").text
             family = iface.find("unit/family/")

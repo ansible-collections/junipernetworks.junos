@@ -350,6 +350,210 @@ EXAMPLES = """
 #         }
 #     }
 # }
+# Using gathered
+# Before state:
+# ------------
+#
+# user@junos01# show interfaces
+# ge-0/0/1 {
+#     description "Configured by Ansible";
+#     disable;
+#     speed 100m;
+#     mtu 1024;
+#     hold-time up 2000 down 2200;
+#     link-mode full-duplex;
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode access;
+#             vlan {
+#                 members vlan100;
+#             }
+#         }
+#     }
+# }
+# ge-0/0/2 {
+#     description "Configured by Ansible";
+#     native-vlan-id 400;
+#     speed 10m;
+#     mtu 2048;
+#     hold-time up 3000 down 3200;
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode trunk;
+#             vlan {
+#                 members [ vlan200 vlan300 ];
+#             }
+#         }
+#     }
+# }
+# ge-1/0/0 {
+#     unit 0 {
+#         family inet {
+#             address 192.168.100.1/24;
+#             address 10.200.16.20/24;
+#         }
+#         family inet6;
+#     }
+# }
+# ge-2/0/0 {
+#     unit 0 {
+#         family inet {
+#             address 192.168.100.2/24;
+#             address 10.200.16.21/24;
+#         }
+#         family inet6;
+#     }
+# }
+# ge-3/0/0 {
+#     unit 0 {
+#         family inet {
+#             address 192.168.100.3/24;
+#             address 10.200.16.22/24;
+#         }
+#         family inet6;
+#     }
+# }
+# em1 {
+#     description TEST;
+# }
+# fxp0 {
+#     description ANSIBLE;
+#     speed 1g;
+#     link-mode automatic;
+#     unit 0 {
+#         family inet {
+#             address 10.8.38.38/24;
+#         }
+#     }
+# }
+- name: Gather junos layer3 interfaces as in given arguments
+  junipernetworks.junos.junos_l3_interfaces:
+    state: gathered
+# Task Output (redacted)
+# -----------------------
+#
+# "gathered": [
+#             {
+#                 "ipv4": [
+#                     {
+#                         "address": "192.168.100.1/24"
+#                     },
+#                     {
+#                         "address": "10.200.16.20/24"
+#                     }
+#                 ],
+#                 "name": "ge-1/0/0",
+#                 "unit": "0"
+#             },
+#             {
+#                 "ipv4": [
+#                     {
+#                         "address": "192.168.100.2/24"
+#                     },
+#                     {
+#                         "address": "10.200.16.21/24"
+#                     }
+#                 ],
+#                 "name": "ge-2/0/0",
+#                 "unit": "0"
+#             },
+#             {
+#                 "ipv4": [
+#                     {
+#                         "address": "192.168.100.3/24"
+#                     },
+#                     {
+#                         "address": "10.200.16.22/24"
+#                     }
+#                 ],
+#                 "name": "ge-3/0/0",
+#                 "unit": "0"
+#             },
+#             {
+#                 "ipv4": [
+#                     {
+#                         "address": "10.8.38.38/24"
+#                     }
+#                 ],
+#                 "name": "fxp0",
+#                 "unit": "0"
+#             }
+#         ]
+# After state:
+# ------------
+#
+# user@junos01# show interfaces
+# ge-0/0/1 {
+#     description "Configured by Ansible";
+#     disable;
+#     speed 100m;
+#     mtu 1024;
+#     hold-time up 2000 down 2200;
+#     link-mode full-duplex;
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode access;
+#             vlan {
+#                 members vlan100;
+#             }
+#         }
+#     }
+# }
+# ge-0/0/2 {
+#     description "Configured by Ansible";
+#     native-vlan-id 400;
+#     speed 10m;
+#     mtu 2048;
+#     hold-time up 3000 down 3200;
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode trunk;
+#             vlan {
+#                 members [ vlan200 vlan300 ];
+#             }
+#         }
+#     }
+# }
+# ge-1/0/0 {
+#     unit 0 {
+#         family inet {
+#             address 192.168.100.1/24;
+#             address 10.200.16.20/24;
+#         }
+#         family inet6;
+#     }
+# }
+# ge-2/0/0 {
+#     unit 0 {
+#         family inet {
+#             address 192.168.100.2/24;
+#             address 10.200.16.21/24;
+#         }
+#         family inet6;
+#     }
+# }
+# ge-3/0/0 {
+#     unit 0 {
+#         family inet {
+#             address 192.168.100.3/24;
+#             address 10.200.16.22/24;
+#         }
+#         family inet6;
+#     }
+# }
+# em1 {
+#     description TEST;
+# }
+# fxp0 {
+#     description ANSIBLE;
+#     speed 1g;
+#     link-mode automatic;
+#     unit 0 {
+#         family inet {
+#             address 10.8.38.38/24;
+#         }
+#     }
+# }
 
 
 """
@@ -372,7 +576,7 @@ commands:
   description: The set of commands pushed to the remote device.
   returned: always
   type: list
-  sample: ['command 1', 'command 2', 'command 3']
+  sample: ['xml 1', 'xml 2', 'xml 3']
 """
 
 
