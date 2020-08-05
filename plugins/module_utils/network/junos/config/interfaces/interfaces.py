@@ -73,33 +73,33 @@ class Interfaces(ConfigBase):
         state = self._module.params["state"]
 
         existing_interfaces_facts = self.get_interfaces_facts()
-        config_xmls = self.set_config(existing_interfaces_facts)
 
         if state == "gathered":
             result["gathered"] = existing_interfaces_facts
+        else:
+            config_xmls = self.set_config(existing_interfaces_facts)
+            with locked_config(self._module):
+                for config_xml in to_list(config_xmls):
+                    diff = load_config(self._module, config_xml, [])
 
-        with locked_config(self._module):
-            for config_xml in to_list(config_xmls):
-                diff = load_config(self._module, config_xml, [])
+                commit = not self._module.check_mode
+                if diff:
+                    if commit:
+                        commit_configuration(self._module)
+                    else:
+                        discard_changes(self._module)
+                    result["changed"] = True
 
-            commit = not self._module.check_mode
-            if diff:
-                if commit:
-                    commit_configuration(self._module)
-                else:
-                    discard_changes(self._module)
-                result["changed"] = True
+                    if self._module._diff:
+                        result["diff"] = {"prepared": diff}
 
-                if self._module._diff:
-                    result["diff"] = {"prepared": diff}
+            result["commands"] = config_xmls
 
-        result["commands"] = config_xmls
+            changed_interfaces_facts = self.get_interfaces_facts()
 
-        changed_interfaces_facts = self.get_interfaces_facts()
-
-        result["before"] = existing_interfaces_facts
-        if result["changed"]:
-            result["after"] = changed_interfaces_facts
+            result["before"] = existing_interfaces_facts
+            if result["changed"]:
+                result["after"] = changed_interfaces_facts
 
         return result
 
@@ -127,6 +127,15 @@ class Interfaces(ConfigBase):
         """
         root = build_root_xml_node("interfaces")
         state = self._module.params["state"]
+        if (
+            state in ("merged", "replaced", "overridden")
+            and not want
+        ):
+            self._module.fail_json(
+                msg="value of config parameter must not be empty for state {0}".format(
+                    state
+                )
+            )
         if state == "overridden":
             config_xmls = self._state_overridden(want, have)
         elif state == "deleted":

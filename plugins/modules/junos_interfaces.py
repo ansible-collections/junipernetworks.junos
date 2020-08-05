@@ -284,7 +284,81 @@ EXAMPLES = """
 # ge-0/0/11 {
 #    description "Configured by Ansible-11";
 # }
+# Using gathered
+# Before state:
+# ------------
+#
+# user@junos01# show interfaces
+# gr-0/0/0 {
+#     description "test gre interface";
+# }
+# fxp0 {
+#     unit 0 {
+#         family inet {
+#             dhcp;
+#         }
+#     }
+# }
+# pp0 {
+#     unit 0 {
+#         pppoe-options {
+#             idle-timeout 100;
+#             access-concentrator ispl.com;
+#             service-name "video@ispl.com";
+#             auto-reconnect 100;
+#             client;
+#             ## Warning: missing mandatory statement(s): 'underlying-interface'
+#         }
+#     }
+# }
 
+- name: Gather junos interfaces as in given arguments
+  junipernetworks.junos.junos_interfaces:
+    state: gathered
+# Task Output (redacted)
+# -----------------------
+#
+# "gathered": [
+#         {
+#             "description": "test gre interface",
+#             "enabled": true,
+#             "name": "gr-0/0/0"
+#         },
+#         {
+#             "enabled": true,
+#             "name": "fxp0"
+#         },
+#         {
+#             "enabled": true,
+#             "name": "pp0"
+#         }
+#     ]
+# After state:
+# ------------
+#
+# user@junos01# show interfaces
+# gr-0/0/0 {
+#     description "test gre interface";
+# }
+# fxp0 {
+#     unit 0 {
+#         family inet {
+#             dhcp;
+#         }
+#     }
+# }
+# pp0 {
+#     unit 0 {
+#         pppoe-options {
+#             idle-timeout 100;
+#             access-concentrator ispl.com;
+#             service-name "video@ispl.com";
+#             auto-reconnect 100;
+#             client;
+#             ## Warning: missing mandatory statement(s): 'underlying-interface'
+#         }
+#     }
+# }
 
 """
 RETURN = """
