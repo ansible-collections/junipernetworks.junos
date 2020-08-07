@@ -5,6 +5,15 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v1.0.1
+======
+
+Bugfixes
+--------
+
+- Make `src`, `backup` and `backup_options` in junos_config work when module alias is used (https://github.com/ansible-collections/junipernetworks.junos/pull/83).
+- Update docs after sanity fixes to modules.
+
 v1.0.0
 ======
 
