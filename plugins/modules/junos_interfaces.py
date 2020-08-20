@@ -91,6 +91,15 @@ options:
         description:
         - Interface link speed. Applicable for Ethernet interfaces only.
         type: str
+  running_config:
+    description:
+    - This option is used only with state I(parsed).
+    - The value of this option should be the output received from the Junos device
+      by executing the command B(show running-config interface).
+    - The state I(parsed) reads the configuration from C(running_config) option and
+      transforms it into Ansible structured data as per the resource module's argspec
+      and the value is then returned in the I(parsed) key within the result.
+    type: str
   state:
     choices:
     - merged
@@ -98,6 +107,8 @@ options:
     - overridden
     - deleted
     - gathered
+    - parsed
+    - rendered
     default: merged
     description:
     - The state of the configuration after module completion
@@ -311,7 +322,7 @@ EXAMPLES = """
 #         }
 #     }
 # }
-
+#
 - name: Gather junos interfaces as in given arguments
   junipernetworks.junos.junos_interfaces:
     state: gathered
@@ -359,6 +370,88 @@ EXAMPLES = """
 #         }
 #     }
 # }
+# Using parsed
+# parsed.cfg
+# ------------
+#
+# <?xml version="1.0" encoding="UTF-8"?>
+# <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
+#     <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
+#         <interfaces>
+#             <interface>
+#                 <name>ge-0/0/1</name>
+#                 <description>Configured by Ansible</description>
+#                 <disable/>
+#                 <speed>100m</speed>
+#                 <mtu>1024</mtu>
+#                 <hold-time>
+#                     <up>2000</up>
+#                     <down>2200</down>
+#                 </hold-time>
+#                 <link-mode>full-duplex</link-mode>
+#                 <unit>
+#                     <name>0</name>
+#                     <family>
+#                         <ethernet-switching>
+#                             <interface-mode>access</interface-mode>
+#                             <vlan>
+#                                 <members>vlan100</members>
+#                             </vlan>
+#                         </ethernet-switching>
+#                     </family>
+#                 </unit>
+#             </interface>
+#         </interfaces>
+#     </configuration>
+# </rpc-reply>
+# - name: Convert interfaces config to argspec without connecting to the appliance
+#   junipernetworks.junos.junos_interfaces:
+#     running_config: "{{ lookup('file', './parsed.cfg') }}"
+#     state: parsed
+# Task Output (redacted)
+# -----------------------
+# "parsed": [
+#         {
+#             "description": "Configured by Ansible",
+#             "duplex": "full-duplex",
+#             "enabled": false,
+#             "hold_time": {
+#                 "down": 2200,
+#                 "up": 2000
+#             },
+#             "mtu": 1024,
+#             "name": "ge-0/0/1",
+#             "speed": "100m"
+#         }
+#     ]
+#
+# Using rendered
+- name: Render platform specific xml from task input using rendered state
+  junipernetworks.junos.junos_interfaces:
+    config:
+    - name: ge-0/0/2
+      description: Configured by Ansibull
+      mtu: 2048
+      speed: 20m
+      hold_time:
+        up: 3200
+        down: 3200
+    state: rendered
+# Task Output (redacted)
+# -----------------------
+# "rendered": <nc:interfaces
+#     xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
+#     <nc:interface>
+#         <nc:name>ge-0/0/2</nc:name>
+#         <nc:description>Configured by Ansibull</nc:description>
+#         <nc:speed>20m</nc:speed>
+#         <nc:mtu>2048</nc:mtu>
+#         <nc:hold-time>
+#             <nc:up>3200</nc:up>
+#             <nc:down>3200</nc:down>
+#         </nc:hold-time>
+#     </nc:interface>
+# </nc:interfaces>"
 
 """
 RETURN = """
@@ -380,7 +473,37 @@ xml:
   description: The set of xml rpc payload pushed to the remote device.
   returned: always
   type: list
-  sample: ['xml 1', 'xml 2', 'xml 3']
+  sample: ['<?xml version="1.0" encoding="UTF-8"?>
+<rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
+    <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
+        <interfaces>
+            <interface>
+                <name>ge-0/0/1</name>
+                <description>Configured by Ansible</description>
+                <disable/>
+                <speed>100m</speed>
+                <mtu>1024</mtu>
+                <hold-time>
+                    <up>2000</up>
+                    <down>2200</down>
+                </hold-time>
+                <link-mode>full-duplex</link-mode>
+                <unit>
+                    <name>0</name>
+                    <family>
+                        <ethernet-switching>
+                            <interface-mode>access</interface-mode>
+                            <vlan>
+                                <members>vlan100</members>
+                            </vlan>
+                        </ethernet-switching>
+                    </family>
+                </unit>
+            </interface>
+            </interfaces>
+    </configuration>
+</rpc-reply>,
+            'xml 2', 'xml 3']
 """
 
 from ansible.module_utils.basic import AnsibleModule
@@ -401,7 +524,9 @@ def main():
     required_if = [
         ("state", "merged", ("config",)),
         ("state", "replaced", ("config",)),
+        ("state", "rendered", ("config",)),
         ("state", "overridden", ("config",)),
+        ("state", "parsed", ("running_config",)),
     ]
 
     module = AnsibleModule(
