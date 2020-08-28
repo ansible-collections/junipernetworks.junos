@@ -61,6 +61,7 @@ class InterfacesArgs(object):
             },
             "type": "list",
         },
+        "running_config": {"type": "str"},
         "state": {
             "choices": [
                 "merged",
@@ -68,6 +69,8 @@ class InterfacesArgs(object):
                 "overridden",
                 "deleted",
                 "gathered",
+                "rendered",
+                "parsed",
             ],
             "default": "merged",
             "type": "str",

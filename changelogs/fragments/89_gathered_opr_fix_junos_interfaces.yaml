@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - set_config called only when state is not gathered so that gathered opeartion works fine (https://github.com/ansible-collections/junipernetworks.junos/issues/89).
