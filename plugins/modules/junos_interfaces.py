@@ -500,10 +500,9 @@ xml:
                     </family>
                 </unit>
             </interface>
-            </interfaces>
+        </interfaces>
     </configuration>
-</rpc-reply>,
-            'xml 2', 'xml 3']
+</rpc-reply>', 'xml 2', 'xml 3']
 """
 
 from ansible.module_utils.basic import AnsibleModule
