@@ -86,6 +86,15 @@ options:
             description:
             - IPv6 address to be set for the specific interface
             type: str
+  running_config:
+    description:
+    - This option is used only with state I(parsed).
+    - The value of this option should be the output received from the Junos device
+      by executing the command B(show interfaces).
+    - The state I(parsed) reads the configuration from C(running_config) option and
+      transforms it into Ansible structured data as per the resource module's argspec
+      and the value is then returned in the I(parsed) key within the result
+    type: str
   state:
     description:
     - The state of the configuration after module completion
@@ -96,6 +105,8 @@ options:
     - overridden
     - deleted
     - gathered
+    - rendered
+    - parsed
     default: merged
 """
 EXAMPLES = """
@@ -554,7 +565,137 @@ EXAMPLES = """
 #         }
 #     }
 # }
+# Using parsed
+# parsed.cfg
+# ------------
+#
+# <?xml version="1.0" encoding="UTF-8"?>
+# <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
+#     <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
+#         <interfaces>
+#             <interface>
+#                 <name>ge-1/0/0</name>
+#                 <unit>
+#                     <name>0</name>
+#                     <family>
+#                         <inet>
+#                             <address>
+#                                 <name>192.168.100.1/24</name>
+#                             </address>
+#                             <address>
+#                                 <name>10.200.16.20/24</name>
+#                             </address>
+#                         </inet>
+#                         <inet6></inet6>
+#                     </family>
+#                 </unit>
+#             </interface>
+#             <interface>
+#                 <name>ge-2/0/0</name>
+#                 <unit>
+#                     <name>0</name>
+#                     <family>
+#                         <inet>
+#                             <address>
+#                                 <name>192.168.100.2/24</name>
+#                             </address>
+#                             <address>
+#                                 <name>10.200.16.21/24</name>
+#                             </address>
+#                         </inet>
+#                         <inet6></inet6>
+#                     </family>
+#                 </unit>
+#             </interface>
+#         </interfaces>
+#     </configuration>
+# </rpc-reply>
+# - name: Convert interfaces config to argspec without connecting to the appliance
+#   junipernetworks.junos.junos_l3_interfaces:
+#     running_config: "{{ lookup('file', './parsed.cfg') }}"
+#     state: parsed
+# Task Output (redacted)
+# -----------------------
+# "parsed": [
+#         {
+#             "ipv4": [
+#                 {
+#                     "address": "192.168.100.1/24"
+#                 },
+#                 {
+#                     "address": "10.200.16.20/24"
+#                 }
+#             ],
+#             "name": "ge-1/0/0",
+#             "unit": "0"
+#         },
+#         {
+#             "ipv4": [
+#                 {
+#                     "address": "192.168.100.2/24"
+#                 },
+#                 {
+#                     "address": "10.200.16.21/24"
+#                 }
+#             ],
+#             "name": "ge-2/0/0",
+#             "unit": "0"
+#         }
+#     ]
+#
+# Using rendered
+- name: Render platform specific xml from task input using rendered state
+  junipernetworks.junos.junos_l3_interfaces:
+    config:
+      - name: ge-1/0/0
+        ipv4:
+          - address: 192.168.100.1/24
+          - address: 10.200.16.20/24
+        unit: 0
 
+      - name: ge-2/0/0
+        ipv4:
+          - address: 192.168.100.2/24
+          - address: 10.200.16.21/24
+        unit: 0
+    state: rendered
+# Task Output (redacted)
+# -----------------------
+# "rendered": "<nc:interfaces
+#     xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
+#     <nc:interface>
+#         <nc:name>ge-1/0/0</nc:name>
+#         <nc:unit>
+#             <nc:name>0</nc:name>
+#             <nc:family>
+#                 <nc:inet>
+#                     <nc:address>
+#                         <nc:name>192.168.100.1/24</nc:name>
+#                     </nc:address>
+#                     <nc:address>
+#                         <nc:name>10.200.16.20/24</nc:name>
+#                     </nc:address>
+#                 </nc:inet>
+#             </nc:family>
+#         </nc:unit>
+#     </nc:interface>
+#     <nc:interface>
+#         <nc:name>ge-2/0/0</nc:name>
+#         <nc:unit>
+#             <nc:name>0</nc:name>
+#             <nc:family>
+#                 <nc:inet>
+#                     <nc:address>
+#                         <nc:name>192.168.100.2/24</nc:name>
+#                     </nc:address>
+#                     <nc:address>
+#                         <nc:name>10.200.16.21/24</nc:name>
+#                     </nc:address>
+#                 </nc:inet>
+#             </nc:family>
+#         </nc:unit>
+#     </nc:interface>
+# </nc:interfaces>"
 
 """
 RETURN = """
@@ -576,7 +717,24 @@ commands:
   description: The set of commands pushed to the remote device.
   returned: always
   type: list
-  sample: ['xml 1', 'xml 2', 'xml 3']
+  sample: ['<nc:interfaces
+    xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
+    <nc:interface>
+        <nc:name>ge-1/0/0</nc:name>
+        <nc:unit>
+            <nc:name>0</nc:name>
+            <nc:family>
+                <nc:inet>
+                    <nc:address>
+                        <nc:name>192.168.100.1/24</nc:name>
+                    </nc:address>
+                    <nc:address>
+                        <nc:name>10.200.16.20/24</nc:name>
+                    </nc:address>
+                </nc:inet>
+            </nc:family>
+        </nc:unit>
+</nc:interfaces>', 'xml 2', 'xml 3']
 """
 
 
@@ -598,7 +756,9 @@ def main():
     required_if = [
         ("state", "merged", ("config",)),
         ("state", "replaced", ("config",)),
+        ("state", "rendered", ("config",)),
         ("state", "overridden", ("config",)),
+        ("state", "parsed", ("running_config",)),
     ]
 
     module = AnsibleModule(
