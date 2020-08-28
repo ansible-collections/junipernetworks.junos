@@ -58,6 +58,7 @@ class L2_interfacesArgs(object):
             },
             "type": "list",
         },
+        "running_config": {"type": "str"},
         "state": {
             "choices": [
                 "merged",
@@ -65,6 +66,8 @@ class L2_interfacesArgs(object):
                 "overridden",
                 "deleted",
                 "gathered",
+                "rendered",
+                "parsed",
             ],
             "default": "merged",
             "type": "str",
