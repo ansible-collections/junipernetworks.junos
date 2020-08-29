@@ -57,6 +57,15 @@ options:
         choices:
         - revertive
         - non-revertive
+  running_config:
+    description:
+    - This option is used only with state I(parsed).
+    - The value of this option should be the output received from the Junos device
+      by executing the command B(show chassis aggregated-devices ethernet lacp).
+    - The state I(parsed) reads the configuration from C(running_config) option and
+      transforms it into Ansible structured data as per the resource module's argspec
+      and the value is then returned in the I(parsed) key within the result
+    type: str
   state:
     description:
     - The state of the configuration after module completion
@@ -66,6 +75,8 @@ options:
     - replaced
     - deleted
     - gathered
+    - rendered
+    - parsed
     default: merged
 requirements:
 - ncclient (>=v0.6.4)
@@ -141,7 +152,84 @@ EXAMPLES = """
 # user@junos01# show chassis aggregated-devices ethernet lacp
 # system-priority 30;
 # link-protection;
+#
+# Using gathered
+# Before state:
+# ------------
+#
+# ansible@cm123456tr21# show chassis aggregated-devices ethernet lacp
+# system-priority 63;
+# link-protection;
 
+- name: Gather junos lacp as in given arguments
+  junipernetworks.junos.junos_lacp:
+    state: gathered
+# Task Output (redacted)
+# -----------------------
+#
+# "gathered": {
+#         "link_protection": "revertive",
+#         "system_priority": 63
+#     }
+# After state:
+# ------------
+#
+# ansible@cm123456tr21# show chassis aggregated-devices ethernet lacp
+# system-priority 63;
+# link-protection;
+# Using rendered
+- name: Render platform specific xml from task input using rendered state
+  junipernetworks.junos.junos_lacp:
+    config:
+      system_priority: 63
+      link_protection: revertive
+    state: rendered
+# Task Output (redacted)
+# -----------------------
+# "rendered": "<nc:chassis
+#     xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
+#     <nc:aggregated-devices>
+#         <nc:ethernet>
+#             <nc:lacp>
+#                 <nc:system-priority>63</nc:system-priority>
+#                 <nc:link-protection>
+#                     <nc:non-revertive delete=\"delete\"/>
+#                 </nc:link-protection>
+#             </nc:lacp>
+#         </nc:ethernet>
+#     </nc:aggregated-devices>
+# </nc:chassis>
+#
+# Using parsed
+# parsed.cfg
+# ------------
+#
+# <?xml version="1.0" encoding="UTF-8"?>
+# <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
+#     <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
+#     <chassis>
+#         <aggregated-devices>
+#             <ethernet>
+#                 <lacp>
+#                     <system-priority>63</system-priority>
+#                     <link-protection>
+#                     </link-protection>
+#                 </lacp>
+#             </ethernet>
+#         </aggregated-devices>
+#     </chassis>
+#     </configuration>
+# </rpc-reply>
+# - name: Convert lacp config to argspec without connecting to the appliance
+#   junipernetworks.junos.junos_lacp:
+#     running_config: "{{ lookup('file', './parsed.cfg') }}"
+#     state: parsed
+# Task Output (redacted)
+# -----------------------
+# "parsed": {
+#         "link_protection": "revertive",
+#         "system_priority": 63
+#     }
 
 """
 RETURN = """
@@ -163,7 +251,19 @@ xml:
   description: The set of xml rpc payload pushed to the remote device.
   returned: always
   type: list
-  sample: ['xml 1', 'xml 2', 'xml 3']
+  sample: ['<nc:chassis
+    xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
+    <nc:aggregated-devices>
+        <nc:ethernet>
+            <nc:lacp>
+                <nc:system-priority>63</nc:system-priority>
+                <nc:link-protection>
+                    <nc:non-revertive delete=\"delete\"/>
+                </nc:link-protection>
+            </nc:lacp>
+        </nc:ethernet>
+    </nc:aggregated-devices>
+</nc:chassis>', 'xml 2', 'xml 3']
 """
 
 
@@ -185,6 +285,8 @@ def main():
     required_if = [
         ("state", "merged", ("config",)),
         ("state", "replaced", ("config",)),
+        ("state", "rendered", ("config",)),
+        ("state", "parsed", ("running_config",)),
     ]
 
     module = AnsibleModule(

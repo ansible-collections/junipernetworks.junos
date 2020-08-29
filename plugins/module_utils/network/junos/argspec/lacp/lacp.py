@@ -48,8 +48,16 @@ class LacpArgs(object):
                 "system_priority": {"type": "int"},
             },
         },
+        "running_config": {"type": "str"},
         "state": {
-            "choices": ["merged", "replaced", "deleted", "gathered"],
+            "choices": [
+                "merged",
+                "replaced",
+                "deleted",
+                "gathered",
+                "rendered",
+                "parsed",
+            ],
             "default": "merged",
             "type": "str",
         },
