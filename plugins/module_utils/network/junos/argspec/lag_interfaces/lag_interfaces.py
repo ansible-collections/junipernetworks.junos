@@ -55,6 +55,7 @@ class Lag_interfacesArgs(object):
             },
             "type": "list",
         },
+        "running_config": {"type": "str"},
         "state": {
             "choices": [
                 "merged",
@@ -62,6 +63,8 @@ class Lag_interfacesArgs(object):
                 "overridden",
                 "deleted",
                 "gathered",
+                "parsed",
+                "rendered",
             ],
             "default": "merged",
             "type": "str",
