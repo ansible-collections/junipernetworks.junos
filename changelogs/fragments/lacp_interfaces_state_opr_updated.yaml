@@ -1,0 +1,4 @@
+---
+minor_changes:
+  - Gathered state operation enabled.
+    Parsed and rendered state operations implemented.
