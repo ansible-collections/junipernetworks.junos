@@ -84,6 +84,15 @@ options:
           is under C(interface-mode) the value is True else if the l2 configuration
           is under C(port-mode) value is False
         type: bool
+  running_config:
+    description:
+    - This option is used only with state I(parsed).
+    - The value of this option should be the output received from the Junos device
+      by executing the command B(show interfaces).
+    - The state I(parsed) reads the configuration from C(running_config) option and
+      transforms it into Ansible structured data as per the resource module's argspec
+      and the value is then returned in the I(parsed) key within the result.
+    type: str
   state:
     choices:
     - merged
@@ -91,6 +100,8 @@ options:
     - overridden
     - deleted
     - gathered
+    - parsed
+    - rendered
     default: merged
     description:
     - The state of the configuration after module completion
@@ -353,7 +364,243 @@ EXAMPLES = """
 #        }
 #    }
 # }
-
+# Using gathered
+# Before state:
+# ------------
+#
+# user@junos01# show interfaces
+# ge-0/0/1 {
+#     description "Configured by Ansible";
+#     disable;
+#     speed 100m;
+#     mtu 1024;
+#     hold-time up 2000 down 2200;
+#     link-mode full-duplex;
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode access;
+#             vlan {
+#                 members vlan100;
+#             }
+#         }
+#     }
+# }
+# ge-0/0/2 {
+#     description "Configured by Ansible";
+#     native-vlan-id 400;
+#     speed 10m;
+#     mtu 2048;
+#     hold-time up 3000 down 3200;
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode trunk;
+#             vlan {
+#                 members [ vlan200 vlan300 ];
+#             }
+#         }
+#     }
+# }
+# em1 {
+#     description TEST;
+# }
+# fxp0 {
+#     description ANSIBLE;
+#     speed 1g;
+#     link-mode automatic;
+#     unit 0 {
+#         family inet {
+#             address 10.8.38.38/24;
+#         }
+#     }
+# }
+- name: Gather junos layer 2 interfaces as in given arguments
+  junipernetworks.junos.junos_l2_interfaces:
+    state: gathered
+# Task Output (redacted)
+# -----------------------
+#
+# "gathered": [
+#         {
+#             "access": {
+#                 "vlan": "vlan100"
+#             },
+#             "enhanced_layer": true,
+#             "name": "ge-0/0/1",
+#             "unit": 0
+#         },
+#         {
+#             "enhanced_layer": true,
+#             "name": "ge-0/0/2",
+#             "trunk": {
+#                 "allowed_vlans": [
+#                     "vlan200",
+#                     "vlan300"
+#                 ],
+#                 "native_vlan": "400"
+#             },
+#             "unit": 0
+#         }
+#     ]
+# After state:
+# ------------
+#
+# user@junos01# show interfaces
+# ge-0/0/1 {
+#     description "Configured by Ansible";
+#     disable;
+#     speed 100m;
+#     mtu 1024;
+#     hold-time up 2000 down 2200;
+#     link-mode full-duplex;
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode access;
+#             vlan {
+#                 members vlan100;
+#             }
+#         }
+#     }
+# }
+# ge-0/0/2 {
+#     description "Configured by Ansible";
+#     native-vlan-id 400;
+#     speed 10m;
+#     mtu 2048;
+#     hold-time up 3000 down 3200;
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode trunk;
+#             vlan {
+#                 members [ vlan200 vlan300 ];
+#             }
+#         }
+#     }
+# }
+# em1 {
+#     description TEST;
+# }
+# fxp0 {
+#     description ANSIBLE;
+#     speed 1g;
+#     link-mode automatic;
+#     unit 0 {
+#         family inet {
+#             address 10.8.38.38/24;
+#         }
+#     }
+# }
+# Using parsed
+# parsed.cfg
+# ------------
+#
+# <?xml version="1.0" encoding="UTF-8"?>
+# <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
+#     <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
+#         <interfaces>
+#             <interface>
+#                 <name>ge-0/0/1</name>
+#                 <description>Configured by Ansible</description>
+#                 <disable/>
+#                 <speed>100m</speed>
+#                 <mtu>1024</mtu>
+#                 <hold-time>
+#                     <up>2000</up>
+#                     <down>2200</down>
+#                 </hold-time>
+#                 <link-mode>full-duplex</link-mode>
+#                 <unit>
+#                     <name>0</name>
+#                     <family>
+#                         <ethernet-switching>
+#                             <interface-mode>access</interface-mode>
+#                             <vlan>
+#                                 <members>vlan100</members>
+#                             </vlan>
+#                         </ethernet-switching>
+#                     </family>
+#                 </unit>
+#             </interface>
+#         </interfaces>
+#     </configuration>
+# </rpc-reply>
+# - name: Convert interfaces config to argspec without connecting to the appliance
+#   junipernetworks.junos.junos_l2_interfaces:
+#     running_config: "{{ lookup('file', './parsed.cfg') }}"
+#     state: parsed
+# Task Output (redacted)
+# -----------------------
+# "parsed": [
+#         {
+#             "access": {
+#                 "vlan": "vlan100"
+#             },
+#             "enhanced_layer": true,
+#             "name": "ge-0/0/1",
+#             "unit": 0
+#         },
+#         {
+#             "enhanced_layer": true,
+#             "name": "ge-0/0/2",
+#             "trunk": {
+#                 "allowed_vlans": [
+#                     "vlan200",
+#                     "vlan300"
+#                 ],
+#                 "native_vlan": "400"
+#             },
+#             "unit": 0
+#         }
+#     ]
+#
+# Using rendered
+- name: Render platform specific xml from task input using rendered state
+  junipernetworks.junos.junos_l2_interfaces:
+    config:
+      - name: ge-0/0/1
+        access:
+          vlan: vlan100
+      - name: ge-0/0/2
+        trunk:
+          allowed_vlans:
+            - vlan200
+            - vlan300
+          native_vlan: '400'
+    state: rendered
+# Task Output (redacted)
+# -----------------------
+# "rendered": "<nc:interfaces
+#     xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
+#     <nc:interface>
+#         <nc:name>ge-0/0/1</nc:name>
+#         <nc:unit>
+#             <nc:name>0</nc:name>
+#             <nc:family>
+#                 <nc:ethernet-switching>
+#                     <nc:interface-mode>access</nc:interface-mode>
+#                     <nc:vlan>
+#                         <nc:members>vlan100</nc:members>
+#                     </nc:vlan>
+#                 </nc:ethernet-switching>
+#             </nc:family>
+#         </nc:unit>
+#     </nc:interface>
+#     <nc:interface>
+#         <nc:name>ge-0/0/2</nc:name>
+#         <nc:unit>
+#             <nc:name>0</nc:name>
+#             <nc:family>
+#                 <nc:ethernet-switching>
+#                     <nc:interface-mode>trunk</nc:interface-mode>
+#                     <nc:vlan>
+#                         <nc:members>vlan200</nc:members>
+#                         <nc:members>vlan300</nc:members>
+#                     </nc:vlan>
+#                 </nc:ethernet-switching>
+#             </nc:family>
+#         </nc:unit>
+#         <nc:native-vlan-id>400</nc:native-vlan-id>
+#     </nc:interface>
+# </nc:interfaces>"
 
 """
 RETURN = """
@@ -375,7 +622,39 @@ commands:
   description: The set of commands pushed to the remote device.
   returned: always
   type: list
-  sample: ['command 1', 'command 2', 'command 3']
+  sample: ['<nc:interfaces
+                                   xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
+                                   <nc:interface>
+                                       <nc:name>ge-0/0/1</nc:name>
+                                       <nc:unit>
+                                           <nc:name>0</nc:name>
+                                           <nc:family>
+                                               <nc:ethernet-switching>
+                                                   <nc:interface-mode>access</nc:interface-mode>
+                                                   <nc:vlan>
+                                                       <nc:members>vlan100</nc:members>
+                                                   </nc:vlan>
+                                               </nc:ethernet-switching>
+                                           </nc:family>
+                                       </nc:unit>
+                                   </nc:interface>
+                                   <nc:interface>
+                                       <nc:name>ge-0/0/2</nc:name>
+                                       <nc:unit>
+                                           <nc:name>0</nc:name>
+                                           <nc:family>
+                                               <nc:ethernet-switching>
+                                                   <nc:interface-mode>trunk</nc:interface-mode>
+                                                   <nc:vlan>
+                                                       <nc:members>vlan200</nc:members>
+                                                       <nc:members>vlan300</nc:members>
+                                                   </nc:vlan>
+                                               </nc:ethernet-switching>
+                                           </nc:family>
+                                       </nc:unit>
+                                       <nc:native-vlan-id>400</nc:native-vlan-id>
+                                   </nc:interface>
+                               </nc:interfaces>', 'xml 2', 'xml 3']
 """
 
 
@@ -397,7 +676,9 @@ def main():
     required_if = [
         ("state", "merged", ("config",)),
         ("state", "replaced", ("config",)),
+        ("state", "rendered", ("config",)),
         ("state", "overridden", ("config",)),
+        ("state", "parsed", ("running_config",)),
     ]
 
     module = AnsibleModule(
