@@ -58,14 +58,14 @@ class Vlans(ConfigBase):
     def __init__(self, module):
         super(Vlans, self).__init__(module)
 
-    def get_vlans_facts(self):
+    def get_vlans_facts(self, data=None):
         """ Get the 'facts' (the current configuration)
 
         :rtype: A dictionary
         :returns: The current configuration as a dictionary
         """
         facts, _warnings = Facts(self._module).get_facts(
-            self.gather_subset, self.gather_network_resources
+            self.gather_subset, self.gather_network_resources, data=data
         )
         vlans_facts = facts["ansible_network_resources"].get("vlans")
         if not vlans_facts:
@@ -82,36 +82,53 @@ class Vlans(ConfigBase):
         state = self._module.params["state"]
         warnings = list()
 
-        existing_vlans_facts = self.get_vlans_facts()
-        config_xmls = self.set_config(existing_vlans_facts)
-
+        if self.state in self.ACTION_STATES:
+            existing_vlans_facts = self.get_vlans_facts()
+        else:
+            existing_vlans_facts = []
         if state == "gathered":
+            existing_vlans_facts = self.get_vlans_facts()
             result["gathered"] = existing_vlans_facts
+        elif self.state == "parsed":
+            running_config = self._module.params["running_config"]
+            if not running_config:
+                self._module.fail_json(
+                    msg="value of running_config parameter must not be empty for state parsed"
+                )
+            result["parsed"] = self.get_vlans_facts(data=running_config)
+        elif self.state == "rendered":
+            config_xmls = self.set_config(existing_vlans_facts)
+            if config_xmls:
+                result["rendered"] = config_xmls[0]
+            else:
+                result["rendered"] = ""
 
-        with locked_config(self._module):
-            for config_xml in to_list(config_xmls):
-                diff = load_config(self._module, config_xml, warnings)
+        else:
+            config_xmls = self.set_config(existing_vlans_facts)
+            with locked_config(self._module):
+                for config_xml in to_list(config_xmls):
+                    diff = load_config(self._module, config_xml, [])
 
-            commit = not self._module.check_mode
-            if diff:
-                if commit:
-                    commit_configuration(self._module)
-                else:
-                    discard_changes(self._module)
-                result["changed"] = True
+                commit = not self._module.check_mode
+                if diff:
+                    if commit:
+                        commit_configuration(self._module)
+                    else:
+                        discard_changes(self._module)
+                    result["changed"] = True
 
-                if self._module._diff:
-                    result["diff"] = {"prepared": diff}
+                    if self._module._diff:
+                        result["diff"] = {"prepared": diff}
 
-        result["commands"] = config_xmls
+            result["commands"] = config_xmls
 
-        changed_vlans_facts = self.get_vlans_facts()
+            changed_vlans_facts = self.get_vlans_facts()
 
-        result["before"] = existing_vlans_facts
-        if result["changed"]:
-            result["after"] = changed_vlans_facts
+            result["before"] = existing_vlans_facts
+            if result["changed"]:
+                result["after"] = changed_vlans_facts
 
-        result["warnings"] = warnings
+            result["warnings"] = warnings
         return result
 
     def set_config(self, existing_vlans_facts):
@@ -138,11 +155,20 @@ class Vlans(ConfigBase):
         """
         root = build_root_xml_node("vlans")
         state = self._module.params["state"]
+        if (
+            state in ("merged", "replaced", "overridden", "rendered")
+            and not want
+        ):
+            self._module.fail_json(
+                msg="value of config parameter must not be empty for state {0}".format(
+                    state
+                )
+            )
         if state == "overridden":
             config_xmls = self._state_overridden(want, have)
         elif state == "deleted":
             config_xmls = self._state_deleted(want, have)
-        elif state == "merged":
+        elif state in ("merged", "rendered"):
             config_xmls = self._state_merged(want, have)
         elif state == "replaced":
             config_xmls = self._state_replaced(want, have)
