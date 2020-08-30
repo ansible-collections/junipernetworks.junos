@@ -63,6 +63,7 @@ class Acl_interfacesArgs(object):  # pylint: disable=R0903
             },
             "type": "list",
         },
+        "running_config": {"type": "str"},
         "state": {
             "choices": [
                 "merged",
@@ -70,6 +71,8 @@ class Acl_interfacesArgs(object):  # pylint: disable=R0903
                 "overridden",
                 "deleted",
                 "gathered",
+                "rendered",
+                "parsed",
             ],
             "default": "merged",
             "type": "str",

@@ -83,6 +83,15 @@ options:
                   on.
                 type: str
                 choices: [in, out]
+  running_config:
+    description:
+    - This option is used only with state I(parsed).
+    - The value of this option should be the output received from the Junos device
+      by executing the command B(show interfaces).
+    - The state I(parsed) reads the configuration from C(running_config) option and
+      transforms it into Ansible structured data as per the resource module's argspec
+      and the value is then returned in the I(parsed) key within the result
+    type: str
   state:
     description:
     - The state the configuration should be left in.
@@ -93,6 +102,8 @@ options:
     - overridden
     - deleted
     - gathered
+    - rendered
+    - parsed
     default: merged
 """
 EXAMPLES = """
@@ -332,12 +343,20 @@ def main():
 
     :returns: the result form module invocation
     """
+    required_if = [
+        ("state", "merged", ("config",)),
+        ("state", "replaced", ("config",)),
+        ("state", "rendered", ("config",)),
+        ("state", "overridden", ("config",)),
+        ("state", "parsed", ("running_config",)),
+    ]
     module = AnsibleModule(
         argument_spec=Acl_interfacesArgs.argument_spec,
+        required_if=required_if,
         supports_check_mode=True,
     )
-
     result = Acl_interfaces(module).execute_module()
+
     module.exit_json(**result)
 
 

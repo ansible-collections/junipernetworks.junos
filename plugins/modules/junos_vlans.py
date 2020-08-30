@@ -64,6 +64,15 @@ options:
         description:
         - Text description of VLANs
         type: str
+  running_config:
+    description:
+    - This option is used only with state I(parsed).
+    - The value of this option should be the output received from the Junos device
+      by executing the command B(show vlans).
+    - The state I(parsed) reads the configuration from C(running_config) option and
+      transforms it into Ansible structured data as per the resource module's argspec
+      and the value is then returned in the I(parsed) key within the result
+    type: str
   state:
     description:
     - The state of the configuration after module completion.
@@ -74,6 +83,8 @@ options:
     - overridden
     - deleted
     - gathered
+    - parsed
+    - rendered
     default: merged
 """
 
@@ -162,7 +173,9 @@ def main():
     required_if = [
         ("state", "merged", ("config",)),
         ("state", "replaced", ("config",)),
+        ("state", "rendered", ("config",)),
         ("state", "overridden", ("config",)),
+        ("state", "parsed", ("running_config",)),
     ]
 
     module = AnsibleModule(
