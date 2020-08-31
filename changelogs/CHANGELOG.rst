@@ -5,6 +5,26 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v1.1.0
+======
+
+Minor Changes
+-------------
+
+- Gathered state operation enabled, Parsed and rendered state operations implemented for junos_lacp.
+- Gathered state operation enabled, Parsed and rendered state operations implemented for junos_lldp_global.
+- Gathered state operation enabled, Parsed and rendered state operations implemented for junos_lldp_interfaces.
+- Gathered state operation enabled, Parsed and rendered state operations implemented for ospfv2, acl_interfaces, vlans and static_routes RM.
+- Gathered state operation enabled. Parsed and rendered state operations implemented.
+- Gathered state operation enabledand Parsed and rendered state operations implemented.
+
+Bugfixes
+--------
+
+- set_config called only when state is not gathered so that gathered opeartion works fine (https://github.com/ansible-collections/junipernetworks.junos/issues/89).
+- set_config called only when state is not gathered so that gathered opeartion works fine (https://github.com/ansible-collections/junipernetworks.junos/issues/93).
+- set_config called only when state is not gathered so that gathered opeartion works fine for l2_interfaces resource module (https://github.com/ansible-collections/junipernetworks.junos/issues/91).
+
 v1.0.1
 ======
 
