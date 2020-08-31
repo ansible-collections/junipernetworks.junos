@@ -1,3 +1,0 @@
----
-minor_changes:
-  - Gathered state operation enabled, Parsed and rendered state operations implemented for ospfv2, acl_interfaces, vlans and static_routes RM.

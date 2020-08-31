@@ -134,3 +134,34 @@ releases:
     - fix_config_module_src_backup.yaml
     - update_docs.yaml
     release_date: '2020-08-07'
+  1.1.0:
+    changes:
+      bugfixes:
+      - set_config called only when state is not gathered so that gathered opeartion
+        works fine (https://github.com/ansible-collections/junipernetworks.junos/issues/89).
+      - set_config called only when state is not gathered so that gathered opeartion
+        works fine (https://github.com/ansible-collections/junipernetworks.junos/issues/93).
+      - set_config called only when state is not gathered so that gathered opeartion
+        works fine for l2_interfaces resource module (https://github.com/ansible-collections/junipernetworks.junos/issues/91).
+      minor_changes:
+      - Gathered state operation enabled, Parsed and rendered state operations implemented
+        for junos_lacp.
+      - Gathered state operation enabled, Parsed and rendered state operations implemented
+        for junos_lldp_global.
+      - Gathered state operation enabled, Parsed and rendered state operations implemented
+        for junos_lldp_interfaces.
+      - Gathered state operation enabled, Parsed and rendered state operations implemented
+        for ospfv2, acl_interfaces, vlans and static_routes RM.
+      - Gathered state operation enabled. Parsed and rendered state operations implemented.
+      - Gathered state operation enabledand Parsed and rendered state operations implemented.
+    fragments:
+    - 89_gathered_opr_fix_junos_interfaces.yaml
+    - 91_gathered_opr_fix_junos_l2interfaces.yaml
+    - 93_gathered_opr_fix_junos_l3_interfaces.yaml
+    - junos_rm_state_opr_updated.yaml
+    - lacp_global_state_opr_updated.yaml
+    - lacp_interfaces_state_opr_updated.yaml
+    - lag_interfaces_state_opr_updated.yaml
+    - lldp_global_state_opr_updated.yaml
+    - lldp_interfaces_state_opr_added.yaml
+    release_date: '2020-08-31'
