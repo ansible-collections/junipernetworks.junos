@@ -46,6 +46,7 @@ class Lldp_interfacesArgs(object):
             },
             "type": "list",
         },
+        "running_config": {"type": "str"},
         "state": {
             "choices": [
                 "merged",
@@ -53,6 +54,8 @@ class Lldp_interfacesArgs(object):
                 "deleted",
                 "overridden",
                 "gathered",
+                "rendered",
+                "parsed",
             ],
             "default": "merged",
             "type": "str",
