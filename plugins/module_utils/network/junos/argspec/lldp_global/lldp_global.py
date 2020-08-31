@@ -48,8 +48,16 @@ class Lldp_globalArgs(object):
             },
             "type": "dict",
         },
+        "running_config": {"type": "str"},
         "state": {
-            "choices": ["merged", "replaced", "deleted", "gathered"],
+            "choices": [
+                "merged",
+                "replaced",
+                "deleted",
+                "gathered",
+                "rendered",
+                "parsed",
+            ],
             "default": "merged",
             "type": "str",
         },
