@@ -165,3 +165,10 @@ releases:
     - lldp_global_state_opr_updated.yaml
     - lldp_interfaces_state_opr_added.yaml
     release_date: '2020-08-31'
+  1.1.1:
+    changes:
+      minor_changes:
+      - Use FQCN to M() references in modules documentation (https://github.com/ansible-collections/junipernetworks.junos/pull/79)
+    fragments:
+    - 79-Use-FQCN-to-M-references
+    release_date: '2020-10-01'

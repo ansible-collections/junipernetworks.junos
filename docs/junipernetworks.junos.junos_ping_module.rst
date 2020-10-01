@@ -19,9 +19,9 @@ Synopsis
 --------
 - Tests reachability using ping from devices running Juniper JUNOS to a remote destination.
 - Tested against Junos (17.3R1.10)
-- For a general purpose network module, see the :ref:`net_ping <net_ping_module>` module.
-- For Windows targets, use the :ref:`win_ping <win_ping_module>` module instead.
-- For targets running Python, use the :ref:`ping <ping_module>` module instead.
+- For a general purpose network module, see the :ref:`ansible.netcommon.net_ping <ansible.netcommon.net_ping_module>` module.
+- For Windows targets, use the :ref:`ansible.windows.win_ping <ansible.windows.win_ping_module>` module instead.
+- For targets running Python, use the :ref:`ansible.builtin.ping <ansible.builtin.ping_module>` module instead.
 
 
 
@@ -307,9 +307,9 @@ Notes
 -----
 
 .. note::
-   - For a general purpose network module, see the :ref:`net_ping <net_ping_module>` module.
-   - For Windows targets, use the :ref:`win_ping <win_ping_module>` module instead.
-   - For targets running Python, use the :ref:`ping <ping_module>` module instead.
+   - For a general purpose network module, see the :ref:`ansible.netcommon..net_ping <ansible.netcommon..net_ping_module>` module.
+   - For Windows targets, use the :ref:`ansible.windows.win_ping <ansible.windows.win_ping_module>` module instead.
+   - For targets running Python, use the :ref:`ansible.builtin.ping <ansible.builtin.ping_module>` module instead.
    - This module works only with connection ``network_cli``.
    - For information on using CLI and netconf see the :ref:`Junos OS Platform Options guide <junos_platform_options>`
    - For more information on using Ansible to manage network devices see the :ref:`Ansible Network Guide <network_guide>`

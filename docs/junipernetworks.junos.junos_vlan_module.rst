@@ -18,7 +18,7 @@ DEPRECATED
 ----------
 :Removed in collection release after 2022-06-01
 :Why: Updated modules released with more functionality
-:Alternative: Use :ref:`junos_vlans <junos_vlans_module>` instead.
+:Alternative: Use :ref:`junipernetworks.junos.junos_vlans <junipernetworks.junos.junos_vlans_module>` instead.
 
 
 
