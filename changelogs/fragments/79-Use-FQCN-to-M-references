@@ -1,3 +1,0 @@
----
-minor_changes:
-  - Use FQCN to M() references in modules documentation (https://github.com/ansible-collections/junipernetworks.junos/pull/79)
