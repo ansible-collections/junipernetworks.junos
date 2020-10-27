@@ -15,7 +15,7 @@
 
 
 """
-The junos_ospfv2 class
+The junos_ospfv3 class
 It is in this file where the current configuration (as dict)
 is compared to the provided configuration (as dict) and the command set
 necessary to bring the current configuration to it's desired end-state is
@@ -49,19 +49,19 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.n
 )
 
 
-class Ospf(ConfigBase):
+class Ospfv3(ConfigBase):
     """
-    The junos_ospfv2 class
+    The junos_ospfv3 class
     """
 
     gather_subset = ["!all", "!min"]
 
-    gather_network_resources = ["ospf"]
+    gather_network_resources = ["ospfv3"]
 
     def __init__(self, module):
-        super(Ospf, self).__init__(module)
+        super(Ospfv3, self).__init__(module)
 
-    def get_ospf_facts(self, data=None):
+    def get_ospfv3_facts(self, data=None):
         """ Get the 'facts' (the current configuration)
 
         :rtype: A dictionary
@@ -70,10 +70,10 @@ class Ospf(ConfigBase):
         facts, _warnings = Facts(self._module).get_facts(
             self.gather_subset, self.gather_network_resources, data=data
         )
-        ospf_facts = facts["ansible_network_resources"].get("junos_ospfv2")
-        if not ospf_facts:
+        ospfv3_facts = facts["ansible_network_resources"].get("junos_ospfv3")
+        if not ospfv3_facts:
             return []
-        return ospf_facts
+        return ospfv3_facts
 
     def execute_module(self):
         """ Execute the module
@@ -86,28 +86,28 @@ class Ospf(ConfigBase):
         warnings = list()
 
         if self.state in self.ACTION_STATES:
-            existing_ospf_facts = self.get_ospf_facts()
+            existing_ospfv3_facts = self.get_ospfv3_facts()
         else:
-            existing_ospf_facts = []
+            existing_ospfv3_facts = []
         if state == "gathered":
-            existing_ospf_facts = self.get_ospf_facts()
-            result["gathered"] = existing_ospf_facts
+            existing_ospfv3_facts = self.get_ospfv3_facts()
+            result["gathered"] = existing_ospfv3_facts
         elif self.state == "parsed":
             running_config = self._module.params["running_config"]
             if not running_config:
                 self._module.fail_json(
                     msg="value of running_config parameter must not be empty for state parsed"
                 )
-            result["parsed"] = self.get_ospf_facts(data=running_config)
+            result["parsed"] = self.get_ospfv3_facts(data=running_config)
         elif self.state == "rendered":
-            config_xmls = self.set_config(existing_ospf_facts)
+            config_xmls = self.set_config(existing_ospfv3_facts)
             if config_xmls:
                 result["rendered"] = config_xmls[0]
             else:
                 result["rendered"] = ""
 
         else:
-            config_xmls = self.set_config(existing_ospf_facts)
+            config_xmls = self.set_config(existing_ospfv3_facts)
             with locked_config(self._module):
                 for config_xml in to_list(config_xmls):
                     diff = load_config(self._module, config_xml, [])
@@ -125,16 +125,16 @@ class Ospf(ConfigBase):
 
             result["commands"] = config_xmls
 
-            changed_ospf_facts = self.get_ospf_facts()
+            changed_ospfv3_facts = self.get_ospfv3_facts()
 
-            result["before"] = existing_ospf_facts
+            result["before"] = existing_ospfv3_facts
             if result["changed"]:
-                result["after"] = changed_ospf_facts
+                result["after"] = changed_ospfv3_facts
 
             result["warnings"] = warnings
         return result
 
-    def set_config(self, existing_ospf_facts):
+    def set_config(self, existing_ospfv3_facts):
         """ Collect the configuration from the args passed to the module,
             collect the current configuration (as a dict from facts)
 
@@ -143,7 +143,7 @@ class Ospf(ConfigBase):
                   to the desired configuration
         """
         want = self._module.params["config"]
-        have = existing_ospf_facts
+        have = existing_ospfv3_facts
         resp = self.set_state(want, have)
         return to_list(resp)
 
@@ -194,10 +194,10 @@ class Ospf(ConfigBase):
         :returns: the xml necessary to migrate the current configuration
                   to the desired configuration
         """
-        ospf_xml = []
-        ospf_xml.extend(self._state_deleted(want, have))
-        ospf_xml.extend(self._state_merged(want, have))
-        return ospf_xml
+        ospfv3_xml = []
+        ospfv3_xml.extend(self._state_deleted(want, have))
+        ospfv3_xml.extend(self._state_merged(want, have))
+        return ospfv3_xml
 
     def _state_overridden(self, want, have):
         """ The command generator when state is overridden
@@ -206,10 +206,10 @@ class Ospf(ConfigBase):
         :returns: the xml necessary to migrate the current configuration
                   to the desired configuration
         """
-        ospf_xml = []
-        ospf_xml.extend(self._state_deleted(None, have))
-        ospf_xml.extend(self._state_merged(want, have))
-        return ospf_xml
+        ospfv3_xml = []
+        ospfv3_xml.extend(self._state_deleted(None, have))
+        ospfv3_xml.extend(self._state_merged(want, have))
+        return ospfv3_xml
 
     def _state_deleted(self, want, have):
         """ The command generator when state is deleted
@@ -218,24 +218,25 @@ class Ospf(ConfigBase):
         :returns: the xml necessary to migrate the current configuration
                   to the desired configuration
         """
-        ospf_xml = []
+        ospfv3_xml = []
         delete = {"delete": "delete"}
 
         if not want:
-            ospf_node = build_child_xml_node(self.protocols, "ospf")
-            ospf_node.attrib.update(delete)
-            router_id = have[0].get("router_id")
-            if router_id:
-                build_child_xml_node(
-                    self.routing_options,
-                    "router-id",
-                    self.router_id,
-                    attrib=delete,
-                )
-            return ospf_node
+            ospfv3node = build_child_xml_node(self.protocols, "ospf3")
+            ospfv3node.attrib.update(delete)
+            if have:
+                router_id = have[0].get("router_id")
+                if router_id:
+                    build_child_xml_node(
+                        self.routing_options,
+                        "router-id",
+                        self.router_id,
+                        attrib=delete,
+                    )
+            return ospfv3node
 
-        ospf_xml = self._state_merged(want, have, delete=delete)
-        return ospf_xml
+        ospfv3_xml = self._state_merged(want, have, delete=delete)
+        return ospfv3_xml
 
     def _state_merged(self, want, have, delete=None):
         """ The command generator when state is merged
@@ -244,99 +245,99 @@ class Ospf(ConfigBase):
         :returns: the xml necessary to migrate the current configuration
                   to the desired configuration
         """
-        ospf_xml = []
+        ospfv3_xml = []
         protocol = build_root_xml_node("ospf3")
-        for ospf in want:
-            ospf = remove_empties(ospf)
-            self.router_id = ospf.get("router_id")
+        for ospfv3 in want:
+            ospfv3 = remove_empties(ospfv3)
+            self.router_id = ospfv3.get("router_id")
             build_child_xml_node(
                 self.routing_options, "router-id", self.router_id
             )
 
-            if ospf.get("spf_options"):
+            if ospfv3.get("spf_options"):
                 spf_options_node = build_child_xml_node(
                     protocol, "spf-options"
                 )
-                if delete and not ospf.get("spf_options").values():
+                if delete and not ospfv3.get("spf_options").values():
                     spf_options_node.attrib.update(delete)
 
-                if ospf["spf_options"].get("delay"):
+                if ospfv3["spf_options"].get("delay"):
                     delay_node = build_child_xml_node(
                         spf_options_node,
                         "delay",
-                        ospf["spf_options"].get("delay"),
+                        ospfv3["spf_options"].get("delay"),
                     )
                     if delete:
                         delay_node.attrib.update(delete)
 
-                if ospf["spf_options"].get("holddown"):
+                if ospfv3["spf_options"].get("holddown"):
                     holddown_node = build_child_xml_node(
                         spf_options_node,
                         "holddown",
-                        ospf["spf_options"].get("holddown"),
+                        ospfv3["spf_options"].get("holddown"),
                     )
                     if delete:
                         holddown_node.attrib.update(delete)
 
-                if ospf["spf_options"].get("delay"):
+                if ospfv3["spf_options"].get("delay"):
                     delay_node = build_child_xml_node(
                         spf_options_node,
                         "rapid-runs",
-                        ospf["spf_options"].get("rapid_runs"),
+                        ospfv3["spf_options"].get("rapid_runs"),
                     )
                     if delete:
                         delay_node.attrib.update(delete)
 
-            if ospf.get("overload"):
+            if ospfv3.get("overload"):
                 overload_node = build_child_xml_node(protocol, "overload")
-                if ospf["overload"].get("timeout"):
+                if ospfv3["overload"].get("timeout"):
                     build_child_xml_node(
                         overload_node,
                         "timeout",
-                        ospf["overload"].get("timeout"),
+                        ospfv3["overload"].get("timeout"),
                     )
                 if delete:
                     overload_node.attrib.update(delete)
 
-            if ospf.get("external_preference"):
+            if ospfv3.get("external_preference"):
                 ext_pref_node = build_child_xml_node(
                     protocol,
                     "external-preference",
-                    ospf["externall_preference"],
+                    ospfv3["externall_preference"],
                 )
                 if delete:
                     ext_pref_node.attrib.update(delete)
 
-            if ospf.get("preference"):
+            if ospfv3.get("preference"):
                 pref_node = build_child_xml_node(
-                    protocol, "preference", ospf["preference"]
+                    protocol, "preference", ospfv3["preference"]
                 )
                 if delete:
                     pref_node.attrib.update(delete)
 
-            if ospf.get("prefix_export_limit"):
+            if ospfv3.get("prefix_export_limit"):
                 prefix_export_node = build_child_xml_node(
                     protocol,
                     "prefix-export-limit",
-                    ospf["prefix_export_limit"],
+                    ospfv3["prefix_export_limit"],
                 )
                 if delete:
                     prefix_export_node.attrib.update(delete)
 
-            if ospf.get("reference_bandwidth"):
+            if ospfv3.get("reference_bandwidth"):
                 ref_bw_node = build_child_xml_node(
                     protocol,
                     "reference-bandwidth",
-                    ospf.get("reference_bandwidth"),
+                    ospfv3.get("reference_bandwidth"),
                 )
                 if delete:
                     ref_bw_node.attrib.update(delete)
 
-            if "rfc1583compatibility" in ospf.keys():
-                if not ospf["rfc1583compatibility"]:
+            if "rfc1583compatibility" in ospfv3.keys():
+                if not ospfv3["rfc1583compatibility"]:
                     build_child_xml_node(protocol, "no-rfc-1583")
 
-            for area in ospf["areas"]:
+            for area in ospfv3["areas"]:
                 area_node = build_child_xml_node(protocol, "area")
                 area_id = area.get("area_id")
                 build_child_xml_node(area_node, "name", area_id)
@@ -433,5 +434,5 @@ class Ospf(ConfigBase):
                                 "default-metric",
                                 area["stub"].get("default_metric"),
                             )
-        ospf_xml.append(protocol)
-        return ospf_xml
+        ospfv3_xml.append(protocol)
+        return ospfv3_xml
