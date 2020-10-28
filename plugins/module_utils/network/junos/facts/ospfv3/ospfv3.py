@@ -276,9 +276,9 @@ class Ospfv3Facts(object):
                 config["spf_options"]["holddown"] = ospfv3["spf-options"].get(
                     "holddown"
                 )
-                config["spf_options"]["rapid_runs"] = ospfv3["spf-options"].get(
-                    "rapid-runs"
-                )
+                config["spf_options"]["rapid_runs"] = ospfv3[
+                    "spf-options"
+                ].get("rapid-runs")
             config["overload"] = ospfv3.get("overload")
             config["preference"] = ospfv3.get("preference")
             config["external_preference"] = ospfv3.get("external-preference")

@@ -15,7 +15,7 @@
                   - name: ge-2/2/0.0
 
     - name: Delete an area
-      junos_ospfv3:
+      junipernetworks.junos.junos_ospfv3:
         config:
           - router_id: 10.200.16.75
             areas:
@@ -41,7 +41,7 @@
         config: []
 
     - name: Delete all ospf config from the device
-      junos_ospfv3:
+      junipernetworks.junos.junos_ospfv3:
         state: deleted
       register: result
 

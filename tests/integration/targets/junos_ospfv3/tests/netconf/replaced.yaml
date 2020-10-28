@@ -18,7 +18,7 @@
                   - name: so-0/0/0.0
 
     - name: Replace configuration
-      junos_ospfv3:
+      junipernetworks.junos.junos_ospfv3:
         config:
           - router_id: 10.200.16.75
             areas:

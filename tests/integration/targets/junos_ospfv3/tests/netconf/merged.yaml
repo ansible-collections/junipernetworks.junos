@@ -19,7 +19,7 @@
                   set: true
 
     - name: Merge the provided configuration with the exisiting running configuration
-      junos_ospfv3: &merged
+      junipernetworks.junos.junos_ospfv3: &merged
         config:
           - router_id: 10.200.16.75
             areas:

@@ -3,7 +3,7 @@
     msg: "START junos_ospfv3 initial config on connection={{ ansible_connection }}"
 
 - name: Set initial configuration for ospf
-  junos_ospfv3:
+  junipernetworks.junos.junos_ospfv3:
     config:
       - router_id: 10.200.16.75
         areas:
