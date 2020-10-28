@@ -9,6 +9,7 @@
 
 - name: wait for netconf server to come up
   delegate_to: localhost
+  tags: netconf
   wait_for:
     host: '{{ hostvars[item].ansible_host }}'
     port: 830
