@@ -1,0 +1,57 @@
+---
+- debug:
+    msg: "START junos_ospfv3 merged integration tests on connection={{ ansible_connection }}"
+
+- block:
+    - include_tasks: _reset_config.yaml
+
+    - set_fact:
+        config:
+          - router_id: 10.200.16.75
+            areas:
+              - area_id: 0.0.0.100
+                interfaces:
+                  - metric: 5
+                    name: so-0/0/0.0
+                    priority: 3
+                stub:
+                  default_metric: 200
+                  set: true
+
+    - name: Merge the provided configuration with the exisiting running configuration
+      junipernetworks.junos.junos_ospfv3: &merged
+        config:
+          - router_id: 10.200.16.75
+            areas:
+              - area_id: 0.0.0.100
+                stub:
+                  default_metric: 200
+                  set: true
+                interfaces:
+                  - name: so-0/0/0.0
+                    priority: 3
+                    metric: 5
+        state: merged
+      register: result
+
+    - name: Assert the configuration is reflected on host
+      assert:
+        that:
+          - result.changed == True
+          - "{{ config|symmetric_difference(result.after) == [] }}"
+
+    - name: Merge the provided configuration with the existing running configuration (IDEMPOTENT)
+      junos_ospfv3: *merged
+      register: result
+
+    - name: Assert that the previous task was idempotent
+      assert:
+        that:
+          - result.changed == False
+
+  tags: merged
+  always:
+    - include_tasks: _reset_config.yaml
+
+- debug:
+    msg: "END junos_ospfv3 merged integration tests on connection={{ ansible_connection }}"
