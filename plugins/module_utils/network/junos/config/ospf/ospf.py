@@ -245,7 +245,7 @@ class Ospf(ConfigBase):
                   to the desired configuration
         """
         ospf_xml = []
-        protocol = build_root_xml_node("ospf3")
+        protocol = build_root_xml_node("ospf")
         for ospf in want:
             ospf = remove_empties(ospf)
             self.router_id = ospf.get("router_id")

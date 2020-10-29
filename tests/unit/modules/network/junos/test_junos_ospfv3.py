@@ -130,8 +130,7 @@ class TestJunosOspfv3Module(TestJunosModule):
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>",
         ]
-        result = self.execute_module(changed=True)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.execute_module(changed=True, commands=commands)
 
     def test_junos_ospfv3_merged_idempotent(self):
         self.get_connection.return_value = load_fixture(
@@ -160,9 +159,7 @@ class TestJunosOspfv3Module(TestJunosModule):
                 state="merged",
             )
         )
-        commands = []
-        self.execute_module(changed=True)
-        self.execute_module(changed=True, commands=commands)
+        self.execute_module(changed=False, commands=[])
 
     def test_junos_ospfv3_replaced(self):
         set_module_args(
@@ -299,3 +296,52 @@ class TestJunosOspfv3Module(TestJunosModule):
         result = self.execute_module(changed=True)
         commands = result["commands"]
         self.execute_module(changed=True, commands=commands)
+
+    def test_junos_ospfv3_parsed(self):
+
+        set_module_args(
+            dict(
+                running_config='<?xml version="1.0" encoding="UTF-8"?>\n'
+                '<rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">\n'
+                '<configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">'
+                "\n<protocols>\n<ospf3>\n<area>\n<name>0.0.0.100</name>\n<stub>\n"
+                "<default-metric>200</default-metric>\n</stub>\n<interface>\n<name>so-0/0/0.0</name>"
+                "\n<passive></passive>\n<metric>5</metric>\n<priority>3</priority>\n"
+                "</interface>\n</area>\n</ospf3>\n</protocols>\n<routing-options>\n"
+                "<router-id>10.200.16.75</router-id>\n</routing-options>\n"
+                "</configuration>\n</rpc-reply>",
+                state="parsed",
+            )
+        )
+        result = self.execute_module(changed=False)
+        self.assertEqual([], result["parsed"])
+
+    def test_junos_ospfv3_rendered(self):
+        set_module_args(
+            dict(
+                config=[
+                    dict(
+                        router_id="10.200.16.75",
+                        areas=[
+                            dict(
+                                area_id="0.0.0.100",
+                                stub=dict(default_metric=200, set=True),
+                                interfaces=[
+                                    dict(
+                                        name="so-0/0/0.0", priority=3, metric=5
+                                    )
+                                ],
+                            )
+                        ],
+                    )
+                ],
+                state="rendered",
+            )
+        )
+        commands = (
+            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:ospf3>'
+            "<nc:area><nc:name>0.0.0.100</nc:name><nc:interface><nc:name>so-0/0/0.0</nc:name>"
+            "<nc:priority>3</nc:priority><nc:metric>5</nc:metric></nc:interface><nc:stub>"
+            "<nc:default-metric>200</nc:default-metric></nc:stub></nc:area></nc:ospf3></nc:protocols>"
+        )
+        self.execute_module(changed=False, commands=commands)

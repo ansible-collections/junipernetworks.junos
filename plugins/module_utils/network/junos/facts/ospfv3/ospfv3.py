@@ -102,7 +102,6 @@ class Ospfv3Facts(object):
                 </configuration>
                 """
             data = self.get_connection(connection, config_filter)
-            # data = connection.get_configuration(filter=config_filter)
 
         if isinstance(data, string_types):
             data = etree.fromstring(

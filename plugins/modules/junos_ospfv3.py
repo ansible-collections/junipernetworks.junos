@@ -384,7 +384,7 @@ EXAMPLES = """
 #     interface ge-2/2/0.0;
 # }
 
-- name: Gathere Junos OSPFv3 config
+- name: Gather Junos OSPFv3 config
   junipernetworks.junos.junos_ospfv3:
     config:
     state: gathered
