@@ -5,6 +5,19 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v1.2.0
+======
+
+Minor Changes
+-------------
+
+- Add ospfv3 resource module.
+
+New Modules
+-----------
+
+- junos_ospfv3 - OSPFv3 resource module
+
 v1.1.1
 ======
 

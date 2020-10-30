@@ -172,3 +172,14 @@ releases:
     fragments:
     - 79-Use-FQCN-to-M-references
     release_date: '2020-10-01'
+  1.2.0:
+    changes:
+      minor_changes:
+      - Add ospfv3 resource module.
+    fragments:
+    - add_junos_ospfv3.yaml
+    modules:
+    - description: OSPFv3 resource module
+      name: junos_ospfv3
+      namespace: ''
+    release_date: '2020-10-30'
