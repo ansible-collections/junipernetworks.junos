@@ -222,7 +222,7 @@ def rpc(module, items):
 
         if (
             name == "command"
-            and text.startswith("show configuration")
+            and text == "show configuration"
             or name == "get-configuration"
         ):
             fetch_config = True
@@ -244,7 +244,6 @@ def rpc(module, items):
                     child = SubElement(element, key)
                     if value is not True:
                         child.text = value
-
         if fetch_config:
             reply = get_configuration(module, format=xattrs["format"])
         else:
@@ -254,7 +253,10 @@ def rpc(module, items):
             if fetch_config:
                 data = reply.find(".//configuration-text")
             else:
-                data = reply.find(".//output")
+                if text.startswith("show configuration"):
+                    data = reply.find(".//configuration-output")
+                else:
+                    data = reply.find(".//output")
 
             if data is None:
                 module.fail_json(msg=tostring(reply))
