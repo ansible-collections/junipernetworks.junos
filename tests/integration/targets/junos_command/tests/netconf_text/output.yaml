@@ -30,6 +30,20 @@
       - result.stdout is defined
       - result.stdout_lines is defined
 
+- name: get output for partial config commands
+  register: result
+  junipernetworks.junos.junos_command:
+    commands:
+      - show configuration system syslog
+    display: text
+    provider: '{{ netconf }}'
+
+- assert:
+    that:
+      - result.changed == false
+      - result.stdout is defined
+      - result.stdout_lines is defined
+
 - name: get output for single command with cli transport
   register: result
   junipernetworks.junos.junos_command:

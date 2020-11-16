@@ -253,7 +253,7 @@ def rpc(module, items):
             if fetch_config:
                 data = reply.find(".//configuration-text")
             else:
-                if text.startswith("show configuration"):
+                if text and text.startswith("show configuration"):
                     data = reply.find(".//configuration-output")
                 else:
                     data = reply.find(".//output")
