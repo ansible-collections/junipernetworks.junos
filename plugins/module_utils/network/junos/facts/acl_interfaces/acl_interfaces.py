@@ -124,36 +124,44 @@ class Acl_interfacesFacts(object):
         """
         config = deepcopy(spec)
         config["access_groups"] = []
-        for family in conf["interface"]["unit"]["family"].keys():
-            access_groups = {
-                "afi": "ipv6" if family == "inet6" else "ipv4",
-                "acls": [],
-            }
-            if conf["interface"]["unit"]["family"][
-                family
-            ] is not None and conf["interface"]["unit"]["family"][family].get(
-                "filter"
-            ):
-                for direction in ["input-list", "output-list"]:
-                    rendered_direction = (
-                        "in" if direction == "input-list" else "out"
-                    )
-                    if conf["interface"]["unit"]["family"][family][
-                        "filter"
-                    ].get(direction):
-                        acl_name = conf["interface"]["unit"]["family"][family][
+
+        if (
+            "unit" in conf["interface"]
+            and "family" in conf["interface"]["unit"]
+        ):
+            for family in conf["interface"]["unit"]["family"].keys():
+                access_groups = {
+                    "afi": "ipv6" if family == "inet6" else "ipv4",
+                    "acls": [],
+                }
+                if conf["interface"]["unit"]["family"][
+                    family
+                ] is not None and conf["interface"]["unit"]["family"][
+                    family
+                ].get(
+                    "filter"
+                ):
+                    for direction in ["input-list", "output-list"]:
+                        rendered_direction = (
+                            "in" if direction == "input-list" else "out"
+                        )
+                        if conf["interface"]["unit"]["family"][family][
                             "filter"
-                        ][direction]
-                        if not isinstance(acl_name, list):
-                            acl_name = [acl_name]
-                        for filter_name in acl_name:
-                            access_groups["acls"].append(
-                                {
-                                    "name": filter_name,
-                                    "direction": rendered_direction,
-                                }
-                            )
-            if access_groups["acls"]:
-                config["name"] = conf["interface"]["name"]
-                config["access_groups"].append(access_groups)
+                        ].get(direction):
+                            acl_name = conf["interface"]["unit"]["family"][
+                                family
+                            ]["filter"][direction]
+                            if not isinstance(acl_name, list):
+                                acl_name = [acl_name]
+                            for filter_name in acl_name:
+                                access_groups["acls"].append(
+                                    {
+                                        "name": filter_name,
+                                        "direction": rendered_direction,
+                                    }
+                                )
+                if access_groups["acls"]:
+                    config["name"] = conf["interface"]["name"]
+                    config["access_groups"].append(access_groups)
+
         return utils.remove_empties(config)
