@@ -224,14 +224,15 @@ class Ospf(ConfigBase):
         if not want:
             ospf_node = build_child_xml_node(self.protocols, "ospf")
             ospf_node.attrib.update(delete)
-            router_id = have[0].get("router_id")
-            if router_id:
-                build_child_xml_node(
-                    self.routing_options,
-                    "router-id",
-                    self.router_id,
-                    attrib=delete,
-                )
+            if have:
+                router_id = have[0].get("router_id")
+                if router_id:
+                    build_child_xml_node(
+                        self.routing_options,
+                        "router-id",
+                        self.router_id,
+                        attrib=delete,
+                    )
             return ospf_node
 
         ospf_xml = self._state_merged(want, have, delete=delete)
