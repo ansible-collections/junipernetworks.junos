@@ -53,14 +53,14 @@ class InterfacesFacts(object):
 
         self.generated_spec = utils.generate_dict(facts_argument_spec)
 
-    def get_connection(self, connection, config_filter):
+    def get_config(self, connection, config_filter):
         """
 
         :param connection:
         :param config_filter:
         :return:
         """
-        return connection.get_configuration(filter=config_filter)
+        return get_resource_config(connection, config_filter=config_filter)
 
     def populate_facts(self, connection, ansible_facts, data=None):
         """ Populate the facts for interfaces
@@ -80,7 +80,7 @@ class InterfacesFacts(object):
                     <interfaces/>
                 </configuration>
             """
-            data = self.get_connection(connection, config_filter)
+            data = self.get_config(connection, config_filter=config_filter)
 
         if isinstance(data, string_types):
             data = etree.fromstring(
