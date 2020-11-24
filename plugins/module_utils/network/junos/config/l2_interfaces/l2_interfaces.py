@@ -256,6 +256,15 @@ class L2_interfaces(ConfigBase):
 
         return intf_xml
 
+    def get_res_config(self, connection, config_filter):
+        """
+
+        :param connection:
+        :param config_filter:
+        :return:
+        """
+        return get_resource_config(connection, config_filter=config_filter)
+
     def _state_deleted(self, want, have):
         """ The xml configuration generator when state is deleted
 
@@ -271,7 +280,10 @@ class L2_interfaces(ConfigBase):
                 <interfaces/>
             </configuration>
             """
-        data = get_resource_config(
+        # data = get_resource_config(
+        #     self._connection, config_filter=config_filter
+        # )
+        data = self.get_res_config(
             self._connection, config_filter=config_filter
         )
 

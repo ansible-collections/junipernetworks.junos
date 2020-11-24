@@ -27,7 +27,6 @@ __metaclass__ = type
 
 from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
     patch,
-    MagicMock,
 )
 from ansible_collections.junipernetworks.junos.plugins.modules import (
     junos_interfaces,
