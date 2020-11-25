@@ -70,6 +70,15 @@ class OspfFacts(object):
         self.generated_spec = utils.generate_dict(facts_argument_spec)
         self.router_id = ""
 
+    def get_connection(self, connection, config_filter):
+        """
+
+        :param connection:
+        :param config_filter:
+        :return:
+        """
+        return connection.get_configuration(filter=config_filter)
+
     def populate_facts(self, connection, ansible_facts, data=None):
         """ Populate the facts for ospf
         :param connection: the device connection
@@ -92,7 +101,7 @@ class OspfFacts(object):
                   </routing-options>
                 </configuration>
                 """
-            data = connection.get_configuration(filter=config_filter)
+            data = self.get_connection(connection, config_filter)
 
         if isinstance(data, string_types):
             data = etree.fromstring(
