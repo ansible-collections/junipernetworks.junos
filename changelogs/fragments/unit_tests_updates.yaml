@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - Updating unit tests for resource modules (https://github.com/ansible-collections/junipernetworks.junos/pull/127)

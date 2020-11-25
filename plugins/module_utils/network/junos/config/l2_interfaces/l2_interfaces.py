@@ -280,9 +280,6 @@ class L2_interfaces(ConfigBase):
                 <interfaces/>
             </configuration>
             """
-        # data = get_resource_config(
-        #     self._connection, config_filter=config_filter
-        # )
         data = self.get_res_config(
             self._connection, config_filter=config_filter
         )

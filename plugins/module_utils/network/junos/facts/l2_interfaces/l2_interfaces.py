@@ -85,7 +85,6 @@ class L2_interfacesFacts(object):
             data = etree.fromstring(
                 to_bytes(data, errors="surrogate_then_replace")
             )
-
         self._resources = data.xpath("configuration/interfaces/interface")
 
         objs = []
