@@ -1,3 +1,0 @@
----
-bugfixes:
-  - allowing partial config filter for junos commands (https://github.com/ansible-collections/junipernetworks.junos/issues/112)

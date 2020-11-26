@@ -183,3 +183,16 @@ releases:
       name: junos_ospfv3
       namespace: ''
     release_date: '2020-10-30'
+  1.2.1:
+    changes:
+      bugfixes:
+      - Add version key to galaxy.yaml to work around ansible-galaxy bug
+      - Updating unit tests for resource modules (https://github.com/ansible-collections/junipernetworks.junos/pull/127)
+      - allowing partial config filter for junos commands (https://github.com/ansible-collections/junipernetworks.junos/issues/112)
+      - checking for units and family attributes in conf dictionary (https://github.com/ansible-collections/junipernetworks.junos/issues/121)
+    fragments:
+    - 112_partial_config_fix.yaml
+    - 121_error_with_junos_acl_interfaces_facts.yaml
+    - galaxy-version.yaml
+    - unit_tests_updates.yaml
+    release_date: '2020-11-26'
