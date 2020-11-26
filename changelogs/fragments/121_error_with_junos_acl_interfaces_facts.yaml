@@ -1,3 +1,0 @@
----
-bugfixes:
-  - checking for units and family attributes in conf dictionary (https://github.com/ansible-collections/junipernetworks.junos/issues/121)

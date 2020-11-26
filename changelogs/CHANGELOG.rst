@@ -5,6 +5,17 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v1.2.1
+======
+
+Bugfixes
+--------
+
+- Add version key to galaxy.yaml to work around ansible-galaxy bug
+- Updating unit tests for resource modules (https://github.com/ansible-collections/junipernetworks.junos/pull/127)
+- allowing partial config filter for junos commands (https://github.com/ansible-collections/junipernetworks.junos/issues/112)
+- checking for units and family attributes in conf dictionary (https://github.com/ansible-collections/junipernetworks.junos/issues/121)
+
 v1.2.0
 ======
 
