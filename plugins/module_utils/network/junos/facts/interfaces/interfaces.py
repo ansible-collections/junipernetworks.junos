@@ -135,4 +135,6 @@ class InterfacesFacts(object):
             config["enabled"] = False
         else:
             config["enabled"] = True
+        import q
+        q(config)
         return utils.remove_empties(config)

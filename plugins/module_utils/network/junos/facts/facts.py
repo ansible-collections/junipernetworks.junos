@@ -68,6 +68,9 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.ospfv3.ospfv3 import (
     Ospfv3Facts,
 )
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.ospf_interfaces.ospf_interfaces import (
+    Ospf_interfacesFacts,
+)
 
 FACT_LEGACY_SUBSETS = dict(
     default=Default, hardware=Hardware, config=Config, interfaces=Interfaces
@@ -85,6 +88,7 @@ FACT_RESOURCE_SUBSETS = dict(
     lldp_interfaces=Lldp_interfacesFacts,
     ospf=OspfFacts,
     ospfv3=Ospfv3Facts,
+    ospf_interfaces=Ospf_interfacesFacts,
     vlans=VlansFacts,
     static_routes=Static_routesFacts,
 )
@@ -110,7 +114,10 @@ class Facts(FactsBase):
         :rtype: dict
         :return: the facts gathered
         """
+        import q
+        q(resource_facts_type)
         if self.VALID_RESOURCE_SUBSETS:
+            q(resource_facts_type)
             self.get_network_resources_facts(
                 FACT_RESOURCE_SUBSETS, resource_facts_type, data
             )
