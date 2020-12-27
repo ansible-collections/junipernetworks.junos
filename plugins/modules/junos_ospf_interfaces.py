@@ -230,7 +230,305 @@ options:
     default: merged
 """
 EXAMPLES = """
+# Using merged
+#
+# Before state
+# ------------
+#
+# admin# show protocols ospf
 
+- name: Merge Junos OSPF interfaces config
+  junipernetworks.junos.junos_ospf_interfaces:
+    config:
+    - router_id: '10.200.16.75'
+      name: 'ge-0/0/2.0'
+      address_family:
+        - afi: 'ipv4'
+          processes:
+            area:
+              area_id: '0.0.0.2'
+            priority: 3
+            metric: 5
+    state: merged
+
+# After state
+# -----------
+#
+# admin# show protocols ospf
+# area 0.0.0.2 {
+#     interface ge-0/0/2.0 {
+#         metric 5;
+#         priority 3;
+#     }
+# }
+
+# Using replaced
+#
+# Before state
+# ------------
+#
+# admin# show protocols ospf
+# area 0.0.0.2 {
+#     interface ge-0/0/2.0 {
+#         metric 5;
+#         priority 3;
+#     }
+# }
+- name: Replace Junos OSPF interfaces config
+  junipernetworks.junos.junos_ospf_interfaces:
+   config:
+     - router_id: '10.200.16.75'
+       name: 'ge-0/0/2.0'
+       address_family:
+         - afi: 'ipv4'
+           processes:
+             area:
+               area_id: '0.0.0.1'
+             priority: 6
+             metric: 6
+   state: replaced
+
+# After state
+# -----------
+#
+# admin# show protocols ospf
+# area 0.0.0.1 {
+#     interface ge-0/0/2.0 {
+#         metric 6;
+#         priority 6;
+#     }
+# }
+
+# Using overridden
+#
+# Before state
+# ------------
+#
+# admin# show protocols ospf
+# area 0.0.0.3 {
+#     interface ge-0/0/3.0 {
+#         metric 5;
+#         priority 3;
+#     }
+# }
+# area 0.0.0.2 {
+#     interface ge-0/0/2.0 {
+#         metric 5;
+#         priority 3;
+#     }
+# }
+
+- name: Override Junos OSPF interfaces config
+  junipernetworks.junos.junos_ospf_interfaces:
+  config:
+    - router_id: '10.200.16.75'
+      name: 'ge-0/0/1.0'
+      address_family:
+        - afi: 'ipv4'
+          processes:
+            area:
+              area_id: '0.0.0.1'
+            priority: 3
+            metric: 5
+  state: overridden
+
+# After state
+# -----------
+#
+# admin# show protocols ospf
+# area 0.0.0.1 {
+#     interface ge-0/0/1.0 {
+#         metric 5;
+#         priority 3;
+#     }
+# }
+
+#
+# Using deleted
+#
+# Before state
+# ------------
+#
+# admin# show protocols ospf
+# area 0.0.0.1 {
+#     interface ge-0/0/1.0 {
+#         metric 5;
+#         priority 3;
+#     }
+# }
+
+- name: Delete Junos OSPF interfaces config
+  junipernetworks.junos.junos_ospf_interfaces:
+    config:
+      - router_id: '10.200.16.75'
+        name: 'ge-0/0/1.0'
+    state: deleted
+
+# After state
+# -----------
+#
+# admin# show protocols ospf
+# Using gathered
+#
+# Before state
+# ------------
+#
+# admin# show protocols ospf
+# area 0.0.0.3 {
+#     interface ge-0/0/3.0 {
+#         metric 5;
+#         priority 3;
+#     }
+# }
+# area 0.0.0.2 {
+#     interface ge-0/0/2.0 {
+#         metric 5;
+#         priority 3;
+#     }
+# }
+
+- name: Gather Junos OSPF interfaces config
+  junipernetworks.junos.junos_ospf_interfaces:
+    config:
+    state: gathered
+#
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#
+#    "gathered": [
+#         {
+#             "address_family": [
+#                 {
+#                     "afi": "ipv4",
+#                     "processes": {
+#                         "area": {
+#                             "area_id": "0.0.0.3"
+#                         },
+#                         "metric": 5,
+#                         "priority": 3
+#                     }
+#                 }
+#             ],
+#             "name": "ge-0/0/3.0",
+#             "router_id": "10.200.16.75"
+#         },
+#         {
+#             "address_family": [
+#                 {
+#                     "afi": "ipv4",
+#                     "processes": {
+#                         "area": {
+#                             "area_id": "0.0.0.2"
+#                         },
+#                         "metric": 5,
+#                         "priority": 3
+#                     }
+#                 }
+#             ],
+#             "name": "ge-0/0/2.0",
+#             "router_id": "10.200.16.75"
+#         }
+#     ]
+#
+# Using rendered
+#
+#
+- name: Render the commands for provided  configuration
+  junipernetworks.junos.junos_ospf_interfaces:
+    config:
+    - router_id: '10.200.16.75'
+      name: 'ge-0/0/2.0'
+      address_family:
+        - afi: 'ipv4'
+          processes:
+            area:
+              area_id: '0.0.0.2'
+            priority: 3
+            metric: 5
+    state: rendered
+
+#
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#
+#
+# "rendered": "
+# <nc:protocols
+#     xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
+#     <nc:ospf>
+#         <nc:area>
+#             <nc:name>0.0.0.2</nc:name>
+#             <nc:interface>
+#                 <nc:name>ge-0/0/2.0</nc:name>
+#                 <nc:priority>3</nc:priority>
+#                 <nc:metric>5</nc:metric>
+#             </nc:interface>
+#         </nc:area>
+#     </nc:ospf>
+# </nc:protocols>"
+#
+# Using parsed
+# parsed.cfg
+# ------------
+# <?xml version="1.0" encoding="UTF-8"?>
+# <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
+#     <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
+#         <protocols>
+#             <ospf>
+#                 <area>
+#                     <name>0.0.0.2</name>
+#                     <stub>
+#                         <default-metric>200</default-metric>
+#                     </stub>
+#                     <interface>
+#                         <name>ge-0/0/2.0</name>
+#                         <metric>5</metric>
+#                         <priority>3</priority>
+#                     </interface>
+#                 </area>
+#             </ospf>
+#         </protocols>
+#         <routing-options>
+#             <router-id>10.200.16.75</router-id>
+#         </routing-options>
+#     </configuration>
+# </rpc-reply>
+
+
+- name: Parsed the device configuration to get output commands
+  junipernetworks.junos.junos_ospf_interfaces:
+    running_config: "{{ lookup('file', './parsed.cfg') }}"
+    state: parsed
+#
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#
+#
+# "parsed": [
+#         {
+#             "address_family": [
+#                 {
+#                     "afi": "ipv4",
+#                     "processes": {
+#                         "area": {
+#                             "area_id": "0.0.0.2"
+#                         },
+#                         "metric": 5,
+#                         "priority": 3
+#                     }
+#                 }
+#             ],
+#             "name": "ge-0/0/2.0",
+#             "router_id": "10.200.16.75"
+#         }
+#     ]
+#
 """
 RETURN = """
 before:
@@ -251,7 +549,33 @@ commands:
   description: The set of commands pushed to the remote device.
   returned: always
   type: list
-  sample: ['command 1', 'command 2', 'command 3']
+  sample: ['<nc:protocols
+    xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
+    <nc:ospf>
+        <nc:area>
+            <nc:name>0.0.0.3</nc:name>
+            <nc:interface>
+                <nc:name>ge-0/0/3.0</nc:name>
+                <nc:priority>3</nc:priority>
+                <nc:metric>5</nc:metric>
+            </nc:interface>
+        </nc:area>
+        <nc:area>
+            <nc:name>0.0.0.2</nc:name>
+            <nc:interface>
+                <nc:name>ge-0/0/2.0</nc:name>
+                <nc:priority>3</nc:priority>
+                <nc:metric>5</nc:metric>
+            </nc:interface>
+        </nc:area>
+    </nc:ospf>
+</nc:protocols>",
+        "
+<nc:routing-options
+    xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
+    <nc:router-id>10.200.16.75</nc:router-id>
+    <nc:router-id>10.200.16.75</nc:router-id>
+</nc:routing-options>', 'xml 2', 'xml 3']
 """
 
 
