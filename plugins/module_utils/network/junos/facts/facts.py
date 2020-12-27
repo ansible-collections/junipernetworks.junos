@@ -114,10 +114,7 @@ class Facts(FactsBase):
         :rtype: dict
         :return: the facts gathered
         """
-        import q
-        q(resource_facts_type)
         if self.VALID_RESOURCE_SUBSETS:
-            q(resource_facts_type)
             self.get_network_resources_facts(
                 FACT_RESOURCE_SUBSETS, resource_facts_type, data
             )

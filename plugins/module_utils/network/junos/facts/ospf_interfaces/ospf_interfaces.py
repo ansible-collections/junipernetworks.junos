@@ -20,7 +20,9 @@ from ansible.module_utils.basic import missing_required_lib
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
     utils,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.ospf_interfaces.ospf_interfaces import Ospf_interfacesArgs
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.ospf_interfaces.ospf_interfaces import (
+    Ospf_interfacesArgs,
+)
 from ansible.module_utils.six import string_types
 
 try:
@@ -36,13 +38,12 @@ try:
 except ImportError:
     HAS_XMLTODICT = False
 
-import  q
 
 class Ospf_interfacesFacts(object):
     """ The junos ospf_interfaces fact class
     """
 
-    def __init__(self, module, subspec='config', options='options'):
+    def __init__(self, module, subspec="config", options="options"):
         self._module = module
         self.argument_spec = Ospf_interfacesArgs.argument_spec
         spec = deepcopy(self.argument_spec)
@@ -107,8 +108,6 @@ class Ospf_interfacesFacts(object):
             if resource:
                 xml = self._get_xml_dict(resource)
                 objs = self.render_config(self.generated_spec, xml)
-                #if obj:
-                    # objs.append(obj)
 
         facts = {}
         if objs:
@@ -118,7 +117,9 @@ class Ospf_interfacesFacts(object):
             )
 
             for cfg in params["config"]:
-                facts["junos_ospf_interfaces"].append(utils.remove_empties(cfg))
+                facts["junos_ospf_interfaces"].append(
+                    utils.remove_empties(cfg)
+                )
 
         ansible_facts["ansible_network_resources"].update(facts)
         return ansible_facts
@@ -174,9 +175,9 @@ class Ospf_interfacesFacts(object):
                     interface_dict["dead_interval"] = interface.get(
                         "dead-interval"
                     )
-                    interface_dict[
-                        "retransmit_interval"
-                    ] = interface.get("retransmit-interval")
+                    interface_dict["retransmit_interval"] = interface.get(
+                        "retransmit-interval"
+                    )
                     interface_dict["transit_delay"] = interface.get(
                         "transit-delay"
                     )
@@ -221,7 +222,9 @@ class Ospf_interfacesFacts(object):
                         auth = interface["authentication"]
                         auth_dict = {}
                         if auth.get("simple-password"):
-                            auth_dict["simple_password"] = auth.get("simple-password")
+                            auth_dict["simple_password"] = auth.get(
+                                "simple-password"
+                            )
                         elif auth.get("md5"):
                             auth_dict["type"] = {"md5": []}
                             md5_list = auth.get("md5")
@@ -244,13 +247,13 @@ class Ospf_interfacesFacts(object):
                     conf = {}
                     areas = {}
                     address_family = []
-                    af['afi'] = 'ipv4'
-                    areas['area_id'] = rendered_area["area_id"]
-                    interface_dict['area'] = areas
-                    af['processes'] = interface_dict
+                    af["afi"] = "ipv4"
+                    areas["area_id"] = rendered_area["area_id"]
+                    interface_dict["area"] = areas
+                    af["processes"] = interface_dict
                     address_family.append(af)
-                    conf['address_family'] = address_family
-                    conf['name'] = interface.get("name")
+                    conf["address_family"] = address_family
+                    conf["name"] = interface.get("name")
                     conf["router_id"] = self.router_id["router-id"]
                     utils.remove_empties(conf)
                     ospf_interfaces_config.append(conf)

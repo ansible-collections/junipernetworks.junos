@@ -24,157 +24,111 @@
 """
 The arg spec for the junos_ospf_interfaces module
 """
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
 
 
 class Ospf_interfacesArgs(object):  # pylint: disable=R0903
     """The arg spec for the junos_ospf_interfaces module
     """
+
     def __init__(self, **kwargs):
         pass
 
     argument_spec = {
-        'config': {
-            'elements': 'dict',
-            'options': {
+        "config": {
+            "elements": "dict",
+            "options": {
                 "router_id": {"required": True, "type": "str"},
-                'address_family': {
-                    'elements': 'dict',
-                    'options': {
-                        'afi': {
-                            'choices': ['ipv4', 'ipv6'],
-                            'required': True,
-                            'type': 'str'
+                "address_family": {
+                    "elements": "dict",
+                    "options": {
+                        "afi": {
+                            "choices": ["ipv4", "ipv6"],
+                            "required": True,
+                            "type": "str",
                         },
-                        'processes': {
-                            'options': {
-                                'area': {
-                                    'options': {
-                                        'area_id': {
-                                            'type': 'str'
-                                        }
-                                    },
-                                    'type': 'dict'
+                        "processes": {
+                            "options": {
+                                "area": {
+                                    "options": {"area_id": {"type": "str"}},
+                                    "type": "dict",
                                 },
-                                'authentication': {
-                                    'options': {
-                                        'md5': {
-                                            'options': {
-                                                'key_id': {
-                                                    'type': 'str'
-                                                },
-                                                'key_value': {
-                                                    'type': 'str'
-                                                },
-                                                'start_time': {
-                                                    'type': 'str'
-                                                }
+                                "authentication": {
+                                    "options": {
+                                        "md5": {
+                                            "options": {
+                                                "key_id": {"type": "str"},
+                                                "key_value": {"type": "str"},
+                                                "start_time": {"type": "str"},
                                             },
-                                            'type': 'dict'
+                                            "type": "dict",
                                         },
-                                        'simple_password': {
-                                            'type': 'str'
-                                        }
+                                        "simple_password": {"type": "str"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'bandwidth_based_metrics': {
-                                    'elements': 'dict',
-                                    'options': {
-                                        'bandwidth': {
-                                            'choices': ['1g', '10g'],
-                                            'type': 'str'
+                                "bandwidth_based_metrics": {
+                                    "elements": "dict",
+                                    "options": {
+                                        "bandwidth": {
+                                            "choices": ["1g", "10g"],
+                                            "type": "str",
                                         },
-                                        'metric': {
-                                            'type': 'int'
-                                        }
+                                        "metric": {"type": "int"},
                                     },
-                                    'type': 'list'
+                                    "type": "list",
                                 },
-                                'dead_interval': {
-                                    'type': 'int'
+                                "dead_interval": {"type": "int"},
+                                "demand_circuit": {"type": "bool"},
+                                "flood_reduction": {"type": "bool"},
+                                "hello_interval": {"type": "int"},
+                                "interface_type": {
+                                    "choices": ["nbma", "p2mp", "p2p"],
+                                    "type": "str",
                                 },
-                                'demand_circuit': {
-                                    'type': 'bool'
+                                "ipsec_sa": {"type": "str"},
+                                "metric": {"type": "int"},
+                                "mtu": {"type": "int"},
+                                "no_advertise_adjacency_segment": {
+                                    "type": "bool"
                                 },
-                                'flood_reduction': {
-                                    'type': 'bool'
+                                "no_eligible_backup": {"type": "bool"},
+                                "no_eligible_remote_backup": {"type": "bool"},
+                                "no_interface_state_traps": {"type": "bool"},
+                                "no_neighbor_down_notification": {
+                                    "type": "bool"
                                 },
-                                'hello_interval': {
-                                    'type': 'int'
-                                },
-                                'interface_type': {
-                                    'choices': ['nbma', 'p2mp', 'p2p'],
-                                    'type': 'str'
-                                },
-                                'ipsec_sa': {
-                                    'type': 'str'
-                                },
-                                'metric': {
-                                    'type': 'int'
-                                },
-                                'mtu': {
-                                    'type': 'int'
-                                },
-                                'no_advertise_adjacency_segment': {
-                                    'type': 'bool'
-                                },
-                                'no_eligible_backup': {
-                                    'type': 'bool'
-                                },
-                                'no_eligible_remote_backup': {
-                                    'type': 'bool'
-                                },
-                                'no_interface_state_traps': {
-                                    'type': 'bool'
-                                },
-                                'no_neighbor_down_notification': {
-                                    'type': 'bool'
-                                },
-                                'node_link_protection': {
-                                    'type': 'str'
-                                },
-                                'poll_interval': {
-                                    'type': 'int'
-                                },
-                                'priority': {
-                                    'type': 'int'
-                                },
-                                'retransmit_interval': {
-                                    'type': 'int'
-                                },
-                                'secondary': {
-                                    'type': 'bool'
-                                },
-                                'te_metric': {
-                                    'type': 'int'
-                                },
-                                'transit_delay': {
-                                    'type': 'int'
-                                }
+                                "node_link_protection": {"type": "str"},
+                                "poll_interval": {"type": "int"},
+                                "priority": {"type": "int"},
+                                "retransmit_interval": {"type": "int"},
+                                "secondary": {"type": "bool"},
+                                "te_metric": {"type": "int"},
+                                "transit_delay": {"type": "int"},
                             },
-                            'type': 'dict'
-                        }
+                            "type": "dict",
+                        },
                     },
-                    'type': 'list'
+                    "type": "list",
                 },
-                'name': {
-                    'required': True,
-                    'type': 'str'
-                }
+                "name": {"required": True, "type": "str"},
             },
-            'type': 'list'
+            "type": "list",
         },
-        "running_config": {
-            "type": "str"
-        },
-        'state': {
-            'choices': [
-                'merged', 'replaced', 'overridden', 'deleted', 'gathered',
-                'parsed', 'rendered'
+        "running_config": {"type": "str"},
+        "state": {
+            "choices": [
+                "merged",
+                "replaced",
+                "overridden",
+                "deleted",
+                "gathered",
+                "parsed",
+                "rendered",
             ],
-            'default':
-            'merged',
-            'type':
-            'str'
-        }
+            "default": "merged",
+            "type": "str",
+        },
     }  # pylint: disable=C0301
