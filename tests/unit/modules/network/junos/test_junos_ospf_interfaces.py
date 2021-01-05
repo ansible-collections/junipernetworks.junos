@@ -76,7 +76,8 @@ class TestJunosOspfv3Module(TestJunosModule):
         self.conn.get = MagicMock()
 
         self.mock_get_xml_dict = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.ospf_interfaces.ospf_interfaces.Ospf_interfacesFacts._get_xml_dict"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts."
+            "ospf_interfaces.ospf_interfaces.Ospf_interfacesFacts._get_xml_dict"
         )
         self._get_xml_dict = self.mock_get_xml_dict.start()
 
