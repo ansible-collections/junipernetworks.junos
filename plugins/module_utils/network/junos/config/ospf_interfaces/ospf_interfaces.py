@@ -34,9 +34,6 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.n
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
     ConfigBase,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    to_list,
-)
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
     Facts,
 )
@@ -285,14 +282,14 @@ class Ospf_interfaces(ConfigBase):
                         if existing_config["name"] == ospf_interfaces["name"]:
                             intf_node.attrib.update(delete)
                 if processes.get("priority"):
-                    priority_node = build_child_xml_node(
+                    build_child_xml_node(
                         intf_node, "priority", processes.get("priority")
                     )
                 if processes.get("flood_reduction"):
                     build_child_xml_node(intf_node, "flood-reduction")
 
                 if processes.get("metric"):
-                    metric_node = build_child_xml_node(
+                    build_child_xml_node(
                         intf_node, "metric", processes.get("metric")
                     )
 

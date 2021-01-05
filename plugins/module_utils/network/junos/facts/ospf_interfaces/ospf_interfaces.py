@@ -143,9 +143,7 @@ class Ospf_interfacesFacts(object):
         :rtype: dictionary
         :returns: The generated config
         """
-        cfg = deepcopy(spec)
         ospf_interfaces_config = []
-        address_family = []
         ospf = conf.get("ospf")
 
         if ospf.get("area"):
