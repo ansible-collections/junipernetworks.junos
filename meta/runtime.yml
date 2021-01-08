@@ -98,6 +98,10 @@ plugin_routing:
       redirect: junipernetworks.junos.junos
     ospfv3:
       redirect: junipernetworks.junos.junos
+    junos_ospf_interfaces:
+      redirect: junipernetworks.junos.junos
+    ospf_interfaces:
+      redirect: junipernetworks.junos.junos
     junos_package:
       redirect: junipernetworks.junos.junos
     package:
@@ -233,6 +237,8 @@ plugin_routing:
       redirect: junipernetworks.junos.junos_ospfv2
     ospfv3:
       redirect: junipernetworks.junos.junos_ospfv3
+    ospf_interfaces:
+      redirect: junipernetworks.junos.junos_ospf_interfaces
     package:
       redirect: junipernetworks.junos.junos_package
     ping:
