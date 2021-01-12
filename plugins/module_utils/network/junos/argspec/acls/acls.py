@@ -61,7 +61,13 @@ class AclsArgs(object):  # pylint: disable=R0903
                                     "type": "dict",
                                     "options": {
                                         "address": {"type": "str"},
-                                        "prefix_list": {"type": "str"},
+                                        "prefix_list": {
+                                            "elements": "dict",
+                                            "type": "list",
+                                            "options": {
+                                                "name": {"type": "str"}
+                                            },
+                                        },
                                         "port_protocol": {
                                             "type": "dict",
                                             "options": {
@@ -83,7 +89,13 @@ class AclsArgs(object):  # pylint: disable=R0903
                                     "type": "dict",
                                     "options": {
                                         "address": {"type": "str"},
-                                        "prefix_list": {"type": "str"},
+                                        "prefix_list": {
+                                            "elements": "dict",
+                                            "type": "list",
+                                            "options": {
+                                                "name": {"type": "str"}
+                                            },
+                                        },
                                         "port_protocol": {
                                             "type": "dict",
                                             "options": {

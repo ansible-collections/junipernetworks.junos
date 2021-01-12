@@ -152,7 +152,7 @@ class AclsFacts(object):
                             ace["source"] = ace.get("source", {})
                             ace["source"]["prefix_list"] = term["from"][
                                 "source-prefix-list"
-                            ]["name"]
+                            ]
                         if term["from"].get("source-port"):
                             ace["source"] = ace.get("source", {})
                             ace["source"]["port_protocol"] = dict(
@@ -167,7 +167,7 @@ class AclsFacts(object):
                             ace["destination"] = ace.get("destination", {})
                             ace["destination"]["prefix_list"] = term["from"][
                                 "destination-prefix-list"
-                            ]["name"]
+                            ]
                         if term["from"].get("destination-port"):
                             ace["destination"]["port_protocol"] = dict(
                                 eq=term["from"]["destination-port"]

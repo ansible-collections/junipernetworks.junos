@@ -98,7 +98,12 @@ options:
                   prefix_list:
                     description:
                     - IP source prefix list to use for the filter
-                    type: str
+                    type: list
+                    elements: dict
+                    suboptions:
+                      name:
+                        description: Name of the list
+                        type: str
                   port_protocol:
                     description:
                     - Specify the source port or protocol.
@@ -133,7 +138,12 @@ options:
                   prefix_list:
                     description:
                     - Match IP destination prefixes in named list
-                    type: str
+                    type: list
+                    elements: dict
+                    suboptions:
+                      name:
+                        description: Name of the list
+                        type: str
                   port_protocol:
                     description:
                     - Specify the destination port or protocol.

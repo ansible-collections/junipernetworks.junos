@@ -255,11 +255,16 @@ class Acls(ConfigBase):
                                         ace[direction]["address"],
                                     )
                                 if ace[direction].get("prefix_list"):
-                                    build_child_xml_node(
-                                        from_node,
-                                        "{0}-prefix-list".format(direction),
-                                        ace[direction]["prefix_list"],
-                                    )
+                                    for prefix in ace[direction].get(
+                                        "prefix_list"
+                                    ):
+                                        build_child_xml_node(
+                                            from_node,
+                                            "{0}-prefix-list".format(
+                                                direction
+                                            ),
+                                            prefix["name"],
+                                        )
                                 if ace[direction].get("port_protocol"):
                                     if "eq" in ace[direction]["port_protocol"]:
                                         build_child_xml_node(
