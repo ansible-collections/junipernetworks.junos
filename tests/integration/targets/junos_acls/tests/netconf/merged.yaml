@@ -5,6 +5,8 @@
 - block:
     - include_tasks: _reset_config.yaml
 
+    - include_tasks: config_policy.yaml
+
     - set_fact:
         config:
           - acls:
@@ -33,6 +35,9 @@
               - aces:
                   - name: ssh_rule
                     source:
+                      prefix_list:
+                        - name: "ipv4-interfaces"
+                        - name: "ospf-all-routers"
                       port_protocol:
                         eq: ssh
                     protocol: tcp
@@ -57,6 +62,9 @@
                 aces:
                   - name: ssh_rule
                     source:
+                      prefix_list:
+                        - name: "ipv4-interfaces"
+                        - name: "ospf-all-routers"
                       port_protocol:
                         eq: ssh
                     protocol: tcp
@@ -81,6 +89,8 @@
   tags: merged
   always:
     - include_tasks: _reset_config.yaml
+
+    - include_tasks: reset_policy_config.yaml
 
 - debug:
     msg: "END junos_acls merged integration tests on connection={{ ansible_connection }}"

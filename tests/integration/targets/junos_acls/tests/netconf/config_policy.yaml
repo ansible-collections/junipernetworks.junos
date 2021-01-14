@@ -1,0 +1,12 @@
+---
+- debug:
+    msg: "START junos_acls preconfig policy options config on connection={{ ansible_connection }}"
+
+- name: Set policy config
+  junos_config:
+    lines:
+      - set policy-options prefix-list ospf-all-routers
+      - set policy-options prefix-list ipv4-interfaces
+
+- debug:
+    msg: "END junos_acls preconfig policy options config on connection={{ ansible_connection }}"
