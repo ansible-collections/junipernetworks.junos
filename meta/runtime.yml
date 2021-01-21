@@ -74,6 +74,10 @@ plugin_routing:
       redirect: junipernetworks.junos.junos
     lldp_global:
       redirect: junipernetworks.junos.junos
+    junos_bgp_global:
+      redirect: junipernetworks.junos.junos
+    bgp_global:
+      redirect: junipernetworks.junos.junos
     junos_lldp_interface:
       redirect: junipernetworks.junos.junos
     lldp_interface:
@@ -218,6 +222,8 @@ plugin_routing:
         warning_text: See the plugin documentation for more details
     lldp_global:
       redirect: junipernetworks.junos.junos_lldp_global
+    bgp_global:
+      redirect: junipernetworks.junos.junos_bgp_global
     lldp_interface:
       redirect: junipernetworks.junos.junos_lldp_interface
       deprecation:
