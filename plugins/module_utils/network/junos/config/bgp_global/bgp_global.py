@@ -141,7 +141,7 @@ class Bgp_global(ConfigBase):
         :returns: the list xml configuration necessary to migrate the current configuration
                   to the desired configuration
         """
-        root = build_root_xml_node("protocols")
+        self.root = build_root_xml_node("protocols")
         state = self._module.params["state"]
         if state in ("merged", "replaced", "rendered") and not want:
             self._module.fail_json(
@@ -151,14 +151,16 @@ class Bgp_global(ConfigBase):
             )
         if state == "deleted":
             config_xmls = self._state_deleted(want, have)
+        elif state == "purged":
+            config_xmls = self._state_purged(want, have)
         elif state in ("merged", "rendered"):
             config_xmls = self._state_merged(want, have)
         elif state == "replaced":
             config_xmls = self._state_replaced(want, have)
 
         for xml in config_xmls:
-            root.append(xml)
-        return tostring(root)
+            self.root.append(xml)
+        return tostring(self.root)
 
     def _state_replaced(self, want, have):
         """ The xml configuration generator when state is merged
@@ -185,20 +187,60 @@ class Bgp_global(ConfigBase):
         bgp_root = build_root_xml_node("bgp")
 
         want = remove_empties(want)
+        bool_parser = [
+            "accept-remote-nexthop",
+            "add-path-display-ipv4-address",
+            "advertise-from-main-vpn-tables",
+            "advertise-inactive",
+            "advertise-peer-as",
+            "damping",
+            "disable",
+            "egress-te-sid-stats",
+            "enforce-first-as",
+            "holddown-all-stale-labels",
+            "include-mp-next-hop",
+            "log-updown",
+            "mtu-discovery",
+            "no-advertise-peer-as",
+            "no-aggregator-id",
+            "no-client-reflect",
+            "no-precision-timers",
+            "passive",
+            "precision-timers",
+            "rfc6514-compliant-safi129",
+            "route-server-client",
+            "send-addpath-optimization",
+            "itcp-aggressive-transmission",
+            "unconfigured-peer-graceful-restart",
+            "vpn-apply-export",
+        ]
+        cfg_parser = [
+            "authentication-algorithm",
+            "authentication-key",
+            "authentication-key-chain",
+            "description",
+            "export",
+            "forwarding-context",
+            "hold-time",
+            "import",
+            "ipsec-sa",
+            "keep",
+            "local-address",
+            "local-interface",
+            "local-preference",
+            "peer-as",
+            "preference",
+            "out-delay",
+            "sr-preference-override",
+            "stale-labels-holddown-period",
+            "tcp-mss",
+            "ttl",
+        ]
+        for item in bool_parser:
+            bgp_root = self._add_node(want, item, item.replace("-", "_"), bgp_root)
 
-        # Generate config commands for accept-remote-nexthop
-        if "accept_remote_next_hop" in want.keys():
-            b_val = want.get("accept_remote_next_hop")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "accept-remote-nexthop")
-
-        # Generate config commands for add-path-display-ipv4-address
-        if "accept_remote_next_hop" in want.keys():
-            b_val = want.get("accept_remote_next_hop")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "add-path-display-ipv4-address")
+        for item in cfg_parser:
+            bgp_root = self._add_node(want, item, item.replace("-", "_"), bgp_root, True)
 
         # Generate config commands for advertise-bgp-static
         if want.get("advertise_bgp_static"):
@@ -208,7 +250,7 @@ class Bgp_global(ConfigBase):
             ad_bgp_static = want.get("advertise_bgp_static")
             if "policy" in ad_bgp_static.keys():
                 build_child_xml_node(
-                    ad_bgp_static_node, "policy"
+                    ad_bgp_static_node, "policy", ad_bgp_static["policy"]
                 )
 
         # Generate config commands for advertise-external
@@ -221,45 +263,6 @@ class Bgp_global(ConfigBase):
                 build_child_xml_node(
                     ad_ext_node, "conditional"
                 )
-
-        # Generate config commands for advertise-from-main-vpn-tables
-        if "advertise_from_main_vpn_tables" in want.keys():
-            b_val = want.get("advertise_from_main_vpn_tables")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "advertise-from-main-vpn-tables")
-
-        # Generate config commands for advertise-inactive
-        if "advertise_inactive" in want.keys():
-            b_val = want.get("advertise_inactive")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "advertise-inactive")
-
-        # Generate config commands for advertise-peer-as
-        if "advertise_peer_as" in want.keys():
-            b_val = want.get("advertise_peer_as")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "advertise-peer-as")
-
-        # Generate config commands for authentication-algorithm
-        if want.get("authentication_algorithm"):
-            build_child_xml_node(
-                bgp_root, "authentication-algorithm", want["authentication_algorithm"]
-            )
-
-        # Generate config commands for authentication-key
-        if want.get("authentication_key"):
-            build_child_xml_node(
-                bgp_root, "authentication-key", want["authentication_key"]
-            )
-
-        # Generate config commands for authentication-key-chain
-        if want.get("authentication_key_chain"):
-            build_child_xml_node(
-                bgp_root, "authentication-key-chain", want["authentication_key_chain"]
-            )
 
         # Generate config commands for bfd-liveness-detection
         if want.get("bfd_liveness_detection"):
@@ -378,6 +381,15 @@ class Bgp_global(ConfigBase):
                 bgp_root, "bmp"
             )
             bmp = want.get("bmp")
+            # Add node for monitor
+            if "monitor" in bmp.keys():
+                b_val = bmp.get("monitor")
+                if b_val is not None:
+                    if b_val is True:
+                        build_child_xml_node(bmp_node, "monitor", "enable")
+                    else:
+                        build_child_xml_node(bmp_node, "monitor", "disable")
+
             # Add node for route-monitoring
             if "route_monitoring" in bmp.keys():
                 r_mon_node = build_child_xml_node(
@@ -415,253 +427,6 @@ class Bgp_global(ConfigBase):
                         if b_val is True:
                             build_child_xml_node(r_mon_node, "pre-policy")
 
-        # Generate config commands for cluster
-        if want.get("cluster_id"):
-            build_child_xml_node(
-                bgp_root, "cluster", want["cluster_id"]
-            )
-
-        # Generate config commands for damping"
-        if "damping" in want.keys():
-            b_val = want.get("damping")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "damping")
-
-        # Generate config commands for description
-        if want.get("description"):
-            build_child_xml_node(
-                bgp_root, "description", want["description"]
-            )
-
-        # Generate config commands for disable"
-        if "disable" in want.keys():
-            b_val = want.get("disable")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "disable")
-
-        # Generate config commands for egress-te-sid-stats"
-        if "egress_te_sid_stats" in want.keys():
-            b_val = want.get("egress_te_sid_stats")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "egress-te-sid-stats")
-
-        # Generate config commands for enforce-first-as"
-        if "enforce_first_as" in want.keys():
-            b_val = want.get("enforce_first_as")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "enforce-first-as")
-
-        # Generate config commands for export
-        if want.get("export"):
-            build_child_xml_node(
-                bgp_root, "export", want["export"]
-            )
-
-        # Generate config commands for forwarding-context
-        if want.get("forwarding_context"):
-            build_child_xml_node(
-                bgp_root, "forwarding-context", want["forwarding_context"]
-            )
-
-        # Generate config commands for hold-time
-        if want.get("hold_time"):
-            build_child_xml_node(
-                bgp_root, "hold-time", want["hold_time"]
-            )
-
-        # Generate config commands for holddown-all-stale-labels"
-        if "holddown_all_stale_labels" in want.keys():
-            b_val = want.get("holddown_all_stale_labels")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "holddown-all-stale-labels")
-
-        # Generate config commands for import
-        if want.get("import"):
-            build_child_xml_node(
-                bgp_root, "import", want["import"]
-            )
-
-        # Generate config commands for include-mp-next-hop"
-        if "include_mp_next_hop" in want.keys():
-            b_val = want.get("include_mp_next_hop")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "include-mp-next-hop")
-
-        # Generate config commands for ipsec-sa
-        if want.get("ipsec_sa"):
-            build_child_xml_node(
-                bgp_root, "ipsec-sa", want["ipsec_sa"]
-            )
-
-        # Generate config commands for keep
-        if want.get("keep"):
-            build_child_xml_node(
-                bgp_root, "keep", want["keep"]
-            )
-
-        # Generate config commands for local-address
-        if want.get("local_address"):
-            build_child_xml_node(
-                bgp_root, "local-address", want["local_address"]
-            )
-
-        # Generate config commands for local-interface
-        if want.get("local_interface"):
-            build_child_xml_node(
-                bgp_root, "local-interface", want["local_interface"]
-            )
-
-        # Generate config commands for local-preference
-        if want.get("local_preference"):
-            build_child_xml_node(
-                bgp_root, "local-preference", want["local_preference"]
-            )
-
-        # Generate config commands for log-updown
-        if "log_updown" in want.keys():
-            b_val = want.get("log_updown")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "log-updown")
-
-        # Generate config commands for mtu-discovery
-        if "mtu_discovery" in want.keys():
-            b_val = want.get("mtu_discovery")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "mtu-discovery")
-
-        # Generate config commands for no-advertise-peer-as
-        if "no_advertise_peer_as" in want.keys():
-            b_val = want.get("no_advertise_peer_as")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "no-advertise-peer-as")
-
-        # Generate config commands for no-aggregator-id
-        if "no_aggregator_id" in want.keys():
-            b_val = want.get("no_aggregator_id")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "no-aggregator-id")
-
-        # Generate config commands for no-client-reflect
-        if "no_client_reflect" in want.keys():
-            b_val = want.get("no_client_reflect")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "no-client-reflect")
-
-        # Generate config commands for no-precision-timers
-        if "no_precision_timers" in want.keys():
-            b_val = want.get("no_precision_timers")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "no-precision-timers")
-
-        # Generate config commands for out-delay
-        if want.get("out_delay"):
-            build_child_xml_node(
-                bgp_root, "out-delay", want["out_delay"]
-            )
-
-        # Generate config commands for passive
-        if "passive" in want.keys():
-            b_val = want.get("passive")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "passive")
-
-        # Generate config commands for peer-as
-        if want.get("peer_as"):
-            build_child_xml_node(
-                bgp_root, "peer-as", want["peer_as"]
-            )
-
-        # Generate config commands for precision-timers
-        if "precision_timers" in want.keys():
-            b_val = want.get("precision_timers")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "precision-timers")
-
-        # Generate config commands for preference
-        if want.get("preference"):
-            build_child_xml_node(
-                bgp_root, "preference", want["preference"]
-            )
-
-        # Generate config commands for rfc6514-compliant-safi129
-        if "rfc6514_compliant_safi129" in want.keys():
-            b_val = want.get("rfc6514_compliant_safi129")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "rfc6514-compliant-safi129")
-
-        # Generate config commands for route-server-client
-        if "route_server_client" in want.keys():
-            b_val = want.get("route_server_client")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "route-server-client")
-
-        # Generate config commands for send-addpath-optimization
-        if "send_addpath_optimization" in want.keys():
-            b_val = want.get("send_addpath_optimization")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "send-addpath-optimization")
-
-        # Generate config commands for sr-preference-override
-        if want.get("sr_preference_override"):
-            build_child_xml_node(
-                bgp_root, "sr-preference-override", want["sr_preference_override"]
-            )
-
-        # Generate config commands for stale-labels-holddown-period
-        if want.get("stale_labels_holddown_period"):
-            build_child_xml_node(
-                bgp_root, "stale-labels-holddown-period", want["stale_labels_holddown_period"]
-            )
-
-        # Generate config commands for tcp-aggressive-transmission
-        if "tcp_aggressive_transmission" in want.keys():
-            b_val = want.get("tcp_aggressive_transmission")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "tcp-aggressive-transmission")
-
-        # Generate config commands for tcp-mss
-        if want.get("tcp_mss"):
-            build_child_xml_node(
-                bgp_root, "tcp-mss", want["tcp_mss"]
-            )
-
-        # Generate config commands for ttl
-        if want.get("ttl"):
-            build_child_xml_node(
-                bgp_root, "ttl", want["ttl"]
-            )
-
-        # Generate config commands for unconfigured-peer-graceful-restart
-        if "unconfigured_peer_graceful_restart" in want.keys():
-            b_val = want.get("unconfigured_peer_graceful_restart")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "unconfigured-peer-graceful-restart")
-
-        # Generate config commands for vpn-apply-export
-        if "vpn_apply_export" in want.keys():
-            b_val = want.get("vpn_apply_export")
-            if b_val is not None:
-                if b_val is True:
-                    build_child_xml_node(bgp_root, "vpn-apply-export")
         bgp_xml.append(bgp_root)
 
         return bgp_xml
@@ -673,7 +438,7 @@ class Bgp_global(ConfigBase):
                   of the provided objects
         """
         bgp_xml = []
-        attrib_list = [
+        parser = [
             "accept-remote-nexthop",
             "add-path-display-ipv4-address",
             "advertise-bgp-static",
@@ -710,11 +475,11 @@ class Bgp_global(ConfigBase):
             "no-aggregator-id",
             "no-client-reflect",
             "no-precision-timers",
-            "out-delay",
             "passive",
             "peer-as",
             "precision-timers",
             "preference",
+            "out-delay",
             "rfc6514-compliant-safi129",
             "route-server-client",
             "send-addpath-optimization",
@@ -727,9 +492,39 @@ class Bgp_global(ConfigBase):
             "vpn-apply-export",
         ]
         bgp_root = build_root_xml_node("bgp")
-        for attrib in attrib_list:
+        for attrib in parser:
             build_child_xml_node(
                 bgp_root, attrib, None, {"delete": "delete"}
             )
         bgp_xml.append(bgp_root)
         return bgp_xml
+
+    def _state_purged(self, want, have):
+        """ The command generator when state is deleted
+        :rtype: A list
+        :returns: the commands necessary to remove the current configuration
+                  of the provided objects
+        """
+        bgp_xml = []
+        delete = {"delete": "delete"}
+        bgp_node = build_child_xml_node(self.root, "bgp")
+        bgp_node.attrib.update(delete)
+        bgp_xml.append(bgp_node)
+        return bgp_xml
+
+    def _add_node(self, want, h_key, w_key, node, cfg=False):
+        """ Append the child node to the root node
+        :param want: the desired configuration as a dictionary
+        :param h_key: the current configuration key
+        :param: node: root node
+        """
+        if cfg:
+            if want.get(w_key):
+                build_child_xml_node(node, h_key, want[w_key])
+        else:
+            if w_key in want.keys():
+                b_val = want.get(w_key)
+                if b_val is not None:
+                    if b_val is True:
+                        build_child_xml_node(node, h_key)
+        return node

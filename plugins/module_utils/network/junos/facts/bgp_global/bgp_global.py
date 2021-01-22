@@ -89,7 +89,7 @@ class Bgp_globalFacts(object):
             data = etree.fromstring(
                 to_bytes(data, errors="surrogate_then_replace")
             )
-
+        objs = {}
         resources = data.xpath("configuration/protocols/bgp")
         autonomous_system = data.xpath("configuration/routing-options/autonomous-system")
         if autonomous_system:
@@ -132,7 +132,7 @@ class Bgp_globalFacts(object):
         bgp = conf.get("bgp")
         # Read accept-remote-nexthop value
         if "accept-remote-nexthop" in bgp.keys():
-            bgp_global["accept_remote_next_hop"] = True
+            bgp_global["accept_remote_nexthop"] = True
 
         # Read add-path-display-ipv4-address value
         if "add-path-display-ipv4-address" in bgp.keys():
@@ -287,9 +287,9 @@ class Bgp_globalFacts(object):
             # Read monitor value
             if "monitor" in bmp.keys():
                 if bmp["monitor"] == "disable":
-                    cfg["monitor"] = True
-                else:
                     cfg["monitor"] = False
+                else:
+                    cfg["monitor"] = True
 
             # write the  bmp to bgp global config dictionary
             bgp_global["bmp"] = cfg

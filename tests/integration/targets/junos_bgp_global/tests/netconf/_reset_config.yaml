@@ -1,0 +1,10 @@
+---
+- debug:
+    msg: "START junos_bgp_global reset config on connection={{ ansible_connection }}"
+
+- name: Reset configuration for ospf3 and routing-options
+  junos_config:
+    lines:
+      - delete protocols bgp
+- debug:
+    msg: "END junos_bgp_global reset config on connection={{ ansible_connection }}"

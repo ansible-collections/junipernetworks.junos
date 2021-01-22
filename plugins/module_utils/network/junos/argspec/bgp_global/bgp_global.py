@@ -38,7 +38,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
     argument_spec = {
         'config': {
             'options': {
-                'accept_remote_next_hop': {
+                'accept_remote_nexthop': {
                     'type': 'bool'
                 },
                 'add_path_display_ipv4_address': {
@@ -1185,7 +1185,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
         },
         'state': {
             'choices': [
-                'purge', 'merged', 'replaced', 'overridden', 'deleted',
+                'merged', 'replaced', 'purged', 'deleted',
                 'gathered', 'parsed', 'rendered'
             ],
             'default':

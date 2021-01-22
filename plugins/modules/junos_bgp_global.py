@@ -67,7 +67,7 @@ options:
       as_number:
         description: Specify Autonomous system number.
         type: str
-      accept_remote_next_hop:
+      accept_remote_nexthop:
         description: Allow import policy to specify a non-directly connected next-hop.
         type: bool
       add_path_display_ipv4_address:
@@ -1138,7 +1138,7 @@ options:
       - purge
       - merged
       - replaced
-      - overridden
+      - purged
       - deleted
       - gathered
       - parsed
@@ -1146,16 +1146,6 @@ options:
     default: merged
 """
 EXAMPLES = """
-
-
-
-
-
-
-
-
-
-
 
 
 """
