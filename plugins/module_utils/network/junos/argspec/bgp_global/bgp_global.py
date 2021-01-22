@@ -32,1165 +32,654 @@ __metaclass__ = type
 class Bgp_globalArgs(object):  # pylint: disable=R0903
     """The arg spec for the junos_bgp_global module
     """
+
     def __init__(self, **kwargs):
         pass
 
     argument_spec = {
-        'config': {
-            'options': {
-                'accept_remote_nexthop': {
-                    'type': 'bool'
-                },
-                'add_path_display_ipv4_address': {
-                    'type': 'bool'
-                },
-                'advertise_bgp_static': {
-                    'options': {
-                        'policy': {
-                            'type': 'str'
-                        },
-                        'set': {
-                            'type': 'bool'
-                        }
+        "config": {
+            "options": {
+                "accept_remote_nexthop": {"type": "bool"},
+                "add_path_display_ipv4_address": {"type": "bool"},
+                "advertise_bgp_static": {
+                    "options": {
+                        "policy": {"type": "str"},
+                        "set": {"type": "bool"},
                     },
-                    'type': 'dict'
+                    "type": "dict",
                 },
-                'advertise_external': {
-                    'options': {
-                        'conditional': {
-                            'type': 'bool'
-                        },
-                        'set': {
-                            'type': 'bool'
-                        }
+                "advertise_external": {
+                    "options": {
+                        "conditional": {"type": "bool"},
+                        "set": {"type": "bool"},
                     },
-                    'type': 'dict'
+                    "type": "dict",
                 },
-                'advertise_from_main_vpn_tables': {
-                    'type': 'bool'
+                "advertise_from_main_vpn_tables": {"type": "bool"},
+                "advertise_inactive": {"type": "bool"},
+                "advertise_peer_as": {"type": "bool"},
+                "as_number": {"type": "str"},
+                "authentication_algorithm": {
+                    "choices": ["aes-128-cmac-96", "hmac-sha-1-96", "md5"],
+                    "type": "str",
                 },
-                'advertise_inactive': {
-                    'type': 'bool'
-                },
-                'advertise_peer_as': {
-                    'type': 'bool'
-                },
-                'as_number': {
-                    'type': 'str'
-                },
-                'authentication_algorithm': {
-                    'choices': ['aes-128-cmac-96', 'hmac-sha-1-96', 'md5'],
-                    'type': 'str'
-                },
-                'authentication_key': {
-                    'type': 'str'
-                },
-                'authentication_key_chain': {
-                    'type': 'str'
-                },
-                'bfd_liveness_detection': {
-                    'options': {
-                        'authentication': {
-                            'options': {
-                                'algorithm': {
-                                    'choices': [
-                                        'keyed-md5', 'keyed-sha-1',
-                                        'meticulous-keyed-md5',
-                                        'meticulous-keyed-sha-1',
-                                        'simple-password'
+                "authentication_key": {"type": "str"},
+                "authentication_key_chain": {"type": "str"},
+                "bfd_liveness_detection": {
+                    "options": {
+                        "authentication": {
+                            "options": {
+                                "algorithm": {
+                                    "choices": [
+                                        "keyed-md5",
+                                        "keyed-sha-1",
+                                        "meticulous-keyed-md5",
+                                        "meticulous-keyed-sha-1",
+                                        "simple-password",
                                     ],
-                                    'type':
-                                    'str'
+                                    "type": "str",
                                 },
-                                'key_chain': {
-                                    'type': 'str'
-                                },
-                                'loose_check': {
-                                    'type': 'bool'
-                                }
+                                "key_chain": {"type": "str"},
+                                "loose_check": {"type": "bool"},
                             },
-                            'type': 'dict'
+                            "type": "dict",
                         },
-                        'detection_time': {
-                            'options': {
-                                'threshold': {
-                                    'type': 'int'
-                                }
+                        "detection_time": {
+                            "options": {"threshold": {"type": "int"}},
+                            "type": "dict",
+                        },
+                        "holddown_interval": {"type": "int"},
+                        "minimum_interval": {"type": "int"},
+                        "minimum_receive_interval": {"type": "int"},
+                        "multiplier": {"type": "int"},
+                        "no_adaptation": {"type": "bool"},
+                        "session_mode": {
+                            "choices": ["automatic", "multihop", "single-hop"],
+                            "type": "str",
+                        },
+                        "transmit_interval": {
+                            "options": {
+                                "minimum_interval": {"type": "int"},
+                                "threshold": {"type": "int"},
                             },
-                            'type': 'dict'
+                            "type": "dict",
                         },
-                        'holddown_interval': {
-                            'type': 'int'
+                        "version": {
+                            "choices": ["0", "1", "automatic"],
+                            "type": "str",
                         },
-                        'minimum_interval': {
-                            'type': 'int'
-                        },
-                        'minimum_receive_interval': {
-                            'type': 'int'
-                        },
-                        'multiplier': {
-                            'type': 'int'
-                        },
-                        'no_adaptation': {
-                            'type': 'bool'
-                        },
-                        'session_mode': {
-                            'choices': ['automatic', 'multihop', 'single-hop'],
-                            'type': 'str'
-                        },
-                        'transmit_interval': {
-                            'options': {
-                                'minimum_interval': {
-                                    'type': 'int'
+                    },
+                    "type": "dict",
+                },
+                "bgp_error_tolerance": {
+                    "options": {
+                        "malformed_route_limit": {"type": "int"},
+                        "malformed_update_log_interval": {"type": "int"},
+                        "no_malformed_route_limit": {"type": "bool"},
+                        "set": {"type": "bool"},
+                    },
+                    "type": "dict",
+                },
+                "bmp": {
+                    "options": {
+                        "monitor": {"type": "bool"},
+                        "route_monitoring": {
+                            "options": {
+                                "none": {"type": "bool"},
+                                "post_policy": {"type": "bool"},
+                                "post_policy_exclude_non_eligible": {
+                                    "type": "bool"
                                 },
-                                'threshold': {
-                                    'type': 'int'
-                                }
+                                "post_policy_exclude_non_feasible": {
+                                    "type": "bool"
+                                },
+                                "pre_policy": {"type": "bool"},
                             },
-                            'type': 'dict'
+                            "type": "dict",
                         },
-                        'version': {
-                            'choices': ['0', '1', 'automatic'],
-                            'type': 'str'
-                        }
                     },
-                    'type': 'dict'
+                    "type": "dict",
                 },
-                'bgp_error_tolerance': {
-                    'options': {
-                        'malformed_route_limit': {
-                            'type': 'int'
-                        },
-                        'malformed_update_log_interval': {
-                            'type': 'int'
-                        },
-                        'no_malformed_route_limit': {
-                            'type': 'bool'
-                        },
-                        'set': {
-                            'type': 'bool'
-                        }
-                    },
-                    'type': 'dict'
+                "cluster_id": {"type": "str"},
+                "damping": {"type": "bool"},
+                "description": {"type": "str"},
+                "disable": {"type": "bool"},
+                "egress_te": {
+                    "options": {"backup_path": {"type": "str"}},
+                    "type": "dict",
                 },
-                'bmp': {
-                    'options': {
-                        'monitor': {
-                            'type': 'bool'
-                        },
-                        'route_monitoring': {
-                            'options': {
-                                'none': {
-                                    'type': 'bool'
-                                },
-                                'post_policy': {
-                                    'type': 'bool'
-                                },
-                                'post_policy_exclude_non_eligible': {
-                                    'type': 'bool'
-                                },
-                                'post_policy_exclude_non_feasible': {
-                                    'type': 'bool'
-                                },
-                                'pre_policy': {
-                                    'type': 'bool'
-                                }
-                            },
-                            'type': 'dict'
-                        }
-                    },
-                    'type': 'dict'
-                },
-                'cluster_id': {
-                    'type': 'str'
-                },
-                'damping': {
-                    'type': 'bool'
-                },
-                'description': {
-                    'type': 'str'
-                },
-                'disable': {
-                    'type': 'bool'
-                },
-                'egress_te': {
-                    'options': {
-                        'backup_path': {
-                            'type': 'str'
-                        }
-                    },
-                    'type': 'dict'
-                },
-                'egress_te_backup_paths': {
-                    'options': {
-                        'peer_addr': {
-                            'type': 'str'
-                        },
-                        'remote_nexthop': {
-                            'type': 'str'
-                        },
-                        'template': {
-                            'options': {
-                                'ip_forward': {
-                                    'options': {
-                                        'rti_name': {
-                                            'type': 'str'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                "egress_te_backup_paths": {
+                    "options": {
+                        "peer_addr": {"type": "str"},
+                        "remote_nexthop": {"type": "str"},
+                        "template": {
+                            "options": {
+                                "ip_forward": {
+                                    "options": {
+                                        "rti_name": {"type": "str"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'path_name': {
-                                    'type': 'str'
-                                }
+                                "path_name": {"type": "str"},
                             },
-                            'type': 'dict'
-                        }
+                            "type": "dict",
+                        },
                     },
-                    'type': 'dict'
+                    "type": "dict",
                 },
-                'egress_te_set_segment': {
-                    'options': {
-                        'egress_te_backup_segment_label': {
-                            'type': 'int'
-                        },
-                        'label': {
-                            'type': 'int'
-                        },
-                        'name': {
-                            'type': 'str'
-                        }
+                "egress_te_set_segment": {
+                    "options": {
+                        "egress_te_backup_segment_label": {"type": "int"},
+                        "label": {"type": "int"},
+                        "name": {"type": "str"},
                     },
-                    'type': 'dict'
+                    "type": "dict",
                 },
-                'egress_te_sid_stats': {
-                    'type': 'bool'
-                },
-                'enforce_first_as': {
-                    'type': 'bool'
-                },
-                'export': {
-                    'type': 'str'
-                },
-                'forwarding_context': {
-                    'type': 'str'
-                },
-                'graceful_restart': {
-                    'options': {
-                        'disable': {
-                            'type': 'bool'
-                        },
-                        'dont_help_shared_fate_bfd_down': {
-                            'type': 'bool'
-                        },
-                        'forwarding_state_bit': {
-                            'options': {
-                                'as_rr_client': {
-                                    'type': 'bool'
-                                },
-                                'from_fib': {
-                                    'type': 'bool'
-                                }
+                "egress_te_sid_stats": {"type": "bool"},
+                "enforce_first_as": {"type": "bool"},
+                "export": {"type": "str"},
+                "forwarding_context": {"type": "str"},
+                "graceful_restart": {
+                    "options": {
+                        "disable": {"type": "bool"},
+                        "dont_help_shared_fate_bfd_down": {"type": "bool"},
+                        "forwarding_state_bit": {
+                            "options": {
+                                "as_rr_client": {"type": "bool"},
+                                "from_fib": {"type": "bool"},
                             },
-                            'type': 'dict'
+                            "type": "dict",
                         },
-                        'long_lived': {
-                            'options': {
-                                'advertise_to_non_llgr_neighbor': {
-                                    'options': {
-                                        'omit_no_export': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                        "long_lived": {
+                            "options": {
+                                "advertise_to_non_llgr_neighbor": {
+                                    "options": {
+                                        "omit_no_export": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'receiver_disable': {
-                                    'type': 'bool'
-                                }
+                                "receiver_disable": {"type": "bool"},
                             },
-                            'type': 'dict'
+                            "type": "dict",
                         },
-                        'restart_time': {
-                            'type': 'int'
-                        },
-                        'set': {
-                            'type': 'bool'
-                        },
-                        'stale_routes_time': {
-                            'type': 'int'
-                        }
+                        "restart_time": {"type": "int"},
+                        "set": {"type": "bool"},
+                        "stale_routes_time": {"type": "int"},
                     },
-                    'type': 'dict'
+                    "type": "dict",
                 },
-                'hold_time': {
-                    'type': 'int'
-                },
-                'holddown_all_stale_labels': {
-                    'type': 'bool'
-                },
-                'idle_after_switch_over': {
-                    'options': {
-                        'forever': {
-                            'type': 'bool'
-                        },
-                        'timeout': {
-                            'type': 'int'
-                        }
+                "hold_time": {"type": "int"},
+                "holddown_all_stale_labels": {"type": "bool"},
+                "idle_after_switch_over": {
+                    "options": {
+                        "forever": {"type": "bool"},
+                        "timeout": {"type": "int"},
                     },
-                    'type': 'dict'
+                    "type": "dict",
                 },
-                'import': {
-                    'type': 'str'
-                },
-                'include_mp_next_hop': {
-                    'type': 'bool'
-                },
-                'ipsec_sa': {
-                    'type': 'str'
-                },
-                'keep': {
-                    'choices': ['all', 'none'],
-                    'type': 'str'
-                },
-                'local_address': {
-                    'type': 'str'
-                },
-                'local_as': {
-                    'options': {
-                        'alias': {
-                            'type': 'bool'
-                        },
-                        'as_num': {
-                            'type': 'str'
-                        },
-                        'loops': {
-                            'type': 'int'
-                        },
-                        'no_prepend_global_as': {
-                            'type': 'bool'
-                        },
-                        'private': {
-                            'type': 'bool'
-                        },
-                        'set': {
-                            'type': 'bool'
-                        }
+                "import": {"type": "str"},
+                "include_mp_next_hop": {"type": "bool"},
+                "ipsec_sa": {"type": "str"},
+                "keep": {"choices": ["all", "none"], "type": "str"},
+                "local_address": {"type": "str"},
+                "local_as": {
+                    "options": {
+                        "alias": {"type": "bool"},
+                        "as_num": {"type": "str"},
+                        "loops": {"type": "int"},
+                        "no_prepend_global_as": {"type": "bool"},
+                        "private": {"type": "bool"},
+                        "set": {"type": "bool"},
                     },
-                    'type': 'dict'
+                    "type": "dict",
                 },
-                'local_interface': {
-                    'type': 'str'
-                },
-                'local_preference': {
-                    'type': 'str'
-                },
-                'log_updown': {
-                    'type': 'bool'
-                },
-                'metric_out': {
-                    'options': {
-                        'igp': {
-                            'options': {
-                                'delay_med_update': {
-                                    'type': 'bool'
-                                },
-                                'metric_offset': {
-                                    'type': 'int'
-                                },
-                                'set': {
-                                    'type': 'bool'
-                                }
+                "local_interface": {"type": "str"},
+                "local_preference": {"type": "str"},
+                "log_updown": {"type": "bool"},
+                "metric_out": {
+                    "options": {
+                        "igp": {
+                            "options": {
+                                "delay_med_update": {"type": "bool"},
+                                "metric_offset": {"type": "int"},
+                                "set": {"type": "bool"},
                             },
-                            'type': 'dict'
+                            "type": "dict",
                         },
-                        'metric_value': {
-                            'type': 'int'
-                        },
-                        'minimum_igp': {
-                            'options': {
-                                'metric_offset': {
-                                    'type': 'int'
-                                },
-                                'set': {
-                                    'type': 'bool'
-                                }
+                        "metric_value": {"type": "int"},
+                        "minimum_igp": {
+                            "options": {
+                                "metric_offset": {"type": "int"},
+                                "set": {"type": "bool"},
                             },
-                            'type': 'dict'
-                        }
+                            "type": "dict",
+                        },
                     },
-                    'type': 'dict'
+                    "type": "dict",
                 },
-                'mtu_discovery': {
-                    'type': 'bool'
-                },
-                'multihop': {
-                    'options': {
-                        'no_nexthop_change': {
-                            'type': 'bool'
-                        },
-                        'set': {
-                            'type': 'bool'
-                        },
-                        'ttl': {
-                            'type': 'int'
-                        }
+                "mtu_discovery": {"type": "bool"},
+                "multihop": {
+                    "options": {
+                        "no_nexthop_change": {"type": "bool"},
+                        "set": {"type": "bool"},
+                        "ttl": {"type": "int"},
                     },
-                    'type': 'dict'
+                    "type": "dict",
                 },
-                'multipath': {
-                    'options': {
-                        'disable': {
-                            'type': 'bool'
-                        },
-                        'multiple_as': {
-                            'type': 'bool'
-                        },
-                        'set': {
-                            'type': 'bool'
-                        }
+                "multipath": {
+                    "options": {
+                        "disable": {"type": "bool"},
+                        "multiple_as": {"type": "bool"},
+                        "set": {"type": "bool"},
                     },
-                    'type': 'dict'
+                    "type": "dict",
                 },
-                'multipath_build_priority': {
-                    'choices': ['low', 'medium'],
-                    'type': 'str'
+                "multipath_build_priority": {
+                    "choices": ["low", "medium"],
+                    "type": "str",
                 },
-                'no_advertise_peer_as': {
-                    'type': 'bool'
-                },
-                'no_aggregator_id': {
-                    'type': 'bool'
-                },
-                'no_client_reflect': {
-                    'type': 'bool'
-                },
-                'no_precision_timers': {
-                    'type': 'bool'
-                },
-                'out_delay': {
-                    'type': 'int'
-                },
-                'outbound_route_filter': {
-                    'options': {
-                        'bgp_orf_cisco_mode': {
-                            'type': 'bool'
-                        },
-                        'prefix_based': {
-                            'options': {
-                                'accept': {
-                                    'options': {
-                                        'inet': {
-                                            'type': 'bool'
-                                        },
-                                        'inet6': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                "no_advertise_peer_as": {"type": "bool"},
+                "no_aggregator_id": {"type": "bool"},
+                "no_client_reflect": {"type": "bool"},
+                "no_precision_timers": {"type": "bool"},
+                "out_delay": {"type": "int"},
+                "outbound_route_filter": {
+                    "options": {
+                        "bgp_orf_cisco_mode": {"type": "bool"},
+                        "prefix_based": {
+                            "options": {
+                                "accept": {
+                                    "options": {
+                                        "inet": {"type": "bool"},
+                                        "inet6": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'set': {
-                                    'type': 'bool'
-                                }
+                                "set": {"type": "bool"},
                             },
-                            'type': 'dict'
-                        }
+                            "type": "dict",
+                        },
                     },
-                    'type': 'dict'
+                    "type": "dict",
                 },
-                'output_queue_priority': {
-                    'options': {
-                        'defaults': {
-                            'options': {
-                                'high': {
-                                    'options': {
-                                        'expedited': {
-                                            'type': 'bool'
-                                        },
-                                        'priority': {
-                                            'type': 'bool'
-                                        }
+                "output_queue_priority": {
+                    "options": {
+                        "defaults": {
+                            "options": {
+                                "high": {
+                                    "options": {
+                                        "expedited": {"type": "bool"},
+                                        "priority": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'low': {
-                                    'options': {
-                                        'expedited': {
-                                            'type': 'bool'
-                                        },
-                                        'priority': {
-                                            'type': 'bool'
-                                        }
+                                "low": {
+                                    "options": {
+                                        "expedited": {"type": "bool"},
+                                        "priority": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'medium': {
-                                    'options': {
-                                        'expedited': {
-                                            'type': 'bool'
-                                        },
-                                        'priority': {
-                                            'type': 'bool'
-                                        }
+                                "medium": {
+                                    "options": {
+                                        "expedited": {"type": "bool"},
+                                        "priority": {"type": "bool"},
                                     },
-                                    'type': 'dict'
-                                }
+                                    "type": "dict",
+                                },
                             },
-                            'type': 'dict'
+                            "type": "dict",
                         },
-                        'expedited': {
-                            'options': {
-                                'set': {
-                                    'type': 'bool'
-                                },
-                                'update_tokens': {
-                                    'type': 'int'
-                                }
+                        "expedited": {
+                            "options": {
+                                "set": {"type": "bool"},
+                                "update_tokens": {"type": "int"},
                             },
-                            'type': 'dict'
+                            "type": "dict",
                         },
-                        'priority': {
-                            'type': 'int'
-                        }
+                        "priority": {"type": "int"},
                     },
-                    'type': 'dict'
+                    "type": "dict",
                 },
-                'passive': {
-                    'type': 'bool'
-                },
-                'path_selection': {
-                    'options': {
-                        'always_compare_med': {
-                            'type': 'bool'
-                        },
-                        'as_path_ignore': {
-                            'type': 'bool'
-                        },
-                        'cisco_non_deterministic': {
-                            'type': 'bool'
-                        },
-                        'external_router_id': {
-                            'type': 'bool'
-                        },
-                        'l2vpn_use_bgp_rules': {
-                            'type': 'bool'
-                        },
-                        'med_plus_igp': {
-                            'options': {
-                                'igp_multiplier': {
-                                    'type': 'int'
-                                },
-                                'med_multiplier': {
-                                    'type': 'int'
-                                }
+                "passive": {"type": "bool"},
+                "path_selection": {
+                    "options": {
+                        "always_compare_med": {"type": "bool"},
+                        "as_path_ignore": {"type": "bool"},
+                        "cisco_non_deterministic": {"type": "bool"},
+                        "external_router_id": {"type": "bool"},
+                        "l2vpn_use_bgp_rules": {"type": "bool"},
+                        "med_plus_igp": {
+                            "options": {
+                                "igp_multiplier": {"type": "int"},
+                                "med_multiplier": {"type": "int"},
                             },
-                            'type': 'dict'
-                        }
+                            "type": "dict",
+                        },
                     },
-                    'type': 'dict'
+                    "type": "dict",
                 },
-                'peer_as': {
-                    'type': 'str'
-                },
-                'precision_timers': {
-                    'type': 'bool'
-                },
-                'preference': {
-                    'type': 'str'
-                },
-                'remove_private': {
-                    'options': {
-                        'all': {
-                            'type': 'bool'
-                        },
-                        'no_peer_loop_check': {
-                            'type': 'bool'
-                        },
-                        'replace': {
-                            'options': {
-                                'nearest': {
-                                    'type': 'bool'
-                                },
-                                'set': {
-                                    'type': 'bool'
-                                }
+                "peer_as": {"type": "str"},
+                "precision_timers": {"type": "bool"},
+                "preference": {"type": "str"},
+                "remove_private": {
+                    "options": {
+                        "all": {"type": "bool"},
+                        "no_peer_loop_check": {"type": "bool"},
+                        "replace": {
+                            "options": {
+                                "nearest": {"type": "bool"},
+                                "set": {"type": "bool"},
                             },
-                            'type': 'dict'
+                            "type": "dict",
                         },
-                        'set': {
-                            'type': 'bool'
-                        }
+                        "set": {"type": "bool"},
                     },
-                    'type': 'dict'
+                    "type": "dict",
                 },
-                'rfc6514_compliant_safi129': {
-                    'type': 'bool'
-                },
-                'route_server_client': {
-                    'type': 'bool'
-                },
-                'send_addpath_optimization': {
-                    'type': 'bool'
-                },
-                'snmp_options': {
-                    'options': {
-                        'backward_traps_only_from_established': {
-                            'type': 'bool'
+                "rfc6514_compliant_safi129": {"type": "bool"},
+                "route_server_client": {"type": "bool"},
+                "send_addpath_optimization": {"type": "bool"},
+                "snmp_options": {
+                    "options": {
+                        "backward_traps_only_from_established": {
+                            "type": "bool"
                         },
-                        'emit_inet_address_length_in_oid': {
-                            'type': 'bool'
-                        }
+                        "emit_inet_address_length_in_oid": {"type": "bool"},
                     },
-                    'type': 'dict'
+                    "type": "dict",
                 },
-                'sr_preference_override': {
-                    'type': 'str'
-                },
-                'stale_labels_holddown_period': {
-                    'type': 'int'
-                },
-                'tcp_aggressive_transmission': {
-                    'type': 'bool'
-                },
-                'tcp_mss': {
-                    'type': 'int'
-                },
-                'traceoptions': {
-                    'options': {
-                        'file': {
-                            'options': {
-                                'file_name': {
-                                    'type': 'str'
-                                },
-                                'files': {
-                                    'type': 'int'
-                                },
-                                'no_world_readable': {
-                                    'type': 'bool'
-                                },
-                                'size': {
-                                    'type': 'int'
-                                },
-                                'world_readable': {
-                                    'type': 'bool'
-                                }
+                "sr_preference_override": {"type": "str"},
+                "stale_labels_holddown_period": {"type": "int"},
+                "tcp_aggressive_transmission": {"type": "bool"},
+                "tcp_mss": {"type": "int"},
+                "traceoptions": {
+                    "options": {
+                        "file": {
+                            "options": {
+                                "file_name": {"type": "str"},
+                                "files": {"type": "int"},
+                                "no_world_readable": {"type": "bool"},
+                                "size": {"type": "int"},
+                                "world_readable": {"type": "bool"},
                             },
-                            'type': 'dict'
+                            "type": "dict",
                         },
-                        'flag': {
-                            'options': {
-                                '4byte_as': {
-                                    'options': {
-                                        'detail': {
-                                            'type': 'bool'
-                                        },
-                                        'disable': {
-                                            'type': 'bool'
-                                        },
-                                        'receive': {
-                                            'type': 'bool'
-                                        },
-                                        'send': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                        "flag": {
+                            "options": {
+                                "4byte_as": {
+                                    "options": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'add_path': {
-                                    'options': {
-                                        'detail': {
-                                            'type': 'bool'
-                                        },
-                                        'disable': {
-                                            'type': 'bool'
-                                        },
-                                        'receive': {
-                                            'type': 'bool'
-                                        },
-                                        'send': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                                "add_path": {
+                                    "options": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'all': {
-                                    'options': {
-                                        'detail': {
-                                            'type': 'bool'
-                                        },
-                                        'disable': {
-                                            'type': 'bool'
-                                        },
-                                        'receive': {
-                                            'type': 'bool'
-                                        },
-                                        'send': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                                "all": {
+                                    "options": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'bfd': {
-                                    'options': {
-                                        'detail': {
-                                            'type': 'bool'
-                                        },
-                                        'disable': {
-                                            'type': 'bool'
-                                        },
-                                        'receive': {
-                                            'type': 'bool'
-                                        },
-                                        'send': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                                "bfd": {
+                                    "options": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'damping': {
-                                    'options': {
-                                        'detail': {
-                                            'type': 'bool'
-                                        },
-                                        'disable': {
-                                            'type': 'bool'
-                                        },
-                                        'filter': {
-                                            'options': {
-                                                'match_on_prefix': {
-                                                    'type': 'bool'
+                                "damping": {
+                                    "options": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "filter": {
+                                            "options": {
+                                                "match_on_prefix": {
+                                                    "type": "bool"
                                                 },
-                                                'policy': {
-                                                    'type': 'str'
-                                                },
-                                                'set': {
-                                                    'type': 'bool'
-                                                }
+                                                "policy": {"type": "str"},
+                                                "set": {"type": "bool"},
                                             },
-                                            'type': 'dict'
+                                            "type": "dict",
                                         },
-                                        'receive': {
-                                            'type': 'bool'
-                                        },
-                                        'send': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'egress_te': {
-                                    'options': {
-                                        'detail': {
-                                            'type': 'bool'
-                                        },
-                                        'disable': {
-                                            'type': 'bool'
-                                        },
-                                        'receive': {
-                                            'type': 'bool'
-                                        },
-                                        'send': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                                "egress_te": {
+                                    "options": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'general': {
-                                    'options': {
-                                        'detail': {
-                                            'type': 'bool'
-                                        },
-                                        'disable': {
-                                            'type': 'bool'
-                                        },
-                                        'receive': {
-                                            'type': 'bool'
-                                        },
-                                        'send': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                                "general": {
+                                    "options": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'graceful_restart': {
-                                    'options': {
-                                        'detail': {
-                                            'type': 'bool'
-                                        },
-                                        'disable': {
-                                            'type': 'bool'
-                                        },
-                                        'receive': {
-                                            'type': 'bool'
-                                        },
-                                        'send': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                                "graceful_restart": {
+                                    "options": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'keepalive': {
-                                    'options': {
-                                        'detail': {
-                                            'type': 'bool'
-                                        },
-                                        'disable': {
-                                            'type': 'bool'
-                                        },
-                                        'receive': {
-                                            'type': 'bool'
-                                        },
-                                        'send': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                                "keepalive": {
+                                    "options": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'normal': {
-                                    'options': {
-                                        'detail': {
-                                            'type': 'bool'
-                                        },
-                                        'disable': {
-                                            'type': 'bool'
-                                        },
-                                        'receive': {
-                                            'type': 'bool'
-                                        },
-                                        'send': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                                "normal": {
+                                    "options": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'nsr_synchronization': {
-                                    'options': {
-                                        'detail': {
-                                            'type': 'bool'
-                                        },
-                                        'disable': {
-                                            'type': 'bool'
-                                        },
-                                        'receive': {
-                                            'type': 'bool'
-                                        },
-                                        'send': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                                "nsr_synchronization": {
+                                    "options": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'open': {
-                                    'options': {
-                                        'detail': {
-                                            'type': 'bool'
-                                        },
-                                        'disable': {
-                                            'type': 'bool'
-                                        },
-                                        'receive': {
-                                            'type': 'bool'
-                                        },
-                                        'send': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                                "open": {
+                                    "options": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'packets': {
-                                    'options': {
-                                        'detail': {
-                                            'type': 'bool'
-                                        },
-                                        'disable': {
-                                            'type': 'bool'
-                                        },
-                                        'receive': {
-                                            'type': 'bool'
-                                        },
-                                        'send': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                                "packets": {
+                                    "options": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'policy': {
-                                    'options': {
-                                        'detail': {
-                                            'type': 'bool'
-                                        },
-                                        'disable': {
-                                            'type': 'bool'
-                                        },
-                                        'receive': {
-                                            'type': 'bool'
-                                        },
-                                        'send': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                                "policy": {
+                                    "options": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'refresh': {
-                                    'options': {
-                                        'detail': {
-                                            'type': 'bool'
-                                        },
-                                        'disable': {
-                                            'type': 'bool'
-                                        },
-                                        'receive': {
-                                            'type': 'bool'
-                                        },
-                                        'send': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                                "refresh": {
+                                    "options": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'route': {
-                                    'options': {
-                                        'detail': {
-                                            'type': 'bool'
-                                        },
-                                        'disable': {
-                                            'type': 'bool'
-                                        },
-                                        'filter': {
-                                            'options': {
-                                                'match_on_prefix': {
-                                                    'type': 'bool'
+                                "route": {
+                                    "options": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "filter": {
+                                            "options": {
+                                                "match_on_prefix": {
+                                                    "type": "bool"
                                                 },
-                                                'policy': {
-                                                    'type': 'str'
-                                                },
-                                                'set': {
-                                                    'type': 'bool'
-                                                }
+                                                "policy": {"type": "str"},
+                                                "set": {"type": "bool"},
                                             },
-                                            'type': 'dict'
+                                            "type": "dict",
                                         },
-                                        'receive': {
-                                            'type': 'bool'
-                                        },
-                                        'send': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'state': {
-                                    'options': {
-                                        'detail': {
-                                            'type': 'bool'
-                                        },
-                                        'disable': {
-                                            'type': 'bool'
-                                        },
-                                        'receive': {
-                                            'type': 'bool'
-                                        },
-                                        'send': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                                "state": {
+                                    "options": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'thread_io': {
-                                    'options': {
-                                        'detail': {
-                                            'type': 'bool'
-                                        },
-                                        'disable': {
-                                            'type': 'bool'
-                                        },
-                                        'receive': {
-                                            'type': 'bool'
-                                        },
-                                        'send': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                                "thread_io": {
+                                    "options": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'thread_update_io': {
-                                    'options': {
-                                        'detail': {
-                                            'type': 'bool'
-                                        },
-                                        'disable': {
-                                            'type': 'bool'
-                                        },
-                                        'receive': {
-                                            'type': 'bool'
-                                        },
-                                        'send': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                                "thread_update_io": {
+                                    "options": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'timer': {
-                                    'options': {
-                                        'detail': {
-                                            'type': 'bool'
-                                        },
-                                        'disable': {
-                                            'type': 'bool'
-                                        },
-                                        'receive': {
-                                            'type': 'bool'
-                                        },
-                                        'send': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                                "timer": {
+                                    "options": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
+                                    "type": "dict",
                                 },
-                                'update': {
-                                    'options': {
-                                        'detail': {
-                                            'type': 'bool'
-                                        },
-                                        'disable': {
-                                            'type': 'bool'
-                                        },
-                                        'receive': {
-                                            'type': 'bool'
-                                        },
-                                        'send': {
-                                            'type': 'bool'
-                                        },
-                                        'set': {
-                                            'type': 'bool'
-                                        }
+                                "update": {
+                                    "options": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
+                                        "set": {"type": "bool"},
                                     },
-                                    'type': 'dict'
-                                }
+                                    "type": "dict",
+                                },
                             },
-                            'type': 'dict'
-                        }
-                    },
-                    'type': 'dict'
-                },
-                'traffic_statistics_labeled_path': {
-                    'options': {
-                        'file': {
-                            'options': {
-                                'file_name': {
-                                    'type': 'str'
-                                },
-                                'files': {
-                                    'type': 'int'
-                                },
-                                'no_world_readable': {
-                                    'type': 'bool'
-                                },
-                                'size': {
-                                    'type': 'int'
-                                },
-                                'world_readable': {
-                                    'type': 'bool'
-                                }
-                            },
-                            'type': 'dict'
+                            "type": "dict",
                         },
-                        'interval': {
-                            'type': 'int'
-                        }
                     },
-                    'type': 'dict'
+                    "type": "dict",
                 },
-                'ttl': {
-                    'type': 'int'
+                "traffic_statistics_labeled_path": {
+                    "options": {
+                        "file": {
+                            "options": {
+                                "file_name": {"type": "str"},
+                                "files": {"type": "int"},
+                                "no_world_readable": {"type": "bool"},
+                                "size": {"type": "int"},
+                                "world_readable": {"type": "bool"},
+                            },
+                            "type": "dict",
+                        },
+                        "interval": {"type": "int"},
+                    },
+                    "type": "dict",
                 },
-                'unconfigured_peer_graceful_restart': {
-                    'type': 'bool'
-                },
-                'vpn_apply_export': {
-                    'type': 'bool'
-                }
+                "ttl": {"type": "int"},
+                "unconfigured_peer_graceful_restart": {"type": "bool"},
+                "vpn_apply_export": {"type": "bool"},
             },
-            'type': 'dict'
+            "type": "dict",
         },
-        'running_config': {
-            'type': 'str'
-        },
-        'state': {
-            'choices': [
-                'merged', 'replaced', 'purged', 'deleted',
-                'gathered', 'parsed', 'rendered'
+        "running_config": {"type": "str"},
+        "state": {
+            "choices": [
+                "merged",
+                "replaced",
+                "purged",
+                "deleted",
+                "gathered",
+                "parsed",
+                "rendered",
             ],
-            'default':
-            'merged',
-            'type':
-            'str'
-        }
+            "default": "merged",
+            "type": "str",
+        },
     }  # pylint: disable=C0301

@@ -28,7 +28,9 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.u
     to_list,
     remove_empties,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import Facts
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
+    Facts,
+)
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
     build_root_xml_node,
     build_child_xml_node,
@@ -237,10 +239,14 @@ class Bgp_global(ConfigBase):
             "ttl",
         ]
         for item in bool_parser:
-            bgp_root = self._add_node(want, item, item.replace("-", "_"), bgp_root)
+            bgp_root = self._add_node(
+                want, item, item.replace("-", "_"), bgp_root
+            )
 
         for item in cfg_parser:
-            bgp_root = self._add_node(want, item, item.replace("-", "_"), bgp_root, True)
+            bgp_root = self._add_node(
+                want, item, item.replace("-", "_"), bgp_root, True
+            )
 
         # Generate config commands for advertise-bgp-static
         if want.get("advertise_bgp_static"):
@@ -255,14 +261,10 @@ class Bgp_global(ConfigBase):
 
         # Generate config commands for advertise-external
         if want.get("advertise_external"):
-            ad_ext_node = build_child_xml_node(
-                bgp_root, "advertise-external"
-            )
+            ad_ext_node = build_child_xml_node(bgp_root, "advertise-external")
             ad_ext = want.get("advertise_external")
             if "conditional" in ad_ext.keys():
-                build_child_xml_node(
-                    ad_ext_node, "conditional"
-                )
+                build_child_xml_node(ad_ext_node, "conditional")
 
         # Generate config commands for bfd-liveness-detection
         if want.get("bfd_liveness_detection"):
@@ -314,22 +316,30 @@ class Bgp_global(ConfigBase):
                 # Add node for minimum-interval
                 if "minimum_interval" in t_int.keys():
                     build_child_xml_node(
-                        t_int_node, "minimum-interval", t_int["minimum_interval"]
+                        t_int_node,
+                        "minimum-interval",
+                        t_int["minimum_interval"],
                     )
             # Add node for holddown-interval
             if "holddown_interval" in bfd_live_detect.keys():
                 build_child_xml_node(
-                    bfd_live_node, "holddown-interval", bfd_live_detect["holddown_interval"]
+                    bfd_live_node,
+                    "holddown-interval",
+                    bfd_live_detect["holddown_interval"],
                 )
             # Add node for minimum-receive-interval
             if "minimum_receive_interval" in bfd_live_detect.keys():
                 build_child_xml_node(
-                    bfd_live_node, "minimum-receive-interval", bfd_live_detect["minimum_receive_interval"]
+                    bfd_live_node,
+                    "minimum-receive-interval",
+                    bfd_live_detect["minimum_receive_interval"],
                 )
             # Add node for minimum-interval
             if "minimum_interval" in bfd_live_detect.keys():
                 build_child_xml_node(
-                    bfd_live_node, "minimum-interval", bfd_live_detect["minimum_interval"]
+                    bfd_live_node,
+                    "minimum-interval",
+                    bfd_live_detect["minimum_interval"],
                 )
             # Add node for multiplier
             if "multiplier" in bfd_live_detect.keys():
@@ -345,7 +355,9 @@ class Bgp_global(ConfigBase):
             # Add node for session-mode
             if "session_mode" in bfd_live_detect.keys():
                 build_child_xml_node(
-                    bfd_live_node, "session-mode", bfd_live_detect["session_mode"]
+                    bfd_live_node,
+                    "session-mode",
+                    bfd_live_detect["session_mode"],
                 )
             # Add node for version
             if "version" in bfd_live_detect.keys():
@@ -361,25 +373,29 @@ class Bgp_global(ConfigBase):
             # Add node for malformed-route-limit"
             if "malformed_route_limit" in bgp_err_tol.keys():
                 build_child_xml_node(
-                    bgp_err_tol_node, "malformed-route-limit", bgp_err_tol["malformed_route_limit"]
+                    bgp_err_tol_node,
+                    "malformed-route-limit",
+                    bgp_err_tol["malformed_route_limit"],
                 )
             # Add node for malformed-update-log-interval
             if "malformed_update_log_interval" in bgp_err_tol.keys():
                 build_child_xml_node(
-                    bgp_err_tol_node, "malformed-update-log-interval", bgp_err_tol["malformed_update_log_interval"]
+                    bgp_err_tol_node,
+                    "malformed-update-log-interval",
+                    bgp_err_tol["malformed_update_log_interval"],
                 )
             # Generate config commands for no-malformed-route-limit
             if "no_malformed_route_limit" in bgp_err_tol.keys():
                 b_val = bgp_err_tol.get("no_malformed_route_limit")
                 if b_val is not None:
                     if b_val is True:
-                        build_child_xml_node(bgp_err_tol_node, "no-malformed-route-limit")
+                        build_child_xml_node(
+                            bgp_err_tol_node, "no-malformed-route-limit"
+                        )
 
         # Generate config commands for bmp
         if want.get("bmp"):
-            bmp_node = build_child_xml_node(
-                bgp_root, "bmp"
-            )
+            bmp_node = build_child_xml_node(bgp_root, "bmp")
             bmp = want.get("bmp")
             # Add node for monitor
             if "monitor" in bmp.keys():
@@ -392,9 +408,7 @@ class Bgp_global(ConfigBase):
 
             # Add node for route-monitoring
             if "route_monitoring" in bmp.keys():
-                r_mon_node = build_child_xml_node(
-                    bmp_node, "route-monitoring",
-                )
+                r_mon_node = build_child_xml_node(bmp_node, "route-monitoring")
                 r_mon = bmp["route_monitoring"]
                 # Add node for none
                 if "none" in r_mon.keys():
@@ -407,8 +421,12 @@ class Bgp_global(ConfigBase):
                     b_val = r_mon.get("post_policy_exclude_non_eligible")
                     if b_val is not None:
                         if b_val is True:
-                            policy_node = build_child_xml_node(r_mon_node, "post-policy")
-                            build_child_xml_node(policy_node, "exclude-non-eligible")
+                            policy_node = build_child_xml_node(
+                                r_mon_node, "post-policy"
+                            )
+                            build_child_xml_node(
+                                policy_node, "exclude-non-eligible"
+                            )
                 elif "post_policy" in r_mon.keys():
                     b_val = r_mon.get("post_policy")
                     if b_val is not None:
@@ -419,8 +437,12 @@ class Bgp_global(ConfigBase):
                     b_val = r_mon.get("pre_policy_exclude_non_feasible")
                     if b_val is not None:
                         if b_val is True:
-                            policy_node = build_child_xml_node(r_mon_node, "pre-policy")
-                            build_child_xml_node(policy_node, "exclude-non-eligible")
+                            policy_node = build_child_xml_node(
+                                r_mon_node, "pre-policy"
+                            )
+                            build_child_xml_node(
+                                policy_node, "exclude-non-eligible"
+                            )
                 elif "pre-policy" in r_mon.keys():
                     b_val = r_mon.get("pre_policy")
                     if b_val is not None:
@@ -493,9 +515,7 @@ class Bgp_global(ConfigBase):
         ]
         bgp_root = build_root_xml_node("bgp")
         for attrib in parser:
-            build_child_xml_node(
-                bgp_root, attrib, None, {"delete": "delete"}
-            )
+            build_child_xml_node(bgp_root, attrib, None, {"delete": "delete"})
         bgp_xml.append(bgp_root)
         return bgp_xml
 

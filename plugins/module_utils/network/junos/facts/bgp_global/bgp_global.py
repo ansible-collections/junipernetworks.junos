@@ -19,8 +19,11 @@ from ansible.module_utils.basic import missing_required_lib
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
     utils,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.bgp_global.bgp_global import Bgp_globalArgs
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.bgp_global.bgp_global import (
+    Bgp_globalArgs,
+)
 from ansible.module_utils.six import string_types
+
 try:
     from lxml import etree
 
@@ -40,7 +43,7 @@ class Bgp_globalFacts(object):
     """ The junos bgp_global fact class
     """
 
-    def __init__(self, module, subspec='config', options='options'):
+    def __init__(self, module, subspec="config", options="options"):
         self._module = module
         self.argument_spec = Bgp_globalArgs.argument_spec
         spec = deepcopy(self.argument_spec)
@@ -91,9 +94,13 @@ class Bgp_globalFacts(object):
             )
         objs = {}
         resources = data.xpath("configuration/protocols/bgp")
-        autonomous_system = data.xpath("configuration/routing-options/autonomous-system")
+        autonomous_system = data.xpath(
+            "configuration/routing-options/autonomous-system"
+        )
         if autonomous_system:
-            self.autonomous_system = self._get_xml_dict(autonomous_system.pop())
+            self.autonomous_system = self._get_xml_dict(
+                autonomous_system.pop()
+            )
         else:
             self.autonomous_system = ""
         for resource in resources:
@@ -141,8 +148,11 @@ class Bgp_globalFacts(object):
         # Parse advertise-bgp-static dictionary
         if "advertise-bgp-static" in bgp.keys():
             cfg = {}
-            if bgp.get("advertise-bgp-static") and "advertise-bgp-static" in bgp.keys():
-                if 'policy' in bgp["advertise-bgp-static"]:
+            if (
+                bgp.get("advertise-bgp-static")
+                and "advertise-bgp-static" in bgp.keys()
+            ):
+                if "policy" in bgp["advertise-bgp-static"]:
                     cfg["policy"] = bgp["advertise-bgp-static"].get("policy")
             else:
                 cfg["set"] = True
@@ -151,7 +161,7 @@ class Bgp_globalFacts(object):
         # Parse advertise-external dictionary
         if "advertise-external" in bgp.keys():
             cfg = {}
-            if 'conditional' in bgp["advertise-bgp-static"].keys():
+            if "conditional" in bgp["advertise-bgp-static"].keys():
                 cfg["conditional"] = True
             else:
                 cfg["set"] = True
@@ -171,7 +181,9 @@ class Bgp_globalFacts(object):
 
         # Read authentication-algorithm value
         if "authentication-algorithm" in bgp.keys():
-            bgp_global["authentication_algorithm"] = bgp["authentication-algorithm"]
+            bgp_global["authentication_algorithm"] = bgp[
+                "authentication-algorithm"
+            ]
 
         # Read authentication-key value
         if "authentication-key" in bgp.keys():
@@ -179,7 +191,9 @@ class Bgp_globalFacts(object):
 
         # Read authentication-key-chain value
         if "authentication-key-chain" in bgp.keys():
-            bgp_global["authentication_key_chain"] = bgp["authentication-key-chain"]
+            bgp_global["authentication_key_chain"] = bgp[
+                "authentication-key-chain"
+            ]
 
         # Parse bfd-liveness-detection dictionary
         if "bfd-liveness-detection" in bgp.keys():
@@ -218,7 +232,9 @@ class Bgp_globalFacts(object):
 
             # Read minimum-receive-interval value
             if "minimum-receive-interval" in bld.keys():
-                cfg["minimum_receive_interval"] = bld["minimum-receive-interval"]
+                cfg["minimum_receive_interval"] = bld[
+                    "minimum-receive-interval"
+                ]
 
             # Read minimum-interval value
             if "minimum-interval" in bld.keys():
@@ -251,7 +267,9 @@ class Bgp_globalFacts(object):
             if "malformed-route-limit" in bet.keys():
                 cfg["malformed_route_limit"] = bet["malformed-route-limit"]
             if "malformed-update-log-interval" in bet.keys():
-                cfg["malformed_update_log_interval"] = bet["malformed-update-log-interval"]
+                cfg["malformed_update_log_interval"] = bet[
+                    "malformed-update-log-interval"
+                ]
             if "no-malformed-route-limit" in bet.keys():
                 cfg["no_malformed_route_limit"] = True
             # write the  bfd_liveness_detection to bgp global config dictionary
@@ -272,7 +290,9 @@ class Bgp_globalFacts(object):
 
                 # Read post-policy attribute value
                 if "post-policy" in r_monitoring.keys():
-                    if r_monitoring["post-policy"].keys("exclude-non-eligible"):
+                    if r_monitoring["post-policy"].keys(
+                        "exclude-non-eligible"
+                    ):
                         rm_dict["post_policy_exclude_non_eligible"] = True
                     else:
                         rm_dict["post_policy"] = True
@@ -420,11 +440,15 @@ class Bgp_globalFacts(object):
 
         # Read sr-preference-override value
         if "sr-preference-override" in bgp.keys():
-            bgp_global["sr_preference_override"] = bgp["sr-preference-override"]
+            bgp_global["sr_preference_override"] = bgp[
+                "sr-preference-override"
+            ]
 
         # Read stale-labels-holddown-period value
         if "stale-labels-holddown-period" in bgp.keys():
-            bgp_global["stale_labels_holddown_period"] = bgp["stale-labels-holddown-period"]
+            bgp_global["stale_labels_holddown_period"] = bgp[
+                "stale-labels-holddown-period"
+            ]
 
         # Read tcp-aggressive-transmission value
         if "tcp-aggressive-transmission" in bgp.keys():

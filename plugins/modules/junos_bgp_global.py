@@ -27,12 +27,13 @@ The module file for junos_bgp_global
 """
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
-    'metadata_version': '1.1',
-    'status': ['preview'],
-    'supported_by': 'network'
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "network",
 }
 
 DOCUMENTATION = """
@@ -1146,19 +1147,535 @@ options:
     default: merged
 """
 EXAMPLES = """
+# Using merged
+#
+# Before state
+# ------------
+#
+# admin# show protocols bgp
 
+- name: Merge Junos BGP interfaces config
+  junipernetworks.junos.junos_bgp_global:
+    config:
+      accept_remote_nexthop: true
+      add_path_display_ipv4_address: true
+      advertise_bgp_static:
+        policy: "static-to-bgp"
+      advertise_from_main_vpn_tables: true
+      advertise_inactive: true
+      authentication_algorithm: "md5"
+      bgp_error_tolerance:
+        malformed_route_limit: 20000000
+      bmp:
+        monitor: true
+      damping: true
+      description: "This is configured with Junos_bgp resource module"
+      egress_te_sid_stats: true
+      hold_time: 5
+      holddown_all_stale_labels: true
+      include_mp_next_hop: true
+      log_updown: true
+      no_advertise_peer_as: true
+      no_aggregator_id: true
+      no_client_reflect: true
+      out_delay: 10
+      precision_timers: true
+      preference: 2
+    state: merged
+
+# After state
+# -----------
+#
+# admin# show protocols bgp
+# precision-timers;
+# advertise-from-main-vpn-tables;
+# holddown-all-stale-labels;
+# description "This is configured with Junos_bgp resource module";
+# accept-remote-nexthop;
+# preference 2;
+# hold-time 5;
+# advertise-inactive;
+# no-advertise-peer-as;
+# no-aggregator-id;
+# out-delay 10;
+# log-updown;
+# damping;
+# bgp-error-tolerance {
+#     malformed-route-limit 20000000;
+# }
+# authentication-algorithm md5;
+# no-client-reflect;
+# include-mp-next-hop;
+# bmp {
+#     monitor enable;
+# }
+# advertise-bgp-static {
+#     policy static-to-bgp;
+# }
+# add-path-display-ipv4-address;
+# egress-te-sid-stats;
+
+
+# Using replaced
+#
+# Before state
+# ------------
+#
+# admin# show protocols bgp
+# precision-timers;
+# advertise-from-main-vpn-tables;
+# holddown-all-stale-labels;
+# description "This is configured with Junos_bgp resource module";
+# accept-remote-nexthop;
+# preference 2;
+# hold-time 5;
+# advertise-inactive;
+# no-advertise-peer-as;
+# no-aggregator-id;
+# out-delay 10;
+# log-updown;
+# damping;
+# bgp-error-tolerance {
+#     malformed-route-limit 20000000;
+# }
+# authentication-algorithm md5;
+# no-client-reflect;
+# include-mp-next-hop;
+# bmp {
+#     monitor enable;
+# }
+# advertise-bgp-static {
+#     policy static-to-bgp;
+# }
+# add-path-display-ipv4-address;
+# egress-te-sid-stats;
+
+- name: Replace Junos BGP global config
+  junipernetworks.junos.junos_bgp_global:
+   config:
+     advertise_bgp_static:
+       policy: "static-to-bgp"
+     advertise_inactive: true
+     authentication_algorithm: "md5"
+     bfd_liveness_detection:
+       minimum_receive_interval: 8
+       multiplier: 30
+       no_adaptation: true
+       transmit_interval:
+         minimum_interval: 4
+       version: "automatic"
+     bgp_error_tolerance:
+       malformed_route_limit: 40000000
+     description: "This is configured with Junos_bgp resource module replace"
+     egress_te_sid_stats: true
+     hold_time: 5
+     out_delay: 10
+     preference: "2"
+   state: replaced
+
+# After state
+# -----------
+#
+# admin# show protocols bgp
+# description "This is configured with Junos_bgp resource module replace";
+# preference 2;
+# hold-time 5;
+# advertise-inactive;
+# out-delay 10;
+# bgp-error-tolerance {
+#     malformed-route-limit 40000000;
+# }
+# authentication-algorithm md5;
+# advertise-bgp-static {
+#     policy static-to-bgp;
+# }
+# bfd-liveness-detection {
+#     version automatic;
+#     minimum-receive-interval 8;
+#     multiplier 30;
+#     no-adaptation;
+#     transmit-interval {
+#         minimum-interval 4;
+#     }
+# }
+# egress-te-sid-stats;
+
+
+#
+# Using deleted
+#
+# Before state
+# ------------
+#
+# admin# show protocols bgp
+# description "This is configured with Junos_bgp resource module replace";
+# preference 2;
+# hold-time 5;
+# advertise-inactive;
+# out-delay 10;
+# bgp-error-tolerance {
+#     malformed-route-limit 40000000;
+# }
+# authentication-algorithm md5;
+# advertise-bgp-static {
+#     policy static-to-bgp;
+# }
+# bfd-liveness-detection {
+#     version automatic;
+#     minimum-receive-interval 8;
+#     multiplier 30;
+#     no-adaptation;
+#     transmit-interval {
+#         minimum-interval 4;
+#     }
+# }
+# egress-te-sid-stats;
+
+- name: Delete Junos BGP global config
+  junipernetworks.junos.junos_bgp_global:
+    config:
+    state: deleted
+
+# After state
+# -----------
+
+
+# admin# show protocols bgp
+# Using gathered
+#
+# Before state
+# ------------
+#
+# admin# show protocols bgp
+# description "This is configured with Junos_bgp resource module replace";
+# preference 2;
+# hold-time 5;
+# advertise-inactive;
+# out-delay 10;
+# bgp-error-tolerance {
+#     malformed-route-limit 40000000;
+# }
+# authentication-algorithm md5;
+# advertise-bgp-static {
+#     policy static-to-bgp;
+# }
+# bfd-liveness-detection {
+#     version automatic;
+#     minimum-receive-interval 8;
+#     multiplier 30;
+#     no-adaptation;
+#     transmit-interval {
+#         minimum-interval 4;
+#     }
+# }
+# egress-te-sid-stats;
+
+- name: Gather Junos BGP global config
+  junipernetworks.junos.junos_bgp_global:
+    config:
+    state: gathered
+#
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#
+#    "gathered": {
+#         "advertise_bgp_static": {
+#             "policy": "static-to-bgp"
+#         },
+#         "advertise_inactive": true,
+#         "authentication_algorithm": "md5",
+#         "bfd_liveness_detection": {
+#             "minimum_receive_interval": 8,
+#             "multiplier": 30,
+#             "no_adaptation": true,
+#             "transmit_interval": {
+#                 "minimum_interval": 4
+#             },
+#             "version": "automatic"
+#         },
+#         "bgp_error_tolerance": {
+#             "malformed_route_limit": 40000000
+#         },
+#         "description": "This is configured with Junos_bgp resource module replace",
+#         "egress_te_sid_stats": true,
+#         "hold_time": 5,
+#         "out_delay": 10,
+#         "preference": "2"
+#     }
+#
+
+#
+# Using purged
+#
+# Before state
+# ------------
+#
+# admin# show protocols bgp
+# description "This is configured with Junos_bgp resource module replace";
+# preference 2;
+# hold-time 5;
+# advertise-inactive;
+# out-delay 10;
+# bgp-error-tolerance {
+#     malformed-route-limit 40000000;
+# }
+# authentication-algorithm md5;
+# advertise-bgp-static {
+#     policy static-to-bgp;
+# }
+# bfd-liveness-detection {
+#     version automatic;
+#     minimum-receive-interval 8;
+#     multiplier 30;
+#     no-adaptation;
+#     transmit-interval {
+#         minimum-interval 4;
+#     }
+# }
+# egress-te-sid-stats;
+
+- name: Purge Junos BGP global config
+  junipernetworks.junos.junos_bgp_global:
+    config:
+    state: purged
+
+# After state
+# ----------
+
+# Using rendered
+#
+#
+- name: Render the commands for provided  configuration
+  junipernetworks.junos.junos_bgp_global:
+    config:
+      authentication_algorithm: "md5"
+      bfd_liveness_detection:
+        minimum_receive_interval: 4
+        multiplier: 10
+        no_adaptation: true
+        transmit_interval:
+          minimum_interval: 2
+        version: "automatic"
+      bgp_error_tolerance:
+        malformed_route_limit: 20000000
+      bmp:
+        monitor: true
+      damping: true
+      description: "This is configured with Junos_bgp resource module"
+      egress_te_sid_stats: true
+      hold_time: 5
+    state: rendered
+
+#
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#
+#
+# "rendered": "
+# <nc:protocols
+#     xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
+#     <nc:bgp>
+#         <nc:damping/>
+#         <nc:egress-te-sid-stats/>
+#         <nc:authentication-algorithm>md5</nc:authentication-algorithm>
+#         <nc:description>This is configured with Junos_bgp resource module</nc:description>
+#         <nc:hold-time>5</nc:hold-time>
+#         <nc:bfd-liveness-detection>
+#             <nc:transmit-interval>
+#                 <nc:minimum-interval>2</nc:minimum-interval>
+#             </nc:transmit-interval>
+#             <nc:minimum-receive-interval>4</nc:minimum-receive-interval>
+#             <nc:multiplier>10</nc:multiplier>
+#             <nc:no-adaptation/>
+#             <nc:version>automatic</nc:version>
+#         </nc:bfd-liveness-detection>
+#         <nc:bgp-error-tolerance>
+#             <nc:malformed-route-limit>20000000</nc:malformed-route-limit>
+#         </nc:bgp-error-tolerance>
+#         <nc:bmp>
+#             <nc:monitor>enable</nc:monitor>
+#         </nc:bmp>
+#     </nc:bgp>
+# </nc:protocols>"
+#
+# Using parsed
+# parsed.cfg
+# ------------
+# <?xml version="1.0" encoding="UTF-8"?>
+# <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
+#    <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
+#       <version>18.4R1-S2.4</version>
+#       <protocols>
+#          <bgp>
+#             <precision-timers />
+#             <advertise-from-main-vpn-tables />
+#             <holddown-all-stale-labels />
+#             <description>This is configured with Junos_bgp resource module</description>
+#             <accept-remote-nexthop />
+#             <preference>2</preference>
+#             <hold-time>5</hold-time>
+#             <advertise-inactive />
+#             <no-advertise-peer-as />
+#             <no-aggregator-id />
+#             <out-delay>10</out-delay>
+#             <log-updown />
+#             <damping />
+#             <bgp-error-tolerance>
+#                <malformed-route-limit>20000000</malformed-route-limit>
+#             </bgp-error-tolerance>
+#             <authentication-algorithm>md5</authentication-algorithm>
+#             <remove-private />
+#             <no-client-reflect />
+#             <include-mp-next-hop />
+#             <bmp>
+#                <monitor>disable</monitor>
+#                <route-monitoring>
+#                   <none />
+#                </route-monitoring>
+#             </bmp>
+#             <advertise-bgp-static>
+#                <policy>static-to-bgp</policy>
+#             </advertise-bgp-static>
+#             <add-path-display-ipv4-address />
+#             <bfd-liveness-detection>
+#                <version>automatic</version>
+#                <minimum-receive-interval>4</minimum-receive-interval>
+#                <multiplier>10</multiplier>
+#                <no-adaptation />
+#                <transmit-interval>
+#                   <minimum-interval>2</minimum-interval>
+#                </transmit-interval>
+#                <detection-time>
+#                   <threshold>300000</threshold>
+#                </detection-time>
+#             </bfd-liveness-detection>
+#             <egress-te-sid-stats />
+#             <group>
+#                <name>internal</name>
+#                <out-delay>8</out-delay>
+#             </group>
+#             <group>
+#                <name>external</name>
+#                <out-delay>9</out-delay>
+#             </group>
+#             <group>
+#                <name>inboun</name>
+#                <type>internal</type>
+#             </group>
+#             <group>
+#                <name>ibgp</name>
+#                <type>internal</type>
+#                <local-address>10.2.2.2</local-address>
+#                <export>static-to-bgp</export>
+#                <neighbor>
+#                   <name>10.1.1.1</name>
+#                </neighbor>
+#             </group>
+#          </bgp>
+#          <ospf3>
+#             <area>
+#                <name>0.0.0.100</name>
+#                <stub>
+#                   <default-metric>200</default-metric>
+#                </stub>
+#                <interface>
+#                   <name>so-0/0/0.0</name>
+#                   <metric>5</metric>
+#                   <priority>3</priority>
+#                </interface>
+#             </area>
+#          </ospf3>
+#       </protocols>
+#       <routing-options>
+#          <static>
+#             <route>
+#                <name>172.16.17.0/24</name>
+#                <discard />
+#             </route>
+#          </static>
+#          <router-id>10.200.16.75</router-id>
+#          <autonomous-system>
+#             <as-number>65432</as-number>
+#          </autonomous-system>
+#       </routing-options>
+#    </configuration>
+# </rpc-reply>
+
+
+- name: Parsed the device configuration to get output commands
+  junipernetworks.junos.junos_bgp_global:
+    running_config: "{{ lookup('file', './parsed.cfg') }}"
+    state: parsed
+#
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#
+#
+# "parsed":  {
+#         "accept_remote_nexthop": true,
+#         "add_path_display_ipv4_address": true,
+#         "advertise_bgp_static": {
+#             "policy": "static-to-bgp"
+#         },
+#         "advertise_from_main_vpn_tables": true,
+#         "advertise_inactive": true,
+#         "authentication_algorithm": "md5",
+#         "bfd_liveness_detection": {
+#             "detection_time": {
+#                 "threshold": 300000
+#             },
+#             "minimum_receive_interval": 4,
+#             "multiplier": 10,
+#             "no_adaptation": true,
+#             "transmit_interval": {
+#                 "minimum_interval": 2
+#             },
+#             "version": "automatic"
+#         },
+#         "bgp_error_tolerance": {
+#             "malformed_route_limit": 20000000
+#         },
+#         "bmp": {
+#             "monitor": false,
+#             "route_monitoring": {
+#                 "none": true
+#             }
+#         },
+#         "damping": true,
+#         "description": "This is configured with Junos_bgp resource module",
+#         "egress_te_sid_stats": true,
+#         "hold_time": 5,
+#         "holddown_all_stale_labels": true,
+#         "include_mp_next_hop": true,
+#         "log_updown": true,
+#         "no_advertise_peer_as": true,
+#         "no_aggregator_id": true,
+#         "no_client_reflect": true,
+#         "out_delay": 10,
+#         "precision_timers": true,
+#         "preference": "2"
+#     }
+#
 
 """
 RETURN = """
 before:
   description: The configuration prior to the model invocation.
   returned: always
+  type: dict
   sample: >
     The configuration returned will always be in the same format
      of the parameters above.
 after:
   description: The resulting configuration model invocation.
   returned: when changed
+  type: dict
   sample: >
     The configuration returned will always be in the same format
      of the parameters above.
@@ -1166,13 +1683,42 @@ commands:
   description: The set of commands pushed to the remote device.
   returned: always
   type: list
-  sample: ['command 1', 'command 2', 'command 3']
+  sample: ['
+  <nc:protocols
+    xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
+    <nc:bgp>
+        <nc:damping/>
+        <nc:egress-te-sid-stats/>
+        <nc:authentication-algorithm>md5</nc:authentication-algorithm>
+        <nc:description>This is configured with Junos_bgp resource module</nc:description>
+        <nc:hold-time>5</nc:hold-time>
+        <nc:bfd-liveness-detection>
+            <nc:transmit-interval>
+                <nc:minimum-interval>2</nc:minimum-interval>
+            </nc:transmit-interval>
+            <nc:minimum-receive-interval>4</nc:minimum-receive-interval>
+            <nc:multiplier>10</nc:multiplier>
+            <nc:no-adaptation/>
+            <nc:version>automatic</nc:version>
+        </nc:bfd-liveness-detection>
+        <nc:bgp-error-tolerance>
+            <nc:malformed-route-limit>20000000</nc:malformed-route-limit>
+        </nc:bgp-error-tolerance>
+        <nc:bmp>
+            <nc:monitor>enable</nc:monitor>
+        </nc:bmp>
+    </nc:bgp>
+  </nc:protocols>', 'xml 2', 'xml 3']
 """
 
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.bgp_global.bgp_global import Bgp_globalArgs
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.bgp_global.bgp_global import Bgp_global
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.bgp_global.bgp_global import (
+    Bgp_globalArgs,
+)
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.bgp_global.bgp_global import (
+    Bgp_global,
+)
 
 
 def main():
@@ -1198,5 +1744,5 @@ def main():
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
