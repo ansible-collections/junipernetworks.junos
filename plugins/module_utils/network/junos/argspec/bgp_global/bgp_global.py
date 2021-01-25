@@ -410,7 +410,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                         },
                         "flag": {
                             "options": {
-                                "4byte_as": {
+                                "byte_as": {
                                     "options": {
                                         "detail": {"type": "bool"},
                                         "disable": {"type": "bool"},

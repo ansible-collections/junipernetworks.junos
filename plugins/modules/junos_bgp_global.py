@@ -671,7 +671,7 @@ options:
             description: Specify tracing parameters.
             type: dict
             suboptions:
-              4byte_as:
+              byte_as:
                 description: Specify trace 4 byte AS events.
                 type: dict
                 suboptions:
@@ -1136,10 +1136,9 @@ options:
       - The state the configuration should be left in.
     type: str
     choices:
-      - purge
+      - purged
       - merged
       - replaced
-      - purged
       - deleted
       - gathered
       - parsed
