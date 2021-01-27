@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - release version added updated to 1.3.0 for junos_ospf_interfaces and junos_bgp_global module
