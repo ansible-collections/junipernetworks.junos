@@ -513,10 +513,11 @@ class Bgp_global(ConfigBase):
             "unconfigured-peer-graceful-restart",
             "vpn-apply-export",
         ]
-        bgp_root = build_root_xml_node("bgp")
-        for attrib in parser:
-            build_child_xml_node(bgp_root, attrib, None, {"delete": "delete"})
-        bgp_xml.append(bgp_root)
+        if have is not None:
+            bgp_root = build_root_xml_node("bgp")
+            for attrib in parser:
+                build_child_xml_node(bgp_root, attrib, None, {"delete": "delete"})
+            bgp_xml.append(bgp_root)
         return bgp_xml
 
     def _state_purged(self, want, have):

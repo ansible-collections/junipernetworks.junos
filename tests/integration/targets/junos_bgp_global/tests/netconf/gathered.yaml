@@ -10,8 +10,6 @@
         expected_gathered_output:
           accept_remote_nexthop: true
           add_path_display_ipv4_address: true
-          advertise_bgp_static:
-            policy: "static-to-bgp"
           advertise_from_main_vpn_tables: true
           advertise_inactive: true
           authentication_algorithm: "md5"
