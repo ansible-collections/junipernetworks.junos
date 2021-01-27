@@ -142,3 +142,24 @@ class TestJunosPingModule(TestJunosModule):
         self.assertEqual(result["rtt"]["avg"], 17.87)
         self.assertEqual(result["rtt"]["max"], 20.04)
         self.assertEqual(result["rtt"]["stddev"], 2.165)
+
+    def test_junos_ping_success_stats_with_df_rapid(self):
+        set_module_args(dict(df_bit=True, rapid=True, dest="10.10.10.12"))
+        self.conn.get = MagicMock(
+            return_value=load_fixture(
+                "junos_ping_ping_10.10.10.12_count_5_do-not-fragment_rapid",
+                content="str",
+            )
+        )
+        result = self.execute_module()
+        self.assertEqual(
+            result["commands"],
+            "ping 10.10.10.12 count 5 do-not-fragment rapid",
+        )
+        self.assertEqual(result["packet_loss"], "0%")
+        self.assertEqual(result["packets_rx"], 5)
+        self.assertEqual(result["packets_tx"], 5)
+        self.assertEqual(result["rtt"]["min"], 2.58)
+        self.assertEqual(result["rtt"]["avg"], 2.63)
+        self.assertEqual(result["rtt"]["max"], 2.74)
+        self.assertEqual(result["rtt"]["stddev"], 0.058)
