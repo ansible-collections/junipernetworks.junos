@@ -516,7 +516,9 @@ class Bgp_global(ConfigBase):
         if have is not None:
             bgp_root = build_root_xml_node("bgp")
             for attrib in parser:
-                build_child_xml_node(bgp_root, attrib, None, {"delete": "delete"})
+                build_child_xml_node(
+                    bgp_root, attrib, None, {"delete": "delete"}
+                )
             bgp_xml.append(bgp_root)
         return bgp_xml
 
