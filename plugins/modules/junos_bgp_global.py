@@ -39,7 +39,7 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = """
 ---
 module: junos_bgp_global
-version_added: "1.2.2"
+version_added: "1.3.0"
 short_description: Manages BGP Global configuration on devices running Juniper JUNOS.
 description:
   - This module manages global bgp configuration on devices running Juniper JUNOS.
