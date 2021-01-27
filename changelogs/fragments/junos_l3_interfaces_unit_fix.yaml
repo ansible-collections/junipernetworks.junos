@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - constructing the facts based on the addresses per unit (https://github.com/ansible-collections/junipernetworks.junos/issues/111)

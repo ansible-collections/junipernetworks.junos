@@ -14,7 +14,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 from copy import deepcopy
-
+from ansible.module_utils.basic import missing_required_lib
 from ansible.module_utils._text import to_bytes
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
     utils,
@@ -22,6 +22,7 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common i
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.l3_interfaces.l3_interfaces import (
     L3_interfacesArgs,
 )
+from ansible.module_utils.six import iteritems
 from ansible.module_utils.six import string_types
 
 try:
@@ -30,6 +31,13 @@ try:
     HAS_LXML = True
 except ImportError:
     HAS_LXML = False
+
+try:
+    import xmltodict
+
+    HAS_XMLTODICT = True
+except ImportError:
+    HAS_XMLTODICT = False
 
 
 class L3_interfacesFacts(object):
@@ -59,6 +67,14 @@ class L3_interfacesFacts(object):
         """
         return connection.get_configuration(filter=config_filter)
 
+    def _get_xml_dict(self, xml_root):
+        if not HAS_XMLTODICT:
+            self._module.fail_json(msg=missing_required_lib("xmltodict"))
+        xml_dict = xmltodict.parse(
+            etree.tostring(xml_root), dict_constructor=dict
+        )
+        return xml_dict
+
     def populate_facts(self, connection, ansible_facts, data=None):
         """ Populate the facts for l3_interfaces
         :param connection: the device connection
@@ -76,78 +92,88 @@ class L3_interfacesFacts(object):
                     <interfaces/>
                 </configuration>
                 """
-            # data = connection.get_configuration(filter=config_filter)
             data = self.get_config(connection, config_filter)
 
         if isinstance(data, string_types):
             data = etree.fromstring(
                 to_bytes(data, errors="surrogate_then_replace")
             )
-
         resources = data.xpath("configuration/interfaces/interface")
-
-        objs = []
-        if resources:
-            objs = self.parse_l3_if_resources(resources)
-
         config = []
-        if objs:
-            for l3_if_obj in objs:
-                config.append(
-                    self.render_config(self.generated_spec, l3_if_obj)
-                )
-
+        if resources:
+            config = self.parse_l3_if_resources(resources)
         facts = {}
         facts["l3_interfaces"] = config
-
         ansible_facts["ansible_network_resources"].update(facts)
         return ansible_facts
 
     def parse_l3_if_resources(self, l3_if_resources):
         l3_ifaces = []
         for iface in l3_if_resources:
-            interface = {}
-            interface["name"] = iface.find("name").text
-            if iface.find("unit") is not None:
-                interface["unit"] = iface.find("unit/name").text
-            family = iface.find("unit/family/")
-            if family is not None and family.tag != "ethernet-switching":
-                ipv4 = iface.findall("unit/family/inet/address")
-                dhcp = iface.findall("unit/family/inet/dhcp")
-                ipv6 = iface.findall("unit/family/inet6/address")
-                if dhcp:
-                    interface["ipv4"] = [{"address": "dhcp"}]
-                if ipv4:
-                    interface["ipv4"] = self.get_ip_addresses(ipv4)
-                elif not dhcp:
-                    interface["ipv4"] = None
-                if ipv6:
-                    interface["ipv6"] = self.get_ip_addresses(ipv6)
-                l3_ifaces.append(interface)
+            int_have = self._get_xml_dict(iface)
+            int_dict = int_have["interface"]
+            if "unit" in int_dict.keys() and int_dict.get("unit") is not None:
+                unit_list = int_dict["unit"]
+                if isinstance(unit_list, list):
+                    for item in unit_list:
+                        fact_dict = self._render_l3_intf(item, int_dict)
+                        if fact_dict:
+                            l3_ifaces.append(fact_dict)
+                else:
+                    fact_dict = self._render_l3_intf(unit_list, int_dict)
+                    if fact_dict:
+                        l3_ifaces.append(fact_dict)
         return l3_ifaces
 
-    def get_ip_addresses(self, ip_addr):
-        address_list = []
-        for ip in ip_addr:
-            for addr in ip:
-                address_list.append({"address": addr.text})
-        return address_list
-
-    def render_config(self, spec, conf):
+    def _render_l3_intf(self, unit, int_dict):
         """
-        Render config as dictionary structure and delete keys
-          from spec for null values
 
-        :param spec: The facts tree, generated from the argspec
-        :param conf: The configuration
-        :rtype: dictionary
-        :returns: The generated config
+        :param item:
+        :param int_dict:
+        :return:
         """
-        config = deepcopy(spec)
-        config["name"] = conf["name"]
-        config["description"] = conf.get("description")
-        config["unit"] = conf.get("unit", 0)
-        config["ipv4"] = conf.get("ipv4")
-        config["ipv6"] = conf.get("ipv6")
-
-        return utils.remove_empties(config)
+        interface = {}
+        ipv4 = []
+        ipv6 = []
+        if "family" in unit.keys():
+            if "inet" in unit["family"].keys():
+                interface["name"] = int_dict["name"]
+                interface["unit"] = unit["name"]
+                inet = unit["family"].get("inet")
+                if inet is not None and "address" in inet.keys():
+                    if isinstance(inet["address"], dict):
+                        for key, value in iteritems(inet["address"]):
+                            addr = {}
+                            addr["address"] = value
+                            ipv4.append(addr)
+                    else:
+                        for ip in inet["address"]:
+                            addr = {}
+                            addr["address"] = ip["name"]
+                            ipv4.append(addr)
+            if "inet" in unit["family"].keys():
+                interface["name"] = int_dict["name"]
+                interface["unit"] = unit["name"]
+                inet = unit["family"].get("inet")
+                if inet is not None and "dhcp" in inet.keys():
+                    addr = {}
+                    addr["address"] = "dhcp"
+                    ipv4.append(addr)
+            if "inet6" in unit["family"].keys():
+                interface["name"] = int_dict["name"]
+                interface["unit"] = unit["name"]
+                inet6 = unit["family"].get("inet6")
+                if inet6 is not None and "address" in inet6.keys():
+                    if isinstance(inet6["address"], dict):
+                        for key, value in iteritems(inet6["address"]):
+                            addr = {}
+                            addr["address"] = value
+                            ipv6.append(addr)
+                    else:
+                        for ip in inet6["address"]:
+                            addr = {}
+                            addr["address"] = ip["name"]
+                            ipv4.append(addr)
+            interface["ipv4"] = ipv4
+            interface["ipv6"] = ipv6
+        return utils.remove_empties(interface)
