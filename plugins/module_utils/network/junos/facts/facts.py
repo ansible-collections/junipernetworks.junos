@@ -71,6 +71,9 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.ospf_interfaces.ospf_interfaces import (
     Ospf_interfacesFacts,
 )
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.bgp_global.bgp_global import (
+    Bgp_globalFacts,
+)
 
 FACT_LEGACY_SUBSETS = dict(
     default=Default, hardware=Hardware, config=Config, interfaces=Interfaces
@@ -91,6 +94,7 @@ FACT_RESOURCE_SUBSETS = dict(
     ospf_interfaces=Ospf_interfacesFacts,
     vlans=VlansFacts,
     static_routes=Static_routesFacts,
+    bgp_global=Bgp_globalFacts,
 )
 
 

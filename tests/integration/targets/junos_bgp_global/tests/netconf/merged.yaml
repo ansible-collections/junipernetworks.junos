@@ -1,0 +1,81 @@
+---
+- debug:
+    msg: "START junos_bgp_global merged integration tests on connection={{ ansible_connection }}"
+
+- block:
+    - include_tasks: _reset_config.yaml
+
+    - set_fact:
+        expected_merged_output:
+          accept_remote_nexthop: true
+          add_path_display_ipv4_address: true
+          advertise_from_main_vpn_tables: true
+          advertise_inactive: true
+          authentication_algorithm: "md5"
+          bgp_error_tolerance:
+            malformed_route_limit: 20000000
+          bmp:
+            monitor: true
+          damping: true
+          description: "This is configured with Junos_bgp resource module"
+          egress_te_sid_stats: true
+          hold_time: 5
+          holddown_all_stale_labels: true
+          include_mp_next_hop: true
+          log_updown: true
+          no_advertise_peer_as: true
+          no_aggregator_id: true
+          no_client_reflect: true
+          out_delay: 10
+          precision_timers: true
+          preference: "2"
+
+    - name: Merge the provided configuration with the exisiting running configuration
+      junipernetworks.junos.junos_bgp_global: &merged
+        config:
+          accept_remote_nexthop: true
+          add_path_display_ipv4_address: true
+          advertise_from_main_vpn_tables: true
+          advertise_inactive: true
+          authentication_algorithm: "md5"
+          bgp_error_tolerance:
+            malformed_route_limit: 20000000
+          bmp:
+            monitor: true
+          damping: true
+          description: "This is configured with Junos_bgp resource module"
+          egress_te_sid_stats: true
+          hold_time: 5
+          holddown_all_stale_labels: true
+          include_mp_next_hop: true
+          log_updown: true
+          no_advertise_peer_as: true
+          no_aggregator_id: true
+          no_client_reflect: true
+          out_delay: 10
+          precision_timers: true
+          preference: "2"
+        state: merged
+      register: result
+
+    - name: Assert the configuration is reflected on host
+      assert:
+        that:
+          - result.changed == True
+          - "{{ expected_merged_output == result.after }}"
+
+    - name: Merge the provided configuration with the existing running configuration (IDEMPOTENT)
+      junos_bgp_global: *merged
+      register: result
+
+    - name: Assert that the previous task was idempotent
+      assert:
+        that:
+          - result.changed == False
+
+  tags: merged
+  always:
+    - include_tasks: _reset_config.yaml
+
+- debug:
+    msg: "END junos_bgp_global merged integration tests on connection={{ ansible_connection }}"
