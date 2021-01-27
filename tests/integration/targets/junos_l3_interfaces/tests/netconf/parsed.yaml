@@ -23,12 +23,12 @@
         unit: 0
 
       - name: ge-2/0/0
-          ipv4:
+        ipv4:
 
-            - address: 192.178.100.2/24
+          - address: 192.178.100.2/24
 
-            - address: 10.210.16.21/24
-          unit: 1
+          - address: 10.210.16.21/24
+        unit: 1
 
 - name: Parse externally provided interfaces config to agnostic model
   register: result
