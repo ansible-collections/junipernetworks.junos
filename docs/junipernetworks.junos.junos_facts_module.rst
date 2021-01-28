@@ -253,7 +253,7 @@ Notes
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: collect default set of facts
       junipernetworks.junos.junos_facts:

@@ -465,7 +465,7 @@ Notes
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: load configure file into device
       junipernetworks.junos.junos_config:

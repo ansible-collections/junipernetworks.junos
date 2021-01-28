@@ -549,7 +549,7 @@ Notes
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: Set ge-0/0/1 IPv4 address
       junipernetworks.junos.junos_l3_interface:

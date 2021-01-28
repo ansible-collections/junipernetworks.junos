@@ -258,7 +258,7 @@ Notes
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: Configure LLDP on specific interfaces
       junipernetworks.junos.junos_lldp_interface:

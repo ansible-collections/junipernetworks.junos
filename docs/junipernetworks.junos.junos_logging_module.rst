@@ -520,7 +520,7 @@ Notes
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: configure console logging
       junipernetworks.junos.junos_logging:

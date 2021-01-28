@@ -296,7 +296,7 @@ Notes
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: configure hostname and domain name
       junipernetworks.junos.junos_system:

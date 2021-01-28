@@ -1,3 +1,0 @@
----
-bugfixes:
-  - changing prefix list type to list and correcting facts gathering (https://github.com/ansible-collections/junipernetworks.junos/issues/131)

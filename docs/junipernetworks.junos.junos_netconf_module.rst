@@ -226,7 +226,7 @@ Notes
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: enable netconf service on port 830
       junipernetworks.junos.junos_netconf:

@@ -269,7 +269,7 @@ Notes
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: configure the login banner
       junipernetworks.junos.junos_banner:

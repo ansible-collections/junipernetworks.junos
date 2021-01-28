@@ -320,7 +320,7 @@ Notes
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: Test reachability to 10.10.10.10
       junipernetworks.junos.junos_ping:
