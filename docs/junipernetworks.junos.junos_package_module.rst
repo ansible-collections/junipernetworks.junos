@@ -373,7 +373,7 @@ Notes
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     # the required set of connection arguments have been purposely left off
     # the examples for brevity

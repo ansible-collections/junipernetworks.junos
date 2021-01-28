@@ -499,7 +499,7 @@ Notes
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: create new user account
       junipernetworks.junos.junos_user:

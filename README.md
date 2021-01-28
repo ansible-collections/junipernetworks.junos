@@ -39,6 +39,7 @@ Name | Description
 [junipernetworks.junos.junos_acl_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_acl_interfaces_module.rst)|ACL interfaces resource module
 [junipernetworks.junos.junos_acls](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_acls_module.rst)|ACLs resource module
 [junipernetworks.junos.junos_banner](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_banner_module.rst)|Manage multiline banners on Juniper JUNOS devices
+[junipernetworks.junos.junos_bgp_global](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_bgp_global_module.rst)|Manages BGP Global configuration on devices running Juniper JUNOS.
 [junipernetworks.junos.junos_command](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_command_module.rst)|Run arbitrary commands on an Juniper JUNOS device
 [junipernetworks.junos.junos_config](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_config_module.rst)|Manage configuration on devices running Juniper JUNOS
 [junipernetworks.junos.junos_facts](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_facts_module.rst)|Collect facts from remote devices running Juniper Junos
@@ -58,6 +59,7 @@ Name | Description
 [junipernetworks.junos.junos_lldp_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_lldp_interfaces_module.rst)|LLDP interfaces resource module
 [junipernetworks.junos.junos_logging](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_logging_module.rst)|Manage logging on network devices
 [junipernetworks.junos.junos_netconf](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_netconf_module.rst)|Configures the Junos Netconf system service
+[junipernetworks.junos.junos_ospf_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_ospf_interfaces_module.rst)|OSPF Interfaces Resource Module.
 [junipernetworks.junos.junos_ospfv2](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_ospfv2_module.rst)|OSPFv2 resource module
 [junipernetworks.junos.junos_ospfv3](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_ospfv3_module.rst)|OSPFv3 resource module
 [junipernetworks.junos.junos_package](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_package_module.rst)|Installs packages on remote devices running Junos

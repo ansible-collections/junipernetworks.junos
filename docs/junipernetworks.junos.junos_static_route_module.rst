@@ -456,7 +456,7 @@ Notes
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: configure static route
       junipernetworks.junos.junos_static_route:

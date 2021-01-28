@@ -5,6 +5,28 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v1.3.0
+======
+
+Minor Changes
+-------------
+
+- Add junos bgp global resource module.
+- Add ospf interfaces resource module.
+
+Bugfixes
+--------
+
+- changing prefix list type to list and correcting facts gathering (https://github.com/ansible-collections/junipernetworks.junos/issues/131)
+- constructing the facts based on the addresses per unit (https://github.com/ansible-collections/junipernetworks.junos/issues/111)
+- release version added updated to 1.3.0 for junos_ospf_interfaces and junos_bgp_global module
+
+New Modules
+-----------
+
+- junos_bgp_global - Manages BGP Global configuration on devices running Juniper JUNOS.
+- junos_ospf_interfaces - OSPF Interfaces Resource Module.
+
 v1.2.1
 ======
 
