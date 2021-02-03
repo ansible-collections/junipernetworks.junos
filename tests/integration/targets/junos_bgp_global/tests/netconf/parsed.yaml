@@ -11,6 +11,7 @@
         policy: "static-to-bgp"
       advertise_from_main_vpn_tables: true
       advertise_inactive: true
+      as_number: "65432"
       authentication_algorithm: "md5"
       bmp:
         monitor: true

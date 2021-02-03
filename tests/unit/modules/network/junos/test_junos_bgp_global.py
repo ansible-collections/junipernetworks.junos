@@ -118,15 +118,14 @@ class TestJunosBgp_globalModule(TestJunosModule):
                 state="merged",
             )
         )
-
         commands = [
-            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:bgp>'
-            "<nc:damping/><nc:description>This is configured with Junos_bgp resource module</nc:description>"
+            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
+            "<nc:bgp><nc:damping/><nc:description>This is configured with Junos_bgp resource module</nc:description>"
             "<nc:preference>2</nc:preference><nc:bfd-liveness-detection>"
             "<nc:minimum-receive-interval>4</nc:minimum-receive-interval>"
-            "<nc:multiplier>10</nc:multiplier><nc:no-adaptation/>"
-            "<nc:version>automatic</nc:version></nc:bfd-liveness-detection>"
-            "</nc:bgp></nc:protocols>"
+            "<nc:multiplier>10</nc:multiplier>"
+            "<nc:no-adaptation/><nc:version>automatic</nc:version></nc:bfd-liveness-detection></nc:bgp></nc:protocols>",
+            '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
         ]
         result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
@@ -179,7 +178,8 @@ class TestJunosBgp_globalModule(TestJunosModule):
             '<nc:authentication-key-chain delete="delete"/><nc:bfd-liveness-detection delete="delete"/>'
             '<nc:bgp-error-tolerance delete="delete"/><nc:bmp delete="delete"/><nc:cluster delete="delete"/>'
             '<nc:damping delete="delete"/><nc:description delete="delete"/><nc:disable delete="delete"/>'
-            '<nc:egress-te-sid-stats delete="delete"/><nc:enforce-first-as delete="delete"/><nc:export delete="delete"/>'
+            '<nc:egress-te-sid-stats delete="delete"/><nc:enforce-first-as delete="delete"/>'
+            '<nc:export delete="delete"/>'
             '<nc:forwarding-context delete="delete"/><nc:hold-time delete="delete"/>'
             '<nc:holddown-all-stale-labels delete="delete"/>'
             '<nc:import delete="delete"/><nc:include-mp-next-hop delete="delete"/><nc:ipsec-sa delete="delete"/>'
@@ -199,7 +199,8 @@ class TestJunosBgp_globalModule(TestJunosModule):
             "<nc:bfd-liveness-detection><nc:minimum-receive-interval>4</nc:minimum-receive-interval>"
             "<nc:multiplier>20</nc:multiplier><nc:no-adaptation/>"
             "<nc:version>automatic</nc:version></nc:bfd-liveness-detection>"
-            "</nc:bgp></nc:protocols>"
+            "</nc:bgp></nc:protocols>",
+            '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
         ]
         result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), commands)
@@ -260,7 +261,8 @@ class TestJunosBgp_globalModule(TestJunosModule):
             '<nc:sr-preference-override delete="delete"/><nc:stale-labels-holddown-period delete="delete"/>'
             '<nc:tcp-aggressive-transmission delete="delete"/><nc:tcp-mss delete="delete"/><nc:ttl delete="delete"/>'
             '<nc:unconfigured-peer-graceful-restart delete="delete"/>'
-            '<nc:vpn-apply-export delete="delete"/></nc:bgp></nc:protocols>'
+            '<nc:vpn-apply-export delete="delete"/></nc:bgp></nc:protocols>',
+            '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
         ]
         result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), commands)
@@ -278,7 +280,8 @@ class TestJunosBgp_globalModule(TestJunosModule):
         set_module_args(dict(config=dict(), state="purged"))
 
         commands = [
-            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:bgp delete="delete"/></nc:protocols>'
+            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:bgp delete="delete"/></nc:protocols>',
+            '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
         ]
         result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), commands)

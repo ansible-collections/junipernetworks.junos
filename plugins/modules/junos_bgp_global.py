@@ -54,12 +54,12 @@ notes:
 options:
   running_config:
     description:
-      - This option is used only with state I(parsed).
-      - The value of this option should be the output received from the NX-OS device
-        by executing the command B(show running-config | section '^router bgp').
-      - The state I(parsed) reads the configuration from C(running_config) option and
-        transforms it into Ansible structured data as per the resource module's argspec
-        and the value is then returned in the I(parsed) key within the result.
+    - This option is used only with state I(parsed).
+    - The value of this option should be the output received from the Junos device
+      by executing the command B(show protocols bgp).
+    - The state I(parsed) reads the configuration from C(running_config) option and
+      transforms it into Ansible structured data as per the resource module's argspec
+      and the value is then returned in the I(parsed) key within the result
     type: str
   config:
     description: A list of BGP process configuration.
@@ -68,6 +68,12 @@ options:
       as_number:
         description: Specify Autonomous system number.
         type: str
+      loops:
+        description: Specify maximum number of times this AS can be in an AS path.
+        type: int
+      asdot_notation:
+        description: Enable AS-Dot notation to display true 4 byte AS numbers.
+        type: bool
       accept_remote_nexthop:
         description: Allow import policy to specify a non-directly connected next-hop.
         type: bool
@@ -1133,7 +1139,18 @@ options:
         type: bool
   state:
     description:
-      - The state the configuration should be left in.
+    - The state the configuration should be left in.
+    - State I(purged) removes all (routing-options autonomous-system, bgp global, bgp groups, bgp family
+      and bgp neighbor family) the BGP configurations from the
+      target device. Use caution with this state.
+    - State I(deleted) only removes BGP attributes that this modules
+      manages and does not negate the BGP process completely. Thereby, preserving
+      address-family related configurations under BGP context.
+    - Running states I(deleted) and I(replaced) will result in an error if there
+      are address-family configuration lines present under a neighbor.Please use the
+      M(junipernetworks.junos.junos_bgp_af) or M(junipernetworks.junos.junos_bgp_groups)
+      modules for prior cleanup.
+    - Refer to examples for more details.
     type: str
     choices:
       - purged
@@ -1307,28 +1324,35 @@ EXAMPLES = """
 # ------------
 #
 # admin# show protocols bgp
-# description "This is configured with Junos_bgp resource module replace";
+# precision-timers;
+# advertise-from-main-vpn-tables;
+# holddown-all-stale-labels;
+# description "This is configured with Junos_bgp resource module";
+# accept-remote-nexthop;
 # preference 2;
 # hold-time 5;
 # advertise-inactive;
+# no-advertise-peer-as;
+# no-aggregator-id;
 # out-delay 10;
+# log-updown;
+# damping;
 # bgp-error-tolerance {
-#     malformed-route-limit 40000000;
+#     malformed-route-limit 20000000;
 # }
 # authentication-algorithm md5;
-# advertise-bgp-static {
-#     policy static-to-bgp;
+# no-client-reflect;
+# include-mp-next-hop;
+# bmp {
+#     monitor enable;
 # }
-# bfd-liveness-detection {
-#     version automatic;
-#     minimum-receive-interval 8;
-#     multiplier 30;
-#     no-adaptation;
-#     transmit-interval {
-#         minimum-interval 4;
-#     }
-# }
+# add-path-display-ipv4-address;
 # egress-te-sid-stats;
+# group internal {
+#     out-delay 12;
+# }
+# admin# show routing-options autonomous-system
+# 65534 loops 3 asdot-notation;
 
 - name: Delete Junos BGP global config
   junipernetworks.junos.junos_bgp_global:
@@ -1337,6 +1361,11 @@ EXAMPLES = """
 
 # After state
 # -----------
+# admin# show protocols bgp
+# group internal {
+#     out-delay 12;
+# }
+
 
 
 # admin# show protocols bgp
@@ -1404,7 +1433,6 @@ EXAMPLES = """
 #         "preference": "2"
 #     }
 #
-
 #
 # Using purged
 #
@@ -1412,28 +1440,35 @@ EXAMPLES = """
 # ------------
 #
 # admin# show protocols bgp
-# description "This is configured with Junos_bgp resource module replace";
+# precision-timers;
+# advertise-from-main-vpn-tables;
+# holddown-all-stale-labels;
+# description "This is configured with Junos_bgp resource module";
+# accept-remote-nexthop;
 # preference 2;
 # hold-time 5;
 # advertise-inactive;
+# no-advertise-peer-as;
+# no-aggregator-id;
 # out-delay 10;
+# log-updown;
+# damping;
 # bgp-error-tolerance {
-#     malformed-route-limit 40000000;
+#     malformed-route-limit 20000000;
 # }
 # authentication-algorithm md5;
-# advertise-bgp-static {
-#     policy static-to-bgp;
+# no-client-reflect;
+# include-mp-next-hop;
+# bmp {
+#     monitor enable;
 # }
-# bfd-liveness-detection {
-#     version automatic;
-#     minimum-receive-interval 8;
-#     multiplier 30;
-#     no-adaptation;
-#     transmit-interval {
-#         minimum-interval 4;
-#     }
-# }
+# add-path-display-ipv4-address;
 # egress-te-sid-stats;
+# group internal {
+#     out-delay 12;
+# }
+# admin# show routing-options autonomous-system
+# 65534 loops 3 asdot-notation;
 
 - name: Purge Junos BGP global config
   junipernetworks.junos.junos_bgp_global:
@@ -1442,6 +1477,13 @@ EXAMPLES = """
 
 # After state
 # ----------
+# admin# show protocols bgp
+#
+# [edit]
+# admin# show routing-options autonomous-system
+#
+#[edit]
+
 
 # Using rendered
 #

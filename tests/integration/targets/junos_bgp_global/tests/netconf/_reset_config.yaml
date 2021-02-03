@@ -2,9 +2,30 @@
 - debug:
     msg: "START junos_bgp_global reset config on connection={{ ansible_connection }}"
 
-- name: Reset configuration for bgp and routing-options
-  junipernetworks.junos.junos_bgp_global:
-    state: deleted
+- name: Reset the config releavent to bgp global resource
+  junipernetworks.junos.junos_config:
+    lines:
+      - delete routing-options autonomous-system
+      - delete protocols bgp accept-remote-nexthop
+      - delete protocols bgp add-path-display-ipv4-address
+      - delete protocols bgp advertise-from-main-vpn-tables
+      - delete protocols bgp advertise-inactive
+      - delete protocols bgp authentication-algorithm
+      - delete protocols bgp bgp-error-tolerance
+      - delete protocols bgp bmp
+      - delete protocols bgp damping
+      - delete protocols bgp description
+      - delete protocols bgp egress-te-sid-stats
+      - delete protocols bgp hold-time
+      - delete protocols bgp holddown-all-stale-labels
+      - delete protocols bgp include-mp-next-hop
+      - delete protocols bgp log-updown
+      - delete protocols bgp no-advertise-peer-as
+      - delete protocols bgp no-aggregator-id
+      - delete protocols bgp no-client-reflect
+      - delete protocols bgp out-delay
+      - delete protocols bgp precision-timers
+      - delete protocols bgp preference
 
 - debug:
     msg: "END junos_bgp_global reset config on connection={{ ansible_connection }}"

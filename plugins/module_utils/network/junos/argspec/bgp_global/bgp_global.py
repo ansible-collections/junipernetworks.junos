@@ -59,6 +59,8 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                 "advertise_inactive": {"type": "bool"},
                 "advertise_peer_as": {"type": "bool"},
                 "as_number": {"type": "str"},
+                "loops": {"type": "int"},
+                "asdot_notation": {"type": "bool"},
                 "authentication_algorithm": {
                     "choices": ["aes-128-cmac-96", "hmac-sha-1-96", "md5"],
                     "type": "str",
