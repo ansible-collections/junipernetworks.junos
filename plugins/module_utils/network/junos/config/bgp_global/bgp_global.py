@@ -261,7 +261,6 @@ class Bgp_global(ConfigBase):
 
         # Generate xml node for autonomous-system
         if want.get("as_number"):
-            # self.autonomous_system = want.get("as_number")
             as_node = build_child_xml_node(
                 self.routing_options,
                 "autonomous-system",
@@ -487,7 +486,6 @@ class Bgp_global(ConfigBase):
                   of the provided objects
         """
         bgp_xml = []
-        delete = {"delete": "delete"}
         parser = [
             "accept-remote-nexthop",
             "add-path-display-ipv4-address",
@@ -541,11 +539,8 @@ class Bgp_global(ConfigBase):
             "unconfigured-peer-graceful-restart",
             "vpn-apply-export",
         ]
-        import q
-
         if have is not None:
             bgp_root = build_root_xml_node("bgp")
-            # bgp_root.attrib.update(delete)
             for attrib in parser:
                 build_child_xml_node(
                     bgp_root, attrib, None, {"delete": "delete"}
