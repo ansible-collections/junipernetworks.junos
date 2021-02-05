@@ -74,6 +74,9 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.bgp_global.bgp_global import (
     Bgp_globalFacts,
 )
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.bgp_address_family.bgp_address_family import (
+    Bgp_address_familyFacts,
+)
 
 FACT_LEGACY_SUBSETS = dict(
     default=Default, hardware=Hardware, config=Config, interfaces=Interfaces
@@ -95,6 +98,7 @@ FACT_RESOURCE_SUBSETS = dict(
     vlans=VlansFacts,
     static_routes=Static_routesFacts,
     bgp_global=Bgp_globalFacts,
+    bgp_address_family=Bgp_address_familyFacts,
 )
 
 
