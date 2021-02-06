@@ -195,6 +195,20 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                     'choices': ['from-fib', 'set'],
                                     'type': 'str'
                                 },
+                                'legacy_redirect_ip_action': {
+                                    'options': {
+                                        'receive': {
+                                            'type': 'bool'
+                                        },
+                                        'send': {
+                                            'type': 'bool'
+                                        },
+                                        'set': {
+                                            'type': 'bool'
+                                        }
+                                    },
+                                    'type': 'dict'
+                                },
                                 'local_ipv4_address': {
                                     'type': 'str'
                                 },
@@ -205,7 +219,7 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                     'type': 'bool'
                                 },
                                 'no_validate': {
-                                    'type': 'bool'
+                                    'type': 'str'
                                 },
                                 'output_queue_priority_expedited': {
                                     'type': 'bool'
@@ -274,6 +288,40 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                         },
                                         'name': {
                                             'type': 'str'
+                                        }
+                                    },
+                                    'type': 'dict'
+                                },
+                                'traffic_statistics': {
+                                    'options': {
+                                        'file': {
+                                            'options': {
+                                                'filename': {
+                                                    'type': 'str'
+                                                },
+                                                'files': {
+                                                    'type': 'int'
+                                                },
+                                                'no_world_readable': {
+                                                    'type': 'bool'
+                                                },
+                                                'size': {
+                                                    'type': 'int'
+                                                },
+                                                'world_readable': {
+                                                    'type': 'bool'
+                                                }
+                                            },
+                                            'type': 'dict'
+                                        },
+                                        'interval': {
+                                            'type': 'int'
+                                        },
+                                        'labeled_path': {
+                                            'type': 'bool'
+                                        },
+                                        'set': {
+                                            'type': 'bool'
                                         }
                                     },
                                     'type': 'dict'

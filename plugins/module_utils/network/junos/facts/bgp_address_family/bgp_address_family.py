@@ -133,38 +133,50 @@ class Bgp_address_familyFacts(object):
         :rtype: dictionary
         :returns: The generated config
         """
-        nlri_type = [
+        nlri_params = [
+            'evpn',
+            'inet',
+            'inet-mdt',
+            'inet-mvpn',
+            'inet-vpn',
+            'inet6',
+            'inet6-mvpn',
+            'inet6-vpn',
+            'iso-vpn',
+            'l2vpn',
+            'route-target',
+            'traffic-engineering',
+        ]
+        # TODO wrap route-target'
+        nlri_types = [
             'any',
             'flow',
             'multicast',
-            'labeled-unicast'
+            'labeled-unicast',
+            'segment-routing-te',
+            'unicast',
+            'signaling'
         ]
         bgp_address_family = {}
         bgp = conf.get("family")
         address_family = []
+        af_dict = {}
 
-        # Parse 'inet' and populate facts
-        if 'inet' in bgp.keys():
-            # Declare af dict element of address_family
-            af = {}
-            af['afi'] = 'inet'
-
-            # Declare af_type dict
-            af_type = []
-            inet = bgp.get('inet')
-
-            for nlri in nlri_type:
-                nlri_dict = self.parse_nlri(inet, nlri)
-                if nlri_dict:
-                    af_type.append(nlri_dict)
-
-            # Populate af dict entry
-            if af_type:
-                af['af_type'] = af_type
-
-        # Populate address family entry
-        if af:
-            address_family.append(af)
+        # Parse NLRI Parameters
+        for param in nlri_params:
+            if param in bgp.keys():
+                af_dict = {}
+                af_type = []
+                af_dict['afi'] = param
+                nlri_param = bgp.get(param)
+                for nlri in nlri_types:
+                    nlri_dict = self.parse_nlri(nlri_param, nlri)
+                    if nlri_dict:
+                        af_type.append(nlri_dict)
+                if af_type:
+                    af_dict['af_type'] = af_type
+            if af_dict:
+                address_family.append(af_dict)
 
         # Populate address family list into address_family dict
         if address_family:
@@ -200,6 +212,13 @@ class Bgp_address_familyFacts(object):
                 if ap_dict:
                     nlri_dict['add_path'] = ap_dict
 
+            # Parse aggregate-label
+            if 'aggregate-label' in nlri.keys():
+                al_dict = self.parse_aggregate_label(nlri)
+                # populate aggregate-label
+                if apl_dict:
+                    nlri_dict['aggregate_label'] = al_dict
+
             # Parse aigp
             if 'aigp' in nlri.keys():
                 aigp_dict = self.parse_aigp(nlri)
@@ -225,6 +244,20 @@ class Bgp_address_familyFacts(object):
                 if dra_dict:
                     nlri_dict['delay_route_advertisements'] = dra_dict
 
+            # Parse entropy-label
+            if 'entropy-label' in nlri.keys():
+                el_dict = self.parse_entropy_label(nlri)
+                # populate entropy-label
+                if el_dict:
+                    nlri_dict['entropy_label'] = el_dict
+
+            # Parse explicit-null
+            if 'explicit-null' in nlri.keys():
+                en_dict = self.parse_explicit_null(nlri)
+                # populate explicit-null
+                if en_dict:
+                    nlri_dict['explicit_null'] = en_dict
+
             # Parse forwarding-state-bit
             if 'forwarding-state-bit' in nlri.keys():
                 fsb = nlri.get('forwarding-state-bit')
@@ -234,12 +267,11 @@ class Bgp_address_familyFacts(object):
                     nlri_dict['graceful_restart_forwarding_state_bit'] = 'set'
 
             # Parse legacy-redirect-ip-action
-            # TODO add support in docs and argspec
-            # if 'legacy-redirect-ip-action' in nlri.keys():
-            #     lria_dict = self.parse_legacy_redirect_ip_action(nlri)
-            #     # populate legacy_redirect_ip_action
-            #     if lria_dict:
-            #         nlri_dict['legacy_redirect_ip_action'] = lria_dict
+            if 'legacy-redirect-ip-action' in nlri.keys():
+                lria_dict = self.parse_legacy_redirect_ip_action(nlri)
+                # populate legacy_redirect_ip_action
+                if lria_dict:
+                    nlri_dict['legacy_redirect_ip_action'] = lria_dict
 
             # Parse local-ipv4-address
             if 'local-ipv4-address' in nlri.keys():
@@ -266,12 +298,32 @@ class Bgp_address_familyFacts(object):
                 if 'priority' in oqp.keys():
                     nlri_dict['output_queue_priority_priority'] = oqp.get('priority')
 
+            # Parse per-group-label
+            if 'per-group-label' in nlri.keys():
+                nlri_dict['per_group_label'] = True
+
+            # Parse per-prefix-label
+            if 'per-prefix-label' in nlri.keys():
+                nlri_dict['per_group_label'] = True
+
+            # Parse resolve-vpn
+            if 'resolve-vpn' in nlri.keys():
+                nlri_dict['resolve_vpn'] = True
+
             # Parse prefix-limit
             if 'prefix-limit' in nlri.keys():
                 pl_dict = self.parse_accepted_prefix_limit(nlri)
                 # populate delay_route_advertisements
                 if pl_dict:
                     nlri_dict['prefix_limit'] = pl_dict
+
+            # Parse resolve-vpn
+            if 'resolve-vpn' in nlri.keys():
+                nlri_dict['resolve_vpn'] = True
+
+            # Parse rib
+            if 'rib' in nlri.keys():
+                nlri_dict['rib'] = nlri.get('rib')
 
             # Parse rib-group
             if 'rib-group' in nlri.keys():
@@ -292,6 +344,13 @@ class Bgp_address_familyFacts(object):
             # Parse strip-nexthop
             if 'strip-nexthop' in nlri.keys():
                 nlri_dict['strip_nexthop'] = True
+
+            # Parse topology
+            if 'topology' in nlri.keys():
+                t_dict = self.parse_topology(nlri)
+                # populate topology
+                if t_dict:
+                    nlri_dict['topology'] = t_dict
 
             # Parse withdraw-priority
             if 'withdraw-priority' in nlri.keys():
@@ -364,6 +423,21 @@ class Bgp_address_familyFacts(object):
                 s_dict['prefix_policy'] = send.get('prefix-policy')
             ap_dict['send'] = s_dict
         return ap_dict
+
+    def parse_aggregate_label(self, cfg):
+        """
+
+        :param self:
+        :param cfg:
+        :return:
+        """
+        al_dict = {}
+        al = cfg.get('aggregate-label')
+        if not al:
+            al_dict['set'] = True
+        else:
+            al_dict['community'] = al.get('community')
+        return al_dict
 
     def parse_aigp(self, cfg):
         """
@@ -438,3 +512,48 @@ class Bgp_address_familyFacts(object):
                 if 'routing-uptime' in mid.keys():
                     dra_dict['min_delay_routing_uptime'] = mid.get('routing-uptime')
         return dra_dict
+
+    def parse_entropy_label(self, cfg):
+        """
+
+        :param self:
+        :param cfg:
+        :return:
+        """
+        el_dict = {}
+        el = cfg.get('entropy-label')
+        if not el:
+            el_dict['set'] = True
+        else:
+            if 'import' in el.keys():
+                el_dict['import'] = el.get('import')
+            if 'no-next-hop-validation' in el.keys():
+                el_dict['no_next_hop_validation'] = True
+        return el_dict
+
+    def parse_explicit_null(self, cfg):
+        """
+
+        :param self:
+        :param cfg:
+        :return:
+        """
+        en_dict = {}
+        en = cfg.get('explicit-null')
+        if not en:
+            en_dict['set'] = True
+        elif 'connected-only' in en.keys():
+            en_dict['connected_only'] = True
+        return en_dict
+
+    def parse_topology(self, cfg):
+        """
+
+        :param self:
+        :param cfg:
+        :return:
+        """
+        top_dict = {}
+        top = cfg.get('topology')
+        top_dict['community'] = top.get('community')
+        return top_dict
