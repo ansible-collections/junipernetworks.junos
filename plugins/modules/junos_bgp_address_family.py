@@ -63,6 +63,9 @@ options:
     description: The provided link BGP address family dictionary.
     type: dict
     suboptions:
+      as_number:
+        description: Specify Autonomous system number.
+        type: str
       address_family:
         description: Enable address family and enter its config mode.
         type: list

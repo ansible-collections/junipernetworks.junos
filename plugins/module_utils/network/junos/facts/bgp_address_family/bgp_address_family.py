@@ -82,6 +82,9 @@ class Bgp_address_familyFacts(object):
                                    </family>
                                 </bgp>
                             </protocols>
+                            <routing-options>
+                                <autonomous-system/>
+                            </routing-options>
                         </configuration>
                         """
             data = self.get_connection(connection, config_filter)
@@ -92,19 +95,27 @@ class Bgp_address_familyFacts(object):
             )
         objs = {}
         resources = data.xpath("configuration/protocols/bgp/family")
-        autonomous_system = data.xpath(
+        autonomous_system_path = data.xpath(
             "configuration/routing-options/autonomous-system"
         )
-        if autonomous_system:
+        if autonomous_system_path:
             self.autonomous_system = self._get_xml_dict(
-                autonomous_system.pop()
+                autonomous_system_path.pop()
             )
         else:
             self.autonomous_system = ""
         for resource in resources:
-            if resource:
+            if resource is not None:
                 xml = self._get_xml_dict(resource)
                 objs = self.render_config(self.generated_spec, xml)
+
+        if not objs:
+            if self.autonomous_system and self.autonomous_system.get(
+                    "autonomous-system"
+            ):
+                objs["as_number"] = self.autonomous_system[
+                    "autonomous-system"
+                ].get("as-number")
         facts = {}
         if objs:
             facts["bgp_address_family"] = {}
@@ -144,8 +155,7 @@ class Bgp_address_familyFacts(object):
             'inet6-vpn',
             'iso-vpn',
             'l2vpn',
-            'route-target',
-            'traffic-engineering',
+            'traffic-engineering'
         ]
         # TODO wrap route-target'
         nlri_types = [
@@ -160,19 +170,28 @@ class Bgp_address_familyFacts(object):
         bgp_address_family = {}
         bgp = conf.get("family")
         address_family = []
-        af_dict = {}
+
+        # Set ASN value into facts
+        if self.autonomous_system and self.autonomous_system.get(
+                "autonomous-system"
+        ):
+            bgp_address_family["as_number"] = self.autonomous_system[
+                "autonomous-system"
+            ].get("as-number")
+
 
         # Parse NLRI Parameters
         for param in nlri_params:
+            af_dict = {}
             if param in bgp.keys():
-                af_dict = {}
                 af_type = []
-                af_dict['afi'] = param
                 nlri_param = bgp.get(param)
                 for nlri in nlri_types:
-                    nlri_dict = self.parse_nlri(nlri_param, nlri)
-                    if nlri_dict:
-                        af_type.append(nlri_dict)
+                    af_dict['afi'] = param
+                    if nlri in nlri_param.keys():
+                        nlri_dict = self.parse_nlri(nlri_param, nlri)
+                        if nlri_dict:
+                            af_type.append(nlri_dict)
                 if af_type:
                     af_dict['af_type'] = af_type
             if af_dict:
@@ -191,7 +210,7 @@ class Bgp_address_familyFacts(object):
         :return:
         """
         nlri_dict = {}
-        if nlri_t in cfg.keys():
+        if cfg and nlri_t in cfg.keys():
             nlri_dict['type'] = nlri_t
             nlri = cfg.get(nlri_t)
 
@@ -258,13 +277,20 @@ class Bgp_address_familyFacts(object):
                 if en_dict:
                     nlri_dict['explicit_null'] = en_dict
 
+            # Parse extended-nexthop
+            if 'extended-nexthop' in nlri.keys():
+                nlri_dict['extended_nexthop'] = True
+
+            # Parse extended-nexthop-color
+            if 'extended-nexthop-color' in nlri.keys():
+                nlri_dict['extended_nexthop_color'] = True
+
             # Parse forwarding-state-bit
-            if 'forwarding-state-bit' in nlri.keys():
-                fsb = nlri.get('forwarding-state-bit')
-                if 'from-fib' in fsb.keys():
-                    nlri_dict['graceful_restart_forwarding_state_bit'] = 'from-fib'
-                else:
-                    nlri_dict['graceful_restart_forwarding_state_bit'] = 'set'
+            if 'graceful-restart' in nlri.keys():
+                gr = nlri.get('graceful-restart')
+                if 'forwarding-state-bit' in gr.keys():
+                    fsb = gr.get('forwarding-state-bit')
+                    nlri_dict['graceful_restart_forwarding_state_bit'] = fsb
 
             # Parse legacy-redirect-ip-action
             if 'legacy-redirect-ip-action' in nlri.keys():
@@ -304,7 +330,7 @@ class Bgp_address_familyFacts(object):
 
             # Parse per-prefix-label
             if 'per-prefix-label' in nlri.keys():
-                nlri_dict['per_group_label'] = True
+                nlri_dict['per_prefix_label'] = True
 
             # Parse resolve-vpn
             if 'resolve-vpn' in nlri.keys():
@@ -323,7 +349,7 @@ class Bgp_address_familyFacts(object):
 
             # Parse rib
             if 'rib' in nlri.keys():
-                nlri_dict['rib'] = nlri.get('rib')
+                nlri_dict['rib'] = 'inet.3'
 
             # Parse rib-group
             if 'rib-group' in nlri.keys():
@@ -351,6 +377,13 @@ class Bgp_address_familyFacts(object):
                 # populate topology
                 if t_dict:
                     nlri_dict['topology'] = t_dict
+
+            # Parse traffic-statistics
+            if 'traffic_statistics' in nlri.keys():
+                ts_dict = self.parse_traffic_statistics(nlri)
+                # populate topology
+                if ts_dict:
+                    nlri_dict['traffic-statistics'] = ts_dict
 
             # Parse withdraw-priority
             if 'withdraw-priority' in nlri.keys():
@@ -463,10 +496,11 @@ class Bgp_address_familyFacts(object):
         """
         dimb_dict = {}
         dimb = cfg.get('defer-initial-multipath-build')
-        if 'maximum-delay' in dimb.keys():
-            dimb_dict['maximum_delay'] = dimb.get('maximum-delay')
-        else:
+        if not dimb:
             dimb_dict['set'] = True
+
+        elif 'maximum-delay' in dimb.keys():
+            dimb_dict['maximum_delay'] = dimb.get('maximum-delay')
         return dimb_dict
 
     def parse_legacy_redirect_ip_action(self, cfg):
@@ -484,7 +518,7 @@ class Bgp_address_familyFacts(object):
             if 'send' in lria.keys():
                 lria_dict['send'] = True
             if 'receive' in lria.keys():
-                lria_dict['send'] = True
+                lria_dict['receive'] = True
         return lria_dict
 
     def parse_delay_route_advertisements(self, cfg):
@@ -557,3 +591,33 @@ class Bgp_address_familyFacts(object):
         top = cfg.get('topology')
         top_dict['community'] = top.get('community')
         return top_dict
+
+    def parse_traffic_statistics(self, cfg):
+        """
+
+        :param self:
+        :param cfg:
+        :return:
+        """
+        ts_dict = {}
+        ts = cfg.get('itraffic-statistics')
+        if not ts:
+            ts_dict['set'] = True
+        else:
+            if 'interval' in ts.keys():
+                ts_dict['interval'] = ts.get('interval')
+            if 'labeled-path' in ts.keys():
+                ts_dict['labeled_path'] = True
+            if 'file' in ts.keys():
+                file = ts.get('file')
+                file_dict = {}
+                if 'files' in file.keys():
+                    file_dict['files'] = file.get('files')
+                if 'no-world-readable' in file.keys():
+                    file_dict['no_world_readable'] = True
+                if 'size' in file.keys():
+                    file_dict['size'] = file.get('size')
+                if 'world-readable' in file.keys():
+                    file_dict['world_readable'] = True
+
+        return ts_dict

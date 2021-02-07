@@ -38,6 +38,7 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
     argument_spec = {
         'config': {
             'options': {
+                'as_number': {'type': 'str'},
                 'address_family': {
                     'elements': 'dict',
                     'options': {
