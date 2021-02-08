@@ -19,8 +19,11 @@ from ansible.module_utils.basic import missing_required_lib
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
     utils,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.bgp_address_family.bgp_address_family import Bgp_address_familyArgs
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.bgp_address_family.bgp_address_family import (
+    Bgp_address_familyArgs,
+)
 from ansible.module_utils.six import string_types
+
 try:
     from lxml import etree
 
@@ -40,7 +43,7 @@ class Bgp_address_familyFacts(object):
     """ The junos bgp_address_family fact class
     """
 
-    def __init__(self, module, subspec='config', options='options'):
+    def __init__(self, module, subspec="config", options="options"):
         self._module = module
         self.argument_spec = Bgp_address_familyArgs.argument_spec
         spec = deepcopy(self.argument_spec)
@@ -109,20 +112,15 @@ class Bgp_address_familyFacts(object):
                 xml = self._get_xml_dict(resource)
                 objs = self.render_config(self.generated_spec, xml)
 
-        if not objs:
-            if self.autonomous_system and self.autonomous_system.get(
-                    "autonomous-system"
-            ):
-                objs["as_number"] = self.autonomous_system[
-                    "autonomous-system"
-                ].get("as-number")
         facts = {}
         if objs:
             facts["bgp_address_family"] = {}
             params = utils.validate_config(
                 self.argument_spec, {"config": objs}
             )
-            facts["bgp_address_family"] = utils.remove_empties(params["config"])
+            facts["bgp_address_family"] = utils.remove_empties(
+                params["config"]
+            )
         ansible_facts["ansible_network_resources"].update(facts)
         return ansible_facts
 
@@ -145,41 +143,31 @@ class Bgp_address_familyFacts(object):
         :returns: The generated config
         """
         nlri_params = [
-            'evpn',
-            'inet',
-            'inet-mdt',
-            'inet-mvpn',
-            'inet-vpn',
-            'inet6',
-            'inet6-mvpn',
-            'inet6-vpn',
-            'iso-vpn',
-            'l2vpn',
-            'traffic-engineering'
+            "evpn",
+            "inet",
+            "inet-mdt",
+            "inet-mvpn",
+            "inet-vpn",
+            "inet6",
+            "inet6-mvpn",
+            "inet6-vpn",
+            "iso-vpn",
+            "l2vpn",
+            "traffic-engineering",
         ]
         # TODO wrap route-target'
         nlri_types = [
-            'any',
-            'flow',
-            'multicast',
-            'labeled-unicast',
-            'segment-routing-te',
-            'unicast',
-            'signaling'
+            "any",
+            "flow",
+            "multicast",
+            "labeled-unicast",
+            "segment-routing-te",
+            "unicast",
+            "signaling",
         ]
         bgp_address_family = {}
         bgp = conf.get("family")
         address_family = []
-
-        # Set ASN value into facts
-        if self.autonomous_system and self.autonomous_system.get(
-                "autonomous-system"
-        ):
-            bgp_address_family["as_number"] = self.autonomous_system[
-                "autonomous-system"
-            ].get("as-number")
-
-
         # Parse NLRI Parameters
         for param in nlri_params:
             af_dict = {}
@@ -187,19 +175,19 @@ class Bgp_address_familyFacts(object):
                 af_type = []
                 nlri_param = bgp.get(param)
                 for nlri in nlri_types:
-                    af_dict['afi'] = param
+                    af_dict["afi"] = param
                     if nlri in nlri_param.keys():
                         nlri_dict = self.parse_nlri(nlri_param, nlri)
                         if nlri_dict:
                             af_type.append(nlri_dict)
                 if af_type:
-                    af_dict['af_type'] = af_type
+                    af_dict["af_type"] = af_type
             if af_dict:
                 address_family.append(af_dict)
 
         # Populate address family list into address_family dict
         if address_family:
-            bgp_address_family['address_family'] = address_family
+            bgp_address_family["address_family"] = address_family
 
         return utils.remove_empties(bgp_address_family)
 
@@ -211,187 +199,195 @@ class Bgp_address_familyFacts(object):
         """
         nlri_dict = {}
         if cfg and nlri_t in cfg.keys():
-            nlri_dict['type'] = nlri_t
+            nlri_dict["type"] = nlri_t
             nlri = cfg.get(nlri_t)
 
             if not nlri:
-                nlri_dict['set'] = True
+                nlri_dict["set"] = True
                 return nlri_dict
             # Parse accepted-prefix-limit
-            if 'accepted-prefix-limit' in nlri.keys():
+            if "accepted-prefix-limit" in nlri.keys():
                 apl_dict = self.parse_accepted_prefix_limit(nlri)
                 # populate accepted_prefix_limit
                 if apl_dict:
-                    nlri_dict['accepted_prefix_limit'] = apl_dict
+                    nlri_dict["accepted_prefix_limit"] = apl_dict
 
             # Parse add-path
-            if 'add-path' in nlri.keys():
+            if "add-path" in nlri.keys():
                 ap_dict = self.parse_add_path(nlri)
                 # populate accepted_prefix_limit
                 if ap_dict:
-                    nlri_dict['add_path'] = ap_dict
+                    nlri_dict["add_path"] = ap_dict
 
             # Parse aggregate-label
-            if 'aggregate-label' in nlri.keys():
+            if "aggregate-label" in nlri.keys():
                 al_dict = self.parse_aggregate_label(nlri)
                 # populate aggregate-label
                 if apl_dict:
-                    nlri_dict['aggregate_label'] = al_dict
+                    nlri_dict["aggregate_label"] = al_dict
 
             # Parse aigp
-            if 'aigp' in nlri.keys():
+            if "aigp" in nlri.keys():
                 aigp_dict = self.parse_aigp(nlri)
                 # populate aigp
                 if aigp_dict:
-                    nlri_dict['aigp'] = aigp_dict
+                    nlri_dict["aigp"] = aigp_dict
 
             # Parse and populate damping
-            if 'damping' in nlri.keys():
-                nlri_dict['damping'] = True
+            if "damping" in nlri.keys():
+                nlri_dict["damping"] = True
 
             # Parse defer-initial-multipath-build
-            if 'defer-initial-multipath-build' in nlri.keys():
+            if "defer-initial-multipath-build" in nlri.keys():
                 dimb_dict = self.parse_defer_initial_multipath_build(nlri)
                 # populate defer_initial_multipath_build
                 if dimb_dict:
-                    nlri_dict['defer_initial_multipath_build'] = dimb_dict
+                    nlri_dict["defer_initial_multipath_build"] = dimb_dict
 
             # Parse delay-route-advertisements
-            if 'delay-route-advertisements' in nlri.keys():
+            if "delay-route-advertisements" in nlri.keys():
                 dra_dict = self.parse_delay_route_advertisements(nlri)
                 # populate delay_route_advertisements
                 if dra_dict:
-                    nlri_dict['delay_route_advertisements'] = dra_dict
+                    nlri_dict["delay_route_advertisements"] = dra_dict
 
             # Parse entropy-label
-            if 'entropy-label' in nlri.keys():
+            if "entropy-label" in nlri.keys():
                 el_dict = self.parse_entropy_label(nlri)
                 # populate entropy-label
                 if el_dict:
-                    nlri_dict['entropy_label'] = el_dict
+                    nlri_dict["entropy_label"] = el_dict
 
             # Parse explicit-null
-            if 'explicit-null' in nlri.keys():
+            if "explicit-null" in nlri.keys():
                 en_dict = self.parse_explicit_null(nlri)
                 # populate explicit-null
                 if en_dict:
-                    nlri_dict['explicit_null'] = en_dict
+                    nlri_dict["explicit_null"] = en_dict
 
             # Parse extended-nexthop
-            if 'extended-nexthop' in nlri.keys():
-                nlri_dict['extended_nexthop'] = True
+            if "extended-nexthop" in nlri.keys():
+                nlri_dict["extended_nexthop"] = True
 
             # Parse extended-nexthop-color
-            if 'extended-nexthop-color' in nlri.keys():
-                nlri_dict['extended_nexthop_color'] = True
+            if "extended-nexthop-color" in nlri.keys():
+                nlri_dict["extended_nexthop_color"] = True
 
             # Parse forwarding-state-bit
-            if 'graceful-restart' in nlri.keys():
-                gr = nlri.get('graceful-restart')
-                if 'forwarding-state-bit' in gr.keys():
-                    fsb = gr.get('forwarding-state-bit')
-                    nlri_dict['graceful_restart_forwarding_state_bit'] = fsb
+            if "graceful-restart" in nlri.keys():
+                gr = nlri.get("graceful-restart")
+                if "forwarding-state-bit" in gr.keys():
+                    fsb = gr.get("forwarding-state-bit")
+                    nlri_dict["graceful_restart_forwarding_state_bit"] = fsb
 
             # Parse legacy-redirect-ip-action
-            if 'legacy-redirect-ip-action' in nlri.keys():
+            if "legacy-redirect-ip-action" in nlri.keys():
                 lria_dict = self.parse_legacy_redirect_ip_action(nlri)
                 # populate legacy_redirect_ip_action
                 if lria_dict:
-                    nlri_dict['legacy_redirect_ip_action'] = lria_dict
+                    nlri_dict["legacy_redirect_ip_action"] = lria_dict
 
             # Parse local-ipv4-address
-            if 'local-ipv4-address' in nlri.keys():
-                nlri_dict['local_ipv4_address'] = nlri.get('local-ipv4-address')
+            if "local-ipv4-address" in nlri.keys():
+                nlri_dict["local_ipv4_address"] = nlri.get(
+                    "local-ipv4-address"
+                )
 
             # Parse loops
-            if 'loops' in nlri.keys():
-                loops = nlri.get('loops')
-                nlri_dict['loops'] = loops.get('loops')
+            if "loops" in nlri.keys():
+                loops = nlri.get("loops")
+                nlri_dict["loops"] = loops.get("loops")
 
             # Parse no-install
-            if 'no-install' in nlri.keys():
-                nlri_dict['no_install'] = True
+            if "no-install" in nlri.keys():
+                nlri_dict["no_install"] = True
 
             # Parse no-validate
-            if 'no-validate' in nlri.keys():
-                nlri_dict['no_validate'] = nlri.get('no-validate')
+            if "no-validate" in nlri.keys():
+                nlri_dict["no_validate"] = nlri.get("no-validate")
 
             # Parse output-queue-priority
-            if 'output-queue-priority' in nlri.keys():
-                oqp = nlri.get('output-queue-priority')
-                if 'expedited' in oqp.keys():
-                    nlri_dict['output_queue_priority_expedited'] = True
-                if 'priority' in oqp.keys():
-                    nlri_dict['output_queue_priority_priority'] = oqp.get('priority')
+            if "output-queue-priority" in nlri.keys():
+                oqp = nlri.get("output-queue-priority")
+                if "expedited" in oqp.keys():
+                    nlri_dict["output_queue_priority_expedited"] = True
+                if "priority" in oqp.keys():
+                    nlri_dict["output_queue_priority_priority"] = oqp.get(
+                        "priority"
+                    )
 
             # Parse per-group-label
-            if 'per-group-label' in nlri.keys():
-                nlri_dict['per_group_label'] = True
+            if "per-group-label" in nlri.keys():
+                nlri_dict["per_group_label"] = True
 
             # Parse per-prefix-label
-            if 'per-prefix-label' in nlri.keys():
-                nlri_dict['per_prefix_label'] = True
+            if "per-prefix-label" in nlri.keys():
+                nlri_dict["per_prefix_label"] = True
 
             # Parse resolve-vpn
-            if 'resolve-vpn' in nlri.keys():
-                nlri_dict['resolve_vpn'] = True
+            if "resolve-vpn" in nlri.keys():
+                nlri_dict["resolve_vpn"] = True
 
             # Parse prefix-limit
-            if 'prefix-limit' in nlri.keys():
+            if "prefix-limit" in nlri.keys():
                 pl_dict = self.parse_accepted_prefix_limit(nlri)
                 # populate delay_route_advertisements
                 if pl_dict:
-                    nlri_dict['prefix_limit'] = pl_dict
+                    nlri_dict["prefix_limit"] = pl_dict
 
             # Parse resolve-vpn
-            if 'resolve-vpn' in nlri.keys():
-                nlri_dict['resolve_vpn'] = True
+            if "resolve-vpn" in nlri.keys():
+                nlri_dict["resolve_vpn"] = True
 
             # Parse rib
-            if 'rib' in nlri.keys():
-                nlri_dict['rib'] = 'inet.3'
+            if "rib" in nlri.keys():
+                nlri_dict["rib"] = "inet.3"
 
             # Parse rib-group
-            if 'rib-group' in nlri.keys():
-                nlri_dict['rib_group'] = nlri.get('rib-group')
+            if "rib-group" in nlri.keys():
+                nlri_dict["rib_group"] = nlri.get("rib-group")
 
             # Parse route-refresh-priority
-            if 'route-refresh-priority' in nlri.keys():
-                oqp = nlri.get('route-refresh-priority')
-                if 'expedited' in oqp.keys():
-                    nlri_dict['route_refresh_priority_expedited'] = True
-                if 'priority' in oqp.keys():
-                    nlri_dict['route_refresh_priority_priority'] = oqp.get('priority')
+            if "route-refresh-priority" in nlri.keys():
+                oqp = nlri.get("route-refresh-priority")
+                if "expedited" in oqp.keys():
+                    nlri_dict["route_refresh_priority_expedited"] = True
+                if "priority" in oqp.keys():
+                    nlri_dict["route_refresh_priority_priority"] = oqp.get(
+                        "priority"
+                    )
 
             # Parse secondary-independent-resolution
-            if 'secondary-independent-resolution' in nlri.keys():
-                nlri_dict['secondary_independent_resolution'] = True
+            if "secondary-independent-resolution" in nlri.keys():
+                nlri_dict["secondary_independent_resolution"] = True
 
             # Parse strip-nexthop
-            if 'strip-nexthop' in nlri.keys():
-                nlri_dict['strip_nexthop'] = True
+            if "strip-nexthop" in nlri.keys():
+                nlri_dict["strip_nexthop"] = True
 
             # Parse topology
-            if 'topology' in nlri.keys():
+            if "topology" in nlri.keys():
                 t_dict = self.parse_topology(nlri)
                 # populate topology
                 if t_dict:
-                    nlri_dict['topology'] = t_dict
+                    nlri_dict["topology"] = t_dict
 
             # Parse traffic-statistics
-            if 'traffic_statistics' in nlri.keys():
+            if "traffic_statistics" in nlri.keys():
                 ts_dict = self.parse_traffic_statistics(nlri)
                 # populate topology
                 if ts_dict:
-                    nlri_dict['traffic-statistics'] = ts_dict
+                    nlri_dict["traffic-statistics"] = ts_dict
 
             # Parse withdraw-priority
-            if 'withdraw-priority' in nlri.keys():
-                oqp = nlri.get('withdraw-priority')
-                if 'expedited' in oqp.keys():
-                    nlri_dict['withdraw_priority_expedited'] = True
-                if 'priority' in oqp.keys():
-                    nlri_dict['withdraw_priority_priority'] = oqp.get('priority')
+            if "withdraw-priority" in nlri.keys():
+                oqp = nlri.get("withdraw-priority")
+                if "expedited" in oqp.keys():
+                    nlri_dict["withdraw_priority_expedited"] = True
+                if "priority" in oqp.keys():
+                    nlri_dict["withdraw_priority_priority"] = oqp.get(
+                        "priority"
+                    )
             return nlri_dict
 
     def parse_accepted_prefix_limit(self, cfg):
@@ -402,26 +398,28 @@ class Bgp_address_familyFacts(object):
         :return:
         """
         apl_dict = {}
-        if 'accepted-prefix-limit' in cfg.keys():
-            apl = cfg.get('accepted-prefix-limit')
+        if "accepted-prefix-limit" in cfg.keys():
+            apl = cfg.get("accepted-prefix-limit")
         else:
-            apl = cfg.get('prefix-limit')
-        if 'maximum' in apl.keys():
-            apl_dict['maximum'] = apl.get('maximum')
-        if 'teardown' in apl.keys():
-            if not apl.get('teardown'):
-                apl_dict['teardown'] = True
+            apl = cfg.get("prefix-limit")
+        if "maximum" in apl.keys():
+            apl_dict["maximum"] = apl.get("maximum")
+        if "teardown" in apl.keys():
+            if not apl.get("teardown"):
+                apl_dict["teardown"] = True
             else:
-                td = apl.get('teardown')
-                if 'idle-timeout' in td.keys():
-                    if not td.get('idle-timeout'):
-                        apl_dict['idle_timeout'] = True
-                    elif 'forever' in td['idle-timeout'].keys():
-                        apl_dict['forever'] = True
-                    elif 'timeout' in td['idle-timeout'].keys():
-                        apl_dict['idle_timeout_value'] = td['idle-timeout'].get('timeout')
-                if 'limit-threshold' in td.keys():
-                    apl_dict['limit_threshold'] = td.get('limit-threshold')
+                td = apl.get("teardown")
+                if "idle-timeout" in td.keys():
+                    if not td.get("idle-timeout"):
+                        apl_dict["idle_timeout"] = True
+                    elif "forever" in td["idle-timeout"].keys():
+                        apl_dict["forever"] = True
+                    elif "timeout" in td["idle-timeout"].keys():
+                        apl_dict["idle_timeout_value"] = td[
+                            "idle-timeout"
+                        ].get("timeout")
+                if "limit-threshold" in td.keys():
+                    apl_dict["limit_threshold"] = td.get("limit-threshold")
         return apl_dict
 
     def parse_add_path(self, cfg):
@@ -432,29 +430,29 @@ class Bgp_address_familyFacts(object):
         :return:
         """
         ap_dict = {}
-        ap = cfg.get('add-path')
-        if 'receive' in ap.keys():
-            ap_dict['receive'] = True
-        if 'send' in ap.keys():
-            send = ap.get('send')
+        ap = cfg.get("add-path")
+        if "receive" in ap.keys():
+            ap_dict["receive"] = True
+        if "send" in ap.keys():
+            send = ap.get("send")
             s_dict = {}
-            if 'include-backup-path' in send.keys():
-                s_dict['include_backup_path'] = send.get('include-backup-path')
-            if 'path-count' in send.keys():
-                s_dict['path_count'] = send.get('path-count')
-            if 'multipath' in send.keys():
-                s_dict['multipath'] = True
-            if 'path-selection-mode' in send.keys():
-                psm = send.get('path-selection-mode')
+            if "include-backup-path" in send.keys():
+                s_dict["include_backup_path"] = send.get("include-backup-path")
+            if "path-count" in send.keys():
+                s_dict["path_count"] = send.get("path-count")
+            if "multipath" in send.keys():
+                s_dict["multipath"] = True
+            if "path-selection-mode" in send.keys():
+                psm = send.get("path-selection-mode")
                 psm_dict = {}
-                if 'all-paths' in psm.keys():
-                    psm_dict['all_paths'] = True
-                if 'equal-cost-paths' in psm.keys():
-                    psm_dict['equal_cost_paths'] = True
-                s_dict['path_selection_mode'] = psm_dict
-            if 'prefix-policy' in send.keys():
-                s_dict['prefix_policy'] = send.get('prefix-policy')
-            ap_dict['send'] = s_dict
+                if "all-paths" in psm.keys():
+                    psm_dict["all_paths"] = True
+                if "equal-cost-paths" in psm.keys():
+                    psm_dict["equal_cost_paths"] = True
+                s_dict["path_selection_mode"] = psm_dict
+            if "prefix-policy" in send.keys():
+                s_dict["prefix_policy"] = send.get("prefix-policy")
+            ap_dict["send"] = s_dict
         return ap_dict
 
     def parse_aggregate_label(self, cfg):
@@ -465,11 +463,11 @@ class Bgp_address_familyFacts(object):
         :return:
         """
         al_dict = {}
-        al = cfg.get('aggregate-label')
+        al = cfg.get("aggregate-label")
         if not al:
-            al_dict['set'] = True
+            al_dict["set"] = True
         else:
-            al_dict['community'] = al.get('community')
+            al_dict["community"] = al.get("community")
         return al_dict
 
     def parse_aigp(self, cfg):
@@ -480,11 +478,11 @@ class Bgp_address_familyFacts(object):
         :return:
         """
         aigp_dict = {}
-        aigp = cfg.get('aigp')
-        if aigp and 'disable' in aigp.keys():
-            aigp_dict['disable'] = True
+        aigp = cfg.get("aigp")
+        if aigp and "disable" in aigp.keys():
+            aigp_dict["disable"] = True
         else:
-            aigp_dict['set'] = True
+            aigp_dict["set"] = True
         return aigp_dict
 
     def parse_defer_initial_multipath_build(self, cfg):
@@ -495,12 +493,12 @@ class Bgp_address_familyFacts(object):
         :return:
         """
         dimb_dict = {}
-        dimb = cfg.get('defer-initial-multipath-build')
+        dimb = cfg.get("defer-initial-multipath-build")
         if not dimb:
-            dimb_dict['set'] = True
+            dimb_dict["set"] = True
 
-        elif 'maximum-delay' in dimb.keys():
-            dimb_dict['maximum_delay'] = dimb.get('maximum-delay')
+        elif "maximum-delay" in dimb.keys():
+            dimb_dict["maximum_delay"] = dimb.get("maximum-delay")
         return dimb_dict
 
     def parse_legacy_redirect_ip_action(self, cfg):
@@ -511,14 +509,14 @@ class Bgp_address_familyFacts(object):
         :return:
         """
         lria_dict = {}
-        lria = cfg.get('legacy-redirect-ip-action')
+        lria = cfg.get("legacy-redirect-ip-action")
         if not lria:
-            lria_dict['set'] = True
+            lria_dict["set"] = True
         else:
-            if 'send' in lria.keys():
-                lria_dict['send'] = True
-            if 'receive' in lria.keys():
-                lria_dict['receive'] = True
+            if "send" in lria.keys():
+                lria_dict["send"] = True
+            if "receive" in lria.keys():
+                lria_dict["receive"] = True
         return lria_dict
 
     def parse_delay_route_advertisements(self, cfg):
@@ -529,22 +527,28 @@ class Bgp_address_familyFacts(object):
         :return:
         """
         dra_dict = {}
-        dra = cfg.get('delay-route-advertisements')
+        dra = cfg.get("delay-route-advertisements")
         if not dra:
-            dra_dict['set'] = True
+            dra_dict["set"] = True
         else:
-            if 'maximum-delay' in dra.keys():
-                mxd = dra.get('maximum-delay')
-                if 'route-age' in mxd.keys():
-                    dra_dict['max_delay_route_age'] = mxd.get('route-age')
-                if 'routing-uptime' in mxd.keys():
-                    dra_dict['max_delay_routing_uptime'] = mxd.get('routing-uptime')
-            if 'minimum-delay' in dra.keys():
-                mid = dra.get('minimum-delay')
-                if 'inbound-convergence' in mid.keys():
-                    dra_dict['min_delay_inbound_convergence'] = mid.get('inbound-convergence')
-                if 'routing-uptime' in mid.keys():
-                    dra_dict['min_delay_routing_uptime'] = mid.get('routing-uptime')
+            if "maximum-delay" in dra.keys():
+                mxd = dra.get("maximum-delay")
+                if "route-age" in mxd.keys():
+                    dra_dict["max_delay_route_age"] = mxd.get("route-age")
+                if "routing-uptime" in mxd.keys():
+                    dra_dict["max_delay_routing_uptime"] = mxd.get(
+                        "routing-uptime"
+                    )
+            if "minimum-delay" in dra.keys():
+                mid = dra.get("minimum-delay")
+                if "inbound-convergence" in mid.keys():
+                    dra_dict["min_delay_inbound_convergence"] = mid.get(
+                        "inbound-convergence"
+                    )
+                if "routing-uptime" in mid.keys():
+                    dra_dict["min_delay_routing_uptime"] = mid.get(
+                        "routing-uptime"
+                    )
         return dra_dict
 
     def parse_entropy_label(self, cfg):
@@ -555,14 +559,14 @@ class Bgp_address_familyFacts(object):
         :return:
         """
         el_dict = {}
-        el = cfg.get('entropy-label')
+        el = cfg.get("entropy-label")
         if not el:
-            el_dict['set'] = True
+            el_dict["set"] = True
         else:
-            if 'import' in el.keys():
-                el_dict['import'] = el.get('import')
-            if 'no-next-hop-validation' in el.keys():
-                el_dict['no_next_hop_validation'] = True
+            if "import" in el.keys():
+                el_dict["import"] = el.get("import")
+            if "no-next-hop-validation" in el.keys():
+                el_dict["no_next_hop_validation"] = True
         return el_dict
 
     def parse_explicit_null(self, cfg):
@@ -573,11 +577,11 @@ class Bgp_address_familyFacts(object):
         :return:
         """
         en_dict = {}
-        en = cfg.get('explicit-null')
+        en = cfg.get("explicit-null")
         if not en:
-            en_dict['set'] = True
-        elif 'connected-only' in en.keys():
-            en_dict['connected_only'] = True
+            en_dict["set"] = True
+        elif "connected-only" in en.keys():
+            en_dict["connected_only"] = True
         return en_dict
 
     def parse_topology(self, cfg):
@@ -588,8 +592,8 @@ class Bgp_address_familyFacts(object):
         :return:
         """
         top_dict = {}
-        top = cfg.get('topology')
-        top_dict['community'] = top.get('community')
+        top = cfg.get("topology")
+        top_dict["community"] = top.get("community")
         return top_dict
 
     def parse_traffic_statistics(self, cfg):
@@ -600,24 +604,24 @@ class Bgp_address_familyFacts(object):
         :return:
         """
         ts_dict = {}
-        ts = cfg.get('itraffic-statistics')
+        ts = cfg.get("itraffic-statistics")
         if not ts:
-            ts_dict['set'] = True
+            ts_dict["set"] = True
         else:
-            if 'interval' in ts.keys():
-                ts_dict['interval'] = ts.get('interval')
-            if 'labeled-path' in ts.keys():
-                ts_dict['labeled_path'] = True
-            if 'file' in ts.keys():
-                file = ts.get('file')
+            if "interval" in ts.keys():
+                ts_dict["interval"] = ts.get("interval")
+            if "labeled-path" in ts.keys():
+                ts_dict["labeled_path"] = True
+            if "file" in ts.keys():
+                file = ts.get("file")
                 file_dict = {}
-                if 'files' in file.keys():
-                    file_dict['files'] = file.get('files')
-                if 'no-world-readable' in file.keys():
-                    file_dict['no_world_readable'] = True
-                if 'size' in file.keys():
-                    file_dict['size'] = file.get('size')
-                if 'world-readable' in file.keys():
-                    file_dict['world_readable'] = True
+                if "files" in file.keys():
+                    file_dict["files"] = file.get("files")
+                if "no-world-readable" in file.keys():
+                    file_dict["no_world_readable"] = True
+                if "size" in file.keys():
+                    file_dict["size"] = file.get("size")
+                if "world-readable" in file.keys():
+                    file_dict["world_readable"] = True
 
         return ts_dict

@@ -27,12 +27,13 @@ The module file for junos_bgp_address_family
 """
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
-    'metadata_version': '1.1',
-    'status': ['preview'],
-    'supported_by': 'network'
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "network",
 }
 
 DOCUMENTATION = """
@@ -63,9 +64,6 @@ options:
     description: The provided link BGP address family dictionary.
     type: dict
     suboptions:
-      as_number:
-        description: Specify Autonomous system number.
-        type: str
       address_family:
         description: Enable address family and enter its config mode.
         type: list
@@ -342,7 +340,6 @@ options:
     - replaced
     - overridden
     - deleted
-    - purged
     - parsed
     - gathered
     - rendered
@@ -383,8 +380,12 @@ commands:
 
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.bgp_address_family.bgp_address_family import Bgp_address_familyArgs
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.bgp_address_family.bgp_address_family import Bgp_address_family
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.bgp_address_family.bgp_address_family import (
+    Bgp_address_familyArgs,
+)
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.bgp_address_family.bgp_address_family import (
+    Bgp_address_family,
+)
 
 
 def main():
@@ -408,5 +409,5 @@ def main():
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
