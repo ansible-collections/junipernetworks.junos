@@ -1148,7 +1148,7 @@ options:
       address-family related configurations under BGP context.
     - Running states I(deleted) and I(replaced) will result in an error if there
       are address-family configuration lines present under a neighbor.Please use the
-      M(junipernetworks.junos.junos_bgp_af) or M(junipernetworks.junos.junos_bgp_groups)
+      M(junipernetworks.junos.junos_bgp_address_family) or M(junipernetworks.junos.junos_bgp_groups)
       modules for prior cleanup.
     - Refer to examples for more details.
     type: str
@@ -1169,10 +1169,17 @@ EXAMPLES = """
 # ------------
 #
 # admin# show protocols bgp
+# [edit]
+
+# admin# show routing-options autonomous-system
+# [edit]
 
 - name: Merge Junos BGP interfaces config
   junipernetworks.junos.junos_bgp_global:
     config:
+      as_number: "65534"
+      loops: 3
+      asdot_notation: true
       accept_remote_nexthop: true
       add_path_display_ipv4_address: true
       advertise_bgp_static:
@@ -1202,6 +1209,9 @@ EXAMPLES = """
 # After state
 # -----------
 #
+# admin# show routing-options autonomous-system
+# 65534 loops 3 asdot-notation;
+
 # admin# show protocols bgp
 # precision-timers;
 # advertise-from-main-vpn-tables;
@@ -1237,6 +1247,8 @@ EXAMPLES = """
 # Before state
 # ------------
 #
+# admin# show routing-options autonomous-system
+# [edit]
 # admin# show protocols bgp
 # precision-timers;
 # advertise-from-main-vpn-tables;
@@ -1316,6 +1328,8 @@ EXAMPLES = """
 # }
 # egress-te-sid-stats;
 
+# admin# show routing-options autonomous-system
+# [edit]
 
 #
 # Using deleted
@@ -1369,6 +1383,10 @@ EXAMPLES = """
 
 
 # admin# show protocols bgp
+# [edit]
+
+# admin# show routing-options autonomous-system
+# [edit]
 # Using gathered
 #
 # Before state
@@ -1666,6 +1684,7 @@ EXAMPLES = """
 #         },
 #         "advertise_from_main_vpn_tables": true,
 #         "advertise_inactive": true,
+#         "as_number": "65432",
 #         "authentication_algorithm": "md5",
 #         "bfd_liveness_detection": {
 #             "detection_time": {
