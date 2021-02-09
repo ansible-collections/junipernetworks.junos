@@ -73,7 +73,7 @@ class Bgp_global(ConfigBase):
 
         warnings = list()
 
-        if self.state in self.ACTION_STATES:
+        if self.state in self.ACTION_STATES or self.state == "purged":
             existing_bgp_global_facts = self.get_bgp_global_facts()
         else:
             existing_bgp_global_facts = {}
@@ -143,7 +143,12 @@ class Bgp_global(ConfigBase):
         :returns: the list xml configuration necessary to migrate the current configuration
                   to the desired configuration
         """
-        self.root = build_root_xml_node("protocols")
+        self.autonomous_system = None
+        self.root = build_root_xml_node("configuration")
+        self.protocols = build_child_xml_node(self.root, "protocols")
+        self.routing_options = build_child_xml_node(
+            self.root, "routing-options"
+        )
         state = self._module.params["state"]
         if state in ("merged", "replaced", "rendered") and not want:
             self._module.fail_json(
@@ -151,6 +156,7 @@ class Bgp_global(ConfigBase):
                     state
                 )
             )
+        config_xmls = []
         if state == "deleted":
             config_xmls = self._state_deleted(want, have)
         elif state == "purged":
@@ -161,8 +167,13 @@ class Bgp_global(ConfigBase):
             config_xmls = self._state_replaced(want, have)
 
         for xml in config_xmls:
-            self.root.append(xml)
-        return tostring(self.root)
+            self.protocols.append(xml)
+        temp_lst = []
+        for xml in self.root.getchildren():
+            xml = tostring(xml)
+            temp_lst.append(xml)
+        # return [tostring(tostring(xml) for xml in self.root.getchildren())]
+        return temp_lst
 
     def _state_replaced(self, want, have):
         """ The xml configuration generator when state is merged
@@ -247,6 +258,21 @@ class Bgp_global(ConfigBase):
             bgp_root = self._add_node(
                 want, item, item.replace("-", "_"), bgp_root, True
             )
+
+        # Generate xml node for autonomous-system
+        if want.get("as_number"):
+            as_node = build_child_xml_node(
+                self.routing_options,
+                "autonomous-system",
+                want.get("as_number"),
+            )
+            # Add node for loops
+            if want.get("loops"):
+                build_child_xml_node(as_node, "loops", want.get("loops"))
+            # Add node for asdot_notation
+            if want.get("asdot_notation"):
+                if "asdot_notation" in want.keys():
+                    build_child_xml_node(as_node, "asdot-notation")
 
         # Generate config commands for advertise-bgp-static
         if want.get("advertise_bgp_static"):
@@ -519,6 +545,14 @@ class Bgp_global(ConfigBase):
                 build_child_xml_node(
                     bgp_root, attrib, None, {"delete": "delete"}
                 )
+            autonomous_system = have.get("as_number")
+            if autonomous_system:
+                build_child_xml_node(
+                    self.routing_options,
+                    "autonomous-system",
+                    None,
+                    {"delete": "delete"},
+                )
             bgp_xml.append(bgp_root)
         return bgp_xml
 
@@ -530,9 +564,15 @@ class Bgp_global(ConfigBase):
         """
         bgp_xml = []
         delete = {"delete": "delete"}
-        bgp_node = build_child_xml_node(self.root, "bgp")
-        bgp_node.attrib.update(delete)
-        bgp_xml.append(bgp_node)
+        build_child_xml_node(self.protocols, "bgp", None, delete)
+        autonomous_system = have.get("as_number")
+        if autonomous_system:
+            build_child_xml_node(
+                self.routing_options,
+                "autonomous-system",
+                None,
+                {"delete": "delete"},
+            )
         return bgp_xml
 
     def _add_node(self, want, h_key, w_key, node, cfg=False):

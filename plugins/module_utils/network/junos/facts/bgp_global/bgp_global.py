@@ -84,6 +84,9 @@ class Bgp_globalFacts(object):
                         <bgp>
                         </bgp>
                     </protocols>
+                    <routing-options>
+                        <autonomous-system/>
+                    </routing-options>
                 </configuration>
                 """
             data = self.get_connection(connection, config_filter)
@@ -94,19 +97,35 @@ class Bgp_globalFacts(object):
             )
         objs = {}
         resources = data.xpath("configuration/protocols/bgp")
-        autonomous_system = data.xpath(
+        autonomous_system_path = data.xpath(
             "configuration/routing-options/autonomous-system"
         )
-        if autonomous_system:
+        if autonomous_system_path:
             self.autonomous_system = self._get_xml_dict(
-                autonomous_system.pop()
+                autonomous_system_path.pop()
             )
         else:
             self.autonomous_system = ""
         for resource in resources:
-            if resource:
+            if resource is not None:
                 xml = self._get_xml_dict(resource)
                 objs = self.render_config(self.generated_spec, xml)
+        if not objs:
+            if self.autonomous_system and self.autonomous_system.get(
+                "autonomous-system"
+            ):
+                objs["as_number"] = self.autonomous_system[
+                    "autonomous-system"
+                ].get("as-number")
+                if self.autonomous_system["autonomous-system"].get("loops"):
+                    objs["loops"] = self.autonomous_system[
+                        "autonomous-system"
+                    ].get("loops")
+                if (
+                    "asdot-notation"
+                    in self.autonomous_system["autonomous-system"]
+                ):
+                    objs["asdot_notation"] = True
         facts = {}
         if objs:
             facts["bgp_global"] = {}
@@ -137,6 +156,20 @@ class Bgp_globalFacts(object):
         """
         bgp_global = {}
         bgp = conf.get("bgp")
+        # Set ASN value into facts
+        if self.autonomous_system and self.autonomous_system.get(
+            "autonomous-system"
+        ):
+            bgp_global["as_number"] = self.autonomous_system[
+                "autonomous-system"
+            ].get("as-number")
+            if self.autonomous_system["autonomous-system"].get("loops"):
+                bgp_global["loops"] = self.autonomous_system[
+                    "autonomous-system"
+                ].get("loops")
+            if "asdot-notation" in self.autonomous_system["autonomous-system"]:
+                bgp_global["asdot_notation"] = True
+
         # Read accept-remote-nexthop value
         if "accept-remote-nexthop" in bgp.keys():
             bgp_global["accept_remote_nexthop"] = True
