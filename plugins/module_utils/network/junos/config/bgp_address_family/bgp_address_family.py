@@ -252,8 +252,12 @@ class Bgp_address_family(ConfigBase):
                         td_node = None
                         if "limit_threshold" in apl.keys():
                             td_node = build_child_xml_node(
-                                apl_node,
-                                "teardown",
+                                apl_node, "teardown"
+                            )
+                            # add node for limit-threshold
+                            build_child_xml_node(
+                                td_node,
+                                "limit-threshold",
                                 apl.get("limit_threshold"),
                             )
                         elif "teardown" in apl.keys():
@@ -264,10 +268,15 @@ class Bgp_address_family(ConfigBase):
                         # Add node for teardown idle_timeout
                         if "idle_timeout_value" in apl.keys():
                             it_node = build_child_xml_node(
-                                td_node,
-                                "idle-timeout",
+                                td_node, "idle-timeout"
+                            )
+                            # add node for timeout
+                            build_child_xml_node(
+                                it_node,
+                                "timeout",
                                 apl.get("idle_timeout_value"),
                             )
+
                         elif "idle_timeout" in apl.keys():
                             it_node = build_child_xml_node(
                                 td_node, "idle-timeout"
@@ -586,7 +595,7 @@ class Bgp_address_family(ConfigBase):
                                 td_node, "idle-timeout"
                             )
                         if "forever" in pl.keys():
-                            if it_node is not None:
+                            if it_node is None:
                                 it_node = build_child_xml_node(
                                     td_node, "idle-timeout"
                                 )

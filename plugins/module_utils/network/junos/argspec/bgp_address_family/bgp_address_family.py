@@ -39,7 +39,6 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
     argument_spec = {
         "config": {
             "options": {
-                # 'as_number': {'type': 'str'},
                 "address_family": {
                     "elements": "dict",
                     "options": {
@@ -160,7 +159,7 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                     "type": "dict",
                                 },
                                 "local_ipv4_address": {"type": "str"},
-                                "loops": {"type": "str"},
+                                "loops": {"type": "int"},
                                 "no_install": {"type": "bool"},
                                 "no_validate": {"type": "str"},
                                 "output_queue_priority_expedited": {
@@ -278,6 +277,7 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                 "deleted",
                 "rendered",
                 "gathered",
+                "parsed",
             ],
             "default": "merged",
             "type": "str",
