@@ -74,13 +74,13 @@ options:
       asdot_notation:
         description: Enable AS-Dot notation to display true 4 byte AS numbers.
         type: bool
-      accept_remote_nexthop:
+      accept_remote_nexthop: &accept_remote_nexthop
         description: Allow import policy to specify a non-directly connected next-hop.
         type: bool
-      add_path_display_ipv4_address:
+      add_path_display_ipv4_address: &add_path_display_ipv4_address
         description: Display add-path path-id in IPv4 address format.
         type: bool
-      advertise_bgp_static:
+      advertise_bgp_static: &advertise_bgp_static
         description: Advertise bgp-static routes.
         type: dict
         suboptions:
@@ -90,7 +90,7 @@ options:
           policy:
             description: Specify static route advertisement policy.
             type: str
-      advertise_external:
+      advertise_external: &advertise_external
         description: Advertise best external routes.
         type: dict
         suboptions:
@@ -103,23 +103,23 @@ options:
       advertise_from_main_vpn_tables:
         description: Advertise VPN routes from bgp.Xvpn.0 tables in master instance.
         type: bool
-      advertise_inactive:
+      advertise_inactive: &advertise_inactive
         description: Advertise inactive routes.
         type: bool
-      advertise_peer_as:
+      advertise_peer_as: &advertise_peer_as
         description: Advertise routes received from the same autonomous system.
         type: bool
-      authentication_algorithm:
+      authentication_algorithm: &authentication_algorithm
         description: Specify authentication algorithm name.
         type: str
         choices: ["aes-128-cmac-96", "hmac-sha-1-96", "md5"]
-      authentication_key:
+      authentication_key: &authentication_key
         description: Specify MD5 authentication key.
         type: str
-      authentication_key_chain:
+      authentication_key_chain: &authentication_key_chain
         description: Specify authentication key chain name.
         type: str
-      bfd_liveness_detection:
+      bfd_liveness_detection: &bfd_liveness_detection
         description: Bidirectional Forwarding Detection (BFD) options.
         type: dict
         suboptions:
@@ -177,7 +177,7 @@ options:
             description: Specify BFD protocol version number.
             type: str
             choices: ["0", "1", "automatic"]
-      bgp_error_tolerance:
+      bgp_error_tolerance: &bgp_error_tolerance
         description: Handle BGP malformed updates softly.
         type: dict
         suboptions:
@@ -193,7 +193,7 @@ options:
           no_malformed_route_limit:
             description: Specify no malformed route limit.
             type: bool
-      bmp:
+      bmp: &bmp
         description: Specific settings to override the routing-options settings.
         type: dict
         suboptions:
@@ -219,19 +219,19 @@ options:
               post_policy_exclude_non_feasible:
                 description: Send pre policy route montoring messages and exclude looped routes, etc.
                 type: bool
-      cluster_id:
+      cluster_id: &cluster_id
         description: Specify cluster identifier.
         type: str
-      damping:
+      damping: &damping
         description: Enable route flap damping.
         type: bool
-      description:
+      description: &description
         description: Specify text description.
         type: str
       disable:
         description: Disable BGP.
         type: bool
-      egress_te:
+      egress_te: &egress_te
         description: Use Egress Peering traffic engineering.
         type: dict
         suboptions:
@@ -281,16 +281,16 @@ options:
       egress_te_sid_stats:
         description: Create BGP-Peer-SID sensor.
         type: bool
-      enforce_first_as:
+      enforce_first_as: &enforce_first_as
         description: Enforce neighbor AS is the first AS in AS-PATH attribute (EBGP).
         type: bool
-      export:
+      export: &export
         description: Specify export policy.
         type: str
-      forwarding_context:
+      forwarding_context: &forwarding_context
         description: Specify routing-instance used for data-forwarding and transport-session.
         type: str
-      graceful_restart:
+      graceful_restart: &graceful_restart
         description: BGP graceful restart options.
         type: dict
         suboptions:
@@ -336,13 +336,13 @@ options:
           stale_routes_time:
             description: Maximum time for which stale routes are kept.
             type: int
-      hold_time:
+      hold_time: &hold_time
         description: Specify hold time used when negotiating with a peer.
         type: int
       holddown_all_stale_labels:
         description: Hold all BGP stale-labels, facilating make-before-break for new label advertisements.
         type: bool
-      idle_after_switch_over:
+      idle_after_switch_over: &idle_after_switch_over
         description: Stop peer session from coming up after nonstop-routing switch-over.
         type: dict
         suboptions:
@@ -352,23 +352,23 @@ options:
           forever:
             description: Idle the peer until the user intervenes.
             type: bool
-      import:
+      import: &import
         description: Specify import policy.
         type: str
-      include_mp_next_hop:
+      include_mp_next_hop: &include_mp_next_hop
         description: Include NEXT-HOP attribute in multiprotocol updates.
         type: bool
-      ipsec_sa:
+      ipsec_sa: &ipsec_sa
         description: Specify IPSec SA name.
         type: str
-      keep:
+      keep: &keep
         description: Specify how to retain routes in the routing table.
         type: str
         choices: ["all", "none"]
-      local_address:
+      local_address: &local_address
         description: Specify Address of local end of BGP session.
         type: str
-      local_as:
+      local_as: &local_as
         description: Local autonomous system number.
         type: dict
         suboptions:
@@ -390,16 +390,16 @@ options:
           private:
             description: Hide this local AS in paths learned from this peering.
             type: bool
-      local_interface:
+      local_interface: &local_interface
         description: Specify Local interface for IPv6 link local EBGP peering.
         type: str
-      local_preference:
+      local_preference: &local_preference
         description: Specify value of LOCAL_PREF path attribute.
         type: str
-      log_updown:
+      log_updown: &log_updown
         description: Enable log a message for peer state transitions.
         type: bool
-      metric_out:
+      metric_out: &metric_out
         description: Specify route metric sent in MED.
         type: dict
         suboptions:
@@ -429,10 +429,10 @@ options:
               metric_offset:
                 description: Specify metric offset for MED.
                 type: int
-      mtu_discovery:
+      mtu_discovery: &mtu_discovery
         description: Enable TCP path MTU discovery.
         type: bool
-      multihop:
+      multihop: &multihop
         description: Configure an EBGP multihop session.
         type: dict
         suboptions:
@@ -445,7 +445,7 @@ options:
           ttl:
             description: TTL value for the session.
             type: int
-      multipath:
+      multipath: &multipath
         description: Allow load sharing among multiple BGP paths.
         type: dict
         suboptions:
@@ -462,22 +462,22 @@ options:
         description: Configure the multipath build priority.
         type: str
         choices: ["low", "medium"]
-      no_advertise_peer_as:
+      no_advertise_peer_as: &no_advertise_peer_as
         description: Allows to not advertise routes received from the same autonomous system.
         type: bool
-      no_aggregator_id:
+      no_aggregator_id: &no_aggregator_id
         description: Set router ID in aggregator path attribute to 0.
         type: bool
-      no_client_reflect:
+      no_client_reflect: &no_client_reflect
         description: Disable intracluster route redistribution.
         type: bool
-      no_precision_timers:
+      no_precision_timers: &no_precision_timers
         description: Specify not to use precision timers for scheduling keepalives.
         type: bool
-      out_delay:
+      out_delay: &out_delay
         description: Specify how long before exporting routes from routing table.
         type: int
-      outbound_route_filter:
+      outbound_route_filter: &outbound_route_filter
         description: Dynamically negotiated cooperative route filtering.
         type: dict
         suboptions:
@@ -555,7 +555,7 @@ options:
           priority:
             description: Output queue priority; higher is better.
             type: int
-      passive:
+      passive: &passive
         description: Specify to not send open messages to a peer.
         type: bool
       path_selection:
@@ -587,16 +587,16 @@ options:
               med_multiplier:
                 description: Specify Multiplier for MED.
                 type: int
-      peer_as:
+      peer_as: &peer_as
         description: Specify Autonomous system number in plain number or 'higher 16bits'.'Lower 16 bits' format.
         type: str
       precision_timers:
         description: Use precision timers for scheduling keepalives.
         type: bool
-      preference:
+      preference: &preference
         description: Specify preference value.
         type: str
-      remove_private:
+      remove_private: &remove_private
         description: Remove well-known private AS numbers.
         type: dict
         suboptions:
@@ -619,10 +619,10 @@ options:
           no_peer_loop_check:
             description: Remove peer loop-check.
             type: bool
-      rfc6514_compliant_safi129:
+      rfc6514_compliant_safi129: &rfc6514_compliant_safi129
         description: Specify Compliance with RFC6514 SAFI129 format.
         type: bool
-      route_server_client:
+      route_server_client: &route_server_client
         description: Enable route server client behavior.
         type: bool
       send_addpath_optimization:
@@ -644,13 +644,13 @@ options:
       stale_labels_holddown_period:
         description: Specify duration (sec) MPLS labels allocated by BGP are kept after they go stale.
         type: int
-      tcp_aggressive_transmission:
+      tcp_aggressive_transmission: &tcp_aggressive_transmission
         description: Enable aggressive transmission of pure TCP ACKs and retransmissions.
         type: bool
-      tcp_mss:
+      tcp_mss: &tcp_mss
         description: Specify maximum TCP segment size.
         type: int
-      traceoptions:
+      traceoptions: &traceoptions
         description: Configure trace options for BGP.
         type: dict
         suboptions:
@@ -1128,7 +1128,7 @@ options:
           interval:
             description: Specify time interval to collect statistics.
             type: int
-      ttl:
+      ttl: &ttl
         description: Specify TTL value for the single-hop peer.
         type: int
       unconfigured_peer_graceful_restart:
@@ -1137,6 +1137,152 @@ options:
       vpn_apply_export:
         description: Apply BGP export policy when exporting VPN routes.
         type: bool
+      group:
+        description: Specify name of the group.
+        type: list
+        elements: dict
+        suboptions:
+          name:
+            description: Specify the name of the group
+            type: str
+          accept_remote_nexthop: *accept_remote_nexthop
+          add_path_display_ipv4_address: *add_path_display_ipv4_address
+          advertise_bgp_static: *advertise_bgp_static
+          advertise_external: *advertise_external
+          advertise_inactive: *advertise_inactive
+          advertise_peer_as: *advertise_peer_as
+          allow:
+            description: Configure peer connections for specific networks.
+            type: list
+            elements: str
+          as_override: &as_override
+            description: Replace neighbor AS number with our AS number
+            type: bool
+          authentication_algorithm: *authentication_algorithm
+          authentication_key: *authentication_key
+          authentication_key_chain: *authentication_key_chain
+          bfd_liveness_detection: *bfd_liveness_detection
+          bgp_error_tolerance: *bgp_error_tolerance
+          bmp: *bmp
+          cluster_id: *cluster_id
+          damping: *damping
+          description: *description
+          egress_te: *egress_te
+          enforce_first_as: *enforce_first_as
+          export: *export
+          forwarding_context: *forwarding_context
+          graceful_restart: *graceful_restart
+          hold_time: *hold_time
+          idle_after_switch_over: *idle_after_switch_over
+          import: *import
+          include_mp_next_hop: *include_mp_next_hop
+          ipsec_sa: *ipsec_sa
+          keep: *keep
+          local_address: *local_address
+          local_as: *local_as
+          local_interface: *local_interface
+          local_preference: *local_preference
+          log_updown: *log_updown
+          metric_out: *metric_out
+          mtu_discovery: *mtu_discovery
+          multihop: *multihop
+          multipath: *multipath
+          no_advertise_peer_as: *no_advertise_peer_as
+          no_aggregator_id: *no_aggregator_id
+          no_client_reflect: *no_client_reflect
+          optimal_route_reflection:
+            description:  Enable optimal route reflection for this client group.
+            type: dict
+            suboptions:
+              igp_backup:
+                description: Backup node identifier for this client group.
+                type: str
+              igp_primary:
+                description: Primary node identifier for this client group.
+                type: str
+          out_delay: *out_delay
+          outbound_route_filter: *outbound_route_filter
+          passive: *passive
+          peer_as: *peer_as
+          preference: *preference
+          remove_private: *remove_private
+          rfc6514_compliant_safi129: *rfc6514_compliant_safi129
+          route_server_client: *route_server_client
+          tcp_aggressive_transmission: *tcp_aggressive_transmission
+          tcp_mss: *tcp_mss
+          traceoptions: *traceoptions
+          ttl: *ttl
+          type:
+            description: Specify BGP group type.
+            type: str
+            choices: ['external', 'internal']
+          unconfigured_peer_graceful_restart: &unconfigured_peer_graceful_restart
+            description: Specify BGP unconfigured peer graceful restart options.
+            type: bool
+          vpn_apply_export: &vpn_apply_export
+            description: Apply BGP export policy when exporting VPN routes.
+            type: bool
+          neighbors:
+            type: list
+            elements: dict
+            suboptions:
+              neighbor_id:
+                description: Specify neighbor identity.
+                type: str
+              accept_remote_nexthop: *accept_remote_nexthop
+              add_path_display_ipv4_address: *add_path_display_ipv4_address
+              advertise_bgp_static: *advertise_bgp_static
+              advertise_external: *advertise_external
+              advertise_inactive: *advertise_inactive
+              advertise_peer_as: *advertise_peer_as
+              as_override: *as_override
+              authentication_algorithm: *authentication_algorithm
+              authentication_key: *authentication_key
+              authentication_key_chain: *authentication_key_chain
+              bfd_liveness_detection: *bfd_liveness_detection
+              bgp_error_tolerance: *bgp_error_tolerance
+              bmp: *bmp
+              cluster_id: *cluster_id
+              damping: *damping
+              description: *description
+              egress_te: *egress_te
+              enforce_first_as: *enforce_first_as
+              export: *export
+              forwarding_context: *forwarding_context
+              graceful_restart: *graceful_restart
+              hold_time: *hold_time
+              idle_after_switch_over: *idle_after_switch_over
+              import: *import
+              include_mp_next_hop: *include_mp_next_hop
+              ipsec_sa: *ipsec_sa
+              keep: *keep
+              local_address: *local_address
+              local_as: *local_as
+              local_interface: *local_interface
+              local_preference: *local_preference
+              log_updown: *log_updown
+              metric_out: *metric_out
+              mtu_discovery: *mtu_discovery
+              multihop: *multihop
+              multipath: *multipath
+              no_advertise_peer_as: *no_advertise_peer_as
+              no_aggregator_id: *no_aggregator_id
+              no_client_reflect: *no_client_reflect
+              out_delay: *out_delay
+              outbound_route_filter: *outbound_route_filter
+              passive: *passive
+              peer_as: *peer_as
+              preference: *preference
+              remove_private: *remove_private
+              rfc6514_compliant_safi129: *rfc6514_compliant_safi129
+              route_server_client: *route_server_client
+              tcp_aggressive_transmission: *tcp_aggressive_transmission
+              tcp_mss: *tcp_mss
+              traceoptions: *traceoptions
+              ttl: *ttl
+              unconfigured_peer_graceful_restart: *unconfigured_peer_graceful_restart
+              vpn_apply_export: *vpn_apply_export
+
   state:
     description:
     - The state the configuration should be left in.
