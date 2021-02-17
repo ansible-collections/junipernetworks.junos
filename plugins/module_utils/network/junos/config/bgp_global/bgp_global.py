@@ -226,6 +226,9 @@ class Bgp_global(ConfigBase):
             "itcp-aggressive-transmission",
             "unconfigured-peer-graceful-restart",
             "vpn-apply-export",
+            "as-override",
+            "unconfigured-peer-graceful-restart",
+            "vpn-apply-export",
         ]
         cfg_parser = [
             "authentication-algorithm",
@@ -248,6 +251,7 @@ class Bgp_global(ConfigBase):
             "stale-labels-holddown-period",
             "tcp-mss",
             "ttl",
+            "type",
         ]
         for item in bool_parser:
             bgp_root = self._add_node(
@@ -542,6 +546,28 @@ class Bgp_global(ConfigBase):
                     if b_val is not None:
                         if b_val is True:
                             build_child_xml_node(r_mon_node, "pre-policy")
+
+        # Generate config commands for allow
+        if want.get("allow"):
+            allow = want.get("allow")
+            for network in allow:
+                build_child_xml_node(bgp_root, "allow", network)
+
+        # Generate config commands for optimal-route-reflection
+        if want.get("optimal_route_reflection"):
+            orr_node = build_child_xml_node(bgp_root, "optimal-route-reflection")
+            orr = want.get("optimal_route_reflection")
+            if "igp_backup" in orr.keys():
+                build_child_xml_node(orr_node, "igp-backup", orr.get("igp_backup"))
+            if "igp_primary" in orr.keys():
+                build_child_xml_node(orr_node, "igp-primary", orr.get("igp_primary"))
+
+
+
+
+
+
+
 
     def _state_deleted(self, want, have):
         """ The command generator when state is deleted
