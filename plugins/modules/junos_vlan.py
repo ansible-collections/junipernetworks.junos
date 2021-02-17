@@ -64,7 +64,6 @@ options:
       vlan_id:
         description:
         - ID of the VLAN. Range 1-4094.
-        required: true
         type: int
       l3_interface:
         description:
