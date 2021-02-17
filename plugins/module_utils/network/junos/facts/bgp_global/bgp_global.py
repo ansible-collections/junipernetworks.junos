@@ -170,68 +170,134 @@ class Bgp_globalFacts(object):
             if "asdot-notation" in self.autonomous_system["autonomous-system"]:
                 bgp_global["asdot_notation"] = True
 
+        self.parse_attrib(bgp_global, bgp)
+
+        # Read group
+        if "group" in bgp.keys():
+            bgp_groups = []
+            bgp_group = {}
+            groups = bgp.get("group")
+            if isinstance(groups, dict):
+                self.parse_attrib(bgp_group, groups)
+                # parse neighbors
+                if "neighbor" in groups.keys():
+                    neighbors_lst = []
+                    neighbors_dict = {}
+                    neighbors = groups.get("neighbor")
+                    if isinstance(neighbors, dict):
+                        self.parse_attrib(
+                            neighbors_dict, neighbors, "neighbor"
+                        )
+                        if neighbors_dict:
+                            neighbors_lst.append(neighbors_dict)
+                    else:
+                        for neighbor in neighbors:
+                            self.parse_attrib(
+                                neighbors_dict, neighbor, "neighbor"
+                            )
+                            if neighbors_dict:
+                                neighbors_lst.append(neighbors_dict)
+                    if neighbors_lst:
+                        bgp_group["neighbors"] = neighbors_lst
+
+                if bgp_group:
+                    bgp_groups.append(bgp_group)
+            else:
+                for group in groups:
+                    bgp_group = {}
+                    self.parse_attrib(bgp_group, group)
+                    # Parse neighbors in the group list
+                    if "neighbor" in group.keys():
+                        neighbors_lst = []
+                        neighbors_dict = {}
+                        neighbors = group.get("neighbor")
+                        if isinstance(neighbors, dict):
+                            self.parse_attrib(
+                                neighbors_dict, neighbors, "neighbor"
+                            )
+                            if neighbors_dict:
+                                neighbors_lst.append(neighbors_dict)
+                        else:
+                            for neighbor in neighbors:
+                                self.parse_attrib(
+                                    neighbors_dict, neighbor, "neighbor"
+                                )
+                                if neighbors_dict:
+                                    neighbors_lst.append(neighbors_dict)
+                                    neighbors_dict = {}
+
+                        if neighbors_lst:
+                            bgp_group["neighbors"] = neighbors_lst
+
+                    if bgp_group:
+                        bgp_groups.append(bgp_group)
+            bgp_global["groups"] = bgp_groups
+        utils.remove_empties(bgp_global)
+        return bgp_global
+
+    def parse_attrib(self, cfg_dict, conf, type=None):
         # Read accept-remote-nexthop value
-        if "accept-remote-nexthop" in bgp.keys():
-            bgp_global["accept_remote_nexthop"] = True
+        if "accept-remote-nexthop" in conf.keys():
+            cfg_dict["accept_remote_nexthop"] = True
 
         # Read add-path-display-ipv4-address value
-        if "add-path-display-ipv4-address" in bgp.keys():
-            bgp_global["add_path_display_ipv4_address"] = True
+        if "add-path-display-ipv4-address" in conf.keys():
+            cfg_dict["add_path_display_ipv4_address"] = True
 
         # Parse advertise-bgp-static dictionary
-        if "advertise-bgp-static" in bgp.keys():
+        if "advertise-bgp-static" in conf.keys():
             cfg = {}
             if (
-                bgp.get("advertise-bgp-static")
-                and "advertise-bgp-static" in bgp.keys()
+                conf.get("advertise-bgp-static")
+                and "advertise-bgp-static" in conf.keys()
             ):
-                if "policy" in bgp["advertise-bgp-static"]:
-                    cfg["policy"] = bgp["advertise-bgp-static"].get("policy")
+                if "policy" in conf["advertise-bgp-static"]:
+                    cfg["policy"] = conf["advertise-bgp-static"].get("policy")
             else:
                 cfg["set"] = True
-            bgp_global["advertise_bgp_static"] = cfg
+            cfg_dict["advertise_bgp_static"] = cfg
 
         # Parse advertise-external dictionary
-        if "advertise-external" in bgp.keys():
+        if "advertise-external" in conf.keys():
             cfg = {}
-            if "conditional" in bgp["advertise-bgp-static"].keys():
+            if "conditional" in conf["advertise-bgp-static"].keys():
                 cfg["conditional"] = True
             else:
                 cfg["set"] = True
-            bgp_global["advertise_external"] = cfg
+            cfg_dict["advertise_external"] = cfg
 
         # Read advertise-from-main-vpn-tables value
-        if "advertise-from-main-vpn-tables" in bgp.keys():
-            bgp_global["advertise_from_main_vpn_tables"] = True
+        if "advertise-from-main-vpn-tables" in conf.keys():
+            cfg_dict["advertise_from_main_vpn_tables"] = True
 
         # Read advertise-inactive value
-        if "advertise-inactive" in bgp.keys():
-            bgp_global["advertise_inactive"] = True
+        if "advertise-inactive" in conf.keys():
+            cfg_dict["advertise_inactive"] = True
 
         # Read advertise-peer-as value
-        if "advertise-peer-as" in bgp.keys():
-            bgp_global["advertise_peer_as"] = True
+        if "advertise-peer-as" in conf.keys():
+            cfg_dict["advertise_peer_as"] = True
 
         # Read authentication-algorithm value
-        if "authentication-algorithm" in bgp.keys():
-            bgp_global["authentication_algorithm"] = bgp[
+        if "authentication-algorithm" in conf.keys():
+            cfg_dict["authentication_algorithm"] = conf[
                 "authentication-algorithm"
             ]
 
         # Read authentication-key value
-        if "authentication-key" in bgp.keys():
-            bgp_global["authentication_key"] = bgp["authentication-key"]
+        if "authentication-key" in conf.keys():
+            cfg_dict["authentication_key"] = conf["authentication-key"]
 
         # Read authentication-key-chain value
-        if "authentication-key-chain" in bgp.keys():
-            bgp_global["authentication_key_chain"] = bgp[
+        if "authentication-key-chain" in conf.keys():
+            cfg_dict["authentication_key_chain"] = conf[
                 "authentication-key-chain"
             ]
 
         # Parse bfd-liveness-detection dictionary
-        if "bfd-liveness-detection" in bgp.keys():
+        if "bfd-liveness-detection" in conf.keys():
             cfg = {}
-            bld = bgp["bfd-liveness-detection"]
+            bld = conf["bfd-liveness-detection"]
             # Parse authentication dictionary
             if "authentication" in bld.keys():
                 a_dict = {}
@@ -290,12 +356,12 @@ class Bgp_globalFacts(object):
                 cfg["version"] = bld["version"]
 
             # write the  bfd_liveness_detection to bgp global config dictionary
-            bgp_global["bfd_liveness_detection"] = cfg
+            cfg_dict["bfd_liveness_detection"] = cfg
 
         # Parse bgp-error-tolerance dictionary
-        if "bgp-error-tolerance" in bgp.keys():
+        if "bgp-error-tolerance" in conf.keys():
             cfg = {}
-            bet = bgp["bgp-error-tolerance"]
+            bet = conf["bgp-error-tolerance"]
             # Parse authentication dictionary
             if "malformed-route-limit" in bet.keys():
                 cfg["malformed_route_limit"] = bet["malformed-route-limit"]
@@ -306,12 +372,12 @@ class Bgp_globalFacts(object):
             if "no-malformed-route-limit" in bet.keys():
                 cfg["no_malformed_route_limit"] = True
             # write the  bfd_liveness_detection to bgp global config dictionary
-            bgp_global["bgp_error_tolerance"] = cfg
+            cfg_dict["bgp_error_tolerance"] = cfg
 
         # Parse bmp dictionary
-        if "bmp" in bgp.keys():
+        if "bmp" in conf.keys():
             cfg = {}
-            bmp = bgp["bmp"]
+            bmp = conf["bmp"]
             # Parse authentication dictionary
             if "route-monitoring" in bmp.keys():
                 rm_dict = {}
@@ -345,163 +411,205 @@ class Bgp_globalFacts(object):
                     cfg["monitor"] = True
 
             # write the  bmp to bgp global config dictionary
-            bgp_global["bmp"] = cfg
+            cfg_dict["bmp"] = cfg
 
         # Read cluster value
-        if "cluster" in bgp.keys():
-            bgp_global["cluster_id"] = bgp["cluster"]
+        if "cluster" in conf.keys():
+            cfg_dict["cluster_id"] = conf["cluster"]
 
         # Read damping value
-        if "damping" in bgp.keys():
-            bgp_global["damping"] = True
+        if "damping" in conf.keys():
+            cfg_dict["damping"] = True
 
         # Read description value
-        if "description" in bgp.keys():
-            bgp_global["description"] = bgp["description"]
+        if "description" in conf.keys():
+            cfg_dict["description"] = conf["description"]
 
         # Read disable value
-        if "disable" in bgp.keys():
-            bgp_global["disable"] = True
+        if "disable" in conf.keys():
+            cfg_dict["disable"] = True
 
         # Read egress-te-sid-stats value
-        if "egress-te-sid-stats" in bgp.keys():
-            bgp_global["egress_te_sid_stats"] = True
+        if "egress-te-sid-stats" in conf.keys():
+            cfg_dict["egress_te_sid_stats"] = True
 
         # Read enforce-first-as value
-        if "enforce-first-as" in bgp.keys():
-            bgp_global["enforce_first_as"] = True
+        if "enforce-first-as" in conf.keys():
+            cfg_dict["enforce_first_as"] = True
 
         # Read export value
-        if "export" in bgp.keys():
-            bgp_global["export"] = bgp["export"]
+        if "export" in conf.keys():
+            cfg_dict["export"] = conf["export"]
 
         # Read forwarding-context value
-        if "forwarding-context" in bgp.keys():
-            bgp_global["forwarding_context"] = bgp["forwarding-context"]
+        if "forwarding-context" in conf.keys():
+            cfg_dict["forwarding_context"] = conf["forwarding-context"]
 
         # Read hold-time value
-        if "hold-time" in bgp.keys():
-            bgp_global["hold_time"] = bgp["hold-time"]
+        if "hold-time" in conf.keys():
+            cfg_dict["hold_time"] = conf["hold-time"]
 
         # Read holddown-all-stale-labels value
-        if "holddown-all-stale-labels" in bgp.keys():
-            bgp_global["holddown_all_stale_labels"] = True
+        if "holddown-all-stale-labels" in conf.keys():
+            cfg_dict["holddown_all_stale_labels"] = True
 
         # Read import value
-        if "import" in bgp.keys():
-            bgp_global["import"] = bgp["import"]
+        if "import" in conf.keys():
+            cfg_dict["import"] = conf["import"]
 
         # Read include-mp-next-hop value
-        if "include-mp-next-hop" in bgp.keys():
-            bgp_global["include_mp_next_hop"] = True
+        if "include-mp-next-hop" in conf.keys():
+            cfg_dict["include_mp_next_hop"] = True
 
         # Read ipsec-sa value
-        if "ipsec-sa" in bgp.keys():
-            bgp_global["ipsec_sa"] = bgp["ipsec-sa"]
+        if "ipsec-sa" in conf.keys():
+            cfg_dict["ipsec_sa"] = conf["ipsec-sa"]
 
         # Read keep value
-        if "keep" in bgp.keys():
-            bgp_global["keep"] = bgp["keep"]
+        if "keep" in conf.keys():
+            cfg_dict["keep"] = conf["keep"]
 
         # Read local-address value
-        if "local-address" in bgp.keys():
-            bgp_global["local_address"] = bgp["local-address"]
+        if "local-address" in conf.keys():
+            cfg_dict["local_address"] = conf["local-address"]
 
         # Read local-interface value
-        if "local-interface" in bgp.keys():
-            bgp_global["local_interface"] = bgp["local-interface"]
+        if "local-interface" in conf.keys():
+            cfg_dict["local_interface"] = conf["local-interface"]
 
         # Read local-preference value
-        if "local-preference" in bgp.keys():
-            bgp_global["local_preference"] = bgp["local-preference"]
+        if "local-preference" in conf.keys():
+            cfg_dict["local_preference"] = conf["local-preference"]
 
         # Read log-updown value
-        if "log-updown" in bgp.keys():
-            bgp_global["log_updown"] = True
+        if "log-updown" in conf.keys():
+            cfg_dict["log_updown"] = True
 
         # Read mtu-discovery value
-        if "mtu-discovery" in bgp.keys():
-            bgp_global["mtu_discovery"] = True
+        if "mtu-discovery" in conf.keys():
+            cfg_dict["mtu_discovery"] = True
 
         # Read no-advertise-peer-as value
-        if "no-advertise-peer-as" in bgp.keys():
-            bgp_global["no_advertise_peer_as"] = True
+        if "no-advertise-peer-as" in conf.keys():
+            cfg_dict["no_advertise_peer_as"] = True
 
         # Read no-aggregator-id value
-        if "no-aggregator-id" in bgp.keys():
-            bgp_global["no_aggregator_id"] = True
+        if "no-aggregator-id" in conf.keys():
+            cfg_dict["no_aggregator_id"] = True
 
         # Read no-client-reflect value
-        if "no-client-reflect" in bgp.keys():
-            bgp_global["no_client_reflect"] = True
+        if "no-client-reflect" in conf.keys():
+            cfg_dict["no_client_reflect"] = True
 
         # Read no-precision-timers value
-        if "no-precision-timers" in bgp.keys():
-            bgp_global["no_precision_timers"] = True
+        if "no-precision-timers" in conf.keys():
+            cfg_dict["no_precision_timers"] = True
 
         # Read out-delay value
-        if "out-delay" in bgp.keys():
-            bgp_global["out_delay"] = bgp["out-delay"]
+        if "out-delay" in conf.keys():
+            cfg_dict["out_delay"] = conf["out-delay"]
 
         # Read passive value
-        if "passive" in bgp.keys():
-            bgp_global["passive"] = True
+        if "passive" in conf.keys():
+            cfg_dict["passive"] = True
 
         # Read peer-as value
-        if "peer-as" in bgp.keys():
-            bgp_global["peer_as"] = bgp["peer-as"]
+        if "peer-as" in conf.keys():
+            cfg_dict["peer_as"] = conf["peer-as"]
 
         # Read precision-timers value
-        if "precision-timers" in bgp.keys():
-            bgp_global["precision_timers"] = True
+        if "precision-timers" in conf.keys():
+            cfg_dict["precision_timers"] = True
 
         # Read preference value
-        if "preference" in bgp.keys():
-            bgp_global["preference"] = bgp["preference"]
+        if "preference" in conf.keys():
+            cfg_dict["preference"] = conf["preference"]
 
         # Read rfc6514-compliant-safi129 value
-        if "rfc6514-compliant-safi129" in bgp.keys():
-            bgp_global["rfc6514_compliant_safi129"] = True
+        if "rfc6514-compliant-safi129" in conf.keys():
+            cfg_dict["rfc6514_compliant_safi129"] = True
 
         # Read route-server-client value
-        if "route-server-client" in bgp.keys():
-            bgp_global["route_server_client"] = True
+        if "route-server-client" in conf.keys():
+            cfg_dict["route_server_client"] = True
 
         # Read send-addpath-optimization value
-        if "send-addpath-optimization" in bgp.keys():
-            bgp_global["send_addpath_optimization"] = True
+        if "send-addpath-optimization" in conf.keys():
+            cfg_dict["send_addpath_optimization"] = True
 
         # Read sr-preference-override value
-        if "sr-preference-override" in bgp.keys():
-            bgp_global["sr_preference_override"] = bgp[
-                "sr-preference-override"
-            ]
+        if "sr-preference-override" in conf.keys():
+            cfg_dict["sr_preference_override"] = conf["sr-preference-override"]
 
         # Read stale-labels-holddown-period value
-        if "stale-labels-holddown-period" in bgp.keys():
-            bgp_global["stale_labels_holddown_period"] = bgp[
+        if "stale-labels-holddown-period" in conf.keys():
+            cfg_dict["stale_labels_holddown_period"] = conf[
                 "stale-labels-holddown-period"
             ]
 
         # Read tcp-aggressive-transmission value
-        if "tcp-aggressive-transmission" in bgp.keys():
-            bgp_global["tcp_aggressive_transmission"] = True
+        if "tcp-aggressive-transmission" in conf.keys():
+            cfg_dict["tcp_aggressive_transmission"] = True
 
         # Read tcp-mss value
-        if "tcp-mss" in bgp.keys():
-            bgp_global["tcp_mss"] = bgp["tcp-mss"]
+        if "tcp-mss" in conf.keys():
+            cfg_dict["tcp_mss"] = conf["tcp-mss"]
 
         # Read ttl value
-        if "ttl" in bgp.keys():
-            bgp_global["ttl"] = bgp["ttl"]
+        if "ttl" in conf.keys():
+            cfg_dict["ttl"] = conf["ttl"]
 
         # Read unconfigured-peer-graceful-restart value
-        if "unconfigured-peer-graceful-restart" in bgp.keys():
-            bgp_global["unconfigured_peer_graceful_restart"] = True
+        if "unconfigured-peer-graceful-restart" in conf.keys():
+            cfg_dict["unconfigured_peer_graceful_restart"] = True
 
         # Read vpn-apply-export value
-        if "vpn-apply-export" in bgp.keys():
-            bgp_global["vpn_apply_export"] = True
+        if "vpn-apply-export" in conf.keys():
+            cfg_dict["vpn_apply_export"] = True
 
-        utils.remove_empties(bgp_global)
-        return bgp_global
+        # Read group name value
+        if "name" in conf.keys():
+            if type == "neighbor":
+                cfg_dict["neighbor_address"] = conf["name"]
+            else:
+                cfg_dict["name"] = conf["name"]
+
+        # Read as-override value
+        if "as-override" in conf.keys():
+            cfg_dict["as_override"] = True
+
+        # Read allow
+        if "allow" in conf.keys():
+            allow_lst = []
+            allow = conf["allow"]
+            if isinstance(allow, list):
+                for item in allow:
+                    allow_lst.append(item)
+            else:
+                allow_lst.append(allow)
+            if allow_lst:
+                cfg_dict["allow"] = allow_lst
+
+        # Read optimal-route-reflection
+        if "optimal-route-reflection" in conf.keys():
+            orr_dict = {}
+            orr = conf["optimal-route-reflection"]
+
+            if "igp-backup" in orr.keys():
+                orr_dict["igp_backup"] = orr.get("igp-backup")
+
+            if "igp-primary" in orr.keys():
+                orr_dict["igp_primary"] = orr.get("igp-primary")
+            cfg_dict["optimal_route_reflection"] = orr_dict
+
+        # Read group type value
+        if "type" in conf.keys():
+            cfg_dict["type"] = conf["type"]
+
+        # Read unconfigured-peer-graceful-restart value
+        if "unconfigured-peer-graceful-restart" in conf.keys():
+            cfg_dict["unconfigured_peer_graceful_restart"] = True
+
+        # Read vpn-apply-export value
+        if "vpn-apply-export" in conf.keys():
+            cfg_dict["vpn_apply_export"] = True

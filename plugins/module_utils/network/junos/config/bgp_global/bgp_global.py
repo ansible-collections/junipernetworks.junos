@@ -274,6 +274,74 @@ class Bgp_global(ConfigBase):
                 if "asdot_notation" in want.keys():
                     build_child_xml_node(as_node, "asdot-notation")
 
+        # Generate commands for bgp node
+        self.parse_attrib(bgp_root, want)
+
+        # Generate commands for groups
+        if want.get("groups"):
+            groups = want.get("groups")
+
+            # Generate commands for each group in group list
+            for group in groups:
+                groups_node = build_child_xml_node(bgp_root, "group")
+                group_node = build_child_xml_node(
+                    groups_node, "name", group["name"]
+                )
+                # Parse the boolean value attributes
+                for item in bool_parser:
+                    groups_node = self._add_node(
+                        group, item, item.replace("-", "_"), groups_node
+                    )
+
+                # Parse the non-boolean leaf attributes
+                for item in cfg_parser:
+                    groups_node = self._add_node(
+                        group, item, item.replace("-", "_"), groups_node, True
+                    )
+
+                # Generate commands for nodes with child attributes
+                self.parse_attrib(groups_node, group)
+
+                # Generate commands for each neighbors
+                if group.get("neighbors"):
+                    neighbors = group.get("neighbors")
+                    # Generate commands for each neighbor in neighbors list
+                    for neighbor in neighbors:
+                        neighbors_node = build_child_xml_node(
+                            groups_node, "neighbor"
+                        )
+                        neighbor_node = build_child_xml_node(
+                            neighbors_node,
+                            "name",
+                            neighbor["neighbor_address"],
+                        )
+                        # Parse the boolean value attributes
+                        for item in bool_parser:
+                            neighbors_node = self._add_node(
+                                neighbor,
+                                item,
+                                item.replace("-", "_"),
+                                neighbors_node,
+                            )
+
+                        # Parse the non-boolean leaf attributes
+                        for item in cfg_parser:
+                            neighbors_node = self._add_node(
+                                neighbor,
+                                item,
+                                item.replace("-", "_"),
+                                neighbors_node,
+                                True,
+                            )
+
+                        # Generate commands for nodes with child attributes
+                        self.parse_attrib(neighbors_node, neighbor)
+
+        bgp_xml.append(bgp_root)
+
+        return bgp_xml
+
+    def parse_attrib(self, bgp_root, want):
         # Generate config commands for advertise-bgp-static
         if want.get("advertise_bgp_static"):
             ad_bgp_static_node = build_child_xml_node(
@@ -475,10 +543,6 @@ class Bgp_global(ConfigBase):
                         if b_val is True:
                             build_child_xml_node(r_mon_node, "pre-policy")
 
-        bgp_xml.append(bgp_root)
-
-        return bgp_xml
-
     def _state_deleted(self, want, have):
         """ The command generator when state is deleted
         :rtype: A list
@@ -500,6 +564,7 @@ class Bgp_global(ConfigBase):
             "bfd-liveness-detection",
             "bgp-error-tolerance",
             "bmp",
+            "group",
             "cluster",
             "damping",
             "description",

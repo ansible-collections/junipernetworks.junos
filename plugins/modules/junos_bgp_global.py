@@ -1137,7 +1137,7 @@ options:
       vpn_apply_export:
         description: Apply BGP export policy when exporting VPN routes.
         type: bool
-      group:
+      groups:
         description: Specify name of the group.
         type: list
         elements: dict
@@ -1226,8 +1226,8 @@ options:
             type: list
             elements: dict
             suboptions:
-              neighbor_id:
-                description: Specify neighbor identity.
+              neighbor_address:
+                description: Specify neighbor address.
                 type: str
               accept_remote_nexthop: *accept_remote_nexthop
               add_path_display_ipv4_address: *add_path_display_ipv4_address

@@ -211,7 +211,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                     },
                     "type": "dict",
                 },
-                "group": {
+                "groups": {
                     "elements": "dict",
                     "options": {
                         "accept_remote_nexthop": {"type": "bool"},
@@ -692,7 +692,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                     },
                                     "type": "dict",
                                 },
-                                "neighbor_id": {"type": "str"},
+                                "neighbor_address": {"type": "str"},
                                 "no_advertise_peer_as": {"type": "bool"},
                                 "no_aggregator_id": {"type": "bool"},
                                 "no_client_reflect": {"type": "bool"},
