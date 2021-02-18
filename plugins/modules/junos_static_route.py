@@ -57,6 +57,7 @@ options:
         description:
         - Network address with prefix of the static route.
         type: str
+        required: true
       next_hop:
         description:
         - Next hop IP of the static route.

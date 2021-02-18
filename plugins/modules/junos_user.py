@@ -71,7 +71,7 @@ options:
           absolute.  It will remove any previously configured users on the device with
           the exception of the current defined set of aggregate.
         type: bool
-        default: no
+        default: false
       state:
         description:
         - The C(state) argument configures the state of the user definitions as it relates
@@ -123,7 +123,7 @@ options:
       absolute.  It will remove any previously configured users on the device with
       the exception of the current defined set of aggregate.
     type: bool
-    default: false
+    default: no
   state:
     description:
     - The C(state) argument configures the state of the user definitions as it relates
@@ -413,6 +413,7 @@ def main():
         ),
         purge=dict(default=False, type="bool"),
     )
+    aggregate_spec["purge"] = dict(type="bool", default=False)
 
     argument_spec.update(element_spec)
     argument_spec.update(junos_argument_spec)

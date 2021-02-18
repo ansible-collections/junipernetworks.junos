@@ -287,6 +287,13 @@ def main():
     # remove default in aggregate spec, to handle common arguments
     remove_default_spec(aggregate_spec)
 
+    argument_spec = dict(
+        aggregate=dict(type="list", elements="dict", options=aggregate_spec)
+    )
+
+    argument_spec.update(element_spec)
+    argument_spec.update(junos_argument_spec)
+
     required_one_of = [["name", "aggregate"]]
     mutually_exclusive = [
         ["name", "aggregate"],
@@ -298,19 +305,6 @@ def main():
         ("mode", "access", ("access_vlan",)),
         ("mode", "trunk", ("trunk_vlans",)),
     ]
-
-    argument_spec = dict(
-        aggregate=dict(
-            type="list",
-            elements="dict",
-            options=aggregate_spec,
-            mutually_exclusive=mutually_exclusive,
-            required_if=required_if,
-        )
-    )
-
-    argument_spec.update(element_spec)
-    argument_spec.update(junos_argument_spec)
 
     module = AnsibleModule(
         argument_spec=argument_spec,

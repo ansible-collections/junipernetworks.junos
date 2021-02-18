@@ -61,6 +61,7 @@ options:
       back to initial defaults.  This argument will effectively remove all current
       configuration statements on the remote device.
     type: bool
+    default: no
   confirm:
     description:
     - The C(confirm) argument will configure a time out value in minutes for the commit
@@ -85,7 +86,6 @@ options:
       set the I(update) argument to C(replace). This argument will be removed in a
       future release. The C(replace) and C(update) argument is mutually exclusive.
     type: bool
-    default: no
   backup:
     description:
     - This argument will cause the module to create a full backup of the current C(running-config)
