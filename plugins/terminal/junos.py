@@ -42,6 +42,8 @@ class TerminalModule(TerminalBase):
         re.compile(br"[\r\n]error:"),
     ]
 
+    terminal_config_prompt = re.compile(r"^.+#$")
+
     def on_open_shell(self):
         try:
             prompt = self._get_prompt()
