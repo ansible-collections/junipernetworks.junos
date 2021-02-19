@@ -146,14 +146,16 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                 "description": {"type": "str"},
                 "disable": {"type": "bool"},
                 "egress_te": {
-                    "options": {"backup_path": {"type": "str"}},
+                    "options": {
+                        "backup_path": {"type": "str"},
+                        "set": {"type": "bool"},
+                    },
                     "type": "dict",
                 },
                 "egress_te_backup_paths": {
                     "options": {
-                        "peer_addr": {"type": "str"},
-                        "remote_nexthop": {"type": "str"},
-                        "template": {
+                        "templates": {
+                            "elements": "dict",
                             "options": {
                                 "ip_forward": {
                                     "options": {
@@ -162,20 +164,23 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                     },
                                     "type": "dict",
                                 },
-                                "path_name": {"type": "str"},
+                                "path_name": {"required": True, "type": "str"},
+                                "peer_addr": {"type": "str"},
+                                "remote_nexthop": {"type": "str"},
                             },
-                            "type": "dict",
-                        },
+                            "type": "list",
+                        }
                     },
                     "type": "dict",
                 },
                 "egress_te_set_segment": {
+                    "elements": "dict",
                     "options": {
                         "egress_te_backup_segment_label": {"type": "int"},
                         "label": {"type": "int"},
-                        "name": {"type": "str"},
+                        "name": {"required": True, "type": "str"},
                     },
-                    "type": "dict",
+                    "type": "list",
                 },
                 "egress_te_sid_stats": {"type": "bool"},
                 "enforce_first_as": {"type": "bool"},
@@ -329,7 +334,10 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                         "damping": {"type": "bool"},
                         "description": {"type": "str"},
                         "egress_te": {
-                            "options": {"backup_path": {"type": "str"}},
+                            "options": {
+                                "backup_path": {"type": "str"},
+                                "set": {"type": "bool"},
+                            },
                             "type": "dict",
                         },
                         "enforce_first_as": {"type": "bool"},
@@ -385,11 +393,10 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                         "local_as": {
                             "options": {
                                 "alias": {"type": "bool"},
-                                "as_num": {"type": "str"},
+                                "as_num": {"required": True, "type": "str"},
                                 "loops": {"type": "int"},
                                 "no_prepend_global_as": {"type": "bool"},
                                 "private": {"type": "bool"},
-                                "set": {"type": "bool"},
                             },
                             "type": "dict",
                         },
@@ -430,6 +437,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                             "options": {
                                 "disable": {"type": "bool"},
                                 "multiple_as": {"type": "bool"},
+                                "multiple_as_disable": {"type": "bool"},
                                 "set": {"type": "bool"},
                             },
                             "type": "dict",
@@ -569,7 +577,8 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                 "description": {"type": "str"},
                                 "egress_te": {
                                     "options": {
-                                        "backup_path": {"type": "str"}
+                                        "backup_path": {"type": "str"},
+                                        "set": {"type": "bool"},
                                     },
                                     "type": "dict",
                                 },
@@ -635,13 +644,15 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                 "local_as": {
                                     "options": {
                                         "alias": {"type": "bool"},
-                                        "as_num": {"type": "str"},
+                                        "as_num": {
+                                            "required": True,
+                                            "type": "str",
+                                        },
                                         "loops": {"type": "int"},
                                         "no_prepend_global_as": {
                                             "type": "bool"
                                         },
                                         "private": {"type": "bool"},
-                                        "set": {"type": "bool"},
                                     },
                                     "type": "dict",
                                 },
@@ -688,6 +699,9 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                     "options": {
                                         "disable": {"type": "bool"},
                                         "multiple_as": {"type": "bool"},
+                                        "multiple_as_disable": {
+                                            "type": "bool"
+                                        },
                                         "set": {"type": "bool"},
                                     },
                                     "type": "dict",
@@ -729,14 +743,11 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                 "remove_private": {
                                     "options": {
                                         "all": {"type": "bool"},
-                                        "no_peer_loop_check": {"type": "bool"},
-                                        "replace": {
-                                            "options": {
-                                                "nearest": {"type": "bool"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
+                                        "all_replace": {"type": "bool"},
+                                        "all_replace_nearest": {
+                                            "type": "bool"
                                         },
+                                        "no_peer_loop_check": {"type": "bool"},
                                         "set": {"type": "bool"},
                                     },
                                     "type": "dict",
@@ -751,7 +762,10 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                     "options": {
                                         "file": {
                                             "options": {
-                                                "file_name": {"type": "str"},
+                                                "filename": {
+                                                    "required": True,
+                                                    "type": "str",
+                                                },
                                                 "files": {"type": "int"},
                                                 "no_world_readable": {
                                                     "type": "bool"
@@ -764,20 +778,17 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                             "type": "dict",
                                         },
                                         "flag": {
+                                            "elements": "dict",
                                             "options": {
-                                                "add_path": {
+                                                "detail": {"type": "bool"},
+                                                "disable": {"type": "bool"},
+                                                "filter": {
                                                     "options": {
-                                                        "detail": {
+                                                        "match_on_prefix": {
                                                             "type": "bool"
                                                         },
-                                                        "disable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "receive": {
-                                                            "type": "bool"
-                                                        },
-                                                        "send": {
-                                                            "type": "bool"
+                                                        "policy": {
+                                                            "type": "str"
                                                         },
                                                         "set": {
                                                             "type": "bool"
@@ -785,436 +796,38 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                                     },
                                                     "type": "dict",
                                                 },
-                                                "all": {
-                                                    "options": {
-                                                        "detail": {
-                                                            "type": "bool"
-                                                        },
-                                                        "disable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "receive": {
-                                                            "type": "bool"
-                                                        },
-                                                        "send": {
-                                                            "type": "bool"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
+                                                "name": {
+                                                    "choices": [
+                                                        "4byte-as",
+                                                        "add-path",
+                                                        "all",
+                                                        "bfd",
+                                                        "damping",
+                                                        "egress-te",
+                                                        "general",
+                                                        "graceful-restart",
+                                                        "keepalive",
+                                                        "normal",
+                                                        "nsr-synchronization",
+                                                        "open",
+                                                        "packets",
+                                                        "policy",
+                                                        "refresh",
+                                                        "route",
+                                                        "state",
+                                                        "task",
+                                                        "thread-io",
+                                                        "thread-update-io",
+                                                        "timer",
+                                                        "update",
+                                                    ],
+                                                    "required": True,
+                                                    "type": "str",
                                                 },
-                                                "bfd": {
-                                                    "options": {
-                                                        "detail": {
-                                                            "type": "bool"
-                                                        },
-                                                        "disable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "receive": {
-                                                            "type": "bool"
-                                                        },
-                                                        "send": {
-                                                            "type": "bool"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
-                                                },
-                                                "byte_as": {
-                                                    "options": {
-                                                        "detail": {
-                                                            "type": "bool"
-                                                        },
-                                                        "disable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "receive": {
-                                                            "type": "bool"
-                                                        },
-                                                        "send": {
-                                                            "type": "bool"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
-                                                },
-                                                "damping": {
-                                                    "options": {
-                                                        "detail": {
-                                                            "type": "bool"
-                                                        },
-                                                        "disable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "filter": {
-                                                            "options": {
-                                                                "match_on_prefix": {
-                                                                    "type": "bool"
-                                                                },
-                                                                "policy": {
-                                                                    "type": "str"
-                                                                },
-                                                                "set": {
-                                                                    "type": "bool"
-                                                                },
-                                                            },
-                                                            "type": "dict",
-                                                        },
-                                                        "receive": {
-                                                            "type": "bool"
-                                                        },
-                                                        "send": {
-                                                            "type": "bool"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
-                                                },
-                                                "egress_te": {
-                                                    "options": {
-                                                        "detail": {
-                                                            "type": "bool"
-                                                        },
-                                                        "disable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "receive": {
-                                                            "type": "bool"
-                                                        },
-                                                        "send": {
-                                                            "type": "bool"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
-                                                },
-                                                "general": {
-                                                    "options": {
-                                                        "detail": {
-                                                            "type": "bool"
-                                                        },
-                                                        "disable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "receive": {
-                                                            "type": "bool"
-                                                        },
-                                                        "send": {
-                                                            "type": "bool"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
-                                                },
-                                                "graceful_restart": {
-                                                    "options": {
-                                                        "detail": {
-                                                            "type": "bool"
-                                                        },
-                                                        "disable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "receive": {
-                                                            "type": "bool"
-                                                        },
-                                                        "send": {
-                                                            "type": "bool"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
-                                                },
-                                                "keepalive": {
-                                                    "options": {
-                                                        "detail": {
-                                                            "type": "bool"
-                                                        },
-                                                        "disable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "receive": {
-                                                            "type": "bool"
-                                                        },
-                                                        "send": {
-                                                            "type": "bool"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
-                                                },
-                                                "normal": {
-                                                    "options": {
-                                                        "detail": {
-                                                            "type": "bool"
-                                                        },
-                                                        "disable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "receive": {
-                                                            "type": "bool"
-                                                        },
-                                                        "send": {
-                                                            "type": "bool"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
-                                                },
-                                                "nsr_synchronization": {
-                                                    "options": {
-                                                        "detail": {
-                                                            "type": "bool"
-                                                        },
-                                                        "disable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "receive": {
-                                                            "type": "bool"
-                                                        },
-                                                        "send": {
-                                                            "type": "bool"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
-                                                },
-                                                "open": {
-                                                    "options": {
-                                                        "detail": {
-                                                            "type": "bool"
-                                                        },
-                                                        "disable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "receive": {
-                                                            "type": "bool"
-                                                        },
-                                                        "send": {
-                                                            "type": "bool"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
-                                                },
-                                                "packets": {
-                                                    "options": {
-                                                        "detail": {
-                                                            "type": "bool"
-                                                        },
-                                                        "disable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "receive": {
-                                                            "type": "bool"
-                                                        },
-                                                        "send": {
-                                                            "type": "bool"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
-                                                },
-                                                "policy": {
-                                                    "options": {
-                                                        "detail": {
-                                                            "type": "bool"
-                                                        },
-                                                        "disable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "receive": {
-                                                            "type": "bool"
-                                                        },
-                                                        "send": {
-                                                            "type": "bool"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
-                                                },
-                                                "refresh": {
-                                                    "options": {
-                                                        "detail": {
-                                                            "type": "bool"
-                                                        },
-                                                        "disable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "receive": {
-                                                            "type": "bool"
-                                                        },
-                                                        "send": {
-                                                            "type": "bool"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
-                                                },
-                                                "route": {
-                                                    "options": {
-                                                        "detail": {
-                                                            "type": "bool"
-                                                        },
-                                                        "disable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "filter": {
-                                                            "options": {
-                                                                "match_on_prefix": {
-                                                                    "type": "bool"
-                                                                },
-                                                                "policy": {
-                                                                    "type": "str"
-                                                                },
-                                                                "set": {
-                                                                    "type": "bool"
-                                                                },
-                                                            },
-                                                            "type": "dict",
-                                                        },
-                                                        "receive": {
-                                                            "type": "bool"
-                                                        },
-                                                        "send": {
-                                                            "type": "bool"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
-                                                },
-                                                "state": {
-                                                    "options": {
-                                                        "detail": {
-                                                            "type": "bool"
-                                                        },
-                                                        "disable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "receive": {
-                                                            "type": "bool"
-                                                        },
-                                                        "send": {
-                                                            "type": "bool"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
-                                                },
-                                                "thread_io": {
-                                                    "options": {
-                                                        "detail": {
-                                                            "type": "bool"
-                                                        },
-                                                        "disable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "receive": {
-                                                            "type": "bool"
-                                                        },
-                                                        "send": {
-                                                            "type": "bool"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
-                                                },
-                                                "thread_update_io": {
-                                                    "options": {
-                                                        "detail": {
-                                                            "type": "bool"
-                                                        },
-                                                        "disable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "receive": {
-                                                            "type": "bool"
-                                                        },
-                                                        "send": {
-                                                            "type": "bool"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
-                                                },
-                                                "timer": {
-                                                    "options": {
-                                                        "detail": {
-                                                            "type": "bool"
-                                                        },
-                                                        "disable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "receive": {
-                                                            "type": "bool"
-                                                        },
-                                                        "send": {
-                                                            "type": "bool"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
-                                                },
-                                                "update": {
-                                                    "options": {
-                                                        "detail": {
-                                                            "type": "bool"
-                                                        },
-                                                        "disable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "receive": {
-                                                            "type": "bool"
-                                                        },
-                                                        "send": {
-                                                            "type": "bool"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
-                                                },
+                                                "receive": {"type": "bool"},
+                                                "send": {"type": "bool"},
                                             },
-                                            "type": "dict",
+                                            "type": "list",
                                         },
                                     },
                                     "type": "dict",
@@ -1264,14 +877,9 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                         "remove_private": {
                             "options": {
                                 "all": {"type": "bool"},
+                                "all_replace": {"type": "bool"},
+                                "all_replace_nearest": {"type": "bool"},
                                 "no_peer_loop_check": {"type": "bool"},
-                                "replace": {
-                                    "options": {
-                                        "nearest": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
                                 "set": {"type": "bool"},
                             },
                             "type": "dict",
@@ -1284,7 +892,10 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                             "options": {
                                 "file": {
                                     "options": {
-                                        "file_name": {"type": "str"},
+                                        "filename": {
+                                            "required": True,
+                                            "type": "str",
+                                        },
                                         "files": {"type": "int"},
                                         "no_world_readable": {"type": "bool"},
                                         "size": {"type": "int"},
@@ -1293,247 +904,52 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                     "type": "dict",
                                 },
                                 "flag": {
+                                    "elements": "dict",
                                     "options": {
-                                        "add_path": {
+                                        "detail": {"type": "bool"},
+                                        "disable": {"type": "bool"},
+                                        "filter": {
                                             "options": {
-                                                "detail": {"type": "bool"},
-                                                "disable": {"type": "bool"},
-                                                "receive": {"type": "bool"},
-                                                "send": {"type": "bool"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
-                                        },
-                                        "all": {
-                                            "options": {
-                                                "detail": {"type": "bool"},
-                                                "disable": {"type": "bool"},
-                                                "receive": {"type": "bool"},
-                                                "send": {"type": "bool"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
-                                        },
-                                        "bfd": {
-                                            "options": {
-                                                "detail": {"type": "bool"},
-                                                "disable": {"type": "bool"},
-                                                "receive": {"type": "bool"},
-                                                "send": {"type": "bool"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
-                                        },
-                                        "byte_as": {
-                                            "options": {
-                                                "detail": {"type": "bool"},
-                                                "disable": {"type": "bool"},
-                                                "receive": {"type": "bool"},
-                                                "send": {"type": "bool"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
-                                        },
-                                        "damping": {
-                                            "options": {
-                                                "detail": {"type": "bool"},
-                                                "disable": {"type": "bool"},
-                                                "filter": {
-                                                    "options": {
-                                                        "match_on_prefix": {
-                                                            "type": "bool"
-                                                        },
-                                                        "policy": {
-                                                            "type": "str"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
+                                                "match_on_prefix": {
+                                                    "type": "bool"
                                                 },
-                                                "receive": {"type": "bool"},
-                                                "send": {"type": "bool"},
+                                                "policy": {"type": "str"},
                                                 "set": {"type": "bool"},
                                             },
                                             "type": "dict",
                                         },
-                                        "egress_te": {
-                                            "options": {
-                                                "detail": {"type": "bool"},
-                                                "disable": {"type": "bool"},
-                                                "receive": {"type": "bool"},
-                                                "send": {"type": "bool"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
+                                        "name": {
+                                            "choices": [
+                                                "4byte-as",
+                                                "add-path",
+                                                "all",
+                                                "bfd",
+                                                "damping",
+                                                "egress-te",
+                                                "general",
+                                                "graceful-restart",
+                                                "keepalive",
+                                                "normal",
+                                                "nsr-synchronization",
+                                                "open",
+                                                "packets",
+                                                "policy",
+                                                "refresh",
+                                                "route",
+                                                "state",
+                                                "task",
+                                                "thread-io",
+                                                "thread-update-io",
+                                                "timer",
+                                                "update",
+                                            ],
+                                            "required": True,
+                                            "type": "str",
                                         },
-                                        "general": {
-                                            "options": {
-                                                "detail": {"type": "bool"},
-                                                "disable": {"type": "bool"},
-                                                "receive": {"type": "bool"},
-                                                "send": {"type": "bool"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
-                                        },
-                                        "graceful_restart": {
-                                            "options": {
-                                                "detail": {"type": "bool"},
-                                                "disable": {"type": "bool"},
-                                                "receive": {"type": "bool"},
-                                                "send": {"type": "bool"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
-                                        },
-                                        "keepalive": {
-                                            "options": {
-                                                "detail": {"type": "bool"},
-                                                "disable": {"type": "bool"},
-                                                "receive": {"type": "bool"},
-                                                "send": {"type": "bool"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
-                                        },
-                                        "normal": {
-                                            "options": {
-                                                "detail": {"type": "bool"},
-                                                "disable": {"type": "bool"},
-                                                "receive": {"type": "bool"},
-                                                "send": {"type": "bool"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
-                                        },
-                                        "nsr_synchronization": {
-                                            "options": {
-                                                "detail": {"type": "bool"},
-                                                "disable": {"type": "bool"},
-                                                "receive": {"type": "bool"},
-                                                "send": {"type": "bool"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
-                                        },
-                                        "open": {
-                                            "options": {
-                                                "detail": {"type": "bool"},
-                                                "disable": {"type": "bool"},
-                                                "receive": {"type": "bool"},
-                                                "send": {"type": "bool"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
-                                        },
-                                        "packets": {
-                                            "options": {
-                                                "detail": {"type": "bool"},
-                                                "disable": {"type": "bool"},
-                                                "receive": {"type": "bool"},
-                                                "send": {"type": "bool"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
-                                        },
-                                        "policy": {
-                                            "options": {
-                                                "detail": {"type": "bool"},
-                                                "disable": {"type": "bool"},
-                                                "receive": {"type": "bool"},
-                                                "send": {"type": "bool"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
-                                        },
-                                        "refresh": {
-                                            "options": {
-                                                "detail": {"type": "bool"},
-                                                "disable": {"type": "bool"},
-                                                "receive": {"type": "bool"},
-                                                "send": {"type": "bool"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
-                                        },
-                                        "route": {
-                                            "options": {
-                                                "detail": {"type": "bool"},
-                                                "disable": {"type": "bool"},
-                                                "filter": {
-                                                    "options": {
-                                                        "match_on_prefix": {
-                                                            "type": "bool"
-                                                        },
-                                                        "policy": {
-                                                            "type": "str"
-                                                        },
-                                                        "set": {
-                                                            "type": "bool"
-                                                        },
-                                                    },
-                                                    "type": "dict",
-                                                },
-                                                "receive": {"type": "bool"},
-                                                "send": {"type": "bool"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
-                                        },
-                                        "state": {
-                                            "options": {
-                                                "detail": {"type": "bool"},
-                                                "disable": {"type": "bool"},
-                                                "receive": {"type": "bool"},
-                                                "send": {"type": "bool"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
-                                        },
-                                        "thread_io": {
-                                            "options": {
-                                                "detail": {"type": "bool"},
-                                                "disable": {"type": "bool"},
-                                                "receive": {"type": "bool"},
-                                                "send": {"type": "bool"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
-                                        },
-                                        "thread_update_io": {
-                                            "options": {
-                                                "detail": {"type": "bool"},
-                                                "disable": {"type": "bool"},
-                                                "receive": {"type": "bool"},
-                                                "send": {"type": "bool"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
-                                        },
-                                        "timer": {
-                                            "options": {
-                                                "detail": {"type": "bool"},
-                                                "disable": {"type": "bool"},
-                                                "receive": {"type": "bool"},
-                                                "send": {"type": "bool"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
-                                        },
-                                        "update": {
-                                            "options": {
-                                                "detail": {"type": "bool"},
-                                                "disable": {"type": "bool"},
-                                                "receive": {"type": "bool"},
-                                                "send": {"type": "bool"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
-                                        },
+                                        "receive": {"type": "bool"},
+                                        "send": {"type": "bool"},
                                     },
-                                    "type": "dict",
+                                    "type": "list",
                                 },
                             },
                             "type": "dict",
@@ -1565,11 +981,10 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                 "local_as": {
                     "options": {
                         "alias": {"type": "bool"},
-                        "as_num": {"type": "str"},
+                        "as_num": {"required": True, "type": "str"},
                         "loops": {"type": "int"},
                         "no_prepend_global_as": {"type": "bool"},
                         "private": {"type": "bool"},
-                        "set": {"type": "bool"},
                     },
                     "type": "dict",
                 },
@@ -1611,6 +1026,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                     "options": {
                         "disable": {"type": "bool"},
                         "multiple_as": {"type": "bool"},
+                        "multiple_as_disable": {"type": "bool"},
                         "set": {"type": "bool"},
                     },
                     "type": "dict",
@@ -1651,35 +1067,39 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                 "high": {
                                     "options": {
                                         "expedited": {"type": "bool"},
-                                        "priority": {"type": "bool"},
+                                        "priority": {"type": "int"},
                                     },
                                     "type": "dict",
                                 },
                                 "low": {
                                     "options": {
                                         "expedited": {"type": "bool"},
-                                        "priority": {"type": "bool"},
+                                        "priority": {"type": "int"},
                                     },
                                     "type": "dict",
                                 },
                                 "medium": {
                                     "options": {
                                         "expedited": {"type": "bool"},
-                                        "priority": {"type": "bool"},
+                                        "priority": {"type": "int"},
                                     },
                                     "type": "dict",
                                 },
                             },
                             "type": "dict",
                         },
-                        "expedited": {
+                        "expedited_update_tokens": {"type": "int"},
+                        "priority_update_tokens": {
+                            "elements": "dict",
                             "options": {
-                                "set": {"type": "bool"},
-                                "update_tokens": {"type": "int"},
+                                "priority": {"required": True, "type": "int"},
+                                "update_tokens": {
+                                    "required": True,
+                                    "type": "int",
+                                },
                             },
-                            "type": "dict",
+                            "type": "list",
                         },
-                        "priority": {"type": "int"},
                     },
                     "type": "dict",
                 },
@@ -1695,6 +1115,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                             "options": {
                                 "igp_multiplier": {"type": "int"},
                                 "med_multiplier": {"type": "int"},
+                                "set": {"type": "bool"},
                             },
                             "type": "dict",
                         },
@@ -1707,14 +1128,9 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                 "remove_private": {
                     "options": {
                         "all": {"type": "bool"},
+                        "all_replace": {"type": "bool"},
+                        "all_replace_nearest": {"type": "bool"},
                         "no_peer_loop_check": {"type": "bool"},
-                        "replace": {
-                            "options": {
-                                "nearest": {"type": "bool"},
-                                "set": {"type": "bool"},
-                            },
-                            "type": "dict",
-                        },
                         "set": {"type": "bool"},
                     },
                     "type": "dict",
@@ -1739,7 +1155,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                     "options": {
                         "file": {
                             "options": {
-                                "file_name": {"type": "str"},
+                                "filename": {"required": True, "type": "str"},
                                 "files": {"type": "int"},
                                 "no_world_readable": {"type": "bool"},
                                 "size": {"type": "int"},
@@ -1748,239 +1164,50 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                             "type": "dict",
                         },
                         "flag": {
+                            "elements": "dict",
                             "options": {
-                                "add_path": {
+                                "detail": {"type": "bool"},
+                                "disable": {"type": "bool"},
+                                "filter": {
                                     "options": {
-                                        "detail": {"type": "bool"},
-                                        "disable": {"type": "bool"},
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
+                                        "match_on_prefix": {"type": "bool"},
+                                        "policy": {"type": "str"},
                                         "set": {"type": "bool"},
                                     },
                                     "type": "dict",
                                 },
-                                "all": {
-                                    "options": {
-                                        "detail": {"type": "bool"},
-                                        "disable": {"type": "bool"},
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
+                                "name": {
+                                    "choices": [
+                                        "4byte-as",
+                                        "add-path",
+                                        "all",
+                                        "bfd",
+                                        "damping",
+                                        "egress-te",
+                                        "general",
+                                        "graceful-restart",
+                                        "keepalive",
+                                        "normal",
+                                        "nsr-synchronization",
+                                        "open",
+                                        "packets",
+                                        "policy",
+                                        "refresh",
+                                        "route",
+                                        "state",
+                                        "task",
+                                        "thread-io",
+                                        "thread-update-io",
+                                        "timer",
+                                        "update",
+                                    ],
+                                    "required": True,
+                                    "type": "str",
                                 },
-                                "bfd": {
-                                    "options": {
-                                        "detail": {"type": "bool"},
-                                        "disable": {"type": "bool"},
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "byte_as": {
-                                    "options": {
-                                        "detail": {"type": "bool"},
-                                        "disable": {"type": "bool"},
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "damping": {
-                                    "options": {
-                                        "detail": {"type": "bool"},
-                                        "disable": {"type": "bool"},
-                                        "filter": {
-                                            "options": {
-                                                "match_on_prefix": {
-                                                    "type": "bool"
-                                                },
-                                                "policy": {"type": "str"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
-                                        },
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "egress_te": {
-                                    "options": {
-                                        "detail": {"type": "bool"},
-                                        "disable": {"type": "bool"},
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "general": {
-                                    "options": {
-                                        "detail": {"type": "bool"},
-                                        "disable": {"type": "bool"},
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "graceful_restart": {
-                                    "options": {
-                                        "detail": {"type": "bool"},
-                                        "disable": {"type": "bool"},
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "keepalive": {
-                                    "options": {
-                                        "detail": {"type": "bool"},
-                                        "disable": {"type": "bool"},
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "normal": {
-                                    "options": {
-                                        "detail": {"type": "bool"},
-                                        "disable": {"type": "bool"},
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "nsr_synchronization": {
-                                    "options": {
-                                        "detail": {"type": "bool"},
-                                        "disable": {"type": "bool"},
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "open": {
-                                    "options": {
-                                        "detail": {"type": "bool"},
-                                        "disable": {"type": "bool"},
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "packets": {
-                                    "options": {
-                                        "detail": {"type": "bool"},
-                                        "disable": {"type": "bool"},
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "policy": {
-                                    "options": {
-                                        "detail": {"type": "bool"},
-                                        "disable": {"type": "bool"},
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "refresh": {
-                                    "options": {
-                                        "detail": {"type": "bool"},
-                                        "disable": {"type": "bool"},
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "route": {
-                                    "options": {
-                                        "detail": {"type": "bool"},
-                                        "disable": {"type": "bool"},
-                                        "filter": {
-                                            "options": {
-                                                "match_on_prefix": {
-                                                    "type": "bool"
-                                                },
-                                                "policy": {"type": "str"},
-                                                "set": {"type": "bool"},
-                                            },
-                                            "type": "dict",
-                                        },
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "state": {
-                                    "options": {
-                                        "detail": {"type": "bool"},
-                                        "disable": {"type": "bool"},
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "thread_io": {
-                                    "options": {
-                                        "detail": {"type": "bool"},
-                                        "disable": {"type": "bool"},
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "thread_update_io": {
-                                    "options": {
-                                        "detail": {"type": "bool"},
-                                        "disable": {"type": "bool"},
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "timer": {
-                                    "options": {
-                                        "detail": {"type": "bool"},
-                                        "disable": {"type": "bool"},
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "update": {
-                                    "options": {
-                                        "detail": {"type": "bool"},
-                                        "disable": {"type": "bool"},
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
+                                "receive": {"type": "bool"},
+                                "send": {"type": "bool"},
                             },
-                            "type": "dict",
+                            "type": "list",
                         },
                     },
                     "type": "dict",
@@ -1989,7 +1216,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                     "options": {
                         "file": {
                             "options": {
-                                "file_name": {"type": "str"},
+                                "filename": {"type": "str"},
                                 "files": {"type": "int"},
                                 "no_world_readable": {"type": "bool"},
                                 "size": {"type": "int"},

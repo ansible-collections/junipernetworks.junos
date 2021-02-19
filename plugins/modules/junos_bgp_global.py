@@ -235,6 +235,9 @@ options:
         description: Use Egress Peering traffic engineering.
         type: dict
         suboptions:
+          set:
+            description: Set the attribute.
+            type: bool
           backup_path:
             description: The 'egress-te-backup-paths template' to use for this peer.
             type: str
@@ -242,13 +245,15 @@ options:
         description: Backup-path for Egress-TE peer interface failure.
         type: dict
         suboptions:
-          template:
+          templates:
             description: Specify Backup-path template.
-            type: dict
+            type: list
+            elements: dict
             suboptions:
               path_name:
                 description: Name of Egress-TE backup path.
                 type: str
+                required: true
               ip_forward:
                 description: Use IP-forward backup path for Egress TE.
                 type: dict
@@ -259,19 +264,21 @@ options:
                   rti_name:
                     description: Routing-instance to use as IP forward backup-path.
                     type: str
-          peer_addr:
-            description: Specify address of BGP peer to use as backup next-hop.
-            type: str
-          remote_nexthop:
-            description: Specify address of remote-nexthop to use as backup path.
-            type: str
+              peer_addr:
+                description: Specify address of BGP peer to use as backup next-hop.
+                type: str
+              remote_nexthop:
+                description: Specify address of remote-nexthop to use as backup path.
+                type: str
       egress_te_set_segment:
         description: Configure BGP-Peer-Set segment.
-        type: dict
+        type: list
+        elements: dict
         suboptions:
           name:
             description: The BGP-Peer-Set segment name.
             type: str
+            required: true
           label:
             description: Backup segment label value from static label pool.
             type: int
@@ -372,12 +379,10 @@ options:
         description: Local autonomous system number.
         type: dict
         suboptions:
-          set:
-            description: Set local autonomous system number.
-            type: bool
           as_num:
             description: Autonomous system number in plain number or (asdot notation) format.
             type: str
+            required: true
           alias:
             description: Treat this AS as an alias to the system AS.
             type: bool
@@ -456,7 +461,10 @@ options:
             description: Disable Multipath.
             type: bool
           multiple_as:
-            description: Disable Multipath.
+            description: Use paths received from different ASs.
+            type: bool
+          multiple_as_disable:
+            description: Disable multipath.
             type: bool
       multipath_build_priority:
         description: Configure the multipath build priority.
@@ -521,7 +529,7 @@ options:
                     type: bool
                   priority:
                     description: Specify output queue priorit.
-                    type: bool
+                    type: int
               low:
                 description: Assign the 'low' priority class to this output-queue.
                 type: dict
@@ -531,7 +539,7 @@ options:
                     type: bool
                   priority:
                     description: Specify output queue priorit.
-                    type: bool
+                    type: int
               medium:
                 description: Assign the 'medium' priority class to this output-queue.
                 type: dict
@@ -541,20 +549,23 @@ options:
                     type: bool
                   priority:
                     description: Specify output queue priorit.
-                    type: bool
-          expedited:
-            description: Expedited queue; highest priority.
-            type: dict
-            suboptions:
-              set:
-                description: Set expedited queue; highest priority.
-                type: bool
-              update_tokens:
-                description: Specify Number of tokens.
-                type: int
-          priority:
-            description: Output queue priority; higher is better.
+                    type: int
+          expedited_update_tokens:
+            description: Expedited queue; highest priority for number of tokens.
             type: int
+          priority_update_tokens:
+            description: Output queue priority; higher is better.
+            type: list
+            elements: dict
+            suboptions:
+              priority:
+                description: Specify the priority.
+                type: int
+                required: true
+              update_tokens:
+                description: Specify update_tokens.
+                type: int
+                required: true
       passive: &passive
         description: Specify to not send open messages to a peer.
         type: bool
@@ -581,6 +592,9 @@ options:
             description: Add IGP cost to next-hop to MED before comparing MED values.
             type: dict
             suboptions:
+              set:
+                description: Set med-plus-igp attribute.
+                type: bool
               igp_multiplier:
                 description: Specify multiplier for IGP cost to next-hop.
                 type: int
@@ -606,16 +620,12 @@ options:
           all:
             description: Remove all private AS numbers and do not stop at the first public AS number.
             type: bool
-          replace:
+          all_replace:
             description: Specify private AS replacement.
-            type: dict
-            suboptions:
-              set:
-                description: Replace private AS numbers with the BGP Group's local AS number.
-                type: bool
-              nearest:
-                description: Use closest public AS number to replace a private AS number.
-                type: bool
+            type: bool
+          all_replace_nearest:
+            description: Use closest public AS number to replace a private AS number.
+            type: bool
           no_peer_loop_check:
             description: Remove peer loop-check.
             type: bool
@@ -658,9 +668,10 @@ options:
             description: Specify trace file options.
             type: dict
             suboptions:
-              file_name:
+              filename:
                 description: Specify name of file in which to write trace information.
                 type: str
+                required: true
               files:
                 description: Specify maximum number of trace files.
                 type: int
@@ -675,433 +686,64 @@ options:
                 type: int
           flag:
             description: Specify tracing parameters.
-            type: dict
+            type: list
+            elements: dict
             suboptions:
-              byte_as:
-                description: Specify trace 4 byte AS events.
+              name:
+                description: specify event name
+                type: str
+                choices:
+                  - 4byte-as
+                  - add-path
+                  - all
+                  - bfd
+                  - damping
+                  - egress-te
+                  - general
+                  - graceful-restart
+                  - keepalive
+                  - normal
+                  - nsr-synchronization
+                  - open
+                  - packets
+                  - policy
+                  - refresh
+                  - route
+                  - state
+                  - task
+                  - thread-io
+                  - thread-update-io
+                  - timer
+                  - update
+              set:
+                description: Set trace 4 byte AS events.
+                type: bool
+              detail:
+                description: Trace detailed information.
+                type: bool
+              disable:
+                description: Disable this trace flag.
+                type: bool
+              receive:
+                description: Trace received packets.
+                type: bool
+              send:
+                description: Trace transmitted packets.
+                type: bool
+              filter:
+                description: Filter to apply to this flag.
                 type: dict
                 suboptions:
                   set:
-                    description: Set trace 4 byte AS events.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              add_path:
-                description: Specify trace add-path events.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set trace add-path events.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              all:
-                description: Specify to trace everything.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace everything.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              bfd:
-                description: Trace BFD events.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set BFD events.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              damping:
-                description: Trace BGP damping information.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace BGP damping information.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-                  filter:
-                    description: Filter to apply to this flag.
-                    type: dict
-                    suboptions:
-                      set:
-                        description: Set filter to apply to this flag.
-                        type: bool
-                      match_on_prefix:
-                        description: Specify filter based on prefix.
-                        type: bool
-                      policy:
-                        description: Specify filter policy.
-                        type: str
-              egress_te:
-                description: Specify Egress Peering Traffic-Engineering events.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Egress Peering Traffic-Engineering events.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              general:
-                description: Trace general events.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set trace general events.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              graceful_restart:
-                description: Trace Graceful Restart events.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace Graceful Restart events.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              keepalive:
-                description: Trace BGP keepalive packets.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace BGP keepalive packets.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              normal:
-                description: Trace normal events.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace normal events.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              nsr_synchronization:
-                description: Trace NSR synchronization events.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace NSR synchronization events.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              open:
-                description: Trace BGP open packets.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace BGP open packets.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              packets:
-                description: Trace all BGP protocol packets.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace all BGP protocol packets.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              policy:
-                description: Trace policy processing.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace policy processing.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              refresh:
-                description: Trace BGP refresh packets.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace BGP refresh packets.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              route:
-                description: Trace routing information.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace routing information.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-                  filter:
-                    description: Filter to apply to this flag.
-                    type: dict
-                    suboptions:
-                      set:
-                        description: Set filter to apply to this flag.
-                        type: bool
-                      match_on_prefix:
-                        description: Specify filter based on prefix.
-                        type: bool
-                      policy:
-                        description: Specify filter policy.
-                        type: str
-              state:
-                description: Trace state transitions.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace state transitions.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              thread_update_io:
-                description: Trace threaded update I/O processing.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace threaded update I/O processing.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              thread_io:
-                description: Trace threaded I/O processing.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace threaded I/O processing.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              timer:
-                description: Trace routing protocol timer processing.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace routing protocol timer processing.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              update:
-                description: Trace BGP update packets.
-                type: dict
-                suboptions:
-                  set:
-                    description: Trace BGP update packets.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
+                    description: Set filter to apply to this flag.
+                    type: bool
+                  match_on_prefix:
+                    description: Specify filter based on prefix.
+                    type: bool
+                  policy:
+                    description: Specify filter policy.
+                    type: str
+
       traffic_statistics_labeled_path:
         description: Collect periodic ingress labeled statistics for BGP label-switched paths.
         type: dict

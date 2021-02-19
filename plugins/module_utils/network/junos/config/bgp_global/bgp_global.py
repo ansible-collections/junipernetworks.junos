@@ -555,19 +555,18 @@ class Bgp_global(ConfigBase):
 
         # Generate config commands for optimal-route-reflection
         if want.get("optimal_route_reflection"):
-            orr_node = build_child_xml_node(bgp_root, "optimal-route-reflection")
+            orr_node = build_child_xml_node(
+                bgp_root, "optimal-route-reflection"
+            )
             orr = want.get("optimal_route_reflection")
             if "igp_backup" in orr.keys():
-                build_child_xml_node(orr_node, "igp-backup", orr.get("igp_backup"))
+                build_child_xml_node(
+                    orr_node, "igp-backup", orr.get("igp_backup")
+                )
             if "igp_primary" in orr.keys():
-                build_child_xml_node(orr_node, "igp-primary", orr.get("igp_primary"))
-
-
-
-
-
-
-
+                build_child_xml_node(
+                    orr_node, "igp-primary", orr.get("igp_primary")
+                )
 
     def _state_deleted(self, want, have):
         """ The command generator when state is deleted

@@ -429,6 +429,106 @@ class Bgp_globalFacts(object):
         if "disable" in conf.keys():
             cfg_dict["disable"] = True
 
+        # Read egress-te value
+        if "egress-te" in conf.keys():
+            cfg = {}
+            if (
+                conf.get("egress-te")
+                and "backup-path" in conf["egress-te"].keys()
+            ):
+                cfg["backup_path"] = conf["egress-te"].get("backup-path")
+            else:
+                cfg["set"] = True
+            cfg_dict["egress_te"] = cfg
+
+        # Read egress-te-backup-paths
+        if "egress-te-backup-paths" in conf.keys():
+            cfg = {}
+            templates_lst = []
+            template_dict = {}
+            templates = conf["egress-te-backup-paths"].get("template")
+            if isinstance(templates, dict):
+                template_dict["path_name"] = templates["name"]
+                if "remote-nexthop" in templates.keys():
+                    template_dict["remote_nexthop"] = templates[
+                        "remote-nexthop"
+                    ].get("remote-nh-addr")
+                if "peer" in templates.keys():
+                    template_dict["peer_addr"] = templates["peer"].get("name")
+                if "ip-forward" in templates.keys():
+                    ipf_dict = {}
+                    if templates.get("ip-forward") is None:
+                        ipf_dict["set"] = True
+                    else:
+                        ipf_dict["rti_name"] = templates["ip-forward"].get(
+                            "rti-name"
+                        )
+                    template_dict["ip_forward"] = ipf_dict
+                if template_dict:
+                    templates_lst.append(template_dict)
+            else:
+                # We have list of templates
+                for template in templates:
+                    template_dict = {}
+                    template_dict["path_name"] = template["name"]
+                    if "remote-nexthop" in template.keys():
+                        template_dict["remote_nexthop"] = template[
+                            "remote-nexthop"
+                        ].get("remote-nh-addr")
+                    if "peer" in template.keys():
+                        template_dict["peer_addr"] = template["peer"].get(
+                            "name"
+                        )
+                    if "ip-forward" in template.keys():
+                        ipf_dict = {}
+                        if template.get("ip-forward") is None:
+                            ipf_dict["set"] = True
+                        else:
+                            ipf_dict["rti_name"] = template["ip-forward"].get(
+                                "rti-name"
+                            )
+                        template_dict["ip_forward"] = ipf_dict
+
+                    if template_dict:
+                        templates_lst.append(template_dict)
+
+            if templates:
+                cfg["templates"] = templates_lst
+            cfg_dict["egress_te_backup_paths"] = cfg
+
+        # Read egress-te-set-segment
+        if "egress-te-set-segment" in conf.keys():
+            etss_lst = []
+            etss_dict = {}
+            etsss = conf["egress-te-set-segment"]
+            if isinstance(etsss, dict):
+                etss_dict["name"] = etsss.get("name")
+                if "label" in etsss.keys():
+                    etss_dict["label"] = etsss["label"].get("label-value")
+                if "egress-te-backup-segment" in etsss.keys():
+                    etbs = etsss.get("egress-te-backup-segment")
+                    etss_dict["egress_te_backup_segment_label"] = etbs[
+                        "label"
+                    ].get("label-value")
+
+                if etss_dict:
+                    etss_lst.append(etss_dict)
+            else:
+                for etss in etsss:
+                    etss_dict["name"] = etss.get("name")
+                    if "label" in etss.keys():
+                        etss_dict["label"] = etss["label"].get("label-value")
+                    if "egress-te-backup-segment" in etss.keys():
+                        etbs = etss.get("egress-te-backup-segment")
+                        etss_dict["egress_te_backup_segment_label"] = etbs[
+                            "label"
+                        ].get("label-value")
+
+                    if etss_dict:
+                        etss_lst.append(etss_dict)
+                    etss_dict = {}
+            cfg_dict["egress_te_set_segment"] = etss_lst
+
         # Read egress-te-sid-stats value
         if "egress-te-sid-stats" in conf.keys():
             cfg_dict["egress_te_sid_stats"] = True
@@ -445,6 +545,50 @@ class Bgp_globalFacts(object):
         if "forwarding-context" in conf.keys():
             cfg_dict["forwarding_context"] = conf["forwarding-context"]
 
+        # Read graceful-restart
+        if "graceful-restart" in conf.keys():
+            cfg = {}
+            gr = conf.get("graceful-restart")
+            if gr is None:
+                cfg["set"] = True
+            else:
+                if "disable" in gr.keys():
+                    cfg["disable"] = True
+                if "dont-help-shared-fate-bfd-down" in gr.keys():
+                    cfg["dont_help_shared_fate_bfd_down"] = True
+                # read forwarding-state-bit
+                if "forwarding-state-bit" in gr.keys():
+                    fsb_dict = {}
+                    if "as-rr-client" == gr.get("forwarding-state-bit"):
+                        fsb_dict["as_rr_client"] = True
+                    if "from-fib" == gr.get("forwarding-state-bit"):
+                        fsb_dict["from_fib"] = True
+                    cfg["forwarding_state_bit"] = fsb_dict
+                # read long-lived
+                if "long-lived" in gr.keys():
+                    ll_dict = {}
+                    ll = gr.get("long-lived")
+                    # read advertise_to_non_llgr_neighbor
+                    if "advertise-to-non-llgr-neighbor" in ll.keys():
+                        atnln_dict = {}
+                        atnln = ll.get("advertise-to-non-llgr-neighbor")
+                        if atnln is None:
+                            atnln_dict["set"] = True
+                        else:
+                            atnln_dict["omit_no_export"] = True
+                        ll_dict["advertise_to_non_llgr_neighbor"] = atnln_dict
+                    if "receiver" in ll.keys():
+                        ll_dict["receiver_disable"] = True
+                    cfg["long_lived"] = ll_dict
+                # read restart-time
+                if "restart-time" in gr.keys():
+                    cfg["restart_time"] = gr.get("restart-time")
+                # read stale-routes-time
+                if "stale-routes-time" in gr.keys():
+                    cfg["stale_routes_time"] = gr.get("stale-routes-time")
+
+            cfg_dict["graceful_restart"] = cfg
+
         # Read hold-time value
         if "hold-time" in conf.keys():
             cfg_dict["hold_time"] = conf["hold-time"]
@@ -452,6 +596,16 @@ class Bgp_globalFacts(object):
         # Read holddown-all-stale-labels value
         if "holddown-all-stale-labels" in conf.keys():
             cfg_dict["holddown_all_stale_labels"] = True
+
+        # Read idle-after-switch-over
+        if "idle-after-switch-over" in conf.keys():
+            cfg = {}
+            iaso = conf.get("idle-after-switch-over")
+            if "forever" in iaso.keys():
+                cfg["forever"] = True
+            else:
+                cfg["timeout"] = iaso.get("timeout")
+            cfg_dict["idle_after_switch_over"] = cfg
 
         # Read import value
         if "import" in conf.keys():
@@ -473,6 +627,21 @@ class Bgp_globalFacts(object):
         if "local-address" in conf.keys():
             cfg_dict["local_address"] = conf["local-address"]
 
+        # Read local_as value
+        if "local-as" in conf.keys():
+            cfg = {}
+            la = conf.get("local-as")
+            cfg["as_num"] = la.get("as-number")
+            if "alias" in la.keys():
+                cfg["alias"] = True
+            elif "private" in la.keys():
+                cfg["private"] = True
+            if "loops" in la.keys():
+                cfg["loops"] = la.get("loops")
+            if "no-prepend-global-as" in la.keys():
+                cfg["no_prepend_global_as"] = True
+            cfg_dict["local_as"] = cfg
+
         # Read local-interface value
         if "local-interface" in conf.keys():
             cfg_dict["local_interface"] = conf["local-interface"]
@@ -485,9 +654,73 @@ class Bgp_globalFacts(object):
         if "log-updown" in conf.keys():
             cfg_dict["log_updown"] = True
 
+        # Read metric-out
+        if "metric-out" in conf.keys():
+            cfg = {}
+            mo = conf.get("metric-out")
+            # metric value
+            if "metric-value" in mo.keys():
+                cfg["metric_value"] = mo.get("metric-value")
+            # read igp
+            if "igp" in mo.keys():
+                igp_dict = {}
+                igp = mo.get("igp")
+                if igp is None:
+                    igp_dict["set"] = True
+                else:
+                    if "metric-offset" in igp.keys():
+                        igp_dict["metric_offset"] = igp.get("metric-offset")
+                    if "delay-med-update" in igp.keys():
+                        igp_dict["delay_med_update"] = True
+                cfg["igp"] = igp_dict
+            # read minimum-igp
+            if "minimum-igp" in mo.keys():
+                minigp_dict = {}
+                minigp = mo.get("minimum-igp")
+                if minigp is None:
+                    minigp_dict["set"] = True
+                else:
+                    if "metric-offset" in minigp.keys():
+                        minigp_dict["metric_offset"] = minigp.get(
+                            "metric-offset"
+                        )
+                cfg["minimum_igp"] = minigp_dict
+            cfg_dict["metric_out"] = cfg
+
         # Read mtu-discovery value
         if "mtu-discovery" in conf.keys():
             cfg_dict["mtu_discovery"] = True
+
+        # Read multihop value
+        if "multihop" in conf.keys():
+            cfg = {}
+            multihop = conf.get("multihop")
+            if multihop is None:
+                cfg["set"] = True
+            else:
+                if "no-nexthop-change" in multihop.keys():
+                    cfg["no_nexthop_change"] = True
+                if "ttl" in multihop.keys():
+                    cfg["ttl"] = multihop.get("ttl")
+            cfg_dict["multihop"] = cfg
+
+        # Read multipath
+        if "multipath" in conf.keys():
+            cfg = {}
+            multipath = conf.get("multipath")
+            if multipath is None:
+                cfg["set"] = True
+            else:
+                if "disable" in multipath.keys():
+                    cfg["disable"] = True
+                if "multiple-as" in multipath.keys():
+                    mas = multipath.get("multiple-as")
+                    if mas is None:
+                        cfg["multiple_as"] = True
+                    else:
+                        cfg["multiple_as_disable"] = True
+
+            cfg_dict["multipath"] = cfg
 
         # Read no-advertise-peer-as value
         if "no-advertise-peer-as" in conf.keys():
@@ -509,9 +742,131 @@ class Bgp_globalFacts(object):
         if "out-delay" in conf.keys():
             cfg_dict["out_delay"] = conf["out-delay"]
 
+        # Read outbound-route-filter
+        if "outbound-route-filter" in conf.keys():
+            cfg = {}
+            orf = conf.get("outbound-route-filter")
+            # read outbound-route-filter
+            if "bgp-orf-cisco-mode" in orf.keys():
+                cfg["bgp_orf_cisco_mode"] = True
+            # read prefix-based
+            if "prefix-based" in orf.keys():
+                pb = orf.get("prefix-based")
+                pb_dict = {}
+                if pb is None:
+                    pb_dict["set"] = True
+                else:
+                    if "accept" in pb.keys():
+                        # read accept node attributes
+                        accept = pb.get("accept")
+                        accept_dict = {}
+                        if accept is None:
+                            accept_dict["set"] = True
+                        else:
+                            if "inet" in accept.keys():
+                                accept_dict["inet"] = True
+                            if "inet6" in accept.keys():
+                                accept_dict["inet6"] = True
+                        pb_dict["accept"] = accept_dict
+                cfg["prefix_based"] = pb_dict
+
+            cfg_dict["outbound_route_filter"] = cfg
+
+        # Read output-queue-priority value
+        if "output-queue-priority" in conf.keys():
+            cfg = {}
+            oqp_dict = {}
+            oqp = conf.get("output-queue-priority")
+            # read defaults
+            if "defaults" in oqp.keys():
+                defaults = oqp.get("defaults")
+                defaults_dict = {}
+                # read high
+                if "high" in defaults.keys():
+                    high_dict = {}
+                    high = defaults.get("high")
+                    if "expedited" in high:
+                        high_dict["expedited"] = True
+
+                    defaults_dict["high"] = high_dict
+                # read low
+                if "low" in defaults.keys():
+                    low_dict = {}
+                    low = defaults.get("low")
+                    if "expedited" in low:
+                        low_dict["expedited"] = True
+                # read medium
+                if "medium" in defaults.keys():
+                    medium_dict = {}
+                    medium = defaults.get("medium")
+                    if "expedited" in medium:
+                        medium_dict["expedited"] = True
+                oqp_dict["defaults"] = defaults_dict
+
+            # read expedited
+            if "expedited" in oqp.keys():
+                expedited = oqp.get("expedited")
+                if "update-tokens" in expedited:
+                    oqp_dict["expedited_update_tokens"] = expedited.get(
+                        "update-tokens"
+                    )
+
+            # read priority
+            if "priority" in oqp.keys():
+                priority_lst = []
+                priority_dict = {}
+                priority = oqp.get("priority")
+                if isinstance(priority, dict):
+                    priority_dict["priority"] = priority.get("name")
+                    priority_dict["update_tokens"] = priority.get(
+                        "update-tokens"
+                    )
+                    priority_lst.append(priority_dict)
+                else:
+                    for element in priority:
+                        priority_dict["priority"] = element.get("name")
+                        priority_dict["update_tokens"] = element.get(
+                            "update-tokens"
+                        )
+                        priority_lst.append(priority_dict)
+                        priority_dict = {}
+
+                oqp_dict["priority_update_tokens"] = priority_lst
+
+            cfg_dict["output_queue_priority"] = oqp_dict
+
         # Read passive value
         if "passive" in conf.keys():
             cfg_dict["passive"] = True
+
+        # Read path-selection value
+        if "path-selection" in conf.keys():
+            ps_dict = {}
+            ps = conf.get("path-selection")
+            if "always-compare-med" in ps.keys():
+                ps_dict["always_compare_med"] = True
+            if "as-path-ignore" in ps.keys():
+                ps_dict["as_path_ignore"] = True
+            if "external-router-id" in ps.keys():
+                ps_dict["external_router_id"] = True
+            if "cisco-non-deterministic" in ps.keys():
+                ps_dict["cisco_non_deterministic"] = True
+            if "l2vpn-use-bgp-rules" in ps.keys():
+                ps_dict["l2vpn_use_bgp_rules"] = True
+            # read med-plus-igp
+            if "med-plus-igp" in ps.keys():
+                mpi_dict = {}
+                mpi = ps.get("med-plus-igp")
+                if mpi is None:
+                    mpi_dict["set"] = True
+                else:
+                    if "igp-multiplier" in mpi.keys():
+                        mpi_dict["igp_multiplier"] = mpi.get("igp-multiplier")
+                    if "med-multiplier" in mpi.keys():
+                        mpi_dict["med_multiplier"] = mpi.get("med-multiplier")
+                ps_dict["med_plus_igp"] = mpi_dict
+
+            cfg_dict["path_selection"] = ps_dict
 
         # Read peer-as value
         if "peer-as" in conf.keys():
@@ -525,6 +880,27 @@ class Bgp_globalFacts(object):
         if "preference" in conf.keys():
             cfg_dict["preference"] = conf["preference"]
 
+        # Read remove-private value
+        if "remove-private" in conf.keys():
+            rp_dict = {}
+            rp = conf.get("remove-private")
+            if rp is None:
+                rp_dict["set"] = True
+            else:
+                if "all" in rp.keys():
+                    all = rp.get("all")
+                    if all is None:
+                        rp_dict["all"] = True
+                    else:
+                        if "replace" in all.keys():
+                            replace = all.get("replace")
+                            if replace is None:
+                                rp_dict["all_replace"] = True
+                            else:
+                                rp_dict["all_replace_nearest"] = True
+
+            cfg_dict["remove_private"] = rp_dict
+
         # Read rfc6514-compliant-safi129 value
         if "rfc6514-compliant-safi129" in conf.keys():
             cfg_dict["rfc6514_compliant_safi129"] = True
@@ -536,6 +912,16 @@ class Bgp_globalFacts(object):
         # Read send-addpath-optimization value
         if "send-addpath-optimization" in conf.keys():
             cfg_dict["send_addpath_optimization"] = True
+
+        # Read snmp-options value
+        if "snmp-options" in conf.keys():
+            cfg = {}
+            so = conf.get("snmp-options")
+            if "backward-traps-only-from-established" in so:
+                cfg["backward_traps_only_from_established"] = True
+            if "emit-inet-address-length-in-oid" in so:
+                cfg["emit_inet_address_length_in_oid"] = True
+            cfg_dict["snmp_options"] = cfg
 
         # Read sr-preference-override value
         if "sr-preference-override" in conf.keys():
@@ -555,6 +941,82 @@ class Bgp_globalFacts(object):
         if "tcp-mss" in conf.keys():
             cfg_dict["tcp_mss"] = conf["tcp-mss"]
 
+        # Read traceoptions value
+        if "traceoptions" in conf.keys():
+            to_dict = {}
+            to = conf.get("traceoptions")
+            # read file
+            if "file" in to.keys():
+                file_dict = {}
+                file = to.get("file")
+                if "filename" in file.keys():
+                    file_dict["filename"] = file.get("filename")
+                if "files" in file.keys():
+                    file_dict["files"] = file.get("files")
+                if "no-world-readable" in file.keys():
+                    file_dict["no_world_readable"] = True
+                if "world-readable" in file.keys():
+                    file_dict["world_readable"] = True
+                if "size" in file.keys():
+                    file_dict["size"] = file.get("size")
+                to_dict["file"] = file_dict
+            # read flag
+            if "flag" in to.keys():
+                flag_lst = []
+                flag = to.get("flag")
+                for event in flag:
+                    flag_dict = {}
+                    if event is not None:
+                        if "detail" in event.keys():
+                            flag_dict["detail"] = True
+                        if "disable" in event.keys():
+                            flag_dict["disable"] = True
+                        if "receive" in event.keys():
+                            flag_dict["receive"] = True
+                        if "send" in event.keys():
+                            flag_dict["send"] = True
+                        if "filter" in event.keys():
+                            filter_dict = {}
+                            filter = event.get("filter")
+                            if filter is None:
+                                filter_dict["set"] = True
+                            else:
+                                if "match-on" in filter.keys():
+                                    filter_dict["match_on_prefix"] = True
+                                if "policy" in filter.keys():
+                                    filter_dict["policy"] = filter.get(
+                                        "policy"
+                                    )
+                            flag_dict["filter"] = filter_dict
+                        flag_dict["name"] = event.get("name")
+                        flag_lst.append(flag_dict)
+
+                to_dict["flag"] = flag_lst
+                cfg_dict["traceoptions"] = to_dict
+        # Read traffic-statistics-labeled-path
+        if "traffic-statistics-labeled-path" in conf.keys():
+            tslp_dict = {}
+            tslp = conf.get("traffic-statistics-labeled-path")
+            # read file
+            if "file" in tslp.keys():
+                file_dict = {}
+                file = tslp.get("file")
+                if "filename" in file.keys():
+                    file_dict["filename"] = file.get("filename")
+                if "files" in file.keys():
+                    file_dict["files"] = file.get("files")
+                if "no-world-readable" in file.keys():
+                    file_dict["no_world_readable"] = True
+                if "world-readable" in file.keys():
+                    file_dict["world_readable"] = True
+                if "size" in file.keys():
+                    file_dict["size"] = file.get("size")
+                tslp_dict["file"] = file_dict
+            # read interval
+            if "interval" in tslp.keys():
+                tslp_dict["interval"] = tslp.get("interval")
+
+            cfg_dict["traffic_statistics_labeled_path"] = tslp_dict
         # Read ttl value
         if "ttl" in conf.keys():
             cfg_dict["ttl"] = conf["ttl"]
