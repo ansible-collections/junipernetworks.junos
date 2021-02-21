@@ -26,6 +26,10 @@
       - delete protocols bgp out-delay
       - delete protocols bgp precision-timers
       - delete protocols bgp preference
+      - delete protocols bgp egress-te
+      - delete protocols bgp egress-te-backup-paths
+      - delete protocols bgp group external
+      - delete protocols bgp group internal
 
 - debug:
     msg: "END junos_bgp_global reset config on connection={{ ansible_connection }}"

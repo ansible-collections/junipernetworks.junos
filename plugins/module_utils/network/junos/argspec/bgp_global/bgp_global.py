@@ -165,7 +165,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                     "type": "dict",
                                 },
                                 "path_name": {"required": True, "type": "str"},
-                                "peer_addr": {"type": "str"},
+                                "peers": {"elements": "str", "type": "list"},
                                 "remote_nexthop": {"type": "str"},
                             },
                             "type": "list",
@@ -1237,9 +1237,9 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
         "running_config": {"type": "str"},
         "state": {
             "choices": [
+                "purged",
                 "merged",
                 "replaced",
-                "purged",
                 "deleted",
                 "gathered",
                 "parsed",

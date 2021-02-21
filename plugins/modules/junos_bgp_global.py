@@ -264,9 +264,10 @@ options:
                   rti_name:
                     description: Routing-instance to use as IP forward backup-path.
                     type: str
-              peer_addr:
+              peers:
                 description: Specify address of BGP peer to use as backup next-hop.
-                type: str
+                type: list
+                elements: str
               remote_nexthop:
                 description: Specify address of remote-nexthop to use as backup path.
                 type: str
@@ -715,9 +716,7 @@ options:
                   - thread-update-io
                   - timer
                   - update
-              set:
-                description: Set trace 4 byte AS events.
-                type: bool
+                required: true
               detail:
                 description: Trace detailed information.
                 type: bool
@@ -743,7 +742,6 @@ options:
                   policy:
                     description: Specify filter policy.
                     type: str
-
       traffic_statistics_labeled_path:
         description: Collect periodic ingress labeled statistics for BGP label-switched paths.
         type: dict
@@ -752,7 +750,7 @@ options:
             description: Specify statistics file options.
             type: dict
             suboptions:
-              file_name:
+              filename:
                 description: Specify name of file in which to write trace information.
                 type: str
               files:
@@ -962,7 +960,7 @@ EXAMPLES = """
 # admin# show routing-options autonomous-system
 # [edit]
 
-- name: Merge Junos BGP interfaces config
+- name: Merge Junos BGP config
   junipernetworks.junos.junos_bgp_global:
     config:
       as_number: "65534"
@@ -1028,6 +1026,169 @@ EXAMPLES = """
 # }
 # add-path-display-ipv4-address;
 # egress-te-sid-stats;
+
+
+# Using merged
+#
+# Before state
+# ------------
+#
+# admin# show routing-options autonomous-system
+# 65534 loops 3 asdot-notation;
+
+# admin# show protocols bgp
+# precision-timers;
+# advertise-from-main-vpn-tables;
+# holddown-all-stale-labels;
+# description "This is configured with Junos_bgp resource module";
+# accept-remote-nexthop;
+# preference 2;
+# hold-time 5;
+# advertise-inactive;
+# no-advertise-peer-as;
+# no-aggregator-id;
+# out-delay 10;
+# log-updown;
+# damping;
+# bgp-error-tolerance {
+#     malformed-route-limit 20000000;
+# }
+# authentication-algorithm md5;
+# no-client-reflect;
+# include-mp-next-hop;
+# bmp {
+#     monitor enable;
+# }
+# advertise-bgp-static {
+#     policy static-to-bgp;
+# }
+# add-path-display-ipv4-address;
+# egress-te-sid-stats;
+
+- name: Update running Junos BGP config
+  junipernetworks.junos.junos_bgp_global:
+    config:
+      egress_te_backup_paths:
+        templates:
+          - path_name: customer1
+            peers:
+              - '11.11.11.11'
+              - '11.11.11.12'
+              - '11.11.11.13'
+            remote_nexthop: '2.2.2.2'
+      groups:
+        - name: 'internal'
+          type: 'internal'
+          vpn_apply_export: true
+          out_delay: 30
+          accept_remote_nexthop: true
+          add_path_display_ipv4_address: true
+          peer_as: '65534'
+          allow:
+            - 'all'
+            - '1.1.1.0/24'
+          neighbors:
+            - neighbor_address: '11.11.11.11'
+              peer_as: '65534'
+              out_delay: 11
+            - neighbor_address: '11.11.11.12'
+              peer_as: '65534'
+              out_delay: 12
+
+        - name: 'external'
+          out_delay: 20
+          peer_as: '65534'
+          accept_remote_nexthop: true
+          add_path_display_ipv4_address: true
+          neighbors:
+            - neighbor_address: '12.12.12.12'
+              peer_as: '65534'
+              out_delay: 21
+              accept_remote_nexthop: true
+              add_path_display_ipv4_address: true
+            - neighbor_address: '11.11.11.13'
+              peer_as: '65534'
+              out_delay: 31
+              accept_remote_nexthop: true
+              add_path_display_ipv4_address: true
+    state: merged
+
+# After state
+# -----------
+#
+# admin# show routing-options autonomous-system
+# 65534 loops 3 asdot-notation;
+
+# admin# show protocols bgp
+# precision-timers;
+# advertise-from-main-vpn-tables;
+# holddown-all-stale-labels;
+# egress-te-backup-paths {
+#     template customer1 {
+#         peer 11.11.11.11;
+#         peer 11.11.11.12;
+#         peer 11.11.11.13;
+#         remote-nexthop {
+#             2.2.2.2;
+#         }
+#     }
+# }
+# description "This is configured with Junos_bgp resource module";
+# accept-remote-nexthop;
+# preference 2;
+# hold-time 5;
+# advertise-inactive;
+# no-advertise-peer-as;
+# no-aggregator-id;
+# out-delay 10;
+# log-updown;
+# damping;
+# bgp-error-tolerance {
+#     malformed-route-limit 20000000;
+# }
+# authentication-algorithm md5;
+# no-client-reflect;
+# include-mp-next-hop;
+# bmp {
+#     monitor enable;
+# }
+# add-path-display-ipv4-address;
+# egress-te-sid-stats;
+# group internal {
+#     type internal;
+#     accept-remote-nexthop;
+#     out-delay 30;
+#     vpn-apply-export;
+#     peer-as 65534;
+#     add-path-display-ipv4-address;
+#     allow [ 0.0.0.0/0 1.1.1.0/24 ];
+#     neighbor 11.11.11.11 {
+#         out-delay 11;
+#         peer-as 65534;
+#     }
+#     neighbor 11.11.11.12 {
+#         out-delay 12;
+#         peer-as 65534;
+#     }
+# }
+# group external {
+#     accept-remote-nexthop;
+#     out-delay 20;
+#     peer-as 65534;
+#     add-path-display-ipv4-address;
+#     neighbor 12.12.12.12 {
+#         accept-remote-nexthop;
+#         out-delay 21;
+#         peer-as 65534;
+#         add-path-display-ipv4-address;
+#     }
+#     neighbor 11.11.11.13 {
+#         accept-remote-nexthop;
+#         out-delay 31;
+#         peer-as 65534;
+#         add-path-display-ipv4-address;
+#     }
+# }
 
 
 # Using replaced

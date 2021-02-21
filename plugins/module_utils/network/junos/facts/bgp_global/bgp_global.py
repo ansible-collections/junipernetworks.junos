@@ -454,7 +454,15 @@ class Bgp_globalFacts(object):
                         "remote-nexthop"
                     ].get("remote-nh-addr")
                 if "peer" in templates.keys():
-                    template_dict["peer_addr"] = templates["peer"].get("name")
+                    peer_lst = []
+                    peers = templates.get("peer")
+                    if isinstance(peers, dict):
+                        peer_lst.append(peers.get("name"))
+                    else:
+                        for peer in peers:
+                            peer_lst.append(peer.get("name"))
+                    template_dict["peers"] = peer_lst
+
                 if "ip-forward" in templates.keys():
                     ipf_dict = {}
                     if templates.get("ip-forward") is None:
@@ -476,9 +484,14 @@ class Bgp_globalFacts(object):
                             "remote-nexthop"
                         ].get("remote-nh-addr")
                     if "peer" in template.keys():
-                        template_dict["peer_addr"] = template["peer"].get(
-                            "name"
-                        )
+                        peer_lst = []
+                        peers = template.get("peer")
+                        if isinstance(peers, dict):
+                            peer_lst.append(peers.get("name"))
+                        else:
+                            for peer in peers:
+                                peer_lst.append(peer.get("name"))
+                        template_dict["peers"] = peer_lst
                     if "ip-forward" in template.keys():
                         ipf_dict = {}
                         if template.get("ip-forward") is None:

@@ -172,7 +172,6 @@ class Bgp_global(ConfigBase):
         for xml in self.root.getchildren():
             xml = tostring(xml)
             temp_lst.append(xml)
-        # return [tostring(tostring(xml) for xml in self.root.getchildren())]
         return temp_lst
 
     def _state_replaced(self, want, have):
@@ -187,7 +186,7 @@ class Bgp_global(ConfigBase):
 
         return bgp_xml
 
-    def _state_merged(self, want, have):
+    def _state_merged(self, want, _):
         """ Select the appropriate function based on the state provided
         :param want: the desired configuration as a dictionary
         :param have: the current configuration as a dictionary
@@ -288,9 +287,7 @@ class Bgp_global(ConfigBase):
             # Generate commands for each group in group list
             for group in groups:
                 groups_node = build_child_xml_node(bgp_root, "group")
-                group_node = build_child_xml_node(
-                    groups_node, "name", group["name"]
-                )
+                build_child_xml_node(groups_node, "name", group["name"])
                 # Parse the boolean value attributes
                 for item in bool_parser:
                     groups_node = self._add_node(
@@ -314,7 +311,7 @@ class Bgp_global(ConfigBase):
                         neighbors_node = build_child_xml_node(
                             groups_node, "neighbor"
                         )
-                        neighbor_node = build_child_xml_node(
+                        build_child_xml_node(
                             neighbors_node,
                             "name",
                             neighbor["neighbor_address"],
@@ -546,6 +543,55 @@ class Bgp_global(ConfigBase):
                     if b_val is not None:
                         if b_val is True:
                             build_child_xml_node(r_mon_node, "pre-policy")
+
+        # Generate config commands for egress-te
+        if want.get("egress_te"):
+            et_node = build_child_xml_node(bgp_root, "egress-te")
+            et = want.get("egress_te")
+            if "backup_path" in et:
+                build_child_xml_node(
+                    et_node, "backup-path", et.get("backup_path")
+                )
+
+        # Generate config commands for egress-te-backup-paths
+        if want.get("egress_te_backup_paths"):
+            etbp_node = build_child_xml_node(
+                bgp_root, "egress-te-backup-paths"
+            )
+            etbp = want.get("egress_te_backup_paths")
+            # generate commands for templates
+            templates = etbp.get("templates")
+            for template in templates:
+                template_node = build_child_xml_node(etbp_node, "template")
+                # add name node
+                if "path_name" in template.keys():
+                    build_child_xml_node(
+                        template_node, "name", template.get("path_name")
+                    )
+                # add peers
+                if "peers" in template.keys():
+                    peers = template.get("peers")
+                    for peer in peers:
+                        peer_node = build_child_xml_node(template_node, "peer")
+                        build_child_xml_node(peer_node, "name", peer)
+                # add remote-nexthop
+                if "remote_nexthop" in template.keys():
+                    build_child_xml_node(
+                        template_node,
+                        "remote-nexthop",
+                        template.get("remote_nexthop"),
+                    )
+                # add ip-forward
+                if "ip_forward" in template.keys():
+                    ipf = template.get("ip_forward")
+                    ipf_node = build_child_xml_node(
+                        template_node, "ip-forward"
+                    )
+
+                    if "rti_name" not in ipf.keys():
+                        build_child_xml_node(
+                            ipf_node, "name", ipf.get("rti_name")
+                        )
 
         # Generate config commands for allow
         if want.get("allow"):
