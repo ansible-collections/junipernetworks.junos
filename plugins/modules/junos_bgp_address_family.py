@@ -64,7 +64,7 @@ options:
     description: The provided link BGP address family dictionary.
     type: dict
     suboptions:
-      address_family:
+      address_family: &address_family
         description: Enable address family and enter its config mode.
         type: list
         elements: dict
@@ -271,7 +271,7 @@ options:
                 type: bool
               no_validate:
                 description: Bypass validation procedure for routes that match policy.
-                type: bool
+                type: str
               output_queue_priority_expedited:
                 description: Expedited queue; highest priority.
                 type: bool
@@ -334,7 +334,7 @@ options:
                     type: str
                   community:
                     description: Community to identify multi topology routes.
-                    type: str
+                    type: bool
               withdraw_priority_expedited:
                 description: Expedited queue; highest priority.
                 type: bool
@@ -376,9 +376,18 @@ options:
                       world_readable:
                         description: Don't allow any user to read the log file.
                         type: bool
-
-
-
+      groups:
+        description: Specify address family config for groups.
+        type: list
+        elements: dict
+        suboptions:
+          address_family: *address_family
+          neighbors:
+            description: Specify address family config per neighbor.
+            type: list
+            elements: dict
+            suboptions:
+              address_family: *address_family
   state:
     description:
     - The state the configuration should be left in.

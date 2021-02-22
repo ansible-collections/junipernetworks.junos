@@ -37,236 +37,1036 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
         pass
 
     argument_spec = {
-        "config": {
-            "options": {
-                "address_family": {
-                    "elements": "dict",
-                    "options": {
-                        "af_type": {
-                            "elements": "dict",
-                            "options": {
-                                "accepted_prefix_limit": {
-                                    "options": {
-                                        "forever": {"type": "bool"},
-                                        "idle_timeout": {"type": "bool"},
-                                        "idle_timeout_value": {"type": "int"},
-                                        "limit_threshold": {"type": "int"},
-                                        "maximum": {"type": "int"},
-                                        "teardown": {"type": "bool"},
+        'config': {
+            'options': {
+                'address_family': {
+                    'elements': 'dict',
+                    'options': {
+                        'af_type': {
+                            'elements': 'dict',
+                            'options': {
+                                'accepted_prefix_limit': {
+                                    'options': {
+                                        'forever': {
+                                            'type': 'bool'
+                                        },
+                                        'idle_timeout': {
+                                            'type': 'bool'
+                                        },
+                                        'idle_timeout_value': {
+                                            'type': 'int'
+                                        },
+                                        'limit_threshold': {
+                                            'type': 'int'
+                                        },
+                                        'maximum': {
+                                            'type': 'int'
+                                        },
+                                        'teardown': {
+                                            'type': 'bool'
+                                        }
                                     },
-                                    "type": "dict",
+                                    'type': 'dict'
                                 },
-                                "add_path": {
-                                    "options": {
-                                        "receive": {"type": "bool"},
-                                        "send": {
-                                            "options": {
-                                                "include_backup_path": {
-                                                    "type": "int"
+                                'add_path': {
+                                    'options': {
+                                        'receive': {
+                                            'type': 'bool'
+                                        },
+                                        'send': {
+                                            'options': {
+                                                'include_backup_path': {
+                                                    'type': 'int'
                                                 },
-                                                "multipath": {"type": "bool"},
-                                                "path_count": {
-                                                    "required": True,
-                                                    "type": "int",
+                                                'multipath': {
+                                                    'type': 'bool'
                                                 },
-                                                "path_selection_mode": {
-                                                    "options": {
-                                                        "all_paths": {
-                                                            "type": "bool"
+                                                'path_count': {
+                                                    'required': True,
+                                                    'type': 'int'
+                                                },
+                                                'path_selection_mode': {
+                                                    'options': {
+                                                        'all_paths': {
+                                                            'type': 'bool'
                                                         },
-                                                        "equal_cost_paths": {
-                                                            "type": "bool"
-                                                        },
+                                                        'equal_cost_paths': {
+                                                            'type': 'bool'
+                                                        }
                                                     },
-                                                    "type": "dict",
+                                                    'type': 'dict'
                                                 },
-                                                "prefix_policy": {
-                                                    "type": "str"
-                                                },
+                                                'prefix_policy': {
+                                                    'type': 'str'
+                                                }
                                             },
-                                            "type": "dict",
+                                            'type': 'dict'
+                                        }
+                                    },
+                                    'type': 'dict'
+                                },
+                                'aggregate_label': {
+                                    'options': {
+                                        'community': {
+                                            'type': 'str'
                                         },
+                                        'set': {
+                                            'type': 'bool'
+                                        }
                                     },
-                                    "type": "dict",
+                                    'type': 'dict'
                                 },
-                                "aggregate_label": {
-                                    "options": {
-                                        "community": {"type": "str"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "aigp": {
-                                    "options": {
-                                        "disable": {"type": "bool"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "damping": {"type": "bool"},
-                                "defer_initial_multipath_build": {
-                                    "options": {
-                                        "maximum_delay": {"type": "int"},
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "delay_route_advertisements": {
-                                    "options": {
-                                        "max_delay_route_age": {"type": "int"},
-                                        "max_delay_routing_uptime": {
-                                            "type": "int"
+                                'aigp': {
+                                    'options': {
+                                        'disable': {
+                                            'type': 'bool'
                                         },
-                                        "min_delay_inbound_convergence": {
-                                            "type": "int"
+                                        'set': {
+                                            'type': 'bool'
+                                        }
+                                    },
+                                    'type': 'dict'
+                                },
+                                'damping': {
+                                    'type': 'bool'
+                                },
+                                'defer_initial_multipath_build': {
+                                    'options': {
+                                        'maximum_delay': {
+                                            'type': 'int'
                                         },
-                                        "min_delay_routing_uptime": {
-                                            "type": "int"
+                                        'set': {
+                                            'type': 'bool'
+                                        }
+                                    },
+                                    'type': 'dict'
+                                },
+                                'delay_route_advertisements': {
+                                    'options': {
+                                        'max_delay_route_age': {
+                                            'type': 'int'
                                         },
-                                        "set": {"type": "bool"},
-                                    },
-                                    "type": "dict",
-                                },
-                                "entropy_label": {
-                                    "options": {
-                                        "import": {"type": "str"},
-                                        "no_next_hop_validation": {
-                                            "type": "bool"
+                                        'max_delay_routing_uptime': {
+                                            'type': 'int'
                                         },
-                                        "set": {"type": "bool"},
+                                        'min_delay_inbound_convergence': {
+                                            'type': 'int'
+                                        },
+                                        'min_delay_routing_uptime': {
+                                            'type': 'int'
+                                        },
+                                        'set': {
+                                            'type': 'bool'
+                                        }
                                     },
-                                    "type": "dict",
+                                    'type': 'dict'
                                 },
-                                "explicit_null": {
-                                    "options": {
-                                        "connected_only": {"type": "bool"},
-                                        "set": {"type": "bool"},
+                                'entropy_label': {
+                                    'options': {
+                                        'import': {
+                                            'type': 'str'
+                                        },
+                                        'no_next_hop_validation': {
+                                            'type': 'bool'
+                                        },
+                                        'set': {
+                                            'type': 'bool'
+                                        }
                                     },
-                                    "type": "dict",
+                                    'type': 'dict'
                                 },
-                                "extended_nexthop": {"type": "bool"},
-                                "extended_nexthop_color": {"type": "bool"},
-                                "graceful_restart_forwarding_state_bit": {
-                                    "choices": ["from-fib", "set"],
-                                    "type": "str",
-                                },
-                                "legacy_redirect_ip_action": {
-                                    "options": {
-                                        "receive": {"type": "bool"},
-                                        "send": {"type": "bool"},
-                                        "set": {"type": "bool"},
+                                'explicit_null': {
+                                    'options': {
+                                        'connected_only': {
+                                            'type': 'bool'
+                                        },
+                                        'set': {
+                                            'type': 'bool'
+                                        }
                                     },
-                                    "type": "dict",
+                                    'type': 'dict'
                                 },
-                                "local_ipv4_address": {"type": "str"},
-                                "loops": {"type": "int"},
-                                "no_install": {"type": "bool"},
-                                "no_validate": {"type": "str"},
-                                "output_queue_priority_expedited": {
-                                    "type": "bool"
+                                'extended_nexthop': {
+                                    'type': 'bool'
                                 },
-                                "output_queue_priority_priority": {
-                                    "type": "int"
+                                'extended_nexthop_color': {
+                                    'type': 'bool'
                                 },
-                                "per_group_label": {"type": "bool"},
-                                "per_prefix_label": {"type": "bool"},
-                                "prefix_limit": {
-                                    "options": {
-                                        "forever": {"type": "bool"},
-                                        "idle_timeout": {"type": "bool"},
-                                        "idle_timeout_value": {"type": "int"},
-                                        "limit_threshold": {"type": "int"},
-                                        "maximum": {"type": "int"},
-                                        "teardown": {"type": "bool"},
+                                'graceful_restart_forwarding_state_bit': {
+                                    'choices': ['from-fib', 'set'],
+                                    'type': 'str'
+                                },
+                                'legacy_redirect_ip_action': {
+                                    'options': {
+                                        'receive': {
+                                            'type': 'bool'
+                                        },
+                                        'send': {
+                                            'type': 'bool'
+                                        },
+                                        'set': {
+                                            'type': 'bool'
+                                        }
                                     },
-                                    "type": "dict",
+                                    'type': 'dict'
                                 },
-                                "resolve_vpn": {"type": "bool"},
-                                "rib": {"choices": ["inet.3"], "type": "str"},
-                                "ribgroup_name": {"type": "str"},
-                                "route_refresh_priority_expedited": {
-                                    "type": "bool"
+                                'local_ipv4_address': {
+                                    'type': 'str'
                                 },
-                                "route_refresh_priority_priority": {
-                                    "type": "int"
+                                'loops': {
+                                    'type': 'int'
                                 },
-                                "secondary_independent_resolution": {
-                                    "type": "bool"
+                                'no_install': {
+                                    'type': 'bool'
                                 },
-                                "set": {"type": "bool"},
-                                "strip_nexthop": {"type": "bool"},
-                                "topology": {
-                                    "options": {
-                                        "community": {"type": "str"},
-                                        "name": {"type": "str"},
+                                'no_validate': {
+                                    'type': 'str'
+                                },
+                                'output_queue_priority_expedited': {
+                                    'type': 'bool'
+                                },
+                                'output_queue_priority_priority': {
+                                    'type': 'int'
+                                },
+                                'per_group_label': {
+                                    'type': 'bool'
+                                },
+                                'per_prefix_label': {
+                                    'type': 'bool'
+                                },
+                                'prefix_limit': {
+                                    'options': {
+                                        'forever': {
+                                            'type': 'bool'
+                                        },
+                                        'idle_timeout': {
+                                            'type': 'bool'
+                                        },
+                                        'idle_timeout_value': {
+                                            'type': 'int'
+                                        },
+                                        'limit_threshold': {
+                                            'type': 'int'
+                                        },
+                                        'maximum': {
+                                            'type': 'int'
+                                        },
+                                        'teardown': {
+                                            'type': 'bool'
+                                        }
                                     },
-                                    "type": "dict",
+                                    'type': 'dict'
                                 },
-                                "traffic_statistics": {
-                                    "options": {
-                                        "file": {
-                                            "options": {
-                                                "filename": {"type": "str"},
-                                                "files": {"type": "int"},
-                                                "no_world_readable": {
-                                                    "type": "bool"
+                                'resolve_vpn': {
+                                    'type': 'bool'
+                                },
+                                'rib': {
+                                    'choices': ['inet.3'],
+                                    'type': 'str'
+                                },
+                                'ribgroup_name': {
+                                    'type': 'str'
+                                },
+                                'route_refresh_priority_expedited': {
+                                    'type': 'bool'
+                                },
+                                'route_refresh_priority_priority': {
+                                    'type': 'int'
+                                },
+                                'secondary_independent_resolution': {
+                                    'type': 'bool'
+                                },
+                                'set': {
+                                    'type': 'bool'
+                                },
+                                'strip_nexthop': {
+                                    'type': 'bool'
+                                },
+                                'topology': {
+                                    'options': {
+                                        'community': {
+                                            'type': 'bool'
+                                        },
+                                        'name': {
+                                            'type': 'str'
+                                        }
+                                    },
+                                    'type': 'dict'
+                                },
+                                'traffic_statistics': {
+                                    'options': {
+                                        'file': {
+                                            'options': {
+                                                'filename': {
+                                                    'type': 'str'
                                                 },
-                                                "size": {"type": "int"},
-                                                "world_readable": {
-                                                    "type": "bool"
+                                                'files': {
+                                                    'type': 'int'
                                                 },
+                                                'no_world_readable': {
+                                                    'type': 'bool'
+                                                },
+                                                'size': {
+                                                    'type': 'int'
+                                                },
+                                                'world_readable': {
+                                                    'type': 'bool'
+                                                }
                                             },
-                                            "type": "dict",
+                                            'type': 'dict'
                                         },
-                                        "interval": {"type": "int"},
-                                        "labeled_path": {"type": "bool"},
-                                        "set": {"type": "bool"},
+                                        'interval': {
+                                            'type': 'int'
+                                        },
+                                        'labeled_path': {
+                                            'type': 'bool'
+                                        },
+                                        'set': {
+                                            'type': 'bool'
+                                        }
                                     },
-                                    "type": "dict",
+                                    'type': 'dict'
                                 },
-                                "type": {
-                                    "choices": [
-                                        "any",
-                                        "flow",
-                                        "labeled-unicast",
-                                        "multicast",
-                                        "segment-routing-te",
-                                        "unicast",
-                                        "signaling",
-                                        "auto-discovery-mspw",
-                                        "auto-discovery-only",
+                                'type': {
+                                    'choices': [
+                                        'any', 'flow', 'labeled-unicast',
+                                        'multicast', 'segment-routing-te',
+                                        'unicast', 'signaling',
+                                        'auto-discovery-mspw',
+                                        'auto-discovery-only'
                                     ],
-                                    "type": "str",
+                                    'type':
+                                    'str'
                                 },
-                                "withdraw_priority_expedited": {
-                                    "type": "bool"
+                                'withdraw_priority_expedited': {
+                                    'type': 'bool'
                                 },
-                                "withdraw_priority_priority": {"type": "int"},
+                                'withdraw_priority_priority': {
+                                    'type': 'int'
+                                }
                             },
-                            "type": "list",
+                            'type': 'list'
                         },
-                        "afi": {
-                            "choices": [
-                                "evpn",
-                                "inet",
-                                "inet-mdt",
-                                "inet-mvpn",
-                                "inet-vpn",
-                                "inet6",
-                                "inet6-mvpn",
-                                "inet6-vpn",
-                                "iso-vpn",
-                                "l2vpn",
-                                "route-target",
-                                "traffic-engineering",
+                        'afi': {
+                            'choices': [
+                                'evpn', 'inet', 'inet-mdt', 'inet-mvpn',
+                                'inet-vpn', 'inet6', 'inet6-mvpn', 'inet6-vpn',
+                                'iso-vpn', 'l2vpn', 'route-target',
+                                'traffic-engineering'
                             ],
-                            "type": "str",
-                        },
+                            'type':
+                            'str'
+                        }
                     },
-                    "type": "list",
+                    'type': 'list'
+                },
+                'as_number': {
+                    'type': 'str'
+                },
+                'groups': {
+                    'elements': 'dict',
+                    'options': {
+                        'address_family': {
+                            'elements': 'dict',
+                            'options': {
+                                'af_type': {
+                                    'elements': 'dict',
+                                    'options': {
+                                        'accepted_prefix_limit': {
+                                            'options': {
+                                                'forever': {
+                                                    'type': 'bool'
+                                                },
+                                                'idle_timeout': {
+                                                    'type': 'bool'
+                                                },
+                                                'idle_timeout_value': {
+                                                    'type': 'int'
+                                                },
+                                                'limit_threshold': {
+                                                    'type': 'int'
+                                                },
+                                                'maximum': {
+                                                    'type': 'int'
+                                                },
+                                                'teardown': {
+                                                    'type': 'bool'
+                                                }
+                                            },
+                                            'type': 'dict'
+                                        },
+                                        'add_path': {
+                                            'options': {
+                                                'receive': {
+                                                    'type': 'bool'
+                                                },
+                                                'send': {
+                                                    'options': {
+                                                        'include_backup_path':
+                                                        {
+                                                            'type': 'int'
+                                                        },
+                                                        'multipath': {
+                                                            'type': 'bool'
+                                                        },
+                                                        'path_count': {
+                                                            'required': True,
+                                                            'type': 'int'
+                                                        },
+                                                        'path_selection_mode':
+                                                        {
+                                                            'options': {
+                                                                'all_paths': {
+                                                                    'type':
+                                                                    'bool'
+                                                                },
+                                                                'equal_cost_paths':
+                                                                {
+                                                                    'type':
+                                                                    'bool'
+                                                                }
+                                                            },
+                                                            'type': 'dict'
+                                                        },
+                                                        'prefix_policy': {
+                                                            'type': 'str'
+                                                        }
+                                                    },
+                                                    'type': 'dict'
+                                                }
+                                            },
+                                            'type': 'dict'
+                                        },
+                                        'aggregate_label': {
+                                            'options': {
+                                                'community': {
+                                                    'type': 'str'
+                                                },
+                                                'set': {
+                                                    'type': 'bool'
+                                                }
+                                            },
+                                            'type': 'dict'
+                                        },
+                                        'aigp': {
+                                            'options': {
+                                                'disable': {
+                                                    'type': 'bool'
+                                                },
+                                                'set': {
+                                                    'type': 'bool'
+                                                }
+                                            },
+                                            'type': 'dict'
+                                        },
+                                        'damping': {
+                                            'type': 'bool'
+                                        },
+                                        'defer_initial_multipath_build': {
+                                            'options': {
+                                                'maximum_delay': {
+                                                    'type': 'int'
+                                                },
+                                                'set': {
+                                                    'type': 'bool'
+                                                }
+                                            },
+                                            'type': 'dict'
+                                        },
+                                        'delay_route_advertisements': {
+                                            'options': {
+                                                'max_delay_route_age': {
+                                                    'type': 'int'
+                                                },
+                                                'max_delay_routing_uptime': {
+                                                    'type': 'int'
+                                                },
+                                                'min_delay_inbound_convergence':
+                                                {
+                                                    'type': 'int'
+                                                },
+                                                'min_delay_routing_uptime': {
+                                                    'type': 'int'
+                                                },
+                                                'set': {
+                                                    'type': 'bool'
+                                                }
+                                            },
+                                            'type': 'dict'
+                                        },
+                                        'entropy_label': {
+                                            'options': {
+                                                'import': {
+                                                    'type': 'str'
+                                                },
+                                                'no_next_hop_validation': {
+                                                    'type': 'bool'
+                                                },
+                                                'set': {
+                                                    'type': 'bool'
+                                                }
+                                            },
+                                            'type': 'dict'
+                                        },
+                                        'explicit_null': {
+                                            'options': {
+                                                'connected_only': {
+                                                    'type': 'bool'
+                                                },
+                                                'set': {
+                                                    'type': 'bool'
+                                                }
+                                            },
+                                            'type': 'dict'
+                                        },
+                                        'extended_nexthop': {
+                                            'type': 'bool'
+                                        },
+                                        'extended_nexthop_color': {
+                                            'type': 'bool'
+                                        },
+                                        'graceful_restart_forwarding_state_bit':
+                                        {
+                                            'choices': ['from-fib', 'set'],
+                                            'type': 'str'
+                                        },
+                                        'legacy_redirect_ip_action': {
+                                            'options': {
+                                                'receive': {
+                                                    'type': 'bool'
+                                                },
+                                                'send': {
+                                                    'type': 'bool'
+                                                },
+                                                'set': {
+                                                    'type': 'bool'
+                                                }
+                                            },
+                                            'type': 'dict'
+                                        },
+                                        'local_ipv4_address': {
+                                            'type': 'str'
+                                        },
+                                        'loops': {
+                                            'type': 'int'
+                                        },
+                                        'no_install': {
+                                            'type': 'bool'
+                                        },
+                                        'no_validate': {
+                                            'type': 'str'
+                                        },
+                                        'output_queue_priority_expedited': {
+                                            'type': 'bool'
+                                        },
+                                        'output_queue_priority_priority': {
+                                            'type': 'int'
+                                        },
+                                        'per_group_label': {
+                                            'type': 'bool'
+                                        },
+                                        'per_prefix_label': {
+                                            'type': 'bool'
+                                        },
+                                        'prefix_limit': {
+                                            'options': {
+                                                'forever': {
+                                                    'type': 'bool'
+                                                },
+                                                'idle_timeout': {
+                                                    'type': 'bool'
+                                                },
+                                                'idle_timeout_value': {
+                                                    'type': 'int'
+                                                },
+                                                'limit_threshold': {
+                                                    'type': 'int'
+                                                },
+                                                'maximum': {
+                                                    'type': 'int'
+                                                },
+                                                'teardown': {
+                                                    'type': 'bool'
+                                                }
+                                            },
+                                            'type': 'dict'
+                                        },
+                                        'resolve_vpn': {
+                                            'type': 'bool'
+                                        },
+                                        'rib': {
+                                            'choices': ['inet.3'],
+                                            'type': 'str'
+                                        },
+                                        'ribgroup_name': {
+                                            'type': 'str'
+                                        },
+                                        'route_refresh_priority_expedited': {
+                                            'type': 'bool'
+                                        },
+                                        'route_refresh_priority_priority': {
+                                            'type': 'int'
+                                        },
+                                        'secondary_independent_resolution': {
+                                            'type': 'bool'
+                                        },
+                                        'set': {
+                                            'type': 'bool'
+                                        },
+                                        'strip_nexthop': {
+                                            'type': 'bool'
+                                        },
+                                        'topology': {
+                                            'options': {
+                                                'community': {
+                                                    'type': 'bool'
+                                                },
+                                                'name': {
+                                                    'type': 'str'
+                                                }
+                                            },
+                                            'type': 'dict'
+                                        },
+                                        'traffic_statistics': {
+                                            'options': {
+                                                'file': {
+                                                    'options': {
+                                                        'filename': {
+                                                            'type': 'str'
+                                                        },
+                                                        'files': {
+                                                            'type': 'int'
+                                                        },
+                                                        'no_world_readable': {
+                                                            'type': 'bool'
+                                                        },
+                                                        'size': {
+                                                            'type': 'int'
+                                                        },
+                                                        'world_readable': {
+                                                            'type': 'bool'
+                                                        }
+                                                    },
+                                                    'type': 'dict'
+                                                },
+                                                'interval': {
+                                                    'type': 'int'
+                                                },
+                                                'labeled_path': {
+                                                    'type': 'bool'
+                                                },
+                                                'set': {
+                                                    'type': 'bool'
+                                                }
+                                            },
+                                            'type': 'dict'
+                                        },
+                                        'type': {
+                                            'choices': [
+                                                'any', 'flow',
+                                                'labeled-unicast', 'multicast',
+                                                'segment-routing-te',
+                                                'unicast', 'signaling',
+                                                'auto-discovery-mspw',
+                                                'auto-discovery-only'
+                                            ],
+                                            'type':
+                                            'str'
+                                        },
+                                        'withdraw_priority_expedited': {
+                                            'type': 'bool'
+                                        },
+                                        'withdraw_priority_priority': {
+                                            'type': 'int'
+                                        }
+                                    },
+                                    'type': 'list'
+                                },
+                                'afi': {
+                                    'choices': [
+                                        'evpn', 'inet', 'inet-mdt',
+                                        'inet-mvpn', 'inet-vpn', 'inet6',
+                                        'inet6-mvpn', 'inet6-vpn', 'iso-vpn',
+                                        'l2vpn', 'route-target',
+                                        'traffic-engineering'
+                                    ],
+                                    'type':
+                                    'str'
+                                }
+                            },
+                            'type': 'list'
+                        },
+                        'neighbors': {
+                            'elements': 'dict',
+                            'options': {
+                                'address_family': {
+                                    'elements': 'dict',
+                                    'options': {
+                                        'af_type': {
+                                            'elements': 'dict',
+                                            'options': {
+                                                'accepted_prefix_limit': {
+                                                    'options': {
+                                                        'forever': {
+                                                            'type': 'bool'
+                                                        },
+                                                        'idle_timeout': {
+                                                            'type': 'bool'
+                                                        },
+                                                        'idle_timeout_value': {
+                                                            'type': 'int'
+                                                        },
+                                                        'limit_threshold': {
+                                                            'type': 'int'
+                                                        },
+                                                        'maximum': {
+                                                            'type': 'int'
+                                                        },
+                                                        'teardown': {
+                                                            'type': 'bool'
+                                                        }
+                                                    },
+                                                    'type': 'dict'
+                                                },
+                                                'add_path': {
+                                                    'options': {
+                                                        'receive': {
+                                                            'type': 'bool'
+                                                        },
+                                                        'send': {
+                                                            'options': {
+                                                                'include_backup_path':
+                                                                {
+                                                                    'type':
+                                                                    'int'
+                                                                },
+                                                                'multipath': {
+                                                                    'type':
+                                                                    'bool'
+                                                                },
+                                                                'path_count': {
+                                                                    'required':
+                                                                    True,
+                                                                    'type':
+                                                                    'int'
+                                                                },
+                                                                'path_selection_mode':
+                                                                {
+                                                                    'options':
+                                                                    {
+                                                                        'all_paths':
+                                                                        {
+                                                                            'type':
+                                                                            'bool'
+                                                                        },
+                                                                        'equal_cost_paths':
+                                                                        {
+                                                                            'type':
+                                                                            'bool'
+                                                                        }
+                                                                    },
+                                                                    'type':
+                                                                    'dict'
+                                                                },
+                                                                'prefix_policy':
+                                                                {
+                                                                    'type':
+                                                                    'str'
+                                                                }
+                                                            },
+                                                            'type': 'dict'
+                                                        }
+                                                    },
+                                                    'type': 'dict'
+                                                },
+                                                'aggregate_label': {
+                                                    'options': {
+                                                        'community': {
+                                                            'type': 'str'
+                                                        },
+                                                        'set': {
+                                                            'type': 'bool'
+                                                        }
+                                                    },
+                                                    'type': 'dict'
+                                                },
+                                                'aigp': {
+                                                    'options': {
+                                                        'disable': {
+                                                            'type': 'bool'
+                                                        },
+                                                        'set': {
+                                                            'type': 'bool'
+                                                        }
+                                                    },
+                                                    'type': 'dict'
+                                                },
+                                                'damping': {
+                                                    'type': 'bool'
+                                                },
+                                                'defer_initial_multipath_build':
+                                                {
+                                                    'options': {
+                                                        'maximum_delay': {
+                                                            'type': 'int'
+                                                        },
+                                                        'set': {
+                                                            'type': 'bool'
+                                                        }
+                                                    },
+                                                    'type': 'dict'
+                                                },
+                                                'delay_route_advertisements': {
+                                                    'options': {
+                                                        'max_delay_route_age':
+                                                        {
+                                                            'type': 'int'
+                                                        },
+                                                        'max_delay_routing_uptime':
+                                                        {
+                                                            'type': 'int'
+                                                        },
+                                                        'min_delay_inbound_convergence':
+                                                        {
+                                                            'type': 'int'
+                                                        },
+                                                        'min_delay_routing_uptime':
+                                                        {
+                                                            'type': 'int'
+                                                        },
+                                                        'set': {
+                                                            'type': 'bool'
+                                                        }
+                                                    },
+                                                    'type': 'dict'
+                                                },
+                                                'entropy_label': {
+                                                    'options': {
+                                                        'import': {
+                                                            'type': 'str'
+                                                        },
+                                                        'no_next_hop_validation':
+                                                        {
+                                                            'type': 'bool'
+                                                        },
+                                                        'set': {
+                                                            'type': 'bool'
+                                                        }
+                                                    },
+                                                    'type': 'dict'
+                                                },
+                                                'explicit_null': {
+                                                    'options': {
+                                                        'connected_only': {
+                                                            'type': 'bool'
+                                                        },
+                                                        'set': {
+                                                            'type': 'bool'
+                                                        }
+                                                    },
+                                                    'type': 'dict'
+                                                },
+                                                'extended_nexthop': {
+                                                    'type': 'bool'
+                                                },
+                                                'extended_nexthop_color': {
+                                                    'type': 'bool'
+                                                },
+                                                'graceful_restart_forwarding_state_bit':
+                                                {
+                                                    'choices':
+                                                    ['from-fib', 'set'],
+                                                    'type': 'str'
+                                                },
+                                                'legacy_redirect_ip_action': {
+                                                    'options': {
+                                                        'receive': {
+                                                            'type': 'bool'
+                                                        },
+                                                        'send': {
+                                                            'type': 'bool'
+                                                        },
+                                                        'set': {
+                                                            'type': 'bool'
+                                                        }
+                                                    },
+                                                    'type': 'dict'
+                                                },
+                                                'local_ipv4_address': {
+                                                    'type': 'str'
+                                                },
+                                                'loops': {
+                                                    'type': 'int'
+                                                },
+                                                'no_install': {
+                                                    'type': 'bool'
+                                                },
+                                                'no_validate': {
+                                                    'type': 'str'
+                                                },
+                                                'output_queue_priority_expedited':
+                                                {
+                                                    'type': 'bool'
+                                                },
+                                                'output_queue_priority_priority':
+                                                {
+                                                    'type': 'int'
+                                                },
+                                                'per_group_label': {
+                                                    'type': 'bool'
+                                                },
+                                                'per_prefix_label': {
+                                                    'type': 'bool'
+                                                },
+                                                'prefix_limit': {
+                                                    'options': {
+                                                        'forever': {
+                                                            'type': 'bool'
+                                                        },
+                                                        'idle_timeout': {
+                                                            'type': 'bool'
+                                                        },
+                                                        'idle_timeout_value': {
+                                                            'type': 'int'
+                                                        },
+                                                        'limit_threshold': {
+                                                            'type': 'int'
+                                                        },
+                                                        'maximum': {
+                                                            'type': 'int'
+                                                        },
+                                                        'teardown': {
+                                                            'type': 'bool'
+                                                        }
+                                                    },
+                                                    'type': 'dict'
+                                                },
+                                                'resolve_vpn': {
+                                                    'type': 'bool'
+                                                },
+                                                'rib': {
+                                                    'choices': ['inet.3'],
+                                                    'type': 'str'
+                                                },
+                                                'ribgroup_name': {
+                                                    'type': 'str'
+                                                },
+                                                'route_refresh_priority_expedited':
+                                                {
+                                                    'type': 'bool'
+                                                },
+                                                'route_refresh_priority_priority':
+                                                {
+                                                    'type': 'int'
+                                                },
+                                                'secondary_independent_resolution':
+                                                {
+                                                    'type': 'bool'
+                                                },
+                                                'set': {
+                                                    'type': 'bool'
+                                                },
+                                                'strip_nexthop': {
+                                                    'type': 'bool'
+                                                },
+                                                'topology': {
+                                                    'options': {
+                                                        'community': {
+                                                            'type': 'bool'
+                                                        },
+                                                        'name': {
+                                                            'type': 'str'
+                                                        }
+                                                    },
+                                                    'type': 'dict'
+                                                },
+                                                'traffic_statistics': {
+                                                    'options': {
+                                                        'file': {
+                                                            'options': {
+                                                                'filename': {
+                                                                    'type':
+                                                                    'str'
+                                                                },
+                                                                'files': {
+                                                                    'type':
+                                                                    'int'
+                                                                },
+                                                                'no_world_readable':
+                                                                {
+                                                                    'type':
+                                                                    'bool'
+                                                                },
+                                                                'size': {
+                                                                    'type':
+                                                                    'int'
+                                                                },
+                                                                'world_readable':
+                                                                {
+                                                                    'type':
+                                                                    'bool'
+                                                                }
+                                                            },
+                                                            'type': 'dict'
+                                                        },
+                                                        'interval': {
+                                                            'type': 'int'
+                                                        },
+                                                        'labeled_path': {
+                                                            'type': 'bool'
+                                                        },
+                                                        'set': {
+                                                            'type': 'bool'
+                                                        }
+                                                    },
+                                                    'type': 'dict'
+                                                },
+                                                'type': {
+                                                    'choices': [
+                                                        'any', 'flow',
+                                                        'labeled-unicast',
+                                                        'multicast',
+                                                        'segment-routing-te',
+                                                        'unicast', 'signaling',
+                                                        'auto-discovery-mspw',
+                                                        'auto-discovery-only'
+                                                    ],
+                                                    'type':
+                                                    'str'
+                                                },
+                                                'withdraw_priority_expedited':
+                                                {
+                                                    'type': 'bool'
+                                                },
+                                                'withdraw_priority_priority': {
+                                                    'type': 'int'
+                                                }
+                                            },
+                                            'type': 'list'
+                                        },
+                                        'afi': {
+                                            'choices': [
+                                                'evpn', 'inet', 'inet-mdt',
+                                                'inet-mvpn', 'inet-vpn',
+                                                'inet6', 'inet6-mvpn',
+                                                'inet6-vpn', 'iso-vpn',
+                                                'l2vpn', 'route-target',
+                                                'traffic-engineering'
+                                            ],
+                                            'type':
+                                            'str'
+                                        }
+                                    },
+                                    'type': 'list'
+                                }
+                            },
+                            'type': 'list'
+                        }
+                    },
+                    'type': 'list'
                 }
             },
-            "type": "dict",
+            'type': 'dict'
         },
         "running_config": {"type": "str"},
         "state": {

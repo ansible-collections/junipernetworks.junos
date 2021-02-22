@@ -13,6 +13,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+import q
 from copy import deepcopy
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
@@ -167,13 +168,17 @@ class Bgp_address_familyFacts(object):
         ]
         bgp_address_family = {}
         bgp = conf.get("family")
+        q(bgp)
         address_family = []
         # Parse NLRI Parameters
+        q(nlri_params)
         for param in nlri_params:
             af_dict = {}
+            q(param)
             if param in bgp.keys():
                 af_type = []
                 nlri_param = bgp.get(param)
+                q(nlri_param)
                 for nlri in nlri_types:
                     af_dict["afi"] = param
                     if nlri in nlri_param.keys():
