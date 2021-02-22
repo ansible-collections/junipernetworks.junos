@@ -186,7 +186,7 @@ class Bgp_global(ConfigBase):
 
         return bgp_xml
 
-    def _state_merged(self, want, _):
+    def _state_merged(self, want, have):
         """ Select the appropriate function based on the state provided
         :param want: the desired configuration as a dictionary
         :param have: the current configuration as a dictionary

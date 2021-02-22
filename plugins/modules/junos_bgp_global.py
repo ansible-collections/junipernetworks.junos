@@ -884,7 +884,9 @@ options:
               bmp: *bmp
               cluster_id: *cluster_id
               damping: *damping
-              description: *description
+              description:
+                description: Specify neighbor description.
+                type: str
               egress_te: *egress_te
               enforce_first_as: *enforce_first_as
               export: *export
