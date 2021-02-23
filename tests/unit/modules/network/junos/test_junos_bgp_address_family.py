@@ -219,12 +219,6 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
         ]
         result = self.execute_module(changed=True)
-        with open("output.xml", "w") as outfile:
-            outfile.write("\n".join(result["commands"]))
-
-        with open("output1.xml", "w") as outfile:
-            outfile.write("\n".join(commands))
-        # result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), commands)
 
     def test_junos_bgp_address_family_rep_idempotent(self):
