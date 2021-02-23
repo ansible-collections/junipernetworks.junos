@@ -227,6 +227,44 @@ class Bgp_address_family(ConfigBase):
                 want.get("as_number"),
             )
         w_af_list = want.get("address_family")
+        # render global address family attribute commands
+        self.render_af(w_af_list, family_root)
+
+        # render commands for group address family attribute commands
+        if "groups" in want.keys():
+            groups = want.get("groups")
+            for group in groups:
+                groups_node = build_root_xml_node("group")
+                build_child_xml_node(groups_node, "name", group["name"])
+                g_family_root = build_child_xml_node(groups_node, "family")
+                w_gaf_list = group.get("address_family")
+                self.render_af(w_gaf_list, g_family_root)
+
+                # render neighbor address-family commands
+                if "neighbors" in group.keys():
+                    neighbors = group.get("neighbors")
+                    for neighbor in neighbors:
+                        neighbors_node = build_child_xml_node(
+                            groups_node, "neighbor"
+                        )
+                        build_child_xml_node(
+                            neighbors_node,
+                            "name",
+                            neighbor["neighbor_address"],
+                        )
+                        n_family_root = build_child_xml_node(
+                            neighbors_node, "family"
+                        )
+                        w_naf_list = neighbor.get("address_family")
+                        self.render_af(w_naf_list, n_family_root)
+
+            family_xml.append(groups_node)
+
+        family_xml.append(family_root)
+
+        return family_xml
+
+    def render_af(self, w_af_list, family_root):
         if w_af_list:
             for waf in w_af_list:
                 # Add the nlri node
@@ -703,9 +741,6 @@ class Bgp_address_family(ConfigBase):
                             "labeled_path"
                         ):
                             build_child_xml_node(ts_node, "labeled-path")
-        family_xml.append(family_root)
-
-        return family_xml
 
     def _state_deleted(self, want, have):
         """ The command generator when state is deleted
@@ -715,13 +750,20 @@ class Bgp_address_family(ConfigBase):
         """
         bgp_xml = []
         family_root = None
+        groups_node = None
+        existing_groups = []
         if have is not None and have.get("address_family"):
             h_af = have.get("address_family")
-
             existing_af = [af["afi"] for af in h_af]
+
+            h_groups = have.get("groups")
+            if h_groups:
+                for group in h_groups:
+                    existing_groups.append(group["name"])
             if not want:
                 want = have
 
+            # Delete root address family
             w_af = want["address_family"]
             for af in w_af:
                 if af["afi"] not in existing_af:
@@ -731,6 +773,59 @@ class Bgp_address_family(ConfigBase):
                 build_child_xml_node(
                     family_root, af["afi"], None, {"delete": "delete"}
                 )
+
+            # Delete group address-family
+            w_groups = want.get("groups")
+            if w_groups:
+                for group in w_groups:
+                    if group["name"] not in existing_groups:
+                        continue
+
+                    groups_node = build_child_xml_node(self.bgp, "group")
+                    build_child_xml_node(groups_node, "name", group["name"])
+
+                    for h_group in h_groups:
+                        if h_group["name"] == group["name"]:
+                            address_family = h_group.get("address_family")
+                            if address_family:
+                                for af in address_family:
+                                    family_node = build_child_xml_node(
+                                        groups_node, "family"
+                                    )
+                                    build_child_xml_node(
+                                        family_node,
+                                        af["afi"],
+                                        None,
+                                        {"delete": "delete"},
+                                    )
+                            if "neighbors" in h_group.keys():
+                                h_neighbors = h_group.get("neighbors")
+                                for neighbor in h_neighbors:
+                                    if "address_family" in neighbor.keys():
+                                        neighbors_node = build_child_xml_node(
+                                            groups_node, "neighbor"
+                                        )
+                                        build_child_xml_node(
+                                            neighbors_node,
+                                            "name",
+                                            neighbor["neighbor_address"],
+                                        )
+                                        address_family = neighbor.get(
+                                            "address_family"
+                                        )
+                                        for af in address_family:
+                                            family_node = build_child_xml_node(
+                                                neighbors_node, "family"
+                                            )
+                                            build_child_xml_node(
+                                                family_node,
+                                                af["afi"],
+                                                None,
+                                                {"delete": "delete"},
+                                            )
+
+            if groups_node is not None:
+                bgp_xml.append(groups_node)
             if family_root is not None:
                 bgp_xml.append(family_root)
         return bgp_xml

@@ -39,7 +39,7 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = """
 ---
 module: junos_bgp_address_family
-version_added: 1.2.3
+version_added: 1.3.0
 short_description: Manage BGP Address Family attributes of interfaces on Junos devices.
 description: Manage BGP Address Family attributes of interfaces on Junos network devices.
 author: Rohit Thakur (@rohitthakur2590)
@@ -381,12 +381,18 @@ options:
         type: list
         elements: dict
         suboptions:
+          name:
+            description: Specify name of the group
+            type: str
           address_family: *address_family
           neighbors:
             description: Specify address family config per neighbor.
             type: list
             elements: dict
             suboptions:
+              neighbor_address:
+                description: Specify neighbor address.
+                type: str
               address_family: *address_family
   state:
     description:

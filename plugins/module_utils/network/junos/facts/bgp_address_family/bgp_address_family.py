@@ -13,7 +13,6 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import q
 from copy import deepcopy
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
@@ -82,8 +81,6 @@ class Bgp_address_familyFacts(object):
                         <configuration>
                             <protocols>
                                 <bgp>
-                                   <family>
-                                   </family>
                                 </bgp>
                             </protocols>
                             <routing-options>
@@ -98,7 +95,7 @@ class Bgp_address_familyFacts(object):
                 to_bytes(data, errors="surrogate_then_replace")
             )
         objs = {}
-        resources = data.xpath("configuration/protocols/bgp/family")
+        resources = data.xpath("configuration/protocols/bgp")
         autonomous_system_path = data.xpath(
             "configuration/routing-options/autonomous-system"
         )
@@ -143,6 +140,99 @@ class Bgp_address_familyFacts(object):
         :rtype: dictionary
         :returns: The generated config
         """
+        bgp_af_config = {}
+
+        # Parse facts for BGP address-family global node
+        conf = conf.get("bgp")
+        bgp_af_config["address_family"] = self.parse_af_facts(conf)
+
+        # Parse BGP group address-family config node
+        if "group" in conf.keys():
+            groups = conf.get("group")
+            groups_af_lst = []
+            group_af_dict = {}
+            if isinstance(groups, list):
+                for group in groups:
+                    af_facts = self.parse_af_facts(group)
+                    if af_facts is not None:
+                        group_af_dict["address_family"] = af_facts
+                    # Parse neighbors af node
+                    if "neighbor" in group.keys():
+                        neighbors_af_lst = []
+                        nh_af_dict = {}
+                        neighbors = group.get("neighbor")
+                        if isinstance(neighbors, list):
+                            for neighbor in neighbors:
+                                nh_af_dict["name"] = neighbor.get("name")
+                                naf_facts = self.parse_af_facts(neighbor)
+                                if naf_facts is not None:
+                                    nh_af_dict["address_family"] = naf_facts
+                                    nh_af_dict[
+                                        "neighbor_address"
+                                    ] = neighbor.get("name")
+                                if nh_af_dict:
+                                    neighbors_af_lst.append(nh_af_dict)
+                                    nh_af_dict = {}
+                        else:
+                            naf_facts = self.parse_af_facts(neighbors)
+                            if naf_facts is not None:
+                                nh_af_dict["address_family"] = naf_facts
+                                nh_af_dict["neighbor_address"] = neighbors.get(
+                                    "name"
+                                )
+                            if nh_af_dict:
+                                neighbors_af_lst.append(nh_af_dict)
+                        if neighbors_af_lst:
+                            group_af_dict["neighbors"] = neighbors_af_lst
+                    if group_af_dict:
+                        group_af_dict["name"] = group.get("name")
+                        groups_af_lst.append(group_af_dict)
+                        group_af_dict = {}
+            else:
+                af_facts = self.parse_af_facts(groups)
+                if af_facts is not None:
+                    group_af_dict["address_family"] = af_facts
+                # Parse neighbors af node
+                if "neighbor" in groups.keys():
+                    neighbors_af_lst = []
+                    nh_af_dict = {}
+                    neighbors = groups.get("neighbor")
+                    if isinstance(neighbors, list):
+                        for neighbor in neighbors:
+                            nh_af_dict["name"] = neighbor.get("name")
+                            naf_facts = self.parse_af_facts(neighbor)
+                            if naf_facts is not None:
+                                nh_af_dict["address_family"] = naf_facts
+                                nh_af_dict["neighbor_address"] = neighbor.get(
+                                    "name"
+                                )
+                            if nh_af_dict:
+                                neighbors_af_lst.append(nh_af_dict)
+                                nh_af_dict = {}
+                    else:
+                        naf_facts = self.parse_af_facts(neighbors)
+                        if naf_facts is not None:
+                            nh_af_dict["address_family"] = naf_facts
+                            nh_af_dict["neighbor_address"] = neighbors.get(
+                                "name"
+                            )
+                        if nh_af_dict:
+                            neighbors_af_lst.append(nh_af_dict)
+                    if neighbors_af_lst:
+                        group_af_dict["neighbors"] = neighbors_af_lst
+                if group_af_dict:
+                    group_af_dict["name"] = groups.get("name")
+                    groups_af_lst.append(group_af_dict)
+            if groups_af_lst is not None:
+                bgp_af_config["groups"] = groups_af_lst
+
+        return utils.remove_empties(bgp_af_config)
+
+    def parse_af_facts(self, conf):
+        """
+
+        :return:
+        """
         nlri_params = [
             "evpn",
             "inet",
@@ -156,7 +246,7 @@ class Bgp_address_familyFacts(object):
             "l2vpn",
             "traffic-engineering",
         ]
-        # TODO wrap route-target'
+        # TBD wrap route-target'
         nlri_types = [
             "any",
             "flow",
@@ -166,19 +256,14 @@ class Bgp_address_familyFacts(object):
             "unicast",
             "signaling",
         ]
-        bgp_address_family = {}
         bgp = conf.get("family")
-        q(bgp)
         address_family = []
         # Parse NLRI Parameters
-        q(nlri_params)
         for param in nlri_params:
             af_dict = {}
-            q(param)
-            if param in bgp.keys():
+            if bgp and param in bgp.keys():
                 af_type = []
                 nlri_param = bgp.get(param)
-                q(nlri_param)
                 for nlri in nlri_types:
                     af_dict["afi"] = param
                     if nlri in nlri_param.keys():
@@ -190,11 +275,7 @@ class Bgp_address_familyFacts(object):
             if af_dict:
                 address_family.append(af_dict)
 
-        # Populate address family list into address_family dict
-        if address_family:
-            bgp_address_family["address_family"] = address_family
-
-        return utils.remove_empties(bgp_address_family)
+        return address_family
 
     def parse_nlri(self, cfg, nlri_t):
         """
