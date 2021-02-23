@@ -863,6 +863,7 @@ options:
             description: Apply BGP export policy when exporting VPN routes.
             type: bool
           neighbors:
+            description: Specify list of neighbors.
             type: list
             elements: dict
             suboptions:
@@ -928,15 +929,15 @@ options:
   state:
     description:
     - The state the configuration should be left in.
-    - State I(purged) removes all (routing-options autonomous-system, bgp global, bgp groups, bgp family
-      and bgp neighbor family) the BGP configurations from the
+    - State I(purged) removes all (routing-options autonomous-system, bgp global, bgp groups, bgp neighbors, bgp family
+      and bgp group and neighbor family) the BGP configurations from the
       target device. Use caution with this state.
     - State I(deleted) only removes BGP attributes that this modules
       manages and does not negate the BGP process completely. Thereby, preserving
       address-family related configurations under BGP context.
     - Running states I(deleted) and I(replaced) will result in an error if there
       are address-family configuration lines present under a neighbor.Please use the
-      M(junipernetworks.junos.junos_bgp_address_family) or M(junipernetworks.junos.junos_bgp_groups)
+      M(junipernetworks.junos.junos_bgp_address_family)
       modules for prior cleanup.
     - Refer to examples for more details.
     type: str
