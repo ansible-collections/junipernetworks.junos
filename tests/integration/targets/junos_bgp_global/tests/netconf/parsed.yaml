@@ -28,6 +28,9 @@
       out_delay: 10
       precision_timers: true
       preference: "2"
+      remove_private:
+        set: true
+
 
 - name: Parse externally provided bgp_global config to agnostic model
   register: result

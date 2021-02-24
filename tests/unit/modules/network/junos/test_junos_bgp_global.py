@@ -168,38 +168,42 @@ class TestJunosBgp_globalModule(TestJunosModule):
                 state="replaced",
             )
         )
+
         commands = [
-            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:bgp>'
-            '<nc:accept-remote-nexthop delete="delete"/><nc:add-path-display-ipv4-address delete="delete"/>'
-            '<nc:advertise-bgp-static delete="delete"/>'
-            '<nc:advertise-external delete="delete"/><nc:advertise-from-main-vpn-tables delete="delete"/>'
+            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
+            '<nc:bgp><nc:accept-remote-nexthop delete="delete"/>'
+            '<nc:add-path-display-ipv4-address delete="delete"/>'
+            '<nc:advertise-bgp-static delete="delete"/><nc:advertise-external delete="delete"/>'
+            '<nc:advertise-from-main-vpn-tables delete="delete"/>'
             '<nc:advertise-inactive delete="delete"/><nc:advertise-peer-as delete="delete"/>'
             '<nc:authentication-algorithm delete="delete"/><nc:authentication-key delete="delete"/>'
             '<nc:authentication-key-chain delete="delete"/><nc:bfd-liveness-detection delete="delete"/>'
-            '<nc:bgp-error-tolerance delete="delete"/><nc:bmp delete="delete"/><nc:cluster delete="delete"/>'
-            '<nc:damping delete="delete"/><nc:description delete="delete"/><nc:disable delete="delete"/>'
+            '<nc:bgp-error-tolerance delete="delete"/><nc:bmp delete="delete"/>'
+            '<nc:group delete="delete"/><nc:cluster delete="delete"/><nc:damping delete="delete"/>'
+            '<nc:description delete="delete"/><nc:disable delete="delete"/>'
             '<nc:egress-te-sid-stats delete="delete"/><nc:enforce-first-as delete="delete"/>'
-            '<nc:export delete="delete"/>'
-            '<nc:forwarding-context delete="delete"/><nc:hold-time delete="delete"/>'
-            '<nc:holddown-all-stale-labels delete="delete"/>'
-            '<nc:import delete="delete"/><nc:include-mp-next-hop delete="delete"/><nc:ipsec-sa delete="delete"/>'
-            '<nc:keep delete="delete"/><nc:local-address delete="delete"/><nc:local-interface delete="delete"/>'
-            '<nc:local-preference delete="delete"/><nc:log-updown delete="delete"/><nc:mtu-discovery delete="delete"/>'
+            '<nc:export delete="delete"/><nc:forwarding-context delete="delete"/>'
+            '<nc:hold-time delete="delete"/><nc:holddown-all-stale-labels delete="delete"/>'
+            '<nc:import delete="delete"/><nc:include-mp-next-hop delete="delete"/>'
+            '<nc:ipsec-sa delete="delete"/><nc:keep delete="delete"/><nc:local-address delete="delete"/>'
+            '<nc:local-interface delete="delete"/><nc:local-preference delete="delete"/>'
+            '<nc:log-updown delete="delete"/><nc:mtu-discovery delete="delete"/>'
             '<nc:no-advertise-peer-as delete="delete"/><nc:no-aggregator-id delete="delete"/>'
-            '<nc:no-client-reflect delete="delete"/>'
-            '<nc:no-precision-timers delete="delete"/><nc:passive delete="delete"/><nc:peer-as delete="delete"/>'
-            '<nc:precision-timers delete="delete"/><nc:preference delete="delete"/><nc:out-delay delete="delete"/>'
-            '<nc:rfc6514-compliant-safi129 delete="delete"/><nc:route-server-client delete="delete"/>'
-            '<nc:send-addpath-optimization delete="delete"/><nc:sr-preference-override delete="delete"/>'
-            '<nc:stale-labels-holddown-period delete="delete"/><nc:tcp-aggressive-transmission delete="delete"/>'
-            '<nc:tcp-mss delete="delete"/><nc:ttl delete="delete"/>'
-            '<nc:unconfigured-peer-graceful-restart delete="delete"/>'
+            '<nc:no-client-reflect delete="delete"/><nc:no-precision-timers delete="delete"/>'
+            '<nc:passive delete="delete"/><nc:peer-as delete="delete"/>'
+            '<nc:precision-timers delete="delete"/><nc:preference delete="delete"/>'
+            '<nc:out-delay delete="delete"/><nc:rfc6514-compliant-safi129 delete="delete"/>'
+            '<nc:route-server-client delete="delete"/><nc:send-addpath-optimization delete="delete"/>'
+            '<nc:sr-preference-override delete="delete"/>'
+            '<nc:stale-labels-holddown-period delete="delete"/>'
+            '<nc:tcp-aggressive-transmission delete="delete"/><nc:tcp-mss delete="delete"/>'
+            '<nc:ttl delete="delete"/><nc:unconfigured-peer-graceful-restart delete="delete"/>'
             '<nc:vpn-apply-export delete="delete"/></nc:bgp><nc:bgp><nc:damping/>'
-            "<nc:description>Replaced by Junos bgp global module</nc:description><nc:preference>3</nc:preference>"
-            "<nc:bfd-liveness-detection><nc:minimum-receive-interval>4</nc:minimum-receive-interval>"
-            "<nc:multiplier>20</nc:multiplier><nc:no-adaptation/>"
-            "<nc:version>automatic</nc:version></nc:bfd-liveness-detection>"
-            "</nc:bgp></nc:protocols>",
+            "<nc:description>Replaced by Junos bgp global module</nc:description>"
+            "<nc:preference>3</nc:preference><nc:bfd-liveness-detection>"
+            "<nc:minimum-receive-interval>4</nc:minimum-receive-interval>"
+            "<nc:multiplier>20</nc:multiplier><nc:no-adaptation/><nc:version>automatic</nc:version>"
+            "</nc:bfd-liveness-detection></nc:bgp></nc:protocols>",
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
         ]
         result = self.execute_module(changed=True)
@@ -236,34 +240,36 @@ class TestJunosBgp_globalModule(TestJunosModule):
         set_module_args(dict(config=dict(), state="deleted"))
 
         commands = [
-            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:bgp>'
-            '<nc:accept-remote-nexthop delete="delete"/>'
+            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
+            '<nc:bgp><nc:accept-remote-nexthop delete="delete"/>'
             '<nc:add-path-display-ipv4-address delete="delete"/><nc:advertise-bgp-static delete="delete"/>'
-            '<nc:advertise-external delete="delete"/><nc:advertise-from-main-vpn-tables delete="delete"/>'
-            '<nc:advertise-inactive delete="delete"/><nc:advertise-peer-as delete="delete"/>'
-            '<nc:authentication-algorithm delete="delete"/><nc:authentication-key delete="delete"/>'
-            '<nc:authentication-key-chain delete="delete"/><nc:bfd-liveness-detection delete="delete"/>'
-            '<nc:bgp-error-tolerance delete="delete"/><nc:bmp delete="delete"/><nc:cluster delete="delete"/>'
+            '<nc:advertise-external delete="delete"/>'
+            '<nc:advertise-from-main-vpn-tables delete="delete"/>'
+            '<nc:advertise-inactive delete="delete"/>'
+            '<nc:advertise-peer-as delete="delete"/><nc:authentication-algorithm delete="delete"/>'
+            '<nc:authentication-key delete="delete"/><nc:authentication-key-chain delete="delete"/>'
+            '<nc:bfd-liveness-detection delete="delete"/><nc:bgp-error-tolerance delete="delete"/>'
+            '<nc:bmp delete="delete"/><nc:group delete="delete"/><nc:cluster delete="delete"/>'
             '<nc:damping delete="delete"/><nc:description delete="delete"/><nc:disable delete="delete"/>'
             '<nc:egress-te-sid-stats delete="delete"/><nc:enforce-first-as delete="delete"/>'
-            '<nc:export delete="delete"/>'
-            '<nc:forwarding-context delete="delete"/><nc:hold-time delete="delete"/>'
+            '<nc:export delete="delete"/><nc:forwarding-context delete="delete"/><nc:hold-time delete="delete"/>'
             '<nc:holddown-all-stale-labels delete="delete"/><nc:import delete="delete"/>'
-            '<nc:include-mp-next-hop delete="delete"/><nc:ipsec-sa delete="delete"/>'
-            '<nc:keep delete="delete"/><nc:local-address delete="delete"/><nc:local-interface delete="delete"/>'
+            '<nc:include-mp-next-hop delete="delete"/><nc:ipsec-sa delete="delete"/><nc:keep delete="delete"/>'
+            '<nc:local-address delete="delete"/><nc:local-interface delete="delete"/>'
             '<nc:local-preference delete="delete"/><nc:log-updown delete="delete"/><nc:mtu-discovery delete="delete"/>'
             '<nc:no-advertise-peer-as delete="delete"/><nc:no-aggregator-id delete="delete"/>'
             '<nc:no-client-reflect delete="delete"/><nc:no-precision-timers delete="delete"/>'
-            '<nc:passive delete="delete"/>'
-            '<nc:peer-as delete="delete"/><nc:precision-timers delete="delete"/><nc:preference delete="delete"/>'
-            '<nc:out-delay delete="delete"/><nc:rfc6514-compliant-safi129 delete="delete"/>'
-            '<nc:route-server-client delete="delete"/><nc:send-addpath-optimization delete="delete"/>'
-            '<nc:sr-preference-override delete="delete"/><nc:stale-labels-holddown-period delete="delete"/>'
+            '<nc:passive delete="delete"/><nc:peer-as delete="delete"/><nc:precision-timers delete="delete"/>'
+            '<nc:preference delete="delete"/><nc:out-delay delete="delete"/>'
+            '<nc:rfc6514-compliant-safi129 delete="delete"/><nc:route-server-client delete="delete"/>'
+            '<nc:send-addpath-optimization delete="delete"/><nc:sr-preference-override delete="delete"/>'
+            '<nc:stale-labels-holddown-period delete="delete"/>'
             '<nc:tcp-aggressive-transmission delete="delete"/><nc:tcp-mss delete="delete"/><nc:ttl delete="delete"/>'
-            '<nc:unconfigured-peer-graceful-restart delete="delete"/>'
-            '<nc:vpn-apply-export delete="delete"/></nc:bgp></nc:protocols>',
+            '<nc:unconfigured-peer-graceful-restart delete="delete"/><nc:vpn-apply-export delete="delete"/>'
+            "</nc:bgp></nc:protocols>",
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
         ]
+
         result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), commands)
 

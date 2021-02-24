@@ -172,7 +172,6 @@ class Bgp_global(ConfigBase):
         for xml in self.root.getchildren():
             xml = tostring(xml)
             temp_lst.append(xml)
-        # return [tostring(tostring(xml) for xml in self.root.getchildren())]
         return temp_lst
 
     def _state_replaced(self, want, have):
@@ -226,6 +225,9 @@ class Bgp_global(ConfigBase):
             "itcp-aggressive-transmission",
             "unconfigured-peer-graceful-restart",
             "vpn-apply-export",
+            "as-override",
+            "unconfigured-peer-graceful-restart",
+            "vpn-apply-export",
         ]
         cfg_parser = [
             "authentication-algorithm",
@@ -248,6 +250,7 @@ class Bgp_global(ConfigBase):
             "stale-labels-holddown-period",
             "tcp-mss",
             "ttl",
+            "type",
         ]
         for item in bool_parser:
             bgp_root = self._add_node(
@@ -274,6 +277,72 @@ class Bgp_global(ConfigBase):
                 if "asdot_notation" in want.keys():
                     build_child_xml_node(as_node, "asdot-notation")
 
+        # Generate commands for bgp node
+        self.parse_attrib(bgp_root, want)
+
+        # Generate commands for groups
+        if want.get("groups"):
+            groups = want.get("groups")
+
+            # Generate commands for each group in group list
+            for group in groups:
+                groups_node = build_child_xml_node(bgp_root, "group")
+                build_child_xml_node(groups_node, "name", group["name"])
+                # Parse the boolean value attributes
+                for item in bool_parser:
+                    groups_node = self._add_node(
+                        group, item, item.replace("-", "_"), groups_node
+                    )
+
+                # Parse the non-boolean leaf attributes
+                for item in cfg_parser:
+                    groups_node = self._add_node(
+                        group, item, item.replace("-", "_"), groups_node, True
+                    )
+
+                # Generate commands for nodes with child attributes
+                self.parse_attrib(groups_node, group)
+
+                # Generate commands for each neighbors
+                if group.get("neighbors"):
+                    neighbors = group.get("neighbors")
+                    # Generate commands for each neighbor in neighbors list
+                    for neighbor in neighbors:
+                        neighbors_node = build_child_xml_node(
+                            groups_node, "neighbor"
+                        )
+                        build_child_xml_node(
+                            neighbors_node,
+                            "name",
+                            neighbor["neighbor_address"],
+                        )
+                        # Parse the boolean value attributes
+                        for item in bool_parser:
+                            neighbors_node = self._add_node(
+                                neighbor,
+                                item,
+                                item.replace("-", "_"),
+                                neighbors_node,
+                            )
+
+                        # Parse the non-boolean leaf attributes
+                        for item in cfg_parser:
+                            neighbors_node = self._add_node(
+                                neighbor,
+                                item,
+                                item.replace("-", "_"),
+                                neighbors_node,
+                                True,
+                            )
+
+                        # Generate commands for nodes with child attributes
+                        self.parse_attrib(neighbors_node, neighbor)
+
+        bgp_xml.append(bgp_root)
+
+        return bgp_xml
+
+    def parse_attrib(self, bgp_root, want):
         # Generate config commands for advertise-bgp-static
         if want.get("advertise_bgp_static"):
             ad_bgp_static_node = build_child_xml_node(
@@ -475,9 +544,75 @@ class Bgp_global(ConfigBase):
                         if b_val is True:
                             build_child_xml_node(r_mon_node, "pre-policy")
 
-        bgp_xml.append(bgp_root)
+        # Generate config commands for egress-te
+        if want.get("egress_te"):
+            et_node = build_child_xml_node(bgp_root, "egress-te")
+            et = want.get("egress_te")
+            if "backup_path" in et:
+                build_child_xml_node(
+                    et_node, "backup-path", et.get("backup_path")
+                )
 
-        return bgp_xml
+        # Generate config commands for egress-te-backup-paths
+        if want.get("egress_te_backup_paths"):
+            etbp_node = build_child_xml_node(
+                bgp_root, "egress-te-backup-paths"
+            )
+            etbp = want.get("egress_te_backup_paths")
+            # generate commands for templates
+            templates = etbp.get("templates")
+            for template in templates:
+                template_node = build_child_xml_node(etbp_node, "template")
+                # add name node
+                if "path_name" in template.keys():
+                    build_child_xml_node(
+                        template_node, "name", template.get("path_name")
+                    )
+                # add peers
+                if "peers" in template.keys():
+                    peers = template.get("peers")
+                    for peer in peers:
+                        peer_node = build_child_xml_node(template_node, "peer")
+                        build_child_xml_node(peer_node, "name", peer)
+                # add remote-nexthop
+                if "remote_nexthop" in template.keys():
+                    build_child_xml_node(
+                        template_node,
+                        "remote-nexthop",
+                        template.get("remote_nexthop"),
+                    )
+                # add ip-forward
+                if "ip_forward" in template.keys():
+                    ipf = template.get("ip_forward")
+                    ipf_node = build_child_xml_node(
+                        template_node, "ip-forward"
+                    )
+
+                    if "rti_name" not in ipf.keys():
+                        build_child_xml_node(
+                            ipf_node, "name", ipf.get("rti_name")
+                        )
+
+        # Generate config commands for allow
+        if want.get("allow"):
+            allow = want.get("allow")
+            for network in allow:
+                build_child_xml_node(bgp_root, "allow", network)
+
+        # Generate config commands for optimal-route-reflection
+        if want.get("optimal_route_reflection"):
+            orr_node = build_child_xml_node(
+                bgp_root, "optimal-route-reflection"
+            )
+            orr = want.get("optimal_route_reflection")
+            if "igp_backup" in orr.keys():
+                build_child_xml_node(
+                    orr_node, "igp-backup", orr.get("igp_backup")
+                )
+            if "igp_primary" in orr.keys():
+                build_child_xml_node(
+                    orr_node, "igp-primary", orr.get("igp_primary")
+                )
 
     def _state_deleted(self, want, have):
         """ The command generator when state is deleted
@@ -500,6 +635,7 @@ class Bgp_global(ConfigBase):
             "bfd-liveness-detection",
             "bgp-error-tolerance",
             "bmp",
+            "group",
             "cluster",
             "damping",
             "description",

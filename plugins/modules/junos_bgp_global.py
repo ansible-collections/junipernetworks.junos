@@ -74,13 +74,13 @@ options:
       asdot_notation:
         description: Enable AS-Dot notation to display true 4 byte AS numbers.
         type: bool
-      accept_remote_nexthop:
+      accept_remote_nexthop: &accept_remote_nexthop
         description: Allow import policy to specify a non-directly connected next-hop.
         type: bool
-      add_path_display_ipv4_address:
+      add_path_display_ipv4_address: &add_path_display_ipv4_address
         description: Display add-path path-id in IPv4 address format.
         type: bool
-      advertise_bgp_static:
+      advertise_bgp_static: &advertise_bgp_static
         description: Advertise bgp-static routes.
         type: dict
         suboptions:
@@ -90,7 +90,7 @@ options:
           policy:
             description: Specify static route advertisement policy.
             type: str
-      advertise_external:
+      advertise_external: &advertise_external
         description: Advertise best external routes.
         type: dict
         suboptions:
@@ -103,23 +103,23 @@ options:
       advertise_from_main_vpn_tables:
         description: Advertise VPN routes from bgp.Xvpn.0 tables in master instance.
         type: bool
-      advertise_inactive:
+      advertise_inactive: &advertise_inactive
         description: Advertise inactive routes.
         type: bool
-      advertise_peer_as:
+      advertise_peer_as: &advertise_peer_as
         description: Advertise routes received from the same autonomous system.
         type: bool
-      authentication_algorithm:
+      authentication_algorithm: &authentication_algorithm
         description: Specify authentication algorithm name.
         type: str
         choices: ["aes-128-cmac-96", "hmac-sha-1-96", "md5"]
-      authentication_key:
+      authentication_key: &authentication_key
         description: Specify MD5 authentication key.
         type: str
-      authentication_key_chain:
+      authentication_key_chain: &authentication_key_chain
         description: Specify authentication key chain name.
         type: str
-      bfd_liveness_detection:
+      bfd_liveness_detection: &bfd_liveness_detection
         description: Bidirectional Forwarding Detection (BFD) options.
         type: dict
         suboptions:
@@ -177,7 +177,7 @@ options:
             description: Specify BFD protocol version number.
             type: str
             choices: ["0", "1", "automatic"]
-      bgp_error_tolerance:
+      bgp_error_tolerance: &bgp_error_tolerance
         description: Handle BGP malformed updates softly.
         type: dict
         suboptions:
@@ -193,7 +193,7 @@ options:
           no_malformed_route_limit:
             description: Specify no malformed route limit.
             type: bool
-      bmp:
+      bmp: &bmp
         description: Specific settings to override the routing-options settings.
         type: dict
         suboptions:
@@ -219,22 +219,25 @@ options:
               post_policy_exclude_non_feasible:
                 description: Send pre policy route montoring messages and exclude looped routes, etc.
                 type: bool
-      cluster_id:
+      cluster_id: &cluster_id
         description: Specify cluster identifier.
         type: str
-      damping:
+      damping: &damping
         description: Enable route flap damping.
         type: bool
-      description:
+      description: &description
         description: Specify text description.
         type: str
       disable:
         description: Disable BGP.
         type: bool
-      egress_te:
+      egress_te: &egress_te
         description: Use Egress Peering traffic engineering.
         type: dict
         suboptions:
+          set:
+            description: Set the attribute.
+            type: bool
           backup_path:
             description: The 'egress-te-backup-paths template' to use for this peer.
             type: str
@@ -242,13 +245,15 @@ options:
         description: Backup-path for Egress-TE peer interface failure.
         type: dict
         suboptions:
-          template:
+          templates:
             description: Specify Backup-path template.
-            type: dict
+            type: list
+            elements: dict
             suboptions:
               path_name:
                 description: Name of Egress-TE backup path.
                 type: str
+                required: true
               ip_forward:
                 description: Use IP-forward backup path for Egress TE.
                 type: dict
@@ -259,19 +264,22 @@ options:
                   rti_name:
                     description: Routing-instance to use as IP forward backup-path.
                     type: str
-          peer_addr:
-            description: Specify address of BGP peer to use as backup next-hop.
-            type: str
-          remote_nexthop:
-            description: Specify address of remote-nexthop to use as backup path.
-            type: str
+              peers:
+                description: Specify address of BGP peer to use as backup next-hop.
+                type: list
+                elements: str
+              remote_nexthop:
+                description: Specify address of remote-nexthop to use as backup path.
+                type: str
       egress_te_set_segment:
         description: Configure BGP-Peer-Set segment.
-        type: dict
+        type: list
+        elements: dict
         suboptions:
           name:
             description: The BGP-Peer-Set segment name.
             type: str
+            required: true
           label:
             description: Backup segment label value from static label pool.
             type: int
@@ -281,16 +289,16 @@ options:
       egress_te_sid_stats:
         description: Create BGP-Peer-SID sensor.
         type: bool
-      enforce_first_as:
+      enforce_first_as: &enforce_first_as
         description: Enforce neighbor AS is the first AS in AS-PATH attribute (EBGP).
         type: bool
-      export:
+      export: &export
         description: Specify export policy.
         type: str
-      forwarding_context:
+      forwarding_context: &forwarding_context
         description: Specify routing-instance used for data-forwarding and transport-session.
         type: str
-      graceful_restart:
+      graceful_restart: &graceful_restart
         description: BGP graceful restart options.
         type: dict
         suboptions:
@@ -336,13 +344,13 @@ options:
           stale_routes_time:
             description: Maximum time for which stale routes are kept.
             type: int
-      hold_time:
+      hold_time: &hold_time
         description: Specify hold time used when negotiating with a peer.
         type: int
       holddown_all_stale_labels:
         description: Hold all BGP stale-labels, facilating make-before-break for new label advertisements.
         type: bool
-      idle_after_switch_over:
+      idle_after_switch_over: &idle_after_switch_over
         description: Stop peer session from coming up after nonstop-routing switch-over.
         type: dict
         suboptions:
@@ -352,32 +360,30 @@ options:
           forever:
             description: Idle the peer until the user intervenes.
             type: bool
-      import:
+      import: &import
         description: Specify import policy.
         type: str
-      include_mp_next_hop:
+      include_mp_next_hop: &include_mp_next_hop
         description: Include NEXT-HOP attribute in multiprotocol updates.
         type: bool
-      ipsec_sa:
+      ipsec_sa: &ipsec_sa
         description: Specify IPSec SA name.
         type: str
-      keep:
+      keep: &keep
         description: Specify how to retain routes in the routing table.
         type: str
         choices: ["all", "none"]
-      local_address:
+      local_address: &local_address
         description: Specify Address of local end of BGP session.
         type: str
-      local_as:
+      local_as: &local_as
         description: Local autonomous system number.
         type: dict
         suboptions:
-          set:
-            description: Set local autonomous system number.
-            type: bool
           as_num:
             description: Autonomous system number in plain number or (asdot notation) format.
             type: str
+            required: true
           alias:
             description: Treat this AS as an alias to the system AS.
             type: bool
@@ -390,16 +396,16 @@ options:
           private:
             description: Hide this local AS in paths learned from this peering.
             type: bool
-      local_interface:
+      local_interface: &local_interface
         description: Specify Local interface for IPv6 link local EBGP peering.
         type: str
-      local_preference:
+      local_preference: &local_preference
         description: Specify value of LOCAL_PREF path attribute.
         type: str
-      log_updown:
+      log_updown: &log_updown
         description: Enable log a message for peer state transitions.
         type: bool
-      metric_out:
+      metric_out: &metric_out
         description: Specify route metric sent in MED.
         type: dict
         suboptions:
@@ -429,10 +435,10 @@ options:
               metric_offset:
                 description: Specify metric offset for MED.
                 type: int
-      mtu_discovery:
+      mtu_discovery: &mtu_discovery
         description: Enable TCP path MTU discovery.
         type: bool
-      multihop:
+      multihop: &multihop
         description: Configure an EBGP multihop session.
         type: dict
         suboptions:
@@ -445,7 +451,7 @@ options:
           ttl:
             description: TTL value for the session.
             type: int
-      multipath:
+      multipath: &multipath
         description: Allow load sharing among multiple BGP paths.
         type: dict
         suboptions:
@@ -456,28 +462,31 @@ options:
             description: Disable Multipath.
             type: bool
           multiple_as:
-            description: Disable Multipath.
+            description: Use paths received from different ASs.
+            type: bool
+          multiple_as_disable:
+            description: Disable multipath.
             type: bool
       multipath_build_priority:
         description: Configure the multipath build priority.
         type: str
         choices: ["low", "medium"]
-      no_advertise_peer_as:
+      no_advertise_peer_as: &no_advertise_peer_as
         description: Allows to not advertise routes received from the same autonomous system.
         type: bool
-      no_aggregator_id:
+      no_aggregator_id: &no_aggregator_id
         description: Set router ID in aggregator path attribute to 0.
         type: bool
-      no_client_reflect:
+      no_client_reflect: &no_client_reflect
         description: Disable intracluster route redistribution.
         type: bool
-      no_precision_timers:
+      no_precision_timers: &no_precision_timers
         description: Specify not to use precision timers for scheduling keepalives.
         type: bool
-      out_delay:
+      out_delay: &out_delay
         description: Specify how long before exporting routes from routing table.
         type: int
-      outbound_route_filter:
+      outbound_route_filter: &outbound_route_filter
         description: Dynamically negotiated cooperative route filtering.
         type: dict
         suboptions:
@@ -521,7 +530,7 @@ options:
                     type: bool
                   priority:
                     description: Specify output queue priorit.
-                    type: bool
+                    type: int
               low:
                 description: Assign the 'low' priority class to this output-queue.
                 type: dict
@@ -531,7 +540,7 @@ options:
                     type: bool
                   priority:
                     description: Specify output queue priorit.
-                    type: bool
+                    type: int
               medium:
                 description: Assign the 'medium' priority class to this output-queue.
                 type: dict
@@ -541,21 +550,24 @@ options:
                     type: bool
                   priority:
                     description: Specify output queue priorit.
-                    type: bool
-          expedited:
-            description: Expedited queue; highest priority.
-            type: dict
-            suboptions:
-              set:
-                description: Set expedited queue; highest priority.
-                type: bool
-              update_tokens:
-                description: Specify Number of tokens.
-                type: int
-          priority:
-            description: Output queue priority; higher is better.
+                    type: int
+          expedited_update_tokens:
+            description: Expedited queue; highest priority for number of tokens.
             type: int
-      passive:
+          priority_update_tokens:
+            description: Output queue priority; higher is better.
+            type: list
+            elements: dict
+            suboptions:
+              priority:
+                description: Specify the priority.
+                type: int
+                required: true
+              update_tokens:
+                description: Specify update_tokens.
+                type: int
+                required: true
+      passive: &passive
         description: Specify to not send open messages to a peer.
         type: bool
       path_selection:
@@ -581,22 +593,25 @@ options:
             description: Add IGP cost to next-hop to MED before comparing MED values.
             type: dict
             suboptions:
+              set:
+                description: Set med-plus-igp attribute.
+                type: bool
               igp_multiplier:
                 description: Specify multiplier for IGP cost to next-hop.
                 type: int
               med_multiplier:
                 description: Specify Multiplier for MED.
                 type: int
-      peer_as:
+      peer_as: &peer_as
         description: Specify Autonomous system number in plain number or 'higher 16bits'.'Lower 16 bits' format.
         type: str
       precision_timers:
         description: Use precision timers for scheduling keepalives.
         type: bool
-      preference:
+      preference: &preference
         description: Specify preference value.
         type: str
-      remove_private:
+      remove_private: &remove_private
         description: Remove well-known private AS numbers.
         type: dict
         suboptions:
@@ -606,23 +621,19 @@ options:
           all:
             description: Remove all private AS numbers and do not stop at the first public AS number.
             type: bool
-          replace:
+          all_replace:
             description: Specify private AS replacement.
-            type: dict
-            suboptions:
-              set:
-                description: Replace private AS numbers with the BGP Group's local AS number.
-                type: bool
-              nearest:
-                description: Use closest public AS number to replace a private AS number.
-                type: bool
+            type: bool
+          all_replace_nearest:
+            description: Use closest public AS number to replace a private AS number.
+            type: bool
           no_peer_loop_check:
             description: Remove peer loop-check.
             type: bool
-      rfc6514_compliant_safi129:
+      rfc6514_compliant_safi129: &rfc6514_compliant_safi129
         description: Specify Compliance with RFC6514 SAFI129 format.
         type: bool
-      route_server_client:
+      route_server_client: &route_server_client
         description: Enable route server client behavior.
         type: bool
       send_addpath_optimization:
@@ -644,13 +655,13 @@ options:
       stale_labels_holddown_period:
         description: Specify duration (sec) MPLS labels allocated by BGP are kept after they go stale.
         type: int
-      tcp_aggressive_transmission:
+      tcp_aggressive_transmission: &tcp_aggressive_transmission
         description: Enable aggressive transmission of pure TCP ACKs and retransmissions.
         type: bool
-      tcp_mss:
+      tcp_mss: &tcp_mss
         description: Specify maximum TCP segment size.
         type: int
-      traceoptions:
+      traceoptions: &traceoptions
         description: Configure trace options for BGP.
         type: dict
         suboptions:
@@ -658,9 +669,10 @@ options:
             description: Specify trace file options.
             type: dict
             suboptions:
-              file_name:
+              filename:
                 description: Specify name of file in which to write trace information.
                 type: str
+                required: true
               files:
                 description: Specify maximum number of trace files.
                 type: int
@@ -675,433 +687,61 @@ options:
                 type: int
           flag:
             description: Specify tracing parameters.
-            type: dict
+            type: list
+            elements: dict
             suboptions:
-              byte_as:
-                description: Specify trace 4 byte AS events.
+              name:
+                description: specify event name
+                type: str
+                choices:
+                  - 4byte-as
+                  - add-path
+                  - all
+                  - bfd
+                  - damping
+                  - egress-te
+                  - general
+                  - graceful-restart
+                  - keepalive
+                  - normal
+                  - nsr-synchronization
+                  - open
+                  - packets
+                  - policy
+                  - refresh
+                  - route
+                  - state
+                  - task
+                  - thread-io
+                  - thread-update-io
+                  - timer
+                  - update
+                required: true
+              detail:
+                description: Trace detailed information.
+                type: bool
+              disable:
+                description: Disable this trace flag.
+                type: bool
+              receive:
+                description: Trace received packets.
+                type: bool
+              send:
+                description: Trace transmitted packets.
+                type: bool
+              filter:
+                description: Filter to apply to this flag.
                 type: dict
                 suboptions:
                   set:
-                    description: Set trace 4 byte AS events.
+                    description: Set filter to apply to this flag.
                     type: bool
-                  detail:
-                    description: Trace detailed information.
+                  match_on_prefix:
+                    description: Specify filter based on prefix.
                     type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              add_path:
-                description: Specify trace add-path events.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set trace add-path events.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              all:
-                description: Specify to trace everything.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace everything.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              bfd:
-                description: Trace BFD events.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set BFD events.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              damping:
-                description: Trace BGP damping information.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace BGP damping information.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-                  filter:
-                    description: Filter to apply to this flag.
-                    type: dict
-                    suboptions:
-                      set:
-                        description: Set filter to apply to this flag.
-                        type: bool
-                      match_on_prefix:
-                        description: Specify filter based on prefix.
-                        type: bool
-                      policy:
-                        description: Specify filter policy.
-                        type: str
-              egress_te:
-                description: Specify Egress Peering Traffic-Engineering events.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Egress Peering Traffic-Engineering events.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              general:
-                description: Trace general events.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set trace general events.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              graceful_restart:
-                description: Trace Graceful Restart events.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace Graceful Restart events.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              keepalive:
-                description: Trace BGP keepalive packets.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace BGP keepalive packets.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              normal:
-                description: Trace normal events.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace normal events.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              nsr_synchronization:
-                description: Trace NSR synchronization events.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace NSR synchronization events.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              open:
-                description: Trace BGP open packets.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace BGP open packets.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              packets:
-                description: Trace all BGP protocol packets.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace all BGP protocol packets.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              policy:
-                description: Trace policy processing.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace policy processing.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              refresh:
-                description: Trace BGP refresh packets.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace BGP refresh packets.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              route:
-                description: Trace routing information.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace routing information.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-                  filter:
-                    description: Filter to apply to this flag.
-                    type: dict
-                    suboptions:
-                      set:
-                        description: Set filter to apply to this flag.
-                        type: bool
-                      match_on_prefix:
-                        description: Specify filter based on prefix.
-                        type: bool
-                      policy:
-                        description: Specify filter policy.
-                        type: str
-              state:
-                description: Trace state transitions.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace state transitions.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              thread_update_io:
-                description: Trace threaded update I/O processing.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace threaded update I/O processing.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              thread_io:
-                description: Trace threaded I/O processing.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace threaded I/O processing.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              timer:
-                description: Trace routing protocol timer processing.
-                type: dict
-                suboptions:
-                  set:
-                    description: Set Trace routing protocol timer processing.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
-              update:
-                description: Trace BGP update packets.
-                type: dict
-                suboptions:
-                  set:
-                    description: Trace BGP update packets.
-                    type: bool
-                  detail:
-                    description: Trace detailed information.
-                    type: bool
-                  disable:
-                    description: Disable this trace flag.
-                    type: bool
-                  receive:
-                    description: Trace received packets.
-                    type: bool
-                  send:
-                    description: Trace transmitted packets.
-                    type: bool
+                  policy:
+                    description: Specify filter policy.
+                    type: str
       traffic_statistics_labeled_path:
         description: Collect periodic ingress labeled statistics for BGP label-switched paths.
         type: dict
@@ -1110,7 +750,7 @@ options:
             description: Specify statistics file options.
             type: dict
             suboptions:
-              file_name:
+              filename:
                 description: Specify name of file in which to write trace information.
                 type: str
               files:
@@ -1128,7 +768,7 @@ options:
           interval:
             description: Specify time interval to collect statistics.
             type: int
-      ttl:
+      ttl: &ttl
         description: Specify TTL value for the single-hop peer.
         type: int
       unconfigured_peer_graceful_restart:
@@ -1137,18 +777,167 @@ options:
       vpn_apply_export:
         description: Apply BGP export policy when exporting VPN routes.
         type: bool
+      groups:
+        description: Specify name of the group.
+        type: list
+        elements: dict
+        suboptions:
+          name:
+            description: Specify the name of the group
+            type: str
+          accept_remote_nexthop: *accept_remote_nexthop
+          add_path_display_ipv4_address: *add_path_display_ipv4_address
+          advertise_bgp_static: *advertise_bgp_static
+          advertise_external: *advertise_external
+          advertise_inactive: *advertise_inactive
+          advertise_peer_as: *advertise_peer_as
+          allow:
+            description: Configure peer connections for specific networks.
+            type: list
+            elements: str
+          as_override: &as_override
+            description: Replace neighbor AS number with our AS number
+            type: bool
+          authentication_algorithm: *authentication_algorithm
+          authentication_key: *authentication_key
+          authentication_key_chain: *authentication_key_chain
+          bfd_liveness_detection: *bfd_liveness_detection
+          bgp_error_tolerance: *bgp_error_tolerance
+          bmp: *bmp
+          cluster_id: *cluster_id
+          damping: *damping
+          description: *description
+          egress_te: *egress_te
+          enforce_first_as: *enforce_first_as
+          export: *export
+          forwarding_context: *forwarding_context
+          graceful_restart: *graceful_restart
+          hold_time: *hold_time
+          idle_after_switch_over: *idle_after_switch_over
+          import: *import
+          include_mp_next_hop: *include_mp_next_hop
+          ipsec_sa: *ipsec_sa
+          keep: *keep
+          local_address: *local_address
+          local_as: *local_as
+          local_interface: *local_interface
+          local_preference: *local_preference
+          log_updown: *log_updown
+          metric_out: *metric_out
+          mtu_discovery: *mtu_discovery
+          multihop: *multihop
+          multipath: *multipath
+          no_advertise_peer_as: *no_advertise_peer_as
+          no_aggregator_id: *no_aggregator_id
+          no_client_reflect: *no_client_reflect
+          optimal_route_reflection:
+            description:  Enable optimal route reflection for this client group.
+            type: dict
+            suboptions:
+              igp_backup:
+                description: Backup node identifier for this client group.
+                type: str
+              igp_primary:
+                description: Primary node identifier for this client group.
+                type: str
+          out_delay: *out_delay
+          outbound_route_filter: *outbound_route_filter
+          passive: *passive
+          peer_as: *peer_as
+          preference: *preference
+          remove_private: *remove_private
+          rfc6514_compliant_safi129: *rfc6514_compliant_safi129
+          route_server_client: *route_server_client
+          tcp_aggressive_transmission: *tcp_aggressive_transmission
+          tcp_mss: *tcp_mss
+          traceoptions: *traceoptions
+          ttl: *ttl
+          type:
+            description: Specify BGP group type.
+            type: str
+            choices: ['external', 'internal']
+          unconfigured_peer_graceful_restart: &unconfigured_peer_graceful_restart
+            description: Specify BGP unconfigured peer graceful restart options.
+            type: bool
+          vpn_apply_export: &vpn_apply_export
+            description: Apply BGP export policy when exporting VPN routes.
+            type: bool
+          neighbors:
+            description: Specify list of neighbors.
+            type: list
+            elements: dict
+            suboptions:
+              neighbor_address:
+                description: Specify neighbor address.
+                type: str
+              accept_remote_nexthop: *accept_remote_nexthop
+              add_path_display_ipv4_address: *add_path_display_ipv4_address
+              advertise_bgp_static: *advertise_bgp_static
+              advertise_external: *advertise_external
+              advertise_inactive: *advertise_inactive
+              advertise_peer_as: *advertise_peer_as
+              as_override: *as_override
+              authentication_algorithm: *authentication_algorithm
+              authentication_key: *authentication_key
+              authentication_key_chain: *authentication_key_chain
+              bfd_liveness_detection: *bfd_liveness_detection
+              bgp_error_tolerance: *bgp_error_tolerance
+              bmp: *bmp
+              cluster_id: *cluster_id
+              damping: *damping
+              description:
+                description: Specify neighbor description.
+                type: str
+              egress_te: *egress_te
+              enforce_first_as: *enforce_first_as
+              export: *export
+              forwarding_context: *forwarding_context
+              graceful_restart: *graceful_restart
+              hold_time: *hold_time
+              idle_after_switch_over: *idle_after_switch_over
+              import: *import
+              include_mp_next_hop: *include_mp_next_hop
+              ipsec_sa: *ipsec_sa
+              keep: *keep
+              local_address: *local_address
+              local_as: *local_as
+              local_interface: *local_interface
+              local_preference: *local_preference
+              log_updown: *log_updown
+              metric_out: *metric_out
+              mtu_discovery: *mtu_discovery
+              multihop: *multihop
+              multipath: *multipath
+              no_advertise_peer_as: *no_advertise_peer_as
+              no_aggregator_id: *no_aggregator_id
+              no_client_reflect: *no_client_reflect
+              out_delay: *out_delay
+              outbound_route_filter: *outbound_route_filter
+              passive: *passive
+              peer_as: *peer_as
+              preference: *preference
+              remove_private: *remove_private
+              rfc6514_compliant_safi129: *rfc6514_compliant_safi129
+              route_server_client: *route_server_client
+              tcp_aggressive_transmission: *tcp_aggressive_transmission
+              tcp_mss: *tcp_mss
+              traceoptions: *traceoptions
+              ttl: *ttl
+              unconfigured_peer_graceful_restart: *unconfigured_peer_graceful_restart
+              vpn_apply_export: *vpn_apply_export
+
   state:
     description:
     - The state the configuration should be left in.
-    - State I(purged) removes all (routing-options autonomous-system, bgp global, bgp groups, bgp family
-      and bgp neighbor family) the BGP configurations from the
+    - State I(purged) removes all (routing-options autonomous-system, bgp global, bgp groups, bgp neighbors, bgp family
+      and bgp group and neighbor family) the BGP configurations from the
       target device. Use caution with this state.
     - State I(deleted) only removes BGP attributes that this modules
       manages and does not negate the BGP process completely. Thereby, preserving
       address-family related configurations under BGP context.
     - Running states I(deleted) and I(replaced) will result in an error if there
       are address-family configuration lines present under a neighbor.Please use the
-      M(junipernetworks.junos.junos_bgp_address_family) or M(junipernetworks.junos.junos_bgp_groups)
+      M(junipernetworks.junos.junos_bgp_address_family)
       modules for prior cleanup.
     - Refer to examples for more details.
     type: str
@@ -1174,7 +963,7 @@ EXAMPLES = """
 # admin# show routing-options autonomous-system
 # [edit]
 
-- name: Merge Junos BGP interfaces config
+- name: Merge Junos BGP config
   junipernetworks.junos.junos_bgp_global:
     config:
       as_number: "65534"
@@ -1240,6 +1029,169 @@ EXAMPLES = """
 # }
 # add-path-display-ipv4-address;
 # egress-te-sid-stats;
+
+
+# Using merged
+#
+# Before state
+# ------------
+#
+# admin# show routing-options autonomous-system
+# 65534 loops 3 asdot-notation;
+
+# admin# show protocols bgp
+# precision-timers;
+# advertise-from-main-vpn-tables;
+# holddown-all-stale-labels;
+# description "This is configured with Junos_bgp resource module";
+# accept-remote-nexthop;
+# preference 2;
+# hold-time 5;
+# advertise-inactive;
+# no-advertise-peer-as;
+# no-aggregator-id;
+# out-delay 10;
+# log-updown;
+# damping;
+# bgp-error-tolerance {
+#     malformed-route-limit 20000000;
+# }
+# authentication-algorithm md5;
+# no-client-reflect;
+# include-mp-next-hop;
+# bmp {
+#     monitor enable;
+# }
+# advertise-bgp-static {
+#     policy static-to-bgp;
+# }
+# add-path-display-ipv4-address;
+# egress-te-sid-stats;
+
+- name: Update running Junos BGP config
+  junipernetworks.junos.junos_bgp_global:
+    config:
+      egress_te_backup_paths:
+        templates:
+          - path_name: customer1
+            peers:
+              - '11.11.11.11'
+              - '11.11.11.12'
+              - '11.11.11.13'
+            remote_nexthop: '2.2.2.2'
+      groups:
+        - name: 'internal'
+          type: 'internal'
+          vpn_apply_export: true
+          out_delay: 30
+          accept_remote_nexthop: true
+          add_path_display_ipv4_address: true
+          peer_as: '65534'
+          allow:
+            - 'all'
+            - '1.1.1.0/24'
+          neighbors:
+            - neighbor_address: '11.11.11.11'
+              peer_as: '65534'
+              out_delay: 11
+            - neighbor_address: '11.11.11.12'
+              peer_as: '65534'
+              out_delay: 12
+
+        - name: 'external'
+          out_delay: 20
+          peer_as: '65534'
+          accept_remote_nexthop: true
+          add_path_display_ipv4_address: true
+          neighbors:
+            - neighbor_address: '12.12.12.12'
+              peer_as: '65534'
+              out_delay: 21
+              accept_remote_nexthop: true
+              add_path_display_ipv4_address: true
+            - neighbor_address: '11.11.11.13'
+              peer_as: '65534'
+              out_delay: 31
+              accept_remote_nexthop: true
+              add_path_display_ipv4_address: true
+    state: merged
+
+# After state
+# -----------
+#
+# admin# show routing-options autonomous-system
+# 65534 loops 3 asdot-notation;
+
+# admin# show protocols bgp
+# precision-timers;
+# advertise-from-main-vpn-tables;
+# holddown-all-stale-labels;
+# egress-te-backup-paths {
+#     template customer1 {
+#         peer 11.11.11.11;
+#         peer 11.11.11.12;
+#         peer 11.11.11.13;
+#         remote-nexthop {
+#             2.2.2.2;
+#         }
+#     }
+# }
+# description "This is configured with Junos_bgp resource module";
+# accept-remote-nexthop;
+# preference 2;
+# hold-time 5;
+# advertise-inactive;
+# no-advertise-peer-as;
+# no-aggregator-id;
+# out-delay 10;
+# log-updown;
+# damping;
+# bgp-error-tolerance {
+#     malformed-route-limit 20000000;
+# }
+# authentication-algorithm md5;
+# no-client-reflect;
+# include-mp-next-hop;
+# bmp {
+#     monitor enable;
+# }
+# add-path-display-ipv4-address;
+# egress-te-sid-stats;
+# group internal {
+#     type internal;
+#     accept-remote-nexthop;
+#     out-delay 30;
+#     vpn-apply-export;
+#     peer-as 65534;
+#     add-path-display-ipv4-address;
+#     allow [ 0.0.0.0/0 1.1.1.0/24 ];
+#     neighbor 11.11.11.11 {
+#         out-delay 11;
+#         peer-as 65534;
+#     }
+#     neighbor 11.11.11.12 {
+#         out-delay 12;
+#         peer-as 65534;
+#     }
+# }
+# group external {
+#     accept-remote-nexthop;
+#     out-delay 20;
+#     peer-as 65534;
+#     add-path-display-ipv4-address;
+#     neighbor 12.12.12.12 {
+#         accept-remote-nexthop;
+#         out-delay 21;
+#         peer-as 65534;
+#         add-path-display-ipv4-address;
+#     }
+#     neighbor 11.11.11.13 {
+#         accept-remote-nexthop;
+#         out-delay 31;
+#         peer-as 65534;
+#         add-path-display-ipv4-address;
+#     }
+# }
 
 
 # Using replaced
