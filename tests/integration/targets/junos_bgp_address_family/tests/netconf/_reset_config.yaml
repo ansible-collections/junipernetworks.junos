@@ -1,0 +1,11 @@
+---
+- debug:
+    msg: "START junos_bgp_address_family reset config on connection={{ ansible_connection }}"
+
+- name: Reset the config releavent to bgp address family resource
+  junipernetworks.junos.junos_config:
+    lines:
+      - delete protocols bgp family
+
+- debug:
+    msg: "END junos_bgp_address_family reset config on connection={{ ansible_connection }}"
