@@ -1,3 +1,0 @@
----
-minor_changes:
-  - Add support for bgp group and neighbors in bgp_global resource module.

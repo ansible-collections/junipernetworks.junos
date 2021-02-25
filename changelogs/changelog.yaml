@@ -220,3 +220,23 @@ releases:
       name: junos_ospf_interfaces
       namespace: ''
     release_date: '2021-01-28'
+  2.0.0:
+    changes:
+      minor_changes:
+      - Add junos_bgp_address_family resource module.
+      - Add support for autonomous-system routing-options for bgp global and updating
+        tests and documentation.
+      - Add support for bgp group and neighbors in bgp_global resource module.
+      - Add support for configuration caching (single_user_mode).
+      - Re-use device_info dictionary in cliconf.
+    fragments:
+    - add_bgp_address_family.yaml
+    - asn_handling_doc_updates.yaml
+    - fix_junos_sanity.yaml
+    - implementing_group_and_neighbor.yaml
+    - single_user_mode.yaml
+    modules:
+    - description: Manage BGP Address Family attributes of interfaces on Junos devices.
+      name: junos_bgp_address_family
+      namespace: ''
+    release_date: '2021-02-25'

@@ -1,3 +1,0 @@
----
-minor_changes:
-  - Add junos_bgp_address_family resource module.

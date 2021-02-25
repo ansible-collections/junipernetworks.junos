@@ -5,6 +5,23 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v2.0.0
+======
+
+Minor Changes
+-------------
+
+- Add junos_bgp_address_family resource module.
+- Add support for autonomous-system routing-options for bgp global and updating tests and documentation.
+- Add support for bgp group and neighbors in bgp_global resource module.
+- Add support for configuration caching (single_user_mode).
+- Re-use device_info dictionary in cliconf.
+
+New Modules
+-----------
+
+- junos_bgp_address_family - Manage BGP Address Family attributes of interfaces on Junos devices.
+
 v1.3.0
 ======
 
