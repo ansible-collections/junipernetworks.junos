@@ -1,3 +1,0 @@
----
-minor_changes:
-  - Add support for autonomous-system routing-options for bgp global and updating tests and documentation.

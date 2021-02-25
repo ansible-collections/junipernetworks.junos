@@ -39,6 +39,7 @@ Name | Description
 [junipernetworks.junos.junos_acl_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_acl_interfaces_module.rst)|ACL interfaces resource module
 [junipernetworks.junos.junos_acls](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_acls_module.rst)|ACLs resource module
 [junipernetworks.junos.junos_banner](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_banner_module.rst)|Manage multiline banners on Juniper JUNOS devices
+[junipernetworks.junos.junos_bgp_address_family](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_bgp_address_family_module.rst)|Manage BGP Address Family attributes of interfaces on Junos devices.
 [junipernetworks.junos.junos_bgp_global](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_bgp_global_module.rst)|Manages BGP Global configuration on devices running Juniper JUNOS.
 [junipernetworks.junos.junos_command](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_command_module.rst)|Run arbitrary commands on an Juniper JUNOS device
 [junipernetworks.junos.junos_config](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_config_module.rst)|Manage configuration on devices running Juniper JUNOS
