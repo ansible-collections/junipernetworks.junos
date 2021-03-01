@@ -183,29 +183,29 @@ Examples
       junipernetworks.junos.junos_vlans:
         config:
         - name: vlan-1
-          vlan-id: 1
-      state: merged
+          vlan_id: 1
+        state: merged
     - name: Replace JUNOS vlan
       junipernetworks.junos.junos_vlans:
         config:
         - name: vlan-1
-          vlan-id: 10
+          vlan_id: 10
         - name: vlan-3
-          vlan-id: 30
-      state: replaced
+          vlan_id: 30
+        state: replaced
     - name: Override JUNOS vlan
       junipernetworks.junos.junos_vlans:
         config:
         - name: vlan-4
-          vlan-id: 100
+          vlan_id: 100
         - name: vlan-2
-          vlan-id: 200
-      state: overridden
+          vlan_id: 200
+        state: overridden
     - name: Delete JUNOS vlan
       junipernetworks.junos.junos_vlans:
         config:
         - name: vlan-1
-      state: deleted
+        state: deleted
 
 
 
