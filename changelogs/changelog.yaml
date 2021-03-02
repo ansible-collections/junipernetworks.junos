@@ -235,6 +235,7 @@ releases:
       - Add support for configuration caching (single_user_mode).
       - Re-use device_info dictionary in cliconf.
     fragments:
+    - 156-remove_tests_sanity_requirements.yml
     - add_bgp_address_family.yaml
     - asn_handling_doc_updates.yaml
     - fix_junos_sanity.yaml
