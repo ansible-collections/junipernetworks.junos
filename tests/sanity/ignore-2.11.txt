@@ -1,1 +1,4 @@
 plugins/action/junos.py action-plugin-docs # base class for deprecated network platform modules using `connection: local`
+plugins/modules/junos_bgp_global.py validate-modules:no-log-needed # temporary workaround for unspecified no-log
+plugins/modules/junos_ospf_interfaces.py validate-modules:no-log-needed # temporary workaround for unspecified no-log
+plugins/modules/junos_user.py validate-modules:no-log-needed # temporary workaround for unspecified no-log

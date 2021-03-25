@@ -203,7 +203,9 @@ import collections
 
 from copy import deepcopy
 
+from ansible.module_utils._text import to_text
 from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.common.validation import check_required_if
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
     remove_default_spec,
 )
@@ -306,7 +308,10 @@ def main():
             if param.get(key) is None:
                 param[key] = module.params[key]
 
-        module._check_required_if(required_if, param)
+        try:
+            check_required_if(required_if, param)
+        except TypeError as exc:
+            module.fail_json(to_text(exc))
 
         item = param.copy()
         dest = item.get("dest")
