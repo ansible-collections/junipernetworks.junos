@@ -27,6 +27,16 @@ options:
     - The IP Address or hostname (resolvable by the device) of the remote node.
     type: str
     required: true
+  df_bit:
+    description:
+    - Determines whether to set the DF bit.
+    type: bool
+    default: false
+  rapid:
+    description:
+    - Determines whether to send the packets rapidly.
+    type: bool
+    default: false
   count:
     description:
     - Number of packets to send to check reachability.
@@ -92,6 +102,12 @@ EXAMPLES = """
     interface: fxp0
     count: 20
     size: 512
+
+- name: Test reachability to 10.50.50.50 using do-not-fragment and rapid
+  junipernetworks.junos.junos_ping:
+    dest: 10.50.50.50
+    df_bit: True
+    rapid: True
 """
 
 RETURN = """
@@ -136,6 +152,8 @@ def main():
     argument_spec = dict(
         count=dict(type="int", default=5),
         dest=dict(type="str", required=True),
+        df_bit=dict(type="bool", default=False),
+        rapid=dict(type="bool", default=False),
         source=dict(),
         interface=dict(),
         ttl=dict(type="int"),
@@ -152,6 +170,8 @@ def main():
 
     count = module.params["count"]
     dest = module.params["dest"]
+    df_bit = module.params["df_bit"]
+    rapid = module.params["rapid"]
     source = module.params["source"]
     size = module.params["size"]
     ttl = module.params["ttl"]
@@ -164,7 +184,7 @@ def main():
         results["warnings"] = warnings
 
     results["commands"] = build_ping(
-        dest, count, size, interval, source, ttl, interface
+        dest, count, size, interval, source, ttl, interface, df_bit, rapid
     )
     conn = get_connection(module)
 
@@ -202,6 +222,8 @@ def build_ping(
     source=None,
     ttl=None,
     interface=None,
+    df_bit=False,
+    rapid=False,
 ):
     cmd = "ping {0} count {1}".format(dest, str(count))
 
@@ -219,6 +241,12 @@ def build_ping(
 
     if interval:
         cmd += " interval {0}".format(str(interval))
+
+    if df_bit:
+        cmd += " do-not-fragment"
+
+    if rapid:
+        cmd += " rapid"
 
     return cmd
 
