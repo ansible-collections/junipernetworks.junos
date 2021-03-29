@@ -1,3 +1,0 @@
----
-trivial:
-  - Replace module._check_required_if removed in ansible-core 2.11 with call from common.validation
