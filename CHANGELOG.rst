@@ -5,6 +5,14 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v2.0.1
+======
+
+Minor Changes
+-------------
+
+- Add support df_bit and size option for junos_ping (https://github.com/ansible-collections/junipernetworks.junos/pull/136).
+
 v2.0.0
 ======
 

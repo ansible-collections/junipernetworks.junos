@@ -246,3 +246,12 @@ releases:
       name: junos_bgp_address_family
       namespace: ''
     release_date: '2021-02-25'
+  2.0.1:
+    changes:
+      minor_changes:
+      - Add support df_bit and size option for junos_ping (https://github.com/ansible-collections/junipernetworks.junos/pull/136).
+    fragments:
+    - int-test-fix.yaml
+    - junos_ping_df_rapid.yaml
+    - remove-check_required.yaml
+    release_date: '2021-03-29'

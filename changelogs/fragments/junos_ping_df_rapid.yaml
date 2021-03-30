@@ -1,3 +1,0 @@
----
-minor_changes:
-  - Add support df_bit and size option for junos_ping (https://github.com/ansible-collections/junipernetworks.junos/pull/136).
