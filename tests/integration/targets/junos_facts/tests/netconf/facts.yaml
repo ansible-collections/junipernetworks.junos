@@ -119,7 +119,7 @@
   assert:
     that:
       - result.changed == false
-      - "{{ result['ansible_facts']['ansible_net_gather_network_resources'] | symmetric_difference(result['ansible_facts']['ansible_net_gather_network_resources']) |length\
+      - "{{ result['ansible_facts']['available_network_resources'] | symmetric_difference(result['ansible_facts']['ansible_net_gather_network_resources']) |length\
           \ == 0 }}"
 
 - debug: msg="END netconf/facts.yaml on connection={{ ansible_connection }}"
