@@ -14,6 +14,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+import q
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     locked_config,
     load_config,
@@ -42,14 +43,9 @@ class Routing_instances(ConfigBase):
     The junos_routing_instances class
     """
 
-    gather_subset = [
-        '!all',
-        '!min',
-    ]
+    gather_subset = ["!all", "!min"]
 
-    gather_network_resources = [
-        'routing_instances',
-    ]
+    gather_network_resources = ["routing_instances"]
 
     def __init__(self, module):
         super(Routing_instances, self).__init__(module)
@@ -60,8 +56,12 @@ class Routing_instances(ConfigBase):
         :rtype: A dictionary
         :returns: The current configuration as a dictionary
         """
-        facts, _warnings = Facts(self._module).get_facts(self.gather_subset, self.gather_network_resources, data=data)
-        routing_instances_facts = facts['ansible_network_resources'].get('routing_instances')
+        facts, _warnings = Facts(self._module).get_facts(
+            self.gather_subset, self.gather_network_resources, data=data
+        )
+        routing_instances_facts = facts["ansible_network_resources"].get(
+            "routing_instances"
+        )
         if not routing_instances_facts:
             return []
         return routing_instances_facts
@@ -144,7 +144,7 @@ class Routing_instances(ConfigBase):
         :returns: the commands necessary to migrate the current configuration
                   to the desired configuration
         """
-        want = self._module.params['config']
+        want = self._module.params["config"]
         have = existing_routing_instances_facts
         resp = self.set_state(want, have)
         return to_list(resp)
@@ -183,9 +183,9 @@ class Routing_instances(ConfigBase):
             config_xmls = self._state_replaced(want, have)
         elif state == "overridden":
             config_xmls = self._state_overridden(want, have)
-
         for xml in config_xmls:
             self.root.append(xml)
+        q(tostring(self.root))
         return tostring(self.root)
 
     def _state_replaced(self, want, have):
@@ -195,8 +195,11 @@ class Routing_instances(ConfigBase):
         :returns: the commands necessary to migrate the current configuration
                   to the desired configuration
         """
-        commands = []
-        return commands
+        rinst_xml = []
+        rinst_xml.extend(self._state_deleted(want, have))
+        rinst_xml.extend(self._state_merged(want, have))
+
+        return rinst_xml
 
     def _state_overridden(self, want, have):
         """ The command generator when state is overridden
@@ -205,8 +208,25 @@ class Routing_instances(ConfigBase):
         :returns: the commands necessary to migrate the current configuration
                   to the desired configuration
         """
-        commands = []
-        return commands
+        rinst_xml = []
+        delete = {"delete", "delete"}
+        instance_node = None
+        if have is not None:
+            have_rinst = [instance["name"] for instance in have]
+            want_rinst = [instance["name"] for instance in want]
+
+            for instance in have_rinst:
+                if instance not in want_rinst:
+                    rinstance_node = build_root_xml_node("instance")
+                    build_child_xml_node(
+                        rinstance_node, "name", instance["name"]
+                    )
+                    rinstance_node.attrib.update(delete)
+                    rinst_xml.append(rinstance_node)
+        rinst_xml.extend(self._state_deleted(want, have))
+        rinst_xml.extend(self._state_merged(want, have))
+
+        return rinst_xml
 
     def _state_merged(self, want, have):
         """ The command generator when state is merged
@@ -216,36 +236,99 @@ class Routing_instances(ConfigBase):
                   the current configuration
         """
         instance_xml = []
+        rinst_node = None
         for instance in want:
-            rinst = build_root_xml_node("instance")
+            rinst_node = build_root_xml_node("instance")
 
             # add node routing table-name
-            build_child_xml_node(rinst, "name", instance["name"])
+            build_child_xml_node(rinst_node, "name", instance["name"])
 
-            # add node connection-id-advertise TODO
-
-            # add node egress-protection TODO
+            # add node connector-id-advertise
+            if instance.get("connector_id_advertise"):
+                build_child_xml_node(rinst_node, "connector-id-advertise")
 
             # add node description
-            build_child_xml_node(rinst, "description", instance["description"])
+            if instance.get("description"):
+                build_child_xml_node(
+                    rinst_node, "description", instance["description"]
+                )
 
             # add node instance-role
-            build_child_xml_node(rinst, "instance-role", instance["insatnce_role"])
+            if instance.get("instance_role"):
+                build_child_xml_node(
+                    rinst_node, "instance-role", instance["insatnce_role"]
+                )
 
             # add node instance-type
-            build_child_xml_node(rinst, "instance-type", instance["type"])
+            if instance.get("type"):
+                build_child_xml_node(
+                    rinst_node, "instance-type", instance["type"]
+                )
 
-            # add child node interface TODO
+            # add child node interface
+            if instance.get("interfaces"):
+                interfaces = instance.get("interfaces")
+                for interface in interfaces:
+                    int_node = build_child_xml_node(rinst_node, "interface")
+                    if interface.get("protect_interface"):
+                        build_child_xml_node(
+                            int_node,
+                            "protect-interface",
+                            interface["protect-interface"],
+                        )
+                    build_child_xml_node(int_node, "name", interface["name"])
 
-            # add node l2vpn-id
-            build_child_xml_node(rinst, "l2vpn-id", instance["l2vpn_id"])
+            # add node l2vpn-id TODO
+            if instance.get("l2vpn_id"):
+                build_child_xml_node(
+                    rinst_node, "l2vpn-id", instance["l2vpn_id"]
+                )
 
+            # add node no-irb-layer2-copy
+            if instance.get("no_irb_layer2_copy"):
+                build_child_xml_node(rinst_node, "no-irb-layer2-copy")
 
+            # add node no-local-switching
+            if instance.get("no_local_switching"):
+                build_child_xml_node(rinst_node, "no-local-switching")
 
-        instance_xml.append(rinst)
+            # add node no-vrf-advertise
+            if instance.get("no_vrf_advertise"):
+                build_child_xml_node(rinst_node, "no-vrf-advertise")
+
+            # add node no-vrf-propagate-ttl
+            if instance.get("no_vrf_propagate_ttl"):
+                build_child_xml_node(rinst_node, "no-vrf-propagate-ttl")
+
+            # add node qualified-bum-pruning-mode
+            if instance.get("qualified_bum_pruning_mode"):
+                build_child_xml_node(rinst_node, "qualified-bum-pruning-mode")
+
+            # add node route-distinguisher
+            if instance.get("route_distinguisher"):
+                rd_instance = build_child_xml_node(
+                    rinst_node, "route-distinguisher"
+                )
+                build_child_xml_node(
+                    rd_instance, "rd-type", instance.get("route_distinguisher")
+                )
+
+            # add node vrf-import
+            if instance.get("vrf_imports"):
+                vrf_imports = instance.get("vrf_imports")
+                for vrf in vrf_imports:
+                    build_child_xml_node(rinst_node, "vrf-import", vrf)
+
+            # add node vrf-export
+            if instance.get("vrf_exports"):
+                vrf_exports = instance.get("vrf_exports")
+                for vrf in vrf_exports:
+                    build_child_xml_node(rinst_node, "vrf-export", vrf)
+
+            if rinst_node is not None:
+                instance_xml.append(rinst_node)
 
         return instance_xml
-
 
     def _state_deleted(self, want, have):
         """ The command generator when state is deleted
@@ -254,5 +337,34 @@ class Routing_instances(ConfigBase):
         :returns: the commands necessary to remove the current configuration
                   of the provided objects
         """
-        commands = []
-        return commands
+        rinst_xml = []
+        existing_rinsts = []
+        rinstance_node = None
+        delete = {"delete": "delete"}
+        if have is not None:
+            # get the instances in running config
+            # form existing instance list
+            for h_rinst in have:
+                existing_rinsts.append(h_rinst["name"])
+
+            # Delete target routing-instance
+            if want:
+                for instance in want:
+                    if instance["name"] not in existing_rinsts:
+                        continue
+                    rinstance_node = build_root_xml_node("instance")
+                    build_child_xml_node(
+                        rinstance_node, "name", instance["name"]
+                    )
+                    rinstance_node.attrib.update(delete)
+                    rinst_xml.append(rinstance_node)
+
+            else:
+                # Delete all the routing-instance
+                rinstance_node = build_root_xml_node("instance")
+                rinstance_node.attrib.update(delete)
+                rinst_xml.append(rinstance_node)
+
+            if rinstance_node is not None:
+                rinst_xml.append(rinstance_node)
+        return rinst_xml

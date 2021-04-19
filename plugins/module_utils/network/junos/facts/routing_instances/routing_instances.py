@@ -20,7 +20,9 @@ from ansible.module_utils.basic import missing_required_lib
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
     utils,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.routing_instances.routing_instances import Routing_instancesArgs
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.routing_instances.routing_instances import (
+    Routing_instancesArgs,
+)
 from ansible.module_utils.six import string_types
 
 try:
@@ -38,12 +40,11 @@ except ImportError:
     HAS_XMLTODICT = False
 
 
-
 class Routing_instancesFacts(object):
     """ The junos routing_instances fact class
     """
 
-    def __init__(self, module, subspec='config', options='options'):
+    def __init__(self, module, subspec="config", options="options"):
         self._module = module
         self.argument_spec = Routing_instancesArgs.argument_spec
         spec = deepcopy(self.argument_spec)
@@ -77,7 +78,6 @@ class Routing_instancesFacts(object):
             self._module.fail_json(msg="lxml is not installed.")
         if not HAS_XMLTODICT:
             self._module.fail_json(msg="xmltodict is not installed.")
-
         if not data:
             config_filter = """
                         <configuration>
@@ -92,14 +92,10 @@ class Routing_instancesFacts(object):
             )
         objs = {}
         resources = data.xpath("configuration/routing-instances")
-        autonomous_system_path = data.xpath(
-            "configuration/routing-options/autonomous-system"
-        )
         for resource in resources:
             if resource is not None:
                 xml = self._get_xml_dict(resource)
                 objs = self.render_config(self.generated_spec, xml)
-
 
         facts = {}
         if objs:
@@ -109,9 +105,7 @@ class Routing_instancesFacts(object):
             )
 
             for cfg in params["config"]:
-                facts["routing_instances"].append(
-                    utils.remove_empties(cfg)
-                )
+                facts["routing_instances"].append(utils.remove_empties(cfg))
         ansible_facts["ansible_network_resources"].update(facts)
         return ansible_facts
 
@@ -160,9 +154,9 @@ class Routing_instancesFacts(object):
         # read instance name
         instance_dict["name"] = instance["name"]
 
-        # read connection-id-advertise TODO
-
-        # read egress-protection TODO
+        # read connection-id-advertise
+        if "connector-id-advertise" in instance.keys():
+            instance_dict["connector_id_advertise"] = True
 
         # read description
         if instance.get("description"):
@@ -176,37 +170,79 @@ class Routing_instancesFacts(object):
         if instance.get("instance-type"):
             instance_dict["type"] = instance["instance-type"]
 
-        # read interfaces TODO
+        # read interfaces
+        if instance.get("interface"):
+            interfaces = instance.get("interface")
+            interfaces_list = []
+            if isinstance(interfaces, list):
+                for interface in interfaces:
+                    interfaces_list.append(self.parse_interface(interface))
+            else:
+                interfaces_list.append(self.parse_interface(interfaces))
+            instance_dict["interfaces"] = interfaces_list
 
         # read l2vpn-id
         if instance.get("l2vpn-id"):
             instance_dict["l2vpn_id"] = instance["l2vpn-id"].get("community")
 
-        # read no-irb-layer2-copy TODO
-        if instance.get("no-irb-layer2-copy"):
+        # read no-irb-layer2-copy
+        if "no-irb-layer2-copy" in instance.keys():
             instance_dict["no_irb_layer_2_copy"] = True
 
-        # read no_local_switching TODO
-        if instance.get("no-local-switching"):
+        # read no_local_switching
+        if "no-local-switching" in instance.keys():
             instance_dict["no_local_switching"] = True
 
-        # read no-vrf-advertise TODO
-        if instance.get("no-vrf-advertise"):
+        # read no-vrf-advertise
+        if "no-vrf-advertise" in instance.keys():
             instance_dict["no_vrf_advertise"] = True
 
-        # read no_vrf_propagate_ttl TODO
-        if instance.get("no-vrf-propagate-ttl"):
+        # read no_vrf_propagate_ttl
+        if "no-vrf-propagate-ttl" in instance.keys():
             instance_dict["no_vrf_propagate_ttl"] = True
-
-        # read  protocols list TODO
 
         # read qualified_bum_pruning_mode
         if instance.get("qualified-bum-pruning-mode"):
             instance_dict["qualified_bum_pruning_mode"] = True
 
-        # read routing interface
+        # read route-distinguisher
+        if instance.get("route-distinguisher"):
+            instance_dict["route_distinguisher"] = instance[
+                "route-distinguisher"
+            ].get("rd-type")
 
-        # Add entry to routing_instances list
+        # read vrf imports
+        if instance.get("vrf-import"):
+            vrf_imp_lst = []
+            vrf_imp = instance.get("vrf-import")
+
+            if isinstance(vrf_imp, list):
+                vrf_imp_lst = vrf_imp
+            else:
+                vrf_imp_lst.append(vrf_imp)
+            instance_dict["vrf_imports"] = vrf_imp_lst
+
+        # read vrf exports
+        if instance.get("vrf-export"):
+            vrf_exp_lst = []
+            vrf_exp = instance.get("vrf-export")
+            if isinstance(vrf_exp, list):
+                vrf_exp_lst = vrf_exp
+            else:
+                vrf_exp_lst.append(vrf_exp)
+            instance_dict["vrf_exports"] = vrf_exp_lst
+
         return utils.remove_empties(instance_dict)
 
+    def parse_interface(self, interface):
+        """
 
+        :param instance:
+        :return:
+        """
+        cfg_dict = {}
+        cfg_dict["name"] = interface["name"]
+        if interface.get("protect-interface"):
+            cfg_dict["protect_interface"] = interface.get("protect-interface")
+
+        return cfg_dict

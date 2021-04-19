@@ -32,99 +32,76 @@ __metaclass__ = type
 class Routing_instancesArgs(object):  # pylint: disable=R0903
     """The arg spec for the junos_routing_instances module
     """
+
     def __init__(self, **kwargs):
         pass
 
     argument_spec = {
-        'config': {
-            'elements': 'dict',
-            'options': {
-                'connector_id_advertise': {
-                    'type': 'bool'
-                },
-                'description': {
-                    'type': 'str'
-                },
-                'egress_protection': {
-                    'options': {
-                        'context_identifier': {
-                            'type': 'str'
-                        },
-                        'protector': {
-                            'type': 'bool'
-                        }
+        "config": {
+            "elements": "dict",
+            "options": {
+                "connector_id_advertise": {"type": "bool"},
+                "description": {"type": "str"},
+                "egress_protection": {
+                    "options": {
+                        "context_identifier": {"type": "str"},
+                        "protector": {"type": "bool"},
                     },
-                    'type': 'dict'
+                    "type": "dict",
                 },
-                'instance_role': {
-                    'choices': ['access', 'nni'],
-                    'type': 'str'
-                },
-                'interfaces': {
-                    'elements': 'dict',
-                    'options': {
-                        'name': {
-                            'type': 'str'
-                        },
-                        'protect_interface': {
-                            'type': 'str'
-                        }
+                "instance_role": {"choices": ["access", "nni"], "type": "str"},
+                "interfaces": {
+                    "elements": "dict",
+                    "options": {
+                        "name": {"type": "str"},
+                        "protect_interface": {"type": "str"},
                     },
-                    'type': 'list'
+                    "type": "list",
                 },
-                'l2vpn_id': {
-                    'type': 'str'
-                },
-                'name': {
-                    'type': 'str'
-                },
-                'no_irb_layer_2_copy': {
-                    'type': 'bool'
-                },
-                'no_local_switching': {
-                    'type': 'bool'
-                },
-                'no_vrf_advertise': {
-                    'type': 'bool'
-                },
-                'no_vrf_propagate_ttl': {
-                    'type': 'bool'
-                },
-                'protocols': {
-                    'elements': 'str',
-                    'type': 'list'
-                },
-                'qualified_bum_pruning_mode': {
-                    'type': 'bool'
-                },
-                'routing_interface': {
-                    'elements': 'str',
-                    'type': 'list'
-                },
-                'type': {
-                    'choices': [
-                        'evpn', 'evpn-vpws', 'forwarding', 'l2backhaul-vpn',
-                        'l2vpn', 'layer2-control', 'mpls-forwarding',
-                        'mpls-internet-multicast', 'no-forwarding',
-                        'virtual-router', 'vpls', 'vrf'
+                "l2vpn_id": {"type": "str"},
+                "name": {"type": "str"},
+                "no_irb_layer_2_copy": {"type": "bool"},
+                "no_local_switching": {"type": "bool"},
+                "no_normalization": {"type": "bool"},
+                "no_vrf_advertise": {"type": "bool"},
+                "no_vrf_propagate_ttl": {"type": "bool"},
+                "qualified_bum_pruning_mode": {"type": "bool"},
+                "route_distinguisher": {"type": "str"},
+                "routing_interface": {"elements": "str", "type": "list"},
+                "type": {
+                    "choices": [
+                        "evpn",
+                        "evpn-vpws",
+                        "forwarding",
+                        "l2backhaul-vpn",
+                        "l2vpn",
+                        "layer2-control",
+                        "mpls-forwarding",
+                        "mpls-internet-multicast",
+                        "no-forwarding",
+                        "virtual-router",
+                        "vpls",
+                        "vrf",
                     ],
-                    'type':
-                    'str'
-                }
+                    "type": "str",
+                },
+                "vrf_exports": {"elements": "str", "type": "list"},
+                "vrf_imports": {"elements": "str", "type": "list"},
             },
-            'type': 'list'
+            "type": "list",
         },
-        'running_config': {
-            'type': 'str'
-        },
-        'state': {
-            'choices': [
-                'merged', 'replaced', 'overridden', 'deleted', 'parsed',
-                'gathered', 'rendered'
+        "running_config": {"type": "str"},
+        "state": {
+            "choices": [
+                "merged",
+                "replaced",
+                "overridden",
+                "deleted",
+                "parsed",
+                "gathered",
+                "rendered",
             ],
-            'default':
-            'merged',
-            'type':
-            'str'
-        }
+            "default": "merged",
+            "type": "str",
+        },
     }  # pylint: disable=C0301
