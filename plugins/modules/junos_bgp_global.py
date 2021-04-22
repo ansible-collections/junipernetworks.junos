@@ -1746,6 +1746,8 @@ def main():
         ("state", "parsed", ("running_config",)),
     ]
 
+    import q
+    q("Inside main call")
     module = AnsibleModule(
         argument_spec=Bgp_globalArgs.argument_spec,
         required_if=required_if,

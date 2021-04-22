@@ -13,6 +13,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+import q
 from copy import deepcopy
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
@@ -57,7 +58,7 @@ class Bgp_globalFacts(object):
 
         self.generated_spec = utils.generate_dict(facts_argument_spec)
 
-    def get_connection(self, connection, config_filter):
+    def get_device_data(self, connection, config_filter):
         """
 
         :param connection:
@@ -77,6 +78,7 @@ class Bgp_globalFacts(object):
         if not HAS_LXML:
             self._module.fail_json(msg="lxml is not installed.")
 
+        q(data)
         if not data:
             config_filter = """
                 <configuration>
@@ -89,14 +91,18 @@ class Bgp_globalFacts(object):
                     </routing-options>
                 </configuration>
                 """
-            data = self.get_connection(connection, config_filter)
+            data = self.get_device_data(connection, config_filter)
 
+        q(data)
         if isinstance(data, string_types):
+            q(string_types)
             data = etree.fromstring(
                 to_bytes(data, errors="surrogate_then_replace")
             )
+            q(data)
         objs = {}
         resources = data.xpath("configuration/protocols/bgp")
+        q(resources)
         autonomous_system_path = data.xpath(
             "configuration/routing-options/autonomous-system"
         )
@@ -107,8 +113,10 @@ class Bgp_globalFacts(object):
         else:
             self.autonomous_system = ""
         for resource in resources:
+            q(resource)
             if resource is not None:
                 xml = self._get_xml_dict(resource)
+                q(xml)
                 objs = self.render_config(self.generated_spec, xml)
         if not objs:
             if self.autonomous_system and self.autonomous_system.get(
@@ -128,12 +136,15 @@ class Bgp_globalFacts(object):
                     objs["asdot_notation"] = True
         facts = {}
         if objs:
+            q(objs)
             facts["bgp_global"] = {}
             params = utils.validate_config(
                 self.argument_spec, {"config": objs}
             )
+            q(params)
             facts["bgp_global"] = utils.remove_empties(params["config"])
         ansible_facts["ansible_network_resources"].update(facts)
+        q(ansible_facts["ansible_network_resources"])
         return ansible_facts
 
     def _get_xml_dict(self, xml_root):
@@ -156,6 +167,7 @@ class Bgp_globalFacts(object):
         """
         bgp_global = {}
         bgp = conf.get("bgp")
+        q(bgp)
         # Set ASN value into facts
         if self.autonomous_system and self.autonomous_system.get(
             "autonomous-system"
@@ -232,7 +244,9 @@ class Bgp_globalFacts(object):
                     if bgp_group:
                         bgp_groups.append(bgp_group)
             bgp_global["groups"] = bgp_groups
+        q(bgp_global)
         utils.remove_empties(bgp_global)
+        q(bgp_global)
         return bgp_global
 
     def parse_attrib(self, cfg_dict, conf, type=None):

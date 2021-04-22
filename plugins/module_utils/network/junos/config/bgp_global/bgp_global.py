@@ -14,6 +14,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+import q
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     locked_config,
     load_config,
@@ -72,6 +73,9 @@ class Bgp_global(ConfigBase):
         state = self._module.params["state"]
 
         warnings = list()
+        q("Inside execute_module")
+        q(self.state)
+        q(self._module.params["config"])
 
         if self.state in self.ACTION_STATES or self.state == "purged":
             existing_bgp_global_facts = self.get_bgp_global_facts()
@@ -143,6 +147,8 @@ class Bgp_global(ConfigBase):
         :returns: the list xml configuration necessary to migrate the current configuration
                   to the desired configuration
         """
+        q(want)
+        q(have)
         self.autonomous_system = None
         self.root = build_root_xml_node("configuration")
         self.protocols = build_child_xml_node(self.root, "protocols")
@@ -252,6 +258,13 @@ class Bgp_global(ConfigBase):
             "ttl",
             "type",
         ]
+        q(want)
+        q(have)
+        import json
+        with open("want.json", "w") as outfile:
+            json.dump(want, outfile)
+        with open("have.json", "w") as outfile:
+             json.dump(have, outfile)
         for item in bool_parser:
             bgp_root = self._add_node(
                 want, item, item.replace("-", "_"), bgp_root
