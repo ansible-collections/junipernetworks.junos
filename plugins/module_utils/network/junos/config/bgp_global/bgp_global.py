@@ -14,7 +14,6 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import q
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     locked_config,
     load_config,
@@ -73,9 +72,6 @@ class Bgp_global(ConfigBase):
         state = self._module.params["state"]
 
         warnings = list()
-        q("Inside execute_module")
-        q(self.state)
-        q(self._module.params["config"])
 
         if self.state in self.ACTION_STATES or self.state == "purged":
             existing_bgp_global_facts = self.get_bgp_global_facts()
@@ -105,7 +101,7 @@ class Bgp_global(ConfigBase):
                     diff = load_config(self._module, config_xml, [])
 
                 commit = not self._module.check_mode
-                if diff:
+                if config_xmls and diff:
                     if commit:
                         commit_configuration(self._module)
                     else:
@@ -147,8 +143,6 @@ class Bgp_global(ConfigBase):
         :returns: the list xml configuration necessary to migrate the current configuration
                   to the desired configuration
         """
-        q(want)
-        q(have)
         self.autonomous_system = None
         self.root = build_root_xml_node("configuration")
         self.protocols = build_child_xml_node(self.root, "protocols")
@@ -163,6 +157,7 @@ class Bgp_global(ConfigBase):
                 )
             )
         config_xmls = []
+        temp_lst = []
         if state == "deleted":
             config_xmls = self._state_deleted(want, have)
         elif state == "purged":
@@ -172,12 +167,16 @@ class Bgp_global(ConfigBase):
         elif state == "replaced":
             config_xmls = self._state_replaced(want, have)
 
-        for xml in config_xmls:
-            self.protocols.append(xml)
-        temp_lst = []
-        for xml in self.root.getchildren():
-            xml = tostring(xml)
-            temp_lst.append(xml)
+        if config_xmls:
+            for xml in config_xmls:
+                self.protocols.append(xml)
+            for xml in self.root.getchildren():
+                xml = tostring(xml)
+                temp_lst.append(xml)
+        if state == "purged":
+            for xml in self.root.getchildren():
+                xml = tostring(xml)
+                temp_lst.append(xml)
         return temp_lst
 
     def _state_replaced(self, want, have):
@@ -202,156 +201,153 @@ class Bgp_global(ConfigBase):
         """
         bgp_xml = []
 
-        bgp_root = build_root_xml_node("bgp")
-
         want = remove_empties(want)
-        bool_parser = [
-            "accept-remote-nexthop",
-            "add-path-display-ipv4-address",
-            "advertise-from-main-vpn-tables",
-            "advertise-inactive",
-            "advertise-peer-as",
-            "damping",
-            "disable",
-            "egress-te-sid-stats",
-            "enforce-first-as",
-            "holddown-all-stale-labels",
-            "include-mp-next-hop",
-            "log-updown",
-            "mtu-discovery",
-            "no-advertise-peer-as",
-            "no-aggregator-id",
-            "no-client-reflect",
-            "no-precision-timers",
-            "passive",
-            "precision-timers",
-            "rfc6514-compliant-safi129",
-            "route-server-client",
-            "send-addpath-optimization",
-            "itcp-aggressive-transmission",
-            "unconfigured-peer-graceful-restart",
-            "vpn-apply-export",
-            "as-override",
-            "unconfigured-peer-graceful-restart",
-            "vpn-apply-export",
-        ]
-        cfg_parser = [
-            "authentication-algorithm",
-            "authentication-key",
-            "authentication-key-chain",
-            "description",
-            "export",
-            "forwarding-context",
-            "hold-time",
-            "import",
-            "ipsec-sa",
-            "keep",
-            "local-address",
-            "local-interface",
-            "local-preference",
-            "peer-as",
-            "preference",
-            "out-delay",
-            "sr-preference-override",
-            "stale-labels-holddown-period",
-            "tcp-mss",
-            "ttl",
-            "type",
-        ]
-        q(want)
-        q(have)
-        import json
-        with open("want.json", "w") as outfile:
-            json.dump(want, outfile)
-        with open("have.json", "w") as outfile:
-             json.dump(have, outfile)
-        for item in bool_parser:
-            bgp_root = self._add_node(
-                want, item, item.replace("-", "_"), bgp_root
-            )
+        if want:
+            bgp_root = build_root_xml_node("bgp")
+            bool_parser = [
+                "accept-remote-nexthop",
+                "add-path-display-ipv4-address",
+                "advertise-from-main-vpn-tables",
+                "advertise-inactive",
+                "advertise-peer-as",
+                "damping",
+                "disable",
+                "egress-te-sid-stats",
+                "enforce-first-as",
+                "holddown-all-stale-labels",
+                "include-mp-next-hop",
+                "log-updown",
+                "mtu-discovery",
+                "no-advertise-peer-as",
+                "no-aggregator-id",
+                "no-client-reflect",
+                "no-precision-timers",
+                "passive",
+                "precision-timers",
+                "rfc6514-compliant-safi129",
+                "route-server-client",
+                "send-addpath-optimization",
+                "itcp-aggressive-transmission",
+                "unconfigured-peer-graceful-restart",
+                "vpn-apply-export",
+                "as-override",
+                "unconfigured-peer-graceful-restart",
+                "vpn-apply-export",
+            ]
+            cfg_parser = [
+                "authentication-algorithm",
+                "authentication-key",
+                "authentication-key-chain",
+                "description",
+                "export",
+                "forwarding-context",
+                "hold-time",
+                "import",
+                "ipsec-sa",
+                "keep",
+                "local-address",
+                "local-interface",
+                "local-preference",
+                "peer-as",
+                "preference",
+                "out-delay",
+                "sr-preference-override",
+                "stale-labels-holddown-period",
+                "tcp-mss",
+                "ttl",
+                "type",
+            ]
+            for item in bool_parser:
+                bgp_root = self._add_node(
+                    want, item, item.replace("-", "_"), bgp_root
+                )
 
-        for item in cfg_parser:
-            bgp_root = self._add_node(
-                want, item, item.replace("-", "_"), bgp_root, True
-            )
+            for item in cfg_parser:
+                bgp_root = self._add_node(
+                    want, item, item.replace("-", "_"), bgp_root, True
+                )
 
-        # Generate xml node for autonomous-system
-        if want.get("as_number"):
-            as_node = build_child_xml_node(
-                self.routing_options,
-                "autonomous-system",
-                want.get("as_number"),
-            )
-            # Add node for loops
-            if want.get("loops"):
-                build_child_xml_node(as_node, "loops", want.get("loops"))
-            # Add node for asdot_notation
-            if want.get("asdot_notation"):
-                if "asdot_notation" in want.keys():
-                    build_child_xml_node(as_node, "asdot-notation")
+            # Generate xml node for autonomous-system
+            if want.get("as_number"):
+                as_node = build_child_xml_node(
+                    self.routing_options,
+                    "autonomous-system",
+                    want.get("as_number"),
+                )
+                # Add node for loops
+                if want.get("loops"):
+                    build_child_xml_node(as_node, "loops", want.get("loops"))
+                # Add node for asdot_notation
+                if want.get("asdot_notation"):
+                    if "asdot_notation" in want.keys():
+                        build_child_xml_node(as_node, "asdot-notation")
 
-        # Generate commands for bgp node
-        self.parse_attrib(bgp_root, want)
+            # Generate commands for bgp node
+            self.parse_attrib(bgp_root, want)
 
-        # Generate commands for groups
-        if want.get("groups"):
-            groups = want.get("groups")
+            # Generate commands for groups
+            if want.get("groups"):
+                groups = want.get("groups")
 
-            # Generate commands for each group in group list
-            for group in groups:
-                groups_node = build_child_xml_node(bgp_root, "group")
-                build_child_xml_node(groups_node, "name", group["name"])
-                # Parse the boolean value attributes
-                for item in bool_parser:
-                    groups_node = self._add_node(
-                        group, item, item.replace("-", "_"), groups_node
-                    )
-
-                # Parse the non-boolean leaf attributes
-                for item in cfg_parser:
-                    groups_node = self._add_node(
-                        group, item, item.replace("-", "_"), groups_node, True
-                    )
-
-                # Generate commands for nodes with child attributes
-                self.parse_attrib(groups_node, group)
-
-                # Generate commands for each neighbors
-                if group.get("neighbors"):
-                    neighbors = group.get("neighbors")
-                    # Generate commands for each neighbor in neighbors list
-                    for neighbor in neighbors:
-                        neighbors_node = build_child_xml_node(
-                            groups_node, "neighbor"
+                # Generate commands for each group in group list
+                for group in groups:
+                    groups_node = build_child_xml_node(bgp_root, "group")
+                    build_child_xml_node(groups_node, "name", group["name"])
+                    # Parse the boolean value attributes
+                    for item in bool_parser:
+                        groups_node = self._add_node(
+                            group, item, item.replace("-", "_"), groups_node
                         )
-                        build_child_xml_node(
-                            neighbors_node,
-                            "name",
-                            neighbor["neighbor_address"],
+
+                    # Parse the non-boolean leaf attributes
+                    for item in cfg_parser:
+                        groups_node = self._add_node(
+                            group,
+                            item,
+                            item.replace("-", "_"),
+                            groups_node,
+                            True,
                         )
-                        # Parse the boolean value attributes
-                        for item in bool_parser:
-                            neighbors_node = self._add_node(
-                                neighbor,
-                                item,
-                                item.replace("-", "_"),
-                                neighbors_node,
+
+                    # Generate commands for nodes with child attributes
+                    self.parse_attrib(groups_node, group)
+
+                    # Generate commands for each neighbors
+                    if group.get("neighbors"):
+                        neighbors = group.get("neighbors")
+                        # Generate commands for each neighbor in neighbors list
+                        for neighbor in neighbors:
+                            neighbors_node = build_child_xml_node(
+                                groups_node, "neighbor"
                             )
-
-                        # Parse the non-boolean leaf attributes
-                        for item in cfg_parser:
-                            neighbors_node = self._add_node(
-                                neighbor,
-                                item,
-                                item.replace("-", "_"),
+                            build_child_xml_node(
                                 neighbors_node,
-                                True,
+                                "name",
+                                neighbor["neighbor_address"],
                             )
+                            # Parse the boolean value attributes
+                            for item in bool_parser:
+                                neighbors_node = self._add_node(
+                                    neighbor,
+                                    item,
+                                    item.replace("-", "_"),
+                                    neighbors_node,
+                                )
 
-                        # Generate commands for nodes with child attributes
-                        self.parse_attrib(neighbors_node, neighbor)
+                            # Parse the non-boolean leaf attributes
+                            for item in cfg_parser:
+                                neighbors_node = self._add_node(
+                                    neighbor,
+                                    item,
+                                    item.replace("-", "_"),
+                                    neighbors_node,
+                                    True,
+                                )
 
-        bgp_xml.append(bgp_root)
+                            # Generate commands for nodes with child attributes
+                            self.parse_attrib(neighbors_node, neighbor)
+
+            bgp_xml.append(bgp_root)
 
         return bgp_xml
 

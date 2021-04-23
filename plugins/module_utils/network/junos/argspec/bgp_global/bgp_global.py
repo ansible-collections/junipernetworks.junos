@@ -385,7 +385,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                             },
                             "type": "dict",
                         },
-                        "import": {"type": "str"},
+                        "import": {"elements": "str", "type": "list"},
                         "include_mp_next_hop": {"type": "bool"},
                         "ipsec_sa": {"type": "str"},
                         "keep": {"choices": ["all", "none"], "type": "str"},

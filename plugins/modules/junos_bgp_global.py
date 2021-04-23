@@ -361,8 +361,9 @@ options:
             description: Idle the peer until the user intervenes.
             type: bool
       import: &import
-        description: Specify import policy.
-        type: str
+        description: Specify import policies.
+        type: list
+        elements: str
       include_mp_next_hop: &include_mp_next_hop
         description: Include NEXT-HOP attribute in multiprotocol updates.
         type: bool
@@ -1747,6 +1748,7 @@ def main():
     ]
 
     import q
+
     q("Inside main call")
     module = AnsibleModule(
         argument_spec=Bgp_globalArgs.argument_spec,
