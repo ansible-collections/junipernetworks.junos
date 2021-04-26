@@ -21,7 +21,7 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.u
     generate_dict,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.utils.utils import (
-    validate_config,
+    _validate_config,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.bgp_global.bgp_global import (
     Bgp_globalArgs,
@@ -134,7 +134,7 @@ class Bgp_globalFacts(object):
         facts = {}
         if objs:
             facts["bgp_global"] = {}
-            params = validate_config(
+            params = _validate_config(
                 self._module, self.argument_spec, {"config": objs}, redact=True
             )
             facts["bgp_global"] = remove_empties(params["config"])

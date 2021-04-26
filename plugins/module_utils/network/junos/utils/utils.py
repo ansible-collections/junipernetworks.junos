@@ -13,7 +13,7 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     tostring,
 )
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    validate_config as _validate_config,
+    validate_config
 )
 
 try:
@@ -44,8 +44,8 @@ def get_resource_config(connection, config_filter=None, attrib=None):
     return connection.execute_rpc(tostring(get_ele))
 
 
-def validate_config(_module, spec, data, redact=False):
-    validated_data = _validate_config(spec, data)
+def _validate_config(_module, spec, data, redact=False):
+    validated_data = validate_config(spec, data)
     if redact:
         _module.no_log_values.update(list_no_log_values(spec, validated_data))
     return validated_data

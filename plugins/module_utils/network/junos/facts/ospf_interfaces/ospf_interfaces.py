@@ -22,7 +22,7 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.u
     generate_dict,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.utils.utils import (
-    validate_config,
+    _validate_config,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.ospf_interfaces.ospf_interfaces import (
     Ospf_interfacesArgs,
@@ -116,7 +116,7 @@ class Ospf_interfacesFacts(object):
         facts = {}
         if objs:
             facts["junos_ospf_interfaces"] = []
-            params = validate_config(
+            params = _validate_config(
                 self._module, self.argument_spec, {"config": objs}, redact=True
             )
 
