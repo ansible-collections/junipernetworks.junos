@@ -19,20 +19,15 @@ from ansible.module_utils.basic import missing_required_lib
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
     remove_empties,
     generate_dict,
-    validate_config as _validate_config,
+)
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.utils.utils import (
+    validate_config,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.bgp_global.bgp_global import (
     Bgp_globalArgs,
 )
 from ansible.module_utils.six import string_types
 
-try:
-    from ansible.module_utils.common.parameters import (
-        _list_no_log_values as list_no_log_values,
-    )
-except ImportError:
-    # TODO: Remove this import when we no longer support ansible < 2.11
-    from ansible.module_utils.common.parameters import list_no_log_values
 
 try:
     from lxml import etree
@@ -75,14 +70,6 @@ class Bgp_globalFacts(object):
         :return:
         """
         return connection.get_configuration(filter=config_filter)
-
-    def validate_config(self, spec, data, redact=False):
-        validated_data = _validate_config(spec, data)
-        if redact:
-            self._module.no_log_values.update(
-                list_no_log_values(spec, validated_data)
-            )
-        return validated_data
 
     def populate_facts(self, connection, ansible_facts, data=None):
         """ Populate the facts for bgp_global
@@ -147,8 +134,8 @@ class Bgp_globalFacts(object):
         facts = {}
         if objs:
             facts["bgp_global"] = {}
-            params = self.validate_config(
-                self.argument_spec, {"config": objs}, redact=True
+            params = validate_config(
+                self._module, self.argument_spec, {"config": objs}, redact=True
             )
             facts["bgp_global"] = remove_empties(params["config"])
         ansible_facts["ansible_network_resources"].update(facts)

@@ -65,7 +65,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                     "type": "str",
                 },
                 "authentication_key": {"type": "str", "no_log": True},
-                "authentication_key_chain": {"type": "str", "no_log": True},
+                "authentication_key_chain": {"type": "str", "no_log": False},
                 "bfd_liveness_detection": {
                     "options": {
                         "authentication": {
@@ -250,7 +250,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                         "authentication_key": {"type": "str", "no_log": True},
                         "authentication_key_chain": {
                             "type": "str",
-                            "no_log": True,
+                            "no_log": False,
                         },
                         "bfd_liveness_detection": {
                             "options": {
@@ -487,7 +487,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                 },
                                 "authentication_key_chain": {
                                     "type": "str",
-                                    "no_log": True,
+                                    "no_log": False,
                                 },
                                 "bfd_liveness_detection": {
                                     "options": {
