@@ -13,7 +13,7 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     tostring,
 )
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    validate_config
+    validate_config,
 )
 
 try:
