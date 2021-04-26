@@ -318,8 +318,8 @@ class TestJunosRouting_instancesModule(TestJunosModule):
         set_module_args(dict(config=[], state="deleted"))
 
         commands = [
-           '<nc:routing-instances xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">'
-           '<nc:instance delete=\"delete\"/></nc:routing-instances>'
+            '<nc:routing-instances xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">'
+            '<nc:instance delete=\"delete\"/></nc:routing-instances>'
         ]
         result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
@@ -333,8 +333,8 @@ class TestJunosRouting_instancesModule(TestJunosModule):
         )], state="deleted"))
 
         commands = [
-          '<nc:routing-instances xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">'
-          '<nc:instance delete=\"delete\"><nc:name>forwardinst</nc:name></nc:instance></nc:routing-instances>'
+            '<nc:routing-instances xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">'
+            '<nc:instance delete=\"delete\"><nc:name>forwardinst</nc:name></nc:instance></nc:routing-instances>'
         ]
         result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
