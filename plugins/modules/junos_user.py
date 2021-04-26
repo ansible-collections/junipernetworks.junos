@@ -392,7 +392,7 @@ def main():
         full_name=dict(),
         role=dict(choices=ROLES),
         encrypted_password=dict(no_log=True),
-        sshkey=dict(),
+        sshkey=dict(no_log=False),
         state=dict(choices=["present", "absent"], default="present"),
         purge=dict(type="bool", default=False),
         active=dict(type="bool", default=True),

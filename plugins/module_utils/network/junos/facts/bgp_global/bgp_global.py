@@ -16,13 +16,23 @@ __metaclass__ = type
 from copy import deepcopy
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
-    utils,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
+    remove_empties,
+    generate_dict,
+    validate_config as _validate_config,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.bgp_global.bgp_global import (
     Bgp_globalArgs,
 )
 from ansible.module_utils.six import string_types
+
+try:
+    from ansible.module_utils.common.parameters import (
+        _list_no_log_values as list_no_log_values,
+    )
+except ImportError:
+    # TODO: Remove this import when we no longer support ansible < 2.11
+    from ansible.module_utils.common.parameters import list_no_log_values
 
 try:
     from lxml import etree
@@ -55,7 +65,7 @@ class Bgp_globalFacts(object):
         else:
             facts_argument_spec = spec
 
-        self.generated_spec = utils.generate_dict(facts_argument_spec)
+        self.generated_spec = generate_dict(facts_argument_spec)
 
     def get_connection(self, connection, config_filter):
         """
@@ -65,6 +75,14 @@ class Bgp_globalFacts(object):
         :return:
         """
         return connection.get_configuration(filter=config_filter)
+
+    def validate_config(self, spec, data, redact=False):
+        validated_data = _validate_config(spec, data)
+        if redact:
+            self._module.no_log_values.update(
+                list_no_log_values(spec, validated_data)
+            )
+        return validated_data
 
     def populate_facts(self, connection, ansible_facts, data=None):
         """ Populate the facts for bgp_global
@@ -129,10 +147,10 @@ class Bgp_globalFacts(object):
         facts = {}
         if objs:
             facts["bgp_global"] = {}
-            params = utils.validate_config(
-                self.argument_spec, {"config": objs}
+            params = self.validate_config(
+                self.argument_spec, {"config": objs}, redact=True
             )
-            facts["bgp_global"] = utils.remove_empties(params["config"])
+            facts["bgp_global"] = remove_empties(params["config"])
         ansible_facts["ansible_network_resources"].update(facts)
         return ansible_facts
 
@@ -232,7 +250,7 @@ class Bgp_globalFacts(object):
                     if bgp_group:
                         bgp_groups.append(bgp_group)
             bgp_global["groups"] = bgp_groups
-        utils.remove_empties(bgp_global)
+        remove_empties(bgp_global)
         return bgp_global
 
     def parse_attrib(self, cfg_dict, conf, type=None):

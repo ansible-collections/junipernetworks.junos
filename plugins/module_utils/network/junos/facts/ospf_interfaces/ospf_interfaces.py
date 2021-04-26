@@ -17,13 +17,23 @@ from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
-    utils,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
+    remove_empties,
+    generate_dict,
+    validate_config as _validate_config,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.ospf_interfaces.ospf_interfaces import (
     Ospf_interfacesArgs,
 )
 from ansible.module_utils.six import string_types
+
+try:
+    from ansible.module_utils.common.parameters import (
+        _list_no_log_values as list_no_log_values,
+    )
+except ImportError:
+    # TODO: Remove this import when we no longer support ansible < 2.11
+    from ansible.module_utils.common.parameters import list_no_log_values
 
 try:
     from lxml import etree
@@ -55,7 +65,7 @@ class Ospf_interfacesFacts(object):
         else:
             facts_argument_spec = spec
 
-        self.generated_spec = utils.generate_dict(facts_argument_spec)
+        self.generated_spec = generate_dict(facts_argument_spec)
         self.router_id = ""
 
     def get_connection(self, connection, config_filter):
@@ -66,6 +76,14 @@ class Ospf_interfacesFacts(object):
         :return:
         """
         return connection.get_configuration(filter=config_filter)
+
+    def validate_config(self, spec, data, redact=False):
+        validated_data = _validate_config(spec, data)
+        if redact:
+            self._module.no_log_values.update(
+                list_no_log_values(spec, validated_data)
+            )
+        return validated_data
 
     def populate_facts(self, connection, ansible_facts, data=None):
         """ Populate the facts for ospf_interfaces
@@ -112,14 +130,12 @@ class Ospf_interfacesFacts(object):
         facts = {}
         if objs:
             facts["junos_ospf_interfaces"] = []
-            params = utils.validate_config(
-                self.argument_spec, {"config": objs}
+            params = self.validate_config(
+                self.argument_spec, {"config": objs}, redact=True
             )
 
             for cfg in params["config"]:
-                facts["junos_ospf_interfaces"].append(
-                    utils.remove_empties(cfg)
-                )
+                facts["junos_ospf_interfaces"].append(remove_empties(cfg))
 
         ansible_facts["ansible_network_resources"].update(facts)
         return ansible_facts
@@ -253,7 +269,7 @@ class Ospf_interfacesFacts(object):
                     conf["address_family"] = address_family
                     conf["name"] = interface.get("name")
                     conf["router_id"] = self.router_id["router-id"]
-                    utils.remove_empties(conf)
+                    remove_empties(conf)
                     ospf_interfaces_config.append(conf)
 
         return ospf_interfaces_config
