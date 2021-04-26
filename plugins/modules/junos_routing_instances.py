@@ -121,6 +121,9 @@ options:
       no_irb_layer_2_copy:
         description: Disable transmission of layer-2 copy of packets of irb routing-interface.
         type: bool
+      no_normalization:
+         description: Disable vlan id normalization for interfaces.
+         type: bool
       no_local_switching:
         description: Disable vlan id normalization for interfaces.
         type: bool
@@ -130,15 +133,22 @@ options:
       no_vrf_propagate_ttl:
         description: Disable TTL propagation from IP to MPLS (on push) and MPLS to IP (on pop).
         type: bool
-      protocols:
-        description:  Routing protocol configuration list.
-        type: list
-        elements: str
       qualified_bum_pruning_mode:
         description: Enable BUM pruning for VPLS instance.
         type: bool
+      route_distinguisher:
+        description: Route distinguisher for this instance
+        type: str
       routing_interface:
         description: Routing interface name for this routing-instance.
+        type: list
+        elements: str
+      vrf_imports:
+        description: Import policy for VRF instance RIBs.
+        type: list
+        elements: str
+      vrf_exports:
+        description: Export policy for VRF instance RIBs.
         type: list
         elements: str
 
@@ -165,7 +175,7 @@ EXAMPLES = """
 # admin# show routing-instances
 #
 # [edit]
-# vagrant@vsrx# show policy-options 
+# vagrant@vsrx# show policy-options
 # policy-statement test-policy {
 #     term t1 {
 #         then reject;
@@ -186,7 +196,7 @@ EXAMPLES = """
         vrf_imports:
           - "test-policy"
         vrf_exports:
-          - "test-policy"            
+          - "test-policy"
           - "test-policy-1"
         interfaces:
           - name: "sp-0/0/0.0"
@@ -310,7 +320,7 @@ EXAMPLES = """
          vrf_imports:
            - "test-policy"
          vrf_exports:
-           - "test-policy"            
+           - "test-policy"
          interfaces:
            - name: "sp-0/0/0.0"
            - name: "gr-0/0/0.0"
@@ -321,7 +331,7 @@ EXAMPLES = """
 # After state
 # -----------
 #
-# admin@vsrx# show routing-instances    
+# admin@vsrx# show routing-instances
 # forwardinst {
 #     description "Configured by Ansible Content Team";
 #     instance-type forwarding;
@@ -341,7 +351,7 @@ EXAMPLES = """
 # Before state
 # ------------
 #
-# admin@vsrx# show routing-instances    
+# admin@vsrx# show routing-instances
 # forwardinst {
 #     description "Configured by Ansible Content Team";
 #     instance-type forwarding;
@@ -365,7 +375,7 @@ EXAMPLES = """
        vrf_imports:
          - "test-policy"
        vrf_exports:
-         - "test-policy"            
+         - "test-policy"
          - "test-policy-1"
        interfaces:
          - name: "sp-0/0/0.0"
@@ -381,7 +391,7 @@ EXAMPLES = """
 # After state
 # -----------
 #
-# admin@vsrx# show routing-instances    
+# admin@vsrx# show routing-instances
 # forwardinst {
 #     description "Configured by Ansible Content Team";
 #     instance-type forwarding;
@@ -405,7 +415,7 @@ EXAMPLES = """
 # Before state
 # ------------
 #
-# admin@vsrx# show routing-instances    
+# admin@vsrx# show routing-instances
 # forwardinst {
 #     description "Configured by Ansible Content Team";
 #     instance-type forwarding;
@@ -429,7 +439,7 @@ EXAMPLES = """
 # After state
 # -----------
 #
-# admin@vsrx# show routing-instances    
+# admin@vsrx# show routing-instances
 # forwardinst {
 #     description "Configured by Ansible Content Team";
 #     instance-type forwarding;
@@ -440,7 +450,7 @@ EXAMPLES = """
 # Before state
 # ------------
 #
-# admin@vsrx# show routing-instances    
+# admin@vsrx# show routing-instances
 # forwardinst {
 #     description "Configured by Ansible Content Team";
 #     instance-type forwarding;
@@ -466,8 +476,8 @@ EXAMPLES = """
 # After state
 # -----------
 #
-# admin@vsrx# show routing-instances    
-# 
+# admin@vsrx# show routing-instances
+#
 # [edit]
 
 - name: Gather Junos BGP address family config
@@ -649,7 +659,7 @@ EXAMPLES = """
         vrf_imports:
           - "test-policy"
         vrf_exports:
-          - "test-policy"            
+          - "test-policy"
           - "test-policy-1"
         interfaces:
           - name: "sp-0/0/0.0"

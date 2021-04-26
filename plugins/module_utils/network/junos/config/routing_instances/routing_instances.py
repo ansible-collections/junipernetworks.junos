@@ -14,7 +14,6 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import q
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     locked_config,
     load_config,
@@ -27,7 +26,6 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.c
 )
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
     to_list,
-    remove_empties,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
     Facts,
@@ -159,10 +157,6 @@ class Routing_instances(ConfigBase):
                   to the desired configuration
         """
         self.root = build_root_xml_node("routing-instances")
-        # self.root = build_root_xml_node("configuration")
-        # self.routing_instances = build_child_xml_node(
-        #     self.root, "routing-instances"
-        # )
         state = self._module.params["state"]
         if (
             state in ("merged", "replaced", "rendered", "overridden")
@@ -174,7 +168,6 @@ class Routing_instances(ConfigBase):
                 )
             )
         config_xmls = []
-        # cfg_lst = []
         if state == "deleted":
             config_xmls = self._state_deleted(want, have)
         elif state in ("merged", "rendered"):
@@ -185,7 +178,6 @@ class Routing_instances(ConfigBase):
             config_xmls = self._state_overridden(want, have)
         for xml in config_xmls:
             self.root.append(xml)
-        q(tostring(self.root))
         return tostring(self.root)
 
     def _state_replaced(self, want, have):
@@ -209,8 +201,7 @@ class Routing_instances(ConfigBase):
                   to the desired configuration
         """
         rinst_xml = []
-        delete = {"delete", "delete"}
-        instance_node = None
+        delete = {"delete": "delete"}
         if have is not None:
             have_rinst = [instance["name"] for instance in have]
             want_rinst = [instance["name"] for instance in want]
@@ -218,9 +209,7 @@ class Routing_instances(ConfigBase):
             for instance in have_rinst:
                 if instance not in want_rinst:
                     rinstance_node = build_root_xml_node("instance")
-                    build_child_xml_node(
-                        rinstance_node, "name", instance["name"]
-                    )
+                    build_child_xml_node(rinstance_node, "name", instance)
                     rinstance_node.attrib.update(delete)
                     rinst_xml.append(rinstance_node)
         rinst_xml.extend(self._state_deleted(want, have))

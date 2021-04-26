@@ -13,7 +13,6 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import q
 from copy import deepcopy
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
@@ -58,7 +57,7 @@ class Routing_instancesFacts(object):
 
         self.generated_spec = utils.generate_dict(facts_argument_spec)
 
-    def get_connection(self, connection, config_filter):
+    def get_device_data(self, connection, config_filter):
         """
         :param connection:
         :param config_filter:
@@ -84,7 +83,7 @@ class Routing_instancesFacts(object):
                            <routing-instances/>
                         </configuration>
                         """
-            data = self.get_connection(connection, config_filter)
+            data = self.get_device_data(connection, config_filter)
 
         if isinstance(data, string_types):
             data = etree.fromstring(
