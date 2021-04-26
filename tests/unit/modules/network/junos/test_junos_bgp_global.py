@@ -27,18 +27,12 @@ __metaclass__ = type
 
 from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
     patch,
-    MagicMock,
 )
 from ansible_collections.junipernetworks.junos.plugins.modules import (
     junos_bgp_global,
 )
 from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
     set_module_args,
-)
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
-    AnsibleExitJson,
-    AnsibleFailJson,
-    ModuleTestCase,
 )
 from .junos_module import TestJunosModule, load_fixture
 
@@ -302,7 +296,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
         result = self.execute_module(changed=False)
         self.assertEqual(sorted(result["rendered"]), sorted(rendered))
 
-    def test_junos_bgp_global_rendered(self):
+    def test_junos_bgp_global_rendered_empty(self):
         """
 
         :return:
