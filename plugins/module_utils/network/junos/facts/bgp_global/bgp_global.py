@@ -62,7 +62,7 @@ class Bgp_globalFacts(object):
 
         self.generated_spec = generate_dict(facts_argument_spec)
 
-    def get_connection(self, connection, config_filter):
+    def get_device_data(self, connection, config_filter):
         """
 
         :param connection:
@@ -94,7 +94,7 @@ class Bgp_globalFacts(object):
                     </routing-options>
                 </configuration>
                 """
-            data = self.get_connection(connection, config_filter)
+            data = self.get_device_data(connection, config_filter)
 
         if isinstance(data, string_types):
             data = etree.fromstring(
@@ -265,7 +265,10 @@ class Bgp_globalFacts(object):
         # Parse advertise-external dictionary
         if "advertise-external" in conf.keys():
             cfg = {}
-            if "conditional" in conf["advertise-bgp-static"].keys():
+            if (
+                isinstance(conf.get("advertise-external"), dict)
+                and "conditional" in conf["advertise-external"].keys()
+            ):
                 cfg["conditional"] = True
             else:
                 cfg["set"] = True
@@ -394,16 +397,14 @@ class Bgp_globalFacts(object):
 
                 # Read post-policy attribute value
                 if "post-policy" in r_monitoring.keys():
-                    if r_monitoring["post-policy"].keys(
-                        "exclude-non-eligible"
-                    ):
+                    if r_monitoring["post-policy"].get("exclude-non-eligible"):
                         rm_dict["post_policy_exclude_non_eligible"] = True
                     else:
                         rm_dict["post_policy"] = True
 
                 # Read pre-policy attribute value
                 if "pre-policy" in r_monitoring.keys():
-                    if r_monitoring["pre-policy"].keys("exclude-non-feasible"):
+                    if r_monitoring["pre-policy"].get("exclude-non-feasible"):
                         rm_dict["pre_policy_exclude_non_feasible"] = True
                     else:
                         rm_dict["pre_policy"] = True
@@ -627,7 +628,15 @@ class Bgp_globalFacts(object):
 
         # Read import value
         if "import" in conf.keys():
-            cfg_dict["import"] = conf["import"]
+
+            imports = conf.get("import")
+            import_lst = []
+            if isinstance(imports, dict):
+                import_lst.append(imports)
+            else:
+                for entry in imports:
+                    import_lst.append(entry)
+            cfg_dict["import"] = import_lst
 
         # Read include-mp-next-hop value
         if "include-mp-next-hop" in conf.keys():
@@ -652,7 +661,7 @@ class Bgp_globalFacts(object):
             cfg["as_num"] = la.get("as-number")
             if "alias" in la.keys():
                 cfg["alias"] = True
-            elif "private" in la.keys():
+            if "private" in la.keys():
                 cfg["private"] = True
             if "loops" in la.keys():
                 cfg["loops"] = la.get("loops")
