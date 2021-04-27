@@ -27,7 +27,6 @@ __metaclass__ = type
 
 from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
     patch,
-    MagicMock,
 )
 from ansible_collections.junipernetworks.junos.plugins.modules import (
     junos_routing_instances,
@@ -318,8 +317,8 @@ class TestJunosRouting_instancesModule(TestJunosModule):
         set_module_args(dict(config=[], state="deleted"))
 
         commands = [
-            '<nc:routing-instances xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">'
-            '<nc:instance delete=\"delete\"/></nc:routing-instances>'
+            '<nc:routing-instances xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
+            '<nc:instance delete="delete"/></nc:routing-instances>'
         ]
         result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
@@ -328,13 +327,13 @@ class TestJunosRouting_instancesModule(TestJunosModule):
         """
         :return:
         """
-        set_module_args(dict(config=[dict(
-            name="forwardinst"
-        )], state="deleted"))
+        set_module_args(
+            dict(config=[dict(name="forwardinst")], state="deleted")
+        )
 
         commands = [
-            '<nc:routing-instances xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">'
-            '<nc:instance delete=\"delete\"><nc:name>forwardinst</nc:name></nc:instance></nc:routing-instances>'
+            '<nc:routing-instances xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
+            '<nc:instance delete="delete"><nc:name>forwardinst</nc:name></nc:instance></nc:routing-instances>'
         ]
         result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), sorted(commands))

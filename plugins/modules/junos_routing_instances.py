@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright 2019 Red Hat
+# Copyright 2021 Red Hat
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -39,7 +39,7 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = """
 ---
 module: junos_routing_instances
-version_added: 1.3.1
+version_added: 2.1.0
 short_description: Manage routing instances on Junos devices.
 description: Manage routing instances on Junos network devices.
 author: Rohit Thakur (@rohitthakur2590)
@@ -151,7 +151,6 @@ options:
         description: Export policy for VRF instance RIBs.
         type: list
         elements: str
-
   state:
     description:
       - The state the configuration should be left in.
@@ -253,7 +252,6 @@ EXAMPLES = """
 # }
 - name: Gather Junos routing-instances
   junipernetworks.junos.junos_routing_instances:
-    config:
     state: gathered
 #
 #
@@ -445,7 +443,7 @@ EXAMPLES = """
 #     instance-type forwarding;
 # }
 
-# Using deleted
+# Using deleted without config
 #
 # Before state
 # ------------
