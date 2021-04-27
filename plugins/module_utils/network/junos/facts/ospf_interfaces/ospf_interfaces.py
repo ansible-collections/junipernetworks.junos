@@ -17,8 +17,12 @@ from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
-    utils,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
+    remove_empties,
+    generate_dict,
+)
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.utils.utils import (
+    _validate_config,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.ospf_interfaces.ospf_interfaces import (
     Ospf_interfacesArgs,
@@ -55,7 +59,7 @@ class Ospf_interfacesFacts(object):
         else:
             facts_argument_spec = spec
 
-        self.generated_spec = utils.generate_dict(facts_argument_spec)
+        self.generated_spec = generate_dict(facts_argument_spec)
         self.router_id = ""
 
     def get_connection(self, connection, config_filter):
@@ -112,14 +116,12 @@ class Ospf_interfacesFacts(object):
         facts = {}
         if objs:
             facts["junos_ospf_interfaces"] = []
-            params = utils.validate_config(
-                self.argument_spec, {"config": objs}
+            params = _validate_config(
+                self._module, self.argument_spec, {"config": objs}, redact=True
             )
 
             for cfg in params["config"]:
-                facts["junos_ospf_interfaces"].append(
-                    utils.remove_empties(cfg)
-                )
+                facts["junos_ospf_interfaces"].append(remove_empties(cfg))
 
         ansible_facts["ansible_network_resources"].update(facts)
         return ansible_facts
@@ -253,7 +255,7 @@ class Ospf_interfacesFacts(object):
                     conf["address_family"] = address_family
                     conf["name"] = interface.get("name")
                     conf["router_id"] = self.router_id["router-id"]
-                    utils.remove_empties(conf)
+                    remove_empties(conf)
                     ospf_interfaces_config.append(conf)
 
         return ospf_interfaces_config

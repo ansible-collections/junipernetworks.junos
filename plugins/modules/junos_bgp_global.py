@@ -362,7 +362,8 @@ options:
             type: bool
       import: &import
         description: Specify import policy.
-        type: str
+        type: list
+        elements: str
       include_mp_next_hop: &include_mp_next_hop
         description: Include NEXT-HOP attribute in multiprotocol updates.
         type: bool

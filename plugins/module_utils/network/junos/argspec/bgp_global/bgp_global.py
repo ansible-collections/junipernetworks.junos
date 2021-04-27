@@ -64,8 +64,8 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                     "choices": ["aes-128-cmac-96", "hmac-sha-1-96", "md5"],
                     "type": "str",
                 },
-                "authentication_key": {"type": "str"},
-                "authentication_key_chain": {"type": "str"},
+                "authentication_key": {"type": "str", "no_log": True},
+                "authentication_key_chain": {"type": "str", "no_log": False},
                 "bfd_liveness_detection": {
                     "options": {
                         "authentication": {
@@ -80,7 +80,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "type": "str",
                                 },
-                                "key_chain": {"type": "str"},
+                                "key_chain": {"type": "str", "no_log": True},
                                 "loose_check": {"type": "bool"},
                             },
                             "type": "dict",
@@ -247,8 +247,11 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                             ],
                             "type": "str",
                         },
-                        "authentication_key": {"type": "str"},
-                        "authentication_key_chain": {"type": "str"},
+                        "authentication_key": {"type": "str", "no_log": True},
+                        "authentication_key_chain": {
+                            "type": "str",
+                            "no_log": False,
+                        },
                         "bfd_liveness_detection": {
                             "options": {
                                 "authentication": {
@@ -263,7 +266,10 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                             ],
                                             "type": "str",
                                         },
-                                        "key_chain": {"type": "str"},
+                                        "key_chain": {
+                                            "type": "str",
+                                            "no_log": True,
+                                        },
                                         "loose_check": {"type": "bool"},
                                     },
                                     "type": "dict",
@@ -385,7 +391,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                             },
                             "type": "dict",
                         },
-                        "import": {"type": "str"},
+                        "import": {"elements": "str", "type": "list"},
                         "include_mp_next_hop": {"type": "bool"},
                         "ipsec_sa": {"type": "str"},
                         "keep": {"choices": ["all", "none"], "type": "str"},
@@ -475,8 +481,14 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "type": "str",
                                 },
-                                "authentication_key": {"type": "str"},
-                                "authentication_key_chain": {"type": "str"},
+                                "authentication_key": {
+                                    "type": "str",
+                                    "no_log": True,
+                                },
+                                "authentication_key_chain": {
+                                    "type": "str",
+                                    "no_log": False,
+                                },
                                 "bfd_liveness_detection": {
                                     "options": {
                                         "authentication": {
@@ -491,7 +503,10 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                                     ],
                                                     "type": "str",
                                                 },
-                                                "key_chain": {"type": "str"},
+                                                "key_chain": {
+                                                    "type": "str",
+                                                    "no_log": False,
+                                                },
                                                 "loose_check": {
                                                     "type": "bool"
                                                 },
@@ -633,7 +648,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                     },
                                     "type": "dict",
                                 },
-                                "import": {"type": "str"},
+                                "import": {"elements": "str", "type": "list"},
                                 "include_mp_next_hop": {"type": "bool"},
                                 "ipsec_sa": {"type": "str"},
                                 "keep": {
@@ -973,7 +988,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                     },
                     "type": "dict",
                 },
-                "import": {"type": "str"},
+                "import": {"elements": "str", "type": "list"},
                 "include_mp_next_hop": {"type": "bool"},
                 "ipsec_sa": {"type": "str"},
                 "keep": {"choices": ["all", "none"], "type": "str"},
@@ -1088,14 +1103,19 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                             },
                             "type": "dict",
                         },
-                        "expedited_update_tokens": {"type": "int"},
+                        "expedited_update_tokens": {
+                            "type": "int",
+                            "no_log": True,
+                        },
                         "priority_update_tokens": {
                             "elements": "dict",
+                            "no_log": True,
                             "options": {
                                 "priority": {"required": True, "type": "int"},
                                 "update_tokens": {
                                     "required": True,
                                     "type": "int",
+                                    "no_log": True,
                                 },
                             },
                             "type": "list",

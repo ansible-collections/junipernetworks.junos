@@ -12,6 +12,9 @@ __metaclass__ = type
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     tostring,
 )
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
+    validate_config,
+)
 
 try:
     from ncclient.xml_ import new_ele, to_ele
@@ -19,6 +22,14 @@ try:
     HAS_NCCLIENT = True
 except ImportError:
     HAS_NCCLIENT = False
+
+try:
+    from ansible.module_utils.common.parameters import (
+        _list_no_log_values as list_no_log_values,
+    )
+except ImportError:
+    # TODO: Remove this import when we no longer support ansible < 2.11
+    from ansible.module_utils.common.parameters import list_no_log_values
 
 
 def get_resource_config(connection, config_filter=None, attrib=None):
@@ -31,3 +42,10 @@ def get_resource_config(connection, config_filter=None, attrib=None):
         get_ele.append(to_ele(config_filter))
 
     return connection.execute_rpc(tostring(get_ele))
+
+
+def _validate_config(_module, spec, data, redact=False):
+    validated_data = validate_config(spec, data)
+    if redact:
+        _module.no_log_values.update(list_no_log_values(spec, validated_data))
+    return validated_data
