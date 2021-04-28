@@ -1,3 +1,0 @@
----
-minor_changes:
-  - Add support for available_network_resources key, which allows to fetch the available resources for a platform (https://github.com/ansible-collections/junipernetworks.junos/issues/160).
