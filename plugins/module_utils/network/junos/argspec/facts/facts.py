@@ -26,4 +26,5 @@ class FactsArgs(object):
             default="text", choices=["xml", "text", "set", "json"]
         ),
         "gather_network_resources": dict(type="list", elements="str"),
+        "available_network_resources": {"type": "bool", "default": False},
     }
