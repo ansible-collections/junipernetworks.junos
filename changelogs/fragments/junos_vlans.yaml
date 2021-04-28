@@ -1,3 +1,0 @@
----
-minor_changes:
-          - Replace unsupported parameter `vlan-id` in junipernetworks.junos.junos_vlans module with `vlan_id`

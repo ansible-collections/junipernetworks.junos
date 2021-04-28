@@ -5,6 +5,26 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v2.1.0
+======
+
+Minor Changes
+-------------
+
+- Add junos_routing_instances Resource Module.
+- Add support for available_network_resources key, which allows to fetch the available resources for a platform (https://github.com/ansible-collections/junipernetworks.junos/issues/160).
+- Replace unsupported parameter `vlan-id` in junipernetworks.junos.junos_vlans module with `vlan_id`
+
+Security Fixes
+--------------
+
+- Mask values of sensitive keys in module result(https://github.com/ansible-collections/junipernetworks.junos/issues/165).
+
+New Modules
+-----------
+
+- junos_routing_instances - Manage routing instances on Junos devices.
+
 v2.0.1
 ======
 

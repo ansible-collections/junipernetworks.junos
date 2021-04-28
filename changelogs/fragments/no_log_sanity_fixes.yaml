@@ -1,3 +1,0 @@
----
-security_fixes:
-  - Mask values of sensitive keys in module result(https://github.com/ansible-collections/junipernetworks.junos/issues/165).

@@ -223,10 +223,10 @@ releases:
   2.0.0:
     changes:
       major_changes:
-      - Requires ansible.netcommon v2.0.0+ to support `ansible_network_single_user_mode`
-        and `ansible_network_import_modules`.
       - Please refer to ansible.netcommon `changelog <https://github.com/ansible-collections/ansible.netcommon/blob/main/changelogs/CHANGELOG.rst#ansible-netcommon-collection-release-notes>`_
         for more details.
+      - Requires ansible.netcommon v2.0.0+ to support `ansible_network_single_user_mode`
+        and `ansible_network_import_modules`.
       minor_changes:
       - Add junos_bgp_address_family resource module.
       - Add support for autonomous-system routing-options for bgp global and updating
@@ -255,3 +255,23 @@ releases:
     - junos_ping_df_rapid.yaml
     - remove-check_required.yaml
     release_date: '2021-03-29'
+  2.1.0:
+    changes:
+      minor_changes:
+      - Add junos_routing_instances Resource Module.
+      - Add support for available_network_resources key, which allows to fetch the
+        available resources for a platform (https://github.com/ansible-collections/junipernetworks.junos/issues/160).
+      - Replace unsupported parameter `vlan-id` in junipernetworks.junos.junos_vlans
+        module with `vlan_id`
+      security_fixes:
+      - Mask values of sensitive keys in module result(https://github.com/ansible-collections/junipernetworks.junos/issues/165).
+    fragments:
+    - 117_junos_routing_instances_resource_module.yaml
+    - ansible_networl_resources_facts.yaml
+    - junos_vlans.yaml
+    - no_log_sanity_fixes.yaml
+    modules:
+    - description: Manage routing instances on Junos devices.
+      name: junos_routing_instances
+      namespace: ''
+    release_date: '2021-04-28'

@@ -65,6 +65,7 @@ Name | Description
 [junipernetworks.junos.junos_ospfv3](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_ospfv3_module.rst)|OSPFv3 resource module
 [junipernetworks.junos.junos_package](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_package_module.rst)|Installs packages on remote devices running Junos
 [junipernetworks.junos.junos_ping](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_ping_module.rst)|Tests reachability using ping from devices running Juniper JUNOS
+[junipernetworks.junos.junos_routing_instances](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_routing_instances_module.rst)|Manage routing instances on Junos devices.
 [junipernetworks.junos.junos_rpc](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_rpc_module.rst)|Runs an arbitrary RPC over NetConf on an Juniper JUNOS device
 [junipernetworks.junos.junos_scp](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_scp_module.rst)|Transfer files from or to remote devices running Junos
 [junipernetworks.junos.junos_static_route](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_static_route_module.rst)|(deprecated, removed after 2022-06-01) Manage static IP routes on Juniper JUNOS network devices
