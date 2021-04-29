@@ -20,6 +20,8 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+import os
+
 from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
     patch,
     MagicMock,
@@ -72,6 +74,14 @@ class TestJunosScpModule(TestJunosModule):
 
         self.scp_mock.put.assert_called_once_with(
             "test.txt", remote_path=".", recursive=False
+        )
+
+    def test_junos_scp_src_expand_tilde(self):
+        set_module_args(dict(src="~/test.txt"))
+        self.execute_module(changed=True)
+
+        self.scp_mock.put.assert_called_once_with(
+            os.path.expanduser("~/test.txt"), remote_path=".", recursive=False
         )
 
     def test_junos_scp_src_fail(self):

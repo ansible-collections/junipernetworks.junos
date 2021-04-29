@@ -25,7 +25,7 @@ options:
       The argument C(recursive) must be C(true) to transfer directories.
     required: true
     type: list
-    elements: str
+    elements: path
   dest:
     description:
     - The C(dest) argument specifies the path in which to receive the files.
@@ -129,7 +129,7 @@ def main():
     """ Main entry point for Ansible module execution
     """
     argument_spec = dict(
-        src=dict(type="list", required=True, elements="str"),
+        src=dict(type="list", required=True, elements="path"),
         dest=dict(type="path", required=False, default="."),
         recursive=dict(type="bool", default=False),
         remote_src=dict(type="bool", default=False),
