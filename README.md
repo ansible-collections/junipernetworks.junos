@@ -141,7 +141,7 @@ Please read and familiarize yourself with this document.
 
 ## Release notes
 
-Release notes are available [here](https://github.com/ansible-collections/junipernetworks.junos/blob/main/changelogs/CHANGELOG.rst).
+Release notes are available [here](https://github.com/ansible-collections/junipernetworks.junos/blob/main/CHANGELOG.rst).
 
 
 ## Roadmap
