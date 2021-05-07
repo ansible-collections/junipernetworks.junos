@@ -45,7 +45,7 @@ options:
     suboptions:
       name:
         description:
-        - Full name of interface, e.g. ge-0/0/0.
+        - Specify Full name of interface, e.g. ge-0/0/0.
         type: str
         required: true
       description:
