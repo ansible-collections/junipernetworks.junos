@@ -62,8 +62,8 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         self.mock_commit_configuration = self.mock_commit_configuration.start()
 
         self.mock_execute_show_command = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.bgp_global.bgp_global."
-            "Bgp_globalFacts.get_device_data"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.bgp_address_family.bgp_address_family."
+            "Bgp_address_familyFacts.get_device_data"
         )
         self.execute_show_command = self.mock_execute_show_command.start()
 
@@ -1644,7 +1644,6 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         This function generate the commands to configure attributes:
         - af_type
         - afi
-        :return:
         """
         set_module_args(
             dict(
@@ -1652,7 +1651,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                     address_family=[
                         dict(
                             afi="evpn",
-                            af_type=[dict(type="flow", damping=True)],
+                            af_type=[dict(type="signaling", set=True)],
                         )
                     ]
                 ),
@@ -1661,12 +1660,1364 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         )
 
         commands = [
-            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
-            "<nc:bgp><nc:family><nc:evpn><nc:flow><nc:damping/></nc:flow></nc:evpn></nc:family></nc:bgp></nc:protocols>",
-            '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:evpn><nc:signaling/></nc:evpn></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>",
         ]
 
         result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_002(self):
+        """
+        This function generate the commands to configure attributes:
+        - accepted_prefix_limit
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="evpn",
+                            af_type=[
+                                dict(
+                                    type="signaling",
+                                    accepted_prefix_limit=dict(
+                                        limit_threshold=98,
+                                        idle_timeout_value=2001,
+                                        maximum=20
+                                    ),
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:evpn><nc:signaling><nc:accepted-prefix-limit>"
+            "<nc:maximum>20</nc:maximum><nc:teardown><nc:limit-threshold>98</nc:limit-threshold>"
+            "<nc:idle-timeout><nc:timeout>2001</nc:timeout></nc:idle-timeout></nc:teardown>"
+            "</nc:accepted-prefix-limit></nc:signaling></nc:evpn></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_002_001(self):
+        """
+        This function generate the commands to configure attributes:
+        - accepted_prefix_limit
+            forever: true
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="evpn",
+                            af_type=[
+                                dict(
+                                    type="signaling",
+                                    accepted_prefix_limit=dict(
+                                        maximum=20,
+                                        limit_threshold=98,
+                                        forever=True
+                                    ),
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:evpn><nc:signaling><nc:accepted-prefix-limit>"
+            "<nc:maximum>20</nc:maximum><nc:teardown><nc:limit-threshold>98</nc:limit-threshold>"
+            "<nc:idle-timeout/><nc:idle-timeout><nc:forever/></nc:idle-timeout></nc:teardown>"
+            "</nc:accepted-prefix-limit></nc:signaling></nc:evpn></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_003(self):
+        """
+        This function generate the commands to configure attributes:
+        - add_path
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="evpn",
+                            af_type=[
+                                dict(
+                                    type="signaling",
+                                    add_path=dict(
+                                        receive=True,
+                                        send=dict(
+                                            multipath=True,
+                                            include_backup_path=1,
+                                            path_count=10,
+                                            prefix_policy="customer65443",
+                                            path_selection_mode=dict(
+                                                all_paths=True,
+                                                equal_cost_paths=True
+                                            )
+                                        )
+                                    ),
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+           "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+           "<nc:bgp><nc:family><nc:evpn><nc:signaling><nc:add-path><nc:receive/>"
+           "<nc:send><nc:path-count>10</nc:path-count>"
+           "<nc:include-backup-path>1</nc:include-backup-path>"
+           "<nc:path-selection-mode><nc:all-paths/><nc:equal-cost-paths/>"
+           "</nc:path-selection-mode><nc:prefix-policy>customer65443</nc:prefix-policy></nc:send>"
+           "</nc:add-path></nc:signaling></nc:evpn></nc:family></nc:bgp></nc:protocols>",
+           "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_004(self):
+        """
+        This function generate the commands to configure attributes:
+        - aggregate_label
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="evpn",
+                            af_type=[
+                                dict(
+                                    type="signaling",
+                                    aggregate_label=dict(
+                                        set=True,
+                                        community="cuastomerapn1"
+                                    ),
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+           "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+           "<nc:bgp><nc:family><nc:evpn><nc:signaling><nc:aggregate_label>"
+           "<nc:community>cuastomerapn1</nc:community></nc:aggregate_label>"
+           "</nc:signaling></nc:evpn></nc:family></nc:bgp></nc:protocols>",
+           "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_005(self):
+        """
+        This function generate the commands to configure attributes:
+        - aigp
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet6",
+                            af_type=[
+                                dict(
+                                    type="labeled-unicast",
+                                    aigp=dict(
+                                        set=True,
+                                    ),
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+           "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+           "<nc:bgp><nc:family><nc:inet6><nc:labeled-unicast><nc:aigp/>"
+           "</nc:labeled-unicast></nc:inet6></nc:family></nc:bgp></nc:protocols>",
+           "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_005_001(self):
+        """
+        This function generate the commands to configure attributes:
+        - aigp
+           disable: true
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet6",
+                            af_type=[
+                                dict(
+                                    type="labeled-unicast",
+                                    aigp=dict(
+                                        disable=True,
+                                    ),
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+           "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+           "<nc:bgp><nc:family><nc:inet6><nc:labeled-unicast><nc:aigp><nc:disable/>"
+           "</nc:aigp></nc:labeled-unicast></nc:inet6></nc:family></nc:bgp>"
+           "</nc:protocols>",
+           "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_006(self):
+        """
+        This function generate the commands to configure attributes:
+        - aigp
+           damping: true
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet6",
+                            af_type=[
+                                dict(
+                                    type="labeled-unicast",
+                                    damping=True
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+           "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+           "<nc:bgp><nc:family><nc:inet6><nc:labeled-unicast><nc:damping/>"
+           "</nc:labeled-unicast></nc:inet6></nc:family></nc:bgp></nc:protocols>",
+           "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_007(self):
+        """
+        This function generate the commands to configure attributes:
+        - aigp
+           defer_initial_multipath_build
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet6",
+                            af_type=[
+                                dict(
+                                    type="labeled-unicast",
+                                    defer_initial_multipath_build=dict(
+                                        set=True
+                                    )
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+           "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+           "<nc:bgp><nc:family><nc:inet6><nc:labeled-unicast><nc:defer-initial-multipath-build/>"
+           "</nc:labeled-unicast></nc:inet6></nc:family></nc:bgp></nc:protocols>",
+           "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_007_001(self):
+        """
+        This function generate the commands to configure attributes:
+          defer_initial_multipath_build
+            maximum_delay
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet6",
+                            af_type=[
+                                dict(
+                                    type="labeled-unicast",
+                                    defer_initial_multipath_build=dict(
+                                        maximum_delay=1200
+                                    )
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+           "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+           "<nc:bgp><nc:family><nc:inet6><nc:labeled-unicast><nc:defer-initial-multipath-build>"
+           "<nc:maximum-delay>1200</nc:maximum-delay></nc:defer-initial-multipath-build>"
+           "</nc:labeled-unicast></nc:inet6></nc:family></nc:bgp></nc:protocols>",
+           "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+           ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_008(self):
+        """
+        This function generate the commands to configure attributes:
+        - delay_route_advertisements
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet6",
+                            af_type=[
+                                dict(
+                                    type="labeled-unicast",
+                                    delay_route_advertisements=dict(
+                                        set=True,
+                                        max_delay_route_age=12000,
+                                        max_delay_routing_uptime=12000,
+                                        min_delay_inbound_convergence=8000,
+                                        min_delay_routing_uptime=8000
+                                    )
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+           "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+           "<nc:bgp><nc:family><nc:inet6><nc:labeled-unicast><nc:delay-route-advertisements>"
+           "<nc:maximum-delay><nc:route-age>12000</nc:route-age><nc:routing-uptime>12000</nc:routing-uptime>"
+           "</nc:maximum-delay><nc:minimum-delay><nc:inbound-convergence>8000</nc:inbound-convergence>"
+           "<nc:routing-uptime>8000</nc:routing-uptime></nc:minimum-delay></nc:delay-route-advertisements>"
+           "</nc:labeled-unicast></nc:inet6></nc:family></nc:bgp></nc:protocols>",
+           "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+           ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_009(self):
+        """
+        This function generate the commands to configure attributes:
+        - entropy_label
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet",
+                            af_type=[
+                                dict(
+                                    type="labeled-unicast",
+                                    entropy_label=dict(
+                                        set=True,
+                                        no_next_hop_validation=True,
+                                    )
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:inet><nc:labeled-unicast><nc:entropy-label>"
+            "<nc:no-next-hop-validation/></nc:entropy-label></nc:labeled-unicast>"
+            "</nc:inet></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_010(self):
+        """
+        This function generate the commands to configure attributes:
+        - explicit_null
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet",
+                            af_type=[
+                                dict(
+                                    type="labeled-unicast",
+                                    explicit_null=dict(
+                                        set=True,
+                                        connected_only=True
+                                    )
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:inet><nc:labeled-unicast><nc:explicit-null>"
+            "<nc:connected-only/></nc:explicit-null></nc:labeled-unicast></nc:inet>"
+            "</nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_011(self):
+        """
+        This function generate the commands to configure attributes:
+        - extended_nexthop
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet",
+                            af_type=[
+                                dict(
+                                    type="unicast",
+                                    extended_nexthop=True
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:inet><nc:unicast><nc:extended-nexthop/>"
+            "</nc:unicast></nc:inet></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_012(self):
+        """
+        This function generate the commands to configure attributes:
+        - extended_nexthop_color
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet6",
+                            af_type=[
+                                dict(
+                                    type="unicast",
+                                    extended_nexthop_color=True
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:inet6><nc:unicast><nc:extended-nexthop-color/>"
+            "</nc:unicast></nc:inet6></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_013(self):
+        """
+        This function generate the commands to configure attributes:
+        - graceful_restart_forwarding_state_bit: from-fib
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet",
+                            af_type=[
+                                dict(
+                                    type="unicast",
+                                    graceful_restart_forwarding_state_bit="from-fib"
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:inet><nc:unicast><nc:graceful-restart>"
+            "<nc:forwarding-state-bit>from-fib</nc:forwarding-state-bit>"
+            "</nc:graceful-restart></nc:unicast></nc:inet></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_013_001(self):
+        """
+        This function generate the commands to configure attributes:
+        - graceful_restart_forwarding_state_bit: set
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet",
+                            af_type=[
+                                dict(
+                                    type="unicast",
+                                    graceful_restart_forwarding_state_bit="set"
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:inet><nc:unicast><nc:graceful-restart>"
+            "<nc:forwarding-state-bit>set</nc:forwarding-state-bit></nc:graceful-restart>"
+            "</nc:unicast></nc:inet></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_014(self):
+        """
+        This function generate the commands to configure attributes:
+        - local_ipv4_address
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet",
+                            af_type=[
+                                dict(
+                                    type="unicast",
+                                    local_ipv4_address="11.11.11.11"
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"><nc:bgp>"
+            "<nc:family><nc:inet><nc:unicast><nc:local-ipv4-address>11.11.11.11</nc:local-ipv4-address>"
+            "</nc:unicast></nc:inet></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_015(self):
+        """
+        This function generate the commands to configure attributes:
+        - legacy_redirect_ip_action
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet",
+                            af_type=[
+                                dict(
+                                    type="flow",
+                                    legacy_redirect_ip_action=dict(
+                                        set=True,
+                                        send=True,
+                                        receive=True
+                                    )
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:inet><nc:flow><nc:legacy-redirect-ip-action>"
+            "<nc:send/><nc:receive/></nc:legacy-redirect-ip-action></nc:flow>"
+            "</nc:inet></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_016(self):
+        """
+        This function generate the commands to configure attributes:
+        - loops
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet",
+                            af_type=[
+                                dict(
+                                    type="flow",
+                                    loops=3
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:inet><nc:flow><nc:loops>3</nc:loops></nc:flow>"
+            "</nc:inet></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_017(self):
+        """
+        This function generate the commands to configure attributes:
+        - no_install
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet",
+                            af_type=[
+                                dict(
+                                    type="flow",
+                                    no_install=True
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:inet><nc:flow><nc:no-install/></nc:flow></nc:inet>"
+            "</nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_018(self):
+        """
+        This function generate the commands to configure attributes:
+        - no_validate
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet",
+                            af_type=[
+                                dict(
+                                    type="flow",
+                                    no_validate='sample'
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:inet><nc:flow><nc:no-validate>sample</nc:no-validate>"
+            "</nc:flow></nc:inet></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_019(self):
+        """
+        This function generate the commands to configure attributes:
+        - output_queue_priority_expedited
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet",
+                            af_type=[
+                                dict(
+                                    type="flow",
+                                    output_queue_priority_expedited=True
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"><nc:bgp>"
+            "<nc:family><nc:inet><nc:flow><nc:output-queue-priority><nc:expedited/>"
+            "</nc:output-queue-priority></nc:flow></nc:inet></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_020(self):
+        """
+        This function generate the commands to configure attributes:
+        - output_queue_priority_priority
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet",
+                            af_type=[
+                                dict(
+                                    type="flow",
+                                    output_queue_priority_priority=15
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:inet><nc:flow><nc:output-queue-priority>"
+            "<nc:priority>15</nc:priority></nc:output-queue-priority></nc:flow>"
+            "</nc:inet></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_021(self):
+        """
+        This function generate the commands to configure attributes:
+        - per_group_label
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet6",
+                            af_type=[
+                                dict(
+                                    type="labeled-unicast",
+                                    per_group_label=True
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:inet6><nc:labeled-unicast><nc:per-group-label/>"
+            "</nc:labeled-unicast></nc:inet6></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_022(self):
+        """
+        This function generate the commands to configure attributes:
+        - per_prefix_label
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet",
+                            af_type=[
+                                dict(
+                                    type="labeled-unicast",
+                                    per_prefix_label=True
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:inet><nc:labeled-unicast><nc:per-prefix-label/>"
+            "</nc:labeled-unicast></nc:inet></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_023(self):
+        """
+        This function generate the commands to configure attributes:
+        - prefix_limit
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet",
+                            af_type=[
+                                dict(
+                                    type="labeled-unicast",
+                                    prefix_limit=dict(
+                                        maximum=4294967290,
+                                        teardown=True,
+                                        limit_threshold=22,
+                                        idle_timeout=True,
+                                        idle_timeout_value=2200
+                                    )
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:inet><nc:labeled-unicast><nc:prefix-limit>"
+            "<nc:maximum>4294967290</nc:maximum><nc:teardown>22<nc:idle-timeout>2200</nc:idle-timeout>"
+            "</nc:teardown></nc:prefix-limit></nc:labeled-unicast>"
+            "</nc:inet></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_023_001(self):
+        """
+        This function generate the commands to configure attributes:
+        - prefix_limit
+            forever: true
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet",
+                            af_type=[
+                                dict(
+                                    type="labeled-unicast",
+                                    prefix_limit=dict(
+                                        teardown=True,
+                                        forever=True
+                                    )
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:inet><nc:labeled-unicast><nc:prefix-limit>"
+            "<nc:teardown><nc:idle-timeout><nc:forever/></nc:idle-timeout></nc:teardown>"
+            "</nc:prefix-limit></nc:labeled-unicast></nc:inet></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_024(self):
+        """
+        This function generate the commands to configure attributes:
+        - resolve_vpn
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet",
+                            af_type=[
+                                dict(
+                                    type="labeled-unicast",
+                                    resolve_vpn=True
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:inet><nc:labeled-unicast><nc:resolve-vpn/>"
+            "</nc:labeled-unicast></nc:inet></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_025(self):
+        """
+        This function generate the commands to configure attributes:
+        - rib
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet6",
+                            af_type=[
+                                dict(
+                                    type="labeled-unicast",
+                                    rib='inet.3'
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:inet6><nc:labeled-unicast><nc:rib><nc:inet.3/>"
+            "</nc:rib></nc:labeled-unicast></nc:inet6></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_026(self):
+        """
+        This function generate the commands to configure attributes:
+        - ribgroup_name
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet6",
+                            af_type=[
+                                dict(
+                                    type="labeled-unicast",
+                                    ribgroup_name='inet3'
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:inet6><nc:labeled-unicast><nc:rib-group>inet3</nc:rib-group>"
+            "</nc:labeled-unicast></nc:inet6></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_027(self):
+        """
+        This function generate the commands to configure attributes:
+        - route_refresh_priority_expedited
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet6",
+                            af_type=[
+                                dict(
+                                    type="labeled-unicast",
+                                    route_refresh_priority_expedited=True
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:inet6><nc:labeled-unicast><nc:route-refresh-priority>"
+            "<nc:expedited/></nc:route-refresh-priority></nc:labeled-unicast></nc:inet6>"
+            "</nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_028(self):
+        """
+        This function generate the commands to configure attributes:
+        - route_refresh_priority_priority
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet6",
+                            af_type=[
+                                dict(
+                                    type="labeled-unicast",
+                                    route_refresh_priority_priority=15
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:inet6><nc:labeled-unicast>"
+            "<nc:route-refresh-priority><nc:priority>15</nc:priority>"
+            "</nc:route-refresh-priority></nc:labeled-unicast></nc:inet6></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_029(self):
+        """
+        This function generate the commands to configure attributes:
+        - secondary_independent_resolution
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    address_family=[
+                        dict(
+                            afi="inet",
+                            af_type=[
+                                dict(
+                                    type="flow",
+                                    secondary_independent_resolution=True
+                                )
+                            ],
+                        )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:family><nc:inet><nc:flow><nc:secondary-independent-resolution/>"
+            "</nc:flow></nc:inet></nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_030(self):
+        """
+        This function generate the commands to configure attributes:
+        - groups:
+            address_family:
+              topology
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    groups=[dict(
+                        name="ebgp",
+                        address_family=[
+                            dict(
+                                afi="inet",
+                                af_type=[
+                                    dict(
+                                        type="unicast",
+                                        topology=[
+                                            dict(
+                                                name="voice",
+                                                community=[
+                                                    'target:40:40'
+                                                ]
+                                            )
+                                        ]
+                                    )
+                                ],
+                            )
+                        ],
+                    )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:group><nc:name>ebgp</nc:name><nc:family><nc:inet>"
+            "<nc:unicast><nc:topology><nc:name>voice</nc:name>"
+            "<nc:community>target:40:40</nc:community></nc:topology>"
+            "</nc:unicast></nc:inet></nc:family></nc:group><nc:family/></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_deleted_031(self):
+        """
+        This function generate the commands to to delete bgp_address family completely:
+        """
+        set_module_args(
+            dict(
+                config=dict(),
+                state="deleted",
+            )
+        )
+        commands = [
+            "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            "<nc:bgp><nc:group><nc:name>internal</nc:name>"
+            "</nc:group><nc:group><nc:name>ebgp</nc:name><nc:family>"
+            "<nc:inet delete=\"delete\"/></nc:family></nc:group>"
+            "<nc:family><nc:inet delete=\"delete\"/><nc:inet6 delete=\"delete\"/>"
+            "</nc:family></nc:bgp></nc:protocols>",
+            "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_deleted_032(self):
+        """
+        This function generate the commands to to delete bgp_address family completely:
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    groups=[dict(
+                        name="ebgp",
+                        address_family=[
+                            dict(
+                                afi="inet",
+                                af_type=[
+                                    dict(
+                                        type="unicast",
+                                        topology=[
+                                            dict(
+                                                name="voice",
+                                                community=[
+                                                    'target:40:40'
+                                                ]
+                                            )
+                                        ]
+                                    )
+                                ],
+                            )
+                        ],
+                    )
+                    ]
+                ),
+                state="overridden",
+            )
+        )
+        commands = [
+           "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+           "<nc:bgp><nc:group><nc:name>internal</nc:name></nc:group>"
+           "<nc:family><nc:inet delete=\"delete\"/><nc:inet6 delete=\"delete\"/>"
+           "</nc:family><nc:group><nc:name>ebgp</nc:name><nc:family>"
+           "<nc:inet delete=\"delete\"/></nc:family></nc:group>"
+           "<nc:family><nc:inet delete=\"delete\"/><nc:inet6 delete=\"delete\"/>"
+           "</nc:family><nc:group><nc:name>ebgp</nc:name><nc:family>"
+           "<nc:inet><nc:unicast><nc:topology><nc:name>voice</nc:name>"
+           "<nc:community>target:40:40</nc:community></nc:topology>"
+           "</nc:unicast></nc:inet></nc:family>"
+           "</nc:group><nc:family/></nc:bgp></nc:protocols>",
+           "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_bgp_address_family_config_033(self):
+        """
+        This function generate the commands to configure attributes:
+        - groups:
+            address_family:
+              topology
+        """
+        set_module_args(
+            dict(
+                config=dict(
+                    groups=[dict(
+                        name="ebgp",
+                        neighbors=[
+                            dict(
+                                neighbor_address="14.14.14.14",
+                                address_family=[
+                                    dict(
+                                        afi="inet",
+                                        af_type=[
+                                            dict(
+                                                type="unicast",
+                                                no_install=True
+                                            )
+                                        ],
+                                    )
+                                ],
+                            )
+                        ],
+
+                    )
+                    ]
+                ),
+                state="merged",
+            )
+        )
+        commands = [
+           "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+           "<nc:bgp><nc:group><nc:name>ebgp</nc:name><nc:family/><nc:neighbor>"
+           "<nc:name>14.14.14.14</nc:name><nc:family><nc:inet><nc:unicast>"
+           "<nc:no-install/></nc:unicast></nc:inet></nc:family></nc:neighbor>"
+           "</nc:group><nc:family/></nc:bgp></nc:protocols>",
+           "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>"
+        ]
+
+        result = self.execute_module(changed=True)
+        with open("rst_com_out.txt", "w") as outfile:
+            outfile.write("\n".join(result["commands"]))
+        with open("tst_com_out.txt", "w") as outfile:
+            outfile.write("\n".join(commands))
         self.assertEqual(sorted(result["commands"]), sorted(commands))
     '''
     def test_junos_bgp_address_family_merged_idempotent(self):

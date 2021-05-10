@@ -14,6 +14,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+import q
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     locked_config,
     load_config,
@@ -183,6 +184,8 @@ class Bgp_address_family(ConfigBase):
         elif state == "overridden":
             config_xmls = self._state_overridden(want, have)
 
+        if state == "deleted":
+            q(config_xmls)
         for xml in config_xmls:
             self.bgp.append(xml)
         cfg_lst = []
@@ -191,6 +194,8 @@ class Bgp_address_family(ConfigBase):
             for xml in self.root.getchildren():
                 xml = tostring(xml)
                 cfg_lst.append(xml)
+        if state == "deleted":
+            q(cfg_lst)
         return cfg_lst
 
     def _state_replaced(self, want, have):
@@ -274,6 +279,7 @@ class Bgp_address_family(ConfigBase):
                 for type in nlri_types:
                     # Add the node for nlri type
                     type_node = build_child_xml_node(nlri_node, type["type"])
+                    q(type["type"])
                     #  Add node for accepted-prefix-limit
                     if "accepted_prefix_limit" in type.keys():
                         apl = type.get("accepted_prefix_limit")
@@ -315,11 +321,11 @@ class Bgp_address_family(ConfigBase):
                                 apl.get("idle_timeout_value"),
                             )
 
-                        elif "idle_timeout" in apl.keys():
-                            it_node = build_child_xml_node(
-                                td_node, "idle-timeout"
-                            )
-                        if "forever" in apl.keys():
+                        elif "forever" in apl.keys():
+                            if it_node is None:
+                                it_node = build_child_xml_node(
+                                    td_node, "idle-timeout"
+                                )
                             if it_node is not None:
                                 it_node = build_child_xml_node(
                                     td_node, "idle-timeout"
@@ -392,7 +398,8 @@ class Bgp_address_family(ConfigBase):
                         aigp = type.get("aigp")
                         # build node for aigp
                         if "disable" in aigp.keys():
-                            build_child_xml_node(type_node, "aigp", "disable")
+                            aigp_node = build_child_xml_node(type_node, "aigp")
+                            build_child_xml_node(aigp_node, "disable")
                         else:
                             build_child_xml_node(type_node, "aigp")
 
@@ -715,16 +722,20 @@ class Bgp_address_family(ConfigBase):
 
                     # add topology
                     if "topology" in type.keys():
-                        top = type.get("topology")
+                        topologies = type.get("topology")
                         top_node = build_child_xml_node(type_node, "topology")
-                        if "name" in top.keys():
-                            build_child_xml_node(
-                                top_node, "topology", top.get("name")
-                            )
-                        if "community" in top.keys():
-                            build_child_xml_node(
-                                top_node, "community", top.get("community")
-                            )
+                        for topology in topologies:
+                            if "name" in topology.keys():
+                                build_child_xml_node(
+                                    top_node, "name", topology.get("name")
+                                )
+                            if "community" in topology.keys():
+                                communities = topology.get("community")
+                                for community in communities:
+                                    build_child_xml_node(
+                                        top_node, "community", community
+                                    )
+
                     # add traffic-statistics
                     if "traffic_statistics" in type.keys():
                         ts = type.get("traffic_statistics")
@@ -752,6 +763,8 @@ class Bgp_address_family(ConfigBase):
         family_root = None
         groups_node = None
         existing_groups = []
+        q(want)
+        q(have)
         if have is not None and have.get("address_family"):
             h_af = have.get("address_family")
             existing_af = [af["afi"] for af in h_af]
@@ -760,7 +773,7 @@ class Bgp_address_family(ConfigBase):
             if h_groups:
                 for group in h_groups:
                     existing_groups.append(group["name"])
-            if not want:
+            if not want or not want.get("address_family"):
                 want = have
 
             # Delete root address family
@@ -828,6 +841,7 @@ class Bgp_address_family(ConfigBase):
                 bgp_xml.append(groups_node)
             if family_root is not None:
                 bgp_xml.append(family_root)
+        q(bgp_xml)
         return bgp_xml
 
     def _state_overridden(self, want, have):
