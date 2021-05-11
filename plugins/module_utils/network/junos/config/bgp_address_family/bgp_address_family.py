@@ -14,7 +14,6 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import q
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     locked_config,
     load_config,
@@ -184,8 +183,6 @@ class Bgp_address_family(ConfigBase):
         elif state == "overridden":
             config_xmls = self._state_overridden(want, have)
 
-        if state == "deleted":
-            q(config_xmls)
         for xml in config_xmls:
             self.bgp.append(xml)
         cfg_lst = []
@@ -194,8 +191,6 @@ class Bgp_address_family(ConfigBase):
             for xml in self.root.getchildren():
                 xml = tostring(xml)
                 cfg_lst.append(xml)
-        if state == "deleted":
-            q(cfg_lst)
         return cfg_lst
 
     def _state_replaced(self, want, have):
@@ -279,7 +274,6 @@ class Bgp_address_family(ConfigBase):
                 for type in nlri_types:
                     # Add the node for nlri type
                     type_node = build_child_xml_node(nlri_node, type["type"])
-                    q(type["type"])
                     #  Add node for accepted-prefix-limit
                     if "accepted_prefix_limit" in type.keys():
                         apl = type.get("accepted_prefix_limit")
@@ -763,8 +757,6 @@ class Bgp_address_family(ConfigBase):
         family_root = None
         groups_node = None
         existing_groups = []
-        q(want)
-        q(have)
         if have is not None and have.get("address_family"):
             h_af = have.get("address_family")
             existing_af = [af["afi"] for af in h_af]
@@ -841,7 +833,6 @@ class Bgp_address_family(ConfigBase):
                 bgp_xml.append(groups_node)
             if family_root is not None:
                 bgp_xml.append(family_root)
-        q(bgp_xml)
         return bgp_xml
 
     def _state_overridden(self, want, have):

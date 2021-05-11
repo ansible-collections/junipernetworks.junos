@@ -13,7 +13,6 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import q
 from copy import deepcopy
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
@@ -720,7 +719,6 @@ class Bgp_address_familyFacts(object):
         :return:
         """
         ts_dict = {}
-        q(cfg)
         ts = cfg.get("traffic-statistics")
         if not ts:
             ts_dict["set"] = True

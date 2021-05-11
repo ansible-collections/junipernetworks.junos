@@ -196,17 +196,15 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                 "set": {"type": "bool"},
                                 "strip_nexthop": {"type": "bool"},
                                 "topology": {
-                                    'elements': 'dict',
-                                    'options': {
-                                        'community': {
-                                            'elements': 'str',
-                                            'type': 'list'
+                                    "elements": "dict",
+                                    "options": {
+                                        "community": {
+                                            "elements": "str",
+                                            "type": "list",
                                         },
-                                        'name': {
-                                            'type': 'str'
-                                        }
+                                        "name": {"type": "str"},
                                     },
-                                    'type': 'list'
+                                    "type": "list",
                                 },
                                 "traffic_statistics": {
                                     "options": {
@@ -456,17 +454,15 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                         "set": {"type": "bool"},
                                         "strip_nexthop": {"type": "bool"},
                                         "topology": {
-                                            'elements': 'dict',
-                                            'options': {
-                                                'community': {
-                                                    'elements': 'str',
-                                                    'type': 'list'
+                                            "elements": "dict",
+                                            "options": {
+                                                "community": {
+                                                    "elements": "str",
+                                                    "type": "list",
                                                 },
-                                                'name': {
-                                                    'type': 'str'
-                                                }
+                                                "name": {"type": "str"},
                                             },
-                                            'type': 'list'
+                                            "type": "list",
                                         },
                                         "traffic_statistics": {
                                             "options": {
@@ -782,17 +778,17 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                                     "type": "bool"
                                                 },
                                                 "topology": {
-                                                    'elements': 'dict',
-                                                    'options': {
-                                                        'community': {
-                                                            'elements': 'str',
-                                                            'type': 'list'
+                                                    "elements": "dict",
+                                                    "options": {
+                                                        "community": {
+                                                            "elements": "str",
+                                                            "type": "list",
                                                         },
-                                                        'name': {
-                                                            'type': 'str'
-                                                        }
+                                                        "name": {
+                                                            "type": "str"
+                                                        },
                                                     },
-                                                    'type': 'list'
+                                                    "type": "list",
                                                 },
                                                 "traffic_statistics": {
                                                     "options": {
