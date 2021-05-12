@@ -27,7 +27,6 @@ __metaclass__ = type
 
 from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
     patch,
-    MagicMock,
 )
 from ansible_collections.junipernetworks.junos.plugins.modules import (
     junos_bgp_address_family,
@@ -1297,7 +1296,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                                     <prefix-policy>customer65443</prefix-policy>
                                                     <path-selection-mode>
                                                         <all-paths/>
-                                                        <equal-cost-paths/> 
+                                                        <equal-cost-paths/>
                                                     </path-selection-mode>
                                                 </send>
                                             </add-path>
@@ -1490,7 +1489,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                                     <prefix-policy>customer65443</prefix-policy>
                                                     <path-selection-mode>
                                                         <all-paths/>
-                                                        <equal-cost-paths/> 
+                                                        <equal-cost-paths/>
                                                     </path-selection-mode>
                                                 </send>
                                             </add-path>
