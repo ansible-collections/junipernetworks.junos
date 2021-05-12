@@ -315,11 +315,11 @@ class Bgp_address_family(ConfigBase):
                                 apl.get("idle_timeout_value"),
                             )
 
-                        elif "idle_timeout" in apl.keys():
-                            it_node = build_child_xml_node(
-                                td_node, "idle-timeout"
-                            )
-                        if "forever" in apl.keys():
+                        elif "forever" in apl.keys():
+                            if it_node is None:
+                                it_node = build_child_xml_node(
+                                    td_node, "idle-timeout"
+                                )
                             if it_node is not None:
                                 it_node = build_child_xml_node(
                                     td_node, "idle-timeout"
@@ -392,7 +392,8 @@ class Bgp_address_family(ConfigBase):
                         aigp = type.get("aigp")
                         # build node for aigp
                         if "disable" in aigp.keys():
-                            build_child_xml_node(type_node, "aigp", "disable")
+                            aigp_node = build_child_xml_node(type_node, "aigp")
+                            build_child_xml_node(aigp_node, "disable")
                         else:
                             build_child_xml_node(type_node, "aigp")
 
@@ -715,16 +716,20 @@ class Bgp_address_family(ConfigBase):
 
                     # add topology
                     if "topology" in type.keys():
-                        top = type.get("topology")
+                        topologies = type.get("topology")
                         top_node = build_child_xml_node(type_node, "topology")
-                        if "name" in top.keys():
-                            build_child_xml_node(
-                                top_node, "topology", top.get("name")
-                            )
-                        if "community" in top.keys():
-                            build_child_xml_node(
-                                top_node, "community", top.get("community")
-                            )
+                        for topology in topologies:
+                            if "name" in topology.keys():
+                                build_child_xml_node(
+                                    top_node, "name", topology.get("name")
+                                )
+                            if "community" in topology.keys():
+                                communities = topology.get("community")
+                                for community in communities:
+                                    build_child_xml_node(
+                                        top_node, "community", community
+                                    )
+
                     # add traffic-statistics
                     if "traffic_statistics" in type.keys():
                         ts = type.get("traffic_statistics")
@@ -760,7 +765,7 @@ class Bgp_address_family(ConfigBase):
             if h_groups:
                 for group in h_groups:
                     existing_groups.append(group["name"])
-            if not want:
+            if not want or not want.get("address_family"):
                 want = have
 
             # Delete root address family

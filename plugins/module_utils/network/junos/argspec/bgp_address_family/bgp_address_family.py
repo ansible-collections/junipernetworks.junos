@@ -196,11 +196,15 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                 "set": {"type": "bool"},
                                 "strip_nexthop": {"type": "bool"},
                                 "topology": {
+                                    "elements": "dict",
                                     "options": {
-                                        "community": {"type": "bool"},
+                                        "community": {
+                                            "elements": "str",
+                                            "type": "list",
+                                        },
                                         "name": {"type": "str"},
                                     },
-                                    "type": "dict",
+                                    "type": "list",
                                 },
                                 "traffic_statistics": {
                                     "options": {
@@ -450,11 +454,15 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                         "set": {"type": "bool"},
                                         "strip_nexthop": {"type": "bool"},
                                         "topology": {
+                                            "elements": "dict",
                                             "options": {
-                                                "community": {"type": "bool"},
+                                                "community": {
+                                                    "elements": "str",
+                                                    "type": "list",
+                                                },
                                                 "name": {"type": "str"},
                                             },
-                                            "type": "dict",
+                                            "type": "list",
                                         },
                                         "traffic_statistics": {
                                             "options": {
@@ -770,15 +778,17 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                                     "type": "bool"
                                                 },
                                                 "topology": {
+                                                    "elements": "dict",
                                                     "options": {
                                                         "community": {
-                                                            "type": "bool"
+                                                            "elements": "str",
+                                                            "type": "list",
                                                         },
                                                         "name": {
                                                             "type": "str"
                                                         },
                                                     },
-                                                    "type": "dict",
+                                                    "type": "list",
                                                 },
                                                 "traffic_statistics": {
                                                     "options": {
