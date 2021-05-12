@@ -53,7 +53,7 @@ options:
     suboptions:
       router_id:
         description:
-        - The OSPFv3 router id.
+        - Specify the OSPFv3 router id.
         type: str
         required: true
       areas:
