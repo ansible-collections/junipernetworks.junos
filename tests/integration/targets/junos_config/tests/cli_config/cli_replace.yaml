@@ -28,6 +28,7 @@
 - name: copy config file to remote host
   ansible.netcommon.net_put:
     src: /tmp/junos01.cfg
+    protocol: sftp
     dest: /var/home/{{ ansible_user }}/junos01.cfg
 
 - name: replace syslog test file configuration
