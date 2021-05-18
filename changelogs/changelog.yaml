@@ -275,3 +275,14 @@ releases:
       name: junos_routing_instances
       namespace: ''
     release_date: '2021-04-28'
+  2.2.0:
+    changes:
+      minor_changes:
+      - Change src element from str to path for junos_scp.
+      - Improve junos_bgp_address_family unit test coverage.
+    fragments:
+    - change_junos_scp_src_element.yaml
+    - changelog_doc_path_update.yaml
+    - improve_bgp_address_family_test_coverage.yaml
+    - update_author_bgp_global.yaml
+    release_date: '2021-05-18'

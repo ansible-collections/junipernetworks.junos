@@ -189,7 +189,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Percentage of prefix-limit to start warnings.</div>
+                        <div>Specify teardown percentage of prefix-limit to start warnings.</div>
                 </td>
             </tr>
             <tr>
@@ -1564,7 +1564,8 @@ Parameters
                     <b>topology</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">dictionary</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=dictionary</span>
                     </div>
                 </td>
                 <td>
@@ -1583,14 +1584,11 @@ Parameters
                     <b>community</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">boolean</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>no</li>
-                                    <li>yes</li>
-                        </ul>
                 </td>
                 <td>
                         <div>Community to identify multi topology routes.</div>
@@ -2088,7 +2086,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Percentage of prefix-limit to start warnings.</div>
+                        <div>Specify teardown percentage of prefix-limit to start warnings.</div>
                 </td>
             </tr>
             <tr>
@@ -3529,7 +3527,8 @@ Parameters
                     <b>topology</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">dictionary</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=dictionary</span>
                     </div>
                 </td>
                 <td>
@@ -3549,14 +3548,11 @@ Parameters
                     <b>community</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">boolean</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>no</li>
-                                    <li>yes</li>
-                        </ul>
                 </td>
                 <td>
                         <div>Community to identify multi topology routes.</div>
@@ -4094,7 +4090,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Percentage of prefix-limit to start warnings.</div>
+                        <div>Specify teardown percentage of prefix-limit to start warnings.</div>
                 </td>
             </tr>
             <tr>
@@ -5601,7 +5597,8 @@ Parameters
                     <b>topology</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">dictionary</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=dictionary</span>
                     </div>
                 </td>
                 <td>
@@ -5622,14 +5619,11 @@ Parameters
                     <b>community</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">boolean</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>no</li>
-                                    <li>yes</li>
-                        </ul>
                 </td>
                 <td>
                         <div>Community to identify multi topology routes.</div>
