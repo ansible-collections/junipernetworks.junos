@@ -1,0 +1,3 @@
+---
+trivial:
+  - Update author content and added ansible-pylibssh dependency.

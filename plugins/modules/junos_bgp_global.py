@@ -43,7 +43,7 @@ version_added: "1.3.0"
 short_description: Manages BGP Global configuration on devices running Juniper JUNOS.
 description:
   - This module manages global bgp configuration on devices running Juniper JUNOS.
-author: Rohit Thakur (@rohitthakur)
+author: Rohit Thakur (@rohitthakur2590)
 requirements:
   - ncclient (>=v0.6.4)
   - xmltodict (>=0.12.0)
