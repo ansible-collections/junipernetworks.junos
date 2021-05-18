@@ -1,3 +1,0 @@
----
-minor_changes:
-  - Change src element from str to path for junos_scp.

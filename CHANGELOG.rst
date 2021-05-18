@@ -5,6 +5,15 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v2.2.0
+======
+
+Minor Changes
+-------------
+
+- Change src element from str to path for junos_scp.
+- Improve junos_bgp_address_family unit test coverage.
+
 v2.1.0
 ======
 
