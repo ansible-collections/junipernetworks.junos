@@ -249,11 +249,15 @@ class Acls(ConfigBase):
                         for direction in ("source", "destination"):
                             if ace.get(direction):
                                 if ace[direction].get("address"):
-                                    build_child_xml_node(
-                                        from_node,
-                                        "{0}-address".format(direction),
-                                        ace[direction]["address"],
-                                    )
+                                    addresses = ace[direction]["address"]
+                                    if not isinstance(addresses, list):
+                                        addresses = [addresses]
+                                    for address in addresses:
+                                        build_child_xml_node(
+                                            from_node,
+                                            "{0}-address".format(direction),
+                                            address,
+                                        )
                                 if ace[direction].get("prefix_list"):
                                     for prefix in ace[direction].get(
                                         "prefix_list"
@@ -266,31 +270,32 @@ class Acls(ConfigBase):
                                             prefix["name"],
                                         )
                                 if ace[direction].get("port_protocol"):
-                                    if "eq" in ace[direction]["port_protocol"]:
-                                        build_child_xml_node(
-                                            from_node,
-                                            "{0}-port".format(direction),
-                                            ace[direction]["port_protocol"][
-                                                "eq"
-                                            ],
-                                        )
-                                    elif (
-                                        "range"
-                                        in ace[direction]["port_protocol"]
-                                    ):
-                                        ports = "{0}-{1}".format(
-                                            ace[direction]["port_protocol"][
-                                                "start"
-                                            ],
-                                            ace[direction]["port_protocol"][
-                                                "end"
-                                            ],
-                                        )
-                                        build_child_xml_node(
-                                            from_node,
-                                            "{0}-port".format(direction),
-                                            ports,
-                                        )
+                                    port_protocols = ace[direction].get("port_protocol")
+                                    if not isinstance(port_protocols, list):
+                                        port_protocols = [port_protocols]
+                                    for port_protocol in port_protocols:
+                                        if "eq" in port_protocol:
+                                            build_child_xml_node(
+                                                from_node,
+                                                "{0}-port".format(direction),
+                                                port_protocol[
+                                                    "eq"
+                                                ],
+                                            )
+                                        if "range" in port_protocol:
+                                            ports = "{0}-{1}".format(
+                                                port_protocol[
+                                                    "start"
+                                                ],
+                                                port_protocol[
+                                                    "end"
+                                                ],
+                                            )
+                                            build_child_xml_node(
+                                                from_node,
+                                                "{0}-port".format(direction),
+                                                ports,
+                                            )
                         if ace.get("protocol"):
                             build_child_xml_node(
                                 from_node, "protocol", ace["protocol"]
