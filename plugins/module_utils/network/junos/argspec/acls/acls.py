@@ -60,7 +60,10 @@ class AclsArgs(object):  # pylint: disable=R0903
                                 "source": {
                                     "type": "dict",
                                     "options": {
-                                        "address": {"type": "str"},
+                                        "address": {
+                                            "elements": "str",
+                                            "type": "list",
+                                        },
                                         "prefix_list": {
                                             "elements": "dict",
                                             "type": "list",
@@ -69,7 +72,8 @@ class AclsArgs(object):  # pylint: disable=R0903
                                             },
                                         },
                                         "port_protocol": {
-                                            "type": "dict",
+                                            "elements": "dict",
+                                            "type": "list",
                                             "options": {
                                                 "eq": {"type": "str"},
                                                 "range": {
@@ -88,7 +92,10 @@ class AclsArgs(object):  # pylint: disable=R0903
                                 "destination": {
                                     "type": "dict",
                                     "options": {
-                                        "address": {"type": "str"},
+                                        "address": {
+                                            "elements": "str",
+                                            "type": "list",
+                                        },
                                         "prefix_list": {
                                             "elements": "dict",
                                             "type": "list",
@@ -97,7 +104,8 @@ class AclsArgs(object):  # pylint: disable=R0903
                                             },
                                         },
                                         "port_protocol": {
-                                            "type": "dict",
+                                            "elements": "dict",
+                                            "type": "list",
                                             "options": {
                                                 "eq": {"type": "str"},
                                                 "range": {

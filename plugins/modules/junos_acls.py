@@ -94,7 +94,8 @@ options:
                   address:
                     description:
                     - IP source address to use for the filter
-                    type: str
+                    type: list
+                    elements: str
                   prefix_list:
                     description:
                     - IP source prefix list to use for the filter
@@ -107,7 +108,8 @@ options:
                   port_protocol:
                     description:
                     - Specify the source port or protocol.
-                    type: dict
+                    type: list
+                    elements: dict
                     suboptions:
                       eq:
                         description:
@@ -134,7 +136,8 @@ options:
                   address:
                     description:
                     - Match IP destination address
-                    type: str
+                    type: list
+                    elements: str
                   prefix_list:
                     description:
                     - Match IP destination prefixes in named list
@@ -147,7 +150,8 @@ options:
                   port_protocol:
                     description:
                     - Specify the destination port or protocol.
-                    type: dict
+                    type: list
+                    elements: dict
                     suboptions:
                       eq:
                         description:
