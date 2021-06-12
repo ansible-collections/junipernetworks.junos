@@ -72,12 +72,15 @@ class AclsArgs(object):  # pylint: disable=R0903
                                             },
                                         },
                                         "port_protocol": {
-                                            "elements": "dict",
-                                            "type": "list",
+                                            "type": "dict",
                                             "options": {
-                                                "eq": {"type": "str"},
+                                                "eq": {
+                                                    "type": "list",
+                                                    "elements": "str"
+                                                    },
                                                 "range": {
-                                                    "type": "dict",
+                                                    "type": "list",
+                                                    "elements": "dict",
                                                     "options": {
                                                         "start": {
                                                             "type": "int"
@@ -104,12 +107,15 @@ class AclsArgs(object):  # pylint: disable=R0903
                                             },
                                         },
                                         "port_protocol": {
-                                            "elements": "dict",
-                                            "type": "list",
+                                            "type": "dict",
                                             "options": {
-                                                "eq": {"type": "str"},
+                                                "eq": {
+                                                    "type": "list",
+                                                    "elements": "str"
+                                                    },
                                                 "range": {
-                                                    "type": "dict",
+                                                    "type": "list",
+                                                    "elements": "dict",
                                                     "options": {
                                                         "start": {
                                                             "type": "int"

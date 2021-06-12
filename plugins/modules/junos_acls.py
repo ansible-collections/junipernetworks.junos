@@ -108,17 +108,18 @@ options:
                   port_protocol:
                     description:
                     - Specify the source port or protocol.
-                    type: list
-                    elements: dict
+                    type: dict
                     suboptions:
                       eq:
                         description:
                         - Match only packets on a given port number.
-                        type: str
+                        type: list
+                        elements: string
                       range:
                         description:
                         - Match only packets in the range of port numbers
-                        type: dict
+                        type: list
+                        elements: dict
                         suboptions:
                           start:
                             description:
@@ -150,17 +151,18 @@ options:
                   port_protocol:
                     description:
                     - Specify the destination port or protocol.
-                    type: list
-                    elements: dict
+                    type: dict
                     suboptions:
                       eq:
                         description:
                         - Match only packets on a given port number.
-                        type: str
+                        type: list
+                        elements: string
                       range:
                         description:
                         - Match only packets in the range of port numbers
-                        type: dict
+                        type: list
+                        elements: dict
                         suboptions:
                           start:
                             description:
