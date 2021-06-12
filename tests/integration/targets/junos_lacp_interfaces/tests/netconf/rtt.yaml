@@ -8,7 +8,7 @@
 - include_tasks: _base_config.yaml
 
 - set_fact:
-    expected_revert_output:
+    expected_revert_output: &base_config
 
       - name: ae1
         period: slow
@@ -36,28 +36,7 @@
     - name: Apply the provided configuration (base config)
       register: base_config
       junipernetworks.junos.junos_lacp_interfaces:
-        config:
-
-          - name: ae1
-            period: slow
-            sync_reset: disable
-            system:
-              priority: 10
-              mac:
-                address: 00:00:00:00:00:03
-
-          - name: ge-0/0/2
-            port_priority: 250
-            force_up: false
-
-          - name: ae2
-            period: fast
-            system:
-              priority: 300
-
-          - name: ge-0/0/4
-            port_priority: 400
-            force_up: true
+        config: *base_config
         state: merged
 
     - name: Gather interfaces facts
