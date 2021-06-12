@@ -161,7 +161,9 @@ class AclsFacts(object):
                             )
                         if term["from"].get("destination-address"):
                             ace["destination"] = ace.get("destination", {})
-                            destination_address = term["from"].get("destination-address")
+                            destination_address = term["from"].get(
+                                "destination-address"
+                            )
                             if not isinstance(destination_address, list):
                                 destination_address = [destination_address]
                             ace["destination"]["address"] = destination_address
