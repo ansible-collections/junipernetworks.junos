@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - fix lacp force-up without port-priority in junos_lacp_interfaces
