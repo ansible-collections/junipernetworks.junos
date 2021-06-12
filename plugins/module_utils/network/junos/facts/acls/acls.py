@@ -147,7 +147,7 @@ class AclsFacts(object):
                             ace["source"] = ace.get("source", {})
                             ace["source"]["address"] = term["from"][
                                 "source-address"
-                            ]["name"]
+                            ]
                         if term["from"].get("source-prefix-list"):
                             ace["source"] = ace.get("source", {})
                             ace["source"]["prefix_list"] = term["from"][
@@ -155,23 +155,23 @@ class AclsFacts(object):
                             ]
                         if term["from"].get("source-port"):
                             ace["source"] = ace.get("source", {})
-                            ace["source"]["port_protocol"] = dict(
-                                eq=term["from"]["source-port"]
-                            )
+                            ace["source"]["port_protocol"] = term["from"][
+                                "source-port"
+                            ]
                         if term["from"].get("destination-address"):
                             ace["destination"] = ace.get("destination", {})
                             ace["destination"]["address"] = term["from"][
                                 "destination-address"
-                            ]["name"]
+                            ]
                         if term["from"].get("destination-prefix-list"):
                             ace["destination"] = ace.get("destination", {})
                             ace["destination"]["prefix_list"] = term["from"][
                                 "destination-prefix-list"
                             ]
                         if term["from"].get("destination-port"):
-                            ace["destination"]["port_protocol"] = dict(
-                                eq=term["from"]["destination-port"]
-                            )
+                            ace["destination"]["port_protocol"] = term["from"][
+                                "destination-port"
+                            ]
                         if term["from"].get("protocol"):
                             ace["protocol"] = term["from"]["protocol"]
                         if term["from"].get("icmp-type"):
