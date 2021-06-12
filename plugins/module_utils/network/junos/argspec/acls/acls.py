@@ -74,13 +74,9 @@ class AclsArgs(object):  # pylint: disable=R0903
                                         "port_protocol": {
                                             "type": "dict",
                                             "options": {
-                                                "eq": {
-                                                    "type": "list",
-                                                    "elements": "str"
-                                                    },
+                                                "eq": {"type": "str"},
                                                 "range": {
-                                                    "type": "list",
-                                                    "elements": "dict",
+                                                    "type": "dict",
                                                     "options": {
                                                         "start": {
                                                             "type": "int"
@@ -109,13 +105,9 @@ class AclsArgs(object):  # pylint: disable=R0903
                                         "port_protocol": {
                                             "type": "dict",
                                             "options": {
-                                                "eq": {
-                                                    "type": "list",
-                                                    "elements": "str"
-                                                    },
+                                                "eq": {"type": "str"},
                                                 "range": {
-                                                    "type": "list",
-                                                    "elements": "dict",
+                                                    "type": "dict",
                                                     "options": {
                                                         "start": {
                                                             "type": "int"

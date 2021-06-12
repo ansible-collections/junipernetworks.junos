@@ -155,9 +155,9 @@ class AclsFacts(object):
                             ]
                         if term["from"].get("source-port"):
                             ace["source"] = ace.get("source", {})
-                            ace["source"]["port_protocol"] = term["from"][
-                                "source-port"
-                            ]
+                            ace["source"]["port_protocol"] = dict(
+                                eq=term["from"]["source-port"]
+                            )
                         if term["from"].get("destination-address"):
                             ace["destination"] = ace.get("destination", {})
                             ace["destination"]["address"] = term["from"][
@@ -169,9 +169,9 @@ class AclsFacts(object):
                                 "destination-prefix-list"
                             ]
                         if term["from"].get("destination-port"):
-                            ace["destination"]["port_protocol"] = term["from"][
-                                "destination-port"
-                            ]
+                            ace["destination"]["port_protocol"] = dict(
+                                eq=term["from"]["destination-port"]
+                            )
                         if term["from"].get("protocol"):
                             ace["protocol"] = term["from"]["protocol"]
                         if term["from"].get("icmp-type"):

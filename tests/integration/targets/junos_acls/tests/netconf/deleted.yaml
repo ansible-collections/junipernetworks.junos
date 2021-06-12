@@ -34,15 +34,6 @@
                         eq: bgp
                     protocol: tcp
                 name: third_acl
-              - aces:
-                  - name: fourteen_dot
-                    source:
-                      address: 14.0.0.0/8
-                      port_protocol:
-                        - eq: bgp
-                        - eq: 80
-                    protocol: tcp
-                name: fourth_acl
             afi: ipv4
           - acls:
               - aces:
@@ -92,15 +83,6 @@
                         eq: bgp
                     protocol: tcp
                 name: third_acl
-              - aces:
-                  - name: fourteen_dot
-                    source:
-                      address: 14.0.0.0/8
-                      port_protocol:
-                        - eq: bgp
-                        - eq: 80
-                    protocol: tcp
-                name: fourth_acl
             afi: ipv4
           - acls:
               - aces:
@@ -145,15 +127,6 @@
                         eq: bgp
                     protocol: tcp
                 name: third_acl
-              - aces:
-                  - name: fourteen_dot
-                    source:
-                      address: 14.0.0.0/8
-                      port_protocol:
-                        - eq: bgp
-                        - eq: 80
-                    protocol: tcp
-                name: fourth_acl
             afi: ipv4
 
     - name: Delete all ACLs under one AFI

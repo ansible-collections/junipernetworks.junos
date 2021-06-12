@@ -113,13 +113,11 @@ options:
                       eq:
                         description:
                         - Match only packets on a given port number.
-                        type: list
-                        elements: string
+                        type: str
                       range:
                         description:
                         - Match only packets in the range of port numbers
-                        type: list
-                        elements: dict
+                        type: dict
                         suboptions:
                           start:
                             description:
@@ -156,13 +154,11 @@ options:
                       eq:
                         description:
                         - Match only packets on a given port number.
-                        type: list
-                        elements: string
+                        type: str
                       range:
                         description:
                         - Match only packets in the range of port numbers
-                        type: list
-                        elements: dict
+                        type: dict
                         suboptions:
                           start:
                             description:
