@@ -146,11 +146,15 @@ class AclsFacts(object):
                         if term["from"].get("source-address"):
                             ace["source"] = ace.get("source", {})
                             ace["source"]["address"] = []
-                            source_addresses = term["from"].get("source-address")
+                            source_addresses = term["from"].get(
+                                "source-address"
+                            )
                             if not isinstance(source_addresses, list):
                                 source_addresses = [source_addresses]
                             for source_address in source_addresses:
-                                ace["source"]["address"].append(source_address["name"])
+                                ace["source"]["address"].append(
+                                    source_address["name"]
+                                )
                         if term["from"].get("source-prefix-list"):
                             ace["source"] = ace.get("source", {})
                             ace["source"]["prefix_list"] = term["from"][
@@ -170,7 +174,9 @@ class AclsFacts(object):
                             if not isinstance(destination_addresses, list):
                                 destination_addresses = [destination_addresses]
                             for destination_address in destination_addresses:
-                                ace["destination"]["address"].append(destination_address["name"])
+                                ace["destination"]["address"].append(
+                                    destination_address["name"]
+                                )
                         if term["from"].get("destination-prefix-list"):
                             ace["destination"] = ace.get("destination", {})
                             ace["destination"]["prefix_list"] = term["from"][
