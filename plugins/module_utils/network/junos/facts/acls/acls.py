@@ -145,16 +145,17 @@ class AclsFacts(object):
                     if term.get("from"):
                         if term["from"].get("source-address"):
                             ace["source"] = ace.get("source", {})
-                            ace["source"]["address"] = []
-                            source_addresses = term["from"].get(
+                            source_address = term["from"].get(
                                 "source-address"
                             )
-                            if not isinstance(source_addresses, list):
-                                source_addresses = [source_addresses]
-                            for source_address in source_addresses:
-                                ace["source"]["address"].append(
-                                    source_address["name"]
-                                )
+                            if not isinstance(source_address, list):
+                                ace["source"]["address"] = source_address["name"]
+                            else:
+                                ace["source"]["address"] = []
+                                for address in source_address:
+                                    ace["source"]["address"].append(
+                                        address["name"]
+                                    )
                         if term["from"].get("source-prefix-list"):
                             ace["source"] = ace.get("source", {})
                             ace["source"]["prefix_list"] = term["from"][
@@ -167,16 +168,17 @@ class AclsFacts(object):
                             )
                         if term["from"].get("destination-address"):
                             ace["destination"] = ace.get("destination", {})
-                            ace["destination"]["address"] = []
-                            destination_addresses = term["from"].get(
+                            destination_address = term["from"].get(
                                 "destination-address"
                             )
-                            if not isinstance(destination_addresses, list):
-                                destination_addresses = [destination_addresses]
-                            for destination_address in destination_addresses:
-                                ace["destination"]["address"].append(
-                                    destination_address["name"]
-                                )
+                            if not isinstance(destination_address, list):
+                                ace["destination"]["address"] = destination_address["name"]
+                            else:
+                                ace["destination"]["address"] = []
+                                for address in destination_address:
+                                    ace["destination"]["address"].append(
+                                        address["name"]
+                                    )
                         if term["from"].get("destination-prefix-list"):
                             ace["destination"] = ace.get("destination", {})
                             ace["destination"]["prefix_list"] = term["from"][
