@@ -150,10 +150,6 @@ class AclsFacts(object):
                                 ace["source"]["address"] = source_address[
                                     "name"
                                 ]
-                            elif len(source_address) == 1:
-                                ace["source"]["address"] = source_address[
-                                    "name"
-                                ]
                             else:
                                 ace["source"]["address"] = []
                                 for address in source_address:
@@ -176,10 +172,6 @@ class AclsFacts(object):
                                 "destination-address"
                             )
                             if not isinstance(destination_address, list):
-                                ace["destination"][
-                                    "address"
-                                ] = destination_address["name"]
-                            elif len(destination_address) == 1:
                                 ace["destination"][
                                     "address"
                                 ] = destination_address["name"]
