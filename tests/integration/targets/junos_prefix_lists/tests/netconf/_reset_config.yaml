@@ -5,9 +5,9 @@
 - name: Reset the prefix lists configuration
   junipernetworks.junos.junos_config:
     lines:
-      -  delete policy-options prefix-list Internal
-      -  delete policy-options prefix-list Test1
-      -  delete policy-options prefix-list Test2
+      - delete policy-options prefix-list Internal
+      - delete policy-options prefix-list Test1
+      - delete policy-options prefix-list Test2
 
 - debug:
     msg: "END junos_prefix_lists reset config on connection={{ ansible_connection }}"
