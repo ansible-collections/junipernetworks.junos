@@ -2947,10 +2947,6 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        with open("rst_com_out.txt", "w") as outfile:
-            outfile.write("\n".join(result["commands"]))
-        with open("tst_com_out.txt", "w") as outfile:
-            outfile.write("\n".join(commands))
         self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     """
