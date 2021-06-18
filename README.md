@@ -28,14 +28,6 @@ Name | Description
 --- | ---
 [junipernetworks.junos.junos](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_cliconf.rst)|Use junos cliconf to run command on Juniper Junos OS platform
 
-### Filter plugins
-Name | Description
---- | ---
-
-### Inventory plugins
-Name | Description
---- | ---
-
 ### Netconf plugins
 Name | Description
 --- | ---
