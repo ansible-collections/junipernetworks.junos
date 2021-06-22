@@ -286,3 +286,11 @@ releases:
     - improve_bgp_address_family_test_coverage.yaml
     - update_author_bgp_global.yaml
     release_date: '2021-05-18'
+  2.3.0:
+    changes:
+      minor_changes:
+      - Add junos_prefix_lists Resource Module.
+    fragments:
+    - 118_junos_prefix_lists_resource_module.yaml
+    - update_readme.yml
+    release_date: '2021-06-22'
