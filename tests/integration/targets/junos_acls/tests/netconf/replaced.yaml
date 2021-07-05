@@ -11,15 +11,13 @@
               - aces:
                   - name: ten_dot
                     source:
-                      address:
-                        - 10.0.0.0/8
+                      address: 10.0.0.0/8
                       port_protocol:
                         eq: bgp
                     protocol: tcp
                   - name: eleven_dot
                     source:
-                      address:
-                        - 11.0.0.0/8
+                      address: 11.0.0.0/8
                       port_protocol:
                         eq: bgp
                     protocol: tcp
@@ -27,8 +25,7 @@
               - aces:
                   - name: twelve_dot
                     source:
-                      address:
-                        - 12.0.0.0/8
+                      address: 12.0.0.0/8
                       port_protocol:
                         eq: bgp
                     protocol: tcp
@@ -36,8 +33,7 @@
                     grant: permit
                     protocol: igmp
                     source:
-                      address:
-                        - 192.168.1.100/32
+                      address: 192.168.1.100/32
                   - name: ace_21
                     grant: permit
                     protocol: tcp
@@ -57,8 +53,7 @@
               - aces:
                   - name: colon_eleven
                     source:
-                      address:
-                        - ::11/128
+                      address: ::11/128
                       port_protocol:
                         eq: "631"
                 name: initial_acl6
@@ -75,8 +70,7 @@
                     grant: permit
                     protocol: igmp
                     source:
-                      address:
-                        - 192.168.1.100
+                      address: 192.168.1.100
                   - name: ace_21
                     grant: permit
                     protocol: tcp
