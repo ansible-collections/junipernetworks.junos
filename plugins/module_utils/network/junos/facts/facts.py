@@ -83,6 +83,9 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.prefix_lists.prefix_lists import (
     Prefix_listsFacts,
 )
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.logging_global.logging_global import (
+    Prefix_listsFacts,
+)
 
 FACT_LEGACY_SUBSETS = dict(
     default=Default, hardware=Hardware, config=Config, interfaces=Interfaces
@@ -107,6 +110,7 @@ FACT_RESOURCE_SUBSETS = dict(
     bgp_address_family=Bgp_address_familyFacts,
     routing_instances=Routing_instancesFacts,
     prefix_lists=Prefix_listsFacts,
+    logging_global=Logging_globalFacts,
 )
 
 
