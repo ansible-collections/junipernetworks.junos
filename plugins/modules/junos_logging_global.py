@@ -283,7 +283,7 @@ options:
           kernel: *kernel
           log_prefix:
             description: Prefix for all logging to this host.
-            type: bool
+            type: str
           match: *match
           match_strings: *match_strings
           ntp: *ntp

@@ -564,7 +564,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                                                                'required': True,
                                                                                'type': 'str'}},
                                                          'type': 'dict'},
-                                              'log_prefix': {'type': 'bool'},
+                                              'log_prefix': {'type': 'str'},
                                               'match': {'type': 'str'},
                                               'match_strings': {'elements': 'str',
                                                                 'type': 'list'},

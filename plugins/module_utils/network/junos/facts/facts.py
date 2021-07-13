@@ -84,7 +84,7 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     Prefix_listsFacts,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.logging_global.logging_global import (
-    Prefix_listsFacts,
+    Logging_globalFacts,
 )
 
 FACT_LEGACY_SUBSETS = dict(

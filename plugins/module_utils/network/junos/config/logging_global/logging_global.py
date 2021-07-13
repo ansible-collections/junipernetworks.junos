@@ -36,16 +36,16 @@ class Logging_global(ConfigBase):
     def __init__(self, module):
         super(Logging_global, self).__init__(module)
 
-    def get_logging_global_facts(self):
+    def get_logging_global_facts(self, data=None):
         """ Get the 'facts' (the current configuration)
 
         :rtype: A dictionary
         :returns: The current configuration as a dictionary
         """
-        facts, _warnings = Facts(self._module).get_facts(self.gather_subset, self.gather_network_resources)
+        facts, _warnings = Facts(self._module).get_facts(self.gather_subset, self.gather_network_resources, data=data)
         logging_global_facts = facts['ansible_network_resources'].get('logging_global')
         if not logging_global_facts:
-            return []
+            return {}
         return logging_global_facts
 
     def execute_module(self):
@@ -97,6 +97,7 @@ class Logging_global(ConfigBase):
         :returns: the commands necessary to migrate the current configuration
                   to the desired configuration
         """
+        commands = []
         state = self._module.params['state']
         if state == 'overridden':
             kwargs = {}
