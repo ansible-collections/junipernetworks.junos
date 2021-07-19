@@ -26,7 +26,7 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.c
 )
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
     to_list,
-    remove_empties
+    remove_empties,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
     Facts,
@@ -36,6 +36,7 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.n
     build_child_xml_node,
 )
 from ansible.module_utils.six import iteritems
+
 
 class Logging_global(ConfigBase):
     """
@@ -77,15 +78,11 @@ class Logging_global(ConfigBase):
         warnings = list()
 
         if self.state in self.ACTION_STATES or self.state == "purged":
-            existing_logging_global_facts = (
-                self.get_logging_global_facts()
-            )
+            existing_logging_global_facts = self.get_logging_global_facts()
         else:
             existing_logging_global_facts = {}
         if state == "gathered":
-            existing_logging_global_facts = (
-                self.get_logging_global_facts()
-            )
+            existing_logging_global_facts = self.get_logging_global_facts()
             result["gathered"] = existing_logging_global_facts
         elif self.state == "parsed":
             running_config = self._module.params["running_config"]
@@ -123,9 +120,7 @@ class Logging_global(ConfigBase):
 
             result["commands"] = config_xmls
 
-            changed_logging_global_facts = (
-                self.get_logging_global_facts()
-            )
+            changed_logging_global_facts = self.get_logging_global_facts()
 
             result["before"] = existing_logging_global_facts
             if result["changed"]:
@@ -160,8 +155,8 @@ class Logging_global(ConfigBase):
         self.root = build_root_xml_node("system")
         state = self._module.params["state"]
         if (
-                state in ("merged", "replaced", "rendered", "overridden")
-                and not want
+            state in ("merged", "replaced", "rendered", "overridden")
+            and not want
         ):
             self._module.fail_json(
                 msg="value of config parameter must not be empty for state {0}".format(
@@ -217,7 +212,7 @@ class Logging_global(ConfigBase):
             "ntp",
             "pfe",
             "security",
-            "user"
+            "user",
         ]
         want = remove_empties(want)
         logging_node = build_root_xml_node("syslog")
@@ -236,8 +231,12 @@ class Logging_global(ConfigBase):
             # add any level node
             for k, v in iteritems(console):
                 if v is not None:
-                    console_node = build_child_xml_node(logging_node, "console")
-                    build_child_xml_node(console_node, "name", k.replace("_", "-"))
+                    console_node = build_child_xml_node(
+                        logging_node, "console"
+                    )
+                    build_child_xml_node(
+                        console_node, "name", k.replace("_", "-")
+                    )
                     build_child_xml_node(console_node, v.get("level"))
 
         # add file node
@@ -248,19 +247,27 @@ class Logging_global(ConfigBase):
                 # add name node
                 build_child_xml_node(file_node, "name", file.get("name"))
                 # add allow-duplicates node
-                if "allow_duplicates" in file.keys() and file.get("allow_duplicates"):
+                if "allow_duplicates" in file.keys() and file.get(
+                    "allow_duplicates"
+                ):
                     build_child_xml_node(file_node, "allow-duplicates")
                 # add contents
                 for k, v in iteritems(file):
                     if k in level_parser and v is not None:
-                        content_node = build_child_xml_node(file_node, "contents")
-                        build_child_xml_node(content_node, "name", k.replace("_", "-"))
+                        content_node = build_child_xml_node(
+                            file_node, "contents"
+                        )
+                        build_child_xml_node(
+                            content_node, "name", k.replace("_", "-")
+                        )
                         build_child_xml_node(content_node, v.get("level"))
                 # add archive node
                 if "archive" in file.keys():
                     self.render_archive(file_node, file)
                 # add explicit-priority
-                if "explicit_priority" in file.keys() and file.get("explicit_priority"):
+                if "explicit_priority" in file.keys() and file.get(
+                    "explicit_priority"
+                ):
                     build_child_xml_node(file_node, "explicit-priority")
                 # add match node
                 if "match" in file.keys():
@@ -273,8 +280,12 @@ class Logging_global(ConfigBase):
                 # add structured-data
                 if "structured_data" in file.keys():
                     structured_data = file.get("structured_data")
-                    s_data_node = build_child_xml_node(file_node, "structured-data")
-                    if "brief" in structured_data.keys() and structured_data.get("brief"):
+                    s_data_node = build_child_xml_node(
+                        file_node, "structured-data"
+                    )
+                    if "brief" in structured_data.keys() and structured_data.get(
+                        "brief"
+                    ):
                         build_child_xml_node(s_data_node, "brief")
 
         # add host node
@@ -285,23 +296,37 @@ class Logging_global(ConfigBase):
                 # add name node
                 build_child_xml_node(host_node, "name", host.get("name"))
                 # add allow-duplicates node
-                if "allow_duplicates" in host.keys() and host.get("allow_duplicates"):
+                if "allow_duplicates" in host.keys() and host.get(
+                    "allow_duplicates"
+                ):
                     build_child_xml_node(host_node, "allow-duplicates")
                 # add contents
                 for k, v in iteritems(host):
                     if k in level_parser and v is not None:
-                        content_node = build_child_xml_node(host_node, "contents")
-                        build_child_xml_node(content_node, "name", k.replace("_", "-"))
+                        content_node = build_child_xml_node(
+                            host_node, "contents"
+                        )
+                        build_child_xml_node(
+                            content_node, "name", k.replace("_", "-")
+                        )
                         build_child_xml_node(content_node, v.get("level"))
                 # add exclude-hostname node
-                if "exclude_hostname" in host.keys() and host.get("exclude_hostname"):
+                if "exclude_hostname" in host.keys() and host.get(
+                    "exclude_hostname"
+                ):
                     build_child_xml_node(host_node, "exclude-hostname")
                 # add facility_override node
                 if "facility_override" in host.keys():
-                    build_child_xml_node(host_node, "facility-override", host.get("facility_override"))
+                    build_child_xml_node(
+                        host_node,
+                        "facility-override",
+                        host.get("facility_override"),
+                    )
                 # add log_prefix node
                 if "log_prefix" in host.keys():
-                    build_child_xml_node(host_node, "log-prefix", host.get("log_prefix"))
+                    build_child_xml_node(
+                        host_node, "log-prefix", host.get("log_prefix")
+                    )
                 # add match node
                 if "match" in host.keys():
                     build_child_xml_node(host_node, "match", host.get("match"))
@@ -315,25 +340,43 @@ class Logging_global(ConfigBase):
                     build_child_xml_node(host_node, "port", host.get("port"))
                 # add routing_instance node
                 if "routing_instance" in host.keys():
-                    build_child_xml_node(host_node, "routing-instance", host.get("routing_instance"))
+                    build_child_xml_node(
+                        host_node,
+                        "routing-instance",
+                        host.get("routing_instance"),
+                    )
                 # add source_address node
                 if "source_address" in host.keys():
-                    build_child_xml_node(host_node, "source-address", host.get("source_address"))
+                    build_child_xml_node(
+                        host_node, "source-address", host.get("source_address")
+                    )
                 # add structured-data
                 if "structured_data" in host.keys():
                     structured_data = host.get("structured_data")
-                    if "set" not in structured_data.keys() or structured_data.get("set"):
-                        s_data_node = build_child_xml_node(host_node, "structured-data")
-                    if "brief" in structured_data.keys() and structured_data.get("brief"):
+                    if "set" not in structured_data.keys() or structured_data.get(
+                        "set"
+                    ):
+                        s_data_node = build_child_xml_node(
+                            host_node, "structured-data"
+                        )
+                    if "brief" in structured_data.keys() and structured_data.get(
+                        "brief"
+                    ):
                         build_child_xml_node(s_data_node, "brief")
 
         # add log_rotate_frequency node
         if "log_rotate_frequency" in want.keys():
-            build_child_xml_node(logging_node, "log-rotate-frequency", want.get("log_rotate_frequency"))
+            build_child_xml_node(
+                logging_node,
+                "log-rotate-frequency",
+                want.get("log_rotate_frequency"),
+            )
 
         # add routing_instance node
         if "routing_instance" in want.keys():
-            build_child_xml_node(logging_node, "routing-instance", want.get("routing_instance"))
+            build_child_xml_node(
+                logging_node, "routing-instance", want.get("routing_instance")
+            )
 
         # add server node
         if "server" in want.keys():
@@ -342,27 +385,39 @@ class Logging_global(ConfigBase):
                 server_node = build_child_xml_node(logging_node, "server")
             if "routing_instance" in server.keys():
                 routing_instance = server.get("routing_instance")
-                if "all" in routing_instance.keys() and routing_instance.get("all"):
+                if "all" in routing_instance.keys() and routing_instance.get(
+                    "all"
+                ):
                     build_child_xml_node(server_node, "all")
-                if "default" in routing_instance.keys() and routing_instance.get("default"):
+                if "default" in routing_instance.keys() and routing_instance.get(
+                    "default"
+                ):
                     build_child_xml_node(server_node, "default")
                 if "routing_instances" in routing_instance.keys():
                     r_instances = routing_instance.get("routing_instances")
                     for instance in r_instances:
-                        instance_node = build_child_xml_node(server_node, "name", instance.get("name"))
-                        if "disable" in instance.keys() and instance.get("disable"):
+                        instance_node = build_child_xml_node(
+                            server_node, "name", instance.get("name")
+                        )
+                        if "disable" in instance.keys() and instance.get(
+                            "disable"
+                        ):
                             build_child_xml_node(instance_node, "disable")
 
         # add source_address node
         if "source_address" in want.keys():
-            build_child_xml_node(logging_node, "source-address", want.get("source_address"))
+            build_child_xml_node(
+                logging_node, "source-address", want.get("source_address")
+            )
 
         # add time_format
         if "time_format" in want.keys():
             time_format = want.get("time_format")
 
             time_node = build_child_xml_node(logging_node, "time-format")
-            if "millisecond" in time_format.keys() and time_format.get("millisecond"):
+            if "millisecond" in time_format.keys() and time_format.get(
+                "millisecond"
+            ):
                 build_child_xml_node(time_node, "millisecond")
             if "year" in time_format.keys() and time_format.get("year"):
                 build_child_xml_node(time_node, "year")
@@ -375,13 +430,19 @@ class Logging_global(ConfigBase):
                 # add name node
                 build_child_xml_node(user_node, "name", user.get("name"))
                 # add allow-duplicates node
-                if "allow_duplicates" in user.keys() and user.get("allow_duplicates"):
+                if "allow_duplicates" in user.keys() and user.get(
+                    "allow_duplicates"
+                ):
                     build_child_xml_node(user_node, "allow-duplicates")
                 # add contents
                 for k, v in iteritems(user):
                     if k in level_parser and v is not None:
-                        content_node = build_child_xml_node(user_node, "contents")
-                        build_child_xml_node(content_node, "name", k.replace("_", "-"))
+                        content_node = build_child_xml_node(
+                            user_node, "contents"
+                        )
+                        build_child_xml_node(
+                            content_node, "name", k.replace("_", "-")
+                        )
                         build_child_xml_node(content_node, v.get("level"))
                 # add match node
                 if "match" in user.keys():
@@ -408,10 +469,7 @@ class Logging_global(ConfigBase):
         delete = {"delete": "delete"}
         if have is not None:
             logging_root = build_child_xml_node(
-                self.root,
-                "syslog",
-                None,
-                delete,
+                self.root, "syslog", None, delete
             )
 
         if logging_root is not None:
@@ -429,14 +487,22 @@ class Logging_global(ConfigBase):
         if "files" in archive.keys():
             build_child_xml_node(archive_node, "files", archive.get("files"))
         # add no-binary-data node
-        if "no_binary_data" in archive.keys() and archive.get("no_binary_data"):
+        if "no_binary_data" in archive.keys() and archive.get(
+            "no_binary_data"
+        ):
             build_child_xml_node(archive_node, "no-binary-data")
         # add size node
         if "file_size" in archive.keys():
-            build_child_xml_node(archive_node, "size", archive.get("file_size"))
+            build_child_xml_node(
+                archive_node, "size", archive.get("file_size")
+            )
         # add world-readable node
-        if "world_readable" in archive.keys() and archive.get("world_readable"):
+        if "world_readable" in archive.keys() and archive.get(
+            "world_readable"
+        ):
             build_child_xml_node(archive_node, "world-readable")
         # add no-world-readable node
-        if "no_world_readable" in archive.keys() and archive.get("no_world_readable"):
+        if "no_world_readable" in archive.keys() and archive.get(
+            "no_world_readable"
+        ):
             build_child_xml_node(archive_node, "no-world-readable")

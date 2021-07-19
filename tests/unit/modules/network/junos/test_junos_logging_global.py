@@ -98,18 +98,17 @@ class TestJunosLogging_globalModule(TestJunosModule):
                         files=10,
                         file_size=65578,
                         no_binary_data=True,
-                        no_world_readable=True
-                    ),
+                        no_world_readable=True,
+                    )
                 ),
                 state="merged",
             )
         )
         commands = [
-            "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:syslog><nc:archive><nc:files>10</nc:files>"
             "<nc:no-binary-data/><nc:size>65578</nc:size><nc:no-world-readable/>"
             "</nc:archive></nc:syslog></nc:system>"
-
         ]
         result = self.execute_module(changed=True, commands=commands)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
@@ -119,25 +118,17 @@ class TestJunosLogging_globalModule(TestJunosModule):
             dict(
                 config=dict(
                     console=dict(
-                        any=dict(
-                            level="info"
-                        ),
-                        authorization=dict(
-                            level="any"
-                        ),
-                        change_log=dict(
-                            level="critical"
-                        ),
-                        ftp=dict(
-                            level="none"
-                        ),
-                    ),
+                        any=dict(level="info"),
+                        authorization=dict(level="any"),
+                        change_log=dict(level="critical"),
+                        ftp=dict(level="none"),
+                    )
                 ),
                 state="merged",
             )
         )
         commands = [
-            "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:syslog><nc:console><nc:name>any</nc:name><nc:info/>"
             "</nc:console><nc:console><nc:name>authorization</nc:name>"
             "<nc:any/></nc:console><nc:console><nc:name>change-log</nc:name><nc:critical/>"
@@ -151,18 +142,13 @@ class TestJunosLogging_globalModule(TestJunosModule):
         set_module_args(
             dict(
                 config=dict(
-                   files=[
-                       dict(
-                           name="file101",
-                           allow_duplicates=True
-                       )
-                   ]
+                    files=[dict(name="file101", allow_duplicates=True)]
                 ),
                 state="merged",
             )
         )
         commands = [
-            "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:syslog><nc:file><nc:name>file101</nc:name>"
             "<nc:allow-duplicates/></nc:file></nc:syslog></nc:system>"
         ]
@@ -173,40 +159,33 @@ class TestJunosLogging_globalModule(TestJunosModule):
         set_module_args(
             dict(
                 config=dict(
-                   files=[
-                       dict(
-                           name="file102",
-                           allow_duplicates=True,
-                           any=dict(
-                               level="any"
-                           ),
-                           structured_data=dict(
-                               set=True
-                           )
-                       ),
-                       dict(
-                           name="file103",
-                           archive=dict(
-                             set=True,
-                             no_binary_data=True,
-                             files=10,
-                             file_size=65578,
-                             no_world_readable=True,
-                           ),
-                           explicit_priority=True,
-                           match="^set*",
-                           match_strings=[
-                               "^delete",
-                               "^prompt"
-                           ]
-                       )
-                   ]
+                    files=[
+                        dict(
+                            name="file102",
+                            allow_duplicates=True,
+                            any=dict(level="any"),
+                            structured_data=dict(set=True),
+                        ),
+                        dict(
+                            name="file103",
+                            archive=dict(
+                                set=True,
+                                no_binary_data=True,
+                                files=10,
+                                file_size=65578,
+                                no_world_readable=True,
+                            ),
+                            explicit_priority=True,
+                            match="^set*",
+                            match_strings=["^delete", "^prompt"],
+                        ),
+                    ]
                 ),
                 state="merged",
             )
         )
         commands = [
-            "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:syslog><nc:file><nc:name>file102</nc:name><nc:allow-duplicates/>"
             "<nc:contents><nc:name>any</nc:name><nc:any/></nc:contents>"
             "<nc:structured-data/></nc:file><nc:file><nc:name>file103</nc:name>"
@@ -223,19 +202,19 @@ class TestJunosLogging_globalModule(TestJunosModule):
         set_module_args(
             dict(
                 config=dict(
-                   hosts=[
-                       dict(
-                           name="host222",
-                           exclude_hostname=True,
-                           allow_duplicates=True
-                       )
-                   ]
+                    hosts=[
+                        dict(
+                            name="host222",
+                            exclude_hostname=True,
+                            allow_duplicates=True,
+                        )
+                    ]
                 ),
                 state="merged",
             )
         )
         commands = [
-            "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:syslog><nc:host><nc:name>host222</nc:name><nc:allow-duplicates/>"
             "<nc:exclude-hostname/></nc:host></nc:syslog></nc:system>"
         ]
@@ -246,31 +225,22 @@ class TestJunosLogging_globalModule(TestJunosModule):
         set_module_args(
             dict(
                 config=dict(
-                   hosts=[
-                       dict(
-                           name="host111",
-                           exclude_hostname=True,
-                           allow_duplicates=True,
-                           any=dict(
-                               level="any"
-                           ),
-                           structured_data=dict(
-                               set=True,
-                               brief=True
-                           ),
-                           facility_override="ftp",
-                           log_prefix="field",
-                           match="^set*",
-                           match_strings=[
-                               "^delete",
-                               "^prompt"
-                           ],
-                           port=1231,
-                           routing_instance="inst11",
-                           source_address="11.11.11.11"
-                       )
-
-                   ]
+                    hosts=[
+                        dict(
+                            name="host111",
+                            exclude_hostname=True,
+                            allow_duplicates=True,
+                            any=dict(level="any"),
+                            structured_data=dict(set=True, brief=True),
+                            facility_override="ftp",
+                            log_prefix="field",
+                            match="^set*",
+                            match_strings=["^delete", "^prompt"],
+                            port=1231,
+                            routing_instance="inst11",
+                            source_address="11.11.11.11",
+                        )
+                    ]
                 ),
                 state="merged",
             )
@@ -286,17 +256,13 @@ class TestJunosLogging_globalModule(TestJunosModule):
                     routing_instance="inst11",
                     log_rotate_frequency=45,
                     source_address="33.33.33.33",
-                    time_format=dict(
-                        millisecond=True,
-                        year=True
-                    )
-
+                    time_format=dict(millisecond=True, year=True),
                 ),
                 state="merged",
             )
         )
         commands = [
-            "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:syslog><nc:allow-duplicates/><nc:log-rotate-frequency>45</nc:log-rotate-frequency>"
             "<nc:routing-instance>inst11</nc:routing-instance><nc:source-address>33.33.33.33</nc:source-address>"
             "<nc:time-format><nc:millisecond/><nc:year/></nc:time-format></nc:syslog></nc:system>"
@@ -308,33 +274,25 @@ class TestJunosLogging_globalModule(TestJunosModule):
         set_module_args(
             dict(
                 config=dict(
-                     users=[
-                         dict(
-                             name="user1",
-                             allow_duplicates=True,
-                         ),
-                         dict(
-                             name="user2",
-                             allow_duplicates=True,
-                             any=dict(
-                                 level="any"
-                             ),
-                             user=dict(
-                                 level="info"
-                             )
-                         )
-                     ]
+                    users=[
+                        dict(name="user1", allow_duplicates=True),
+                        dict(
+                            name="user2",
+                            allow_duplicates=True,
+                            any=dict(level="any"),
+                            user=dict(level="info"),
+                        ),
+                    ]
                 ),
                 state="merged",
             )
         )
         commands = [
-            "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:syslog><nc:user><nc:name>user1</nc:name><nc:allow-duplicates/>"
             "</nc:user><nc:user><nc:name>user2</nc:name><nc:allow-duplicates/><nc:contents>"
             "<nc:name>any</nc:name><nc:any/></nc:contents><nc:contents><nc:name>user</nc:name>"
             "<nc:info/></nc:contents></nc:user></nc:syslog></nc:system>"
-
         ]
         result = self.execute_module(changed=True, commands=commands)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
@@ -343,29 +301,22 @@ class TestJunosLogging_globalModule(TestJunosModule):
         set_module_args(
             dict(
                 config=dict(
-                     users=[
-                         dict(
-                             name="user1",
-                             allow_duplicates=True,
-                         ),
-                         dict(
-                             name="user2",
-                             allow_duplicates=True,
-                             any=dict(
-                                 level="any"
-                             ),
-                             user=dict(
-                                 level="info"
-                             )
-                         )
-                     ]
+                    users=[
+                        dict(name="user1", allow_duplicates=True),
+                        dict(
+                            name="user2",
+                            allow_duplicates=True,
+                            any=dict(level="any"),
+                            user=dict(level="info"),
+                        ),
+                    ]
                 ),
                 state="replaced",
             )
         )
         commands = [
-            "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
-            "<nc:syslog delete=\"delete\"/><nc:syslog><nc:user><nc:name>user1</nc:name>"
+            '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
+            '<nc:syslog delete="delete"/><nc:syslog><nc:user><nc:name>user1</nc:name>'
             "<nc:allow-duplicates/></nc:user><nc:user><nc:name>user2</nc:name>"
             "<nc:allow-duplicates/><nc:contents><nc:name>any</nc:name><nc:any/>"
             "</nc:contents><nc:contents><nc:name>user</nc:name><nc:info/>"
@@ -378,29 +329,22 @@ class TestJunosLogging_globalModule(TestJunosModule):
         set_module_args(
             dict(
                 config=dict(
-                     users=[
-                         dict(
-                             name="user1",
-                             allow_duplicates=True,
-                         ),
-                         dict(
-                             name="user2",
-                             allow_duplicates=True,
-                             any=dict(
-                                 level="any"
-                             ),
-                             user=dict(
-                                 level="info"
-                             )
-                         )
-                     ]
+                    users=[
+                        dict(name="user1", allow_duplicates=True),
+                        dict(
+                            name="user2",
+                            allow_duplicates=True,
+                            any=dict(level="any"),
+                            user=dict(level="info"),
+                        ),
+                    ]
                 ),
                 state="overridden",
             )
         )
         commands = [
-            "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
-            "<nc:syslog delete=\"delete\"/><nc:syslog><nc:user><nc:name>user1</nc:name>"
+            '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
+            '<nc:syslog delete="delete"/><nc:syslog><nc:user><nc:name>user1</nc:name>'
             "<nc:allow-duplicates/></nc:user><nc:user><nc:name>user2</nc:name>"
             "<nc:allow-duplicates/><nc:contents><nc:name>any</nc:name><nc:any/>"
             "</nc:contents><nc:contents><nc:name>user</nc:name><nc:info/>"
@@ -410,16 +354,10 @@ class TestJunosLogging_globalModule(TestJunosModule):
         self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_logging_global_deleted_user_11(self):
-        set_module_args(
-            dict(
-                config=dict(
-                ),
-                state="deleted",
-            )
-        )
+        set_module_args(dict(config=dict(), state="deleted"))
         commands = [
-            "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
-            "<nc:syslog delete=\"delete\"/></nc:system>"
+            '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
+            '<nc:syslog delete="delete"/></nc:system>'
         ]
         result = self.execute_module(changed=True, commands=commands)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
@@ -433,14 +371,14 @@ class TestJunosLogging_globalModule(TestJunosModule):
                         files=10,
                         file_size=65578,
                         no_binary_data=True,
-                        no_world_readable=True
-                    ),
+                        no_world_readable=True,
+                    )
                 ),
                 state="rendered",
             )
         )
         rendered = (
-            "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+            '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:syslog><nc:archive><nc:files>10</nc:files><nc:no-binary-data/>"
             "<nc:size>65578</nc:size><nc:no-world-readable/></nc:archive></nc:syslog></nc:system>"
         )
@@ -561,98 +499,63 @@ class TestJunosLogging_globalModule(TestJunosModule):
                 "file_size": 65578,
                 "files": 10,
                 "no_binary_data": True,
-                "no_world_readable": True
+                "no_world_readable": True,
             },
             "console": {
-                "any": {
-                    "level": "info"
-                },
-                "authorization": {
-                    "level": "any"
-                },
-                "change_log": {
-                    "level": "critical"
-                },
-                "ftp": {
-                    "level": "none"
-                }
+                "any": {"level": "info"},
+                "authorization": {"level": "any"},
+                "change_log": {"level": "critical"},
+                "ftp": {"level": "none"},
             },
             "files": [
+                {"allow_duplicates": True, "name": "file101"},
                 {
                     "allow_duplicates": True,
-                    "name": "file101"
-                },
-                {
-                    "allow_duplicates": True,
-                    "any": {
-                        "level": "any"
-                    },
+                    "any": {"level": "any"},
                     "name": "file102",
-                    "structured_data": {
-                        "set": True
-                    }
+                    "structured_data": {"set": True},
                 },
                 {
                     "archive": {
                         "file_size": 65578,
                         "files": 10,
                         "no_binary_data": True,
-                        "no_world_readable": True
+                        "no_world_readable": True,
                     },
                     "explicit_priority": True,
                     "match": "^set*",
-                    "match_strings": [
-                        "^delete",
-                        "^prompt"
-                    ],
-                    "name": "file103"
-                }
+                    "match_strings": ["^delete", "^prompt"],
+                    "name": "file103",
+                },
             ],
             "hosts": [
                 {
                     "allow_duplicates": True,
-                    "any": {
-                        "level": "any"
-                    },
+                    "any": {"level": "any"},
                     "exclude_hostname": True,
                     "facility_override": "ftp",
                     "log_prefix": "field",
                     "match": "^set*",
-                    "match_strings": [
-                        "^delete",
-                        "^prompt"
-                    ],
+                    "match_strings": ["^delete", "^prompt"],
                     "name": "host111",
                     "port": 1231,
                     "routing_instance": "inst11",
                     "source_address": "11.1.1.11",
-                    "structured_data": {
-                        "brief": True
-                    }
+                    "structured_data": {"brief": True},
                 }
             ],
             "log_rotate_frequency": 45,
             "routing_instance": "inst11",
             "source_address": "33.33.33.33",
-            "time_format": {
-                "millisecond": True,
-                "year": True
-            },
+            "time_format": {"millisecond": True, "year": True},
             "users": [
+                {"allow_duplicates": True, "name": "user1"},
                 {
                     "allow_duplicates": True,
-                    "name": "user1"
-                },
-                {
-                    "allow_duplicates": True,
-                    "any": {
-                        "level": "any"
-                    },
+                    "any": {"level": "any"},
                     "name": "user2",
-                    "user": {
-                        "level": "info"
-                    }
-                }
-            ]
+                    "user": {"level": "info"},
+                },
+            ],
         }
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))

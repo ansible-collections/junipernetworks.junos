@@ -17,7 +17,9 @@ from copy import deepcopy
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
     utils,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.logging_global.logging_global import Logging_globalArgs
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.logging_global.logging_global import (
+    Logging_globalArgs,
+)
 from ansible.module_utils.six import string_types
 
 try:
@@ -39,7 +41,7 @@ class Logging_globalFacts(object):
     """ The junos logging_global fact class
     """
 
-    def __init__(self, module, subspec='config', options='options'):
+    def __init__(self, module, subspec="config", options="options"):
         self._module = module
         self.argument_spec = Logging_globalArgs.argument_spec
         spec = deepcopy(self.argument_spec)
@@ -101,9 +103,7 @@ class Logging_globalFacts(object):
                 self.argument_spec, {"config": objs}
             )
 
-            facts["logging_global"] = utils.remove_empties(
-                params["config"]
-            )
+            facts["logging_global"] = utils.remove_empties(params["config"])
         ansible_facts["ansible_network_resources"].update(facts)
         return ansible_facts
 
@@ -156,15 +156,21 @@ class Logging_globalFacts(object):
 
         # Read log-rotate-frequency node
         if "log-rotate-frequency" in conf.keys():
-            logging_gloabl_config["log_rotate_frequency"] = conf.get("log-rotate-frequency")
+            logging_gloabl_config["log_rotate_frequency"] = conf.get(
+                "log-rotate-frequency"
+            )
 
         # Read routing-instance node
         if "routing-instance" in conf.keys():
-            logging_gloabl_config["routing_instance"] = conf.get("routing-instance")
+            logging_gloabl_config["routing_instance"] = conf.get(
+                "routing-instance"
+            )
 
         # Read source-address node
         if "source-address" in conf.keys():
-            logging_gloabl_config["source_address"] = conf.get("source-address")
+            logging_gloabl_config["source_address"] = conf.get(
+                "source-address"
+            )
 
         # Read user node
         if "user" in conf.keys():
@@ -232,7 +238,7 @@ class Logging_globalFacts(object):
             "ntp",
             "pfe",
             "security",
-            "user"
+            "user",
         ]
 
         # Read any node
