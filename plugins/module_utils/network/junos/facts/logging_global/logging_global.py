@@ -172,6 +172,20 @@ class Logging_globalFacts(object):
         if "user" in conf.keys():
             users_list = self.parse_user_node(conf.get("user"))
             logging_gloabl_config["users"] = users_list
+
+        # Read time-format
+        if "time-format" in conf.keys():
+            time_format_dict = {}
+            time_format = conf.get("time-format")
+            if time_format is None:
+                time_format_dict["set"] = True
+            else:
+                if "millisecond" in time_format.keys():
+                    time_format_dict["millisecond"] = True
+                if "year" in time_format.keys():
+                    time_format_dict["year"] = True
+            logging_gloabl_config["time_format"] = time_format_dict
+
         return utils.remove_empties(logging_gloabl_config)
 
     def parse_archive_node(self, conf):
@@ -328,6 +342,19 @@ class Logging_globalFacts(object):
             # Read log-prefix node
             if "log-prefix" in host.keys():
                 host_dict["log_prefix"] = host.get("log-prefix")
+            # Read match
+            if "match" in host.keys():
+                host_dict["match"] = host.get("match")
+            # Read match-strings
+            if "match-strings" in host.keys():
+                match_strings = host.get("match-strings")
+                match_strings_list = []
+                if isinstance(match_strings, list):
+                    for item in match_strings:
+                        match_strings_list.append(item)
+                else:
+                    match_strings_list.append(match_strings)
+                host_dict["match_strings"] = match_strings_list
             # Read port node
             if "port" in host.keys():
                 host_dict["port"] = host.get("port")

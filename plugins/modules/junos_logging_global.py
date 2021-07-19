@@ -300,48 +300,6 @@ options:
             type: str
           structured_data: *structured_data
           user: *user
-          other_routing_engine:
-            description: Send to log file on other Routing Engine.
-            type: dict
-            suboptions:
-              allow_duplicates: *allow_duplicates
-              any: *any
-              authorization: *authorization
-              change_log: *change_log
-              conflict_log: *conflict_log
-              daemon: *daemon
-              dfc: *dfc
-              exclude_hostname:
-                description: Specify exclude hostname field in messages.
-                type: bool
-              explicit_priority: *explicit_priority
-              external: *external
-              facility_override:
-                description: Specify alternate facility for logging to remote host.
-                type: str
-              firewall: *firewall
-              ftp: *ftp
-              interactive_commands: *interactive_commands
-              kernel: *kernel
-              log_prefix:
-                description: Prefix for all logging to this host.
-                type: bool
-              match: *match
-              match_strings: *match_strings
-              ntp: *ntp
-              pfe: *pfe
-              port:
-                description: Specify port number.
-                type: int
-              routing_instance:
-                description: Specify routing-instance.
-                type: str
-              security: *security
-              source_address:
-                description: Specify address as source address.
-                type: str
-              structured_data: *structured_data
-              user: *user
       log_rotate_frequency:
         description: Specify Rotate log frequency (1..59 minutes).
         type: int
@@ -383,13 +341,46 @@ options:
         description: Specify additional information to include in system log timestamp.
         type: dict
         suboptions:
-          milliseconds:
+          set:
+            description: Set time-format
+            type: bool
+          millisecond:
             description: Include milliseconds in timestamp.
             type: bool
           year:
             description: Include year in timestamp.
             type: bool
-      user: *user
+      users:
+        description: Specify user logging
+        type: list
+        elements: dict
+        suboptions:
+          name:
+            description: Specify user name.
+            type: str
+          allow_duplicates: *allow_duplicates
+          any: *any
+          authorization: *authorization
+          change_log: *change_log
+          conflict_log: *conflict_log
+          daemon: *daemon
+          dfc: *dfc
+          external: *external
+          firewall: *firewall
+          ftp: *ftp
+          interactive_commands: *interactive_commands
+          kernel: *kernel
+          match:
+            description: Specify regular expression for lines to be logged.
+            type: str
+          match_strings:
+            description: Specify matching string(s) for lines to be logged.
+            type: list
+            elements: str
+          ntp: *ntp
+          pfe: *pfe
+          security: *security
+          user: *user
             
   state:
     description:
