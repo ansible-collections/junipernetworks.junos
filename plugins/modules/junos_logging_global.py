@@ -391,6 +391,7 @@ options:
     - merged
     - replaced
     - deleted
+    - overridden
     - parsed
     - gathered
     - rendered

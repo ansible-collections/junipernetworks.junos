@@ -830,6 +830,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
  'running_config': {'type': 'str'},
  'state': {'choices': ['merged',
                        'replaced',
+                       'overridden',
                        'deleted',
                        'parsed',
                        'gathered',

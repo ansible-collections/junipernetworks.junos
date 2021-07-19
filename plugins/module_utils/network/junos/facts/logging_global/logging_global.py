@@ -33,7 +33,6 @@ try:
     HAS_XMLTODICT = True
 except ImportError:
     HAS_XMLTODICT = False
-import q
 
 
 class Logging_globalFacts(object):
@@ -130,7 +129,6 @@ class Logging_globalFacts(object):
 
         # Parse facts for BGP address-family global node
         conf = conf.get("syslog")
-        q(conf)
 
         # Read allow-duplicates node
         if "allow-duplicates" in conf.keys():
@@ -200,8 +198,8 @@ class Logging_globalFacts(object):
                 archive_dict["no_binary_data"] = True
             if "no-world-readable" in conf.keys():
                 archive_dict["no_world_readable"] = True
-            if "file-size" in conf.keys():
-                archive_dict["file_size"] = conf.get("file-size")
+            if "size" in conf.keys():
+                archive_dict["file_size"] = conf.get("size")
             if "world-readable" in conf.keys():
                 archive_dict["world_readable"] = True
             if "archive-sites" in conf.keys():
@@ -227,7 +225,7 @@ class Logging_globalFacts(object):
             "daemon",
             "dfc",
             "external",
-            "firewall"
+            "firewall",
             "ftp",
             "interactive-commands",
             "kernel",
