@@ -36,7 +36,6 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.n
     build_child_xml_node,
 )
 from ansible.module_utils.six import iteritems
-import q
 
 class Logging_global(ConfigBase):
     """
@@ -203,8 +202,6 @@ class Logging_global(ConfigBase):
         """
         logging_xml = []
         want = remove_empties(want)
-        q(want)
-        q(have)
         level_parser = [
             "any",
             "authorization",
