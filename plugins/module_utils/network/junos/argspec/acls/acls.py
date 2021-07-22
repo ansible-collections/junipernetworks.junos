@@ -60,7 +60,7 @@ class AclsArgs(object):  # pylint: disable=R0903
                                 "source": {
                                     "type": "dict",
                                     "options": {
-                                        "address": {"type": "str"},
+                                        "address": {"type": "raw"},
                                         "prefix_list": {
                                             "elements": "dict",
                                             "type": "list",
@@ -88,7 +88,7 @@ class AclsArgs(object):  # pylint: disable=R0903
                                 "destination": {
                                     "type": "dict",
                                     "options": {
-                                        "address": {"type": "str"},
+                                        "address": {"type": "raw"},
                                         "prefix_list": {
                                             "elements": "dict",
                                             "type": "list",

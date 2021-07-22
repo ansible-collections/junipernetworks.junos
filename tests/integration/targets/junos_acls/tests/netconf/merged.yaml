@@ -33,6 +33,16 @@
                     protocol: tcp
                 name: second_acl
               - aces:
+                  - name: thirteen_dot
+                    source:
+                      address:
+                        - 13.0.0.0/16
+                        - 13.1.0.0/16
+                      port_protocol:
+                        eq: bgp
+                    protocol: tcp
+                name: third_acl
+              - aces:
                   - name: ssh_rule
                     source:
                       prefix_list:

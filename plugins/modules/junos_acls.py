@@ -94,7 +94,7 @@ options:
                   address:
                     description:
                     - IP source address to use for the filter
-                    type: str
+                    type: raw
                   prefix_list:
                     description:
                     - IP source prefix list to use for the filter
@@ -134,7 +134,7 @@ options:
                   address:
                     description:
                     - Match IP destination address
-                    type: str
+                    type: raw
                   prefix_list:
                     description:
                     - Match IP destination prefixes in named list
