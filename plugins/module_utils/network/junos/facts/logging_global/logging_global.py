@@ -9,11 +9,9 @@ It is in this file the configuration is collected from the device
 for a given resource, parsed, and the facts tree is populated
 based on the configuration.
 """
-from copy import deepcopy
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
 from copy import deepcopy
-
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
     utils,
 )
@@ -247,7 +245,7 @@ class Logging_globalFacts(object):
                 if item in conf.get("name"):
                     any_dict = {}
                     for k, v in conf.items():
-                        if k is not "name":
+                        if k != "name":
                             any_dict["level"] = k
                     console_dict[item.replace("-", "_")] = any_dict
         else:
@@ -256,7 +254,7 @@ class Logging_globalFacts(object):
                     if item in console.get("name"):
                         any_dict = {}
                         for k, v in console.items():
-                            if k is not "name":
+                            if k != "name":
                                 any_dict["level"] = k
                         console_dict[item.replace("-", "_")] = any_dict
 

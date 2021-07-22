@@ -92,7 +92,7 @@ options:
             type: int
           world_readable:
             description: Allow any user to read the log file.
-            type: bool  
+            type: bool
       console:
         description: Set console logging parameters.
         type: dict
@@ -382,7 +382,6 @@ options:
           pfe: *pfe
           security: *security
           user: *user
-            
   state:
     description:
     - The state the configuration should be left in.
