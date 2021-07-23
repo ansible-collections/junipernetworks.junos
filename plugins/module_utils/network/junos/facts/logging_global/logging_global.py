@@ -224,7 +224,7 @@ class Logging_globalFacts(object):
 
         return archive_dict
 
-    def parse_console_node(self, conf, console_dict={}):
+    def parse_console_node(self, conf, console_dict=None):
         console_loggings = [
             "any",
             "authorization",
@@ -242,7 +242,8 @@ class Logging_globalFacts(object):
             "security",
             "user",
         ]
-
+        if console_dict is None:
+            console_dict = {}
         # Read any node
         if isinstance(conf, dict):
             for item in console_loggings:
