@@ -3,9 +3,9 @@
     msg: START junos_logging_global round trip integration tests on connection={{
       ansible_connection }}
 
-- include_tasks: _reset_config.yaml
-
 - block:
+    - include_tasks: _reset_config.yaml
+    - include_tasks: _initial_config.yaml
 
     - name: Apply the provided configuration (base config)
       register: base_config
@@ -66,13 +66,9 @@
               port: 1231
               routing_instance: "inst11"
               source_address: "11.1.1.11"
-
           routing_instance: "inst11"
-
           log_rotate_frequency: 45
-
           source_address: "33.33.33.33"
-
           time_format:
             millisecond: true
             year: true

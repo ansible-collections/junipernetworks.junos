@@ -6,7 +6,7 @@
   junipernetworks.junos.junos_config:
     lines:
       - delete system syslog
-      - delete routing-instances inst11 description "inst11"
+      - delete routing-instances
 
 
 - debug:
