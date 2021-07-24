@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - Add junos_logging_global Resource Module.

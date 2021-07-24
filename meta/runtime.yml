@@ -90,6 +90,10 @@ plugin_routing:
       redirect: junipernetworks.junos.junos
     prefix_lists:
       redirect: junipernetworks.junos.junos
+    junos_logging_global:
+      redirect: junipernetworks.junos.junos
+    logging_global:
+      redirect: junipernetworks.junos.junos
     junos_lldp_interface:
       redirect: junipernetworks.junos.junos
     lldp_interface:
@@ -242,6 +246,8 @@ plugin_routing:
       redirect: junipernetworks.junos.junos_routing_instances
     prefix_lists:
       redirect: junipernetworks.junos.junos_prefix_lists
+    logging_global:
+      redirect: junipernetworks.junos.junos_logging_global
     lldp_interface:
       redirect: junipernetworks.junos.junos_lldp_interface
       deprecation:
