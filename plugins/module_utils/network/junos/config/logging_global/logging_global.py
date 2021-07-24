@@ -97,8 +97,6 @@ class Logging_global(ConfigBase):
             config_xmls = self.set_config(existing_logging_global_facts)
             if config_xmls:
                 result["rendered"] = config_xmls[0]
-            else:
-                result["rendered"] = ""
 
         else:
             diff = None

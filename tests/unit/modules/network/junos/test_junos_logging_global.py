@@ -81,10 +81,7 @@ class TestJunosLogging_globalModule(TestJunosModule):
         self, commands=None, format="text", changed=False, filename=None
     ):
         def load_from_file(*args, **kwargs):
-            if filename:
-                output = load_fixture(filename)
-            else:
-                output = load_fixture("junos_logging_global_config.cfg")
+            output = load_fixture("junos_logging_global_config.cfg")
             return output
 
         self.execute_show_command.side_effect = load_from_file
@@ -127,16 +124,23 @@ class TestJunosLogging_globalModule(TestJunosModule):
                 state="merged",
             )
         )
-        commands = [
-            '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
-            "<nc:syslog><nc:console><nc:name>any</nc:name><nc:info/>"
-            "</nc:console><nc:console><nc:name>authorization</nc:name>"
-            "<nc:any/></nc:console><nc:console><nc:name>change-log</nc:name><nc:critical/>"
-            "</nc:console><nc:console><nc:name>ftp</nc:name><nc:none/>"
-            "</nc:console></nc:syslog></nc:system>"
-        ]
-        result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        result = self.execute_module(changed=True)
+        self.assertIn(
+            "<nc:console><nc:name>any</nc:name><nc:info/>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:console><nc:name>authorization</nc:name><nc:any/>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:console><nc:name>change-log</nc:name><nc:critical/>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:console><nc:name>ftp</nc:name><nc:none/>",
+            str(result["commands"]),
+        )
 
     def test_junos_logging_global_merged_files_03(self):
         set_module_args(
@@ -287,15 +291,19 @@ class TestJunosLogging_globalModule(TestJunosModule):
                 state="merged",
             )
         )
-        commands = [
-            '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
-            "<nc:syslog><nc:user><nc:name>user1</nc:name><nc:allow-duplicates/>"
-            "</nc:user><nc:user><nc:name>user2</nc:name><nc:allow-duplicates/><nc:contents>"
-            "<nc:name>any</nc:name><nc:any/></nc:contents><nc:contents><nc:name>user</nc:name>"
-            "<nc:info/></nc:contents></nc:user></nc:syslog></nc:system>"
-        ]
-        result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        result = self.execute_module(changed=True)
+        self.assertIn(
+            "<nc:user><nc:name>user1</nc:name><nc:allow-duplicates/>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:user><nc:name>user2</nc:name><nc:allow-duplicates/>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:contents><nc:name>any</nc:name><nc:any/></nc:contents>",
+            str(result["commands"]),
+        )
 
     def test_junos_logging_global_replaced_user_09(self):
         set_module_args(
@@ -314,16 +322,23 @@ class TestJunosLogging_globalModule(TestJunosModule):
                 state="replaced",
             )
         )
-        commands = [
-            '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
-            '<nc:syslog delete="delete"/><nc:syslog><nc:user><nc:name>user1</nc:name>'
-            "<nc:allow-duplicates/></nc:user><nc:user><nc:name>user2</nc:name>"
-            "<nc:allow-duplicates/><nc:contents><nc:name>any</nc:name><nc:any/>"
-            "</nc:contents><nc:contents><nc:name>user</nc:name><nc:info/>"
-            "</nc:contents></nc:user></nc:syslog></nc:system>"
-        ]
-        result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        result = self.execute_module(changed=True)
+        self.assertIn(
+            '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
+            str(result["commands"]),
+        )
+        self.assertIn(
+            '<nc:syslog delete="delete"/><nc:syslog><nc:user><nc:name>user1</nc:name>',
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:allow-duplicates/></nc:user><nc:user><nc:name>user2</nc:name>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "</nc:contents></nc:user></nc:syslog></nc:system>",
+            str(result["commands"]),
+        )
 
     def test_junos_logging_global_overridden_user_10(self):
         set_module_args(
@@ -342,16 +357,19 @@ class TestJunosLogging_globalModule(TestJunosModule):
                 state="overridden",
             )
         )
-        commands = [
-            '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
-            '<nc:syslog delete="delete"/><nc:syslog><nc:user><nc:name>user1</nc:name>'
-            "<nc:allow-duplicates/></nc:user><nc:user><nc:name>user2</nc:name>"
-            "<nc:allow-duplicates/><nc:contents><nc:name>any</nc:name><nc:any/>"
-            "</nc:contents><nc:contents><nc:name>user</nc:name><nc:info/>"
-            "</nc:contents></nc:user></nc:syslog></nc:system>"
-        ]
-        result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        result = self.execute_module(changed=True)
+        self.assertIn(
+            '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
+            str(result["commands"]),
+        )
+        self.assertIn(
+            '<nc:syslog delete="delete"/><nc:syslog><nc:user><nc:name>user1</nc:name>',
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:allow-duplicates/></nc:user><nc:user><nc:name>user2</nc:name>",
+            str(result["commands"]),
+        )
 
     def test_junos_logging_global_deleted_user_11(self):
         set_module_args(dict(config=dict(), state="deleted"))
@@ -556,6 +574,455 @@ class TestJunosLogging_globalModule(TestJunosModule):
                     "name": "user2",
                     "user": {"level": "info"},
                 },
+            ],
+        }
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+
+    def test_junos_logging_global_gathered_14(self):
+        """
+        :return:
+        """
+        set_module_args(dict(state="gathered"))
+        result = self.execute_module(changed=False)
+        gather_list = {
+            "hosts": [
+                {
+                    "name": "host111",
+                    "allow_duplicates": True,
+                    "any": {"level": "any"},
+                    "exclude_hostname": True,
+                    "facility_override": "ftp",
+                    "log_prefix": "field",
+                    "match": "^set*",
+                    "match_strings": ["^delete", "^prompt"],
+                    "port": 1231,
+                    "routing_instance": "inst11",
+                    "source_address": "11.1.1.11",
+                    "structured_data": {"brief": True},
+                }
+            ]
+        }
+        self.assertEqual(sorted(gather_list), sorted(result["gathered"]))
+
+    def test_junos_logging_global_parsed_15(self):
+        parsed_str = """
+               <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
+                   <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
+                       <version>18.4R1-S2.4</version>
+                       <system>
+                           <syslog>
+                               <archive>
+                                   <size>65578</size>
+                                   <files>10</files>
+                                   <world-readable/>
+                                   <binary-data/>
+                               </archive>
+                               <user>
+                                   <name>user1</name>
+                                   <allow-duplicates/>
+                               </user>
+                               <user>
+                                   <name>user2</name>
+                                   <contents>
+                                       <name>any</name>
+                                       <any/>
+                                   </contents>
+                                   <contents>
+                                       <name>user</name>
+                                       <info/>
+                                   </contents>
+                                   <allow-duplicates/>
+                               </user>
+                               <host>
+                                   <name>host111</name>
+                                   <contents>
+                                       <name>any</name>
+                                       <any/>
+                                   </contents>
+                                   <match>^set*</match>
+                                   <allow-duplicates/>
+                                   <port>1231</port>
+                                   <facility-override>ftp</facility-override>
+                                   <log-prefix>field</log-prefix>
+                                   <source-address>11.1.1.11</source-address>
+                                   <routing-instance>inst11</routing-instance>
+                                   <exclude-hostname/>
+                                   <match-strings>^delete</match-strings>
+                                   <match-strings>^prompt</match-strings>
+                                   <structured-data>
+                                       <brief/>
+                                   </structured-data>
+                               </host>
+                               <allow-duplicates/>
+                               <file>
+                                   <name>file101</name>
+                                   <allow-duplicates/>
+                                   <archive-sites>
+                                       <name>www.antsiblr.com</name>
+                                   </archive-sites>
+                               </file>
+                               <file>
+                                   <name>file102</name>
+                                   <contents>
+                                       <name>any</name>
+                                       <any/>
+                                   </contents>
+                                   <allow-duplicates/>
+                                   <structured-data>
+                                   </structured-data>
+                               </file>
+                               <file>
+                                   <name>file103</name>
+                                   <match>^set*</match>
+                                   <archive>
+                                       <size>65578</size>
+                                       <files>10</files>
+                                       <no-world-readable/>
+                                       <no-binary-data/>
+                                   </archive>
+                                   <explicit-priority/>
+                                   <match-strings>^delete</match-strings>
+                                   <match-strings>^prompt</match-strings>
+                               </file>
+                               <console>
+                                   <name>any</name>
+                                   <info/>
+                               </console>
+                               <console>
+                                   <name>authorization</name>
+                                   <any/>
+                               </console>
+                               <console>
+                                   <name>ftp</name>
+                                   <none/>
+                               </console>
+                               <console>
+                                   <name>change-log</name>
+                                   <critical/>
+                               </console>
+                               <time-format>
+                               </time-format>
+                               <source-address>33.33.33.33</source-address>
+                               <routing-instance>inst11</routing-instance>
+                               <log-rotate-frequency>45</log-rotate-frequency>
+                           </syslog>
+                       </system>
+                   </configuration>
+               </rpc-reply>
+           """
+        set_module_args(dict(running_config=parsed_str, state="parsed"))
+        result = self.execute_module(changed=False)
+        parsed_dict = {
+            "allow_duplicates": True,
+            "archive": {
+                "file_size": 65578,
+                "files": 10,
+                "no_binary_data": True,
+                "no_world_readable": True,
+            },
+            "console": {
+                "any": {"level": "info"},
+                "authorization": {"level": "any"},
+                "change_log": {"level": "critical"},
+                "ftp": {"level": "none"},
+            },
+            "files": [
+                {
+                    "allow_duplicates": True,
+                    "name": "file101",
+                    "archive_sites": ["www.antsiblr.com"],
+                },
+                {
+                    "allow_duplicates": True,
+                    "any": {"level": "any"},
+                    "name": "file102",
+                    "structured_data": {"set": True},
+                },
+                {
+                    "archive": {
+                        "file_size": 65578,
+                        "files": 10,
+                        "binary_data": True,
+                        "world_readable": True,
+                    },
+                    "explicit_priority": True,
+                    "match": "^set*",
+                    "match_strings": ["^delete", "^prompt"],
+                    "name": "file103",
+                },
+            ],
+            "hosts": [
+                {
+                    "allow_duplicates": True,
+                    "any": {"level": "any"},
+                    "exclude_hostname": True,
+                    "facility_override": "ftp",
+                    "log_prefix": "field",
+                    "match": "^set*",
+                    "match_strings": ["^delete", "^prompt"],
+                    "name": "host111",
+                    "port": 1231,
+                    "routing_instance": "inst11",
+                    "source_address": "11.1.1.11",
+                    "structured_data": {"brief": True},
+                }
+            ],
+            "log_rotate_frequency": 45,
+            "routing_instance": "inst11",
+            "source_address": "33.33.33.33",
+            "time_format": {"set": True},
+            "users": [
+                {"allow_duplicates": True, "name": "user1"},
+                {
+                    "allow_duplicates": True,
+                    "any": {"level": "any"},
+                    "name": "user2",
+                    "user": {"level": "info"},
+                },
+            ],
+        }
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+
+    def test_junos_logging_global_parsed_16(self):
+        parsed_str = """
+               <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
+                   <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
+                       <version>18.4R1-S2.4</version>
+                       <system>
+                           <syslog>
+                               <archive>
+                                   <size>65578</size>
+                                   <files>10</files>
+                                   <world-readable/>
+                                   <binary-data/>
+                               </archive>
+                               <user>
+                                   <name>user1</name>
+                                   <allow-duplicates/>
+                                   <match-strings>^delete</match-strings>
+                                   <match-strings>^prompt</match-strings>
+                               </user>
+                               <user>
+                                   <name>user2</name>
+                                   <contents>
+                                       <name>any</name>
+                                       <any/>
+                                   </contents>
+                                   <contents>
+                                       <name>user</name>
+                                       <info/>
+                                   </contents>
+                                   <allow-duplicates/>
+                               </user>
+                               <host>
+                                   <name>host111</name>
+                                   <contents>
+                                       <name>any</name>
+                                       <any/>
+                                   </contents>
+                                   <match>^set*</match>
+                                   <allow-duplicates/>
+                                   <port>1231</port>
+                                   <facility-override>ftp</facility-override>
+                                   <log-prefix>field</log-prefix>
+                                   <source-address>11.1.1.11</source-address>
+                                   <routing-instance>inst11</routing-instance>
+                                   <exclude-hostname/>
+                                   <match-strings>^delete</match-strings>
+                                   <match-strings>^prompt</match-strings>
+                                   <structured-data>
+                                       <brief/>
+                                   </structured-data>
+                               </host>
+                               <allow-duplicates/>
+                               <file>
+                                   <name>file101</name>
+                                   <allow-duplicates/>
+                                   <archive-sites>
+                                       <name>www.antsiblr.com</name>
+                                       <name>www.antsiblr2.com</name>
+                                   </archive-sites>
+                                   <contents>
+                                       <name>any</name>
+                                       <any/>
+                                   </contents>
+                                   <contents>
+                                       <name>authorization</name>
+                                       <any/>
+                                   </contents>
+                                   <structured-data>
+                                       <brief/>
+                                   </structured-data>
+                               </file>
+                               <console>
+                                   <name>any</name>
+                                   <info/>
+                               </console>
+                               <console>
+                                   <name>authorization</name>
+                                   <any/>
+                               </console>
+                               <console>
+                                   <name>ftp</name>
+                                   <none/>
+                               </console>
+                               <console>
+                                   <name>change-log</name>
+                                   <critical/>
+                               </console>
+                               <time-format>
+                               </time-format>
+                               <source-address>33.33.33.33</source-address>
+                               <routing-instance>inst11</routing-instance>
+                               <log-rotate-frequency>45</log-rotate-frequency>
+                           </syslog>
+                       </system>
+                   </configuration>
+               </rpc-reply>
+           """
+        set_module_args(dict(running_config=parsed_str, state="parsed"))
+        result = self.execute_module(changed=False)
+        parsed_dict = {
+            "allow_duplicates": True,
+            "archive": {
+                "file_size": 65578,
+                "files": 10,
+                "no_binary_data": True,
+                "no_world_readable": True,
+            },
+            "console": {
+                "any": {"level": "info"},
+                "authorization": {"level": "any"},
+                "change_log": {"level": "critical"},
+                "ftp": {"level": "none"},
+            },
+            "files": [
+                {
+                    "allow_duplicates": True,
+                    "name": "file101",
+                    "archive_sites": ["www.antsiblr.com", "www.antsiblr2.com"],
+                    "any": {"level": "any"},
+                    "authorization": {"level": "any"},
+                    "structured_data": {"brief": True},
+                }
+            ],
+            "hosts": [
+                {
+                    "allow_duplicates": True,
+                    "any": {"level": "any"},
+                    "exclude_hostname": True,
+                    "facility_override": "ftp",
+                    "log_prefix": "field",
+                    "match": "^set*",
+                    "match_strings": ["^delete", "^prompt"],
+                    "name": "host111",
+                    "port": 1231,
+                    "routing_instance": "inst11",
+                    "source_address": "11.1.1.11",
+                    "structured_data": {"brief": True},
+                }
+            ],
+            "log_rotate_frequency": 45,
+            "routing_instance": "inst11",
+            "source_address": "33.33.33.33",
+            "time_format": {"set": True},
+            "users": [
+                {
+                    "allow_duplicates": True,
+                    "name": "user1",
+                    "match_strings": ["^delete", "^prompt"],
+                },
+                {
+                    "allow_duplicates": True,
+                    "any": {"level": "any"},
+                    "name": "user2",
+                    "user": {"level": "info"},
+                },
+            ],
+        }
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+
+    def test_junos_logging_global_parsed_17(self):
+        parsed_str = """
+               <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
+                   <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
+                       <version>18.4R1-S2.4</version>
+                       <system>
+                           <syslog>
+                               <user>
+                                   <name>user1</name>
+                                   <match>^set*</match>
+                                   <match-strings>^delete</match-strings>
+                                   <contents>
+                                       <name>user</name>
+                                       <info/>
+                                   </contents>
+                               </user>
+                               <host>
+                                   <name>host111</name>
+                                   <contents>
+                                       <name>any</name>
+                                       <any/>
+                                   </contents>
+                                   <contents>
+                                       <name>authorization</name>
+                                       <any/>
+                                   </contents>
+                                   <match-strings>^delete</match-strings>
+                                   <structured-data>
+                                   </structured-data>
+                               </host>
+                               <file>
+                                   <name>file101</name>
+                                   <match-strings>^delete</match-strings>
+                                   <archive>
+                                       <archive-sites>
+                                          <name>www.antsiblr.com</name>
+                                       </archive-sites>
+                                       <archive-sites>
+                                          <name>www.antsiblr2.com</name>
+                                       </archive-sites>
+                                   </archive>
+                               </file>
+                           </syslog>
+                       </system>
+                   </configuration>
+               </rpc-reply>
+           """
+        set_module_args(dict(running_config=parsed_str, state="parsed"))
+        result = self.execute_module(changed=False)
+        parsed_dict = {
+            "files": [
+                {
+                    "allow_duplicates": True,
+                    "name": "file101",
+                    "archive": {
+                        "archive_sites": [
+                            "www.antsiblr.com",
+                            "www.antsiblr2.com",
+                        ]
+                    },
+                    "any": {"level": "any"},
+                    "authorization": {"level": "any"},
+                    "structured_data": {"brief": True},
+                }
+            ],
+            "hosts": [
+                {
+                    "any": {"level": "any"},
+                    "authorization": {"level": "any"},
+                    "match_strings": ["^delete"],
+                    "name": "host111",
+                    "structured_data": {"set": True},
+                }
+            ],
+            "users": [
+                {
+                    "name": "user1",
+                    "user": {"level": "info"},
+                    "match": "^set*",
+                    "match_strings": ["^delete"],
+                }
             ],
         }
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
