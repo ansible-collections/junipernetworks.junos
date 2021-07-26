@@ -44,6 +44,7 @@ class VlansArgs(object):  # pylint: disable=R0903
                 "description": {},
                 "name": {"required": True, "type": "str"},
                 "vlan_id": {"type": "int"},
+                "l3_interface": {"type": "str"},
             },
             "type": "list",
         },

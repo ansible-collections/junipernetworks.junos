@@ -13,6 +13,7 @@
 
       - name: vlan2
         vlan_id: 2
+        l3_interface: "irb.12"
 
 - block:
 
@@ -26,6 +27,7 @@
 
           - name: vlan2
             vlan_id: 2
+            l3_interface: "irb.12"
         state: merged
 
     - name: Assert the configuration is reflected on host

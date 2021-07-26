@@ -64,6 +64,10 @@ options:
         description:
         - Text description of VLANs
         type: str
+      l3_interface:
+        description:
+        - Name of logical layer 3 interface.
+        type: str
   running_config:
     description:
     - This option is used only with state I(parsed).
@@ -108,6 +112,7 @@ EXAMPLES = """
     config:
     - name: vlan-1
       vlan_id: 1
+      l3_interface: "irb.12"
     state: merged
 - name: Replace JUNOS vlan
   junipernetworks.junos.junos_vlans:
