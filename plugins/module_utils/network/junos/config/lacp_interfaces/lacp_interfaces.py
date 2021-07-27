@@ -243,15 +243,20 @@ class Lacp_interfaces(ConfigBase):
                 element = build_subtree(
                     lacp_intf_root, "ether-options/ieee-802.3ad/lacp"
                 )
-                build_child_xml_node(
-                    element, "port-priority", config["port_priority"]
-                )
-                if config["force_up"] is False:
+                if config["port_priority"] is not None:
+                    build_child_xml_node(
+                        element, "port-priority", config["port_priority"]
+                    )
+                else:
+                    build_child_xml_node(
+                        element, "port-priority", None, {"delete": "delete"}
+                    )
+                if config["force_up"]:
+                    build_child_xml_node(element, "force-up")
+                else:
                     build_child_xml_node(
                         element, "force-up", None, {"delete": "delete"}
                     )
-                else:
-                    build_child_xml_node(element, "force-up")
                 intf_xml.append(lacp_intf_root)
 
         return intf_xml
