@@ -77,6 +77,28 @@ Parameters
                     <td class="elbow-placeholder"></td>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>backup_format</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>xml</li>
+                                    <li><div style="color: blue"><b>set</b>&nbsp;&larr;</div></li>
+                                    <li>text</li>
+                                    <li>json</li>
+                        </ul>
+                </td>
+                <td>
+                        <div>This argument specifies the format of the configuration the backup file will be stored as.  If the argument is not specified, the module will use the &#x27;set&#x27; format.</div>
+                </td>
+            </tr>
+            <tr>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>dir_path</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
