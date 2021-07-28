@@ -59,6 +59,7 @@ Name | Description
 [junipernetworks.junos.junos_lldp_interface](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_lldp_interface_module.rst)|(deprecated, removed after 2022-06-01) Manage LLDP interfaces configuration on Juniper JUNOS network devices
 [junipernetworks.junos.junos_lldp_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_lldp_interfaces_module.rst)|LLDP interfaces resource module
 [junipernetworks.junos.junos_logging](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_logging_module.rst)|Manage logging on network devices
+[junipernetworks.junos.junos_logging_global](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_logging_global_module.rst)|Manage logging configuration on Junos devices.
 [junipernetworks.junos.junos_netconf](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_netconf_module.rst)|Configures the Junos Netconf system service
 [junipernetworks.junos.junos_ospf_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_ospf_interfaces_module.rst)|OSPF Interfaces Resource Module.
 [junipernetworks.junos.junos_ospfv2](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_ospfv2_module.rst)|OSPFv2 resource module
