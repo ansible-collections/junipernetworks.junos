@@ -5,8 +5,8 @@
 - name: Remove interface config
   junipernetworks.junos.junos_config:
     lines:
-      - delete vlan vlan1
-      - delete vlan vlan2
+      - delete vlans vlan1
+      - delete vlans vlan2
 
 - debug:
     msg: End junos_vlans teardown ansible_connection={{ ansible_connection }}
