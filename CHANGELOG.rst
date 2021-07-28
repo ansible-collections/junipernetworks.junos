@@ -5,6 +5,33 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v2.4.0
+======
+
+Minor Changes
+-------------
+
+- Add junos_logging_global Resource Module.
+- Add support for backup_format option in junos_config
+- support l3_interface in junos vlans
+
+Deprecated Features
+-------------------
+
+- The junos_logging module has been deprecated in favor of the new junos_logging_global resource module and will be removed in a release after '2023-08-01'.
+
+Bugfixes
+--------
+
+- fix lacp force-up without port-priority in junos_lacp_interfaces
+- fix netconf test-case for lacp revert
+- junos_acls failed to parse acl when multiple addresses defined within a single term (https://github.com/ansible-collections/junipernetworks.junos/issues/190)
+
+New Modules
+-----------
+
+- junos_logging_global - Manage logging configuration on Junos devices.
+
 v2.3.0
 ======
 

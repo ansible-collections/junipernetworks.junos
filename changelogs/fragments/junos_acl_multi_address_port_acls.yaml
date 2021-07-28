@@ -1,3 +1,0 @@
----
-bugfixes:
-  - junos_acls failed to parse acl when multiple addresses defined within a single term (https://github.com/ansible-collections/junipernetworks.junos/issues/190)
