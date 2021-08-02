@@ -5,10 +5,10 @@
 junipernetworks.junos.junos_logging_global
 ******************************************
 
-**Manage logging configuration on Junos devices.**
+**LOGGING resource module**
 
 
-Version added: 2.4.0
+Version added: 1.0.0
 
 .. contents::
    :local:
@@ -4269,67 +4269,67 @@ Examples
             no_world_readable: true
           console:
             any:
-              level: "info"
+              level: info
             authorization:
-              level: "any"
+              level: any
             change_log:
-              level: "critical"
+              level: critical
             ftp:
-              level: "none"
+              level: none
           files:
-            - name: "file101"
-              allow_duplicates: true
-            - name: "file102"
-              allow_duplicates: true
-              any:
-                level: "any"
-              structured_data:
-                set: true
-            - name: "file103"
-              archive:
-                set: true
-                no_binary_data: true
-                files: 10
-                file_size: 65578
-                no_world_readable: true
-              explicit_priority: true
-              match: "^set*"
-              match_strings:
-                - "^delete"
-                - "^prompt"
+          - name: file101
+            allow_duplicates: true
+          - name: file102
+            allow_duplicates: true
+            any:
+              level: any
+            structured_data:
+              set: true
+          - name: file103
+            archive:
+              set: true
+              no_binary_data: true
+              files: 10
+              file_size: 65578
+              no_world_readable: true
+            explicit_priority: true
+            match: ^set*
+            match_strings:
+            - ^delete
+            - ^prompt
           hosts:
-            - name: host111
-              exclude_hostname: true
-              allow_duplicates: true
-              any:
-                level: "any"
-              structured_data:
-                set: true
-                brief: true
-              facility_override: "ftp"
-              log_prefix: "field"
-              match: "^set*"
-              match_strings:
-                - "^delete"
-                - "^prompt"
-              port: 1231
-              routing_instance: "inst11"
-              source_address: "11.1.1.11"
-          routing_instance: "inst11"
+          - name: host111
+            exclude_hostname: true
+            allow_duplicates: true
+            any:
+              level: any
+            structured_data:
+              set: true
+              brief: true
+            facility_override: ftp
+            log_prefix: field
+            match: ^set*
+            match_strings:
+            - ^delete
+            - ^prompt
+            port: 1231
+            routing_instance: inst11
+            source_address: 11.1.1.11
+          routing_instance: inst11
           log_rotate_frequency: 45
-          source_address: "33.33.33.33"
+          source_address: 33.33.33.33
           time_format:
             millisecond: true
             year: true
           users:
-            - name: "user1"
-              allow_duplicates: true
-            - name: "user2"
-              allow_duplicates: true
-              any:
-                level: "any"
-              user:
-                level: info
+          - name: user1
+            allow_duplicates: true
+          - name: user2
+            allow_duplicates: true
+            any:
+              level: any
+            user:
+              level: info
         state: merged
     #
     # -------------------------
@@ -4576,41 +4576,41 @@ Examples
       junipernetworks.junos.junos_logging_global:
         config:
           files:
-            - name: "file104"
-              allow_duplicates: true
-            - name: "file102"
-              allow_duplicates: true
-              any:
-                level: "any"
-              structured_data:
-                set: true
+          - name: file104
+            allow_duplicates: true
+          - name: file102
+            allow_duplicates: true
+            any:
+              level: any
+            structured_data:
+              set: true
           hosts:
-            - name: host222
-              exclude_hostname: true
-              allow_duplicates: true
-              any:
-                level: "any"
-              structured_data:
-                set: true
-                brief: true
-              facility_override: "ftp"
-              log_prefix: "field"
-              match: "^set*"
-              match_strings:
-                - "^delete"
-                - "^prompt"
-              port: 1231
-              routing_instance: "inst11"
-              source_address: "11.1.1.11"
+          - name: host222
+            exclude_hostname: true
+            allow_duplicates: true
+            any:
+              level: any
+            structured_data:
+              set: true
+              brief: true
+            facility_override: ftp
+            log_prefix: field
+            match: ^set*
+            match_strings:
+            - ^delete
+            - ^prompt
+            port: 1231
+            routing_instance: inst11
+            source_address: 11.1.1.11
           users:
-            - name: "user1"
-              allow_duplicates: true
-            - name: "user2"
-              allow_duplicates: true
-              any:
-                level: "any"
-              user:
-                level: info
+          - name: user1
+            allow_duplicates: true
+          - name: user2
+            allow_duplicates: true
+            any:
+              level: any
+            user:
+              level: info
         state: replaced
     #
     # -------------------------
@@ -4886,41 +4886,41 @@ Examples
       junipernetworks.junos.junos_logging_global:
         config:
           files:
-            - name: "file104"
-              allow_duplicates: true
-            - name: "file102"
-              allow_duplicates: true
-              any:
-                level: "any"
-              structured_data:
-                set: true
+          - name: file104
+            allow_duplicates: true
+          - name: file102
+            allow_duplicates: true
+            any:
+              level: any
+            structured_data:
+              set: true
           hosts:
-            - name: host222
-              exclude_hostname: true
-              allow_duplicates: true
-              any:
-                level: "any"
-              structured_data:
-                set: true
-                brief: true
-              facility_override: "ftp"
-              log_prefix: "field"
-              match: "^set*"
-              match_strings:
-                - "^delete"
-                - "^prompt"
-              port: 1231
-              routing_instance: "inst11"
-              source_address: "11.1.1.11"
+          - name: host222
+            exclude_hostname: true
+            allow_duplicates: true
+            any:
+              level: any
+            structured_data:
+              set: true
+              brief: true
+            facility_override: ftp
+            log_prefix: field
+            match: ^set*
+            match_strings:
+            - ^delete
+            - ^prompt
+            port: 1231
+            routing_instance: inst11
+            source_address: 11.1.1.11
           users:
-            - name: "user1"
-              allow_duplicates: true
-            - name: "user2"
-              allow_duplicates: true
-              any:
-                level: "any"
-              user:
-                level: info
+          - name: user1
+            allow_duplicates: true
+          - name: user2
+            allow_duplicates: true
+            any:
+              level: any
+            user:
+              level: info
         state: overridden
     #
     # -------------------------
@@ -5361,13 +5361,6 @@ Examples
     # Before state
     # ------------
     #
-    # vagrant@vsrx# show system syslog
-    #
-    # [edit]
-    # vagrant@vsrx# show routing-instances
-    # inst11 {
-    #     description inst11;
-    # }
     - name: Render xml for provided facts.
       junipernetworks.junos.junos_logging_global:
         config:
@@ -5380,67 +5373,67 @@ Examples
             no_world_readable: true
           console:
             any:
-              level: "info"
+              level: info
             authorization:
-              level: "any"
+              level: any
             change_log:
-              level: "critical"
+              level: critical
             ftp:
-              level: "none"
+              level: none
           files:
-            - name: "file101"
-              allow_duplicates: true
-            - name: "file102"
-              allow_duplicates: true
-              any:
-                level: "any"
-              structured_data:
-                set: true
-            - name: "file103"
-              archive:
-                set: true
-                no_binary_data: true
-                files: 10
-                file_size: 65578
-                no_world_readable: true
-              explicit_priority: true
-              match: "^set*"
-              match_strings:
-                - "^delete"
-                - "^prompt"
+          - name: file101
+            allow_duplicates: true
+          - name: file102
+            allow_duplicates: true
+            any:
+              level: any
+            structured_data:
+              set: true
+          - name: file103
+            archive:
+              set: true
+              no_binary_data: true
+              files: 10
+              file_size: 65578
+              no_world_readable: true
+            explicit_priority: true
+            match: ^set*
+            match_strings:
+            - ^delete
+            - ^prompt
           hosts:
-            - name: host111
-              exclude_hostname: true
-              allow_duplicates: true
-              any:
-                level: "any"
-              structured_data:
-                set: true
-                brief: true
-              facility_override: "ftp"
-              log_prefix: "field"
-              match: "^set*"
-              match_strings:
-                - "^delete"
-                - "^prompt"
-              port: 1231
-              routing_instance: "inst11"
-              source_address: "11.1.1.11"
-          routing_instance: "inst11"
+          - name: host111
+            exclude_hostname: true
+            allow_duplicates: true
+            any:
+              level: any
+            structured_data:
+              set: true
+              brief: true
+            facility_override: ftp
+            log_prefix: field
+            match: ^set*
+            match_strings:
+            - ^delete
+            - ^prompt
+            port: 1231
+            routing_instance: inst11
+            source_address: 11.1.1.11
+          routing_instance: inst11
           log_rotate_frequency: 45
-          source_address: "33.33.33.33"
+          source_address: 33.33.33.33
           time_format:
             millisecond: true
             year: true
           users:
-            - name: "user1"
-              allow_duplicates: true
-            - name: "user2"
-              allow_duplicates: true
-              any:
-                level: "any"
-              user:
-                level: info
+          - name: user1
+            allow_duplicates: true
+          - name: user2
+            allow_duplicates: true
+            any:
+              level: any
+            user:
+              level: info
         state: rendered
     #
     # -------------------------
@@ -5512,7 +5505,7 @@ Examples
     # </rpc-reply>
 
     - name: Parse routing instance running config
-      junipernetworks.junos.junos_routing_instances:
+      junipernetworks.junos.junos_logging_global:
         running_config: "{{ lookup('file', './parsed.cfg') }}"
         state: parsed
     #
