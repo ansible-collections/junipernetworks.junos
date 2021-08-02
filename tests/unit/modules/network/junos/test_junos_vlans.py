@@ -81,10 +81,7 @@ class TestJunosVlansModule(TestJunosModule):
         self, commands=None, format="text", changed=False, filename=None
     ):
         def load_from_file(*args, **kwargs):
-            if filename:
-                output = load_fixture(filename)
-            else:
-                output = load_fixture("junos_vlans_config.cfg")
+            output = load_fixture("junos_vlans_config.cfg")
             return output
 
         self.execute_show_command.side_effect = load_from_file
