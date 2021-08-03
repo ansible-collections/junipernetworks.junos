@@ -53,6 +53,14 @@ class VlansFacts(object):
 
         self.generated_spec = utils.generate_dict(facts_argument_spec)
 
+    def get_device_data(self, connection, config_filter):
+        """
+        :param connection:
+        :param config_filter:
+        :return:
+        """
+        return get_resource_config(connection, config_filter=config_filter)
+
     def populate_facts(self, connection, ansible_facts, data=None):
         """ Populate the facts for vlans
         :param connection: the device connection
@@ -71,7 +79,7 @@ class VlansFacts(object):
                   </vlans>
                 </configuration>
                 """
-            data = get_resource_config(connection, config_filter=config_filter)
+            data = self.get_device_data(connection, config_filter)
 
         if isinstance(data, string_types):
             data = etree.fromstring(

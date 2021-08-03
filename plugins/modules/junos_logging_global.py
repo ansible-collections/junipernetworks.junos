@@ -30,12 +30,6 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "network",
-}
-
 DOCUMENTATION = """
 ---
 module: junos_logging_global
@@ -668,7 +662,6 @@ EXAMPLES = """
 # source-address 33.33.33.33;
 # routing-instance inst11;
 # log-rotate-frequency 45;
-
 # Using replaced
 #
 # Before state
@@ -724,7 +717,6 @@ EXAMPLES = """
 # source-address 33.33.33.33;
 # routing-instance inst11;
 # log-rotate-frequency 45;
-
 - name: Replaced running logging global configuration with provided configuration
   junipernetworks.junos.junos_logging_global:
     config:
@@ -978,7 +970,6 @@ EXAMPLES = """
 #     allow-duplicates;
 #     structured-data;
 # }
-
 # Using overridden
 #
 # Before state
@@ -1034,7 +1025,6 @@ EXAMPLES = """
 # source-address 33.33.33.33;
 # routing-instance inst11;
 # log-rotate-frequency 45;
-
 - name: Override running logging global configuration with provided configuration
   junipernetworks.junos.junos_logging_global:
     config:
@@ -1288,7 +1278,6 @@ EXAMPLES = """
 #     allow-duplicates;
 #     structured-data;
 # }
-
 # Using deleted
 #
 # Before state
@@ -1326,7 +1315,6 @@ EXAMPLES = """
 #     allow-duplicates;
 #     structured-data;
 # }
-
 - name: Delete running logging global configuration
   junipernetworks.junos.junos_logging_global:
     config:
@@ -1404,7 +1392,6 @@ EXAMPLES = """
 # vagrant@vsrx# show system syslog
 #
 # [edit]
-
 # Using gathered
 #
 # Before state
@@ -1442,7 +1429,6 @@ EXAMPLES = """
 #     allow-duplicates;
 #     structured-data;
 # }
-
 - name: Gather running logging global configuration
   junipernetworks.junos.junos_logging_global:
     state: gathered
@@ -1508,19 +1494,11 @@ EXAMPLES = """
 #         ]
 #     },
 #     "changed": false,
-
 # Using rendered
 #
 # Before state
 # ------------
 #
-# vagrant@vsrx# show system syslog
-#
-# [edit]
-# vagrant@vsrx# show routing-instances
-# inst11 {
-#     description inst11;
-# }
 - name: Render xml for provided facts.
   junipernetworks.junos.junos_logging_global:
     config:
@@ -1624,7 +1602,6 @@ EXAMPLES = """
 #         "<nc:user><nc:name>user2</nc:name><nc:allow-duplicates/><nc:contents><nc:name>any</nc:name><nc:any/>"
 #         "</nc:contents><nc:contents><nc:name>user</nc:name><nc:info/></nc:contents></nc:user></nc:syslog></nc:system>"
 #     ]
-
 # Using parsed
 # parsed.cfg
 # ------------
@@ -1663,8 +1640,7 @@ EXAMPLES = """
 #     </system>
 #     </configuration>
 # </rpc-reply>
-
-- name: Parse routing instance running config
+- name: Parse logging global running config
   junipernetworks.junos.junos_routing_instances:
     running_config: "{{ lookup('file', './parsed.cfg') }}"
     state: parsed
@@ -1743,7 +1719,6 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
 def main():
     """
     Main entry point for module execution
-
     :returns: the result form module invocation
     """
     required_if = [
