@@ -125,13 +125,13 @@ class OspfFacts(object):
 
         facts = {}
         if objs:
-            facts["junos_ospfv2"] = []
+            facts["ospfv2"] = []
             params = utils.validate_config(
                 self.argument_spec, {"config": objs}
             )
 
             for cfg in params["config"]:
-                facts["junos_ospfv2"].append(utils.remove_empties(cfg))
+                facts["ospfv2"].append(utils.remove_empties(cfg))
 
         ansible_facts["ansible_network_resources"].update(facts)
         return ansible_facts

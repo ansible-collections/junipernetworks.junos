@@ -37,13 +37,16 @@ short_description: OSPFv2 resource module
 description:
 - This module manages global OSPFv2 configuration on devices running Juniper JUNOS.
 version_added: 1.0.0
-author: Daniel Mellado (@dmellado)
+author:
+- Daniel Mellado (@dmellado)
+- Rohit Thakur (@rohitthakur2590)
 requirements:
 - ncclient (>=v0.6.4)
 - xmltodict (>=0.12.0)
 notes:
 - This module requires the netconf system service be enabled on the device being managed.
-- This module works with connection C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
+- This module works with connection C(netconf).
+  - See L(the Junos OS Platform Options,https://docs.ansible.com/ansible/latest/network/user_guide/platform_junos.html).
 - Tested against JunOS v18.4R1
 options:
   config:

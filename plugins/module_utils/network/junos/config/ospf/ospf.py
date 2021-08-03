@@ -70,7 +70,7 @@ class Ospf(ConfigBase):
         facts, _warnings = Facts(self._module).get_facts(
             self.gather_subset, self.gather_network_resources, data=data
         )
-        ospf_facts = facts["ansible_network_resources"].get("junos_ospfv2")
+        ospf_facts = facts["ansible_network_resources"].get("ospfv2")
         if not ospf_facts:
             return []
         return ospf_facts
