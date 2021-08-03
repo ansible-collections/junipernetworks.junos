@@ -59,7 +59,7 @@ class VlansFacts(object):
         :param config_filter:
         :return:
         """
-        return connection.get_configuration(filter=config_filter)
+        return get_resource_config(connection, config_filter=config_filter)
 
     def populate_facts(self, connection, ansible_facts, data=None):
         """ Populate the facts for vlans
