@@ -30,21 +30,21 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-
 DOCUMENTATION = """
+---
 module: junos_logging_global
-short_description: LOGGING resource module
+version_added: 2.4.0
+short_description: Manage logging configuration on Junos devices.
 description: This module manages logging configuration on devices running Junos.
-version_added: 1.0.0
 author: Rohit Thakur (@rohitthakur2590)
 requirements:
-- ncclient (>=v0.6.4)
-- xmltodict (>=0.12.0)
+  - ncclient (>=v0.6.4)
+  - xmltodict (>=0.12.0)
 notes:
-- This module requires the netconf system service be enabled on the device being managed.
-- This module works with connection C(netconf).
-- See L(the Junos OS Platform Options,https://docs.ansible.com/ansible/latest/network/user_guide/platform_junos.html).
-- Tested against JunOS v18.4R1
+  - This module requires the netconf system service be enabled on the device being managed.
+  - This module works with connection C(netconf).
+  - See L(the Junos OS Platform Options,https://docs.ansible.com/ansible/latest/network/user_guide/platform_junos.html).
+  - Tested against JunOS v18.4R1
 options:
   running_config:
     description:
@@ -99,8 +99,7 @@ options:
                 description: Set severity logging level.
                 type: str
                 required: true
-                choices: [alert, any, critical, emergency, error, info, none, notice,
-                  warning]
+                choices: ["alert", "any", "critical", "emergency", "error", "info", "none", "notice", "warning"]
           authorization: &authorization
             description: Specify authorization system.
             type: dict
@@ -189,8 +188,7 @@ options:
                 description: Set archive file information.
                 type: bool
               archive_sites:
-                description: Specify Primary and failover URLs to receive archive
-                  facilities.
+                description: Specify Primary and failover URLs to receive archive facilities.
                 type: list
                 elements: str
               binary_data:
@@ -212,8 +210,7 @@ options:
                 description: Specify start time for file transmission (yyyy-mm-dd.hh:mm).
                 type: str
               transfer_interval:
-                description: Specify frequency at which to transfer files to archive
-                  sites (5..2880 minutes).
+                description: Specify frequency at which to transfer files to archive sites (5..2880 minutes).
                 type: int
               world_readable:
                 description: Allow any user to read the log file.
@@ -252,7 +249,7 @@ options:
                 description: Omit English-language text from end of logged messages.
                 type: bool
           user: *user
-      hosts:
+      hosts: &hosts
         description: Specify hosts  to be notified.
         type: list
         elements: dict
@@ -393,7 +390,6 @@ options:
     - gathered
     - rendered
     default: merged
-
 """
 EXAMPLES = """
 # Using merged
@@ -420,67 +416,67 @@ EXAMPLES = """
         no_world_readable: true
       console:
         any:
-          level: info
+          level: "info"
         authorization:
-          level: any
+          level: "any"
         change_log:
-          level: critical
+          level: "critical"
         ftp:
-          level: none
+          level: "none"
       files:
-      - name: file101
-        allow_duplicates: true
-      - name: file102
-        allow_duplicates: true
-        any:
-          level: any
-        structured_data:
-          set: true
-      - name: file103
-        archive:
-          set: true
-          no_binary_data: true
-          files: 10
-          file_size: 65578
-          no_world_readable: true
-        explicit_priority: true
-        match: ^set*
-        match_strings:
-        - ^delete
-        - ^prompt
+        - name: "file101"
+          allow_duplicates: true
+        - name: "file102"
+          allow_duplicates: true
+          any:
+            level: "any"
+          structured_data:
+            set: true
+        - name: "file103"
+          archive:
+            set: true
+            no_binary_data: true
+            files: 10
+            file_size: 65578
+            no_world_readable: true
+          explicit_priority: true
+          match: "^set*"
+          match_strings:
+            - "^delete"
+            - "^prompt"
       hosts:
-      - name: host111
-        exclude_hostname: true
-        allow_duplicates: true
-        any:
-          level: any
-        structured_data:
-          set: true
-          brief: true
-        facility_override: ftp
-        log_prefix: field
-        match: ^set*
-        match_strings:
-        - ^delete
-        - ^prompt
-        port: 1231
-        routing_instance: inst11
-        source_address: 11.1.1.11
-      routing_instance: inst11
+        - name: host111
+          exclude_hostname: true
+          allow_duplicates: true
+          any:
+            level: "any"
+          structured_data:
+            set: true
+            brief: true
+          facility_override: "ftp"
+          log_prefix: "field"
+          match: "^set*"
+          match_strings:
+            - "^delete"
+            - "^prompt"
+          port: 1231
+          routing_instance: "inst11"
+          source_address: "11.1.1.11"
+      routing_instance: "inst11"
       log_rotate_frequency: 45
-      source_address: 33.33.33.33
+      source_address: "33.33.33.33"
       time_format:
         millisecond: true
         year: true
       users:
-      - name: user1
-        allow_duplicates: true
-      - name: user2
-        allow_duplicates: true
-        any:
-          level: any
-        user:
-          level: info
+        - name: "user1"
+          allow_duplicates: true
+        - name: "user2"
+          allow_duplicates: true
+          any:
+            level: "any"
+          user:
+            level: info
     state: merged
 #
 # -------------------------
@@ -589,7 +585,7 @@ EXAMPLES = """
 #     "before": {},
 #     "changed": true,
 #     "commands": [
-#         "<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">"
+#         "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
 #         "<nc:syslog><nc:allow-duplicates/><nc:archive><nc:files>10</nc:files>"
 #         "<nc:no-binary-data/><nc:size>65578</nc:size><nc:no-world-readable/></nc:archive>"
 #         "<nc:console><nc:name>change-log</nc:name><nc:critical/></nc:console><nc:console>"
@@ -666,7 +662,6 @@ EXAMPLES = """
 # source-address 33.33.33.33;
 # routing-instance inst11;
 # log-rotate-frequency 45;
-
 # Using replaced
 #
 # Before state
@@ -722,46 +717,45 @@ EXAMPLES = """
 # source-address 33.33.33.33;
 # routing-instance inst11;
 # log-rotate-frequency 45;
-
 - name: Replaced running logging global configuration with provided configuration
   junipernetworks.junos.junos_logging_global:
     config:
       files:
-      - name: file104
-        allow_duplicates: true
-      - name: file102
-        allow_duplicates: true
-        any:
-          level: any
-        structured_data:
-          set: true
+        - name: "file104"
+          allow_duplicates: true
+        - name: "file102"
+          allow_duplicates: true
+          any:
+            level: "any"
+          structured_data:
+            set: true
       hosts:
-      - name: host222
-        exclude_hostname: true
-        allow_duplicates: true
-        any:
-          level: any
-        structured_data:
-          set: true
-          brief: true
-        facility_override: ftp
-        log_prefix: field
-        match: ^set*
-        match_strings:
-        - ^delete
-        - ^prompt
-        port: 1231
-        routing_instance: inst11
-        source_address: 11.1.1.11
+        - name: host222
+          exclude_hostname: true
+          allow_duplicates: true
+          any:
+            level: "any"
+          structured_data:
+            set: true
+            brief: true
+          facility_override: "ftp"
+          log_prefix: "field"
+          match: "^set*"
+          match_strings:
+            - "^delete"
+            - "^prompt"
+          port: 1231
+          routing_instance: "inst11"
+          source_address: "11.1.1.11"
       users:
-      - name: user1
-        allow_duplicates: true
-      - name: user2
-        allow_duplicates: true
-        any:
-          level: any
-        user:
-          level: info
+        - name: "user1"
+          allow_duplicates: true
+        - name: "user2"
+          allow_duplicates: true
+          any:
+            level: "any"
+          user:
+            level: info
     state: replaced
 #
 # -------------------------
@@ -926,8 +920,8 @@ EXAMPLES = """
 #     },
 #     "changed": true,
 #     "commands": [
-#             "<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">"
-#             "<nc:syslog delete="delete"/><nc:syslog><nc:file><nc:name>file104</nc:name>"
+#             "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+#             "<nc:syslog delete=\"delete\"/><nc:syslog><nc:file><nc:name>file104</nc:name>"
 #             "<nc:allow-duplicates/></nc:file><nc:file><nc:name>file102</nc:name><nc:allow-duplicates/>"
 #             "<nc:contents><nc:name>any</nc:name><nc:any/></nc:contents><nc:structured-data/></nc:file>"
 #             "<nc:host><nc:name>host222</nc:name><nc:allow-duplicates/><nc:contents><nc:name>any</nc:name>"
@@ -976,7 +970,6 @@ EXAMPLES = """
 #     allow-duplicates;
 #     structured-data;
 # }
-
 # Using overridden
 #
 # Before state
@@ -1032,46 +1025,45 @@ EXAMPLES = """
 # source-address 33.33.33.33;
 # routing-instance inst11;
 # log-rotate-frequency 45;
-
 - name: Override running logging global configuration with provided configuration
   junipernetworks.junos.junos_logging_global:
     config:
       files:
-      - name: file104
-        allow_duplicates: true
-      - name: file102
-        allow_duplicates: true
-        any:
-          level: any
-        structured_data:
-          set: true
+        - name: "file104"
+          allow_duplicates: true
+        - name: "file102"
+          allow_duplicates: true
+          any:
+            level: "any"
+          structured_data:
+            set: true
       hosts:
-      - name: host222
-        exclude_hostname: true
-        allow_duplicates: true
-        any:
-          level: any
-        structured_data:
-          set: true
-          brief: true
-        facility_override: ftp
-        log_prefix: field
-        match: ^set*
-        match_strings:
-        - ^delete
-        - ^prompt
-        port: 1231
-        routing_instance: inst11
-        source_address: 11.1.1.11
+        - name: host222
+          exclude_hostname: true
+          allow_duplicates: true
+          any:
+            level: "any"
+          structured_data:
+            set: true
+            brief: true
+          facility_override: "ftp"
+          log_prefix: "field"
+          match: "^set*"
+          match_strings:
+            - "^delete"
+            - "^prompt"
+          port: 1231
+          routing_instance: "inst11"
+          source_address: "11.1.1.11"
       users:
-      - name: user1
-        allow_duplicates: true
-      - name: user2
-        allow_duplicates: true
-        any:
-          level: any
-        user:
-          level: info
+        - name: "user1"
+          allow_duplicates: true
+        - name: "user2"
+          allow_duplicates: true
+          any:
+            level: "any"
+          user:
+            level: info
     state: overridden
 #
 # -------------------------
@@ -1236,8 +1228,8 @@ EXAMPLES = """
 #     },
 #     "changed": true,
 #     "commands": [
-#             "<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">"
-#             "<nc:syslog delete="delete"/><nc:syslog><nc:file><nc:name>file104</nc:name>"
+#             "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+#             "<nc:syslog delete=\"delete\"/><nc:syslog><nc:file><nc:name>file104</nc:name>"
 #             "<nc:allow-duplicates/></nc:file><nc:file><nc:name>file102</nc:name><nc:allow-duplicates/>"
 #             "<nc:contents><nc:name>any</nc:name><nc:any/></nc:contents><nc:structured-data/></nc:file>"
 #             "<nc:host><nc:name>host222</nc:name><nc:allow-duplicates/><nc:contents><nc:name>any</nc:name>"
@@ -1286,7 +1278,6 @@ EXAMPLES = """
 #     allow-duplicates;
 #     structured-data;
 # }
-
 # Using deleted
 #
 # Before state
@@ -1324,7 +1315,6 @@ EXAMPLES = """
 #     allow-duplicates;
 #     structured-data;
 # }
-
 - name: Delete running logging global configuration
   junipernetworks.junos.junos_logging_global:
     config:
@@ -1393,8 +1383,8 @@ EXAMPLES = """
 #     },
 #     "changed": true,
 #     "commands": [
-#               "<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">"
-#               "<nc:syslog delete="delete"/></nc:system>"
+#               "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+#               "<nc:syslog delete=\"delete\"/></nc:system>"
 #     ]
 # After state
 # -----------
@@ -1402,7 +1392,6 @@ EXAMPLES = """
 # vagrant@vsrx# show system syslog
 #
 # [edit]
-
 # Using gathered
 #
 # Before state
@@ -1440,7 +1429,6 @@ EXAMPLES = """
 #     allow-duplicates;
 #     structured-data;
 # }
-
 - name: Gather running logging global configuration
   junipernetworks.junos.junos_logging_global:
     state: gathered
@@ -1506,7 +1494,6 @@ EXAMPLES = """
 #         ]
 #     },
 #     "changed": false,
-
 # Using rendered
 #
 # Before state
@@ -1524,74 +1511,74 @@ EXAMPLES = """
         no_world_readable: true
       console:
         any:
-          level: info
+          level: "info"
         authorization:
-          level: any
+          level: "any"
         change_log:
-          level: critical
+          level: "critical"
         ftp:
-          level: none
+          level: "none"
       files:
-      - name: file101
-        allow_duplicates: true
-      - name: file102
-        allow_duplicates: true
-        any:
-          level: any
-        structured_data:
-          set: true
-      - name: file103
-        archive:
-          set: true
-          no_binary_data: true
-          files: 10
-          file_size: 65578
-          no_world_readable: true
-        explicit_priority: true
-        match: ^set*
-        match_strings:
-        - ^delete
-        - ^prompt
+        - name: "file101"
+          allow_duplicates: true
+        - name: "file102"
+          allow_duplicates: true
+          any:
+            level: "any"
+          structured_data:
+            set: true
+        - name: "file103"
+          archive:
+            set: true
+            no_binary_data: true
+            files: 10
+            file_size: 65578
+            no_world_readable: true
+          explicit_priority: true
+          match: "^set*"
+          match_strings:
+            - "^delete"
+            - "^prompt"
       hosts:
-      - name: host111
-        exclude_hostname: true
-        allow_duplicates: true
-        any:
-          level: any
-        structured_data:
-          set: true
-          brief: true
-        facility_override: ftp
-        log_prefix: field
-        match: ^set*
-        match_strings:
-        - ^delete
-        - ^prompt
-        port: 1231
-        routing_instance: inst11
-        source_address: 11.1.1.11
-      routing_instance: inst11
+        - name: host111
+          exclude_hostname: true
+          allow_duplicates: true
+          any:
+            level: "any"
+          structured_data:
+            set: true
+            brief: true
+          facility_override: "ftp"
+          log_prefix: "field"
+          match: "^set*"
+          match_strings:
+            - "^delete"
+            - "^prompt"
+          port: 1231
+          routing_instance: "inst11"
+          source_address: "11.1.1.11"
+      routing_instance: "inst11"
       log_rotate_frequency: 45
-      source_address: 33.33.33.33
+      source_address: "33.33.33.33"
       time_format:
         millisecond: true
         year: true
       users:
-      - name: user1
-        allow_duplicates: true
-      - name: user2
-        allow_duplicates: true
-        any:
-          level: any
-        user:
-          level: info
+        - name: "user1"
+          allow_duplicates: true
+        - name: "user2"
+          allow_duplicates: true
+          any:
+            level: "any"
+          user:
+            level: info
     state: rendered
 #
 # -------------------------
 # Module Execution Result
 # -------------------------
 #     "rendered": [
-#         "<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">"
+#         "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
 #         "<nc:syslog><nc:allow-duplicates/><nc:archive><nc:files>10</nc:files>"
 #         "<nc:no-binary-data/><nc:size>65578</nc:size><nc:no-world-readable/></nc:archive>"
 #         "<nc:console><nc:name>change-log</nc:name><nc:critical/></nc:console><nc:console>"
@@ -1615,7 +1602,6 @@ EXAMPLES = """
 #         "<nc:user><nc:name>user2</nc:name><nc:allow-duplicates/><nc:contents><nc:name>any</nc:name><nc:any/>"
 #         "</nc:contents><nc:contents><nc:name>user</nc:name><nc:info/></nc:contents></nc:user></nc:syslog></nc:system>"
 #     ]
-
 # Using parsed
 # parsed.cfg
 # ------------
@@ -1654,9 +1640,8 @@ EXAMPLES = """
 #     </system>
 #     </configuration>
 # </rpc-reply>
-
-- name: Parse routing instance running config
-  junipernetworks.junos.junos_logging_global:
+- name: Parse logging global running config
+  junipernetworks.junos.junos_routing_instances:
     running_config: "{{ lookup('file', './parsed.cfg') }}"
     state: parsed
 #
@@ -1734,7 +1719,6 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
 def main():
     """
     Main entry point for module execution
-
     :returns: the result form module invocation
     """
     required_if = [
