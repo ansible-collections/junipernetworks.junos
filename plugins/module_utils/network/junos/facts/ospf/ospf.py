@@ -33,7 +33,7 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common i
     utils,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.ospf.ospf import (
-    OspfArgs,
+    Ospfv2Args,
 )
 from ansible.module_utils.six import string_types
 
@@ -51,13 +51,13 @@ except ImportError:
     HAS_XMLTODICT = False
 
 
-class OspfFacts(object):
+class Ospfv2Facts(object):
     """ The junos ospf fact class
     """
 
     def __init__(self, module, subspec="config", options="options"):
         self._module = module
-        self.argument_spec = OspfArgs.argument_spec
+        self.argument_spec = Ospfv2Args.argument_spec
         spec = deepcopy(self.argument_spec)
         if subspec:
             if options:
@@ -114,7 +114,6 @@ class OspfFacts(object):
             self.router_id = self._get_xml_dict(router_id_path.pop())
         else:
             self.router_id = ""
-
         objs = []
         for resource in resources:
             if resource:
@@ -284,5 +283,6 @@ class OspfFacts(object):
             config["prefix_export_limit"] = ospf.get("prefix-export-limit")
             config["reference_bandwidth"] = ospf.get("reference-bandwidth")
             config["areas"] = rendered_areas
-            config["router_id"] = self.router_id["router-id"]
+            if self.router_id != "":
+                config["router_id"] = self.router_id["router-id"]
         return utils.remove_empties(config)

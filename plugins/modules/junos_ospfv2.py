@@ -39,7 +39,6 @@ description:
 version_added: 1.0.0
 author:
 - Daniel Mellado (@dmellado)
-- Rohit Thakur (@rohitthakur2590)
 requirements:
 - ncclient (>=v0.6.4)
 - xmltodict (>=0.12.0)
@@ -315,10 +314,10 @@ commands:
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.ospf.ospf import (
-    OspfArgs,
+    Ospfv2Args,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospf.ospf import (
-    Ospf,
+    Ospfv2,
 )
 
 
@@ -336,11 +335,11 @@ def main():
         ("state", "parsed", ("running_config",)),
     ]
     module = AnsibleModule(
-        argument_spec=OspfArgs.argument_spec,
+        argument_spec=Ospfv2Args.argument_spec,
         required_if=required_if,
         supports_check_mode=True,
     )
-    result = Ospf(module).execute_module()
+    result = Ospfv2(module).execute_module()
     module.exit_json(**result)
 
 
