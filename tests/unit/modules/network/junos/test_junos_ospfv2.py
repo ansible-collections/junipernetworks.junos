@@ -27,7 +27,6 @@ __metaclass__ = type
 
 from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
     patch,
-    MagicMock,
 )
 from ansible_collections.junipernetworks.junos.plugins.modules import (
     junos_ospfv2,
@@ -91,39 +90,6 @@ class TestJunosOspfv2Module(TestJunosModule):
         entry_list.sort(key=lambda i: i.get("name"))
 
     def test_junos_ospfv2_merged(self):
-        set_module_args(
-            dict(
-                config=[
-                    dict(
-                        router_id="10.200.16.75",
-                        areas=[
-                            dict(
-                                area_id="0.0.0.100",
-                                stub=dict(default_metric=200, set=True),
-                                interfaces=[
-                                    dict(
-                                        name="so-0/0/0.0", priority=3, metric=5
-                                    )
-                                ],
-                            )
-                        ],
-                    )
-                ],
-                state="merged",
-            )
-        )
-        commands = [
-            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:ospf>'
-            "<nc:area><nc:name>0.0.0.100</nc:name><nc:interface><nc:name>so-0/0/0.0</nc:name>"
-            "<nc:priority>3</nc:priority><nc:metric>5</nc:metric></nc:interface><nc:stub>"
-            "<nc:default-metric>200</nc:default-metric></nc:stub></nc:area></nc:ospf></nc:protocols>",
-            '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
-            "<nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>",
-        ]
-        result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
-
-    def test_junos_ospfv2_merged_01(self):
         set_module_args(
             dict(
                 config=[
