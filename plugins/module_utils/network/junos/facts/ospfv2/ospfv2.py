@@ -32,7 +32,7 @@ from ansible.module_utils.basic import missing_required_lib
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
     utils,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.ospf.ospf import (
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.ospfv2.ospfv2 import (
     Ospfv2Args,
 )
 from ansible.module_utils.six import string_types

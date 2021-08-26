@@ -313,10 +313,10 @@ commands:
 
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.ospf.ospf import (
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.ospfv2.ospfv2 import (
     Ospfv2Args,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospf.ospf import (
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospfv2.ospfv2 import (
     Ospfv2,
 )
 

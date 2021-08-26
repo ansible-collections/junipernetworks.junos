@@ -54,17 +54,17 @@ class TestJunosOspfv2Module(TestJunosModule):
         self.unlock_configuration = self.mock_unlock_configuration.start()
 
         self.mock_load_config = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospf.ospf.load_config"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospfv2.ospfv2.load_config"
         )
         self.load_config = self.mock_load_config.start()
 
         self.mock_commit_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospf.ospf.commit_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospfv2.ospfv2.commit_configuration"
         )
         self.mock_commit_configuration = self.mock_commit_configuration.start()
 
         self.mock_execute_show_command = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.ospf.ospf."
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.ospfv2.ospfv2."
             "Ospfv2Facts.get_connection"
         )
         self.execute_show_command = self.mock_execute_show_command.start()
