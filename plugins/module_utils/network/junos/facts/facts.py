@@ -62,7 +62,7 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     Static_routesFacts,
 )
 
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.ospf.ospf import (
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.ospfv2.ospfv2 import (
     Ospfv2Facts,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.ospfv3.ospfv3 import (
