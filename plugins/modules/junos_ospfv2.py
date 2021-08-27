@@ -58,7 +58,7 @@ options:
         - The OSPFv2 router id.
         - This option is DEPRECATED and will be replaced with router_id attribute of
           junos_routing_options resource_module.
-        - This attribute will be removed after 2023-08-01.
+        - This attribute will be removed after 2024-01-01.
         type: str
       areas:
         description:
@@ -239,8 +239,7 @@ EXAMPLES = """
 - name: Merge Junos OSPFv2 config
   junipernetworks.junos.junos_ospfv2:
     config:
-    - router_id: 10.200.16.75
-      reference_bandwidth: 10g
+    - reference_bandwidth: 10g
       areas:
       - area_id: 0.0.0.100
         area_range: 10.200.16.0/24
