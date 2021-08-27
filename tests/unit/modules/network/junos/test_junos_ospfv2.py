@@ -27,7 +27,6 @@ __metaclass__ = type
 
 from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
     patch,
-    MagicMock,
 )
 from ansible_collections.junipernetworks.junos.plugins.modules import (
     junos_ospfv2,
@@ -43,62 +42,52 @@ class TestJunosOspfv2Module(TestJunosModule):
 
     def setUp(self):
         super(TestJunosOspfv2Module, self).setUp()
+
         self.mock_lock_configuration = patch(
             "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration"
         )
         self.lock_configuration = self.mock_lock_configuration.start()
+
         self.mock_unlock_configuration = patch(
             "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration"
         )
         self.unlock_configuration = self.mock_unlock_configuration.start()
+
         self.mock_load_config = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospf.ospf.load_config"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospfv2.ospfv2.load_config"
         )
         self.load_config = self.mock_load_config.start()
 
-        self.mock_validate_config = patch(
-            "ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils.validate_config"
-        )
-        self.validate_config = self.mock_validate_config.start()
-
         self.mock_commit_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospf.ospf.commit_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospfv2.ospfv2.commit_configuration"
         )
         self.mock_commit_configuration = self.mock_commit_configuration.start()
 
-        self.mock_get_connection = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.ospf.ospf."
-            "OspfFacts.get_connection"
+        self.mock_execute_show_command = patch(
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.ospfv2.ospfv2."
+            "Ospfv2Facts.get_connection"
         )
-        self.get_connection = self.mock_get_connection.start()
-
-        self.conn = self.get_connection()
-        self.conn.get = MagicMock()
-
-        self.mock_get_xml_dict = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.ospf.ospf.OspfFacts._get_xml_dict"
-        )
-        self._get_xml_dict = self.mock_get_xml_dict.start()
+        self.execute_show_command = self.mock_execute_show_command.start()
 
     def tearDown(self):
         super(TestJunosOspfv2Module, self).tearDown()
-        self.mock_get_connection.stop()
         self.mock_load_config.stop()
-        self.mock_validate_config.stop()
         self.mock_lock_configuration.stop()
         self.mock_unlock_configuration.stop()
         self.mock_commit_configuration.stop()
+        self.mock_execute_show_command.stop()
 
-    def load_fixtures(self, commands=None, format="text", changed=False):
-        self.get_connection.return_value = load_fixture(
-            "junos_ospfv2_config.cfg"
-        )
-        if changed:
-            self.load_config.return_value = load_fixture(
-                "get_configuration_rpc_reply_diff.txt"
-            )
-        else:
-            self.load_config.return_value = None
+    def load_fixtures(
+        self, commands=None, format="text", changed=False, filename=None
+    ):
+        def load_from_file(*args, **kwargs):
+            output = load_fixture("junos_ospfv2_config.cfg")
+            return output
+
+        self.execute_show_command.side_effect = load_from_file
+
+    def sort_ospf(self, entry_list):
+        entry_list.sort(key=lambda i: i.get("name"))
 
     def test_junos_ospfv2_merged(self):
         set_module_args(
@@ -130,28 +119,25 @@ class TestJunosOspfv2Module(TestJunosModule):
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>",
         ]
-        result = self.execute_module(changed=True)
-
+        result = self.execute_module(changed=True, commands=commands)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
 
-    def test_junos_ospfv2_merged_idempotent(self):
-        self.get_connection.return_value = load_fixture(
-            "junos_ospfv2_config.cfg"
-        )
-        src = load_fixture("junos_ospfv2.cfg", content="str")
-        set_module_args(dict(src=src))
+    def test_junos_ospfv2_merged_bandwith(self):
         set_module_args(
             dict(
                 config=[
                     dict(
-                        router_id="30",
+                        router_id="10.200.16.77",
                         areas=[
                             dict(
-                                area_id="100",
-                                stub=dict(default_metric=10, set=True),
+                                area_id="0.0.0.10",
                                 interfaces=[
                                     dict(
-                                        name="so-0/0/0.0", priority=3, metric=5
+                                        name="so-0/0/0.0",
+                                        metric=5,
+                                        bandwidth_based_metrics=[
+                                            dict(bandwidth="10g", metric=5)
+                                        ],
                                     )
                                 ],
                             )
@@ -161,9 +147,27 @@ class TestJunosOspfv2Module(TestJunosModule):
                 state="merged",
             )
         )
-        self.execute_module(changed=False, commands=[])
+        result = self.execute_module(changed=True)
+        self.assertIn(
+            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
+            str(result["commands"]),
+        )
+        self.assertIn(
+            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
+            str(result["commands"]),
+        )
+        self.assertIn("<nc:name>0.0.0.10</nc:name>", str(result["commands"]))
+        self.assertIn(
+            "<nc:interface><nc:name>so-0/0/0.0</nc:name>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:bandwidth-based-metrics><nc:bandwidth><nc:name>10g</nc:name>",
+            str(result["commands"]),
+        )
+        self.assertIn("<nc:metric>5</nc:metric>", str(result["commands"]))
 
-    def test_junos_ospfv2_replaced(self):
+    def test_junos_ospfv2_merged_02(self):
         set_module_args(
             dict(
                 config=[
@@ -172,13 +176,156 @@ class TestJunosOspfv2Module(TestJunosModule):
                         areas=[
                             dict(
                                 area_id="0.0.0.100",
-                                stub=dict(default_metric=200, set=True),
+                                area_range="3:3::/64",
+                                stub=dict(set=True),
                                 interfaces=[
                                     dict(
-                                        name="so-0/0/0.0", priority=3, metric=5
+                                        name="so-0/0/0.0",
+                                        priority=3,
+                                        metric=5,
+                                        flood_reduction=True,
+                                        passive=True,
+                                        timers=dict(
+                                            dead_interval=100,
+                                            hello_interval=80,
+                                            retransmit_interval=90,
+                                            transit_delay=True,
+                                        ),
                                     )
                                 ],
                             )
+                        ],
+                    )
+                ],
+                state="merged",
+            )
+        )
+        result = self.execute_module(changed=True)
+        self.assertIn(
+            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:ospf><nc:area><nc:name>0.0.0.100</nc:name>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:interface><nc:name>so-0/0/0.0</nc:name>",
+            str(result["commands"]),
+        )
+        self.assertIn("<nc:priority>3</nc:priority>", str(result["commands"]))
+        self.assertIn("<nc:flood-reduction/>", str(result["commands"]))
+        self.assertIn("<nc:metric>5</nc:metric>", str(result["commands"]))
+        self.assertIn("<nc:passive/>", str(result["commands"]))
+        self.assertIn(
+            "<nc:dead-interval>100</nc:dead-interval>", str(result["commands"])
+        )
+        self.assertIn(
+            "<nc:hello-interval>80</nc:hello-interval>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:retransmit-interval>90</nc:retransmit-interval>",
+            str(result["commands"]),
+        )
+        self.assertIn("</nc:interface>", str(result["commands"]))
+        self.assertIn(
+            "<nc:stub/></nc:area></nc:ospf></nc:protocols>",
+            str(result["commands"]),
+        )
+        self.assertIn("</nc:interface>", str(result["commands"]))
+        self.assertIn(
+            '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>",
+            str(result["commands"]),
+        )
+
+    def test_junos_ospfv2_merged_03(self):
+        set_module_args(
+            dict(
+                config=[
+                    dict(
+                        router_id="10.200.16.75",
+                        external_preference=2,
+                        overload=dict(timeout=80),
+                        preference=1,
+                        prefix_export_limit=20000,
+                        reference_bandwidth="10g",
+                        rfc1583compatibility=False,
+                        spf_options=dict(
+                            delay=1000, holddown=15000, rapid_runs=9
+                        ),
+                    )
+                ],
+                state="merged",
+            )
+        )
+        result = self.execute_module(changed=True)
+        self.assertIn(
+            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:spf-options><nc:delay>1000</nc:delay>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:overload><nc:timeout>80</nc:timeout></nc:overload>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:external-preference>2</nc:external-preference>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:preference>1</nc:preference>", str(result["commands"])
+        )
+        self.assertIn(
+            "<nc:prefix-export-limit>20000</nc:prefix-export-limit>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:reference-bandwidth>10g</nc:reference-bandwidth>",
+            str(result["commands"]),
+        )
+        self.assertIn("<nc:no-rfc-1583/>", str(result["commands"]))
+        self.assertIn(
+            "<nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>",
+            str(result["commands"]),
+        )
+
+    def test_junos_ospfv2_replaced_01(self):
+        set_module_args(
+            dict(
+                config=[
+                    dict(
+                        router_id="10.200.16.77",
+                        areas=[
+                            dict(
+                                area_id="0.0.0.10",
+                                stub=dict(default_metric=200, set=True),
+                                interfaces=[
+                                    dict(
+                                        name="so-0/0/0.0",
+                                        priority=3,
+                                        metric=2,
+                                        passive=True,
+                                    ),
+                                    dict(
+                                        name="so-0/0/0.1", priority=4, metric=4
+                                    ),
+                                ],
+                            ),
+                            dict(
+                                area_id="0.0.0.1=30",
+                                interfaces=[
+                                    dict(name="ge-1/1/1.0"),
+                                    dict(name="ge-2/2/2.0"),
+                                ],
+                            ),
                         ],
                     )
                 ],
@@ -186,183 +333,118 @@ class TestJunosOspfv2Module(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        commands = [
-            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:ospf>'
-            "<nc:area><nc:name>0.0.0.100</nc:name><nc:interface><nc:name>so-0/0/0.0</nc:name>"
-            "<nc:priority>3</nc:priority>"
-            "<nc:metric>5</nc:metric></nc:interface>"
-            "<nc:stub><nc:default-metric>200</nc:default-metric></nc:stub></nc:area></nc:ospf>"
-            "<nc:ospf><nc:area><nc:name>0.0.0.100</nc:name>"
-            "<nc:interface><nc:name>so-0/0/0.0</nc:name>"
-            "<nc:priority>3</nc:priority><nc:metric>5</nc:metric></nc:interface>"
-            "<nc:stub><nc:default-metric>200</nc:default-metric></nc:stub></nc:area></nc:ospf></nc:protocols>",
-            '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
-            "<nc:router-id>10.200.16.75</nc:router-id><nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>",
-        ]
-        self.assertEqual(sorted(result["commands"]), commands)
-
-    def test_junos_ospfv2_replaced_idempotent(self):
-        self.get_connection.return_value = load_fixture(
-            "junos_ospfv2_config.cfg"
+        self.assertIn(
+            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
+            str(result["commands"]),
         )
-        src = load_fixture("junos_ospfv2.cfg", content="str")
-        set_module_args(dict(src=src))
+        self.assertIn(
+            '<nc:ospf><nc:area delete="delete">0.0.0.20</nc:area></nc:ospf>',
+            str(result["commands"]),
+        )
+        self.assertIn(
+            '<nc:ospf><nc:area delete="delete">0.0.0.10</nc:area></nc:ospf>',
+            str(result["commands"]),
+        )
+        self.assertIn(
+            '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
+            str(result["commands"]),
+        )
+        self.assertIn("<nc:metric>2</nc:metric>", str(result["commands"]))
+        self.assertIn("<nc:priority>3</nc:priority>", str(result["commands"]))
+        self.assertIn(
+            "<nc:interface><nc:name>so-0/0/0.1</nc:name>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:stub><nc:default-metric>200</nc:default-metric></nc:stub>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:router-id>10.200.16.77</nc:router-id></nc:routing-options>",
+            str(result["commands"]),
+        )
+
+    def test_junos_ospfv2_merged_01(self):
         set_module_args(
             dict(
                 config=[
                     dict(
-                        router_id="30",
+                        router_id="10.200.16.77",
                         areas=[
                             dict(
-                                area_id="100",
-                                stub=dict(default_metric=10, set=True),
-                                interfaces=[
-                                    dict(
-                                        name="so-0/0/0.0", priority=3, metric=5
-                                    )
-                                ],
-                            )
-                        ],
-                    )
-                ],
-                state="replaced",
-            )
-        )
-
-        self.execute_module(changed=False, commands=[])
-
-    def test_junos_ospfv2_overridden(self):
-        set_module_args(
-            dict(
-                config=[
-                    dict(
-                        router_id="10.200.16.75",
-                        areas=[
-                            dict(
-                                area_id="0.0.0.100",
+                                area_id="0.0.0.10",
                                 stub=dict(default_metric=200, set=True),
                                 interfaces=[
                                     dict(
-                                        name="so-0/0/0.0", priority=3, metric=5
-                                    )
+                                        name="so-0/0/0.0",
+                                        priority=3,
+                                        metric=2,
+                                        passive=True,
+                                    ),
+                                    dict(
+                                        name="so-0/0/0.1", priority=4, metric=4
+                                    ),
                                 ],
-                            )
+                            ),
+                            dict(
+                                area_id="0.0.0.1=30",
+                                interfaces=[
+                                    dict(name="ge-1/1/1.0"),
+                                    dict(name="ge-2/2/2.0"),
+                                ],
+                            ),
                         ],
                     )
                 ],
                 state="overridden",
             )
         )
-        commands = [
-            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:ospf delete="delete"/><nc:ospf>'
-            "<nc:area><nc:name>0.0.0.100</nc:name><nc:interface><nc:name>so-0/0/0.0</nc:name>"
-            "<nc:priority>3</nc:priority>"
-            "<nc:metric>5</nc:metric></nc:interface>"
-            "<nc:stub><nc:default-metric>200</nc:default-metric></nc:stub></nc:area></nc:ospf></nc:protocols>",
-            '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
-            "<nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>",
-        ]
         result = self.execute_module(changed=True)
-        self.assertEqual(sorted(result["commands"]), commands)
-
-    def test_junos_ospfv2_overridden_idempotent(self):
-        self.get_connection.return_value = load_fixture(
-            "junos_ospfv2_config.cfg"
+        self.assertIn(
+            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
+            str(result["commands"]),
         )
-        src = load_fixture("junos_ospfv2.cfg", content="str")
-        set_module_args(dict(src=src))
-        set_module_args(
-            dict(
-                config=[
-                    dict(
-                        router_id="30",
-                        areas=[
-                            dict(
-                                area_id="100",
-                                stub=dict(default_metric=10, set=True),
-                                interfaces=[
-                                    dict(
-                                        name="so-0/0/0.0", priority=3, metric=5
-                                    )
-                                ],
-                            )
-                        ],
-                    )
-                ],
-                state="overridden",
-            )
+        self.assertIn(
+            '<nc:ospf><nc:area delete="delete">0.0.0.20</nc:area></nc:ospf>',
+            str(result["commands"]),
+        )
+        self.assertIn(
+            '<nc:ospf><nc:area delete="delete">0.0.0.10</nc:area></nc:ospf>',
+            str(result["commands"]),
+        )
+        self.assertIn(
+            '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
+            str(result["commands"]),
+        )
+        self.assertIn("<nc:metric>2</nc:metric>", str(result["commands"]))
+        self.assertIn("<nc:priority>3</nc:priority>", str(result["commands"]))
+        self.assertIn(
+            "<nc:interface><nc:name>so-0/0/0.1</nc:name>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:stub><nc:default-metric>200</nc:default-metric></nc:stub>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:router-id>10.200.16.77</nc:router-id></nc:routing-options>",
+            str(result["commands"]),
         )
 
-        self.execute_module(changed=False, commands=[])
-
-    def test_junos_ospfv2_delete(self):
-        set_module_args(
-            dict(
-                config=[
-                    dict(
-                        router_id="10.200.16.75",
-                        areas=[
-                            dict(
-                                area_id="0.0.0.100",
-                                stub=dict(default_metric=200, set=True),
-                                interfaces=[dict(name="so-0/0/0.0")],
-                            )
-                        ],
-                    )
-                ],
-                state="deleted",
-            )
-        )
+    def test_junos_ospfv2_deleted(self):
+        """
+        :return:
+        """
+        set_module_args(dict(config=[], state="deleted"))
 
         commands = [
-            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:ospf>'
-            "<nc:area><nc:name>0.0.0.100</nc:name><nc:interface><nc:name>so-0/0/0.0</nc:name>"
-            "</nc:interface><nc:stub><nc:default-metric>200</nc:default-metric></nc:stub></nc:area></nc:ospf></nc:protocols>",
-            '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
-            "<nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>",
+            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
+            '<nc:ospf><nc:area delete="delete">0.0.0.10</nc:area></nc:ospf>'
+            '<nc:ospf><nc:area delete="delete">0.0.0.20</nc:area></nc:ospf>'
+            "</nc:protocols>"
         ]
-
         result = self.execute_module(changed=True)
-        self.assertEqual(sorted(result["commands"]), commands)
-
-    def test_junos_ospfv2_delete_idempotent(self):
-        set_module_args(
-            dict(
-                config=[
-                    dict(
-                        router_id="10.200.16.70",
-                        areas=[
-                            dict(
-                                area_id="0.0.0.100",
-                                stub=dict(default_metric=200, set=True),
-                                interfaces=[dict(name="so-0/0/0.0")],
-                            )
-                        ],
-                    )
-                ],
-                state="deleted",
-            )
-        )
-        self.execute_module(changed=False, commands=[])
-
-    def test_junos_ospfv2_parsed(self):
-
-        set_module_args(
-            dict(
-                running_config='<?xml version="1.0" encoding="UTF-8"?>\n'
-                '<rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">\n'
-                '<configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">'
-                "\n<protocols>\n<ospf>\n<area>\n<name>0.0.0.100</name>\n<stub>\n"
-                "<default-metric>200</default-metric>\n</stub>\n<interface>\n<name>so-0/0/0.0</name>"
-                "\n<passive></passive>\n<metric>5</metric>\n<priority>3</priority>\n"
-                "</interface>\n</area>\n</ospf>\n</protocols>\n<routing-options>\n"
-                "<router-id>10.200.16.75</router-id>\n</routing-options>\n"
-                "</configuration>\n</rpc-reply>",
-                state="parsed",
-            )
-        )
-        result = self.execute_module(changed=False)
-        self.assertEqual([], result["parsed"])
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_ospfv2_rendered(self):
         set_module_args(
@@ -386,10 +468,194 @@ class TestJunosOspfv2Module(TestJunosModule):
                 state="rendered",
             )
         )
-        commands = (
-            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:ospf>'
-            "<nc:area><nc:name>0.0.0.100</nc:name><nc:interface><nc:name>so-0/0/0.0</nc:name>"
-            "<nc:priority>3</nc:priority><nc:metric>5</nc:metric></nc:interface><nc:stub>"
-            "<nc:default-metric>200</nc:default-metric></nc:stub></nc:area></nc:ospf></nc:protocols>"
+        rendered = (
+            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
+            "<nc:ospf><nc:area><nc:name>0.0.0.100</nc:name><nc:interface>"
+            "<nc:name>so-0/0/0.0</nc:name><nc:priority>3</nc:priority>"
+            "<nc:metric>5</nc:metric></nc:interface>"
+            "<nc:stub><nc:default-metric>200</nc:default-metric></nc:stub></nc:area></nc:ospf></nc:protocols>"
         )
-        self.execute_module(changed=False, commands=commands)
+        result = self.execute_module(changed=False)
+        self.assertEqual(sorted(result["rendered"]), sorted(rendered))
+
+    def test_junos_vlans_gathered(self):
+        """
+        :return:
+        """
+        set_module_args(dict(state="gathered"))
+        result = self.execute_module(changed=False)
+        gather_list = [
+            dict(
+                router_id="10.200.16.77",
+                areas=[
+                    dict(
+                        area_id="0.0.0.10",
+                        stub=dict(default_metric=200, set=True),
+                        interfaces=[
+                            dict(
+                                name="so-0/0/0.0",
+                                priority=3,
+                                metric=5,
+                                passive=True,
+                                flood_reduction=True,
+                            )
+                        ],
+                    ),
+                    dict(
+                        area_id="0.0.0.20",
+                        interfaces=[
+                            dict(name="ge-1/1/0.0"),
+                            dict(name="ge-2/2/0.0"),
+                        ],
+                    ),
+                ],
+            )
+        ]
+        self.assertEqual(sorted(gather_list), sorted(result["gathered"]))
+
+    def test_junos_vlans_parsed(self):
+        parsed_str = """
+            <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
+                <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
+                    <version>18.4R1-S2.4</version>
+                     <protocols>
+                        <ospf>
+                            <area>
+                            <name>0.0.0.200</name>
+                                <interface>
+                                    <name>so-0/0/0.1</name>
+                                    <metric>3</metric>
+                                    <priority>5</priority>
+                                </interface>
+                            </area>
+                            <area>
+                                <name>0.0.0.100</name>
+                                <stub>
+                                    <default-metric>200</default-metric>
+                                </stub>
+                                <interface>
+                                    <name>so-0/0/0.0</name>
+                                    <metric>5</metric>
+                                    <priority>3</priority>
+                                    <bandwidth-based-metrics>
+                                        <bandwidth>
+                                            <name>10g</name>
+                                            <metric>5</metric>
+                                        </bandwidth>
+                                    </bandwidth-based-metrics>
+                                </interface>
+                            </area>
+                        </ospf>
+                    </protocols>
+                    <routing-options>
+                        <router-id>10.200.16.7</router-id>
+                    </routing-options>
+                </configuration>
+            </rpc-reply>
+        """
+        set_module_args(dict(running_config=parsed_str, state="parsed"))
+        result = self.execute_module(changed=False)
+        parsed_list = [
+            {
+                "areas": [
+                    {
+                        "area_id": "0.0.0.200",
+                        "interfaces": [
+                            {"metric": 3, "name": "so-0/0/0.1", "priority": 5}
+                        ],
+                    },
+                    {
+                        "area_id": "0.0.0.100",
+                        "interfaces": [
+                            {
+                                "bandwidth_based_metrics": [
+                                    {"metric": 5, "bandwidth": "10g"}
+                                ],
+                                "metric": 5,
+                                "name": "so-0/0/0.0",
+                                "priority": 3,
+                            }
+                        ],
+                        "stub": {"default_metric": 200, "set": True},
+                    },
+                ],
+                "router_id": "10.200.16.7",
+            }
+        ]
+        self.assertEqual(result["parsed"], parsed_list)
+
+    def test_junos_vlans_parsed_02(self):
+        parsed_str = """
+            <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
+                <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
+                    <version>18.4R1-S2.4</version>
+                     <protocols>
+                        <ospf>
+                            <area>
+                            <name>0.0.0.200</name>
+                                <interface>
+                                    <name>so-0/0/0.1</name>
+                                    <metric>3</metric>
+                                    <priority>5</priority>
+                                </interface>
+                            </area>
+                            <area>
+                                <name>0.0.0.100</name>
+                                <stub>
+                                    <default-metric>200</default-metric>
+                                </stub>
+                                <interface>
+                                    <name>so-0/0/0.0</name>
+                                    <metric>5</metric>
+                                    <priority>3</priority>
+                                    <bandwidth-based-metrics>
+                                        <bandwidth>
+                                            <name>10g</name>
+                                            <metric>5</metric>
+                                        </bandwidth>
+                                        <bandwidth>
+                                            <name>1g</name>
+                                            <metric>5</metric>
+                                        </bandwidth>
+                                    </bandwidth-based-metrics>
+                                </interface>
+                            </area>
+                        </ospf>
+                    </protocols>
+                    <routing-options>
+                        <router-id>10.200.16.7</router-id>
+                    </routing-options>
+                </configuration>
+            </rpc-reply>
+        """
+        set_module_args(dict(running_config=parsed_str, state="parsed"))
+        result = self.execute_module(changed=False)
+        parsed_list = [
+            {
+                "areas": [
+                    {
+                        "area_id": "0.0.0.200",
+                        "interfaces": [
+                            {"metric": 3, "name": "so-0/0/0.1", "priority": 5}
+                        ],
+                    },
+                    {
+                        "area_id": "0.0.0.100",
+                        "interfaces": [
+                            {
+                                "bandwidth_based_metrics": [
+                                    {"metric": 5, "bandwidth": "10g"},
+                                    {"metric": 5, "bandwidth": "1g"},
+                                ],
+                                "metric": 5,
+                                "name": "so-0/0/0.0",
+                                "priority": 3,
+                            }
+                        ],
+                        "stub": {"default_metric": 200, "set": True},
+                    },
+                ],
+                "router_id": "10.200.16.7",
+            }
+        ]
+        self.assertEqual(result["parsed"], parsed_list)

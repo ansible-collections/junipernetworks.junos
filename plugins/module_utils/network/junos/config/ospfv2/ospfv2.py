@@ -49,7 +49,7 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.n
 )
 
 
-class Ospf(ConfigBase):
+class Ospfv2(ConfigBase):
     """
     The junos_ospfv2 class
     """
@@ -59,7 +59,7 @@ class Ospf(ConfigBase):
     gather_network_resources = ["ospf"]
 
     def __init__(self, module):
-        super(Ospf, self).__init__(module)
+        super(Ospfv2, self).__init__(module)
 
     def get_ospf_facts(self, data=None):
         """ Get the 'facts' (the current configuration)
@@ -70,7 +70,7 @@ class Ospf(ConfigBase):
         facts, _warnings = Facts(self._module).get_facts(
             self.gather_subset, self.gather_network_resources, data=data
         )
-        ospf_facts = facts["ansible_network_resources"].get("junos_ospfv2")
+        ospf_facts = facts["ansible_network_resources"].get("ospfv2")
         if not ospf_facts:
             return []
         return ospf_facts
@@ -113,7 +113,7 @@ class Ospf(ConfigBase):
                     diff = load_config(self._module, config_xml, [])
 
                 commit = not self._module.check_mode
-                if diff:
+                if config_xmls and diff:
                     if commit:
                         commit_configuration(self._module)
                     else:
@@ -159,9 +159,6 @@ class Ospf(ConfigBase):
         self.router_id = None
         self.root = build_root_xml_node("configuration")
         self.protocols = build_child_xml_node(self.root, "protocols")
-        self.routing_options = build_child_xml_node(
-            self.root, "routing-options"
-        )
         state = self._module.params["state"]
         if (
             state in ("merged", "replaced", "overridden", "rendered")
@@ -173,6 +170,7 @@ class Ospf(ConfigBase):
                 )
             )
         config_xmls = []
+        commands = []
         if state == "overridden":
             config_xmls = self._state_overridden(want, have)
         elif state == "deleted":
@@ -182,10 +180,13 @@ class Ospf(ConfigBase):
         elif state == "replaced":
             config_xmls = self._state_replaced(want, have)
 
-        for xml in config_xmls:
-            self.protocols.append(xml)
+        if config_xmls:
+            for xml in config_xmls:
+                self.protocols.append(xml)
 
-        return [tostring(xml) for xml in self.root.getchildren()]
+            commands = [tostring(xml) for xml in self.root.getchildren()]
+        return commands
+        # return [tostring(xml) for xml in self.root.getchildren()]
 
     def _state_replaced(self, want, have):
         """ The command generator when state is replaced
@@ -207,7 +208,7 @@ class Ospf(ConfigBase):
                   to the desired configuration
         """
         ospf_xml = []
-        ospf_xml.extend(self._state_deleted(None, have))
+        ospf_xml.extend(self._state_deleted(want, have))
         ospf_xml.extend(self._state_merged(want, have))
         return ospf_xml
 
@@ -220,25 +221,19 @@ class Ospf(ConfigBase):
         """
         ospf_xml = []
         delete = {"delete": "delete"}
-
-        if not want:
-            ospf_node = build_child_xml_node(self.protocols, "ospf")
-            ospf_node.attrib.update(delete)
-            if have:
-                router_id = have[0].get("router_id")
-                if router_id:
-                    build_child_xml_node(
-                        self.routing_options,
-                        "router-id",
-                        self.router_id,
-                        attrib=delete,
+        if have:
+            for have_ospf in have:
+                have_areas = have_ospf.get("areas") or []
+                for area in have_areas:
+                    ospf_node = build_child_xml_node(self.protocols, "ospf")
+                    area_node = build_child_xml_node(
+                        ospf_node, "area", area["area_id"]
                     )
-            return ospf_node
-
-        ospf_xml = self._state_merged(want, have, delete=delete)
+                    area_node.attrib.update(delete)
+                    ospf_xml.append(ospf_node)
         return ospf_xml
 
-    def _state_merged(self, want, have, delete=None):
+    def _state_merged(self, want, have):
         """ The command generator when state is merged
 
         :rtype: A list
@@ -248,45 +243,41 @@ class Ospf(ConfigBase):
         ospf_xml = []
         protocol = build_root_xml_node("ospf")
         for ospf in want:
-            ospf = remove_empties(ospf)
-            self.router_id = ospf.get("router_id")
-            build_child_xml_node(
-                self.routing_options, "router-id", self.router_id
-            )
+            if "router_id" in ospf.keys():
+                self.routing_options = build_child_xml_node(
+                    self.root, "routing-options"
+                )
+                ospf = remove_empties(ospf)
+                self.router_id = ospf.get("router_id")
+                build_child_xml_node(
+                    self.routing_options, "router-id", self.router_id
+                )
 
             if ospf.get("spf_options"):
                 spf_options_node = build_child_xml_node(
                     protocol, "spf-options"
                 )
-                if delete and not ospf.get("spf_options").values():
-                    spf_options_node.attrib.update(delete)
 
                 if ospf["spf_options"].get("delay"):
-                    delay_node = build_child_xml_node(
+                    build_child_xml_node(
                         spf_options_node,
                         "delay",
                         ospf["spf_options"].get("delay"),
                     )
-                    if delete:
-                        delay_node.attrib.update(delete)
 
                 if ospf["spf_options"].get("holddown"):
-                    holddown_node = build_child_xml_node(
+                    build_child_xml_node(
                         spf_options_node,
                         "holddown",
                         ospf["spf_options"].get("holddown"),
                     )
-                    if delete:
-                        holddown_node.attrib.update(delete)
 
                 if ospf["spf_options"].get("delay"):
-                    delay_node = build_child_xml_node(
+                    build_child_xml_node(
                         spf_options_node,
                         "rapid-runs",
                         ospf["spf_options"].get("rapid_runs"),
                     )
-                    if delete:
-                        delay_node.attrib.update(delete)
 
             if ospf.get("overload"):
                 overload_node = build_child_xml_node(protocol, "overload")
@@ -296,143 +287,130 @@ class Ospf(ConfigBase):
                         "timeout",
                         ospf["overload"].get("timeout"),
                     )
-                if delete:
-                    overload_node.attrib.update(delete)
 
             if ospf.get("external_preference"):
-                ext_pref_node = build_child_xml_node(
+                build_child_xml_node(
                     protocol,
                     "external-preference",
-                    ospf["externall_preference"],
+                    ospf["external_preference"],
                 )
-                if delete:
-                    ext_pref_node.attrib.update(delete)
 
             if ospf.get("preference"):
-                pref_node = build_child_xml_node(
+                build_child_xml_node(
                     protocol, "preference", ospf["preference"]
                 )
-                if delete:
-                    pref_node.attrib.update(delete)
 
             if ospf.get("prefix_export_limit"):
-                prefix_export_node = build_child_xml_node(
+                build_child_xml_node(
                     protocol,
                     "prefix-export-limit",
                     ospf["prefix_export_limit"],
                 )
-                if delete:
-                    prefix_export_node.attrib.update(delete)
 
             if ospf.get("reference_bandwidth"):
-                ref_bw_node = build_child_xml_node(
+                build_child_xml_node(
                     protocol,
                     "reference-bandwidth",
                     ospf.get("reference_bandwidth"),
                 )
-                if delete:
-                    ref_bw_node.attrib.update(delete)
 
             if "rfc1583compatibility" in ospf.keys():
                 if not ospf["rfc1583compatibility"]:
                     build_child_xml_node(protocol, "no-rfc-1583")
 
-            for area in ospf["areas"]:
-                area_node = build_child_xml_node(protocol, "area")
-                area_id = area.get("area_id")
-                build_child_xml_node(area_node, "name", area_id)
-                if area.get("area_range"):
-                    area_range_node = build_child_xml_node(
-                        area_node, "area-range"
-                    )
-                    build_child_xml_node(
-                        area_range_node, "name", area["area_range"]
-                    )
-                    if delete:
-                        area_range_node.attrib.update(delete)
-
-                for intf in area.get("interfaces"):
-                    intf_node = build_child_xml_node(area_node, "interface")
-                    build_child_xml_node(intf_node, "name", intf.get("name"))
-                    if delete:
-                        if have:
-                            existing_config = have[0]
-                            for existing_area in existing_config["areas"]:
-                                if existing_area["area_id"] == area_id:
-                                    if len(existing_area["interfaces"]) == 1:
-                                        area_node.attrib.update(delete)
-                                    else:
-                                        intf_node.attrib.update(delete)
-
-                    if intf.get("priority"):
+            if "areas" in ospf.keys():
+                for area in ospf["areas"]:
+                    area_node = build_child_xml_node(protocol, "area")
+                    area_id = area.get("area_id")
+                    build_child_xml_node(area_node, "name", area_id)
+                    if area.get("area_range"):
+                        area_range_node = build_child_xml_node(
+                            area_node, "area-range"
+                        )
                         build_child_xml_node(
-                            intf_node, "priority", intf.get("priority")
+                            area_range_node, "name", area["area_range"]
                         )
 
-                    if intf.get("flood_reduction"):
-                        build_child_xml_node(intf_node, "flood-reduction")
-
-                    if intf.get("metric"):
+                    for intf in area.get("interfaces"):
+                        intf_node = build_child_xml_node(
+                            area_node, "interface"
+                        )
                         build_child_xml_node(
-                            intf_node, "metric", intf["metric"]
+                            intf_node, "name", intf.get("name")
                         )
 
-                    if intf.get("passive"):
-                        build_child_xml_node(intf_node, "passive")
-
-                    if intf.get("bandwidth_based_metrics"):
-                        bw_metrics_node = build_child_xml_node(
-                            intf_node, "bandwidth-based-metrics"
-                        )
-                        bw_metrics = intf.get("bandwidth_based_metrics")
-                        for bw_metric in bw_metrics:
-                            bw_metric_node = build_child_xml_node(
-                                bw_metrics_node, "bandwidth"
-                            )
+                        if intf.get("priority"):
                             build_child_xml_node(
-                                bw_metric_node,
-                                "name",
-                                bw_metric.get("bandwidth"),
-                            )
-                            build_child_xml_node(
-                                bw_metric_node,
-                                "metric",
-                                bw_metric.get("metric"),
-                            )
-                    if intf.get("timers"):
-                        if intf["timers"].get("dead_interval"):
-                            build_child_xml_node(
-                                intf_node,
-                                "dead-interval",
-                                intf["timers"].get("dead_interval"),
-                            )
-                        if intf["timers"].get("hello_interval"):
-                            build_child_xml_node(
-                                intf_node,
-                                "hello-interval",
-                                intf["timers"].get("hello_interval"),
-                            )
-                        if intf["timers"].get("poll_interval"):
-                            build_child_xml_node(
-                                intf_node,
-                                "poll-interval",
-                                intf["timers"].get("poll_interval"),
-                            )
-                        if intf["timers"].get("retransmit_interval"):
-                            build_child_xml_node(
-                                intf_node,
-                                "retransmit-interval",
-                                intf["timers"].get("retransmit_interval"),
+                                intf_node, "priority", intf.get("priority")
                             )
 
-                if area.get("stub"):
-                    if area["stub"]["set"]:
-                        stub_node = build_child_xml_node(area_node, "stub")
-                        if area["stub"].get("default_metric"):
+                        if intf.get("flood_reduction"):
                             build_child_xml_node(
-                                stub_node,
-                                "default-metric",
-                                area["stub"].get("default_metric"),
+                                intf_node, "flood-reduction", None
                             )
+
+                        if intf.get("metric"):
+                            build_child_xml_node(
+                                intf_node, "metric", intf["metric"]
+                            )
+
+                        if intf.get("passive"):
+                            build_child_xml_node(intf_node, "passive")
+
+                        if intf.get("bandwidth_based_metrics"):
+                            bw_metrics_node = build_child_xml_node(
+                                intf_node, "bandwidth-based-metrics"
+                            )
+                            bw_metrics = intf.get("bandwidth_based_metrics")
+                            for bw_metric in bw_metrics:
+                                bw_metric_node = build_child_xml_node(
+                                    bw_metrics_node, "bandwidth"
+                                )
+                                build_child_xml_node(
+                                    bw_metric_node,
+                                    "name",
+                                    bw_metric.get("bandwidth"),
+                                )
+                                build_child_xml_node(
+                                    bw_metric_node,
+                                    "metric",
+                                    bw_metric.get("metric"),
+                                )
+                        if intf.get("timers"):
+                            if intf["timers"].get("dead_interval"):
+                                build_child_xml_node(
+                                    intf_node,
+                                    "dead-interval",
+                                    intf["timers"].get("dead_interval"),
+                                )
+                            if intf["timers"].get("hello_interval"):
+                                build_child_xml_node(
+                                    intf_node,
+                                    "hello-interval",
+                                    intf["timers"].get("hello_interval"),
+                                )
+                            if intf["timers"].get("poll_interval"):
+                                build_child_xml_node(
+                                    intf_node,
+                                    "poll-interval",
+                                    intf["timers"].get("poll_interval"),
+                                )
+                            if intf["timers"].get("retransmit_interval"):
+                                build_child_xml_node(
+                                    intf_node,
+                                    "retransmit-interval",
+                                    intf["timers"].get("retransmit_interval"),
+                                )
+
+                    if area.get("stub"):
+                        if area["stub"]["set"]:
+                            stub_node = build_child_xml_node(area_node, "stub")
+                            if area["stub"].get("default_metric"):
+                                build_child_xml_node(
+                                    stub_node,
+                                    "default-metric",
+                                    area["stub"].get("default_metric"),
+                                )
+
         ospf_xml.append(protocol)
         return ospf_xml

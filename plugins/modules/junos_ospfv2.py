@@ -37,13 +37,15 @@ short_description: OSPFv2 resource module
 description:
 - This module manages global OSPFv2 configuration on devices running Juniper JUNOS.
 version_added: 1.0.0
-author: Daniel Mellado (@dmellado)
+author:
+- Daniel Mellado (@dmellado)
 requirements:
 - ncclient (>=v0.6.4)
 - xmltodict (>=0.12.0)
 notes:
 - This module requires the netconf system service be enabled on the device being managed.
-- This module works with connection C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
+- This module works with connection C(netconf).
+  - See L(the Junos OS Platform Options,https://docs.ansible.com/ansible/latest/network/user_guide/platform_junos.html).
 - Tested against JunOS v18.4R1
 options:
   config:
@@ -311,11 +313,11 @@ commands:
 
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.ospf.ospf import (
-    OspfArgs,
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.ospfv2.ospfv2 import (
+    Ospfv2Args,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospf.ospf import (
-    Ospf,
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospfv2.ospfv2 import (
+    Ospfv2,
 )
 
 
@@ -333,11 +335,11 @@ def main():
         ("state", "parsed", ("running_config",)),
     ]
     module = AnsibleModule(
-        argument_spec=OspfArgs.argument_spec,
+        argument_spec=Ospfv2Args.argument_spec,
         required_if=required_if,
         supports_check_mode=True,
     )
-    result = Ospf(module).execute_module()
+    result = Ospfv2(module).execute_module()
     module.exit_json(**result)
 
 
