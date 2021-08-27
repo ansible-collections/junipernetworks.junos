@@ -629,13 +629,14 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
-                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
                         <div>The OSPFv2 router id.</div>
+                        <div>This option is DEPRECATED and will be replaced with router_id attribute of junos_routing_options resource_module.</div>
+                        <div>This attribute will be removed after 2024-01-01.</div>
                 </td>
             </tr>
             <tr>
@@ -777,8 +778,7 @@ Examples
     - name: Merge Junos OSPFv2 config
       junipernetworks.junos.junos_ospfv2:
         config:
-        - router_id: 10.200.16.75
-          reference_bandwidth: 10g
+        - reference_bandwidth: 10g
           areas:
           - area_id: 0.0.0.100
             area_range: 10.200.16.0/24
