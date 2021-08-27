@@ -54,8 +54,10 @@ options:
       router_id:
         description:
         - The OSPFv3 router id.
+        - This option is DEPRECATED and will be replaced with router_id attribute of
+          junos_routing_options resource_module.
+        - This attribute will be removed after 2024-01-01.
         type: str
-        required: true
       areas:
         description:
         - A list of OSPFv3 areas' configuration.
@@ -235,8 +237,7 @@ EXAMPLES = """
 - name: Merge Junos OSPFv3 config
   junipernetworks.junos.junos_ospfv3:
     config:
-    - router_id: 10.200.16.75
-      areas:
+    - areas:
         - area_id: 0.0.0.100
           stub:
             default_metric: 200
@@ -274,8 +275,7 @@ EXAMPLES = """
 - name: Replace Junos OSPFv3 config
   junipernetworks.junos.junos_ospfv3:
    config:
-     - router_id: 10.200.16.75
-       areas:
+     - areas:
          - area_id: 0.0.0.100
            interfaces:
              - name: so-0/0/0.0
@@ -300,8 +300,7 @@ EXAMPLES = """
 - name: Override Junos OSPFv3 config
   junipernetworks.junos.junos_ospfv3:
   config:
-    - router_id: 10.200.16.75
-      areas:
+    - areas:
         - area_id: 0.0.0.100
           stub:
             default_metric: 200
@@ -353,8 +352,7 @@ EXAMPLES = """
 - name: Delete Junos OSPFv3 config
   junipernetworks.junos.junos_ospfv3:
     config:
-      - router_id: 10.200.16.75
-        areas:
+      - areas:
           - area_id: 0.0.0.100
             interfaces:
               - name: so-0/0/0.0
@@ -424,7 +422,6 @@ EXAMPLES = """
 #                     ]
 #                 }
 #             ],
-#             "router_id": "10.200.16.75"
 #         }
 #
 # Using rendered
@@ -433,8 +430,7 @@ EXAMPLES = """
 - name: Render the commands for provided  configuration
   junipernetworks.junos.junos_ospfv3:
     config:
-    - router_id: 10.200.16.75
-      areas:
+    - areas:
         - area_id: 0.0.0.100
           stub:
             default_metric: 200
@@ -603,7 +599,6 @@ EXAMPLES = """
 #                     ]
 #                 }
 #             ],
-#             "router_id": "10.200.16.75"
 #         }
 #     ]
 #

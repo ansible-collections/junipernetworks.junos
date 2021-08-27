@@ -33,7 +33,7 @@ class Ospfv3Args(object):  # pylint: disable=R0903
         "config": {
             "elements": "dict",
             "options": {
-                "router_id": {"required": True, "type": "str"},
+                "router_id": {"type": "str"},
                 "areas": {
                     "elements": "dict",
                     "options": {
