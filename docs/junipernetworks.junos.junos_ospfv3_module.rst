@@ -629,13 +629,14 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
-                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
                         <div>The OSPFv3 router id.</div>
+                        <div>This option is DEPRECATED and will be replaced with router_id attribute of junos_routing_options resource_module.</div>
+                        <div>This attribute will be removed after 2024-01-01.</div>
                 </td>
             </tr>
             <tr>
@@ -777,8 +778,7 @@ Examples
     - name: Merge Junos OSPFv3 config
       junipernetworks.junos.junos_ospfv3:
         config:
-        - router_id: 10.200.16.75
-          areas:
+        - areas:
             - area_id: 0.0.0.100
               stub:
                 default_metric: 200
@@ -816,8 +816,7 @@ Examples
     - name: Replace Junos OSPFv3 config
       junipernetworks.junos.junos_ospfv3:
        config:
-         - router_id: 10.200.16.75
-           areas:
+         - areas:
              - area_id: 0.0.0.100
                interfaces:
                  - name: so-0/0/0.0
@@ -842,8 +841,7 @@ Examples
     - name: Override Junos OSPFv3 config
       junipernetworks.junos.junos_ospfv3:
       config:
-        - router_id: 10.200.16.75
-          areas:
+        - areas:
             - area_id: 0.0.0.100
               stub:
                 default_metric: 200
@@ -895,8 +893,7 @@ Examples
     - name: Delete Junos OSPFv3 config
       junipernetworks.junos.junos_ospfv3:
         config:
-          - router_id: 10.200.16.75
-            areas:
+          - areas:
               - area_id: 0.0.0.100
                 interfaces:
                   - name: so-0/0/0.0
@@ -966,7 +963,6 @@ Examples
     #                     ]
     #                 }
     #             ],
-    #             "router_id": "10.200.16.75"
     #         }
     #
     # Using rendered
@@ -975,8 +971,7 @@ Examples
     - name: Render the commands for provided  configuration
       junipernetworks.junos.junos_ospfv3:
         config:
-        - router_id: 10.200.16.75
-          areas:
+        - areas:
             - area_id: 0.0.0.100
               stub:
                 default_metric: 200
@@ -1145,7 +1140,6 @@ Examples
     #                     ]
     #                 }
     #             ],
-    #             "router_id": "10.200.16.75"
     #         }
     #     ]
     #
