@@ -9,6 +9,7 @@ namespace: junipernetworks
 description: Ansible Network Collection for Junipernetworks Junos devices.
 readme: README.md
 repository: https://github.com/ansible-collections/junipernetworks.junos
+issues: https://github.com/ansible-collections/junipernetworks.junos/issues
 tags: [juniper, junipernetworks, junos, networking, security, netconf]
 # NOTE(pabelanger): We create an empty version key to keep ansible-galaxy
 # happy. We dynamically inject version info based on git information.
