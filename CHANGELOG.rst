@@ -5,6 +5,20 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v2.5.0
+======
+
+Minor Changes
+-------------
+
+- Improve junos ospfv2 integration and unit tests coverage and router id assignment check implemented.
+- Improve junos vlans integration and unit tests coverage and facts gathering logic modification.
+
+Deprecated Features
+-------------------
+
+- Deprecated router_id from ospfv3 resource module.
+
 v2.4.0
 ======
 
