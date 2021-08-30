@@ -320,3 +320,17 @@ releases:
       name: junos_logging_global
       namespace: ''
     release_date: '2021-07-28'
+  2.5.0:
+    changes:
+      deprecated_features:
+      - Deprecated router_id from ospfv3 resource module.
+      minor_changes:
+      - Improve junos ospfv2 integration and unit tests coverage and router id assignment
+        check implemented.
+      - Improve junos vlans integration and unit tests coverage and facts gathering
+        logic modification.
+    fragments:
+    - deprecate_ospfv3_router_id.yaml
+    - ospfv2_test_coverage_improvement.yaml
+    - vlans_tests_coverage_improvement.yaml
+    release_date: '2021-08-30'
