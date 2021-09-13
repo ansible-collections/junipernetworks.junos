@@ -285,4 +285,24 @@ class Ntp_globalFacts(object):
             if source_address_lst:
                 ntp_global_config['source_addresses'] = source_address_lst
 
+        # Read threshold node
+        if 'threshold' in conf.keys():
+            threshold = conf.get('threshold')
+            threshold_dict = {}
+            if 'value' in threshold.keys():
+                threshold_dict['value'] = threshold.get('value')
+            if 'action' in threshold.keys():
+                threshold_dict['action'] = threshold.get('action')
+            if threshold_dict:
+                ntp_global_config['threshold'] = threshold_dict
+
+        # read trusted-keys node
+        if 'trusted-key' in conf.keys():
+            trusted_keys = conf.get('trusted-key')
+            trusted_keys_lst = []
+            if isinstance(trusted_keys, dict):
+                trusted_keys_lst.append(trusted_keys)
+                ntp_global_config['trusted_keys'] = trusted_keys_lst
+            else:
+                ntp_global_config['trusted_keys'] = trusted_keys
         return utils.remove_empties(ntp_global_config)
