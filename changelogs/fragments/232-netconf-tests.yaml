@@ -1,0 +1,3 @@
+---
+trivial:
+  - Move netconf_* integration tests to junos
