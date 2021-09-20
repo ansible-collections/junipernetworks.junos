@@ -138,24 +138,24 @@ class Ntp_globalFacts(object):
             auth_keys = conf.get("authentication-key")
             auth_key_dict = {}
             if isinstance(auth_keys, dict):
-                auth_key_dict['id'] = auth_keys['name']
-                auth_key_dict['algorithm'] = auth_keys['type']
-                auth_key_dict['key'] = auth_keys['value']
+                auth_key_dict["id"] = auth_keys["name"]
+                auth_key_dict["algorithm"] = auth_keys["type"]
+                auth_key_dict["key"] = auth_keys["value"]
                 auth_key_lst.append(auth_key_dict)
 
             else:
                 for auth_key in auth_keys:
-                    auth_key_dict['id'] = auth_key['name']
-                    auth_key_dict['algorithm'] = auth_key['type']
-                    auth_key_dict['key'] = auth_key['value']
+                    auth_key_dict["id"] = auth_key["name"]
+                    auth_key_dict["algorithm"] = auth_key["type"]
+                    auth_key_dict["key"] = auth_key["value"]
                     auth_key_lst.append(auth_key_dict)
                     auth_key_dict = {}
             if auth_key_lst:
-                ntp_global_config['authentication_keys'] = auth_key_lst
+                ntp_global_config["authentication_keys"] = auth_key_lst
 
         # Read boot-server node
-        if "broadcast" in conf.keys():
-            ntp_global_config['boot_server'] = conf.get('boot-server')
+        if "boot-server" in conf.keys():
+            ntp_global_config["boot_server"] = conf.get("boot-server")
 
         # Read broadcast node
         if "broadcast" in conf.keys():
@@ -163,44 +163,52 @@ class Ntp_globalFacts(object):
             broadcasts = conf.get("broadcast")
             broadcast_dict = {}
             if isinstance(broadcasts, dict):
-                broadcast_dict['address'] = broadcasts['name']
-                if 'key' in broadcasts.keys():
-                    broadcast_dict['key'] = broadcasts['key']
-                if 'ttl' in broadcasts.keys():
-                    broadcast_dict['ttl'] = broadcasts['ttl']
-                if 'version' in broadcasts.keys():
-                    broadcast_dict['version'] = broadcasts['version']
-                if 'routing_instance_name' in broadcasts.keys():
-                    broadcast_dict['routing_instance_name'] = broadcasts['routing-instance-name']
+                broadcast_dict["address"] = broadcasts["name"]
+                if "key" in broadcasts.keys():
+                    broadcast_dict["key"] = broadcasts["key"]
+                if "ttl" in broadcasts.keys():
+                    broadcast_dict["ttl"] = broadcasts["ttl"]
+                if "version" in broadcasts.keys():
+                    broadcast_dict["version"] = broadcasts["version"]
+                if "routing-instance-name" in broadcasts.keys():
+                    broadcast_dict["routing_instance_name"] = broadcasts[
+                        "routing-instance-name"
+                    ]
                 broadcast_lst.append(broadcast_dict)
 
             else:
                 for broadcast in broadcasts:
-                    broadcast_dict['address'] = broadcast['name']
-                    if 'key' in broadcast.keys():
-                        broadcast_dict['key'] = broadcast['key']
-                    if 'ttl' in broadcast.keys():
-                        broadcast_dict['ttl'] = broadcast['ttl']
-                    if 'version' in broadcast.keys():
-                        broadcast_dict['version'] = broadcast['version']
-                    if 'routing_instance_name' in broadcast.keys():
-                        broadcast_dict['routing_instance_name'] = broadcast['routing-instance-name']
+                    broadcast_dict["address"] = broadcast["name"]
+                    if "key" in broadcast.keys():
+                        broadcast_dict["key"] = broadcast["key"]
+                    if "ttl" in broadcast.keys():
+                        broadcast_dict["ttl"] = broadcast["ttl"]
+                    if "version" in broadcast.keys():
+                        broadcast_dict["version"] = broadcast["version"]
+                    if "routing-instance-name" in broadcast.keys():
+                        broadcast_dict["routing_instance_name"] = broadcast[
+                            "routing-instance-name"
+                        ]
                     broadcast_lst.append(broadcast_dict)
                     broadcast_dict = {}
             if broadcast_lst:
-                ntp_global_config['broadcasts'] = broadcast_lst
+                ntp_global_config["broadcasts"] = broadcast_lst
 
         # Read broadcast-client node
-        if 'broadcast-client' in conf.keys():
-            ntp_global_config['broadcast_client'] = True
+        if "broadcast-client" in conf.keys():
+            ntp_global_config["broadcast_client"] = True
 
         # Read interval-range node
-        if 'interval-range' in conf.keys():
-            ntp_global_config['interval_range'] = conf['interval-range'].get('value')
+        if "interval-range" in conf.keys():
+            ntp_global_config["interval_range"] = conf["interval-range"].get(
+                "value"
+            )
 
         # Read multicast-client node
-        if 'multicast-client' in conf.keys():
-            ntp_global_config['multicast_client'] = conf['multicast-client'].get('address')
+        if "multicast-client" in conf.keys():
+            ntp_global_config["multicast_client"] = conf[
+                "multicast-client"
+            ].get("address")
 
         # Read peer node
         if "peer" in conf.keys():
@@ -208,28 +216,28 @@ class Ntp_globalFacts(object):
             peers = conf.get("peer")
             peer_dict = {}
             if isinstance(peers, dict):
-                peer_dict['peer'] = peers['name']
-                if 'key' in peers.keys():
-                    peer_dict['key'] = peers['key']
-                if 'prefer' in peers.keys():
-                    peer_dict['prefer'] = True
-                if 'version' in peers.keys():
-                    peer_dict['version'] = peers['version']
+                peer_dict["peer"] = peers["name"]
+                if "key" in peers.keys():
+                    peer_dict["key"] = peers["key"]
+                if "prefer" in peers.keys():
+                    peer_dict["prefer"] = True
+                if "version" in peers.keys():
+                    peer_dict["version"] = peers["version"]
                 peer_lst.append(peer_dict)
 
             else:
                 for peer in peers:
-                    peer_dict['peer'] = peer['name']
-                    if 'key' in peer.keys():
-                        peer_dict['key'] = peer['key']
-                    if 'prefer' in peer.keys():
-                        peer_dict['prefer'] = True
-                    if 'version' in peer.keys():
-                        peer_dict['version'] = peer['version']
+                    peer_dict["peer"] = peer["name"]
+                    if "key" in peer.keys():
+                        peer_dict["key"] = peer["key"]
+                    if "prefer" in peer.keys():
+                        peer_dict["prefer"] = True
+                    if "version" in peer.keys():
+                        peer_dict["version"] = peer["version"]
                     peer_lst.append(peer_dict)
                     peer_dict = {}
             if peer_lst:
-                ntp_global_config['peers'] = peer_lst
+                ntp_global_config["peers"] = peer_lst
 
         # Read server node
         if "server" in conf.keys():
@@ -237,32 +245,36 @@ class Ntp_globalFacts(object):
             servers = conf.get("server")
             server_dict = {}
             if isinstance(servers, dict):
-                server_dict['server'] = servers['name']
-                if 'key' in servers.keys():
-                    server_dict['key'] = servers['key']
-                if 'prefer' in servers.keys():
-                    server_dict['prefer'] = True
-                if 'version' in servers.keys():
-                    server_dict['version'] = servers['version']
-                if 'routing_instance_name' in servers.keys():
-                    server_dict['routing_instance_name'] = servers['routing-instance-name']
+                server_dict["server"] = servers["name"]
+                if "key" in servers.keys():
+                    server_dict["key"] = servers["key"]
+                if "prefer" in servers.keys():
+                    server_dict["prefer"] = True
+                if "version" in servers.keys():
+                    server_dict["version"] = servers["version"]
+                if "routing-instance" in servers.keys():
+                    server_dict["routing-instance"] = servers[
+                        "routing-instance"
+                    ]
                 server_lst.append(server_dict)
 
             else:
                 for server in servers:
-                    server_dict['server'] = server['name']
-                    if 'key' in server.keys():
-                        server_dict['key'] = server['key']
-                    if 'prefer' in server.keys():
-                        server_dict['prefer'] = True
-                    if 'version' in server.keys():
-                        server_dict['version'] = server['version']
-                    if 'routing_instance_name' in server.keys():
-                        server_dict['routing_instance_name'] = server['routing-instance-name']
+                    server_dict["server"] = server["name"]
+                    if "key" in server.keys():
+                        server_dict["key"] = server["key"]
+                    if "prefer" in server.keys():
+                        server_dict["prefer"] = True
+                    if "version" in server.keys():
+                        server_dict["version"] = server["version"]
+                    if "routing-instance" in server.keys():
+                        server_dict["routing_instance"] = server[
+                            "routing-instance"
+                        ]
                     server_lst.append(server_dict)
                     server_dict = {}
             if server_lst:
-                ntp_global_config['servers'] = server_lst
+                ntp_global_config["servers"] = server_lst
 
         # Read source-address node
         if "source-address" in conf.keys():
@@ -270,39 +282,48 @@ class Ntp_globalFacts(object):
             source_addresses = conf.get("source-address")
             source_address_dict = {}
             if isinstance(source_addresses, dict):
-                source_address_dict['source_address'] = source_addresses['name']
-                if 'routing-instance' in source_addresses.keys():
-                    source_address_dict['routing_instance'] = source_addresses['routing-instance']
+                source_address_dict["source_address"] = source_addresses[
+                    "name"
+                ]
+                if "routing-instance" in source_addresses.keys():
+                    source_address_dict["routing_instance"] = source_addresses[
+                        "routing-instance"
+                    ]
                 source_address_lst.append(source_address_dict)
 
             else:
                 for source_address in source_addresses:
-                    source_address_dict['source_address'] = source_address['name']
-                    if 'routing_instance' in source_address.keys():
-                        source_address_dict['routing_instance'] = source_address['routing-instance']
+                    source_address_dict["source_address"] = source_address[
+                        "name"
+                    ]
+                    if "routing-instance" in source_address.keys():
+                        source_address_dict[
+                            "routing_instance"
+                        ] = source_address["routing-instance"]
                     source_address_lst.append(source_address_dict)
                     source_address_dict = {}
             if source_address_lst:
-                ntp_global_config['source_addresses'] = source_address_lst
+                ntp_global_config["source_addresses"] = source_address_lst
 
         # Read threshold node
-        if 'threshold' in conf.keys():
-            threshold = conf.get('threshold')
+        if "threshold" in conf.keys():
+            threshold = conf.get("threshold")
             threshold_dict = {}
-            if 'value' in threshold.keys():
-                threshold_dict['value'] = threshold.get('value')
-            if 'action' in threshold.keys():
-                threshold_dict['action'] = threshold.get('action')
+            if "value" in threshold.keys():
+                threshold_dict["value"] = threshold.get("value")
+            if "action" in threshold.keys():
+                threshold_dict["action"] = threshold.get("action")
             if threshold_dict:
-                ntp_global_config['threshold'] = threshold_dict
+                ntp_global_config["threshold"] = threshold_dict
 
         # read trusted-keys node
-        if 'trusted-key' in conf.keys():
-            trusted_keys = conf.get('trusted-key')
+        if "trusted-key" in conf.keys():
+            trusted_keys = conf.get("trusted-key")
             trusted_keys_lst = []
-            if isinstance(trusted_keys, dict):
-                trusted_keys_lst.append(trusted_keys)
-                ntp_global_config['trusted_keys'] = trusted_keys_lst
+            if isinstance(trusted_keys, list):
+                trusted_keys.sort(key=int)
+                ntp_global_config["trusted_keys"] = trusted_keys
             else:
-                ntp_global_config['trusted_keys'] = trusted_keys
+                trusted_keys_lst.append(trusted_keys)
+                ntp_global_config["trusted_keys"] = trusted_keys_lst
         return utils.remove_empties(ntp_global_config)

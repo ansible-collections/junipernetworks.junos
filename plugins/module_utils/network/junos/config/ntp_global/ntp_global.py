@@ -35,7 +35,6 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.n
     build_root_xml_node,
     build_child_xml_node,
 )
-from ansible.module_utils.six import iteritems
 
 
 class Ntp_global(ConfigBase):
@@ -59,9 +58,7 @@ class Ntp_global(ConfigBase):
         facts, _warnings = Facts(self._module).get_facts(
             self.gather_subset, self.gather_network_resources, data=data
         )
-        ntp_global_facts = facts["ansible_network_resources"].get(
-            "ntp_global"
-        )
+        ntp_global_facts = facts["ansible_network_resources"].get("ntp_global")
         if not ntp_global_facts:
             return {}
         return ntp_global_facts
@@ -90,9 +87,7 @@ class Ntp_global(ConfigBase):
                 self._module.fail_json(
                     msg="value of running_config parameter must not be empty for state parsed"
                 )
-            result["parsed"] = self.get_ntp_global_facts(
-                data=running_config
-            )
+            result["parsed"] = self.get_ntp_global_facts(data=running_config)
         elif self.state == "rendered":
             config_xmls = self.set_config(existing_ntp_global_facts)
             if config_xmls:
@@ -195,261 +190,152 @@ class Ntp_global(ConfigBase):
         """
         ntp_xml = []
         want = remove_empties(want)
-        level_parser = [
-            "any",
-            "authorization",
-            "change_log",
-            "conflict_log",
-            "daemon",
-            "dfc",
-            "external",
-            "firewall",
-            "ftp",
-            "interactive_commands",
-            "kernel",
-            "ntp",
-            "pfe",
-            "security",
-            "user",
-        ]
-        want = remove_empties(want)
-        ntp_node = build_root_xml_node("syslog")
+        ntp_node = build_root_xml_node("ntp")
 
-        # add allow-duplicates node
-        if "allow_duplicates" in want.keys() and want.get("allow_duplicates"):
-            build_child_xml_node(ntp_node, "allow-duplicates")
-
-        # add archive node
-        if "archive" in want.keys():
-            self.render_archive(ntp_node, want)
-
-        # add console node
-        if "console" in want.keys():
-            console = want.get("console")
-            # add any level node
-            for k, v in iteritems(console):
-                if v is not None:
-                    console_node = build_child_xml_node(
-                        ntp_node, "console"
-                    )
-                    build_child_xml_node(
-                        console_node, "name", k.replace("_", "-")
-                    )
-                    build_child_xml_node(console_node, v.get("level"))
-
-        # add file node
-        if "files" in want.keys():
-            files = want.get("files")
-            for file in files:
-                file_node = build_child_xml_node(ntp_node, "file")
+        # add authentication-keys node
+        if "authentication_keys" in want.keys():
+            auth_keys = want.get("authentication_keys")
+            for key in auth_keys:
+                key_node = build_child_xml_node(ntp_node, "authentication-key")
                 # add name node
-                build_child_xml_node(file_node, "name", file.get("name"))
-                # add allow-duplicates node
-                if "allow_duplicates" in file.keys() and file.get(
-                    "allow_duplicates"
-                ):
-                    build_child_xml_node(file_node, "allow-duplicates")
-                # add contents
-                for k, v in iteritems(file):
-                    if k in level_parser and v is not None:
-                        content_node = build_child_xml_node(
-                            file_node, "contents"
-                        )
-                        build_child_xml_node(
-                            content_node, "name", k.replace("_", "-")
-                        )
-                        build_child_xml_node(content_node, v.get("level"))
-                # add archive node
-                if "archive" in file.keys():
-                    self.render_archive(file_node, file)
-                # add explicit-priority
-                if "explicit_priority" in file.keys() and file.get(
-                    "explicit_priority"
-                ):
-                    build_child_xml_node(file_node, "explicit-priority")
-                # add match node
-                if "match" in file.keys():
-                    build_child_xml_node(file_node, "match", file.get("match"))
-                # add match-strings node
-                if "match_strings" in file.keys():
-                    match_strings = file.get("match_strings")
-                    for match in match_strings:
-                        build_child_xml_node(file_node, "match-strings", match)
-                # add structured-data
-                if "structured_data" in file.keys():
-                    structured_data = file.get("structured_data")
-                    s_data_node = build_child_xml_node(
-                        file_node, "structured-data"
-                    )
-                    if "brief" in structured_data.keys() and structured_data.get(
-                        "brief"
-                    ):
-                        build_child_xml_node(s_data_node, "brief")
+                build_child_xml_node(key_node, "name", key.get("id"))
+                # add type node
+                build_child_xml_node(key_node, "type", key.get("algorithm"))
+                # add value node
+                build_child_xml_node(key_node, "value", key.get("key"))
 
-        # add host node
-        if "hosts" in want.keys():
-            hosts = want.get("hosts")
-            for host in hosts:
-                host_node = build_child_xml_node(ntp_node, "host")
-                # add name node
-                build_child_xml_node(host_node, "name", host.get("name"))
-                # add allow-duplicates node
-                if "allow_duplicates" in host.keys() and host.get(
-                    "allow_duplicates"
-                ):
-                    build_child_xml_node(host_node, "allow-duplicates")
-                # add contents
-                for k, v in iteritems(host):
-                    if k in level_parser and v is not None:
-                        content_node = build_child_xml_node(
-                            host_node, "contents"
-                        )
-                        build_child_xml_node(
-                            content_node, "name", k.replace("_", "-")
-                        )
-                        build_child_xml_node(content_node, v.get("level"))
-                # add exclude-hostname node
-                if "exclude_hostname" in host.keys() and host.get(
-                    "exclude_hostname"
-                ):
-                    build_child_xml_node(host_node, "exclude-hostname")
-                # add facility_override node
-                if "facility_override" in host.keys():
-                    build_child_xml_node(
-                        host_node,
-                        "facility-override",
-                        host.get("facility_override"),
-                    )
-                # add log_prefix node
-                if "log_prefix" in host.keys():
-                    build_child_xml_node(
-                        host_node, "log-prefix", host.get("log_prefix")
-                    )
-                # add match node
-                if "match" in host.keys():
-                    build_child_xml_node(host_node, "match", host.get("match"))
-                # add match-strings node
-                if "match_strings" in host.keys():
-                    match_strings = host.get("match_strings")
-                    for match in match_strings:
-                        build_child_xml_node(host_node, "match-strings", match)
-                # add port node
-                if "port" in host.keys():
-                    build_child_xml_node(host_node, "port", host.get("port"))
-                # add routing_instance node
-                if "routing_instance" in host.keys():
-                    build_child_xml_node(
-                        host_node,
-                        "routing-instance",
-                        host.get("routing_instance"),
-                    )
-                # add source_address node
-                if "source_address" in host.keys():
-                    build_child_xml_node(
-                        host_node, "source-address", host.get("source_address")
-                    )
-                # add structured-data
-                if "structured_data" in host.keys():
-                    structured_data = host.get("structured_data")
-                    if "set" not in structured_data.keys() or structured_data.get(
-                        "set"
-                    ):
-                        s_data_node = build_child_xml_node(
-                            host_node, "structured-data"
-                        )
-                    if "brief" in structured_data.keys() and structured_data.get(
-                        "brief"
-                    ):
-                        build_child_xml_node(s_data_node, "brief")
-
-        # add log_rotate_frequency node
-        if "log_rotate_frequency" in want.keys():
+        # add boot_server node
+        if "boot_server" in want.keys():
             build_child_xml_node(
-                ntp_node,
-                "log-rotate-frequency",
-                want.get("log_rotate_frequency"),
+                ntp_node, "boot-server", want.get("boot_server")
             )
 
-        # add routing_instance node
-        if "routing_instance" in want.keys():
+        # add broadcast node
+        if "broadcasts" in want.keys():
+            broadcasts = want.get("broadcasts")
+            for item in broadcasts:
+                broadcast_node = build_child_xml_node(ntp_node, "broadcast")
+                # add name node
+                build_child_xml_node(
+                    broadcast_node, "name", item.get("address")
+                )
+                # add key node
+                if "key" in item.keys():
+                    build_child_xml_node(
+                        broadcast_node, "key", item.get("key")
+                    )
+                # add routing-instance-name node
+                if "routing_instance_name" in item.keys():
+                    build_child_xml_node(
+                        broadcast_node,
+                        "routing-instance-name",
+                        item.get("routing_instance_name"),
+                    )
+                # add ttl node
+                if "ttl" in item.keys():
+                    build_child_xml_node(
+                        broadcast_node, "ttl", item.get("ttl")
+                    )
+                # add version node
+                if "version" in item.keys():
+                    build_child_xml_node(
+                        broadcast_node, "version", item.get("version")
+                    )
+
+        # add broadcast_client node
+        if "broadcast_client" in want.keys() and want.get("broadcast_client"):
+            build_child_xml_node(ntp_node, "broadcast-client")
+
+        # add interval_range node
+        if "interval_range" in want.keys():
             build_child_xml_node(
-                ntp_node, "routing-instance", want.get("routing_instance")
+                ntp_node, "interval-range", want.get("interval_range")
             )
+
+        # add multicast_client node
+        if "multicast_client" in want.keys():
+            build_child_xml_node(
+                ntp_node, "multicast-client", want.get("multicast_client")
+            )
+
+        # add peers node
+        if "peers" in want.keys():
+            peers = want.get("peers")
+            for item in peers:
+                peer_node = build_child_xml_node(ntp_node, "peer")
+                # add name node
+                build_child_xml_node(peer_node, "name", item.get("peer"))
+                # add key node
+                if "key" in item.keys():
+                    build_child_xml_node(peer_node, "key", item.get("key"))
+                # add prefer node
+                if "prefer" in item.keys() and item.get("prefer"):
+                    build_child_xml_node(peer_node, "prefer")
+                # add version node
+                if "version" in item.keys():
+                    build_child_xml_node(
+                        peer_node, "version", item.get("version")
+                    )
 
         # add server node
-        if "server" in want.keys():
-            server = want.get("server")
-            if "set" not in server.keys() or server.get("set"):
+        if "servers" in want.keys():
+            servers = want.get("servers")
+            for item in servers:
                 server_node = build_child_xml_node(ntp_node, "server")
-            if "routing_instance" in server.keys():
-                routing_instance = server.get("routing_instance")
-                if "all" in routing_instance.keys() and routing_instance.get(
-                    "all"
-                ):
-                    build_child_xml_node(server_node, "all")
-                if "default" in routing_instance.keys() and routing_instance.get(
-                    "default"
-                ):
-                    build_child_xml_node(server_node, "default")
-                if "routing_instances" in routing_instance.keys():
-                    r_instances = routing_instance.get("routing_instances")
-                    for instance in r_instances:
-                        instance_node = build_child_xml_node(
-                            server_node, "name", instance.get("name")
-                        )
-                        if "disable" in instance.keys() and instance.get(
-                            "disable"
-                        ):
-                            build_child_xml_node(instance_node, "disable")
-
-        # add source_address node
-        if "source_address" in want.keys():
-            build_child_xml_node(
-                ntp_node, "source-address", want.get("source_address")
-            )
-
-        # add time_format
-        if "time_format" in want.keys():
-            time_format = want.get("time_format")
-
-            time_node = build_child_xml_node(ntp_node, "time-format")
-            if "millisecond" in time_format.keys() and time_format.get(
-                "millisecond"
-            ):
-                build_child_xml_node(time_node, "millisecond")
-            if "year" in time_format.keys() and time_format.get("year"):
-                build_child_xml_node(time_node, "year")
-
-        # add user node
-        if "users" in want.keys():
-            users = want.get("users")
-            for user in users:
-                user_node = build_child_xml_node(ntp_node, "user")
                 # add name node
-                build_child_xml_node(user_node, "name", user.get("name"))
-                # add allow-duplicates node
-                if "allow_duplicates" in user.keys() and user.get(
-                    "allow_duplicates"
-                ):
-                    build_child_xml_node(user_node, "allow-duplicates")
-                # add contents
-                for k, v in iteritems(user):
-                    if k in level_parser and v is not None:
-                        content_node = build_child_xml_node(
-                            user_node, "contents"
-                        )
-                        build_child_xml_node(
-                            content_node, "name", k.replace("_", "-")
-                        )
-                        build_child_xml_node(content_node, v.get("level"))
-                # add match node
-                if "match" in user.keys():
-                    build_child_xml_node(user_node, "match", user.get("match"))
-                # add match-strings node
-                if "match_strings" in user.keys():
-                    match_strings = user.get("match_strings")
-                    for match in match_strings:
-                        build_child_xml_node(user_node, "match-strings", match)
+                build_child_xml_node(server_node, "name", item.get("server"))
+                # add key node
+                if "key" in item.keys():
+                    build_child_xml_node(server_node, "key", item.get("key"))
+                # add routing-instance node
+                if "routing_instance" in item.keys():
+                    build_child_xml_node(
+                        server_node,
+                        "routing-instance",
+                        item.get("routing_instance"),
+                    )
+                # add prefer node
+                if "prefer" in item.keys() and item.get("prefer"):
+                    build_child_xml_node(server_node, "prefer")
+                # add version node
+                if "version" in item.keys():
+                    build_child_xml_node(
+                        server_node, "version", item.get("version")
+                    )
+        # add source_address node
+        if "source_addresses" in want.keys():
+            source_addresses = want.get("source_addresses")
+            for item in source_addresses:
+                source_node = build_child_xml_node(ntp_node, "source-address")
+                # add name node
+                build_child_xml_node(
+                    source_node, "name", item.get("source_address")
+                )
+                # add routing-instance node
+                if "routing_instance" in item.keys():
+                    build_child_xml_node(
+                        source_node,
+                        "routing-instance",
+                        item.get("routing_instance"),
+                    )
+        # add threshold node
+        if "threshold" in want.keys():
+            threshold = want.get("threshold")
+            threshold_node = build_child_xml_node(ntp_node, "threshold")
+            if "value" in threshold.keys():
+                build_child_xml_node(
+                    threshold_node, "value", threshold.get("value")
+                )
+            if "action" in threshold.keys():
+                build_child_xml_node(
+                    threshold_node, "action", threshold.get("action")
+                )
+
+        # add trusted key
+        if "trusted_keys" in want.keys():
+            trusted_keys = want.get("trusted_keys")
+            for key in trusted_keys:
+                build_child_xml_node(ntp_node, "trusted-key", key)
 
         if ntp_node is not None:
             ntp_xml.append(ntp_node)
@@ -466,41 +352,8 @@ class Ntp_global(ConfigBase):
         ntp_root = None
         delete = {"delete": "delete"}
         if have is not None:
-            ntp_root = build_child_xml_node(
-                self.root, "syslog", None, delete
-            )
+            ntp_root = build_child_xml_node(self.root, "ntp", None, delete)
 
         if ntp_root is not None:
             ntp_xml.append(ntp_root)
         return ntp_xml
-
-    def render_archive(self, root, want):
-        archive = want.get("archive")
-        archive_node = build_child_xml_node(root, "archive")
-
-        # add binary-data node
-        if "binary_data" in archive.keys() and archive.get("binary_data"):
-            build_child_xml_node(archive_node, "binary-data")
-        # add files node
-        if "files" in archive.keys():
-            build_child_xml_node(archive_node, "files", archive.get("files"))
-        # add no-binary-data node
-        if "no_binary_data" in archive.keys() and archive.get(
-            "no_binary_data"
-        ):
-            build_child_xml_node(archive_node, "no-binary-data")
-        # add size node
-        if "file_size" in archive.keys():
-            build_child_xml_node(
-                archive_node, "size", archive.get("file_size")
-            )
-        # add world-readable node
-        if "world_readable" in archive.keys() and archive.get(
-            "world_readable"
-        ):
-            build_child_xml_node(archive_node, "world-readable")
-        # add no-world-readable node
-        if "no_world_readable" in archive.keys() and archive.get(
-            "no_world_readable"
-        ):
-            build_child_xml_node(archive_node, "no-world-readable")
