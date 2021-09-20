@@ -160,7 +160,7 @@ options:
             type: str
           routing_instance:
             description: Routing intance name in which source address is defined.
-            type: str 
+            type: str
       threshold:
         description: Set the maximum threshold(sec) allowed for NTP adjustment.
         type: dict
@@ -175,7 +175,7 @@ options:
       trusted_keys:
         description: List of trusted authentication keys.
         type: list
-        elements: str        
+        elements: str
   state:
     description:
     - The state the configuration should be left in.
@@ -235,7 +235,7 @@ EXAMPLES = """
           prefer: true
           version: 2
           routing_instance: 'rt1'
-        - server: "48.45.194.186" 
+        - server: "48.45.194.186"
           key: 34
           prefer: true
           version: 2
@@ -396,7 +396,7 @@ EXAMPLES = """
           prefer: true
           version: 2
           routing_instance: 'rt1'
-        - server: "48.45.194.186" 
+        - server: "48.45.194.186"
           key: 34
           prefer: true
           version: 2
@@ -556,7 +556,7 @@ EXAMPLES = """
           prefer: true
           version: 2
           routing_instance: 'rt1'
-        - server: "48.45.194.186" 
+        - server: "48.45.194.186"
           key: 34
           prefer: true
           version: 2
@@ -868,7 +868,7 @@ EXAMPLES = """
           prefer: true
           version: 2
           routing_instance: 'rt1'
-        - server: "48.45.194.186" 
+        - server: "48.45.194.186"
           key: 34
           prefer: true
           version: 2
@@ -891,21 +891,22 @@ EXAMPLES = """
 #     "rendered": [
 #           "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
 #           "<nc:ntp><nc:boot-server>78.46.194.186</nc:boot-server><nc:broadcast><nc:name>172.16.255.255</nc:name>"
-#           "<nc:key>50</nc:key><nc:routing-instance-name>rt1</nc:routing-instance-name><nc:ttl>200</nc:ttl>
-#           "<nc:version>3</nc:version></nc:broadcast><nc:broadcast><nc:name>192.16.255.255</nc:name>
-#           "<nc:key>50</nc:key><nc:routing-instance-name>rt2</nc:routing-instance-name>
-#           "<nc:ttl>200</nc:ttl><nc:version>3</nc:version></nc:broadcast><nc:broadcast-client/>
-#           "<nc:interval-range>2</nc:interval-range><nc:multicast-client>224.0.0.1</nc:multicast-client><nc:peer>
-#           "<nc:name>78.44.194.186</nc:name></nc:peer><nc:peer><nc:name>172.44.194.186</nc:name>
-#           "<nc:key>10000</nc:key><nc:prefer/><nc:version>3</nc:version></nc:peer><nc:server>
-#           "<nc:name>48.46.194.186</nc:name><nc:key>34</nc:key><nc:routing-instance>rt1</nc:routing-instance>
-#           "<nc:prefer/><nc:version>2</nc:version></nc:server><nc:server><nc:name>48.45.194.186</nc:name>
-#           "<nc:key>34</nc:key><nc:prefer/><nc:version>2</nc:version></nc:server><nc:source-address>
-#           "<nc:name>172.45.194.186</nc:name><nc:routing-instance>rt1</nc:routing-instance></nc:source-address>
-#           "<nc:source-address><nc:name>171.45.194.186</nc:name><nc:routing-instance>rt2</nc:routing-instance>
-#           "</nc:source-address><nc:threshold><nc:value>300</nc:value><nc:action>accept</nc:action></nc:threshold>
+#           "<nc:key>50</nc:key><nc:routing-instance-name>rt1</nc:routing-instance-name><nc:ttl>200</nc:ttl>"
+#           "<nc:version>3</nc:version></nc:broadcast><nc:broadcast><nc:name>192.16.255.255</nc:name>"
+#           "<nc:key>50</nc:key><nc:routing-instance-name>rt2</nc:routing-instance-name>"
+#           "<nc:ttl>200</nc:ttl><nc:version>3</nc:version></nc:broadcast><nc:broadcast-client/>"
+#           "<nc:interval-range>2</nc:interval-range><nc:multicast-client>224.0.0.1</nc:multicast-client><nc:peer>"
+#           "<nc:name>78.44.194.186</nc:name></nc:peer><nc:peer><nc:name>172.44.194.186</nc:name>"
+#           "<nc:key>10000</nc:key><nc:prefer/><nc:version>3</nc:version></nc:peer><nc:server>"
+#           "<nc:name>48.46.194.186</nc:name><nc:key>34</nc:key><nc:routing-instance>rt1</nc:routing-instance>"
+#           "<nc:prefer/><nc:version>2</nc:version></nc:server><nc:server><nc:name>48.45.194.186</nc:name>"
+#           "<nc:key>34</nc:key><nc:prefer/><nc:version>2</nc:version></nc:server><nc:source-address>"
+#           "<nc:name>172.45.194.186</nc:name><nc:routing-instance>rt1</nc:routing-instance></nc:source-address>"
+#           "<nc:source-address><nc:name>171.45.194.186</nc:name><nc:routing-instance>rt2</nc:routing-instance>"
+#           "</nc:source-address><nc:threshold><nc:value>300</nc:value><nc:action>accept</nc:action></nc:threshold>"
 #           "<nc:trusted-key>3000</nc:trusted-key><nc:trusted-key>2000</nc:trusted-key></nc:ntp></nc:system>"
 #     ]
+#
 # Using parsed
 # parsed.cfg
 # ------------
@@ -929,8 +930,9 @@ EXAMPLES = """
 #     </system>
 #     </configuration>
 # </rpc-reply>
+#
 - name: Parse NTP global running config
-  junipernetworks.junos.junos_routing_instances:
+  junipernetworks.junos.junos_ntp_global:
     running_config: "{{ lookup('file', './parsed.cfg') }}"
     state: parsed
 #
