@@ -21,20 +21,13 @@
 #   builder template.
 #
 #############################################
-
 """
-The module file for junos_ntp_global
+The module file for junos_logging_global
 """
 
 from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
-
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "network",
-}
 
 DOCUMENTATION = """
 ---
@@ -80,7 +73,6 @@ options:
           key:
             description: Authentication key value.
             type: str
-            no_log: True
       boot_server:
         description: Server to query during boot sequence.
         type: str
@@ -138,7 +130,7 @@ options:
           server:
             description: IP address or hostname of the server.
             type: str
-          key:
+          key_id:
             description: Key-id to be used while communicating.
             type: int
           prefer:
@@ -175,10 +167,16 @@ options:
       trusted_keys:
         description: List of trusted authentication keys.
         type: list
-        elements: str
+        elements: dict
+        suboptions:
+          key_id:
+            description: Trusted-Key number.
+            type: int
   state:
     description:
     - The state the configuration should be left in.
+    - The states I(replaced) and I(overridden) have identical
+      behaviour for this module.
     - Refer to examples for more details.
     type: str
     choices:
@@ -231,12 +229,12 @@ EXAMPLES = """
           version: 3
       servers:
         - server: "48.46.194.186"
-          key: 34
+          key_id: 34
           prefer: true
           version: 2
           routing_instance: 'rt1'
         - server: "48.45.194.186"
-          key: 34
+          key_id: 34
           prefer: true
           version: 2
       source_addresses:
@@ -248,8 +246,8 @@ EXAMPLES = """
         value: 300
         action: "accept"
       trusted_keys:
-        - 3000
-        - 2000
+        - key_id: 3000
+        - key_id: 2000
     state: merged
 #
 # -------------------------
@@ -289,14 +287,14 @@ EXAMPLES = """
 #         ],
 #         "servers": [
 #             {
-#                 "key": 34,
+#                 "key_id": 34,
 #                 "prefer": true,
 #                 "routing_instance": "rt1",
 #                 "server": "48.46.194.186",
 #                 "version": 2
 #             },
 #             {
-#                 "key": 34,
+#                 "key_id": 34,
 #                 "prefer": true,
 #                 "server": "48.45.194.186",
 #                 "version": 2
@@ -317,8 +315,8 @@ EXAMPLES = """
 #             "value": 300
 #         },
 #         "trusted_keys": [
-#             "2000",
-#             "3000"
+#             {"key_id": 2000},
+#             {"key_id": 3000}
 #         ]
 #     },
 #     "before": {},
@@ -392,12 +390,12 @@ EXAMPLES = """
           key: 'aasdad'
       servers:
         - server: "48.46.194.186"
-          key: 34
+          key_id: 34
           prefer: true
           version: 2
           routing_instance: 'rt1'
         - server: "48.45.194.186"
-          key: 34
+          key_id: 34
           prefer: true
           version: 2
     state: replaced
@@ -420,14 +418,14 @@ EXAMPLES = """
 #         ],
 #         "servers": [
 #             {
-#                 "key": 34,
+#                 "key_id": 34,
 #                 "prefer": true,
 #                 "routing_instance": "rt1",
 #                 "server": "48.46.194.186",
 #                 "version": 2
 #             },
 #             {
-#                 "key": 34,
+#                 "key_id": 34,
 #                 "prefer": true,
 #                 "server": "48.45.194.186",
 #                 "version": 2
@@ -468,14 +466,14 @@ EXAMPLES = """
 #         ],
 #         "servers": [
 #             {
-#                 "key": 34,
+#                 "key_id": 34,
 #                 "prefer": true,
 #                 "routing_instance": "rt1",
 #                 "server": "48.46.194.186",
 #                 "version": 2
 #             },
 #             {
-#                 "key": 34,
+#                 "key_id": 34,
 #                 "prefer": true,
 #                 "server": "48.45.194.186",
 #                 "version": 2
@@ -496,8 +494,8 @@ EXAMPLES = """
 #             "value": 300
 #         },
 #         "trusted_keys": [
-#             "2000",
-#             "3000"
+#             {"key_id": 2000},
+#             {"key_id": 3000}
 #         ]
 #     },
 #     "changed": true,
@@ -552,12 +550,12 @@ EXAMPLES = """
           key: 'aasdad'
       servers:
         - server: "48.46.194.186"
-          key: 34
+          key_id: 34
           prefer: true
           version: 2
           routing_instance: 'rt1'
         - server: "48.45.194.186"
-          key: 34
+          key_id: 34
           prefer: true
           version: 2
     state: overridden
@@ -580,14 +578,14 @@ EXAMPLES = """
 #         ],
 #         "servers": [
 #             {
-#                 "key": 34,
+#                 "key_id": 34,
 #                 "prefer": true,
 #                 "routing_instance": "rt1",
 #                 "server": "48.46.194.186",
 #                 "version": 2
 #             },
 #             {
-#                 "key": 34,
+#                 "key_id": 34,
 #                 "prefer": true,
 #                 "server": "48.45.194.186",
 #                 "version": 2
@@ -628,14 +626,14 @@ EXAMPLES = """
 #         ],
 #         "servers": [
 #             {
-#                 "key": 34,
+#                 "key_id": 34,
 #                 "prefer": true,
 #                 "routing_instance": "rt1",
 #                 "server": "48.46.194.186",
 #                 "version": 2
 #             },
 #             {
-#                 "key": 34,
+#                 "key_id": 34,
 #                 "prefer": true,
 #                 "server": "48.45.194.186",
 #                 "version": 2
@@ -656,8 +654,8 @@ EXAMPLES = """
 #             "value": 300
 #         },
 #         "trusted_keys": [
-#             "2000",
-#             "3000"
+#             {"key_id": 2000},
+#             {"key_id": 3000}
 #         ]
 #     },
 #     "changed": true,
@@ -714,14 +712,14 @@ EXAMPLES = """
 #         ],
 #         "servers": [
 #             {
-#                 "key": 34,
+#                 "key_id": 34,
 #                 "prefer": true,
 #                 "routing_instance": "rt1",
 #                 "server": "48.46.194.186",
 #                 "version": 2
 #             },
 #             {
-#                 "key": 34,
+#                 "key_id": 34,
 #                 "prefer": true,
 #                 "server": "48.45.194.186",
 #                 "version": 2
@@ -800,14 +798,14 @@ EXAMPLES = """
 #         ],
 #         "servers": [
 #             {
-#                 "key": 34,
+#                 "key_id": 34,
 #                 "prefer": true,
 #                 "routing_instance": "rt1",
 #                 "server": "48.46.194.186",
 #                 "version": 2
 #             },
 #             {
-#                 "key": 34,
+#                 "key_id": 34,
 #                 "prefer": true,
 #                 "server": "48.45.194.186",
 #                 "version": 2
@@ -828,8 +826,8 @@ EXAMPLES = """
 #             "value": 300
 #         },
 #         "trusted_keys": [
-#             "2000",
-#             "3000"
+#             {"key_id": 2000},
+#             {"key_id": 3000}
 #         ]
 #     },
 #     "changed": false,
@@ -864,12 +862,12 @@ EXAMPLES = """
           version: 3
       servers:
         - server: "48.46.194.186"
-          key: 34
+          key_id: 34
           prefer: true
           version: 2
           routing_instance: 'rt1'
         - server: "48.45.194.186"
-          key: 34
+          key_id: 34
           prefer: true
           version: 2
       source_addresses:
@@ -978,10 +976,8 @@ commands:
   description: The set of commands pushed to the remote device.
   returned: always
   type: list
-  sample: ['<nc:allow-duplicates/></nc:user><nc:user><nc:name>user2</nc:name>
-           <nc:allow-duplicates/><nc:contents><nc:name>any</nc:name><nc:any/>
-           </nc:contents><nc:contents><nc:name>user</nc:name><nc:info/></nc:contents>
-           </nc:user></nc:syslog></nc:system>"', 'xml 2', 'xml 3']
+  sample: ["<nc:name>78.44.194.186</nc:name></nc:peer><nc:peer><nc:name>172.44.194.186</nc:name>",
+           'xml 2', 'xml 3']
 """
 
 

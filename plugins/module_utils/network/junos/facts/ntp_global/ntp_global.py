@@ -247,7 +247,7 @@ class Ntp_globalFacts(object):
             if isinstance(servers, dict):
                 server_dict["server"] = servers["name"]
                 if "key" in servers.keys():
-                    server_dict["key"] = servers["key"]
+                    server_dict["key_id"] = servers["key"]
                 if "prefer" in servers.keys():
                     server_dict["prefer"] = True
                 if "version" in servers.keys():
@@ -262,7 +262,7 @@ class Ntp_globalFacts(object):
                 for server in servers:
                     server_dict["server"] = server["name"]
                     if "key" in server.keys():
-                        server_dict["key"] = server["key"]
+                        server_dict["key_id"] = server["key"]
                     if "prefer" in server.keys():
                         server_dict["prefer"] = True
                     if "version" in server.keys():
@@ -320,10 +320,16 @@ class Ntp_globalFacts(object):
         if "trusted-key" in conf.keys():
             trusted_keys = conf.get("trusted-key")
             trusted_keys_lst = []
+            trusted_keys_dict = {}
             if isinstance(trusted_keys, list):
                 trusted_keys.sort(key=int)
-                ntp_global_config["trusted_keys"] = trusted_keys
+                for key in trusted_keys:
+                    trusted_keys_dict["key_id"] = key
+                    trusted_keys_lst.append(trusted_keys_dict)
+                    trusted_keys_dict = {}
+                ntp_global_config["trusted_keys"] = trusted_keys_lst
             else:
-                trusted_keys_lst.append(trusted_keys)
+                trusted_keys_dict["key_id"] = trusted_keys
+                trusted_keys_lst.append(trusted_keys_dict)
                 ntp_global_config["trusted_keys"] = trusted_keys_lst
         return utils.remove_empties(ntp_global_config)

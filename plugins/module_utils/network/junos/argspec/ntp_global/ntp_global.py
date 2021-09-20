@@ -42,6 +42,7 @@ class Ntp_globalArgs(object):  # pylint: disable=R0903
             "options": {
                 "authentication_keys": {
                     "elements": "dict",
+                    "no_log": False,
                     "options": {
                         "algorithm": {
                             "choices": ["md5", "sha1", "sha256"],
@@ -80,7 +81,7 @@ class Ntp_globalArgs(object):  # pylint: disable=R0903
                 "servers": {
                     "elements": "dict",
                     "options": {
-                        "key": {"type": "int"},
+                        "key_id": {"type": "int"},
                         "prefer": {"type": "bool"},
                         "routing_instance": {"type": "str"},
                         "server": {"type": "str"},
@@ -106,7 +107,12 @@ class Ntp_globalArgs(object):  # pylint: disable=R0903
                     },
                     "type": "dict",
                 },
-                "trusted_keys": {"elements": "str", "type": "list"},
+                "trusted_keys": {
+                    "type": "list",
+                    "elements": "dict",
+                    "no_log": False,
+                    "options": {"key_id": {"type": "int"}},
+                },
             },
             "type": "dict",
         },

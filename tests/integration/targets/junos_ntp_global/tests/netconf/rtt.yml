@@ -34,12 +34,12 @@
               version: 3
           servers:
             - server: "48.46.194.186"
-              key: 34
+              key_id: 34
               prefer: true
               version: 2
               routing_instance: 'rt1'
             - server: "48.45.194.186"
-              key: 34
+              key_id: 34
               prefer: true
               version: 2
           source_addresses:
@@ -51,8 +51,8 @@
             value: 300
             action: "accept"
           trusted_keys:
-            - 3000
-            - 2000
+            - key_id: 3000
+            - key_id: 2000
         state: merged
 
     - name: Gather interfaces facts

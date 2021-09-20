@@ -285,8 +285,8 @@ class Ntp_global(ConfigBase):
                 # add name node
                 build_child_xml_node(server_node, "name", item.get("server"))
                 # add key node
-                if "key" in item.keys():
-                    build_child_xml_node(server_node, "key", item.get("key"))
+                if "key_id" in item.keys():
+                    build_child_xml_node(server_node, "key", item.get("key_id"))
                 # add routing-instance node
                 if "routing_instance" in item.keys():
                     build_child_xml_node(
@@ -335,7 +335,7 @@ class Ntp_global(ConfigBase):
         if "trusted_keys" in want.keys():
             trusted_keys = want.get("trusted_keys")
             for key in trusted_keys:
-                build_child_xml_node(ntp_node, "trusted-key", key)
+                build_child_xml_node(ntp_node, "trusted-key", key["key_id"])
 
         if ntp_node is not None:
             ntp_xml.append(ntp_node)
