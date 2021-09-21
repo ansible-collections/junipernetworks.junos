@@ -253,7 +253,7 @@ plugin_routing:
     logging_global:
       redirect: junipernetworks.junos.junos_logging_global
     ntp_global:
-      redirect: junipernetworks.junos.junos_logging_global
+      redirect: junipernetworks.junos.junos_ntp_global
     lldp_interface:
       redirect: junipernetworks.junos.junos_lldp_interface
       deprecation:

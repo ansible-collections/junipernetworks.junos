@@ -145,8 +145,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
                         ),
                     ],
                     threshold=dict(action="accept", value=300),
-                    trusted_keys=[
-                        dict(key_id=3000), dict(key_id=2000)],
+                    trusted_keys=[dict(key_id=3000), dict(key_id=2000)],
                 ),
                 state="merged",
             )
@@ -348,10 +347,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
                 },
             ],
             "threshold": {"action": "accept", "value": 300},
-            "trusted_keys": [
-                {"key_id": 2000},
-                {"key_id": 3000}
-            ],
+            "trusted_keys": [{"key_id": 2000}, {"key_id": 3000}],
         }
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
@@ -449,9 +445,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
                 {"routing_instance": "rt2", "source_address": "171.45.194.186"}
             ],
             "threshold": {"action": "accept", "value": 300},
-            "trusted_keys": [
-                {"key_id": 2000}
-            ],
+            "trusted_keys": [{"key_id": 2000}],
         }
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
@@ -564,8 +558,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
                         ),
                     ],
                     threshold=dict(action="accept", value=300),
-                    trusted_keys=[
-                        dict(key_id=3000), dict(key_id=2000)],
+                    trusted_keys=[dict(key_id=3000), dict(key_id=2000)],
                 ),
                 state="overridden",
             )
@@ -699,8 +692,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
                         ),
                     ],
                     threshold=dict(action="accept", value=300),
-                    trusted_keys=[
-                        dict(key_id=3000), dict(key_id=2000)],
+                    trusted_keys=[dict(key_id=3000), dict(key_id=2000)],
                 ),
                 state="replaced",
             )

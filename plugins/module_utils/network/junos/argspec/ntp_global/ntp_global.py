@@ -49,7 +49,7 @@ class Ntp_globalArgs(object):  # pylint: disable=R0903
                             "type": "str",
                         },
                         "id": {"type": "int"},
-                        "key": {"type": "str"},
+                        "key": {"type": "str", "no_log": True},
                     },
                     "type": "list",
                 },
@@ -59,7 +59,7 @@ class Ntp_globalArgs(object):  # pylint: disable=R0903
                     "elements": "dict",
                     "options": {
                         "address": {"type": "str"},
-                        "key": {"type": "str"},
+                        "key": {"type": "str", "no_log": False},
                         "routing_instance_name": {"type": "str"},
                         "ttl": {"type": "int"},
                         "version": {"type": "int"},
@@ -71,7 +71,7 @@ class Ntp_globalArgs(object):  # pylint: disable=R0903
                 "peers": {
                     "elements": "dict",
                     "options": {
-                        "key": {"type": "int"},
+                        "key": {"type": "int", "no_log": False},
                         "peer": {"type": "str"},
                         "prefer": {"type": "bool"},
                         "version": {"type": "int"},
