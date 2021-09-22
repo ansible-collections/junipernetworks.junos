@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - Add junos_ntp_global resource module.
