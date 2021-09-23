@@ -5,6 +5,24 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v2.6.0
+======
+
+Minor Changes
+-------------
+
+- Add junos_ntp_global resource module.
+
+Deprecated Features
+-------------------
+
+- Deprecated router_id from ospfv2 resource module.
+
+New Modules
+-----------
+
+- junos_ntp_global - Manage NTP configuration on Junos devices.
+
 v2.5.0
 ======
 
