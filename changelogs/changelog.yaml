@@ -348,4 +348,4 @@ releases:
     - description: Manage NTP configuration on Junos devices.
       name: junos_ntp_global
       namespace: ''
-    release_date: '2021-09-23'
+    release_date: '2021-09-24'
