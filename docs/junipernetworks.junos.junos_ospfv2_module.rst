@@ -757,7 +757,7 @@ Notes
 
 .. note::
    - This module requires the netconf system service be enabled on the device being managed.
-   - This module works with connection ``netconf``. See `the Junos OS Platform Options <../network/user_guide/platform_junos.html>`_.
+   - This module works with connection ``netconf``. - See `the Junos OS Platform Options <https://docs.ansible.com/ansible/latest/network/user_guide/platform_junos.html>`_.
    - Tested against JunOS v18.4R1
 
 
