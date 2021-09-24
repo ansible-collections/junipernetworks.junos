@@ -29,7 +29,7 @@
           peers:
             - peer: "78.44.194.186"
             - peer: "172.44.194.186"
-              key: 10000
+              key_id: 10000
               prefer: true
               version: 3
           servers:
@@ -70,7 +70,7 @@
           interval_range: 3
           peers:
             - peer: "172.44.194.188"
-              key: 10000
+              key_id: 10000
               prefer: true
               version: 3
         state: replaced

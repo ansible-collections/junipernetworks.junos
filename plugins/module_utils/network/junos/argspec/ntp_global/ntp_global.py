@@ -71,7 +71,7 @@ class Ntp_globalArgs(object):  # pylint: disable=R0903
                 "peers": {
                     "elements": "dict",
                     "options": {
-                        "key": {"type": "int", "no_log": False},
+                        "key_id": {"type": "int", "no_log": False},
                         "peer": {"type": "str"},
                         "prefer": {"type": "bool"},
                         "version": {"type": "int"},

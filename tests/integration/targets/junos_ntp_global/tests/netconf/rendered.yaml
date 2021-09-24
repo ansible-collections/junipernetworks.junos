@@ -15,7 +15,7 @@
       peers:
         - peer: "78.44.194.186"
         - peer: "172.44.194.186"
-          key: 10000
+          key_id: 10000
           prefer: true
           version: 3
     state: rendered

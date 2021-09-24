@@ -218,7 +218,7 @@ class Ntp_globalFacts(object):
             if isinstance(peers, dict):
                 peer_dict["peer"] = peers["name"]
                 if "key" in peers.keys():
-                    peer_dict["key"] = peers["key"]
+                    peer_dict["key_id"] = peers["key"]
                 if "prefer" in peers.keys():
                     peer_dict["prefer"] = True
                 if "version" in peers.keys():
@@ -229,7 +229,7 @@ class Ntp_globalFacts(object):
                 for peer in peers:
                     peer_dict["peer"] = peer["name"]
                     if "key" in peer.keys():
-                        peer_dict["key"] = peer["key"]
+                        peer_dict["key_id"] = peer["key"]
                     if "prefer" in peer.keys():
                         peer_dict["prefer"] = True
                     if "version" in peer.keys():

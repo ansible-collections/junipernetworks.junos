@@ -1,0 +1,3 @@
+---
+trivial:
+  - Update peers suboption key attribute to key_id.
