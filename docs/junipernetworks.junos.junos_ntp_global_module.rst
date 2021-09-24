@@ -322,7 +322,7 @@ Parameters
                     <td class="elbow-placeholder"></td>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>key</b>
+                    <b>key_id</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">integer</span>
@@ -737,7 +737,7 @@ Examples
           peers:
             - peer: "78.44.194.186"
             - peer: "172.44.194.186"
-              key: 10000
+              key_id: 10000
               prefer: true
               version: 3
           servers:
@@ -792,7 +792,7 @@ Examples
     #                 "peer": "78.44.194.186"
     #             },
     #             {
-    #                 "key": 10000,
+    #                 "key_id": 10000,
     #                 "peer": "172.44.194.186",
     #                 "prefer": true,
     #                 "version": 3
@@ -971,7 +971,7 @@ Examples
     #                 "peer": "78.44.194.186"
     #             },
     #             {
-    #                 "key": 10000,
+    #                 "key_id": 10000,
     #                 "peer": "172.44.194.186",
     #                 "prefer": true,
     #                 "version": 3
@@ -1131,7 +1131,7 @@ Examples
     #                 "peer": "78.44.194.186"
     #             },
     #             {
-    #                 "key": 10000,
+    #                 "key_id": 10000,
     #                 "peer": "172.44.194.186",
     #                 "prefer": true,
     #                 "version": 3
@@ -1303,7 +1303,7 @@ Examples
     #                 "peer": "78.44.194.186"
     #             },
     #             {
-    #                 "key": 10000,
+    #                 "key_id": 10000,
     #                 "peer": "172.44.194.186",
     #                 "prefer": true,
     #                 "version": 3
@@ -1370,7 +1370,7 @@ Examples
           peers:
             - peer: "78.44.194.186"
             - peer: "172.44.194.186"
-              key: 10000
+              key_id: 10000
               prefer: true
               version: 3
           servers:
