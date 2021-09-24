@@ -334,3 +334,18 @@ releases:
     - ospfv2_test_coverage_improvement.yaml
     - vlans_tests_coverage_improvement.yaml
     release_date: '2021-08-30'
+  2.6.0:
+    changes:
+      deprecated_features:
+      - Deprecated router_id from ospfv2 resource module.
+      minor_changes:
+      - Add junos_ntp_global resource module.
+    fragments:
+    - deprecate_ospfv2_router_id.yaml
+    - junos_ntp_global.yaml
+    - set_allow_duplicates.yaml
+    modules:
+    - description: Manage NTP configuration on Junos devices.
+      name: junos_ntp_global
+      namespace: ''
+    release_date: '2021-09-24'

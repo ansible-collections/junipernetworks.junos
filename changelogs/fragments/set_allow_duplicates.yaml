@@ -1,3 +1,0 @@
----
-trivial:
-  - set allow_duplicates to true in prepare_junos_tests to support network-ee.
