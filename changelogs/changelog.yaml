@@ -343,6 +343,7 @@ releases:
     fragments:
     - deprecate_ospfv2_router_id.yaml
     - junos_ntp_global.yaml
+    - rename_key_to_key_id_junos_ntp_global.yaml
     - set_allow_duplicates.yaml
     modules:
     - description: Manage NTP configuration on Junos devices.
