@@ -114,7 +114,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
                         dict(peer="78.44.194.186"),
                         dict(
                             peer="172.44.194.186",
-                            key="10000",
+                            key_id="10000",
                             prefer=True,
                             version=3,
                         ),
@@ -315,7 +315,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
             "peers": [
                 {"peer": "78.44.194.186"},
                 {
-                    "key": 10000,
+                    "key_id": 10000,
                     "peer": "172.44.194.186",
                     "prefer": True,
                     "version": 3,
@@ -427,7 +427,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
             "multicast_client": "224.0.0.1",
             "peers": [
                 {
-                    "key": 10000,
+                    "key_id": 10000,
                     "peer": "172.44.194.186",
                     "prefer": True,
                     "version": 3,
@@ -527,7 +527,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
                         dict(peer="78.44.194.186"),
                         dict(
                             peer="172.44.194.186",
-                            key="10000",
+                            key_id="10000",
                             prefer=True,
                             version=3,
                         ),
@@ -661,7 +661,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
                         dict(peer="78.44.194.186"),
                         dict(
                             peer="172.44.194.186",
-                            key="10000",
+                            key_id="10000",
                             prefer=True,
                             version=3,
                         ),

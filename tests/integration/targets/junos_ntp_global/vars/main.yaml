@@ -20,7 +20,7 @@ merged:
     multicast_client: "224.0.0.1"
     peers:
       - peer: "78.44.194.186"
-      - key: 10000
+      - key_id: 10000
         peer: "172.44.194.186"
         prefer: true
         version: 3
@@ -65,11 +65,11 @@ merged:
     peers:
       - peer: "78.44.194.186"
       - peer: "172.44.194.186"
-        key: 10000
+        key_id: 10000
         prefer: true
         version: 3
       - peer: "172.44.194.188"
-        key: 10000
+        key_id: 10000
         prefer: true
         version: 3
     servers:
@@ -99,6 +99,6 @@ replaced:
     multicast_client: "224.0.0.1"
     peers:
       - peer: "172.44.194.188"
-        key: 10000
+        key_id: 10000
         prefer: true
         version: 3

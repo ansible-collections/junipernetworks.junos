@@ -113,7 +113,7 @@ options:
           peer:
             description: Hostname/IP address of the NTP Peer.
             type: str
-          key:
+          key_id:
             description: Key-id to be used while communicating.
             type: int
           prefer:
@@ -224,7 +224,7 @@ EXAMPLES = """
       peers:
         - peer: "78.44.194.186"
         - peer: "172.44.194.186"
-          key: 10000
+          key_id: 10000
           prefer: true
           version: 3
       servers:
@@ -279,7 +279,7 @@ EXAMPLES = """
 #                 "peer": "78.44.194.186"
 #             },
 #             {
-#                 "key": 10000,
+#                 "key_id": 10000,
 #                 "peer": "172.44.194.186",
 #                 "prefer": true,
 #                 "version": 3
@@ -458,7 +458,7 @@ EXAMPLES = """
 #                 "peer": "78.44.194.186"
 #             },
 #             {
-#                 "key": 10000,
+#                 "key_id": 10000,
 #                 "peer": "172.44.194.186",
 #                 "prefer": true,
 #                 "version": 3
@@ -618,7 +618,7 @@ EXAMPLES = """
 #                 "peer": "78.44.194.186"
 #             },
 #             {
-#                 "key": 10000,
+#                 "key_id": 10000,
 #                 "peer": "172.44.194.186",
 #                 "prefer": true,
 #                 "version": 3
@@ -790,7 +790,7 @@ EXAMPLES = """
 #                 "peer": "78.44.194.186"
 #             },
 #             {
-#                 "key": 10000,
+#                 "key_id": 10000,
 #                 "peer": "172.44.194.186",
 #                 "prefer": true,
 #                 "version": 3
@@ -857,7 +857,7 @@ EXAMPLES = """
       peers:
         - peer: "78.44.194.186"
         - peer: "172.44.194.186"
-          key: 10000
+          key_id: 10000
           prefer: true
           version: 3
       servers:

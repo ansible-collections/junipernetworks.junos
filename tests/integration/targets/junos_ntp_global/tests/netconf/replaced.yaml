@@ -14,7 +14,7 @@
           interval_range: 3
           peers:
             - peer: "172.44.194.188"
-              key: 10000
+              key_id: 10000
               prefer: true
               version: 3
         state: replaced

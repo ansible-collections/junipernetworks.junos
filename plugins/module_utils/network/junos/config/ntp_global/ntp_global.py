@@ -266,8 +266,8 @@ class Ntp_global(ConfigBase):
                 # add name node
                 build_child_xml_node(peer_node, "name", item.get("peer"))
                 # add key node
-                if "key" in item.keys():
-                    build_child_xml_node(peer_node, "key", item.get("key"))
+                if "key_id" in item.keys():
+                    build_child_xml_node(peer_node, "key", item.get("key_id"))
                 # add prefer node
                 if "prefer" in item.keys() and item.get("prefer"):
                     build_child_xml_node(peer_node, "prefer")
