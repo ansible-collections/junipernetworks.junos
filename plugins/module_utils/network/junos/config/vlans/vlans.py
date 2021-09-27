@@ -226,6 +226,11 @@ class Vlans(ConfigBase):
                 build_child_xml_node(
                     vlan_root, "l3-interface", config.get("l3_interface")
                 )
+            if config.get("vxlan"):
+                vxlan = build_child_xml_node( vlan_root, "vxlan" )
+                build_child_xml_node(
+                    vxlan, "vni", config.get("vxlan").get("vni")
+            )
 
             intf_xml.append(vlan_root)
         return intf_xml

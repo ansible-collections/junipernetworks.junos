@@ -120,4 +120,5 @@ class VlansFacts(object):
         config["vlan_id"] = utils.get_xml_conf_arg(conf, "vlan-id")
         config["description"] = utils.get_xml_conf_arg(conf, "description")
         config["l3_interface"] = utils.get_xml_conf_arg(conf, "l3-interface")
+        config["vxlan"] = utils.get_xml_conf_arg(conf, "vxlan")
         return utils.remove_empties(config)
