@@ -57,7 +57,7 @@ class Ospfv2(ConfigBase):
 
     gather_subset = ["!all", "!min"]
 
-    gather_network_resources = ["ospf"]
+    gather_network_resources = ["ospfv2"]
 
     def __init__(self, module):
         super(Ospfv2, self).__init__(module)
