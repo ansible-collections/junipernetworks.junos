@@ -33,7 +33,7 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 module: junos_l2_interfaces
-short_description: L2 interfaces resource module
+short_description: L2 interfaces  resource module
 description: This module provides declarative management of a Layer-2 interface on
   Juniper JUNOS devices.
 version_added: 1.0.0
