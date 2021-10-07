@@ -123,7 +123,7 @@ notes:
 """
 EXAMPLES = """
 # Using deleted
-
+# test
 # Before state:
 # -------------
 # user@junos01# show interfaces
