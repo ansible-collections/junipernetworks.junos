@@ -25,6 +25,9 @@
 """
 The arg spec for the junos_snmp_server module
 """
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
 
 
 class Snmp_serverArgs(object):  # pylint: disable=R0903
@@ -66,7 +69,7 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                                                                                   'options': {'address': {'type': 'str'},
                                                                                                               'restrict': {'type': 'bool'}},
                                                                                                   'type': 'list'},
-                                                                                      'routing-instance': {'type': 'str'}},
+                                                                                      'name': {'type': 'str'}},
                                                                           'type': 'list'},
                                                     'view': {'type': 'str'}},
                                         'type': 'list'},
@@ -84,10 +87,10 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                                                          'type': 'list'},
                                                           'set': {'type': 'bool'}},
                                               'type': 'dict'},
-                        'health_monitor': {'options': {'falling-threshold': {'type': 'int'},
+                        'health_monitor': {'options': {'falling_threshold': {'type': 'int'},
                                                        'idp': {'type': 'bool'},
                                                        'interval': {'type': 'int'},
-                                                       'rising-threshold': {'type': 'int'},
+                                                       'rising_threshold': {'type': 'int'},
                                                        'set': {'type': 'bool'}},
                                            'type': 'dict'},
                         'if_count_with_filter_interfaces': {'type': 'bool'},

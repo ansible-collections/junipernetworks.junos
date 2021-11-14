@@ -9,20 +9,43 @@ It is in this file the configuration is collected from the device
 for a given resource, parsed, and the facts tree is populated
 based on the configuration.
 """
-import re
-from copy import deepcopy
+from __future__ import absolute_import, division, print_function
 
+__metaclass__ = type
+
+from ansible.module_utils._text import to_bytes
+from ansible.module_utils.basic import missing_required_lib
+from copy import deepcopy
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
     utils,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.snmp_server.snmp_server import Snmp_serverArgs
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.snmp_server.snmp_server import (
+    Snmp_serverArgs,
+)
+from ansible.module_utils.six import string_types
+
+try:
+    from lxml import etree
+
+    HAS_LXML = True
+except ImportError:
+    HAS_LXML = False
+
+try:
+    import xmltodict
+
+    HAS_XMLTODICT = True
+except ImportError:
+    HAS_XMLTODICT = False
+import q
+
 
 
 class Snmp_serverFacts(object):
     """ The junos snmp_server fact class
     """
 
-    def __init__(self, module, subspec='config', options='options'):
+    def __init__(self, module, subspec="config", options="options"):
         self._module = module
         self.argument_spec = Snmp_serverArgs.argument_spec
         spec = deepcopy(self.argument_spec)
@@ -36,52 +59,64 @@ class Snmp_serverFacts(object):
 
         self.generated_spec = utils.generate_dict(facts_argument_spec)
 
+    def get_device_data(self, connection, config_filter):
+        """
+        :param connection:
+        :param config_filter:
+        :return:
+        """
+        return connection.get_configuration(filter=config_filter)
+
     def populate_facts(self, connection, ansible_facts, data=None):
-        """ Populate the facts for snmp_server
+        """ Populate the facts for ntp_gloabl
         :param connection: the device connection
         :param ansible_facts: Facts dictionary
         :param data: previously collected conf
         :rtype: dictionary
         :returns: facts
         """
-        if connection:  # just for linting purposes, remove
-            pass
+        if not HAS_LXML:
+            self._module.fail_json(msg="lxml is not installed.")
 
         if not data:
-            # typically data is populated from the current device configuration
-            # data = connection.get('show running-config | section ^interface')
-            # using mock data instead
-            data = ("resource rsrc_a\n"
-                    "  a_bool true\n"
-                    "  a_string choice_a\n"
-                    "  resource here\n"
-                    "resource rscrc_b\n"
-                    "  key is property01 value is value end\n"
-                    "  an_int 10\n")
+            config_filter = """
+                        <configuration>
+                                <snmp>
+                                </snmp>
+                        </configuration>
+                        """
+            data = self.get_device_data(connection, config_filter)
+            q(data)
 
-        # split the config into instances of the resource
-        resource_delim = 'resource'
-        find_pattern = r'(?:^|\n)%s.*?(?=(?:^|\n)%s|$)' % (resource_delim,
-                                                           resource_delim)
-        resources = [p.strip() for p in re.findall(find_pattern,
-                                                   data,
-                                                   re.DOTALL)]
-
-        objs = []
+        if isinstance(data, string_types):
+            data = etree.fromstring(
+                to_bytes(data, errors="surrogate_then_replace")
+            )
+        objs = {}
+        resources = data.xpath("configuration/snmp")
         for resource in resources:
-            if resource:
-                obj = self.render_config(self.generated_spec, resource)
-                if obj:
-                    objs.append(obj)
+            if resource is not None:
+                xml = self._get_xml_dict(resource)
+                objs = self.render_config(self.generated_spec, xml)
 
-        ansible_facts['ansible_network_resources'].pop('snmp_server', None)
         facts = {}
         if objs:
-            params = utils.validate_config(self.argument_spec, {'config': objs})
-            facts['snmp_server'] = params['config']
+            facts["snmp_server"] = {}
+            params = utils.validate_config(
+                self.argument_spec, {"config": objs}
+            )
 
-        ansible_facts['ansible_network_resources'].update(facts)
+            facts["snmp_server"] = utils.remove_empties(params["config"])
+        ansible_facts["ansible_network_resources"].update(facts)
         return ansible_facts
+
+    def _get_xml_dict(self, xml_root):
+        if not HAS_XMLTODICT:
+            self._module.fail_json(msg=missing_required_lib("xmltodict"))
+        xml_dict = xmltodict.parse(
+            etree.tostring(xml_root), dict_constructor=dict
+        )
+        return xml_dict
 
     def render_config(self, spec, conf):
         """
@@ -93,25 +128,316 @@ class Snmp_serverFacts(object):
         :rtype: dictionary
         :returns: The generated config
         """
-        config = deepcopy(spec)
-        config['name'] = utils.parse_conf_arg(conf, 'resource')
-        config['some_string'] = utils.parse_conf_arg(conf, 'a_string')
+        snmp_server_config = {}
 
-        match = re.match(r'.*key is property01 (\S+)',
-                         conf, re.MULTILINE | re.DOTALL)
-        if match:
-            config['some_dict']['property_01'] = match.groups()[0]
+        # Parse facts for BGP address-family global node
+        conf = conf.get("snmp")
+        q(conf)
 
-        a_bool = utils.parse_conf_arg(conf, 'a_bool')
-        if a_bool == 'true':
-            config['some_bool'] = True
-        elif a_bool == 'false':
-            config['some_bool'] = False
+        # Read arp node
+        if "arp" in conf.keys():
+            arp = conf.get("arp")
+            arp_dict = {}
+            if arp is None:
+                arp_dict["set"] = True
+            elif "host-name-resolution" in arp.keys():
+                arp_dict["host_name_resolution"] = True
+            snmp_server_config["arp"] = arp_dict
+
+        # Read client_lists node
+        if "client-list" in conf.keys():
+            snmp_server_config["client_lists"] = self.get_client_list(conf.get("client-list"))
+
+        # Read communities node
+        if "community" in conf.keys():
+            comm_lst = []
+            comm_lists = conf.get("community")
+
+            if isinstance(comm_lists, dict):
+                comm_lst.append(self.get_community(comm_lists))
+            else:
+                for item in comm_lists:
+                    comm_lst.append(self.get_community(item))
+            if comm_lst:
+                snmp_server_config["communities"] = comm_lst
+
+        # Read routing-instance-access
+        if "routing-instance-access" in conf.keys():
+            rinst_access = conf.get("routing-instance-access")
+            rints_dict = {}
+            access_lst = []
+            if rinst_access is None:
+                rinst_access["set"] = True
+            else:
+                access_lists = rinst_access.get("access-list")
+                if isinstance(access_lists, dict):
+                    access_lst.append(access_lists["name"])
+                else:
+                    for item in access_lists:
+                        access_lst.append(item["name"])
+                rints_dict["access_lists"] = access_lst
+            snmp_server_config["routing_instance_access"] = rints_dict
+
+        # Read contact
+        if "contact" in conf.keys():
+            snmp_server_config["contact"] = conf.get("contact")
+
+        # Read description
+        if "description" in conf.keys():
+            snmp_server_config["description"] = conf.get("description")
+
+        # Read customization
+        if "customization" in conf.keys():
+            custom_dict = {}
+            if "ether-stats-ifd-only" in conf["customization"].keys():
+                custom_dict["ether_stats_ifd_only"] = True
+            snmp_server_config["customization"] = custom_dict
+
+        # Read engine-id
+        if "engine-id" in conf.keys():
+            engine_id = conf.get("engine-id")
+            engine_id_dict = {}
+            if "local" in engine_id.keys():
+                engine_id_dict["local"] = engine_id["local"]
+            elif "use-default-ip-address" in engine_id.keys():
+                engine_id_dict["use_default_ip_address"] = True
+            else:
+                engine_id_dict["use_mac_address"] = True
+
+            snmp_server_config["engine_id"] = engine_id_dict
+
+        # Read filter-duplicates
+        if "filter-duplicates" in conf.keys():
+            snmp_server_config["filter_duplicates"] = True
+
+        # Read filter-interfaces
+        if "filter-interfaces" in conf.keys():
+            filter_dict = {}
+            filter_interfaces = conf.get("filter-interfaces")
+
+            if filter_interfaces is None:
+                filter_dict["set"] = True
+            else:
+                if "all-internal-interfaces" in filter_interfaces.keys():
+                    filter_dict["all_internal_interfaces"] = True
+                if "interfaces" in filter_interfaces.keys():
+                    int_lst = []
+                    interfaces = filter_interfaces.get("interfaces")
+                    if isinstance(interfaces, dict):
+                        int_lst.append(interfaces["name"])
+                    else:
+                        for item in interfaces:
+                            int_lst.append(item["name"])
+                    filter_dict["interfaces"] = int_lst
+
+            snmp_server_config["filter_interfaces"] = filter_dict
+
+        # Read health_monitor
+        if "health-monitor" in conf.keys():
+            health_dict = {}
+            health_monitor = conf.get("health-monitor")
+
+            if health_monitor is None:
+                health_dict["set"] = True
+            else:
+                if "idp" in health_monitor.keys():
+                    health_dict["idp"] = True
+                if "falling-threshold" in health_monitor.keys():
+                    health_dict["falling_threshold"] = health_monitor["falling-threshold"]
+                if "rising-threshold" in health_monitor.keys():
+                    health_dict["rising_threshold"] = health_monitor["rising-threshold"]
+                if "interval" in health_monitor.keys():
+                    health_dict["interval"] = health_monitor["interval"]
+            snmp_server_config["health_monitor"] = health_dict
+
+        # Read if-count-with-filter-interfaces
+        if "if-count-with-filter-interfaces" in conf.keys():
+            snmp_server_config["if_count_with_filter_interfaces"] = True
+
+        # Read interfaces
+        if "interfaces" in conf.keys():
+            int_lst = []
+            interfaces = conf.get("interfaces")
+            if isinstance(interfaces, dict):
+                int_lst.append(interfaces["name"])
+            else:
+                for item in interfaces:
+                    int_lst.append(item["name"])
+
+            snmp_server_config["interfaces"] = int_lst
+
+        # Read location
+        if "location" in conf.keys():
+            snmp_server_config["location"] = conf.get("location")
+
+        # Read logical-system-trap-filter
+        if "logical-system-trap-filter" in conf.keys():
+            snmp_server_config["logical_system_trap_filter"] = True
+
+        # Read name
+        if "name" in conf.keys():
+            snmp_server_config["name"] = conf.get("name")
+
+        # Read nonvolatile
+        if "nonvolatile" in conf.keys():
+            cfg_dict = {}
+            cfg_dict["commit_delay"] = conf["nonvolatile"].get("commit-delay")
+            snmp_server_config["nonvolatile"] = cfg_dict
+
+        # Read rmon
+        if "rmon" in conf.keys():
+            cfg_dict = {}
+            rmon = conf.get("rmon")
+
+            if rmon is None:
+                cfg_dict["set"] = True
+            else:
+                if "event" in rmon.keys():
+                    event = rmon.get("event")
+                    if isinstance(event, dict):
+                        cfg_dict["events"].append(self.get_events(event))
+                    else:
+                        for item in event:
+                            cfg_dict["events"].append(self.get_events(item))
+                if "alarm" in rmon.keys():
+                    alarm = rmon.get("alarm")
+                    if isinstance(alarm, dict):
+                        cfg_dict["alarms"].append(self.get_alarms(alarm))
+                    else:
+                        for item in alarm:
+                            cfg_dict["alarms"].append(self.get_alarms(item))
+
+            snmp_server_config["rmon"] = cfg_dict
+
+        return utils.remove_empties(snmp_server_config)
+
+    def get_events(self, cfg):
+        cfg_dict = {}
+        cfg_dict["id"] = cfg["name"]
+        if "community" in cfg.keys():
+            cfg_dict["community"] = cfg.get("community")
+        if "description" in cfg.keys():
+            cfg_dict["description"] = cfg.get("description")
+        if "type" in cfg.keys():
+            cfg_dict["type"] = cfg.get("type")
+        return  cfg_dict
+
+    def get_alarms(self, cfg):
+        cfg_dict = {}
+        cfg_dict["id"] = cfg["name"]
+        if "description" in cfg.keys():
+            cfg_dict["description"] = cfg.get("description")
+        if "falling-event-index" in cfg.keys():
+            cfg_dict["falling_event_index"] = cfg.get("falling-event-index")
+        if "falling-threshold" in cfg.keys():
+            cfg_dict["falling_threshold"] = cfg.get("falling-threshold")
+        if "falling-threshold-interval" in cfg.keys():
+            cfg_dict["falling_threshold_interval"] = cfg.get("falling-threshold-interval")
+        if "interval" in cfg.keys():
+            cfg_dict["interval"] = cfg.get("interval")
+        if "request-type" in cfg.keys():
+            cfg_dict["request_type"] = cfg.get("request-type")
+        if "rising-event-index" in cfg.keys():
+            cfg_dict["rising_event_index"] = cfg.get("rising-event-index")
+        if "rising-threshold" in cfg.keys():
+            cfg_dict["rising_threshold"] = cfg.get("rising-threshold")
+        if "sample-type" in cfg.keys():
+            cfg_dict["sample_type"] = cfg.get("sample-type")
+        if "startup-alarm" in cfg.keys():
+            cfg_dict["startup_alarm"] = cfg.get("startup-alarm")
+        if "syslog-subtag" in cfg.keys():
+            cfg_dict["syslog_subtag"] = cfg.get("syslog-subtag")
+        if "variable" in cfg.keys():
+            cfg_dict["variable"] = cfg.get("variable")
+
+        return cfg_dict
+
+    def get_routing_instance(self, cfg):
+        cfg_dict = {}
+        cfg_dict["name"] = cfg["name"]
+        if "client-list-name" in cfg.keys():
+            cfg_dict["client_list_name"] = cfg.get("client-list-name")
+        if "clients" in cfg.keys():
+            client_lst = []
+            if isinstance(cfg.get("clients"), dict):
+                client_lst.append(self.get_client_address(cfg.get("clients")))
+            else:
+                clients = cfg.get("clients")
+                for item in clients:
+                    client_lst.append(self.get_client_address(item))
+            cfg_dict["clients"] = client_lst
+        return cfg_dict
+
+    def get_community(self, cfg):
+        cfg_dict = {}
+        cfg_dict["name"] = cfg["name"]
+        if "authorization" in cfg.keys():
+            cfg_dict["authorization"] = cfg.get("authorization")
+        if "client-list-name" in cfg.keys():
+            cfg_dict["client_list_name"] = cfg.get("client-list-name")
+        if "clients" in cfg.keys():
+            client_lst = []
+            if isinstance(cfg.get("clients"), dict):
+                client_lst.append(self.get_client_address(cfg.get("clients")))
+            else:
+                clients = cfg.get("clients")
+                for item in clients:
+                    client_lst.append(self.get_client_address(item))
+            cfg_dict["clients"] = client_lst
+        if "routing-instance" in cfg.keys():
+            rinst_lst = []
+            rinst_lists = cfg.get("routing-instance")
+
+            if isinstance(rinst_lists, dict):
+                rinst_lst.append(self.get_routing_instance(rinst_lists))
+            else:
+                for item in rinst_lists:
+                    rinst_lst.append(self.get_routing_instance(item))
+            if rinst_lst:
+                cfg_dict["routing_instances"] = rinst_lst
+        if "view" in cfg.keys():
+            cfg_dict["view"] = cfg.get("view")
+
+        return cfg_dict
+
+    def get_client_address(self, cfg):
+        cfg_dict = {}
+        cfg_dict["address"] = cfg["name"]
+        if "restrict" in cfg.keys():
+            cfg_dict["restrict"] = True
+        return cfg_dict
+
+    def get_client_list(self, cfg):
+        client_lst = []
+        client_lists = cfg
+        client_dict = {}
+        if isinstance(client_lists, dict):
+            client_dict["name"] = client_lists["name"]
+            if "client-address-list" in client_lists.keys():
+                client_addresses = client_lists["client-address-list"]
+                client_address_lst = []
+                if isinstance(client_addresses, dict):
+                    client_address_lst.append(self.get_client_address(client_addresses))
+                else:
+                    for address in client_addresses:
+                        client_address_lst.append(self.get_client_address(address))
+                if client_address_lst:
+                    client_dict["addresses"] = client_address_lst
+            client_lst.append(client_dict)
+
         else:
-            config['some_bool'] = None
-
-        try:
-            config['some_int'] = int(utils.parse_conf_arg(conf, 'an_int'))
-        except TypeError:
-            config['some_int'] = None
-        return utils.remove_empties(config)
+            for client in client_lists:
+                client_dict["name"] = client["name"]
+                if "client-address-list" in client.keys():
+                    client_addresses = client["client-address-list"]
+                    client_address_lst = []
+                    if isinstance(client_addresses, dict):
+                        client_address_lst.append(self.get_client_address(client_addresses))
+                    else:
+                        for address in client_addresses:
+                            client_address_lst.append(self.get_client_address(address))
+                    if client_address_lst:
+                        client_dict["addresses"] = client_address_lst
+                client_lst.append(client_dict)
+                client_dict = {}
+        return client_lst
