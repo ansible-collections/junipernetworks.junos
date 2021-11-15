@@ -25,6 +25,9 @@
 """
 The arg spec for the junos_snmp_server module
 """
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
 
 
 class Snmp_serverArgs(object):  # pylint: disable=R0903
@@ -157,21 +160,20 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                                     'type': 'dict'},
                         'snmp_v3': {'options': {'notify': {'elements': 'dict',
                                                            'options': {'name': {'type': 'str'},
-                                                                       'tags': {'elements': 'str',
-                                                                               'type': 'list'},
+                                                                       'tag': {'type': 'str'},
                                                                        'type': {'type': 'str'}},
                                                            'type': 'list'},
                                                 'notify_filter': {'elements': 'dict',
                                                                   'options': {'name': {'type': 'str'},
-                                                                              'oids': {'options': {'exclude': {'type': 'bool'},
+                                                                              'oids': {'elements': 'dict',
+                                                                                       'options': {'exclude': {'type': 'bool'},
                                                                                                    'include': {'type': 'bool'},
                                                                                                    'oid': {'type': 'str'}},
-                                                                                       'type': 'dict'}},
+                                                                                       'type': 'list'}},
                                                                   'type': 'list'},
                                                 'snmp_community': {'elements': 'dict',
                                                                    'options': {'community_index': {'type': 'str'},
-                                                                               'community_name': {'elements': 'str',
-                                                                                                  'type': 'list'},
+                                                                               'community_name': {'type': 'str'},
                                                                                'context': {'type': 'str'},
                                                                                'security_name': {'type': 'str'},
                                                                                'tag': {'type': 'str'}},
@@ -359,7 +361,7 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                               'oids': {'elements': 'dict',
                                                        'options': {'exclude': {'type': 'bool'},
                                                                    'include': {'type': 'bool'},
-                                                                   'name': {'type': 'str'}},
+                                                                   'oid': {'type': 'str'}},
                                                        'type': 'list'}},
                                   'type': 'list'}},
             'type': 'dict'},

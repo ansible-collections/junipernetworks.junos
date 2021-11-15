@@ -37,8 +37,6 @@ try:
     HAS_XMLTODICT = True
 except ImportError:
     HAS_XMLTODICT = False
-import q
-
 
 
 class Snmp_serverFacts(object):
@@ -86,7 +84,6 @@ class Snmp_serverFacts(object):
                         </configuration>
                         """
             data = self.get_device_data(connection, config_filter)
-            q(data)
 
         if isinstance(data, string_types):
             data = etree.fromstring(
@@ -132,7 +129,6 @@ class Snmp_serverFacts(object):
 
         # Parse facts for BGP address-family global node
         conf = conf.get("snmp")
-        q(conf)
 
         # Read arp node
         if "arp" in conf.keys():
@@ -343,7 +339,6 @@ class Snmp_serverFacts(object):
                 if mtrace is None:
                     trace_dict["set"] = True
                 else:
-                    q(mtrace)
                     trace_dict["size"] = mtrace.get("size")
                 cfg_dict["memory_trace"] = trace_dict
             if "no-remote-trace" in conf.keys():
@@ -397,7 +392,7 @@ class Snmp_serverFacts(object):
             cfg_dict = {}
             snmp_v3 = conf.get("v3")
 
-            if "notify" in snmp_v3:
+            if "notify" in snmp_v3.keys():
                 notify_lst = []
                 notify = snmp_v3.get("notify")
                 if isinstance(notify, dict):
@@ -406,8 +401,8 @@ class Snmp_serverFacts(object):
                     for item in notify:
                         notify_lst.append(self.get_notify(item))
                 cfg_dict["notify"] = notify_lst
-            if "notify-filter" in snmp_v3:
-                notify_filter = snmp_v3.get("notify")
+            if "notify-filter" in snmp_v3.keys():
+                notify_filter = snmp_v3.get("notify-filter")
                 notify_lst = []
                 if isinstance(notify_filter, dict):
                     notify_lst.append(self.get_notify_filter(notify_filter))
@@ -416,9 +411,197 @@ class Snmp_serverFacts(object):
                         notify_lst.append(self.get_notify_filter(item))
                 cfg_dict["notify_filter"] = notify_lst
 
+            if "snmp-community" in snmp_v3.keys():
+                comm_lst = []
+                communities = snmp_v3.get("snmp-community")
+                if isinstance(communities, dict):
+                    comm_lst.append(self.get_snmpv3_comm(communities))
+                else:
+                    for item in communities:
+                        comm_lst.append(self.get_snmpv3_comm(item))
+                cfg_dict["snmp_community"] = comm_lst
+
+            if "target-address" in snmp_v3.keys():
+                tar_addr_lst = []
+                tar_addr = snmp_v3.get("target-address")
+                if isinstance(tar_addr, dict):
+                    tar_addr_lst.append(self.get_snmpv3_target(tar_addr))
+                else:
+                    for item in tar_addr:
+                        tar_addr_lst.append(self.get_snmpv3_target(item))
+                cfg_dict["target_addresses"] = tar_addr_lst
+
+            if "target-parameters" in snmp_v3.keys():
+                tar_param_lst = []
+                tar_params = snmp_v3.get("target-parameters")
+                if isinstance(tar_params, dict):
+                    tar_param_lst.append(self.get_snmpv3_param(tar_params))
+                else:
+                    for item in tar_params:
+                        tar_param_lst.append(self.get_snmpv3_param(item))
+                cfg_dict["target_parameters"] = tar_param_lst
+
+            if "usm" in snmp_v3.keys():
+                usm_dict = {}
+                usm = snmp_v3.get("usm")
+                if "local-engine" in usm.keys():
+                    local_dict = {}
+                    local_engine = usm.get("local-engine")
+                    if "user" in local_engine.keys():
+                        user_lst = []
+                        users = local_engine.get("user")
+                        if isinstance(users, dict):
+                            user_lst.append(self.get_user(users))
+                        else:
+                            for item in users:
+                                user_lst.append(self.get_user(item))
+                        local_dict["users"] = user_lst
+
+                    usm_dict["local_engine"] = local_dict
+
+                if "remote-engine" in usm.keys():
+                    remote_lst = []
+                    remote_dict = {}
+                    remote_engine = usm.get("remote-engine")
+                    if isinstance(remote_engine, dict):
+                        remote_dict["id"] = remote_engine["name"]
+                        if "user" in remote_engine.keys():
+                            user_lst = []
+                            users = remote_engine.get("user")
+                            if isinstance(users, dict):
+                                user_lst.append(self.get_user(users))
+                            else:
+                                for item in users:
+                                    user_lst.append(self.get_user(item))
+                            remote_dict["users"] = user_lst
+                        remote_lst.append(remote_dict)
+                    else:
+                        for remote_eng in remote_engine:
+                            remote_dict["id"] = remote_eng["name"]
+                            if "user" in remote_eng.keys():
+                                user_lst = []
+                                users = remote_eng.get("user")
+                                if isinstance(users, dict):
+                                    user_lst.append(self.get_user(users))
+                                else:
+                                    for item in users:
+                                        user_lst.append(self.get_user(item))
+                                remote_dict["users"] = user_lst
+                            remote_lst.append(remote_dict)
+                            remote_dict = {}
+                    usm_dict["remote_engine"] = remote_lst
+                cfg_dict["usm"] = usm_dict
+
             snmp_server_config["snmp_v3"] = cfg_dict
 
+        # Read view
+        if "view" in conf.keys():
+            cfg_lst = []
+            views = conf.get("view")
+            if isinstance(views, dict):
+                cfg_lst.append(self.get_view(views))
+            else:
+                for item in views:
+                    cfg_lst.append(self.get_view(item))
+
+            snmp_server_config["views"] = cfg_lst
         return utils.remove_empties(snmp_server_config)
+
+    def get_view(self, cfg):
+        cfg_dict = {}
+        cfg_dict["name"] = cfg["name"]
+        if "oid" in cfg.keys():
+            oid_lst = []
+            oid_dict = {}
+            oids = cfg.get("oid")
+            if isinstance(oids, list):
+                for item in oids:
+                    oid_dict["oid"] = item["name"]
+                    if "exclude" in item.keys():
+                        oid_dict["exclude"] = True
+                    if "include" in item.keys():
+                        oid_dict["include"] = True
+                    oid_lst.append(oid_dict)
+                    oid_dict = {}
+            else:
+                oid_dict["oid"] = oids["name"]
+                if "exclude" in oids.keys():
+                    oid_dict["exclude"] = True
+                if "include" in oids.keys():
+                    oid_dict["include"] = True
+                oid_lst.append(oid_dict)
+            cfg_dict["oids"] = oid_lst
+
+        return cfg_dict
+
+    def get_user(self, cfg):
+        cfg_dict = {}
+        cfg_dict["name"] = cfg.get("name")
+        if "authentication-md5" in cfg.keys():
+            auth_dict = {}
+            auth_md5 = cfg.get("authentication-md5")
+            auth_dict["key"] = auth_md5["authentication-key"]
+            if "authentication-password" in auth_md5.keys():
+                auth_dict["password"] = auth_md5["authentication-password"]
+            cfg_dict["authentication_md5"] = auth_dict
+        if "authentication-none" in cfg.keys():
+            cfg_dict["authentication_none"] = True
+        if "authentication-sha" in cfg.keys():
+            auth_dict = {}
+            auth_sha = cfg.get("authentication-sha")
+            auth_dict["key"] = auth_sha["authentication-key"]
+            if "authentication-password" in auth_sha.keys():
+                auth_dict["password"] = auth_sha["authentication-password"]
+            cfg_dict["authentication_sha"] = auth_dict
+        if "privacy-3des" in cfg.keys():
+            pri_dict = {}
+            pri_3des = cfg.get("privacy-3des")
+            pri_dict["key"] = pri_3des["privacy-key"]
+            if "privacy-password" in pri_3des.keys():
+                pri_dict["password"] = pri_3des["privacy-password"]
+            cfg_dict["privacy_3des"] = pri_dict
+        if "privacy-aes128" in cfg.keys():
+            pri_dict = {}
+            pri_aes = cfg.get("privacy-aes128")
+            pri_dict["key"] = pri_aes["privacy-key"]
+            if "privacy-password" in pri_aes.keys():
+                pri_dict["password"] = pri_aes["privacy-password"]
+            cfg_dict["privacy_aes128"] = pri_dict
+        if "privacy-none" in cfg.keys():
+            cfg_dict["privacy_none"] = True
+        return cfg_dict
+
+    def get_snmpv3_param(self, cfg):
+        cfg_dict = {}
+        cfg_dict["name"] = cfg.get("name")
+        if "notify-filter" in cfg.keys():
+            cfg_dict["notify_filter"] = cfg.get("notify-filter")
+        if "parameters" in cfg.keys():
+            param_dict = {}
+            parameters = cfg.get("parameters")
+            for key in parameters.keys():
+                param_dict[key.replace("-", "_")] = parameters.get(key)
+            cfg_dict["parameters"] = param_dict
+        return cfg_dict
+
+    def get_snmpv3_target(self, cfg):
+        cfg_dict = {}
+        for key in cfg.keys():
+            cfg_dict[key.replace("-", "_")] = cfg.get(key)
+        return cfg_dict
+
+    def get_snmpv3_comm(self, cfg):
+        cfg_dict = {}
+        cfg_dict["community_index"] = cfg["name"]
+        if "context" in cfg.keys():
+            cfg_dict["context"] = cfg.get("context")
+        if "tag" in cfg.keys():
+            cfg_dict["tag"] = cfg.get("tag")
+        if "security-name" in cfg.keys():
+            cfg_dict["security_name"] = cfg.get("security-name")
+        if "community-name" in cfg.keys():
+            cfg_dict["community_name"] = cfg.get("community-name")
+        return cfg_dict
 
     def get_notify_filter(self, cfg):
         cfg_dict = {}
@@ -429,7 +612,7 @@ class Snmp_serverFacts(object):
             oids = cfg.get("oid")
             if isinstance(oids, list):
                 for item in oids:
-                    oid_dict["name"] = item["name"]
+                    oid_dict["oid"] = item["name"]
                     if "exclude" in item.keys():
                         oid_dict["exclude"] = True
                     if "include" in item.keys():
@@ -437,7 +620,7 @@ class Snmp_serverFacts(object):
                     oid_lst.append(oid_dict)
                     oid_dict = {}
             else:
-                oid_dict["name"] = oids["name"]
+                oid_dict["oid"] = oids["name"]
                 if "exclude" in oids.keys():
                     oid_dict["exclude"] = True
                 if "include" in oids.keys():
@@ -446,27 +629,18 @@ class Snmp_serverFacts(object):
             cfg_dict["oids"] = oid_lst
         return cfg_dict
 
-
     def get_notify(self, cfg):
         cfg_dict = {}
         cfg_dict["name"] = cfg["name"]
         if "type" in cfg.keys():
             cfg_dict["type"] = cfg.get("type")
         if "tag" in cfg.keys():
-            tag_lst = []
-            tags = cfg.get("tag")
-            if isinstance(tags, list):
-                for item in tags:
-                    tag_lst.append(item["name"])
-            else:
-                tag_lst.append(tags)
-            cfg_dict["tags"] = tag_lst
+            cfg_dict["tag"] = cfg.get("tag")
 
         return cfg_dict
 
     def get_trap_group(self, cfg):
         cfg_dict = {}
-        q(cfg)
         cfg_dict["name"] = cfg.get("name")
         if "categories" in cfg.keys():
             categories_dict = {}
@@ -495,10 +669,7 @@ class Snmp_serverFacts(object):
                     targets_lst.append(item["name"])
             cfg_dict["targets"] = targets_lst
 
-
-
         return cfg_dict
-
 
     def get_trace_flag(self, cfg):
         cfg_dict = {}

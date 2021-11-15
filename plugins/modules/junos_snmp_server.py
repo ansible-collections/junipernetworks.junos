@@ -632,10 +632,9 @@ options:
               name: 
                 description: Specify notify name.
                 type: str
-              tags:
+              tag:
                 description: Notifications will be sent to all targets configured with this tag. 
-                type: list
-                elements: str
+                type: str
               type:
                 description: Notification type.
                 type: str
@@ -649,7 +648,8 @@ options:
                 type: str 
               oids:
                 description: OID to include/exclude from notify filter. 
-                type: dict
+                type: list
+                elements: dict
                 suboptions:
                   oid:
                     description: Specify OID. 
@@ -673,8 +673,7 @@ options:
                 type: str
               community_name:
                 description: SNMPv1/v2c community name (default is same as community-index). 
-                type: list
-                elements: str
+                type: str
               context:
                 description: Context used when performing access control. 
                 type: str
@@ -850,7 +849,7 @@ options:
             type: list
             elements: dict
             suboptions:
-              name:
+              oid:
                 description: OID to include or exclude from view. 
                 type: str
               exclude:
