@@ -93,6 +93,17 @@ options:
               restrict:
                 description: Deny access.
                 type: bool
+      routing_instance_access: &routing_instance_access
+        description: SNMP routing-instance options.
+        type: dict
+        suboptions:
+          set:
+            description: Set routing_instance_access.
+            type: bool
+          access_lists:
+            description: Allow/Deny SNMP access to routing-instances.
+            type: list
+            elements: str
       communities:
         description: Specify list of community string.
         type: list
@@ -119,17 +130,6 @@ options:
               restrict:
                 description: Deny access.
                 type: bool
-          routing_instance_access: &routing_instance_access
-            description: SNMP routing-instance options.
-            type: dict
-            suboptions:
-              set:
-                description: Set routing_instance_access.
-                type: bool
-              access_lists:
-                description: Allow/Deny SNMP access to routing-instances.
-                type: list
-                elements: str
           routing_instances: &routing_instances
             description: Use routing-instance name for v1/v2c clients. 
             type: list
@@ -285,12 +285,68 @@ options:
           alarms:
             description: RMON alarm entries.
             type: list
-            elements: int
+            elements: dict
+            suboptions:
+              id:
+                description: Specify alarm ID.
+                type: str
+              description: 
+                description:  General description of alarm (stored in alarmOwner).
+                type: str
+              falling_event_index:
+                description: Event triggered after falling threshold is crossed. 
+                type: int
+              falling_threshold:
+                description: Specify falling-threshold. 
+                type: int
+              falling_threshold_interval:
+                description: Interval between samples during falling-threshold test.
+                type: int
+              interval:
+                description: Interval between samples. 
+                type: int
+              request_type:
+                description: Type of SNMP request to issue for alarm. 
+                type: str
+                choices: ["get-next-request", "get-request", "walk-request"]
+              rising_event_index:
+                description: Event triggered after rising threshold is crossed. 
+                type: int
+              rising_threshold:
+                description: The rising threshold. 
+                type: int
+              sample_type:
+                description: Method of sampling the selected variable. 
+                type: str
+                choices: ["absolute-value", "delta-value"]
+              startup_alarm:
+                description: The alarm that may be sent upon entry startup. 
+                type: str
+                choices: ["falling-alarm", "rising-alarm", "rising-or-falling-alarm"]
+              syslog_subtag:
+                description: Tag to be added to syslog messages. 
+                type: str
+              variable:
+                description: OID of MIB variable to be monitored. 
+                type: str
           events:
             description: RMON event entries.
             type: list
-            elements: int
-      routing_instance_access: *routing_instance_access
+            elements: dict
+            suboptions:
+              id: 
+                description: Specify event ID. 
+                type: int
+              community: 
+                description: The community (trap group) for outgoing traps. 
+                type: str
+              description: 
+                description: General description of event. 
+                type: str
+              type: 
+                description: The type of notification for this event. 
+                type: str
+                choices: ["log", "log-and-trap", "none", "snmptrap"]
       subagent:
         description: SNMP subagent configuration.
         type: dict
@@ -371,7 +427,7 @@ options:
                 type: bool
               size:
                 description: Specify Memory size reserved for tracing.
-                type: bool
+                type: int
           no_remote_trace:
             description: Disable remote tracing.
             type: bool
@@ -383,9 +439,6 @@ options:
           name: 
             description: Specify trap group name. 
             type: str
-          set:
-            description: Set trap group.
-            type: bool
           categories:
             description: Specify Trap categories.
             type: dict
@@ -524,7 +577,9 @@ options:
             description: SNMP trap receiver port number
             type: int
           logical_system: *logical_system
-          routing_instances: *routing_instances
+          routing_instance:
+            description: Routing instance for trap destination.
+            type: str
           targets:
             description: Targets for trap messages
             type: list
@@ -577,7 +632,7 @@ options:
               name: 
                 description: Specify notify name.
                 type: str
-              tag:
+              tags:
                 description: Notifications will be sent to all targets configured with this tag. 
                 type: list
                 elements: str
@@ -846,12 +901,8 @@ commands:
 
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.snmp_server.snmp_server import (
-    Snmp_serverArgs,
-)
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.snmp_server.snmp_server import (
-    Snmp_server,
-)
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.snmp_server.snmp_server import Snmp_serverArgs
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.snmp_server.snmp_server import Snmp_server
 
 
 def main():
@@ -860,22 +911,12 @@ def main():
 
     :returns: the result form module invocation
     """
-    required_if = [
-        ("state", "merged", ("config",)),
-        ("state", "replaced", ("config",)),
-        ("state", "overridden", ("config",)),
-        ("state", "rendered", ("config",)),
-        ("state", "parsed", ("running_config",)),
-    ]
-    module = AnsibleModule(
-        argument_spec=Snmp_serverArgs.argument_spec,
-        required_if=required_if,
-        supports_check_mode=True,
-    )
+    module = AnsibleModule(argument_spec=Snmp_serverArgs.argument_spec,
+                           supports_check_mode=True)
 
     result = Snmp_server(module).execute_module()
     module.exit_json(**result)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

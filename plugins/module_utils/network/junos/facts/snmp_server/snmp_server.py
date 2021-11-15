@@ -287,6 +287,8 @@ class Snmp_serverFacts(object):
         # Read rmon
         if "rmon" in conf.keys():
             cfg_dict = {}
+            events = []
+            alarms = []
             rmon = conf.get("rmon")
 
             if rmon is None:
@@ -295,21 +297,233 @@ class Snmp_serverFacts(object):
                 if "event" in rmon.keys():
                     event = rmon.get("event")
                     if isinstance(event, dict):
-                        cfg_dict["events"].append(self.get_events(event))
+                        events.append(self.get_events(event))
                     else:
                         for item in event:
-                            cfg_dict["events"].append(self.get_events(item))
+                            events.append(self.get_events(item))
+                    cfg_dict["events"] = events
                 if "alarm" in rmon.keys():
                     alarm = rmon.get("alarm")
                     if isinstance(alarm, dict):
-                        cfg_dict["alarms"].append(self.get_alarms(alarm))
+                        alarms.append(self.get_alarms(alarm))
                     else:
                         for item in alarm:
-                            cfg_dict["alarms"].append(self.get_alarms(item))
+                            alarms.append(self.get_alarms(item))
+                    cfg_dict["alarms"] = alarms
 
             snmp_server_config["rmon"] = cfg_dict
 
+        # Read subagent node
+        if "subagent" in conf.keys():
+            cfg_dict = {}
+            subagent = conf.get("subagent")
+
+            if "tcp" in subagent.keys():
+                tcp = subagent.get("tcp")
+                tcp_dict = {}
+                if tcp is None:
+                    tcp_dict["set"] = True
+                else:
+                    tcp_dict["routing_instances_default"] = True
+            cfg_dict["tcp"] = tcp_dict
+            snmp_server_config["subagent"] = cfg_dict
+
+        # Read traceoptions node
+        if "traceoptions" in conf.keys():
+            cfg_dict = {}
+            trace_options = conf.get("traceoptions")
+
+            if "file" in trace_options.keys():
+                cfg_dict["file"] = self.get_trace_file(trace_options.get("file"))
+            if "flag" in trace_options.keys():
+                cfg_dict["flag"] = self.get_trace_flag(trace_options.get("flag"))
+            if "memory-trace" in trace_options.keys():
+                mtrace = trace_options.get("memory-trace")
+                trace_dict = {}
+                if mtrace is None:
+                    trace_dict["set"] = True
+                else:
+                    q(mtrace)
+                    trace_dict["size"] = mtrace.get("size")
+                cfg_dict["memory_trace"] = trace_dict
+            if "no-remote-trace" in conf.keys():
+                cfg_dict["no_remote_trace"] = True
+
+            snmp_server_config["traceoptions"] = cfg_dict
+
+        # Read trap-group node
+        if "trap-group" in conf.keys():
+            cfg_lst = []
+            trap_groups = conf.get("trap-group")
+
+            if isinstance(trap_groups, dict):
+                cfg_lst.append(self.get_trap_group(trap_groups))
+            else:
+                for item in trap_groups:
+                    cfg_lst.append(self.get_trap_group(item))
+
+            snmp_server_config["trap_groups"] = cfg_lst
+
+        # Read trap-options node
+        if "trap-options" in conf.keys():
+            cfg_dict = {}
+            trap_options = conf.get("trap-options")
+            if trap_options is None:
+                cfg_dict["set"] = True
+            else:
+                if "agent_address" in trap_options.keys():
+                    agent_dict = {}
+                    agent_dict["outgoing_interface"] = True
+                    cfg_dict["agent_address"] = agent_dict
+                if "context_oid" in trap_options.keys():
+                    cfg_dict["context_oid"] = True
+                if "enterprise-oid" in trap_options.keys():
+                    cfg_dict["enterprise_oid"] = True
+                if "source-address" in trap_options.keys():
+                    source_address = trap_options.get("source-address")
+                    source_dict = {}
+                    if "address" in source_address.keys():
+                        source_dict["address"] = source_address["address"]
+                    if "lowest-loopback" in source_address.keys():
+                        source_dict["lowest_loopback"] = True
+                    cfg_dict["source_address"] = source_dict
+                if "routing-instance" in trap_options.keys():
+                    cfg_dict["routing_instance"] = trap_options.get("routing-instance")
+
+            snmp_server_config["trap_options"] = cfg_dict
+
+        # Read snmp-v3
+        if "v3" in conf.keys():
+            cfg_dict = {}
+            snmp_v3 = conf.get("v3")
+
+            if "notify" in snmp_v3:
+                notify_lst = []
+                notify = snmp_v3.get("notify")
+                if isinstance(notify, dict):
+                    notify_lst.append(self.get_notify(notify))
+                else:
+                    for item in notify:
+                        notify_lst.append(self.get_notify(item))
+                cfg_dict["notify"] = notify_lst
+            if "notify-filter" in snmp_v3:
+                notify_filter = snmp_v3.get("notify")
+                notify_lst = []
+                if isinstance(notify_filter, dict):
+                    notify_lst.append(self.get_notify_filter(notify_filter))
+                else:
+                    for item in notify_filter:
+                        notify_lst.append(self.get_notify_filter(item))
+                cfg_dict["notify_filter"] = notify_lst
+
+            snmp_server_config["snmp_v3"] = cfg_dict
+
         return utils.remove_empties(snmp_server_config)
+
+    def get_notify_filter(self, cfg):
+        cfg_dict = {}
+        cfg_dict["name"] = cfg["name"]
+        if "oid" in cfg.keys():
+            oid_lst = []
+            oid_dict = {}
+            oids = cfg.get("oid")
+            if isinstance(oids, list):
+                for item in oids:
+                    oid_dict["name"] = item["name"]
+                    if "exclude" in item.keys():
+                        oid_dict["exclude"] = True
+                    if "include" in item.keys():
+                        oid_dict["include"] = True
+                    oid_lst.append(oid_dict)
+                    oid_dict = {}
+            else:
+                oid_dict["name"] = oids["name"]
+                if "exclude" in oids.keys():
+                    oid_dict["exclude"] = True
+                if "include" in oids.keys():
+                    oid_dict["include"] = True
+                oid_lst.append(oid_dict)
+            cfg_dict["oids"] = oid_lst
+        return cfg_dict
+
+
+    def get_notify(self, cfg):
+        cfg_dict = {}
+        cfg_dict["name"] = cfg["name"]
+        if "type" in cfg.keys():
+            cfg_dict["type"] = cfg.get("type")
+        if "tag" in cfg.keys():
+            tag_lst = []
+            tags = cfg.get("tag")
+            if isinstance(tags, list):
+                for item in tags:
+                    tag_lst.append(item["name"])
+            else:
+                tag_lst.append(tags)
+            cfg_dict["tags"] = tag_lst
+
+        return cfg_dict
+
+    def get_trap_group(self, cfg):
+        cfg_dict = {}
+        q(cfg)
+        cfg_dict["name"] = cfg.get("name")
+        if "categories" in cfg.keys():
+            categories_dict = {}
+            categories = cfg.get("categories")
+            for item in categories.keys():
+                if item == "otn-alarms":
+                    otn_dict = {}
+                    otn_alarms = categories.get("otn-alarms")
+                    for key in otn_alarms.keys():
+                        otn_dict[key.replace("-", "_")] = True
+                    categories_dict["otn_alarms"] = otn_dict
+                else:
+                    categories_dict[item.replace("-", "_")] = True
+            cfg_dict["categories"] = categories_dict
+        if "destination-port" in cfg.keys():
+            cfg_dict["destination_port"] = cfg.get("destination-port")
+        if "routing-instance" in cfg.keys():
+            cfg_dict["routing_instance"] = cfg.get("routing-instance")
+        if "targets" in cfg.keys():
+            targets_lst = []
+            targets = cfg.get("targets")
+            if isinstance(targets, dict):
+                targets_lst.append(targets["name"])
+            else:
+                for item in targets:
+                    targets_lst.append(item["name"])
+            cfg_dict["targets"] = targets_lst
+
+
+
+        return cfg_dict
+
+
+    def get_trace_flag(self, cfg):
+        cfg_dict = {}
+        if isinstance(cfg, dict):
+            cfg_dict[cfg["name"].replace("-", "_")] = True
+        else:
+            for item in cfg:
+                cfg_dict[item["name"].replace("-", "_")] = True
+
+        return cfg_dict
+
+    def get_trace_file(self, cfg):
+        cfg_dict = {}
+        if "match" in cfg.keys():
+            cfg_dict["match"] = cfg.get("match")
+        if "files" in cfg.keys():
+            cfg_dict["files"] = cfg.get("files")
+        if "no-world-readable" in cfg.keys():
+            cfg_dict["no_world_readable"] = True
+        if "world-readable" in cfg.keys():
+            cfg_dict["world_readable"] = True
+        if "size" in cfg.keys():
+            cfg_dict["size"] = cfg.get("size")
+
+        return cfg_dict
 
     def get_events(self, cfg):
         cfg_dict = {}
