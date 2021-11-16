@@ -900,8 +900,12 @@ commands:
 
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.snmp_server.snmp_server import Snmp_serverArgs
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.snmp_server.snmp_server import Snmp_server
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.snmp_server.snmp_server import (
+    Snmp_serverArgs,
+)
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.snmp_server.snmp_server import (
+    Snmp_server,
+)
 
 
 def main():
@@ -910,8 +914,18 @@ def main():
 
     :returns: the result form module invocation
     """
-    module = AnsibleModule(argument_spec=Snmp_serverArgs.argument_spec,
-                           supports_check_mode=True)
+    required_if = [
+        ("state", "merged", ("config",)),
+        ("state", "replaced", ("config",)),
+        ("state", "overridden", ("config",)),
+        ("state", "rendered", ("config",)),
+        ("state", "parsed", ("running_config",)),
+    ]
+    module = AnsibleModule(
+        argument_spec=Snmp_serverArgs.argument_spec,
+        required_if=required_if,
+        supports_check_mode=True,
+    )
 
     result = Snmp_server(module).execute_module()
     module.exit_json(**result)

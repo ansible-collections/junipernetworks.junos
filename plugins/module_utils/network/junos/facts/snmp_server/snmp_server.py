@@ -37,6 +37,7 @@ try:
     HAS_XMLTODICT = True
 except ImportError:
     HAS_XMLTODICT = False
+import q
 
 
 class Snmp_serverFacts(object):
@@ -126,6 +127,9 @@ class Snmp_serverFacts(object):
         :returns: The generated config
         """
         snmp_server_config = {}
+        import q
+
+        q(conf)
 
         # Parse facts for BGP address-family global node
         conf = conf.get("snmp")
@@ -163,7 +167,7 @@ class Snmp_serverFacts(object):
             rints_dict = {}
             access_lst = []
             if rinst_access is None:
-                rinst_access["set"] = True
+                rints_dict["set"] = True
             else:
                 access_lists = rinst_access.get("access-list")
                 if isinstance(access_lists, dict):
@@ -254,6 +258,7 @@ class Snmp_serverFacts(object):
         if "interfaces" in conf.keys():
             int_lst = []
             interfaces = conf.get("interfaces")
+            q(interfaces)
             if isinstance(interfaces, dict):
                 int_lst.append(interfaces["name"])
             else:

@@ -21,6 +21,28 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.u
     to_list,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import Facts
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
+    locked_config,
+    load_config,
+    commit_configuration,
+    discard_changes,
+    tostring,
+)
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
+    ConfigBase,
+)
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
+    to_list,
+    remove_empties,
+)
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
+    Facts,
+)
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
+    build_root_xml_node,
+    build_child_xml_node,
+)
+import q
 
 
 class Snmp_server(ConfigBase):
@@ -131,7 +153,7 @@ class Snmp_server(ConfigBase):
         :returns: the commands necessary to migrate the current configuration
                   to the desired configuration
         """
-        self.root = build_root_xml_node("system")
+        self.root = build_root_xml_node("snmp")
         state = self._module.params["state"]
         if (
                 state in ("merged", "replaced", "rendered", "overridden")
@@ -142,17 +164,14 @@ class Snmp_server(ConfigBase):
                     state
                 )
             )
-        config_xmls = []
         if state == "deleted":
-            config_xmls = self._state_deleted(want, have)
+            self._state_deleted(want, have)
         elif state in ("merged", "rendered"):
-            config_xmls = self._state_merged(want, have)
+            self._state_merged(want, have)
         elif state == "replaced":
-            config_xmls = self._state_replaced(want, have)
+            self._state_replaced(want, have)
         elif state == "overridden":
-            config_xmls = self._state_replaced(want, have)
-        for xml in config_xmls:
-            self.root.append(xml)
+            self._state_replaced(want, have)
         return tostring(self.root)
 
     def _state_replaced(self, want, have):
@@ -174,160 +193,200 @@ class Snmp_server(ConfigBase):
         :returns: the commands necessary to merge the provided into
                   the current configuration
         """
-        ntp_xml = []
+        q(want)
+        snmp_xml = []
         want = remove_empties(want)
-        ntp_node = build_root_xml_node("ntp")
+        snmp_node = self.root
+        # add arp node
+        if "arp" in want.keys():
+            arp = want.get("arp")
+            if arp.get("host_name_resolution"):
+                arp_node = build_child_xml_node(snmp_node, "arp")
+                build_child_xml_node(arp_node, "host-name-resolution")
+            elif arp.get("set"):
+                build_child_xml_node(snmp_node, "arp")
 
-        # add authentication-keys node
-        if "authentication_keys" in want.keys():
-            auth_keys = want.get("authentication_keys")
-            for key in auth_keys:
-                key_node = build_child_xml_node(ntp_node, "authentication-key")
-                # add name node
-                build_child_xml_node(key_node, "name", key.get("id"))
-                # add type node
-                build_child_xml_node(key_node, "type", key.get("algorithm"))
-                # add value node
-                build_child_xml_node(key_node, "value", key.get("key"))
-
-        # add boot_server node
-        if "boot_server" in want.keys():
-            build_child_xml_node(
-                ntp_node, "boot-server", want.get("boot_server")
-            )
-
-        # add broadcast node
-        if "broadcasts" in want.keys():
-            broadcasts = want.get("broadcasts")
-            for item in broadcasts:
-                broadcast_node = build_child_xml_node(ntp_node, "broadcast")
+        # add node client list
+        if "client_lists" in want.keys():
+            client_lists = want.get("client_lists")
+            for client in client_lists:
+                client_node = build_child_xml_node(snmp_node, "client-list")
                 # add name node
                 build_child_xml_node(
-                    broadcast_node, "name", item.get("address")
+                    client_node, "name", client.get("name")
                 )
-                # add key node
-                if "key" in item.keys():
-                    build_child_xml_node(
-                        broadcast_node, "key", item.get("key")
-                    )
-                # add routing-instance-name node
-                if "routing_instance_name" in item.keys():
-                    build_child_xml_node(
-                        broadcast_node,
-                        "routing-instance-name",
-                        item.get("routing_instance_name"),
-                    )
-                # add ttl node
-                if "ttl" in item.keys():
-                    build_child_xml_node(
-                        broadcast_node, "ttl", item.get("ttl")
-                    )
-                # add version node
-                if "version" in item.keys():
-                    build_child_xml_node(
-                        broadcast_node, "version", item.get("version")
-                    )
+                if "addresses" in client.keys():
+                    addresses = client.get("addresses")
+                    for address in addresses:
+                        add_lst_node = build_child_xml_node(client_node, "client-address-list")
+                        build_child_xml_node(add_lst_node, "name", address["address"])
+                        if address.get("restrict"):
+                            build_child_xml_node(add_lst_node, "restrict")
 
-        # add broadcast_client node
-        if "broadcast_client" in want.keys() and want.get("broadcast_client"):
-            build_child_xml_node(ntp_node, "broadcast-client")
+        # add routing_instance_access
+        if "routing_instance_access" in want.keys():
+            ria = want.get("routing_instance_access")
 
-        # add interval_range node
-        if "interval_range" in want.keys():
-            build_child_xml_node(
-                ntp_node, "interval-range", want.get("interval_range")
-            )
+            if "access_lists" not in ria.keys() and ria.get("set"):
+                build_child_xml_node(snmp_node, "routing-instance-access")
+            elif "access_lists" in ria.keys():
+                ria_node = build_child_xml_node(snmp_node, "routing-instance-access")
+                access_lists = ria.get("access_lists")
+                for item in access_lists:
+                    al_node = build_child_xml_node(ria_node, "access-list")
+                    build_child_xml_node(al_node, "name", item)
+        # add communities node
+        if "communities" in want.keys():
+            communities = want.get("communities")
+            for community in communities:
+                comm_node = build_child_xml_node(snmp_node, "community")
+                build_child_xml_node(comm_node, "name", community["name"])
+                if "authorization" in community.keys():
+                    build_child_xml_node(comm_node, "authorization", community["authorization"])
+                if "clients" in community.keys():
+                    clients = community.get("clients")
+                    for client in clients:
+                        client_node = build_child_xml_node(comm_node, "clients")
+                        build_child_xml_node(client_node, "name", client["address"])
+                        if client.get("restrict"):
+                            build_child_xml_node(client_node, "restrict")
+                if "client_list_name" in community.keys():
+                    build_child_xml_node(comm_node, "client-list-name", community.get("client_list_name"))
+                if "routing_instances" in community.keys():
+                    routing_instances = community.get("routing_instances")
+                    for inst in routing_instances:
+                        inst_node = build_child_xml_node(comm_node, "routing-instance")
+                        build_child_xml_node(inst_node, "name", inst["name"])
+                        if "clients" in inst.keys():
+                            clients = inst.get("clients")
+                            for client in clients:
+                                client_node = build_child_xml_node(inst_node, "clients")
+                                build_child_xml_node(client_node, "name", client["address"])
+                                if client.get("restrict"):
+                                    build_child_xml_node(client_node, "restrict")
+                        if "client_list_name" in inst.keys():
+                            build_child_xml_node(inst_node, "client-list-name", inst.get("client_list_name"))
+                if "view" in community.keys():
+                    build_child_xml_node(comm_node, "view", community.get("view"))
 
-        # add multicast_client node
-        if "multicast_client" in want.keys():
-            build_child_xml_node(
-                ntp_node, "multicast-client", want.get("multicast_client")
-            )
+        # add contact node
+        if "contact" in want.keys():
+            build_child_xml_node(snmp_node, "contact", want.get("contact"))
 
-        # add peers node
-        if "peers" in want.keys():
-            peers = want.get("peers")
-            for item in peers:
-                peer_node = build_child_xml_node(ntp_node, "peer")
-                # add name node
-                build_child_xml_node(peer_node, "name", item.get("peer"))
-                # add key node
-                if "key_id" in item.keys():
-                    build_child_xml_node(peer_node, "key", item.get("key_id"))
-                # add prefer node
-                if "prefer" in item.keys() and item.get("prefer"):
-                    build_child_xml_node(peer_node, "prefer")
-                # add version node
-                if "version" in item.keys():
-                    build_child_xml_node(
-                        peer_node, "version", item.get("version")
-                    )
+        # add customization node
+        if "customization" in want.keys():
+            custom = want.get("customization")
+            if custom.get("ether_stats_ifd_only"):
+                custom_node = build_child_xml_node(snmp_node, "customization")
+                build_child_xml_node(custom_node, "ether-stats-ifd-only")
 
-        # add server node
-        if "servers" in want.keys():
-            servers = want.get("servers")
-            for item in servers:
-                server_node = build_child_xml_node(ntp_node, "server")
-                # add name node
-                build_child_xml_node(server_node, "name", item.get("server"))
-                # add key node
-                if "key_id" in item.keys():
-                    build_child_xml_node(
-                        server_node, "key", item.get("key_id")
-                    )
-                # add routing-instance node
-                if "routing_instance" in item.keys():
-                    build_child_xml_node(
-                        server_node,
-                        "routing-instance",
-                        item.get("routing_instance"),
-                    )
-                # add prefer node
-                if "prefer" in item.keys() and item.get("prefer"):
-                    build_child_xml_node(server_node, "prefer")
-                # add version node
-                if "version" in item.keys():
-                    build_child_xml_node(
-                        server_node, "version", item.get("version")
-                    )
-        # add source_address node
-        if "source_addresses" in want.keys():
-            source_addresses = want.get("source_addresses")
-            for item in source_addresses:
-                source_node = build_child_xml_node(ntp_node, "source-address")
-                # add name node
-                build_child_xml_node(
-                    source_node, "name", item.get("source_address")
-                )
-                # add routing-instance node
-                if "routing_instance" in item.keys():
-                    build_child_xml_node(
-                        source_node,
-                        "routing-instance",
-                        item.get("routing_instance"),
-                    )
-        # add threshold node
-        if "threshold" in want.keys():
-            threshold = want.get("threshold")
-            threshold_node = build_child_xml_node(ntp_node, "threshold")
-            if "value" in threshold.keys():
-                build_child_xml_node(
-                    threshold_node, "value", threshold.get("value")
-                )
-            if "action" in threshold.keys():
-                build_child_xml_node(
-                    threshold_node, "action", threshold.get("action")
-                )
+        # add description node
+        if "description" in want.keys():
+            build_child_xml_node(snmp_node, "description", want.get("description"))
 
-        # add trusted key
-        if "trusted_keys" in want.keys():
-            trusted_keys = want.get("trusted_keys")
-            for key in trusted_keys:
-                build_child_xml_node(ntp_node, "trusted-key", key["key_id"])
+        # add engine_id
+        if "engine_id" in want.keys():
+            engine = want.get("engine_id")
+            engine_node = build_child_xml_node(snmp_node, "engine-id")
+            if "local" in engine.keys():
+                build_child_xml_node(engine_node, "local", engine["local"])
+            if engine.get("use_default_ip_address"):
+                build_child_xml_node(engine_node, "use-default-ip-address")
+            if engine.get("use_mac_address"):
+                build_child_xml_node(engine_node, "use-mac-address")
 
-        if ntp_node is not None:
-            ntp_xml.append(ntp_node)
-        return ntp_xml
+        # add filter_duplicates node
+        if want.get("filter_duplicates"):
+            build_child_xml_node(snmp_node, "filter-duplicates")
+
+        # add filter_interfaces node
+        if "filter_interfaces" in want.keys():
+            fints = want.get("filter_interfaces")
+
+            if not fints.keys() >= {"all_internal_interfaces", "interfaces"}:
+                build_child_xml_node(snmp_node, "filter-interfaces")
+            else:
+                fints_node = build_child_xml_node(snmp_node, "filter-interfaces")
+                if "all_internal_interfaces" in fints.keys():
+                    build_child_xml_node(fints_node, "all-internal-interfaces")
+                if "interfaces" in fints.keys():
+                    interfaces = fints.get("interfaces")
+                    for item in interfaces:
+                        int_node = build_child_xml_node(fints_node, "interfaces")
+                        build_child_xml_node(int_node, "name", item)
+
+        # add health_monitor node
+        if "health_monitor" in want.keys():
+            health = want.get("health_monitor")
+
+            if not health.keys() >= {"falling_threshold", "rising_threshold", "idp", "interval"}:
+                build_child_xml_node(snmp_node, "health-monitor")
+            else:
+                q("INSIDE HEALTH ELSE")
+                health_node = build_child_xml_node(snmp_node, "health-monitor")
+                if "falling_threshold" in health.keys():
+                    build_child_xml_node(health_node, "falling-threshold", health.get("falling_threshold"))
+                if "rising_threshold" in health.keys():
+                    build_child_xml_node(health_node, "rising-threshold", health.get("rising_threshold"))
+                if "interval" in health.keys():
+                    build_child_xml_node(health_node, "interval", health.get("interval"))
+                if health.get("idp"):
+                    build_child_xml_node(health_node, "idp")
+
+        # add if_count_with_filter_interfaces
+        if want.get("if_count_with_filter_interfaces"):
+            build_child_xml_node(snmp_node, "if-count-with-filter-interfaces")
+
+        # add interfaces node
+        if "interfaces" in want.keys():
+            interfaces = want.get("interfaces")
+            for item in interfaces:
+                q(item)
+                build_child_xml_node(snmp_node, "interface", item)
+
+        # add location
+        if "location" in want.keys():
+            build_child_xml_node(snmp_node, "location", want.get("location"))
+
+        # add logical_system_trap_filter
+        if want.get("logical_system_trap_filter"):
+            build_child_xml_node(snmp_node, "logical-system-trap-filter")
+
+
+
+
+
+        '''
+        health_monitor:
+          description: Specify health monitoring configuration.
+          type: dict
+          suboptions:
+            set:
+              description: Set health-monitor configuration.
+              type: bool
+            falling_threshold:
+              description: Falling threshold applied to all monitored objects.
+              type: int
+            rising_threshold:
+              description: Rising threshold applied to all monitored objects.
+              type: int
+            idp:
+              description: IDP health monitor configuration.
+              type: bool
+            interval:
+              description: Interval between samples.
+              type: int
+        <health-monitor>
+            <rising-threshold>60</rising-threshold>
+            <falling-threshold>50</falling-threshold>
+            <idp>
+            </idp>
+        </health-monitor>
+        '''
+
+        if snmp_node is not None:
+            snmp_xml.append(snmp_node)
+        return snmp_xml
 
     def _state_deleted(self, want, have):
         """ The command generator when state is deleted
