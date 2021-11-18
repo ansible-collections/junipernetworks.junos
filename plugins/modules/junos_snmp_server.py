@@ -609,7 +609,9 @@ options:
             description: Add snmpTrapEnterprise oid in varbind of all traps. 
             type: bool
           logical_system: *logical_system
-          routing_instances: *routing_instances
+          routing_instance:
+            description: Specify routing-instance.
+            type: str
           source_address:
             description: IPv4/IPv6 source address for trap PDUs.
             type: dict

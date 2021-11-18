@@ -37,7 +37,6 @@ try:
     HAS_XMLTODICT = True
 except ImportError:
     HAS_XMLTODICT = False
-import q
 
 
 class Snmp_serverFacts(object):
@@ -127,9 +126,6 @@ class Snmp_serverFacts(object):
         :returns: The generated config
         """
         snmp_server_config = {}
-        import q
-
-        q(conf)
 
         # Parse facts for BGP address-family global node
         conf = conf.get("snmp")
@@ -258,7 +254,6 @@ class Snmp_serverFacts(object):
         if "interfaces" in conf.keys():
             int_lst = []
             interfaces = conf.get("interfaces")
-            q(interfaces)
             if isinstance(interfaces, dict):
                 int_lst.append(interfaces["name"])
             else:
@@ -276,8 +271,8 @@ class Snmp_serverFacts(object):
             snmp_server_config["logical_system_trap_filter"] = True
 
         # Read name
-        if "name" in conf.keys():
-            snmp_server_config["name"] = conf.get("name")
+        if "system-name" in conf.keys():
+            snmp_server_config["name"] = conf.get("system-name")
 
         # Read nonvolatile
         if "nonvolatile" in conf.keys():
@@ -664,6 +659,8 @@ class Snmp_serverFacts(object):
             cfg_dict["destination_port"] = cfg.get("destination-port")
         if "routing-instance" in cfg.keys():
             cfg_dict["routing_instance"] = cfg.get("routing-instance")
+        if "version" in cfg.keys():
+            cfg_dict["version"] = cfg.get("version")
         if "targets" in cfg.keys():
             targets_lst = []
             targets = cfg.get("targets")
