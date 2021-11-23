@@ -71,7 +71,7 @@ options:
     - present
     default: present
 notes:
-- For a general purpose network module, see the M(ansible.netcommon..net_ping) module.
+- For a general purpose network module, see the M(ansible.netcommon.net_ping) module.
 - For Windows targets, use the M(ansible.windows.win_ping) module instead.
 - For targets running Python, use the M(ansible.builtin.ping) module instead.
 - This module works only with connection C(network_cli).
