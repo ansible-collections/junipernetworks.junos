@@ -13,7 +13,6 @@
               metric: 5
               priority: 3
         name: 'ge-0/0/2.0'
-        router_id: '10.200.16.75'
 
 - name: Parse externally provided interfaces config to agnostic model
   register: result

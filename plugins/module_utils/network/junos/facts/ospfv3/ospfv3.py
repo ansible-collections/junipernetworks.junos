@@ -284,5 +284,6 @@ class Ospfv3Facts(object):
             config["prefix_export_limit"] = ospfv3.get("prefix-export-limit")
             config["reference_bandwidth"] = ospfv3.get("reference-bandwidth")
             config["areas"] = rendered_areas
-            config["router_id"] = self.router_id["router-id"]
+            if self.router_id:
+                config["router_id"] = self.router_id["router-id"]
         return utils.remove_empties(config)

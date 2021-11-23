@@ -249,10 +249,11 @@ class Ospfv3(ConfigBase):
         protocol = build_root_xml_node("ospf3")
         for ospfv3 in want:
             ospfv3 = remove_empties(ospfv3)
-            self.router_id = ospfv3.get("router_id")
-            build_child_xml_node(
-                self.routing_options, "router-id", self.router_id
-            )
+            if "router_id" in ospfv3.keys():
+                self.router_id = ospfv3.get("router_id")
+                build_child_xml_node(
+                    self.routing_options, "router-id", self.router_id
+                )
 
             if ospfv3.get("spf_options"):
                 spf_options_node = build_child_xml_node(
