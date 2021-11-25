@@ -171,6 +171,7 @@ class Snmp_server(ConfigBase):
             self._state_replaced(want, have)
         elif state == "overridden":
             self._state_replaced(want, have)
+
         return tostring(self.root)
 
     def _state_replaced(self, want, have):
@@ -191,6 +192,7 @@ class Snmp_server(ConfigBase):
                   the current configuration
         """
         want = remove_empties(want)
+        self.root = build_root_xml_node("snmp")
         snmp_node = self.root
         # add arp node
         if "arp" in want.keys():
@@ -632,3 +634,4 @@ class Snmp_server(ConfigBase):
         delete = {"delete": "delete"}
         if have is not None:
             self.root.attrib.update(delete)
+
