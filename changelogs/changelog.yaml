@@ -350,3 +350,13 @@ releases:
       name: junos_ntp_global
       namespace: ''
     release_date: '2021-09-24'
+  2.7.0:
+    changes:
+      doc_changes:
+      - Add note for router_id deprecation from ospf-interfaces resource module.
+      - make sure router_id facts and config operation works fine for ospfv2 and ospfv3
+        RM
+    fragments:
+    - 0-copy_ignore_txt.yml
+    - junos_ospf_router_if_fix.yaml
+    release_date: '2021-11-25'
