@@ -5,6 +5,15 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v2.7.0
+======
+
+Documentation Changes
+---------------------
+
+- Add note for router_id deprecation from ospf-interfaces resource module.
+- make sure router_id facts and config operation works fine for ospfv2 and ospfv3 RM
+
 v2.6.0
 ======
 

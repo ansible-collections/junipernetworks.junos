@@ -1,4 +1,0 @@
----
-doc_changes:
-  - Add note for router_id deprecation from ospf-interfaces resource module.
-  - make sure router_id facts and config operation works fine for ospfv2 and ospfv3 RM
