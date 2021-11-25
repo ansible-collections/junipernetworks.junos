@@ -127,7 +127,6 @@ class Routing_optionsFacts(object):
         :returns: The generated config
         """
         routing_config = {}
-        q(conf)
         conf = conf.get("routing-options")
 
         # Read autonomous-system

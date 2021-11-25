@@ -50,7 +50,7 @@ options:
     description:
     - This option is used only with state I(parsed).
     - The value of this option should be the output received from the Junos device
-      by executing the command B(show system syslog).
+      by executing the command B(show system routing-options).
     - The state I(parsed) reads the configuration from C(running_config) option and
       transforms it into Ansible structured data as per the resource module's argspec
       and the value is then returned in the I(parsed) key within the result.
@@ -66,6 +66,7 @@ options:
           as_number:
             description: Specify Autonomous system number.
             type: str
+            required: true
           loops:
             description: Specify maximum number of times this AS can be in an AS path.
             type: int

@@ -42,7 +42,7 @@ class Routing_optionsArgs(object):  # pylint: disable=R0903
             "options": {
                 "autonomous_system": {
                     "options": {
-                        "as_number": {"type": "str"},
+                        "as_number": {"type": "str", "required": True},
                         "asdot_notation": {"type": "bool"},
                         "loops": {"type": "int"},
                     },

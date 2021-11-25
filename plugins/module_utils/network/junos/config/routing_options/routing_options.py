@@ -49,14 +49,14 @@ class Routing_options(ConfigBase):
     def __init__(self, module):
         super(Routing_options, self).__init__(module)
 
-    def get_routing_options_facts(self):
+    def get_routing_options_facts(self, data=None):
         """ Get the 'facts' (the current configuration)
 
         :rtype: A dictionary
         :returns: The current configuration as a dictionary
         """
         facts, _warnings = Facts(self._module).get_facts(
-            self.gather_subset, self.gather_network_resources
+            self.gather_subset, self.gather_network_resources, data=data
         )
         routing_options_facts = facts["ansible_network_resources"].get(
             "routing_options"
@@ -163,23 +163,16 @@ class Routing_options(ConfigBase):
                     state
                 )
             )
-        config_xmls = []
         temp_lst = []
         if state == "deleted":
-            config_xmls = self._state_deleted(want, have)
+            self._state_deleted(want, have)
         elif state in ("merged", "rendered"):
-            config_xmls = self._state_merged(want, have)
+             self._state_merged(want, have)
         elif state == "replaced":
-            config_xmls = self._state_replaced(want, have)
+             self._state_replaced(want, have)
         elif state == "overridden":
-            config_xmls = self._state_replaced(want, have)
-        if config_xmls:
-            for xml in config_xmls:
-                self.protocols.append(xml)
-            for xml in self.root.getchildren():
-                xml = tostring(xml)
-                temp_lst.append(xml)
-        if state == "delete":
+             self._state_replaced(want, have)
+        if self.root is not None:
             for xml in self.root.getchildren():
                 xml = tostring(xml)
                 temp_lst.append(xml)
@@ -193,9 +186,8 @@ class Routing_options(ConfigBase):
                   to the desired configuration
         """
         routing_xml = []
-        routing_xml.extend(self._state_deleted(want, have))
-        routing_xml.extend(self._state_merged(want, have))
-        return routing_xml
+        self._state_deleted(want, have)
+        self._state_merged(want, have)
 
     def _state_merged(self, want, have):
         """ The command generator when state is merged
