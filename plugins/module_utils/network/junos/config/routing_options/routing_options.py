@@ -10,13 +10,31 @@ is compared to the provided configuration (as dict) and the command set
 necessary to bring the current configuration to it's desired end-state is
 created
 """
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
+    locked_config,
+    load_config,
+    commit_configuration,
+    discard_changes,
+    tostring,
+)
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
     ConfigBase,
 )
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
     to_list,
+    remove_empties,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import Facts
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
+    Facts,
+)
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
+    build_root_xml_node,
+    build_child_xml_node,
+)
 
 
 class Routing_options(ConfigBase):
@@ -24,14 +42,9 @@ class Routing_options(ConfigBase):
     The junos_routing_options class
     """
 
-    gather_subset = [
-        '!all',
-        '!min',
-    ]
+    gather_subset = ["!all", "!min"]
 
-    gather_network_resources = [
-        'routing_options',
-    ]
+    gather_network_resources = ["routing_options"]
 
     def __init__(self, module):
         super(Routing_options, self).__init__(module)
@@ -42,10 +55,14 @@ class Routing_options(ConfigBase):
         :rtype: A dictionary
         :returns: The current configuration as a dictionary
         """
-        facts, _warnings = Facts(self._module).get_facts(self.gather_subset, self.gather_network_resources)
-        routing_options_facts = facts['ansible_network_resources'].get('routing_options')
+        facts, _warnings = Facts(self._module).get_facts(
+            self.gather_subset, self.gather_network_resources
+        )
+        routing_options_facts = facts["ansible_network_resources"].get(
+            "routing_options"
+        )
         if not routing_options_facts:
-            return []
+            return {}
         return routing_options_facts
 
     def execute_module(self):
@@ -54,25 +71,60 @@ class Routing_options(ConfigBase):
         :rtype: A dictionary
         :returns: The result from module execution
         """
-        result = {'changed': False}
+        result = {"changed": False}
+        state = self._module.params["state"]
+
         warnings = list()
-        commands = list()
 
-        existing_routing_options_facts = self.get_routing_options_facts()
-        commands.extend(self.set_config(existing_routing_options_facts))
-        if commands:
-            if not self._module.check_mode:
-                self._connection.edit_config(commands)
-            result['changed'] = True
-        result['commands'] = commands
+        if self.state in self.ACTION_STATES:
+            existing_routing_options_facts = self.get_routing_options_facts()
+        else:
+            existing_routing_options_facts = {}
+        if state == "gathered":
+            existing_routing_options_facts = self.get_routing_options_facts()
+            result["gathered"] = existing_routing_options_facts
+        elif self.state == "parsed":
+            running_config = self._module.params["running_config"]
+            if not running_config:
+                self._module.fail_json(
+                    msg="value of running_config parameter must not be empty for state parsed"
+                )
+            result["parsed"] = self.get_routing_options_facts(
+                data=running_config
+            )
+        elif self.state == "rendered":
+            config_xmls = self.set_config(existing_routing_options_facts)
+            if config_xmls:
+                result["rendered"] = config_xmls[0]
 
-        changed_routing_options_facts = self.get_routing_options_facts()
+        else:
+            diff = None
+            config_xmls = self.set_config(existing_routing_options_facts)
+            with locked_config(self._module):
+                for config_xml in config_xmls:
+                    diff = load_config(self._module, config_xml, [])
 
-        result['before'] = existing_routing_options_facts
-        if result['changed']:
-            result['after'] = changed_routing_options_facts
+                commit = not self._module.check_mode
+                if diff:
+                    if commit:
+                        commit_configuration(self._module)
+                    else:
+                        discard_changes(self._module)
+                    result["changed"] = True
 
-        result['warnings'] = warnings
+                    if self._module._diff:
+                        result["diff"] = {"prepared": diff}
+
+            result["commands"] = config_xmls
+
+            changed_routing_options_facts = self.get_routing_options_facts()
+
+            result["before"] = existing_routing_options_facts
+            if result["changed"]:
+                result["after"] = changed_routing_options_facts
+
+            result["warnings"] = warnings
+
         return result
 
     def set_config(self, existing_routing_options_facts):
@@ -83,7 +135,7 @@ class Routing_options(ConfigBase):
         :returns: the commands necessary to migrate the current configuration
                   to the desired configuration
         """
-        want = self._module.params['config']
+        want = self._module.params["config"]
         have = existing_routing_options_facts
         resp = self.set_state(want, have)
         return to_list(resp)
@@ -97,60 +149,101 @@ class Routing_options(ConfigBase):
         :returns: the commands necessary to migrate the current configuration
                   to the desired configuration
         """
-        state = self._module.params['state']
-        if state == 'overridden':
-            kwargs = {}
-            commands = self._state_overridden(**kwargs)
-        elif state == 'deleted':
-            kwargs = {}
-            commands = self._state_deleted(**kwargs)
-        elif state == 'merged':
-            kwargs = {}
-            commands = self._state_merged(**kwargs)
-        elif state == 'replaced':
-            kwargs = {}
-            commands = self._state_replaced(**kwargs)
-        return commands
-    @staticmethod
-    def _state_replaced(**kwargs):
+        self.root = build_root_xml_node("configuration")
+        self.routing_options = build_child_xml_node(
+            self.root, "routing-options"
+        )
+        state = self._module.params["state"]
+        if (
+            state in ("merged", "replaced", "rendered", "overridden")
+            and not want
+        ):
+            self._module.fail_json(
+                msg="value of config parameter must not be empty for state {0}".format(
+                    state
+                )
+            )
+        config_xmls = []
+        temp_lst = []
+        if state == "deleted":
+            config_xmls = self._state_deleted(want, have)
+        elif state in ("merged", "rendered"):
+            config_xmls = self._state_merged(want, have)
+        elif state == "replaced":
+            config_xmls = self._state_replaced(want, have)
+        elif state == "overridden":
+            config_xmls = self._state_replaced(want, have)
+        if config_xmls:
+            for xml in config_xmls:
+                self.protocols.append(xml)
+            for xml in self.root.getchildren():
+                xml = tostring(xml)
+                temp_lst.append(xml)
+        if state == "delete":
+            for xml in self.root.getchildren():
+                xml = tostring(xml)
+                temp_lst.append(xml)
+        return temp_lst
+
+    def _state_replaced(self, want, have):
         """ The command generator when state is replaced
 
         :rtype: A list
         :returns: the commands necessary to migrate the current configuration
                   to the desired configuration
         """
-        commands = []
-        return commands
+        routing_xml = []
+        routing_xml.extend(self._state_deleted(want, have))
+        routing_xml.extend(self._state_merged(want, have))
+        return routing_xml
 
-    @staticmethod
-    def _state_overridden(**kwargs):
-        """ The command generator when state is overridden
-
-        :rtype: A list
-        :returns: the commands necessary to migrate the current configuration
-                  to the desired configuration
-        """
-        commands = []
-        return commands
-
-    @staticmethod
-    def _state_merged(**kwargs):
+    def _state_merged(self, want, have):
         """ The command generator when state is merged
 
         :rtype: A list
         :returns: the commands necessary to merge the provided into
                   the current configuration
         """
-        commands = []
-        return commands
+        routing_xml = []
+        want = remove_empties(want)
 
-    @staticmethod
-    def _state_deleted(**kwargs):
+        # add authentication-keys node
+        if "autonomous_system" in want.keys():
+            as_num = want.get("autonomous_system")
+            # Generate xml node for autonomous-system
+            if as_num.get("as_number"):
+                as_node = build_child_xml_node(
+                    self.routing_options,
+                    "autonomous-system",
+                    as_num.get("as_number"),
+                )
+                # Add node for loops
+                if as_num.get("loops"):
+                    build_child_xml_node(as_node, "loops", as_num.get("loops"))
+                # Add node for asdot_notation
+                if as_num.get("asdot_notation"):
+                    if "asdot_notation" in as_num.keys():
+                        build_child_xml_node(as_node, "asdot-notation")
+        if "router_id" in want.keys():
+            build_child_xml_node(
+                self.routing_options, "router-id", want.get("router_id")
+            )
+        return routing_xml
+
+    def _state_deleted(self, want, have):
         """ The command generator when state is deleted
 
         :rtype: A list
         :returns: the commands necessary to remove the current configuration
                   of the provided objects
         """
-        commands = []
-        return commands
+        delete = {"delete": "delete"}
+        if have is not None:
+            if "autonomous_system" in have.keys():
+                build_child_xml_node(
+                    self.routing_options, "autonomous-system", None, delete
+                )
+            if "router_id" in have.keys():
+                build_child_xml_node(
+                    self.routing_options, "router-id", None, delete
+                )
