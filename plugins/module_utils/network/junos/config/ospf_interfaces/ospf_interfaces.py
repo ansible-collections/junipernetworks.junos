@@ -261,10 +261,11 @@ class Ospf_interfaces(ConfigBase):
         protocol = build_root_xml_node("ospf")
         for ospf_interfaces in want:
             ospf_interfaces = remove_empties(ospf_interfaces)
-            self.router_id = ospf_interfaces.get("router_id")
-            build_child_xml_node(
-                self.routing_options, "router-id", self.router_id
-            )
+            if "router_id" in ospf_interfaces.keys():
+                self.router_id = ospf_interfaces.get("router_id")
+                build_child_xml_node(
+                    self.routing_options, "router-id", self.router_id
+                )
             for af in ospf_interfaces["address_family"]:
                 area_node = build_child_xml_node(protocol, "area")
                 processes = af.get("processes")

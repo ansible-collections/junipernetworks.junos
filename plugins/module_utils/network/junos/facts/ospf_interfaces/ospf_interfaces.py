@@ -102,6 +102,7 @@ class Ospf_interfacesFacts(object):
 
         resources = data.xpath("configuration/protocols/ospf")
         router_id_path = data.xpath("configuration/routing-options/router-id")
+
         if router_id_path:
             self.router_id = self._get_xml_dict(router_id_path.pop())
         else:
@@ -254,7 +255,8 @@ class Ospf_interfacesFacts(object):
                     address_family.append(af)
                     conf["address_family"] = address_family
                     conf["name"] = interface.get("name")
-                    conf["router_id"] = self.router_id["router-id"]
+                    if self.router_id:
+                        conf["router_id"] = self.router_id["router-id"]
                     remove_empties(conf)
                     ospf_interfaces_config.append(conf)
 
