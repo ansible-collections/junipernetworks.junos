@@ -92,9 +92,254 @@ options:
     default: merged
 """
 EXAMPLES = """
+# Using merged
+#
+# Before state
+# ------------
+#
+# vagrant@vsrx# show system routing-options
+#
+- name: Merge provided NTP configuration into running configuration.
+  junipernetworks.junos.junos_routing_options:
+    config: 
+      autonomous_system:
+        as_number: 2
+        asdot_notation: true
+    state: merged
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#     "after": {
+#         "autonomous_system": {
+#             "as_number": "2",
+#             "asdot_notation": true
+#         }
+#     },
+#     "before": {},
+#     "changed": true,
+#     "commands": [
+#           "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+#           "<nc:autonomous-system>2<nc:asdot-notation/></nc:autonomous-system></nc:routing-options>"
+#     ]
+# After state
+# -----------
+#
+# vagrant@vsrx# show routing-options      
+# autonomous-system 2 asdot-notation;
+#
+#
+# Using Replaced
+# Before state
+# ------------
+#
+# vagrant@vsrx# show routing-options      
+# autonomous-system 2 asdot-notation;
+
+- name: Replaced running routing-options configuration with provided configuration
+  junipernetworks.junos.junos_routing_options:
+    config: 
+      autonomous_system:
+        as_number: 2
+        asdot_notation: true
+      router_id: "1.1.1.1"
+    state: replaced
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#     "after": {
+#         "autonomous_system": {
+#             "as_number": "2",
+#             "asdot_notation": true
+#         },
+#         "router_id": "1.1.1.1"
+#     },
+#     "before": {
+#         "autonomous_system": {
+#             "as_number": "2",
+#             "asdot_notation": true
+#         }
+#     },
+#     "changed": true,
+#     "commands": [
+#             "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+#             "<nc:autonomous-system delete=\"delete\"/><nc:autonomous-system>2<nc:asdot-notation/>"
+#             "</nc:autonomous-system><nc:router-id>1.1.1.1</nc:router-id></nc:routing-options>"
+#     ]
+# After state
+# -----------
+#
+# vagrant@vsrx# show routing-options    
+# router-id 1.1.1.1;
+# autonomous-system 2 asdot-notation;
 
 
+# Using overridden
+#
+# vagrant@vsrx# show routing-options      
+# autonomous-system 2 asdot-notation;
 
+- name: Override running routing-options configuration with provided configuration
+  junipernetworks.junos.junos_routing_options:
+    config: 
+      autonomous_system:
+        as_number: 2
+        asdot_notation: true
+      router_id: "1.1.1.1"
+    state: overridden
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#     "after": {
+#         "autonomous_system": {
+#             "as_number": "2",
+#             "asdot_notation": true
+#         },
+#         "router_id": "1.1.1.1"
+#     },
+#     "before": {
+#         "autonomous_system": {
+#             "as_number": "2",
+#             "asdot_notation": true
+#         }
+#     },
+#     "changed": true,
+#     "commands": [
+#             "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+#             "<nc:autonomous-system delete=\"delete\"/><nc:autonomous-system>2<nc:asdot-notation/>"
+#             "</nc:autonomous-system><nc:router-id>1.1.1.1</nc:router-id></nc:routing-options>"
+#     ]
+# After state
+# -----------
+#
+# vagrant@vsrx# show routing-options    
+# router-id 1.1.1.1;
+# autonomous-system 2 asdot-notation;
+#
+# Using deleted
+#
+# Before state
+# ------------
+#
+# vagrant@vsrx# show routing-options    
+# router-id 1.1.1.1;
+# autonomous-system 2 asdot-notation;
+#
+- name: Delete running routing-options configuration
+  junipernetworks.junos.junos_routing_options:
+    config:
+    state: deleted
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#     "after": {},
+#     "before": {
+#         "autonomous_system": {
+#             "as_number": "2",
+#             "asdot_notation": true
+#         },
+#         "router_id": "1.1.1.1"
+#     },
+#     "changed": true,
+#     "commands": [
+#               "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+#               "<nc:autonomous-system delete=\"delete\"/><nc:router-id delete=\"delete\"/></nc:routing-options>"
+#     ]
+# After state
+# -----------
+#
+# vagrant@vsrx# show routing-options 
+#
+# [edit]
+# Using gathered
+#
+# Before state
+# ------------
+#
+# vagrant@vsrx# show routing-options    
+# router-id 1.1.1.1;
+# autonomous-system 2 asdot-notation;
+
+- name: Gather running routing-options configuration
+  junipernetworks.junos.junos_routing_options:
+    state: gathered
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#     "gathered": {
+#         "autonomous_system": {
+#             "as_number": "2",
+#             "asdot_notation": true
+#         },
+#         "router_id": "1.1.1.1"
+#     },
+#     "changed": false,
+# Using rendered
+#
+# Before state
+# ------------
+#
+- name: Render xml for provided facts.
+  junipernetworks.junos.junos_routing_options:
+    config: 
+      autonomous_system:
+        as_number: 2
+        asdot_notation: true
+        loops: 4
+      router_id: 12.12.12.12
+    state: rendered
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#     "rendered": [
+#           "<nc:routing-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
+#           "<nc:autonomous-system>2<nc:loops>4</nc:loops><nc:asdot-notation/></nc:autonomous-system>
+#           "<nc:router-id>12.12.12.12</nc:router-id></nc:routing-options>"
+#     ]
+#
+# Using parsed
+# parsed.cfg
+# ------------
+# <?xml version="1.0" encoding="UTF-8"?>
+# <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
+#     <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
+#         <version>18.4R1-S2.4</version>
+#         <routing-options>
+#             <router-id>12.12.12.12</router-id>
+#             <autonomous-system>
+#                 <as-number>2</as-number>
+#                 <loops>4</loops>
+#                 <asdot-notation/>
+#             </autonomous-system>
+#         </routing-options>
+#     </configuration>
+# </rpc-reply>
+#
+- name: Parse routing-options running config
+  junipernetworks.junos.junos_routing_options:
+    running_config: "{{ lookup('file', './parsed.cfg') }}"
+    state: parsed
+#
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#
+#
+# "parsed":  {
+#         "autonomous_system": {
+#             "as_number": "2",
+#             "asdot_notation": true,
+#             "loops": 4
+#         },
+#         "router_id": "12.12.12.12"
+#     }
+#
 """
 RETURN = """
 before:
@@ -103,17 +348,19 @@ before:
   sample: >
     The configuration returned will always be in the same format
      of the parameters above.
+  type: dict
 after:
   description: The resulting configuration model invocation.
   returned: when changed
   sample: >
     The configuration returned will always be in the same format
      of the parameters above.
+  type: dict
 commands:
   description: The set of commands pushed to the remote device.
   returned: always
   type: list
-  sample: ['command 1', 'command 2', 'command 3']
+  sample: ['<nc:autonomous-system delete=\"delete\"/><nc:router-id delete=\"delete\"/></nc:routing-options>']
 """
 
 

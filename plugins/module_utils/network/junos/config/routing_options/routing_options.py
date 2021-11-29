@@ -167,11 +167,11 @@ class Routing_options(ConfigBase):
         if state == "deleted":
             self._state_deleted(want, have)
         elif state in ("merged", "rendered"):
-             self._state_merged(want, have)
+            self._state_merged(want, have)
         elif state == "replaced":
-             self._state_replaced(want, have)
+            self._state_replaced(want, have)
         elif state == "overridden":
-             self._state_replaced(want, have)
+            self._state_replaced(want, have)
         if self.root is not None:
             for xml in self.root.getchildren():
                 xml = tostring(xml)
