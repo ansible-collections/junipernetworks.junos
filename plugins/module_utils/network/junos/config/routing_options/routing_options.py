@@ -185,7 +185,6 @@ class Routing_options(ConfigBase):
         :returns: the commands necessary to migrate the current configuration
                   to the desired configuration
         """
-        routing_xml = []
         self._state_deleted(want, have)
         self._state_merged(want, have)
 
