@@ -101,7 +101,7 @@ EXAMPLES = """
 #
 - name: Merge provided NTP configuration into running configuration.
   junipernetworks.junos.junos_routing_options:
-    config: 
+    config:
       autonomous_system:
         as_number: 2
         asdot_notation: true
@@ -125,7 +125,7 @@ EXAMPLES = """
 # After state
 # -----------
 #
-# vagrant@vsrx# show routing-options      
+# vagrant@vsrx# show routing-options
 # autonomous-system 2 asdot-notation;
 #
 #
@@ -133,12 +133,12 @@ EXAMPLES = """
 # Before state
 # ------------
 #
-# vagrant@vsrx# show routing-options      
+# vagrant@vsrx# show routing-options
 # autonomous-system 2 asdot-notation;
 
 - name: Replaced running routing-options configuration with provided configuration
   junipernetworks.junos.junos_routing_options:
-    config: 
+    config:
       autonomous_system:
         as_number: 2
         asdot_notation: true
@@ -170,19 +170,19 @@ EXAMPLES = """
 # After state
 # -----------
 #
-# vagrant@vsrx# show routing-options    
+# vagrant@vsrx# show routing-options
 # router-id 1.1.1.1;
 # autonomous-system 2 asdot-notation;
 
 
 # Using overridden
 #
-# vagrant@vsrx# show routing-options      
+# vagrant@vsrx# show routing-options
 # autonomous-system 2 asdot-notation;
 
 - name: Override running routing-options configuration with provided configuration
   junipernetworks.junos.junos_routing_options:
-    config: 
+    config:
       autonomous_system:
         as_number: 2
         asdot_notation: true
@@ -214,7 +214,7 @@ EXAMPLES = """
 # After state
 # -----------
 #
-# vagrant@vsrx# show routing-options    
+# vagrant@vsrx# show routing-options
 # router-id 1.1.1.1;
 # autonomous-system 2 asdot-notation;
 #
@@ -223,7 +223,7 @@ EXAMPLES = """
 # Before state
 # ------------
 #
-# vagrant@vsrx# show routing-options    
+# vagrant@vsrx# show routing-options
 # router-id 1.1.1.1;
 # autonomous-system 2 asdot-notation;
 #
@@ -251,7 +251,7 @@ EXAMPLES = """
 # After state
 # -----------
 #
-# vagrant@vsrx# show routing-options 
+# vagrant@vsrx# show routing-options
 #
 # [edit]
 # Using gathered
@@ -259,7 +259,7 @@ EXAMPLES = """
 # Before state
 # ------------
 #
-# vagrant@vsrx# show routing-options    
+# vagrant@vsrx# show routing-options
 # router-id 1.1.1.1;
 # autonomous-system 2 asdot-notation;
 
@@ -285,7 +285,7 @@ EXAMPLES = """
 #
 - name: Render xml for provided facts.
   junipernetworks.junos.junos_routing_options:
-    config: 
+    config:
       autonomous_system:
         as_number: 2
         asdot_notation: true

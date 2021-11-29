@@ -2,4 +2,4 @@
 minor_changes:
   - Add junos_routing_options resource module.
 deprecated_features:
-  - 'router_id' options is deprecated from junos_ospf_interfaces, junos_ospfv2 and junos_ospfv3 resuorce module.
+  - "'router_id' options is deprecated from junos_ospf_interfaces, junos_ospfv2 and junos_ospfv3 resuorce module."
