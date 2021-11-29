@@ -67,7 +67,7 @@ class Routing_optionsFacts(object):
         return connection.get_configuration(filter=config_filter)
 
     def populate_facts(self, connection, ansible_facts, data=None):
-        """ Populate the facts for ntp_gloabl
+        """ Populate the facts for routing_options
         :param connection: the device connection
         :param ansible_facts: Facts dictionary
         :param data: previously collected conf
