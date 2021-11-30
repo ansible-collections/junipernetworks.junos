@@ -355,9 +355,9 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                             "options": {
                                                 "authentication_md5": {
                                                     "options": {
-                                                        "key": {"type": "str"},
+                                                        "key": {"type": "str", "no_log": False},
                                                         "password": {
-                                                            "type": "str"
+                                                            "type": "str", "no_log": False
                                                         },
                                                     },
                                                     "type": "dict",
@@ -367,9 +367,9 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                                 },
                                                 "authentication_sha": {
                                                     "options": {
-                                                        "key": {"type": "str"},
+                                                        "key": {"type": "str", "no_log": False},
                                                         "password": {
-                                                            "type": "str"
+                                                            "type": "str", "no_log": False
                                                         },
                                                     },
                                                     "type": "dict",
@@ -377,27 +377,27 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                                 "name": {"type": "str"},
                                                 "privacy_3des": {
                                                     "options": {
-                                                        "key": {"type": "str"},
+                                                        "key": {"type": "str", "no_log": False},
                                                         "password": {
-                                                            "type": "str"
+                                                            "type": "str", "no_log": False
                                                         },
                                                     },
                                                     "type": "dict",
                                                 },
                                                 "privacy_aes128": {
                                                     "options": {
-                                                        "key": {"type": "str"},
+                                                        "key": {"type": "str", "no_log": False},
                                                         "password": {
-                                                            "type": "str"
+                                                            "type": "str", "no_log": False
                                                         },
                                                     },
                                                     "type": "dict",
                                                 },
                                                 "privacy_des": {
                                                     "options": {
-                                                        "key": {"type": "str"},
+                                                        "key": {"type": "str", "no_log": False},
                                                         "password": {
-                                                            "type": "str"
+                                                            "type": "str", "no_log": False
                                                         },
                                                     },
                                                     "type": "dict",
@@ -420,9 +420,9 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                             "options": {
                                                 "authentication_md5": {
                                                     "options": {
-                                                        "key": {"type": "str"},
+                                                        "key": {"type": "str", "no_log": False},
                                                         "password": {
-                                                            "type": "str"
+                                                            "type": "str", "no_log": False
                                                         },
                                                     },
                                                     "type": "dict",
@@ -432,9 +432,9 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                                 },
                                                 "authentication_sha": {
                                                     "options": {
-                                                        "key": {"type": "str"},
+                                                        "key": {"type": "str", "no_log": False},
                                                         "password": {
-                                                            "type": "str"
+                                                            "type": "str", "no_log": False
                                                         },
                                                     },
                                                     "type": "dict",
@@ -442,27 +442,27 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                                 "name": {"type": "str"},
                                                 "privacy_3des": {
                                                     "options": {
-                                                        "key": {"type": "str"},
+                                                        "key": {"type": "str", "no_log": False},
                                                         "password": {
-                                                            "type": "str"
+                                                            "type": "str", "no_log": False
                                                         },
                                                     },
                                                     "type": "dict",
                                                 },
                                                 "privacy_aes128": {
                                                     "options": {
-                                                        "key": {"type": "str"},
+                                                        "key": {"type": "str", "no_log": False},
                                                         "password": {
-                                                            "type": "str"
+                                                            "type": "str", "no_log": False
                                                         },
                                                     },
                                                     "type": "dict",
                                                 },
                                                 "privacy_des": {
                                                     "options": {
-                                                        "key": {"type": "str"},
+                                                        "key": {"type": "str", "no_log": False},
                                                         "password": {
-                                                            "type": "str"
+                                                            "type": "str", "no_log": False
                                                         },
                                                     },
                                                     "type": "dict",

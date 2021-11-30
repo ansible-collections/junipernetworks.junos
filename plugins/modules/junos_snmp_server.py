@@ -121,7 +121,7 @@ options:
             description: Specify the name of client list or prefix list.
             type: str
           clients: &clients
-            description: Specify List of source address prefix ranges to accept. 
+            description: Specify List of source address prefix ranges to accept.
             type: list
             elements: dict
             suboptions:
@@ -132,7 +132,7 @@ options:
                 description: Deny access.
                 type: bool
           routing_instances: &routing_instances
-            description: Use routing-instance name for v1/v2c clients. 
+            description: Use routing-instance name for v1/v2c clients.
             type: list
             elements: dict
             suboptions:
@@ -142,7 +142,7 @@ options:
               client_list_name: *client_list_name
               clients: *clients
           logical_system: &logical_system
-            description: Use logical-system name for v1/v2c clients. 
+            description: Use logical-system name for v1/v2c clients.
             type: list
             elements: str
           view:
@@ -165,17 +165,17 @@ options:
         description: Specify SNMPv3 engine ID
         type: dict
         suboptions:
-          local: 
+          local:
             description: Local engine ID.
             type: str
           use_default_ip_address:
-            description: Use default IP address for the engine ID. 
+            description: Use default IP address for the engine ID.
             type: bool
           use_mac_address:
-            description: Uses management interface MAC Address for the engine ID. 
+            description: Uses management interface MAC Address for the engine ID.
             type: bool
       filter_duplicates:
-        description: Filter requests with duplicate source address/port and request ID. 
+        description: Filter requests with duplicate source address/port and request ID.
         type: bool
       filter_interfaces:
         description: List of interfaces that needs to be filtered.
@@ -185,7 +185,7 @@ options:
             description: Set filter-interfaces.
             type: bool
           all_internal_interfaces:
-            description: Filter all internal interfaces. 
+            description: Filter all internal interfaces.
             type: bool
           interfaces:
             description: Specify filter specified interfaces.
@@ -214,7 +214,7 @@ options:
          description: Filter interfaces config for ifNumber and ipv6Interfaces.
          type: bool
       interfaces:
-        description: Restrict SNMP requests to interfaces. 
+        description: Restrict SNMP requests to interfaces.
         type: list
         elements: str
       location:
@@ -291,61 +291,61 @@ options:
               id:
                 description: Specify alarm ID.
                 type: str
-              description: 
+              description:
                 description:  General description of alarm (stored in alarmOwner).
                 type: str
               falling_event_index:
-                description: Event triggered after falling threshold is crossed. 
+                description: Event triggered after falling threshold is crossed.
                 type: int
               falling_threshold:
-                description: Specify falling-threshold. 
+                description: Specify falling-threshold.
                 type: int
               falling_threshold_interval:
                 description: Interval between samples during falling-threshold test.
                 type: int
               interval:
-                description: Interval between samples. 
+                description: Interval between samples.
                 type: int
               request_type:
-                description: Type of SNMP request to issue for alarm. 
+                description: Type of SNMP request to issue for alarm.
                 type: str
                 choices: ["get-next-request", "get-request", "walk-request"]
               rising_event_index:
-                description: Event triggered after rising threshold is crossed. 
+                description: Event triggered after rising threshold is crossed.
                 type: int
               rising_threshold:
-                description: The rising threshold. 
+                description: The rising threshold.
                 type: int
               sample_type:
-                description: Method of sampling the selected variable. 
+                description: Method of sampling the selected variable.
                 type: str
                 choices: ["absolute-value", "delta-value"]
               startup_alarm:
-                description: The alarm that may be sent upon entry startup. 
+                description: The alarm that may be sent upon entry startup.
                 type: str
                 choices: ["falling-alarm", "rising-alarm", "rising-or-falling-alarm"]
               syslog_subtag:
-                description: Tag to be added to syslog messages. 
+                description: Tag to be added to syslog messages.
                 type: str
               variable:
-                description: OID of MIB variable to be monitored. 
+                description: OID of MIB variable to be monitored.
                 type: str
           events:
             description: RMON event entries.
             type: list
             elements: dict
             suboptions:
-              id: 
-                description: Specify event ID. 
+              id:
+                description: Specify event ID.
                 type: int
-              community: 
-                description: The community (trap group) for outgoing traps. 
+              community:
+                description: The community (trap group) for outgoing traps.
                 type: str
-              description: 
-                description: General description of event. 
+              description:
+                description: General description of event.
                 type: str
-              type: 
-                description: The type of notification for this event. 
+              type:
+                description: The type of notification for this event.
                 type: str
                 choices: ["log", "log-and-trap", "none", "snmptrap"]
       subagent:
@@ -362,7 +362,7 @@ options:
               routing_instances_default:
                 description: Specify routing-instance name for tcp connection.
                 type: bool
-      traceoptions: 
+      traceoptions:
         description: Configure trace options for SNMP.
         type: dict
         suboptions:
@@ -423,7 +423,7 @@ options:
             description: Memory tracing information.
             type: dict
             suboptions:
-              set: 
+              set:
                 description: set memory traceoptions.
                 type: bool
               size:
@@ -437,8 +437,8 @@ options:
         type: list
         elements: dict
         suboptions:
-          name: 
-            description: Specify trap group name. 
+          name:
+            description: Specify trap group name.
             type: str
           categories:
             description: Specify Trap categories.
@@ -494,7 +494,7 @@ options:
                     description: ODU Locked alarm notification.
                     type: bool
                   odu_oci:
-                    description: ODU Open connection indicator alarm notifications. 
+                    description: ODU Open connection indicator alarm notifications.
                     type: bool
                   odu_rx_aps_change:
                     description: ODU Receive APS change notifications.
@@ -503,42 +503,42 @@ options:
                     description: ODU Signal degrade alarm notifications.
                     type: bool
                   odu_ses_threshold:
-                    description: ODU Severely Errored Second threshold alarm notification. 
+                    description: ODU Severely Errored Second threshold alarm notification.
                     type: bool
                   odu_sf:
                     description: ODU Signal fail alarm notification.
-                    type: bool                   
+                    type: bool
                   odu_ttim:
-                    description: ODU Trace identification mismatch alarm notification. 
+                    description: ODU Trace identification mismatch alarm notification.
                     type: bool
                   odu_uas_threshold:
-                    description: ODU Unavailable Second threshold alarm notification. 
+                    description: ODU Unavailable Second threshold alarm notification.
                     type: bool
                   opu_ptm:
-                    description: ODU Payload Type Mismatch alarm notification. 
+                    description: ODU Payload Type Mismatch alarm notification.
                     type: bool
                   otu_ais:
-                    description: OTU Alarm indication signal alarm notification. 
+                    description: OTU Alarm indication signal alarm notification.
                     type: bool
                   otu_bbe_threshold:
-                    description: OTU Background block error threshold alarm notification. 
+                    description: OTU Background block error threshold alarm notification.
                     type: bool
-                  otu_bdi: 
-                    description: OTU Backward defect indication alarm notification. 
+                  otu_bdi:
+                    description: OTU Backward defect indication alarm notification.
                     type: bool
                   otu_es_threshold:
-                    description: OTU Errored Second threshold alarm notification. 
+                    description: OTU Errored Second threshold alarm notification.
                     type: bool
                   otu_fec_deg:
                     description: OTU Fec degraded errors alarm notification.
                     type: bool
                   otu_fec_exe:
                     description: OTU Fec excessive errors alarm notification.
-                    type: bool 
+                    type: bool
                   otu_iae:
                     description: OTU Incoming alignment error alarm notification.
                     type: bool
-                  otu_sd: 
+                  otu_sd:
                     description: OTU Signal degrade alarm notification.
                     type: bool
                   otu_ses_threshold:
@@ -560,7 +560,7 @@ options:
                 description: Remote operations.
                 type: bool
               rmon_alarm:
-                description: RMON rising and falling alarms. 
+                description: RMON rising and falling alarms.
                 type: bool
               routing:
                 description: Routing protocol notifications.
@@ -571,7 +571,7 @@ options:
               startup:
                 description: System warm and cold starts.
                 type: bool
-              vrrp_events: 
+              vrrp_events:
                 description: VRRP notifications.
                 type: bool
           destination_port:
@@ -607,7 +607,7 @@ options:
             description: Add context oid in varbind of all traps at the end.
             type: bool
           enterprise_oid:
-            description: Add snmpTrapEnterprise oid in varbind of all traps. 
+            description: Add snmpTrapEnterprise oid in varbind of all traps.
             type: bool
           logical_system: *logical_system
           routing_instance:
@@ -618,7 +618,7 @@ options:
             type: dict
             suboptions:
               address:
-                description: Use specified address. 
+                description: Use specified address.
                 type: str
               lowest_loopback:
                 description: Use lowest address on loopback interfaces.
@@ -632,11 +632,11 @@ options:
             type: list
             elements: dict
             suboptions:
-              name: 
+              name:
                 description: Specify notify name.
                 type: str
               tag:
-                description: Notifications will be sent to all targets configured with this tag. 
+                description: Notifications will be sent to all targets configured with this tag.
                 type: str
               type:
                 description: Notification type.
@@ -646,42 +646,42 @@ options:
             type: list
             elements: dict
             suboptions:
-              name: 
+              name:
                 description: Specify notify filter name.
-                type: str 
+                type: str
               oids:
-                description: OID to include/exclude from notify filter. 
+                description: OID to include/exclude from notify filter.
                 type: list
                 elements: dict
                 suboptions:
                   oid:
-                    description: Specify OID. 
+                    description: Specify OID.
                     type: str
                   exclude:
-                    description: Exclude this OID from the notify filtered. 
+                    description: Exclude this OID from the notify filtered.
                     type: bool
                   include:
-                    description: Include this OID in the notify filter. 
+                    description: Include this OID in the notify filter.
                     type: bool
           snmp_community:
-            description: SNMP community and view-based access control model configuration. 
+            description: SNMP community and view-based access control model configuration.
             type: list
             elements: dict
             suboptions:
               community_index:
-                description: Unique index value in this community table entry. 
+                description: Unique index value in this community table entry.
                 type: str
               security_name:
-                description: Security name used when performing access control. 
+                description: Security name used when performing access control.
                 type: str
               community_name:
-                description: SNMPv1/v2c community name (default is same as community-index). 
+                description: SNMPv1/v2c community name (default is same as community-index).
                 type: str
               context:
-                description: Context used when performing access control. 
+                description: Context used when performing access control.
                 type: str
               tag:
-                description: Tag identifier for set of targets allowed to use this community string. 
+                description: Tag identifier for set of targets allowed to use this community string.
                 type: str
           target_addresses:
             description: Identifies notification targets as well as allowed management stations.
@@ -689,48 +689,48 @@ options:
             elements: dict
             suboptions:
               name:
-                description: SNMP target address name. 
+                description: SNMP target address name.
                 type: str
               address:
-                description: SNMP target address. 
+                description: SNMP target address.
                 type: str
               address_mask:
                 description: Mask range of addresses for community string access control.
                 type: str
               logical_system:
-                description: Logical-system name for trap destination. 
+                description: Logical-system name for trap destination.
                 type: str
               port:
-                description: SNMP target port number. 
+                description: SNMP target port number.
                 type: int
               retry_count:
-                description: Maximum retry count for confirmed SNMP notifications. 
+                description: Maximum retry count for confirmed SNMP notifications.
                 type: int
               routing_instance:
-                description: Routing instance for trap destination. 
+                description: Routing instance for trap destination.
                 type: str
               tag_list:
-                description: SNMP tag list used to select target addresses. 
+                description: SNMP tag list used to select target addresses.
                 type: str
               target_parameters:
-                description: SNMPv3 target parameter name in the target parameters table. 
+                description: SNMPv3 target parameter name in the target parameters table.
                 type: str
               timeout:
-                description: Acknowledgment timeout for confirmed SNMP notifications (seconds). 
+                description: Acknowledgment timeout for confirmed SNMP notifications (seconds).
                 type: int
           target_parameters:
-            description: SNMPv3 target parameter name in the target parameters table. 
+            description: SNMPv3 target parameter name in the target parameters table.
             type: list
             elements: dict
             suboptions:
-              name:  
+              name:
                 description: SNMPv3 target parameters name.
                 type: str
               notify_filter:
                 description: Notify filter with filter name to apply to notifications.
                 type: str
               parameters:
-                description: Parameters used when sending notifications. 
+                description: Parameters used when sending notifications.
                 type: dict
                 suboptions:
                   message_processing_model:
@@ -738,7 +738,7 @@ options:
                     type: str
                     choices: ["v1", "v2c", "v3"]
                   security_level:
-                    description: Security-level used when generating SNMP notifications. 
+                    description: Security-level used when generating SNMP notifications.
                     type: str
                     choices: ["authentication", "none", "privacy"]
                   security_model:
@@ -746,14 +746,14 @@ options:
                     type: str
                     choices: ["usm", "v1", "v2c"]
                   security_name:
-                    description: Security name used when generating SNMP notifications. 
+                    description: Security name used when generating SNMP notifications.
                     type: str
           usm:
-            description: User-based security model (USM) information. 
+            description: User-based security model (USM) information.
             type: dict
             suboptions:
               local_engine:
-                description: Local engine user configuration. 
+                description: Local engine user configuration.
                 type: dict
                 suboptions:
                   users: &users
@@ -762,14 +762,14 @@ options:
                     elements: dict
                     suboptions:
                       name:
-                        description: User name. 
+                        description: User name.
                         type: str
                       authentication_md5:
                         description: Configure MD5 authentication.
                         type: dict
                         suboptions:
                           key:
-                            description: Encrypted key used for user authentication. 
+                            description: Encrypted key used for user authentication.
                             type: str
                             no_log: True
                           password:
@@ -777,14 +777,14 @@ options:
                             type: str
                             no_log: True
                       authentication_none:
-                        description: Set no authentication for the user. 
+                        description: Set no authentication for the user.
                         type: bool
                       authentication_sha:
                         description: Configure SHA authentication.
                         type: dict
                         suboptions:
                           key:
-                            description: Encrypted key used for user authentication. 
+                            description: Encrypted key used for user authentication.
                             type: str
                             no_log: True
                           password:
@@ -796,7 +796,7 @@ options:
                         type: dict
                         suboptions:
                           key:
-                            description: Encrypted key used for user privacy. 
+                            description: Encrypted key used for user privacy.
                             type: str
                             no_log: True
                           password:
@@ -831,20 +831,20 @@ options:
                         description: Set no privacy for the user.
                         type: bool
               remote_engine:
-                description: Remote engine user configuration. 
+                description: Remote engine user configuration.
                 type: list
                 elements: dict
                 suboptions:
                   id: 
-                    description:  Remote engine id. 
+                    description:  Remote engine id.
                     type: str
                   users: *users
       views:
-        description: Define MIB views. 
+        description: Define MIB views.
         type: list
         elements: dict
         suboptions:
-          name: 
+          name:
             description: MIB view name.
             type: str
           oids:
@@ -853,14 +853,14 @@ options:
             elements: dict
             suboptions:
               oid:
-                description: OID to include or exclude from view. 
+                description: OID to include or exclude from view.
                 type: str
               exclude:
-                description: Exclude this OID from the view. 
+                description: Exclude this OID from the view.
                 type: bool
               include:
-                description: Include this OID from the view. 
-                type: bool        
+                description: Include this OID from the view.
+                type: bool
   state:
     description:
     - The state the configuration should be left in.
@@ -891,19 +891,19 @@ EXAMPLES = """
 # }
 - name: Merge provided SNMP configuration into running configuration.
   junipernetworks.junos.junos_snmp_server:
-    config: 
-      arp: 
+    config:
+      arp:
         set: true
         host_name_resolution: true
       client_lists:   # ATTR-----2
          - name: cl1
-           addresses: 
+           addresses:
              - address: "192.16.1.0/24"
              - address: "192.16.2.0/24"
              - address: "11.11.11.11"
-               restrict: true  
+               restrict: true
          - name: cl2
-           addresses: 
+           addresses:
              - address: "192.16.4.0/24"
       routing_instance_access:  # ATTR-----3
         set: true
@@ -966,7 +966,7 @@ EXAMPLES = """
 # After state
 # -----------
 #
-# vagrant@vsrx# show snmp 
+# vagrant@vsrx# show snmp
 # client-list cl1 {
 #     192.16.1.0/24;
 #     192.16.2.0/24;
@@ -1417,15 +1417,15 @@ EXAMPLES = """
 #
 - name: Render xml for provided facts.
   junipernetworks.junos.junos_snmp_server:
-    config: 
-          arp: 
-            set: true
-            host_name_resolution: true
-          routing_instance_access:  # ATTR-----3
-            set: true
-            access_lists:
-              - "clv1"
-              - "clv2"
+    config:
+      arp:
+        set: true
+        host_name_resolution: true
+      routing_instance_access:  # ATTR-----3
+        set: true
+        access_lists:
+          - "clv1"
+          - "clv2"
     state: rendered
 #
 # -------------------------
@@ -1539,12 +1539,14 @@ before:
   sample: >
     The configuration returned will always be in the same format
      of the parameters above.
+  type: dict
 after:
   description: The resulting configuration model invocation.
   returned: when changed
   sample: >
     The configuration returned will always be in the same format
      of the parameters above.
+  type: dict
 commands:
   description: The set of commands pushed to the remote device.
   returned: always
