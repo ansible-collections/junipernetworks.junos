@@ -142,7 +142,9 @@ class Snmp_serverFacts(object):
 
         # Read client_lists node
         if "client-list" in conf.keys():
-            snmp_server_config["client_lists"] = self.get_client_list(conf.get("client-list"))
+            snmp_server_config["client_lists"] = self.get_client_list(
+                conf.get("client-list")
+            )
 
         # Read communities node
         if "community" in conf.keys():
@@ -239,9 +241,13 @@ class Snmp_serverFacts(object):
                 if "idp" in health_monitor.keys():
                     health_dict["idp"] = True
                 if "falling-threshold" in health_monitor.keys():
-                    health_dict["falling_threshold"] = health_monitor["falling-threshold"]
+                    health_dict["falling_threshold"] = health_monitor[
+                        "falling-threshold"
+                    ]
                 if "rising-threshold" in health_monitor.keys():
-                    health_dict["rising_threshold"] = health_monitor["rising-threshold"]
+                    health_dict["rising_threshold"] = health_monitor[
+                        "rising-threshold"
+                    ]
                 if "interval" in health_monitor.keys():
                     health_dict["interval"] = health_monitor["interval"]
             snmp_server_config["health_monitor"] = health_dict
@@ -330,9 +336,13 @@ class Snmp_serverFacts(object):
             trace_options = conf.get("traceoptions")
 
             if "file" in trace_options.keys():
-                cfg_dict["file"] = self.get_trace_file(trace_options.get("file"))
+                cfg_dict["file"] = self.get_trace_file(
+                    trace_options.get("file")
+                )
             if "flag" in trace_options.keys():
-                cfg_dict["flag"] = self.get_trace_flag(trace_options.get("flag"))
+                cfg_dict["flag"] = self.get_trace_flag(
+                    trace_options.get("flag")
+                )
             if "memory-trace" in trace_options.keys():
                 mtrace = trace_options.get("memory-trace")
                 trace_dict = {}
@@ -383,7 +393,9 @@ class Snmp_serverFacts(object):
                         source_dict["lowest_loopback"] = True
                     cfg_dict["source_address"] = source_dict
                 if "routing-instance" in trap_options.keys():
-                    cfg_dict["routing_instance"] = trap_options.get("routing-instance")
+                    cfg_dict["routing_instance"] = trap_options.get(
+                        "routing-instance"
+                    )
 
             snmp_server_config["trap_options"] = cfg_dict
 
@@ -707,7 +719,7 @@ class Snmp_serverFacts(object):
             cfg_dict["description"] = cfg.get("description")
         if "type" in cfg.keys():
             cfg_dict["type"] = cfg.get("type")
-        return  cfg_dict
+        return cfg_dict
 
     def get_alarms(self, cfg):
         cfg_dict = {}
@@ -719,7 +731,9 @@ class Snmp_serverFacts(object):
         if "falling-threshold" in cfg.keys():
             cfg_dict["falling_threshold"] = cfg.get("falling-threshold")
         if "falling-threshold-interval" in cfg.keys():
-            cfg_dict["falling_threshold_interval"] = cfg.get("falling-threshold-interval")
+            cfg_dict["falling_threshold_interval"] = cfg.get(
+                "falling-threshold-interval"
+            )
         if "interval" in cfg.keys():
             cfg_dict["interval"] = cfg.get("interval")
         if "request-type" in cfg.keys():
@@ -804,10 +818,14 @@ class Snmp_serverFacts(object):
                 client_addresses = client_lists["client-address-list"]
                 client_address_lst = []
                 if isinstance(client_addresses, dict):
-                    client_address_lst.append(self.get_client_address(client_addresses))
+                    client_address_lst.append(
+                        self.get_client_address(client_addresses)
+                    )
                 else:
                     for address in client_addresses:
-                        client_address_lst.append(self.get_client_address(address))
+                        client_address_lst.append(
+                            self.get_client_address(address)
+                        )
                 if client_address_lst:
                     client_dict["addresses"] = client_address_lst
             client_lst.append(client_dict)
@@ -819,10 +837,14 @@ class Snmp_serverFacts(object):
                     client_addresses = client["client-address-list"]
                     client_address_lst = []
                     if isinstance(client_addresses, dict):
-                        client_address_lst.append(self.get_client_address(client_addresses))
+                        client_address_lst.append(
+                            self.get_client_address(client_addresses)
+                        )
                     else:
                         for address in client_addresses:
-                            client_address_lst.append(self.get_client_address(address))
+                            client_address_lst.append(
+                                self.get_client_address(address)
+                            )
                     if client_address_lst:
                         client_dict["addresses"] = client_address_lst
                 client_lst.append(client_dict)

@@ -1,6 +1,6 @@
 ---
 - debug:
-    msg: "START junos_ntp_global replaced integration tests on connection={{ ansible_connection }}"
+    msg: "START junos_snmp_server replaced integration tests on connection={{ ansible_connection }}"
 
 - block:
     - include_tasks: _reset_config.yaml
@@ -8,21 +8,27 @@
     - include_tasks: _populate_config.yaml
 
     - name: Override configuration
-      junipernetworks.junos.junos_ntp_global: &replaced
+      junipernetworks.junos.junos_snmp_server: &replaced
         config:
-          multicast_client: "224.0.0.1"
-          interval_range: 3
-          peers:
-            - peer: "172.44.194.188"
-              key_id: 10000
-              prefer: true
-              version: 3
+          contact: "ansiblesupport11@redhat.com"
+          customization:
+            ether_stats_ifd_only: True
+          description: "Local SNMP Server"
+          engine_id:
+            use_mac_address: True
+          filter_duplicates: True
+          filter_interfaces:
+            set: True
+            all_internal_interfaces: True
+            interfaces:
+              - "eth1"
+              - "eth2"
         state: replaced
       register: result
 
     - name: Assert that before dicts were correctly generated
       assert:
-        that: "{{ merged['after'] == result['before'] }}"
+        that: "{{ gathered['facts'] == result['before'] }}"
 
     - name: Assert configuration
       assert:
@@ -31,7 +37,7 @@
           - "{{ replaced['after'] == result.after }}"
 
     - name: Replaced the provided configuration with the existing running configuration (IDEMPOTENT)
-      junos_ntp_global: *replaced
+      junos_snmp_server: *replaced
       register: result
 
     - name: Assert that the previous task was idempotent
@@ -44,4 +50,4 @@
     - include_tasks: _reset_config.yaml
 
 - debug:
-    msg: "END junos_ntp_global replaced integration tests on connection={{ ansible_connection }}"
+    msg: "END junos_snmp_server replaced integration tests on connection={{ ansible_connection }}"

@@ -27,18 +27,19 @@ The module file for junos_snmp_server
 """
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
-    'metadata_version': '1.1',
-    'status': ['preview'],
-    'supported_by': 'network'
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "network",
 }
 
 DOCUMENTATION = """
 ---
 module: junos_snmp_server
-version_added: 2.7.0
+version_added: 2.9.0
 short_description: Manage SNMP server configuration on Junos devices.
 description: This module manages SNMP server configuration on devices running Junos.
 author: Rohit Thakur (@rohitthakur2590)
@@ -876,9 +877,660 @@ options:
     default: merged
 """
 EXAMPLES = """
+# Using merged
+#
+# Before state
+# ------------
+#
+# vagrant@vsrx# show routing-instances
+# clv1 {
+#     description clv1;
+# }
+# clv2 {
+#     description clv2;
+# }
+- name: Merge provided SNMP configuration into running configuration.
+  junipernetworks.junos.junos_snmp_server:
+    config: 
+      arp: 
+        set: true
+        host_name_resolution: true
+      client_lists:   # ATTR-----2
+         - name: cl1
+           addresses: 
+             - address: "192.16.1.0/24"
+             - address: "192.16.2.0/24"
+             - address: "11.11.11.11"
+               restrict: true  
+         - name: cl2
+           addresses: 
+             - address: "192.16.4.0/24"
+      routing_instance_access:  # ATTR-----3
+        set: true
+        access_lists:
+          - "clv1"
+          - "clv2"
+    state: merged
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#     "after": {
+#         "arp": {
+#             "host_name_resolution": true
+#         },
+#         "client_lists": [
+#             {
+#                 "addresses": [
+#                     {
+#                         "address": "192.16.1.0/24"
+#                     },
+#                     {
+#                         "address": "192.16.2.0/24"
+#                     },
+#                     {
+#                         "address": "11.11.11.11/32",
+#                         "restrict": true
+#                     }
+#                 ],
+#                 "name": "cl1"
+#             },
+#             {
+#                 "addresses": [
+#                     {
+#                         "address": "192.16.4.0/24"
+#                     }
+#                 ],
+#                 "name": "cl2"
+#             }
+#         ],
+#         "routing_instance_access": {
+#             "access_lists": [
+#                 "clv1",
+#                 "clv2"
+#             ]
+#         }
+#     },
+#     "before": {},
+#     "changed": true,
+#     "commands": [
+#           "<nc:snmp xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+#           "<nc:arp><nc:host-name-resolution/></nc:arp><nc:client-list><nc:name>cl1</nc:name>"
+#           "<nc:client-address-list><nc:name>192.16.1.0/24</nc:name></nc:client-address-list>"
+#           "<nc:client-address-list><nc:name>192.16.2.0/24</nc:name></nc:client-address-list><nc:client-address-list>"
+#           "<nc:name>11.11.11.11</nc:name><nc:restrict/></nc:client-address-list></nc:client-list><nc:client-list>"
+#           "<nc:name>cl2</nc:name><nc:client-address-list><nc:name>192.16.4.0/24</nc:name></nc:client-address-list>"
+#           "</nc:client-list><nc:routing-instance-access><nc:access-list><nc:name>clv1</nc:name></nc:access-list>"
+#           "<nc:access-list><nc:name>clv2</nc:name></nc:access-list></nc:routing-instance-access></nc:snmp>"
+#     ]
+# After state
+# -----------
+#
+# vagrant@vsrx# show snmp 
+# client-list cl1 {
+#     192.16.1.0/24;
+#     192.16.2.0/24;
+#     11.11.11.11/32 {
+#         restrict;
+#     }
+# }
+# client-list cl2 {
+#     192.16.4.0/24;
+# }
+# routing-instance-access {
+#     access-list {
+#         clv1;
+#         clv2;
+#     }
+# }
+# arp {
+#     host-name-resolution;
+# }
+# vagrant@vsrx# show routing-instances
+# clv1 {
+#     description clv1;
+# }
+# clv2 {
+#     description clv2;
+# }
+#
+# Using Replaced
+# Before state
+# ------------
+#
+# vagrant@vsrx# show snmp
+# client-list cl1 {
+#     192.16.1.0/24;
+#     192.16.2.0/24;
+#     11.11.11.11/32 {
+#         restrict;
+#     }
+# }
+# client-list cl2 {
+#     192.16.4.0/24;
+# }
+# routing-instance-access {
+#     access-list {
+#         clv1;
+#         clv2;
+#     }
+# }
+# arp {
+#     host-name-resolution;
+# }
+# vagrant@vsrx# show routing-instances
+# clv1 {
+#     description clv1;
+# }
+# clv2 {
+#     description clv2;
+# }
 
+- name: Replaced running SNMP server configuration with provided configuration
+  junipernetworks.junos.junos_snmp_server:
+    config:
+      contact: "ansiblesupport11@redhat.com"
+      customization:
+        ether_stats_ifd_only: True
+      description: "Local SNMP Server"
+      engine_id:
+        local: "local1"
+        use_default_ip_address: True
+        use_mac_address: True
+      filter_duplicates: True
+      filter_interfaces:
+        set: True
+        all_internal_interfaces: True
+        interfaces:
+          - "eth1"
+          - "eth2"
+    state: replaced
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#     "after": {
+#         "contact": "ansiblesupport11@redhat.com",
+#         "customization": {
+#             "ether_stats_ifd_only": true
+#         },
+#         "description": "Local SNMP Server",
+#         "engine_id": {
+#             "use_mac_address": true
+#         },
+#         "filter_duplicates": true,
+#         "filter_interfaces": {
+#             "all_internal_interfaces": true,
+#             "interfaces": [
+#                 "eth1",
+#                 "eth2"
+#             ]
+#         }
+#     },
+#     "before":
+#      {
+#         "arp": {
+#             "host_name_resolution": true
+#         },
+#         "client_lists": [
+#             {
+#                 "addresses": [
+#                     {
+#                         "address": "192.16.1.0/24"
+#                     },
+#                     {
+#                         "address": "192.16.2.0/24"
+#                     },
+#                     {
+#                         "address": "11.11.11.11/32",
+#                         "restrict": true
+#                     }
+#                 ],
+#                 "name": "cl1"
+#             },
+#             {
+#                 "addresses": [
+#                     {
+#                         "address": "192.16.4.0/24"
+#                     }
+#                 ],
+#                 "name": "cl2"
+#             }
+#         ],
+#         "routing_instance_access": {
+#             "access_lists": [
+#                 "clv1",
+#                 "clv2"
+#             ]
+#         }
+#     },
+#     "changed": true,
+#     "commands": [
+#         "<nc:snmp xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>",
+#         "<nc:snmp xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\" delete=\"delete\"/>",
+#         "<nc:snmp xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+#         "<nc:contact>ansiblesupport11@redhat.com</nc:contact><nc:customization>"
+#         "<nc:ether-stats-ifd-only/></nc:customization><nc:description>Local SNMP Server</nc:description>"
+#         "<nc:engine-id><nc:local>local1</nc:local><nc:use-default-ip-address/><nc:use-mac-address/>"
+#         "</nc:engine-id><nc:filter-duplicates/><nc:filter-interfaces><nc:all-internal-interfaces/><nc:interfaces>"
+#         "<nc:name>eth1</nc:name></nc:interfaces><nc:interfaces><nc:name>eth2</nc:name></nc:interfaces>"
+#         "</nc:filter-interfaces></nc:snmp>"
+#     ]
+# After state
+# -----------
+#
+# vagrant@vsrx# show routing-instances
+# clv1 {
+#     description clv1;
+# }
+# clv2 {
+#     description clv2;
+# }
+# vagrant@vsrx# show snmp
+# description "Local SNMP Server";
+# contact "ansiblesupport11@redhat.com";
+# filter-interfaces {
+#     interfaces {
+#         eth1;
+#         eth2;
+#     }
+#     all-internal-interfaces;
+# }
+# filter-duplicates;
+# engine-id {
+#     use-mac-address;
+# }
+# customization {
+#     ether-stats-ifd-only;
+# }
 
-
+# Using overridden
+#
+# Before state
+# ------------
+#
+# vagrant@vsrx# show snmp
+# client-list cl1 {
+#     192.16.1.0/24;
+#     192.16.2.0/24;
+#     11.11.11.11/32 {
+#         restrict;
+#     }
+# }
+# client-list cl2 {
+#     192.16.4.0/24;
+# }
+# routing-instance-access {
+#     access-list {
+#         clv1;
+#         clv2;
+#     }
+# }
+# arp {
+#     host-name-resolution;
+# }
+# vagrant@vsrx# show routing-instances
+# clv1 {
+#     description clv1;
+# }
+# clv2 {
+#     description clv2;
+# }
+- name: Override running SNMP server configuration with provided configuration
+  junipernetworks.junos.junos_snmp_server:
+    config:
+      contact: "ansiblesupport11@redhat.com"
+      customization:
+        ether_stats_ifd_only: True
+      description: "Local SNMP Server"
+      engine_id:
+        local: "local1"
+        use_default_ip_address: True
+        use_mac_address: True
+      filter_duplicates: True
+      filter_interfaces:
+        set: True
+        all_internal_interfaces: True
+        interfaces:
+          - "eth1"
+          - "eth2"
+    state:  overridden
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#     "after": {
+#         "contact": "ansiblesupport11@redhat.com",
+#         "customization": {
+#             "ether_stats_ifd_only": true
+#         },
+#         "description": "Local SNMP Server",
+#         "engine_id": {
+#             "use_mac_address": true
+#         },
+#         "filter_duplicates": true,
+#         "filter_interfaces": {
+#             "all_internal_interfaces": true,
+#             "interfaces": [
+#                 "eth1",
+#                 "eth2"
+#             ]
+#         }
+#     },
+#     "before":
+#      {
+#         "arp": {
+#             "host_name_resolution": true
+#         },
+#         "client_lists": [
+#             {
+#                 "addresses": [
+#                     {
+#                         "address": "192.16.1.0/24"
+#                     },
+#                     {
+#                         "address": "192.16.2.0/24"
+#                     },
+#                     {
+#                         "address": "11.11.11.11/32",
+#                         "restrict": true
+#                     }
+#                 ],
+#                 "name": "cl1"
+#             },
+#             {
+#                 "addresses": [
+#                     {
+#                         "address": "192.16.4.0/24"
+#                     }
+#                 ],
+#                 "name": "cl2"
+#             }
+#         ],
+#         "routing_instance_access": {
+#             "access_lists": [
+#                 "clv1",
+#                 "clv2"
+#             ]
+#         }
+#     },
+#     "changed": true,
+#     "commands": [
+#         "<nc:snmp xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>",
+#         "<nc:snmp xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\" delete=\"delete\"/>",
+#         "<nc:snmp xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+#         "<nc:contact>ansiblesupport11@redhat.com</nc:contact><nc:customization>"
+#         "<nc:ether-stats-ifd-only/></nc:customization><nc:description>Local SNMP Server</nc:description>"
+#         "<nc:engine-id><nc:local>local1</nc:local><nc:use-default-ip-address/><nc:use-mac-address/>"
+#         "</nc:engine-id><nc:filter-duplicates/><nc:filter-interfaces><nc:all-internal-interfaces/><nc:interfaces>"
+#         "<nc:name>eth1</nc:name></nc:interfaces><nc:interfaces><nc:name>eth2</nc:name></nc:interfaces>"
+#         "</nc:filter-interfaces></nc:snmp>"
+#     ]
+# After state
+# -----------
+#
+# vagrant@vsrx# show routing-instances
+# clv1 {
+#     description clv1;
+# }
+# clv2 {
+#     description clv2;
+# }
+# vagrant@vsrx# show snmp
+# description "Local SNMP Server";
+# contact "ansiblesupport11@redhat.com";
+# filter-interfaces {
+#     interfaces {
+#         eth1;
+#         eth2;
+#     }
+#     all-internal-interfaces;
+# }
+# filter-duplicates;
+# engine-id {
+#     use-mac-address;
+# }
+# customization {
+#     ether-stats-ifd-only;
+# }
+#
+# Using deleted
+#
+# Before state
+# ------------
+#
+# vagrant@vsrx# show routing-instances
+# clv1 {
+#     description clv1;
+# }
+# clv2 {
+#     description clv2;
+# }
+# vagrant@vsrx# show snmp
+# description "Local SNMP Server";
+# contact "ansiblesupport11@redhat.com";
+# filter-interfaces {
+#     interfaces {
+#         eth1;
+#         eth2;
+#     }
+#     all-internal-interfaces;
+# }
+# filter-duplicates;
+# engine-id {
+#     use-mac-address;
+# }
+# customization {
+#     ether-stats-ifd-only;
+# }
+#
+- name: Delete running SNMP server configuration
+  junipernetworks.junos.junos_snmp_server:
+    config:
+    state: deleted
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#     "after": {},
+#     "before": {
+#         "contact": "ansiblesupport11@redhat.com",
+#         "customization": {
+#             "ether_stats_ifd_only": true
+#         },
+#         "description": "Local SNMP Server",
+#         "engine_id": {
+#             "use_mac_address": true
+#         },
+#         "filter_duplicates": true,
+#         "filter_interfaces": {
+#             "all_internal_interfaces": true,
+#             "interfaces": [
+#                 "eth1",
+#                 "eth2"
+#             ]
+#         }
+#     },
+#     "changed": true,
+#     "commands": [
+#               "<nc:snmp xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"/>",
+#               "<nc:snmp xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\" delete=\"delete\"/>"
+#     ]
+# After state
+# -----------
+#
+# vagrant@vsrx# show routing-instances
+# clv1 {
+#     description clv1;
+# }
+# clv2 {
+#     description clv2;
+# }
+# vagrant@vsrx# show snmp
+# description "Local SNMP Server";
+# contact "ansiblesupport11@redhat.com";
+# filter-interfaces {
+#     interfaces {
+#         eth1;
+#         eth2;
+#     }
+#     all-internal-interfaces;
+# }
+# filter-duplicates;
+# engine-id {
+#     use-mac-address;
+# }
+# customization {
+#     ether-stats-ifd-only;
+# }
+#
+- name: Gather running SNMP server configuration
+  junipernetworks.junos.junos_snmp_server:
+    state: gathered
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#     "gathered": {
+#         "contact": "ansiblesupport11@redhat.com",
+#         "customization": {
+#             "ether_stats_ifd_only": true
+#         },
+#         "description": "Local SNMP Server",
+#         "engine_id": {
+#             "use_mac_address": true
+#         },
+#         "filter_duplicates": true,
+#         "filter_interfaces": {
+#             "all_internal_interfaces": true,
+#             "interfaces": [
+#                 "eth1",
+#                 "eth2"
+#             ]
+#         }
+#     },
+#     "changed": false,
+# Using rendered
+#
+# Before state
+# ------------
+#
+- name: Render xml for provided facts.
+  junipernetworks.junos.junos_snmp_server:
+    config: 
+          arp: 
+            set: true
+            host_name_resolution: true
+          routing_instance_access:  # ATTR-----3
+            set: true
+            access_lists:
+              - "clv1"
+              - "clv2"
+    state: rendered
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#     "rendered": [
+#           "<nc:snmp xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+#           "<nc:arp><nc:host-name-resolution/></nc:arp><nc:routing-instance-access>"
+#           "<nc:access-list><nc:name>clv1</nc:name></nc:access-list><nc:access-list><nc:name>clv2</nc:name>"
+#           "</nc:access-list></nc:routing-instance-access></nc:snmp>"
+#     ]
+#
+# Using parsed
+# parsed.cfg
+# ------------
+# <?xml version="1.0" encoding="UTF-8"?>
+# <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
+#     <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
+#         <version>18.4R1-S2.4</version>
+#         <system xmlns="http://yang.juniper.net/junos-es/conf/system">
+#            <snmp>
+#         <client-list>
+#             <name>cl1</name>
+#             <client-address-list>
+#                 <name>192.16.1.0/24</name>
+#             </client-address-list>
+#             <client-address-list>
+#                 <name>192.16.2.0/24</name>
+#             </client-address-list>
+#             <client-address-list>
+#                 <name>11.11.11.11/32</name>
+#                 <restrict/>
+#             </client-address-list>
+#         </client-list>
+#         <client-list>
+#             <name>cl2</name>
+#             <client-address-list>
+#                 <name>192.16.4.0/24</name>
+#             </client-address-list>
+#         </client-list>
+#         <routing-instance-access>
+#             <access-list>
+#                 <name>clv1</name>
+#             </access-list>
+#             <access-list>
+#                 <name>clv2</name>
+#             </access-list>
+#         </routing-instance-access>
+#         <arp>
+#             <host-name-resolution/>
+#         </arp>
+#     </snmp>
+#     </system>
+#     </configuration>
+# </rpc-reply>
+#
+- name: Parse SNMP server running config
+  junipernetworks.junos.junos_snmp_server:
+    running_config: "{{ lookup('file', './parsed.cfg') }}"
+    state: parsed
+#
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#
+#
+# "parsed":  {
+#         "arp": {
+#             "host_name_resolution": true
+#         },
+#         "client_lists": [
+#             {
+#                 "addresses": [
+#                     {
+#                         "address": "192.16.1.0/24"
+#                     },
+#                     {
+#                         "address": "192.16.2.0/24"
+#                     },
+#                     {
+#                         "address": "11.11.11.11/32",
+#                         "restrict": true
+#                     }
+#                 ],
+#                 "name": "cl1"
+#             },
+#             {
+#                 "addresses": [
+#                     {
+#                         "address": "192.16.4.0/24"
+#                     }
+#                 ],
+#                 "name": "cl2"
+#             }
+#         ],
+#         "routing_instance_access": {
+#             "access_lists": [
+#                 "clv1",
+#                 "clv2"
+#             ]
+#         }
+#     }
+#
+#
 """
 RETURN = """
 before:
@@ -897,7 +1549,8 @@ commands:
   description: The set of commands pushed to the remote device.
   returned: always
   type: list
-  sample: ['command 1', 'command 2', 'command 3']
+  sample: ['<nc:arp><nc:host-name-resolution/></nc:arp><nc:routing-instance-access>"',
+           '<nc:snmp xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">']
 """
 
 
@@ -933,5 +1586,5 @@ def main():
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

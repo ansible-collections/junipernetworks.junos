@@ -88,8 +88,6 @@ replaced:
       ether_stats_ifd_only: true
     description: "Local SNMP Server"
     engine_id:
-      local: "local1"
-      use_default_ip_address: true
       use_mac_address: true
     filter_duplicates: true
     filter_interfaces:
