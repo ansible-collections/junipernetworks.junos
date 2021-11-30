@@ -355,9 +355,13 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                             "options": {
                                                 "authentication_md5": {
                                                     "options": {
-                                                        "key": {"type": "str", "no_log": False},
+                                                        "key": {
+                                                            "type": "str",
+                                                            "no_log": False,
+                                                        },
                                                         "password": {
-                                                            "type": "str", "no_log": False
+                                                            "type": "str",
+                                                            "no_log": False,
                                                         },
                                                     },
                                                     "type": "dict",
@@ -367,9 +371,13 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                                 },
                                                 "authentication_sha": {
                                                     "options": {
-                                                        "key": {"type": "str", "no_log": False},
+                                                        "key": {
+                                                            "type": "str",
+                                                            "no_log": False,
+                                                        },
                                                         "password": {
-                                                            "type": "str", "no_log": False
+                                                            "type": "str",
+                                                            "no_log": False,
                                                         },
                                                     },
                                                     "type": "dict",
@@ -377,27 +385,39 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                                 "name": {"type": "str"},
                                                 "privacy_3des": {
                                                     "options": {
-                                                        "key": {"type": "str", "no_log": False},
+                                                        "key": {
+                                                            "type": "str",
+                                                            "no_log": False,
+                                                        },
                                                         "password": {
-                                                            "type": "str", "no_log": False
+                                                            "type": "str",
+                                                            "no_log": False,
                                                         },
                                                     },
                                                     "type": "dict",
                                                 },
                                                 "privacy_aes128": {
                                                     "options": {
-                                                        "key": {"type": "str", "no_log": False},
+                                                        "key": {
+                                                            "type": "str",
+                                                            "no_log": False,
+                                                        },
                                                         "password": {
-                                                            "type": "str", "no_log": False
+                                                            "type": "str",
+                                                            "no_log": False,
                                                         },
                                                     },
                                                     "type": "dict",
                                                 },
                                                 "privacy_des": {
                                                     "options": {
-                                                        "key": {"type": "str", "no_log": False},
+                                                        "key": {
+                                                            "type": "str",
+                                                            "no_log": False,
+                                                        },
                                                         "password": {
-                                                            "type": "str", "no_log": False
+                                                            "type": "str",
+                                                            "no_log": False,
                                                         },
                                                     },
                                                     "type": "dict",
@@ -420,9 +440,13 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                             "options": {
                                                 "authentication_md5": {
                                                     "options": {
-                                                        "key": {"type": "str", "no_log": False},
+                                                        "key": {
+                                                            "type": "str",
+                                                            "no_log": False,
+                                                        },
                                                         "password": {
-                                                            "type": "str", "no_log": False
+                                                            "type": "str",
+                                                            "no_log": False,
                                                         },
                                                     },
                                                     "type": "dict",
@@ -432,9 +456,13 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                                 },
                                                 "authentication_sha": {
                                                     "options": {
-                                                        "key": {"type": "str", "no_log": False},
+                                                        "key": {
+                                                            "type": "str",
+                                                            "no_log": False,
+                                                        },
                                                         "password": {
-                                                            "type": "str", "no_log": False
+                                                            "type": "str",
+                                                            "no_log": False,
                                                         },
                                                     },
                                                     "type": "dict",
@@ -442,27 +470,39 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                                 "name": {"type": "str"},
                                                 "privacy_3des": {
                                                     "options": {
-                                                        "key": {"type": "str", "no_log": False},
+                                                        "key": {
+                                                            "type": "str",
+                                                            "no_log": False,
+                                                        },
                                                         "password": {
-                                                            "type": "str", "no_log": False
+                                                            "type": "str",
+                                                            "no_log": False,
                                                         },
                                                     },
                                                     "type": "dict",
                                                 },
                                                 "privacy_aes128": {
                                                     "options": {
-                                                        "key": {"type": "str", "no_log": False},
+                                                        "key": {
+                                                            "type": "str",
+                                                            "no_log": False,
+                                                        },
                                                         "password": {
-                                                            "type": "str", "no_log": False
+                                                            "type": "str",
+                                                            "no_log": False,
                                                         },
                                                     },
                                                     "type": "dict",
                                                 },
                                                 "privacy_des": {
                                                     "options": {
-                                                        "key": {"type": "str", "no_log": False},
+                                                        "key": {
+                                                            "type": "str",
+                                                            "no_log": False,
+                                                        },
                                                         "password": {
-                                                            "type": "str", "no_log": False
+                                                            "type": "str",
+                                                            "no_log": False,
                                                         },
                                                     },
                                                     "type": "dict",
@@ -612,7 +652,7 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                         "context_oid": {"type": "bool"},
                         "enterprise_oid": {"type": "bool"},
                         "logical_system": {"elements": "str", "type": "list"},
-                        "routing_instances": {"type": "str"},
+                        "routing_instance": {"type": "str"},
                         "set": {"type": "bool"},
                         "source_address": {
                             "options": {

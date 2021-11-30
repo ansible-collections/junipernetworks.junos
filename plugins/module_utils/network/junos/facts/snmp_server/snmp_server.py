@@ -376,11 +376,11 @@ class Snmp_serverFacts(object):
             if trap_options is None:
                 cfg_dict["set"] = True
             else:
-                if "agent_address" in trap_options.keys():
+                if "agent-address" in trap_options.keys():
                     agent_dict = {}
                     agent_dict["outgoing_interface"] = True
                     cfg_dict["agent_address"] = agent_dict
-                if "context_oid" in trap_options.keys():
+                if "context-oid" in trap_options.keys():
                     cfg_dict["context_oid"] = True
                 if "enterprise-oid" in trap_options.keys():
                     cfg_dict["enterprise_oid"] = True

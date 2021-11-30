@@ -742,7 +742,7 @@ options:
                     type: str
                     choices: ["authentication", "none", "privacy"]
                   security_model:
-                    description: Security-model used when generating SNMP notifications. 
+                    description: Security-model used when generating SNMP notifications.
                     type: str
                     choices: ["usm", "v1", "v2c"]
                   security_name:
@@ -808,7 +808,7 @@ options:
                         type: dict
                         suboptions:
                           key:
-                            description: Encrypted key used for user privacy. 
+                            description: Encrypted key used for user privacy.
                             type: str
                             no_log: True
                           password:
@@ -820,7 +820,7 @@ options:
                         type: dict
                         suboptions:
                           key:
-                            description: Encrypted key used for user privacy. 
+                            description: Encrypted key used for user privacy.
                             type: str
                             no_log: True
                           password:
