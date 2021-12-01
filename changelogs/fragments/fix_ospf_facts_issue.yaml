@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - Fix ospf router_id overlap issue.

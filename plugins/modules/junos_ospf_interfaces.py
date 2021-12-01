@@ -59,10 +59,7 @@ options:
     suboptions:
       router_id:
         description:
-        - The OSPFv3 router id.
-        - This option is DEPRECATED and will be replaced with router_id attribute of
-          junos_routing_options resource_module.
-        - This attribute will be removed after 2024-01-01.
+        - The OSPF router id.
         type: str
       name:
         description:
