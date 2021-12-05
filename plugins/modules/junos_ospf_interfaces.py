@@ -133,6 +133,10 @@ options:
                 description:
                   - Priority for the interface.
                 type: int
+              passive:
+                description:
+                  - Do not run OSPF, but advertise it.
+                type: bool
               metric:
                 description:
                   - Metric applied to the interface.
