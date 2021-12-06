@@ -58,6 +58,12 @@ class InterfacesArgs(object):
                 "mtu": {"type": "int"},
                 "name": {"required": True, "type": "str"},
                 "speed": {"type": "str"},
+                "units": {
+                    "elements": "dict",
+                    "options": {"name": {"type": "int"},
+                                "description": {"type": "str"}},
+                    "type": "list",
+                },
             },
             "type": "list",
         },

@@ -91,6 +91,18 @@ options:
         description:
         - Interface link speed. Applicable for Ethernet interfaces only.
         type: str
+      units:
+        description:
+          - Specify Logical interfaces units.
+        type: list
+        elements: dict
+        suboptions:
+          name:
+            description:
+              - Specify interface unit number.
+            type: int
+          description:
+            description: Specify logical interface description.   
   running_config:
     description:
     - This option is used only with state I(parsed).
