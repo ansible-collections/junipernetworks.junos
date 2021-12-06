@@ -14,15 +14,6 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
-    ConfigBase,
-)
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    to_list,
-)
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
-    Facts,
-)
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     locked_config,
     load_config,
@@ -158,7 +149,7 @@ class Snmp_server(ConfigBase):
         """
         self.root = build_root_xml_node("configuration")
         self.snmp = build_child_xml_node(self.root, "snmp")
-        temp_lst = []
+        cmd_lst = []
         state = self._module.params["state"]
         if (
             state in ("merged", "replaced", "rendered", "overridden")
@@ -181,8 +172,8 @@ class Snmp_server(ConfigBase):
         if self.root is not None:
             for xml in self.root.getchildren():
                 xml = tostring(xml)
-                temp_lst.append(xml)
-        return temp_lst
+                cmd_lst.append(xml)
+        return cmd_lst
 
     def _state_replaced(self, want, have):
         """ The command generator when state is replaced
@@ -814,10 +805,10 @@ class Snmp_server(ConfigBase):
                                                     "privacy-password",
                                                     sub_dict["password"],
                                                 )
-            if "views" in usm.keys():
-                views = usm.get("views")
+            if "views" in want.keys():
+                views = want.get("views")
                 for view in views:
-                    view_node = build_child_xml_node(usm_node, "view")
+                    view_node = build_child_xml_node(snmp_node, "view")
 
                     if "name" in view.keys():
                         build_child_xml_node(

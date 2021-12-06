@@ -771,11 +771,9 @@ options:
                           key:
                             description: Encrypted key used for user authentication.
                             type: str
-                            no_log: True
                           password:
                             description: User's authentication password
                             type: str
-                            no_log: True
                       authentication_none:
                         description: Set no authentication for the user.
                         type: bool
@@ -786,11 +784,9 @@ options:
                           key:
                             description: Encrypted key used for user authentication.
                             type: str
-                            no_log: True
                           password:
                             description: User's authentication password
                             type: str
-                            no_log: True
                       privacy_3des:
                         description: Configure Triple DES privacy.
                         type: dict
@@ -798,11 +794,9 @@ options:
                           key:
                             description: Encrypted key used for user privacy.
                             type: str
-                            no_log: True
                           password:
                             description: User's privacy password
                             type: str
-                            no_log: True
                       privacy_aes128:
                         description: Configure AES128 privacy.
                         type: dict
@@ -810,11 +804,9 @@ options:
                           key:
                             description: Encrypted key used for user privacy.
                             type: str
-                            no_log: True
                           password:
                             description: User's privacy password
                             type: str
-                            no_log: True
                       privacy_des:
                         description: Configure DES privacy.
                         type: dict
@@ -822,11 +814,9 @@ options:
                           key:
                             description: Encrypted key used for user privacy.
                             type: str
-                            no_log: True
                           password:
                             description: User's privacy password
                             type: str
-                            no_log: True
                       privacy_none:
                         description: Set no privacy for the user.
                         type: bool
@@ -835,7 +825,7 @@ options:
                 type: list
                 elements: dict
                 suboptions:
-                  id: 
+                  id:
                     description:  Remote engine id.
                     type: str
                   users: *users

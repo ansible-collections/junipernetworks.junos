@@ -43,14 +43,14 @@
         config:
           contact: "ansiblesupport11@redhat.com"
           customization:
-            ether_stats_ifd_only: True
+            ether_stats_ifd_only: true
           description: "Local SNMP Server"
           engine_id:
-            use_mac_address: True
-          filter_duplicates: True
+            use_mac_address: true
+          filter_duplicates: true
           filter_interfaces:
-            set: True
-            all_internal_interfaces: True
+            set: true
+            all_internal_interfaces: true
             interfaces:
               - "eth1"
               - "eth2"
