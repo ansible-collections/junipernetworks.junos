@@ -60,8 +60,10 @@ class InterfacesArgs(object):
                 "speed": {"type": "str"},
                 "units": {
                     "elements": "dict",
-                    "options": {"name": {"type": "int"},
-                                "description": {"type": "str"}},
+                    "options": {
+                        "name": {"type": "int"},
+                        "description": {"type": "str"},
+                    },
                     "type": "list",
                 },
             },

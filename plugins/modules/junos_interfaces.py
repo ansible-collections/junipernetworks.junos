@@ -102,7 +102,8 @@ options:
               - Specify interface unit number.
             type: int
           description:
-            description: Specify logical interface description.   
+            description: Specify logical interface description.
+            type: str
   running_config:
     description:
     - This option is used only with state I(parsed).
@@ -131,7 +132,8 @@ notes:
 - This module requires the netconf system service be enabled on the remote device
   being managed.
 - Tested against vSRX JUNOS version 18.4R1.
-- This module works with connection C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
+- This module works with connection C(netconf).
+- See L(the Junos OS Platform Options,https://docs.ansible.com/ansible/latest/network/user_guide/platform_junos.html).
 """
 EXAMPLES = """
 # Using deleted

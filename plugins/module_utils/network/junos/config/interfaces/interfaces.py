@@ -231,12 +231,14 @@ class Interfaces(ConfigBase):
             if config.get("enabled") is False:
                 build_child_xml_node(intf, "disable")
 
-            if "units" in config.keys():
+            if config.get("units"):
                 units = config.get("units")
                 for unit in units:
                     unit_node = build_child_xml_node(intf, "unit")
                     build_child_xml_node(unit_node, "name", unit["name"])
-                    build_child_xml_node(unit_node, "description", unit["description"])
+                    build_child_xml_node(
+                        unit_node, "description", unit["description"]
+                    )
 
             holdtime = config.get("hold_time")
             if holdtime:
@@ -304,11 +306,14 @@ class Interfaces(ConfigBase):
             build_child_xml_node(intf, "disable", None, {"delete": "delete"})
 
             holdtime_ele = build_child_xml_node(intf, "hold-time")
-            unit_node = build_child_xml_node(intf, "unit")
-            if "units" in config.keys():
+            if config.get("units"):
                 units = config["units"]
                 for unit in units:
-                    build_child_xml_node(unit_node, "description", None, {"delete": "delete"})
+                    unit_node = build_child_xml_node(intf, "unit")
+                    build_child_xml_node(unit_node, "name", unit["name"])
+                    build_child_xml_node(
+                        unit_node, "description", None, {"delete": "delete"}
+                    )
 
             for holdtime_field in ["up", "down"]:
                 build_child_xml_node(

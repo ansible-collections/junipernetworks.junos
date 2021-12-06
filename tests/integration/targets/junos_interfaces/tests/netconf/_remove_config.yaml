@@ -10,6 +10,7 @@
       - delete interfaces ge-0/0/2
       - delete interfaces ge-0/0/3
       - delete interfaces lo0
+      - delete interfaces fe-0/0/2
 
 - debug:
     msg: End junos_nterfaces deleted remove interface config ansible_connection={{

@@ -5,6 +5,8 @@
 
 - include_tasks: _remove_config.yaml
 
+- include_tasks: _initial_config.yaml
+
 - set_fact:
     expected_merged_output:
 
@@ -27,6 +29,12 @@
           up: 3000
           down: 3200
 
+      - name: fe-0/0/2
+        units:
+          - name: 10
+            description: "This is logical interface UNIT 10"
+          - name: 20
+            description: "This is logical interface UNIT 11"
       - name: fxp0
         enabled: true
 
@@ -54,6 +62,12 @@
             hold_time:
               up: 3000
               down: 3200
+          - name: fe-0/0/2
+            units:
+              - name: 10
+                description: "This is logical interface UNIT 10"
+              - name: 11
+                description: "This is logical interface UNIT 11"
         state: merged
 
     - name: Assert the configuration is reflected on host
