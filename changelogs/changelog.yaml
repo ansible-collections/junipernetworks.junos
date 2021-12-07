@@ -360,3 +360,10 @@ releases:
     - 0-copy_ignore_txt.yml
     - junos_ospf_router_if_fix.yaml
     release_date: '2021-11-25'
+  2.7.1:
+    changes:
+      bugfixes:
+      - Fix ospf router_id overlap issue.
+    fragments:
+    - fix_ospf_facts_issue.yaml
+    release_date: '2021-12-07'

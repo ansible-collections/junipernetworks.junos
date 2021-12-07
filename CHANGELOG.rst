@@ -5,6 +5,14 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v2.7.1
+======
+
+Bugfixes
+--------
+
+- Fix ospf router_id overlap issue.
+
 v2.7.0
 ======
 
