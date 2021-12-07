@@ -36,8 +36,8 @@
               up: 3000
               down: 3200
             units:
-              name: 0
-              description: "Logical interface UNIT 0"
+              - name: 0
+                description: "Logical interface UNIT 0"
         state: merged
 
     - name: Delete the provided interface configuration from running configuration
