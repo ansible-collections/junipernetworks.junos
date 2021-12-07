@@ -635,8 +635,6 @@ Parameters
                 </td>
                 <td>
                         <div>The OSPFv3 router id.</div>
-                        <div>This option is DEPRECATED and will be replaced with router_id attribute of junos_routing_options resource_module.</div>
-                        <div>This attribute will be removed after 2024-01-01.</div>
                 </td>
             </tr>
             <tr>
