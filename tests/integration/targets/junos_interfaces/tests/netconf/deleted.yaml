@@ -5,8 +5,6 @@
 
 - include_tasks: _remove_config.yaml
 
-- include_tasks: _initial_config.yaml
-
 - set_fact:
     expected_deleted_output:
 
@@ -37,12 +35,9 @@
             hold_time:
               up: 3000
               down: 3200
-          - name: fe-0/0/2
             units:
-              - name: 10
-                description: "This is logical interface UNIT 10"
-              - name: 11
-                description: "This is logical interface UNIT 11"
+              name: 0
+              description: "Logical interface UNIT 0"
         state: merged
 
     - name: Delete the provided interface configuration from running configuration
@@ -54,7 +49,6 @@
 
           - name: ge-0/0/2
 
-          - name: fe-0/0/2
         state: deleted
 
     - name: Assert the configuration is reflected on host

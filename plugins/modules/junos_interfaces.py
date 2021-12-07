@@ -145,6 +145,8 @@ EXAMPLES = """
 #    description "Configured by Ansible-1";
 #    speed 1g;
 #    mtu 1800
+#    unit 0 {
+#     description "This is logical intf unit0";
 # }
 # ge-0/0/2 {
 #    description "Configured by Ansible-2";
@@ -200,6 +202,9 @@ EXAMPLES = """
     - name: ge-0/0/1
       description: Configured by Ansible-1
       enabled: true
+      units:
+        - name: 0
+          description: ""This is logical intf unit0"
       mtu: 1800
     - name: ge-0/0/2
       description: Configured by Ansible-2
@@ -213,6 +218,9 @@ EXAMPLES = """
 #    description "Configured by Ansible-1";
 #    speed 1g;
 #    mtu 1800
+#    unit 0 {
+#     description "This is logical intf unit0";
+#   }
 # }
 # ge-0/0/2 {
 #    disable;
