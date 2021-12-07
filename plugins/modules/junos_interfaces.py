@@ -183,6 +183,15 @@ EXAMPLES = """
 #    description "test interface";
 #    speed 1g;
 # }
+# fe-0/0/2 {
+#     vlan-tagging;
+#     unit 10 {
+#         vlan-id 10;
+#     }
+#     unit 11 {
+#         vlan-id 11;
+#     }
+# }
 
 - name: Merge provided configuration with device configuration (default operation
     is merge)
