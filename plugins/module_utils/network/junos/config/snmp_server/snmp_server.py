@@ -331,7 +331,10 @@ class Snmp_server(ConfigBase):
         if "filter_interfaces" in want.keys():
             fints = want.get("filter_interfaces")
 
-            if not fints.keys() >= {"all_internal_interfaces", "interfaces"}:
+            if (
+                "all_internal_interfaces" not in fints.keys()
+                and "interfaces" not in fints.keys()
+            ):
                 build_child_xml_node(snmp_node, "filter-interfaces")
             else:
                 fints_node = build_child_xml_node(
@@ -351,13 +354,15 @@ class Snmp_server(ConfigBase):
         if "health_monitor" in want.keys():
             health = want.get("health_monitor")
 
-            if not health.keys() >= {
-                "falling_threshold",
-                "rising_threshold",
-                "idp",
-                "interval",
-            }:
-                build_child_xml_node(snmp_node, "health-monitor")
+            if (
+                "falling_threshold" not in health.keys()
+                and "rising_threshold" not in health.keys()
+            ):
+                if (
+                    "idp" not in health.keys()
+                    and "interval" not in health.keys()
+                ):
+                    build_child_xml_node(snmp_node, "health-monitor")
             else:
                 health_node = build_child_xml_node(snmp_node, "health-monitor")
                 if "falling_threshold" in health.keys():
@@ -414,7 +419,11 @@ class Snmp_server(ConfigBase):
         if "rmon" in want.keys():
             rmon = want.get("rmon")
 
-            if rmon.keys() == {"set"} and want.get("set"):
+            if (
+                "alarms" not in rmon.keys()
+                and "events" not in rmon.keys()
+                and want.get("set")
+            ):
                 build_child_xml_node(snmp_node, "rmon")
             else:
                 rmon_node = build_child_xml_node(snmp_node, "rmon")

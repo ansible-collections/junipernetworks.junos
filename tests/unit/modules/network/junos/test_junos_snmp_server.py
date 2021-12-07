@@ -431,7 +431,6 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             "</nc:community><nc:contact>rohitthakur2590</nc:contact><nc:customization><nc:ether-stats-ifd-only/>",
             "</nc:customization><nc:description>Local SNMP Server</nc:description><nc:engine-id>",
             "<nc:local>local1</nc:local><nc:use-default-ip-address/><nc:use-mac-address/></nc:engine-id>",
-            "<nc:name>eth1</nc:name></nc:interfaces><nc:interfaces><nc:name>eth2</nc:name></nc:interfaces>",
             "</nc:filter-interfaces><nc:health-monitor><nc:falling-threshold>50</nc:falling-threshold>",
             "<nc:rising-threshold>60</nc:rising-threshold><nc:interval>100</nc:interval><nc:idp/></nc:health-monitor>",
             "<nc:if-count-with-filter-interfaces/><nc:interface>eth1</nc:interface><nc:interface>eth2</nc:interface>",
