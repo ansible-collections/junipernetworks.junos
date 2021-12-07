@@ -204,7 +204,7 @@ EXAMPLES = """
       enabled: true
       units:
         - name: 0
-          description: ""This is logical intf unit0"
+          description: "This is logical intf unit0"
       mtu: 1800
     - name: ge-0/0/2
       description: Configured by Ansible-2
