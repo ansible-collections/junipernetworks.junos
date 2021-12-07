@@ -18,11 +18,11 @@
             use_mac_address: true
           filter_duplicates: true
           filter_interfaces:
-            set: true
             all_internal_interfaces: true
             interfaces:
               - "eth1"
               - "eth2"
+            set: true
         state: replaced
       register: result
 
