@@ -628,9 +628,6 @@ class TestJunosNtp_globalModule(TestJunosModule):
             "</nc:authentication-key><nc:boot-server>78.46.194.186</nc:boot-server></nc:ntp></nc:system>"
         )
         result = self.execute_module(changed=False)
-        with open("output.xml", "w") as outfile:
-            outfile.write(result["rendered"])
-
         self.assertEqual(sorted(result["rendered"]), sorted(rendered))
 
     def test_junos_ntp_global_replaced_01(self):

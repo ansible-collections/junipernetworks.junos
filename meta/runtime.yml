@@ -98,6 +98,10 @@ plugin_routing:
       redirect: junipernetworks.junos.junos
     ntp_global:
       redirect: junipernetworks.junos.junos
+    junos_snmp_server:
+      redirect: junipernetworks.junos.junos
+    snmp_server:
+      redirect: junipernetworks.junos.junos
     junos_lldp_interface:
       redirect: junipernetworks.junos.junos
     lldp_interface:
@@ -254,6 +258,8 @@ plugin_routing:
       redirect: junipernetworks.junos.junos_logging_global
     ntp_global:
       redirect: junipernetworks.junos.junos_ntp_global
+    snmp_server:
+      redirect: junipernetworks.junos.junos_snmp_server
     lldp_interface:
       redirect: junipernetworks.junos.junos_lldp_interface
       deprecation:
