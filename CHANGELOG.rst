@@ -5,6 +5,25 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v2.8.0
+======
+
+Minor Changes
+-------------
+
+- Add junos_routing_options resource module.
+- Add junos_snmp_server resource module.
+
+Deprecated Features
+-------------------
+
+- 'router_id' options is deprecated from junos_ospf_interfaces, junos_ospfv2 and junos_ospfv3 resuorce module.
+
+New Modules
+-----------
+
+- junos_routing_options - Manage routing-options configuration on Junos devices.
+
 v2.7.1
 ======
 

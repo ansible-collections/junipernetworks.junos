@@ -367,3 +367,19 @@ releases:
     fragments:
     - fix_ospf_facts_issue.yaml
     release_date: '2021-12-07'
+  2.8.0:
+    changes:
+      deprecated_features:
+      - '''router_id'' options is deprecated from junos_ospf_interfaces, junos_ospfv2
+        and junos_ospfv3 resuorce module.'
+      minor_changes:
+      - Add junos_routing_options resource module.
+      - Add junos_snmp_server resource module.
+    fragments:
+    - junos_routing_options_resource_module.yaml
+    - junos_snmp_server_module.yaml
+    modules:
+    - description: Manage routing-options configuration on Junos devices.
+      name: junos_routing_options
+      namespace: ''
+    release_date: '2021-12-09'
