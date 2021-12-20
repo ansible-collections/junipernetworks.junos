@@ -330,26 +330,25 @@ EXAMPLES = """
 # Before state:
 # ------------
 #
-# user@junos01# show interfaces
-# gr-0/0/0 {
-#     description "test gre interface";
-# }
-# fxp0 {
-#     unit 0 {
-#         family inet {
-#             dhcp;
-#         }
+# vagrant@vsrx# show interfaces
+# fe-0/0/2 {
+#     description "This is interface DESCRIPTION";
+#     vlan-tagging;
+#     unit 10 {
+#         description "UNIT 10 DESCRIPTION";
+#         vlan-id 10;
+#     }
+#     unit 11 {
+#         description "UNIT 11 DESCRIPTION";
+#         vlan-id 11;
 #     }
 # }
-# pp0 {
+# fxp0 {
+#     description OUTER;
 #     unit 0 {
-#         pppoe-options {
-#             idle-timeout 100;
-#             access-concentrator ispl.com;
-#             service-name "video@ispl.com";
-#             auto-reconnect 100;
-#             client;
-#             ## Warning: missing mandatory statement(s): 'underlying-interface'
+#         description "Sample config";
+#         family inet {
+#             dhcp;
 #         }
 #     }
 # }
@@ -362,45 +361,58 @@ EXAMPLES = """
 #
 # "gathered": [
 #         {
-#             "description": "test gre interface",
+#             "description": "This is interface DESCRIPTION",
 #             "enabled": true,
-#             "name": "gr-0/0/0"
+#             "name": "fe-0/0/2",
+#             "units": [
+#                 {
+#                     "description": "UNIT 10 DESCRIPTION",
+#                     "name": 10
+#                 },
+#                 {
+#                     "description": "UNIT 11 DESCRIPTION",
+#                     "name": 11
+#                 }
+#             ]
 #         },
 #         {
+#             "description": "OUTER",
 #             "enabled": true,
-#             "name": "fxp0"
-#         },
-#         {
-#             "enabled": true,
-#             "name": "pp0"
+#             "name": "fxp0",
+#             "units": [
+#                 {
+#                     "description": "Sample config",
+#                     "name": 0
+#                 }
+#             ]
 #         }
 #     ]
 # After state:
 # ------------
 #
-# user@junos01# show interfaces
-# gr-0/0/0 {
-#     description "test gre interface";
+# vagrant@vsrx# show interfaces
+# fe-0/0/2 {
+#     description "This is interface DESCRIPTION";
+#     vlan-tagging;
+#     unit 10 {
+#         description "UNIT 10 DESCRIPTION";
+#         vlan-id 10;
+#     }
+#     unit 11 {
+#         description "UNIT 11 DESCRIPTION";
+#         vlan-id 11;
+#     }
 # }
 # fxp0 {
+#     description OUTER;
 #     unit 0 {
+#         description "Sample config";
 #         family inet {
 #             dhcp;
 #         }
 #     }
 # }
-# pp0 {
-#     unit 0 {
-#         pppoe-options {
-#             idle-timeout 100;
-#             access-concentrator ispl.com;
-#             service-name "video@ispl.com";
-#             auto-reconnect 100;
-#             client;
-#             ## Warning: missing mandatory statement(s): 'underlying-interface'
-#         }
-#     }
-# }
+#
 # Using parsed
 # parsed.cfg
 # ------------

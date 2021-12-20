@@ -17,7 +17,6 @@ __metaclass__ = type
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
     to_list,
 )
-
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
     ConfigBase,
 )
@@ -165,7 +164,6 @@ class Interfaces(ConfigBase):
 
         for xml in config_xmls:
             root.append(xml)
-
         return tostring(root)
 
     def _state_replaced(self, want, have):
@@ -235,7 +233,7 @@ class Interfaces(ConfigBase):
                 units = config.get("units")
                 for unit in units:
                     unit_node = build_child_xml_node(intf, "unit")
-                    build_child_xml_node(unit_node, "name", unit["name"])
+                    build_child_xml_node(unit_node, "name", str(unit["name"]))
                     build_child_xml_node(
                         unit_node, "description", unit["description"]
                     )
@@ -310,7 +308,7 @@ class Interfaces(ConfigBase):
                 units = config["units"]
                 for unit in units:
                     unit_node = build_child_xml_node(intf, "unit")
-                    build_child_xml_node(unit_node, "name", unit["name"])
+                    build_child_xml_node(unit_node, "name", str(unit["name"]))
                     build_child_xml_node(
                         unit_node, "description", None, {"delete": "delete"}
                     )
