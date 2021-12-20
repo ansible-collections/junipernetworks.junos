@@ -29,12 +29,13 @@
           up: 3000
           down: 3200
 
-      - name: fe-0/0/2
+      - enabled: true
+        name: fe-0/0/2
         units:
-          - name: 10
-            description: "This is logical interface UNIT 10"
-          - name: 20
-            description: "This is logical interface UNIT 11"
+          - description: "This is logical interface UNIT 10"
+            name: 10
+          - description: "This is logical interface UNIT 11"
+            name: 11
       - name: fxp0
         enabled: true
 
