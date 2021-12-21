@@ -188,7 +188,6 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.u
 )
 from ansible.module_utils.six import iteritems
 
-
 try:
     from lxml.etree import Element, SubElement
 except ImportError:
@@ -250,18 +249,21 @@ def rpc(module, items):
             reply = exec_rpc(module, tostring(element), ignore_warning=False)
 
         if xattrs["format"] == "text":
-            if fetch_config:
-                data = reply.find(".//configuration-text")
-            else:
-                if text and text.startswith("show configuration"):
-                    data = reply.find(".//configuration-output")
+            if len(reply) >= 1:
+                if fetch_config:
+                    data = reply.find(".//configuration-text")
                 else:
-                    data = reply.find(".//output")
+                    if text and text.startswith("show configuration"):
+                        data = reply.find(".//configuration-output")
+                    else:
+                        data = reply.find(".//output")
 
-            if data is None:
-                module.fail_json(msg=tostring(reply))
+                if data is None:
+                    module.fail_json(msg=tostring(reply))
 
-            responses.append(data.text.strip())
+                responses.append(data.text.strip())
+            else:
+                responses.append(reply.text.strip())
 
         elif xattrs["format"] == "json":
             responses.append(module.from_json(reply.text.strip()))
@@ -429,7 +431,6 @@ def main():
     retries = module.params["retries"]
     interval = module.params["interval"]
     match = module.params["match"]
-
     while retries > 0:
         responses = rpc(module, items)
         transformed = list()
