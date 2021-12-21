@@ -266,57 +266,81 @@ class Interfaces(ConfigBase):
             # delete base interfaces attribute from all the existing interface
             intf_obj = have
 
-        for config in intf_obj:
-            intf = build_root_xml_node("interface")
-            build_child_xml_node(intf, "name", config["name"])
+        if have:
+            for config in intf_obj:
+                intf = build_root_xml_node("interface")
+                build_child_xml_node(intf, "name", config["name"])
 
-            intf_fields = ["description"]
-            if not any(
-                [
-                    config["name"].startswith("gr"),
-                    config["name"].startswith("lo"),
-                ]
-            ):
-                intf_fields.append("speed")
+                intf_fields = ["description"]
+                if not any(
+                    [
+                        config["name"].startswith("gr"),
+                        config["name"].startswith("lo"),
+                    ]
+                ):
+                    intf_fields.append("speed")
 
-            if not any(
-                [
-                    config["name"].startswith("gr"),
-                    config["name"].startswith("fxp"),
-                    config["name"].startswith("lo"),
-                ]
-            ):
-                intf_fields.append("mtu")
+                if not any(
+                    [
+                        config["name"].startswith("gr"),
+                        config["name"].startswith("fxp"),
+                        config["name"].startswith("lo"),
+                    ]
+                ):
+                    intf_fields.append("mtu")
 
-            for field in intf_fields:
-                build_child_xml_node(intf, field, None, {"delete": "delete"})
-
-            if not any(
-                [
-                    config["name"].startswith("gr"),
-                    config["name"].startswith("lo"),
-                ]
-            ):
-                build_child_xml_node(
-                    intf, "link-mode", None, {"delete": "delete"}
-                )
-
-            build_child_xml_node(intf, "disable", None, {"delete": "delete"})
-
-            holdtime_ele = build_child_xml_node(intf, "hold-time")
-            if config.get("units"):
-                units = config["units"]
-                for unit in units:
-                    unit_node = build_child_xml_node(intf, "unit")
-                    build_child_xml_node(unit_node, "name", str(unit["name"]))
+                for field in intf_fields:
                     build_child_xml_node(
-                        unit_node, "description", None, {"delete": "delete"}
+                        intf, field, None, {"delete": "delete"}
                     )
 
-            for holdtime_field in ["up", "down"]:
+                if not any(
+                    [
+                        config["name"].startswith("gr"),
+                        config["name"].startswith("lo"),
+                    ]
+                ):
+                    build_child_xml_node(
+                        intf, "link-mode", None, {"delete": "delete"}
+                    )
+
                 build_child_xml_node(
-                    holdtime_ele, holdtime_field, None, {"delete": "delete"}
+                    intf, "disable", None, {"delete": "delete"}
                 )
-            intf_xml.append(intf)
+
+                holdtime_ele = build_child_xml_node(intf, "hold-time")
+                have_cfg = self.in_have(config["name"], have)
+                if have_cfg:
+                    logical_cfg = have_cfg
+                else:
+                    logical_cfg = config
+                if logical_cfg.get("units"):
+                    units = logical_cfg.get("units")
+                    for unit in units:
+                        unit_node = build_child_xml_node(intf, "unit")
+                        build_child_xml_node(
+                            unit_node, "name", str(unit["name"])
+                        )
+                        build_child_xml_node(
+                            unit_node,
+                            "description",
+                            None,
+                            {"delete": "delete"},
+                        )
+
+                for holdtime_field in ["up", "down"]:
+                    build_child_xml_node(
+                        holdtime_ele,
+                        holdtime_field,
+                        None,
+                        {"delete": "delete"},
+                    )
+                intf_xml.append(intf)
 
         return intf_xml
+
+    def in_have(self, name, have):
+        for item in have:
+            if name == item["name"]:
+                return item
+        return None
