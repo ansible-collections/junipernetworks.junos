@@ -2,7 +2,7 @@
 - debug: msg="START netconf_text/no_config.yaml on connection={{ ansible_connection
     }}"
 
-- name: test bad condition
+- name: test handling of show command's empty response received from network device
   register: result
   ignore_errors: true
   junipernetworks.junos.junos_command:
@@ -14,6 +14,9 @@
 - assert:
     that:
       - result.failed == false
+      - result.changed == false
+      - result.stdout == [""]
+      - result.stdout_lines == [""]
 
 - debug: msg="END netconf_text/no_config.yaml on connection={{ ansible_connection
     }}"
