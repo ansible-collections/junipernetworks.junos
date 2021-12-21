@@ -15,8 +15,8 @@
     that:
       - result.failed == false
       - result.changed == false
-      - result.stdout == [""]
-      - result.stdout_lines == [""]
+      - result.stdout|symmetric_difference([""]) == []
+      - result.stdout_lines|symmetric_difference([[""]]) == []
 
 - debug: msg="END netconf_text/no_config.yaml on connection={{ ansible_connection
     }}"
