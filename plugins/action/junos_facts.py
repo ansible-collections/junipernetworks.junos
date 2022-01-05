@@ -17,9 +17,6 @@ from ansible_collections.junipernetworks.junos.plugins.modules.junos_facts impor
     DOCUMENTATION,
 )
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.facts.facts import (
-    FactsArgs,
-)
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
     Facts,
     FACT_RESOURCE_SUBSETS,
@@ -69,8 +66,7 @@ class ActionModule(ActionBase):
         basic.AnsibleModule(**argspec)
 
     def run(self, tmp=None, task_vars=None):
-
-        argument_spec = FactsArgs.argument_spec
+        argument_spec = (convert_doc_to_ansible_module_kwargs(DOCUMENTATION))['argument_spec']
         argument_spec.update(junos_argument_spec)
         self._check_argspec()
         super(ActionModule, self).run(tmp, task_vars)
