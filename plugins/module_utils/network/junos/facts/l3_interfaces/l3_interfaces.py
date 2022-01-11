@@ -43,6 +43,8 @@ class L3_interfacesFacts(object):
 
     def __init__(self, module, subspec="config", options="options"):
         self._module = module
+        self.argument_spec = self._module.argument_spec
+        self.generated_spec = utils.generate_dict(self.argument_spec)
 
     def get_config(self, connection, config_filter):
         """
