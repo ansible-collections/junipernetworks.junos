@@ -27,12 +27,13 @@ The module file for junos_hostname
 """
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
-    'metadata_version': '1.1',
-    'status': ['preview'],
-    'supported_by': 'network'
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "network",
 }
 
 DOCUMENTATION = """
@@ -109,8 +110,12 @@ commands:
 
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.hostname.hostname import HostnameArgs
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.hostname.hostname import Hostname
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.hostname.hostname import (
+    HostnameArgs,
+)
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.hostname.hostname import (
+    Hostname,
+)
 
 
 def main():
@@ -119,12 +124,22 @@ def main():
 
     :returns: the result form module invocation
     """
-    module = AnsibleModule(argument_spec=HostnameArgs.argument_spec,
-                           supports_check_mode=True)
+    required_if = [
+        ("state", "merged", ("config",)),
+        ("state", "replaced", ("config",)),
+        ("state", "overridden", ("config",)),
+        ("state", "rendered", ("config",)),
+        ("state", "parsed", ("running_config",)),
+    ]
+    module = AnsibleModule(
+        argument_spec=HostnameArgs.argument_spec,
+        required_if=required_if,
+        supports_check_mode=True,
+    )
 
     result = Hostname(module).execute_module()
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

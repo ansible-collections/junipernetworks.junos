@@ -9,20 +9,43 @@ It is in this file the configuration is collected from the device
 for a given resource, parsed, and the facts tree is populated
 based on the configuration.
 """
-import re
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
+from ansible.module_utils._text import to_bytes
+from ansible.module_utils.basic import missing_required_lib
 from copy import deepcopy
 
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
     utils,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.hostname.hostname import HostnameArgs
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.hostname.hostname import (
+    HostnameArgs,
+)
+from ansible.module_utils.six import string_types
+import q
+
+try:
+    from lxml import etree
+
+    HAS_LXML = True
+except ImportError:
+    HAS_LXML = False
+
+try:
+    import xmltodict
+
+    HAS_XMLTODICT = True
+except ImportError:
+    HAS_XMLTODICT = False
 
 
 class HostnameFacts(object):
     """ The junos hostname fact class
     """
 
-    def __init__(self, module, subspec='config', options='options'):
+    def __init__(self, module, subspec="config", options="options"):
         self._module = module
         self.argument_spec = HostnameArgs.argument_spec
         spec = deepcopy(self.argument_spec)
@@ -36,52 +59,66 @@ class HostnameFacts(object):
 
         self.generated_spec = utils.generate_dict(facts_argument_spec)
 
+    def get_device_data(self, connection, config_filter):
+        """
+        :param connection:
+        :param config_filter:
+        :return:
+        """
+        return connection.get_configuration(filter=config_filter)
+
     def populate_facts(self, connection, ansible_facts, data=None):
-        """ Populate the facts for hostname
+        """ Populate the facts for ntp_gloabl
         :param connection: the device connection
         :param ansible_facts: Facts dictionary
         :param data: previously collected conf
         :rtype: dictionary
         :returns: facts
         """
-        if connection:  # just for linting purposes, remove
-            pass
+        q("INSIDE HOSTNAME FACTS")
+        if not HAS_LXML:
+            self._module.fail_json(msg="lxml is not installed.")
 
         if not data:
-            # typically data is populated from the current device configuration
-            # data = connection.get('show running-config | section ^interface')
-            # using mock data instead
-            data = ("resource rsrc_a\n"
-                    "  a_bool true\n"
-                    "  a_string choice_a\n"
-                    "  resource here\n"
-                    "resource rscrc_b\n"
-                    "  key is property01 value is value end\n"
-                    "  an_int 10\n")
+            config_filter = """
+                                <configuration>
+                                    <system>
+                                    </system>
+                                </configuration>
+                                """
+            data = self.get_device_data(connection, config_filter)
 
-        # split the config into instances of the resource
-        resource_delim = 'resource'
-        find_pattern = r'(?:^|\n)%s.*?(?=(?:^|\n)%s|$)' % (resource_delim,
-                                                           resource_delim)
-        resources = [p.strip() for p in re.findall(find_pattern,
-                                                   data,
-                                                   re.DOTALL)]
+        q(data)
 
-        objs = []
+        if isinstance(data, string_types):
+            data = etree.fromstring(
+                to_bytes(data, errors="surrogate_then_replace")
+            )
+        objs = {}
+        resources = data.xpath("configuration/system/host-name")
         for resource in resources:
-            if resource:
-                obj = self.render_config(self.generated_spec, resource)
-                if obj:
-                    objs.append(obj)
+            if resource is not None:
+                xml = self._get_xml_dict(resource)
+                objs = self.render_config(self.generated_spec, xml)
 
-        ansible_facts['ansible_network_resources'].pop('hostname', None)
         facts = {}
         if objs:
-            params = utils.validate_config(self.argument_spec, {'config': objs})
-            facts['hostname'] = params['config']
+            facts["hostname"] = {}
+            params = utils.validate_config(
+                self.argument_spec, {"config": objs}
+            )
 
-        ansible_facts['ansible_network_resources'].update(facts)
+            facts["hostname"] = utils.remove_empties(params["config"])
+        ansible_facts["ansible_network_resources"].update(facts)
         return ansible_facts
+
+    def _get_xml_dict(self, xml_root):
+        if not HAS_XMLTODICT:
+            self._module.fail_json(msg=missing_required_lib("xmltodict"))
+        xml_dict = xmltodict.parse(
+            etree.tostring(xml_root), dict_constructor=dict
+        )
+        return xml_dict
 
     def render_config(self, spec, conf):
         """
@@ -93,25 +130,10 @@ class HostnameFacts(object):
         :rtype: dictionary
         :returns: The generated config
         """
-        config = deepcopy(spec)
-        config['name'] = utils.parse_conf_arg(conf, 'resource')
-        config['some_string'] = utils.parse_conf_arg(conf, 'a_string')
+        hostname_config = {}
 
-        match = re.match(r'.*key is property01 (\S+)',
-                         conf, re.MULTILINE | re.DOTALL)
-        if match:
-            config['some_dict']['property_01'] = match.groups()[0]
+        # Parse facts for BGP address-family global node
 
-        a_bool = utils.parse_conf_arg(conf, 'a_bool')
-        if a_bool == 'true':
-            config['some_bool'] = True
-        elif a_bool == 'false':
-            config['some_bool'] = False
-        else:
-            config['some_bool'] = None
-
-        try:
-            config['some_int'] = int(utils.parse_conf_arg(conf, 'an_int'))
-        except TypeError:
-            config['some_int'] = None
-        return utils.remove_empties(config)
+        if "host-name" in conf.keys():
+            hostname_config["hostname"] = conf.get("host-name")
+        return utils.remove_empties(hostname_config)

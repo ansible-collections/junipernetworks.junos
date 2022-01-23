@@ -25,6 +25,9 @@
 """
 The arg spec for the junos_hostname module
 """
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
 
 
 class HostnameArgs(object):  # pylint: disable=R0903
@@ -34,14 +37,20 @@ class HostnameArgs(object):  # pylint: disable=R0903
     def __init__(self, **kwargs):
         pass
 
-    argument_spec = {'config': {'options': {'hostname': {'type': 'str'}}, 'type': 'dict'},
- 'running_config': {'type': 'str'},
- 'state': {'choices': ['merged',
-                       'replaced',
-                       'deleted',
-                       'overridden',
-                       'parsed',
-                       'gathered',
-                       'rendered'],
-           'default': 'merged',
-           'type': 'str'}}  # pylint: disable=C0301
+    argument_spec = {
+        "config": {"options": {"hostname": {"type": "str"}}, "type": "dict"},
+        "running_config": {"type": "str"},
+        "state": {
+            "choices": [
+                "merged",
+                "replaced",
+                "deleted",
+                "overridden",
+                "parsed",
+                "gathered",
+                "rendered",
+            ],
+            "default": "merged",
+            "type": "str",
+        },
+    }  # pylint: disable=C0301
