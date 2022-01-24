@@ -39,7 +39,7 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = """
 ---
 module: junos_hostname
-version_added: 2.7.0
+version_added: 2.9.0
 short_description: Manage SNMP server configuration on Junos devices.
 description: This module manages SNMP server configuration on devices running Junos.
 author: Rohit Thakur (@rohitthakur2590)
@@ -84,8 +84,205 @@ options:
     default: merged
 """
 EXAMPLES = """
-
-
+# Using merged
+#
+# Before state
+# ------------
+#
+# vagrant@vsrx# show system hostname
+#
+# [edit]
+- name: Merge provided HOSTNAME configuration into running configuration.
+  junipernetworks.junos.junos_hostname:
+    config:
+      hostname: 'vsrx-18.4R1'
+    state: merged
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#     "after": {
+#         "hostname": "vsrx-18.4R1"
+#     },
+#     "before": {},
+#     "changed": true,
+#     "commands": [
+#           "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
+#           "<nc:host-name>vsrx-18.4R1</nc:host-name></nc:system>"
+#     ]
+# After state
+# -----------
+#
+# vagrant@vsrx-18.4R1# show system host-name
+# host-name vsrx-18.4R1;
+#
+# Using replaced
+#
+# Before state
+# ------------
+#
+# vagrant@vsrx-18.4R1# show system host-name
+# host-name vsrx-18.4R1;
+#
+# [edit]
+- name: Replaced target config with provided config.
+  junipernetworks.junos.junos_hostname:
+    config:
+      hostname: 'vsrx-12'
+    state: replaced
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#     "after": {
+#         "hostname": "vsrx-12"
+#     },
+#     "before": {
+#         "hostname": "vsrx-18.4R1"
+#     },
+#     "changed": true,
+#     "commands": [
+#           "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
+#           "<nc:host-name>vsrx-12</nc:host-name></nc:system>"
+#     ]
+# After state
+# -----------
+#
+# vagrant@vsrx-18.4R1# show system host-name
+# host-name vsrx-12;
+#
+# Using overridden
+#
+# Before state
+# ------------
+#
+# vagrant@vsrx-18.4R1# show system host-name
+# host-name vsrx-18.4R1;
+#
+# [edit]
+- name: Replaced target config with provided config.
+  junipernetworks.junos.junos_hostname:
+    config:
+      hostname: 'vsrx-12'
+    state: overridden
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#     "after": {
+#         "hostname": "vsrx-12"
+#     },
+#     "before": {
+#         "hostname": "vsrx-18.4R1"
+#     },
+#     "changed": true,
+#     "commands": [
+#           "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
+#           "<nc:host-name>vsrx-12</nc:host-name></nc:system>"
+#     ]
+# After state
+# -----------
+#
+# vagrant@vsrx-18.4R1# show system host-name
+# host-name vsrx-12;
+#
+# Using deleted
+#
+# Before state
+# ------------
+#
+# vagrant@vsrx-18.4R1# show system host-name
+# host-name vsrx-12;
+#
+- name: Delete running HOSTNAME global configuration
+  junipernetworks.junos.junos_hostname:
+    config:
+    state: deleted
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#     "after": {},
+#     "before": {
+#         "hostname": "vsrx-12"
+#     },
+#     "changed": true,
+#     "commands": [
+#               "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
+#                <nc:host-name delete=\"delete\"/></nc:system>"
+#     ]
+# After state
+# -----------
+#
+# vagrant@vsrx# show system ntp
+#
+# [edit]
+# Using gathered
+#
+# Before state
+# ------------
+#
+# vagrant@vsrx-18.4R1# show system host-name
+# host-name vsrx-12;
+#
+- name: Gather running HOSTNAME global configuration
+  junipernetworks.junos.junos_hostname:
+    state: gathered
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#     "gathered": {
+#         "hostname": "vsrx-12",
+#     },
+#     "changed": false,
+# Using rendered
+#
+# Before state
+# ------------
+#
+- name: Render xml for provided facts.
+  junipernetworks.junos.junos_hostname:
+    config:
+      boot_server: '78.46.194.186'
+    state: rendered
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#     "rendered": [
+#           "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">"
+#           "<nc:host-name>78.46.194.186</nc:host-name></nc:system>"
+#     ]
+#
+# Using parsed
+# parsed.cfg
+# ------------
+# <?xml version="1.0" encoding="UTF-8"?>
+# <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
+#     <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
+#         <version>18.4R1-S2.4</version>
+#         <system xmlns="http://yang.juniper.net/junos-es/conf/system">
+#            <host-name>vsrx-18.4R1</host-name>
+#         </system>
+#     </configuration>
+# </rpc-reply>
+#
+- name: Parse HOSTNAME running config
+  junipernetworks.junos.junos_hostname:
+    running_config: "{{ lookup('file', './parsed.cfg') }}"
+    state: parsed
+#
+#
+# -------------------------
+# Module Execution Result
+# -------------------------
+#
+#
+# "parsed":  {
+#         "hostname": "vsrx-18.4R1"
+#     }
+#
 
 """
 RETURN = """
