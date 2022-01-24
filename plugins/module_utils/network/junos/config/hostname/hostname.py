@@ -35,7 +35,6 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.n
     build_root_xml_node,
     build_child_xml_node,
 )
-import q
 
 
 class Hostname(ConfigBase):
@@ -56,7 +55,6 @@ class Hostname(ConfigBase):
         :rtype: A dictionary
         :returns: The current configuration as a dictionary
         """
-        q("INSIDE CONFIG")
         facts, _warnings = Facts(self._module).get_facts(
             self.gather_subset, self.gather_network_resources, data=data
         )

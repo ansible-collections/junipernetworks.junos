@@ -24,7 +24,6 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     HostnameArgs,
 )
 from ansible.module_utils.six import string_types
-import q
 
 try:
     from lxml import etree
@@ -75,7 +74,6 @@ class HostnameFacts(object):
         :rtype: dictionary
         :returns: facts
         """
-        q("INSIDE HOSTNAME FACTS")
         if not HAS_LXML:
             self._module.fail_json(msg="lxml is not installed.")
 
@@ -87,8 +85,6 @@ class HostnameFacts(object):
                                 </configuration>
                                 """
             data = self.get_device_data(connection, config_filter)
-
-        q(data)
 
         if isinstance(data, string_types):
             data = etree.fromstring(
