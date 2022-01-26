@@ -1726,8 +1726,8 @@ commands:
 
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.bgp_global.bgp_global import (
-    Bgp_globalArgs,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
+    convert_doc_to_ansible_module_kwargs,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.bgp_global.bgp_global import (
     Bgp_global,
@@ -1746,9 +1746,11 @@ def main():
         ("state", "rendered", ("config",)),
         ("state", "parsed", ("running_config",)),
     ]
-
+    argument_spec = (convert_doc_to_ansible_module_kwargs(DOCUMENTATION))[
+        "argument_spec"
+    ]
     module = AnsibleModule(
-        argument_spec=Bgp_globalArgs.argument_spec,
+        argument_spec=argument_spec,
         required_if=required_if,
         supports_check_mode=True,
     )

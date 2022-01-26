@@ -315,8 +315,8 @@ commands:
 
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.acls.acls import (
-    AclsArgs,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
+    convert_doc_to_ansible_module_kwargs,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.acls.acls import (
     Acls,
@@ -329,8 +329,11 @@ def main():
 
     :returns: the result form module invocation
     """
+    argument_spec = (convert_doc_to_ansible_module_kwargs(DOCUMENTATION))[
+        "argument_spec"
+    ]
     module = AnsibleModule(
-        argument_spec=AclsArgs.argument_spec, supports_check_mode=True
+        argument_spec=argument_spec, supports_check_mode=True
     )
 
     result = Acls(module).execute_module()

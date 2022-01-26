@@ -23,9 +23,6 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.u
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.utils.utils import (
     _validate_config,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.bgp_global.bgp_global import (
-    Bgp_globalArgs,
-)
 from ansible.module_utils.six import string_types
 
 
@@ -50,7 +47,7 @@ class Bgp_globalFacts(object):
 
     def __init__(self, module, subspec="config", options="options"):
         self._module = module
-        self.argument_spec = Bgp_globalArgs.argument_spec
+        self.argument_spec = self._module.argument_spec
         spec = deepcopy(self.argument_spec)
         if subspec:
             if options:

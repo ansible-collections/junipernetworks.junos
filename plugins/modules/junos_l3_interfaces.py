@@ -761,7 +761,9 @@ def main():
         ("state", "parsed", ("running_config",)),
     ]
 
-    argument_spec = (convert_doc_to_ansible_module_kwargs(DOCUMENTATION))['argument_spec']
+    argument_spec = (convert_doc_to_ansible_module_kwargs(DOCUMENTATION))[
+        "argument_spec"
+    ]
 
     module = AnsibleModule(
         argument_spec=argument_spec,

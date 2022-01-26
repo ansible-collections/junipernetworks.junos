@@ -19,14 +19,11 @@ from ansible.module_utils._text import to_bytes
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
     utils,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.interfaces.interfaces import (
-    InterfacesArgs,
-)
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.utils.utils import (
     get_resource_config,
 )
-from ansible.module_utils.six import string_types
 
+from ansible.module_utils.six import string_types
 try:
     from lxml import etree
 
@@ -34,14 +31,13 @@ try:
 except ImportError:
     HAS_LXML = False
 
-
 class InterfacesFacts(object):
     """ The junos interfaces fact class
     """
 
     def __init__(self, module, subspec="config", options="options"):
         self._module = module
-        self.argument_spec = InterfacesArgs.argument_spec
+        self.argument_spec = self._module.argument_spec
         spec = deepcopy(self.argument_spec)
         if subspec:
             if options:
@@ -124,9 +120,10 @@ class InterfacesFacts(object):
         config["mtu"] = int(mtu) if mtu else None
         config["speed"] = utils.get_xml_conf_arg(conf, "speed")
         config["duplex"] = utils.get_xml_conf_arg(conf, "link-mode")
-        config["hold_time"]["down"] = utils.get_xml_conf_arg(
-            conf, "hold-time/down"
-        )
+        if "hold-time" in conf.keys():
+            config["hold_time"]["down"] = utils.get_xml_conf_arg(
+                conf, "hold-time/down"
+            )
         config["hold_time"]["up"] = utils.get_xml_conf_arg(
             conf, "hold-time/up"
         )

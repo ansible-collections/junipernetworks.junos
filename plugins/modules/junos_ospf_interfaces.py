@@ -575,8 +575,8 @@ commands:
 
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.ospf_interfaces.ospf_interfaces import (
-    Ospf_interfacesArgs,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
+    convert_doc_to_ansible_module_kwargs,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospf_interfaces.ospf_interfaces import (
     Ospf_interfaces,
@@ -596,8 +596,11 @@ def main():
         ("state", "overridden", ("config",)),
         ("state", "parsed", ("running_config",)),
     ]
+    argument_spec = (convert_doc_to_ansible_module_kwargs(DOCUMENTATION))[
+        "argument_spec"
+    ]
     module = AnsibleModule(
-        argument_spec=Ospf_interfacesArgs.argument_spec,
+        argument_spec=argument_spec,
         required_if=required_if,
         supports_check_mode=True,
     )

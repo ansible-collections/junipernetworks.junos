@@ -9,7 +9,7 @@ It is in this file the configuration is collected from the device
 for a given resource, parsed, and the facts tree is populated
 based on the configuration.
 """
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import, division, print_function, annotations
 
 __metaclass__ = type
 
@@ -19,9 +19,9 @@ from ansible.module_utils._text import to_bytes
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
     utils,
 )
+
 from ansible.module_utils.six import iteritems
 from ansible.module_utils.six import string_types
-
 try:
     from lxml import etree
 
@@ -35,6 +35,7 @@ try:
     HAS_XMLTODICT = True
 except ImportError:
     HAS_XMLTODICT = False
+import q
 
 
 class L3_interfacesFacts(object):
@@ -44,7 +45,16 @@ class L3_interfacesFacts(object):
     def __init__(self, module, subspec="config", options="options"):
         self._module = module
         self.argument_spec = self._module.argument_spec
-        self.generated_spec = utils.generate_dict(self.argument_spec)
+        spec = deepcopy(self.argument_spec)
+        if subspec:
+            if options:
+                facts_argument_spec = spec[subspec][options]
+            else:
+                facts_argument_spec = spec[subspec]
+        else:
+            facts_argument_spec = spec
+
+        self.generated_spec = utils.generate_dict(facts_argument_spec)
 
     def get_config(self, connection, config_filter):
         """

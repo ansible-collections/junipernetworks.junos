@@ -19,9 +19,6 @@ from ansible.module_utils.basic import missing_required_lib
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
     utils,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.prefix_lists.prefix_lists import (
-    Prefix_listsArgs,
-)
 from ansible.module_utils.six import string_types
 
 try:
@@ -45,7 +42,7 @@ class Prefix_listsFacts(object):
 
     def __init__(self, module, subspec="config", options="options"):
         self._module = module
-        self.argument_spec = Prefix_listsArgs.argument_spec
+        self.argument_spec = self._module.argument_spec
         spec = deepcopy(self.argument_spec)
         if subspec:
             if options:

@@ -646,8 +646,8 @@ commands:
 
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.prefix_lists.prefix_lists import (
-    Prefix_listsArgs,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
+    convert_doc_to_ansible_module_kwargs,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.prefix_lists.prefix_lists import (
     Prefix_lists,
@@ -667,8 +667,11 @@ def main():
         ("state", "overridden", ("config",)),
         ("state", "parsed", ("running_config",)),
     ]
+    argument_spec = (convert_doc_to_ansible_module_kwargs(DOCUMENTATION))[
+        "argument_spec"
+    ]
     module = AnsibleModule(
-        argument_spec=Prefix_listsArgs.argument_spec,
+        argument_spec=argument_spec,
         required_if=required_if,
         supports_check_mode=True,
     )

@@ -271,8 +271,8 @@ commands:
 
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.static_routes.static_routes import (
-    Static_routesArgs,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
+    convert_doc_to_ansible_module_kwargs,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.static_routes.static_routes import (
     Static_routes,
@@ -292,8 +292,11 @@ def main():
         ("state", "overridden", ("config",)),
         ("state", "parsed", ("running_config",)),
     ]
+    argument_spec = (convert_doc_to_ansible_module_kwargs(DOCUMENTATION))[
+        "argument_spec"
+    ]
     module = AnsibleModule(
-        argument_spec=Static_routesArgs.argument_spec,
+        argument_spec=argument_spec,
         required_if=required_if,
         supports_check_mode=True,
     )

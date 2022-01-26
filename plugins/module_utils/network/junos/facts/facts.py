@@ -96,6 +96,8 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     Routing_optionsFacts,
 )
 
+import q
+
 FACT_LEGACY_SUBSETS = dict(
     default=Default, hardware=Hardware, config=Config, interfaces=Interfaces
 )
@@ -132,6 +134,9 @@ class Facts(FactsBase):
 
     VALID_LEGACY_GATHER_SUBSETS = frozenset(FACT_LEGACY_SUBSETS.keys())
     VALID_RESOURCE_SUBSETS = frozenset(FACT_RESOURCE_SUBSETS.keys())
+    q("INSIDE FACTS CLASS")
+    q(VALID_RESOURCE_SUBSETS)
+    q(FACT_RESOURCE_SUBSETS.keys())
 
     def __init__(self, module):
         super(Facts, self).__init__(module)
@@ -147,11 +152,14 @@ class Facts(FactsBase):
         :return: the facts gathered
         """
         if self.VALID_RESOURCE_SUBSETS:
+            q("Resource fact Type: ------ ", resource_facts_type, "----", data)
             self.get_network_resources_facts(
                 FACT_RESOURCE_SUBSETS, resource_facts_type, data
             )
 
         if not legacy_facts_type:
+            q("Legacy Facts Type: ------ ", legacy_facts_type)
+
             legacy_facts_type = self._gather_subset
             # fetch old style facts only when explicitly mentioned in gather_subset option
             if "ofacts" in legacy_facts_type:

@@ -506,8 +506,8 @@ xml:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.interfaces.interfaces import (
-    InterfacesArgs,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
+    convert_doc_to_ansible_module_kwargs,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.interfaces.interfaces import (
     Interfaces,
@@ -527,9 +527,11 @@ def main():
         ("state", "overridden", ("config",)),
         ("state", "parsed", ("running_config",)),
     ]
-
+    argument_spec = (convert_doc_to_ansible_module_kwargs(DOCUMENTATION))[
+        "argument_spec"
+    ]
     module = AnsibleModule(
-        argument_spec=InterfacesArgs.argument_spec,
+        argument_spec=argument_spec,
         required_if=required_if,
         supports_check_mode=True,
     )
@@ -540,3 +542,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+

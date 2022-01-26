@@ -19,9 +19,6 @@ from ansible.module_utils._text import to_bytes
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
     utils,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.vlans.vlans import (
-    VlansArgs,
-)
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.utils.utils import (
     get_resource_config,
 )
@@ -41,7 +38,7 @@ class VlansFacts(object):
 
     def __init__(self, module, subspec="config", options="options"):
         self._module = module
-        self.argument_spec = VlansArgs.argument_spec
+        self.argument_spec = self._module.argument_spec
         spec = deepcopy(self.argument_spec)
         if subspec:
             if options:

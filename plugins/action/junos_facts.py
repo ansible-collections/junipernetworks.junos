@@ -66,19 +66,22 @@ class ActionModule(ActionBase):
         basic.AnsibleModule(**argspec)
 
     def run(self, tmp=None, task_vars=None):
-        argument_spec = (convert_doc_to_ansible_module_kwargs(DOCUMENTATION))['argument_spec']
+        argument_spec = (convert_doc_to_ansible_module_kwargs(DOCUMENTATION))[
+            "argument_spec"
+        ]
         argument_spec.update(junos_argument_spec)
         self._check_argspec()
-        super(ActionModule, self).run(tmp, task_vars)
+        result = super(ActionModule, self).run(tmp, task_vars)
         if not (
-                hasattr(self._connection, "socket_path")
-                and self._connection.socket_path is not None
+            hasattr(self._connection, "socket_path")
+            and self._connection.socket_path is not None
         ):
             raise AnsibleConnectionError(
                 "netconf connection to remote host in not active"
             )
         if self._result.get("failed"):
             return self._result
+
         module = AnsibleModule(
             argument_spec=argument_spec, supports_check_mode=True
         )
@@ -93,8 +96,36 @@ class ActionModule(ActionBase):
             ansible_facts["available_network_resources"] = sorted(
                 FACT_RESOURCE_SUBSETS.keys()
             )
-        result = Facts(module).get_facts()
-        additional_facts, additional_warnings = result
-        ansible_facts.update(additional_facts)
-        warnings.extend(additional_warnings)
+
+        ansible_network_resources = {}
+        for rmodule in self._task.args.get('gather_network_resources'):
+            if rmodule in FACT_RESOURCE_SUBSETS:
+                name = rmodule
+                rmodule = self._task.collections[0] + '.' + self._task.collections[0].split('.')[1] + '_' + rmodule
+                if not self._shared_loader_obj.module_loader.has_plugin(rmodule):
+                    result.update(
+                        {"failed": True, "msg": "Could not find %s module." % rmodule}
+                    )
+                else:
+                    self._display.vvvv(
+                        "Running %s module to fetch data from remote host" % rmodule
+                    )
+                    result = self._execute_module(
+                        module_name=rmodule,
+                        module_args={"state": "gathered"},
+                        task_vars=task_vars,
+                        wrap_async=self._task.async_val,
+                    )
+                    if result.get("failed"):
+                        return result
+                    ansible_network_resources[name] = result['gathered']
+            else:
+                result = Facts(module).get_facts()
+                additional_facts, additional_warnings = result
+                ansible_facts.update(additional_facts)
+                warnings.extend(additional_warnings)
+
+        ansible_facts.update({'ansible_network_resources': ansible_network_resources})
+        ansible_facts['ansible_net_gather_network_resources'] = self._task.args.get('gather_network_resources')
+        ansible_facts['gather_subset'] = module.params.get("gather_subset")
         return ansible_facts
