@@ -33,6 +33,7 @@ from ansible_collections.ansible.netcommon.plugins.action.network import (
     ActionModule as ActionNetworkModule,
 )
 from ansible.utils.display import Display
+
 display = Display()
 
 CLI_SUPPORTED_MODULES = ["junos_netconf", "junos_ping", "junos_command"]
