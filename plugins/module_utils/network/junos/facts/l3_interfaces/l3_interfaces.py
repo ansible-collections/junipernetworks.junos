@@ -22,6 +22,7 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common i
 
 from ansible.module_utils.six import iteritems
 from ansible.module_utils.six import string_types
+
 try:
     from lxml import etree
 

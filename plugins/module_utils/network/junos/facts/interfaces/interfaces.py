@@ -24,12 +24,14 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
 )
 
 from ansible.module_utils.six import string_types
+
 try:
     from lxml import etree
 
     HAS_LXML = True
 except ImportError:
     HAS_LXML = False
+
 
 class InterfacesFacts(object):
     """ The junos interfaces fact class

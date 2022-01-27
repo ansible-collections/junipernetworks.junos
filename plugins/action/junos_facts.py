@@ -98,17 +98,36 @@ class ActionModule(ActionBase):
             )
 
         ansible_network_resources = {}
-        for rmodule in self._task.args.get('gather_network_resources'):
-            if rmodule in FACT_RESOURCE_SUBSETS:
+
+        restorun_subsets = Facts(module).get_restorun()
+        result = Facts(module).get_legacy_facts()
+        additional_facts, additional_warnings = result
+        ansible_facts.update(additional_facts)
+        warnings.extend(additional_warnings)
+
+        if restorun_subsets:
+            for rmodule in restorun_subsets:
                 name = rmodule
-                rmodule = self._task.collections[0] + '.' + self._task.collections[0].split('.')[1] + '_' + rmodule
-                if not self._shared_loader_obj.module_loader.has_plugin(rmodule):
+                rmodule = (
+                    self._task.collections[0]
+                    + "."
+                    + self._task.collections[0].split(".")[1]
+                    + "_"
+                    + rmodule
+                )
+                if not self._shared_loader_obj.module_loader.has_plugin(
+                    rmodule
+                ):
                     result.update(
-                        {"failed": True, "msg": "Could not find %s module." % rmodule}
+                        {
+                            "failed": True,
+                            "msg": "Could not find %s module." % rmodule,
+                        }
                     )
                 else:
                     self._display.vvvv(
-                        "Running %s module to fetch data from remote host" % rmodule
+                        "Running %s module to fetch data from remote host"
+                        % rmodule
                     )
                     result = self._execute_module(
                         module_name=rmodule,
@@ -118,14 +137,15 @@ class ActionModule(ActionBase):
                     )
                     if result.get("failed"):
                         return result
-                    ansible_network_resources[name] = result['gathered']
-            else:
-                result = Facts(module).get_facts()
-                additional_facts, additional_warnings = result
-                ansible_facts.update(additional_facts)
-                warnings.extend(additional_warnings)
 
-        ansible_facts.update({'ansible_network_resources': ansible_network_resources})
-        ansible_facts['ansible_net_gather_network_resources'] = self._task.args.get('gather_network_resources')
-        ansible_facts['gather_subset'] = module.params.get("gather_subset")
+                    if result.get("gathered"):
+                        ansible_network_resources[name] = result["gathered"]
+
+        ansible_facts.update(
+            {"ansible_network_resources": ansible_network_resources}
+        )
+        ansible_facts[
+            "ansible_net_gather_network_resources"
+        ] = self._task.args.get("gather_network_resources")
+        ansible_facts["gather_subset"] = module.params.get("gather_subset")
         return ansible_facts
