@@ -40,8 +40,8 @@ DOCUMENTATION = """
 ---
 module: junos_hostname
 version_added: 2.9.0
-short_description: Manage SNMP server configuration on Junos devices.
-description: This module manages SNMP server configuration on devices running Junos.
+short_description: Manage Hostname server configuration on Junos devices.
+description: This module manages hostname configuration on devices running Junos.
 author: Rohit Thakur (@rohitthakur2590)
 requirements:
   - ncclient (>=v0.6.4)
@@ -71,7 +71,23 @@ options:
   state:
     description:
     - The state the configuration should be left in.
-    - Refer to examples for more details.
+    - The states I(rendered), I(gathered) and I(parsed) does not perform any change
+      on the device.
+    - The state I(rendered) will transform the configuration in C(config) option to
+      platform specific CLI commands which will be returned in the I(rendered) key
+      within the result. For state I(rendered) active connection to remote host is
+      not required.
+    - The states I(merged), I(replaced) and I(overridden) have identical
+      behaviour for this module.
+    - The state I(gathered) will fetch the running configuration from device and transform
+      it into structured data in the format as per the resource module argspec and
+      the value is returned in the I(gathered) key within the result.
+    - The state I(parsed) reads the configuration from C(running_config) option and
+      transforms it into JSON format as per the resource module parameters and the
+      value is returned in the I(parsed) key within the result. The value of C(running_config)
+      option should be the same format as the output of command
+      I(show system hostname) executed on device. For state I(parsed) active
+      connection to remote host is not required.
     type: str
     choices:
     - merged
@@ -304,7 +320,7 @@ commands:
   description: The set of commands pushed to the remote device.
   returned: always
   type: list
-  sample: ['command 1', 'command 2', 'command 3']
+  sample: ['"<nc:host-name>78.46.194.186</nc:host-name></nc:system>"', 'command 2', 'command 3']
 """
 
 
