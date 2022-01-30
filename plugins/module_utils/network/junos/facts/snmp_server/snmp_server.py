@@ -19,9 +19,6 @@ from copy import deepcopy
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
     utils,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.snmp_server.snmp_server import (
-    Snmp_serverArgs,
-)
 from ansible.module_utils.six import string_types
 
 try:
@@ -45,7 +42,7 @@ class Snmp_serverFacts(object):
 
     def __init__(self, module, subspec="config", options="options"):
         self._module = module
-        self.argument_spec = Snmp_serverArgs.argument_spec
+        self.argument_spec = self._module.argument_spec
         spec = deepcopy(self.argument_spec)
         if subspec:
             if options:

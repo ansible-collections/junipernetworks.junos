@@ -9,7 +9,7 @@ It is in this file the configuration is collected from the device
 for a given resource, parsed, and the facts tree is populated
 based on the configuration.
 """
-from __future__ import absolute_import, division, print_function, annotations
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -36,7 +36,6 @@ try:
     HAS_XMLTODICT = True
 except ImportError:
     HAS_XMLTODICT = False
-import q
 
 
 class L3_interfacesFacts(object):
