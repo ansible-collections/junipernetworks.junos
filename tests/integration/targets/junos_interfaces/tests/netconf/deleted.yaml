@@ -10,6 +10,8 @@
 
       - name: fxp0
         enabled: true
+      - name: ge-0/0/2
+        enabled: true
 
 - block:
 
