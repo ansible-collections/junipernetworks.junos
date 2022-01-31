@@ -102,6 +102,10 @@ plugin_routing:
       redirect: junipernetworks.junos.junos
     snmp_server:
       redirect: junipernetworks.junos.junos
+    junos_hostname:
+      redirect: junipernetworks.junos.junos
+    hostname:
+      redirect: junipernetworks.junos.junos
     junos_routing_options:
       redirect: junipernetworks.junos.junos
     routing_options:
@@ -264,6 +268,8 @@ plugin_routing:
       redirect: junipernetworks.junos.junos_ntp_global
     snmp_server:
       redirect: junipernetworks.junos.junos_snmp_server
+    hostname:
+      redirect: junipernetworks.junos.junos_hostname
     routing_options:
       redirect: junipernetworks.junos.junos_routing_options
     lldp_interface:
