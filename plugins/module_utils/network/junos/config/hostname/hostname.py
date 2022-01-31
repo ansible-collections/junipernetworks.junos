@@ -171,7 +171,7 @@ class Hostname(ConfigBase):
         """
         want = remove_empties(want)
 
-        # add boot_server node
+        # add hostname node
         if "hostname" in want.keys():
             build_child_xml_node(self.root, "host-name", want.get("hostname"))
 

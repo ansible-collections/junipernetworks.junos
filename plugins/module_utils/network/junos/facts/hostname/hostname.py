@@ -128,7 +128,7 @@ class HostnameFacts(object):
         """
         hostname_config = {}
 
-        # Parse facts for BGP address-family global node
+        # Parse facts for hostname node
 
         if "host-name" in conf.keys():
             hostname_config["hostname"] = conf.get("host-name")

@@ -62,7 +62,7 @@ options:
       and the value is then returned in the I(parsed) key within the result.
     type: str
   config:
-    description: A dictionary of SNMP server configuration.
+    description: A dictionary of system Hostname configuration.
     type: dict
     suboptions:
       hostname:
@@ -320,7 +320,7 @@ commands:
   description: The set of commands pushed to the remote device.
   returned: always
   type: list
-  sample: ['"<nc:host-name>78.46.194.186</nc:host-name></nc:system>"', 'command 2', 'command 3']
+  sample: ['"<nc:host-name>78.46.194.186</nc:host-name></nc:system>"']
 """
 
 
