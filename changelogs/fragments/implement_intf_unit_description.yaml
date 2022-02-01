@@ -1,3 +1,0 @@
----
-minor_changes:
-  - Allow interfaces resource module to configure and gather logical interface description.

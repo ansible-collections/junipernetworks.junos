@@ -214,6 +214,58 @@ Parameters
                         <div>Interface link speed. Applicable for Ethernet interfaces only.</div>
                 </td>
             </tr>
+            <tr>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>units</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=dictionary</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Specify Logical interfaces units.</div>
+                </td>
+            </tr>
+                                <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>description</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Specify logical interface description.</div>
+                </td>
+            </tr>
+            <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>name</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">integer</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Specify interface unit number.</div>
+                </td>
+            </tr>
+
 
             <tr>
                 <td colspan="3">
@@ -266,7 +318,8 @@ Notes
 .. note::
    - This module requires the netconf system service be enabled on the remote device being managed.
    - Tested against vSRX JUNOS version 18.4R1.
-   - This module works with connection ``netconf``. See `the Junos OS Platform Options <../network/user_guide/platform_junos.html>`_.
+   - This module works with connection ``netconf``.
+   - See `the Junos OS Platform Options <https://docs.ansible.com/ansible/latest/network/user_guide/platform_junos.html>`_.
 
 
 
@@ -284,6 +337,8 @@ Examples
     #    description "Configured by Ansible-1";
     #    speed 1g;
     #    mtu 1800
+    #    unit 0 {
+    #     description "This is logical intf unit0";
     # }
     # ge-0/0/2 {
     #    description "Configured by Ansible-2";
@@ -322,6 +377,15 @@ Examples
     #    description "test interface";
     #    speed 1g;
     # }
+    # fe-0/0/2 {
+    #     vlan-tagging;
+    #     unit 10 {
+    #         vlan-id 10;
+    #     }
+    #     unit 11 {
+    #         vlan-id 11;
+    #     }
+    # }
 
     - name: Merge provided configuration with device configuration (default operation
         is merge)
@@ -330,6 +394,9 @@ Examples
         - name: ge-0/0/1
           description: Configured by Ansible-1
           enabled: true
+          units:
+            - name: 0
+              description: "This is logical intf unit0"
           mtu: 1800
         - name: ge-0/0/2
           description: Configured by Ansible-2
@@ -343,6 +410,9 @@ Examples
     #    description "Configured by Ansible-1";
     #    speed 1g;
     #    mtu 1800
+    #    unit 0 {
+    #     description "This is logical intf unit0";
+    #   }
     # }
     # ge-0/0/2 {
     #    disable;
@@ -452,26 +522,25 @@ Examples
     # Before state:
     # ------------
     #
-    # user@junos01# show interfaces
-    # gr-0/0/0 {
-    #     description "test gre interface";
-    # }
-    # fxp0 {
-    #     unit 0 {
-    #         family inet {
-    #             dhcp;
-    #         }
+    # vagrant@vsrx# show interfaces
+    # fe-0/0/2 {
+    #     description "This is interface DESCRIPTION";
+    #     vlan-tagging;
+    #     unit 10 {
+    #         description "UNIT 10 DESCRIPTION";
+    #         vlan-id 10;
+    #     }
+    #     unit 11 {
+    #         description "UNIT 11 DESCRIPTION";
+    #         vlan-id 11;
     #     }
     # }
-    # pp0 {
+    # fxp0 {
+    #     description OUTER;
     #     unit 0 {
-    #         pppoe-options {
-    #             idle-timeout 100;
-    #             access-concentrator ispl.com;
-    #             service-name "video@ispl.com";
-    #             auto-reconnect 100;
-    #             client;
-    #             ## Warning: missing mandatory statement(s): 'underlying-interface'
+    #         description "Sample config";
+    #         family inet {
+    #             dhcp;
     #         }
     #     }
     # }
@@ -484,45 +553,58 @@ Examples
     #
     # "gathered": [
     #         {
-    #             "description": "test gre interface",
+    #             "description": "This is interface DESCRIPTION",
     #             "enabled": true,
-    #             "name": "gr-0/0/0"
+    #             "name": "fe-0/0/2",
+    #             "units": [
+    #                 {
+    #                     "description": "UNIT 10 DESCRIPTION",
+    #                     "name": 10
+    #                 },
+    #                 {
+    #                     "description": "UNIT 11 DESCRIPTION",
+    #                     "name": 11
+    #                 }
+    #             ]
     #         },
     #         {
+    #             "description": "OUTER",
     #             "enabled": true,
-    #             "name": "fxp0"
-    #         },
-    #         {
-    #             "enabled": true,
-    #             "name": "pp0"
+    #             "name": "fxp0",
+    #             "units": [
+    #                 {
+    #                     "description": "Sample config",
+    #                     "name": 0
+    #                 }
+    #             ]
     #         }
     #     ]
     # After state:
     # ------------
     #
-    # user@junos01# show interfaces
-    # gr-0/0/0 {
-    #     description "test gre interface";
+    # vagrant@vsrx# show interfaces
+    # fe-0/0/2 {
+    #     description "This is interface DESCRIPTION";
+    #     vlan-tagging;
+    #     unit 10 {
+    #         description "UNIT 10 DESCRIPTION";
+    #         vlan-id 10;
+    #     }
+    #     unit 11 {
+    #         description "UNIT 11 DESCRIPTION";
+    #         vlan-id 11;
+    #     }
     # }
     # fxp0 {
+    #     description OUTER;
     #     unit 0 {
+    #         description "Sample config";
     #         family inet {
     #             dhcp;
     #         }
     #     }
     # }
-    # pp0 {
-    #     unit 0 {
-    #         pppoe-options {
-    #             idle-timeout 100;
-    #             access-concentrator ispl.com;
-    #             service-name "video@ispl.com";
-    #             auto-reconnect 100;
-    #             client;
-    #             ## Warning: missing mandatory statement(s): 'underlying-interface'
-    #         }
-    #     }
-    # }
+    #
     # Using parsed
     # parsed.cfg
     # ------------
