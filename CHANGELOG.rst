@@ -5,6 +5,26 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v2.9.0
+======
+
+Minor Changes
+-------------
+
+- Add junos_hostname resource module.
+- Allow interfaces resource module to configure and gather logical interface description.
+
+Bugfixes
+--------
+
+- Fix junos_command output when empty config response is received for show commands (https://github.com/ansible-collections/junipernetworks.junos/issues/249).
+
+New Modules
+-----------
+
+- junos_hostname - Manage Hostname server configuration on Junos devices.
+- junos_snmp_server - Manage SNMP server configuration on Junos devices.
+
 v2.8.0
 ======
 

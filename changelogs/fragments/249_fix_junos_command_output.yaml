@@ -1,3 +1,0 @@
----
-bugfixes:
-  - Fix junos_command output when empty config response is received for show commands (https://github.com/ansible-collections/junipernetworks.junos/issues/249).

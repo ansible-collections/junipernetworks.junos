@@ -383,3 +383,24 @@ releases:
       name: junos_routing_options
       namespace: ''
     release_date: '2021-12-09'
+  2.9.0:
+    changes:
+      bugfixes:
+      - Fix junos_command output when empty config response is received for show commands
+        (https://github.com/ansible-collections/junipernetworks.junos/issues/249).
+      minor_changes:
+      - Add junos_hostname resource module.
+      - Allow interfaces resource module to configure and gather logical interface
+        description.
+    fragments:
+    - 249_fix_junos_command_output.yaml
+    - implement_intf_unit_description.yaml
+    - junos_hostname_module.yaml
+    modules:
+    - description: Manage Hostname server configuration on Junos devices.
+      name: junos_hostname
+      namespace: ''
+    - description: Manage SNMP server configuration on Junos devices.
+      name: junos_snmp_server
+      namespace: ''
+    release_date: '2022-02-01'
