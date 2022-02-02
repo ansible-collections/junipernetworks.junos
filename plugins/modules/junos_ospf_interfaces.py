@@ -59,9 +59,8 @@ options:
     suboptions:
       router_id:
         description:
-        - The OSPFv3 router id.
+        - The OSPF router id.
         type: str
-        required: true
       name:
         description:
           - Name/Identifier of the interface.
@@ -134,6 +133,10 @@ options:
                 description:
                   - Priority for the interface.
                 type: int
+              passive:
+                description:
+                  - Do not run OSPF, but advertise it.
+                type: bool
               metric:
                 description:
                   - Metric applied to the interface.
@@ -240,8 +243,7 @@ EXAMPLES = """
 - name: Merge Junos OSPF interfaces config
   junipernetworks.junos.junos_ospf_interfaces:
     config:
-    - router_id: '10.200.16.75'
-      name: 'ge-0/0/2.0'
+    - name: 'ge-0/0/2.0'
       address_family:
         - afi: 'ipv4'
           processes:
@@ -277,8 +279,7 @@ EXAMPLES = """
 - name: Replace Junos OSPF interfaces config
   junipernetworks.junos.junos_ospf_interfaces:
    config:
-     - router_id: '10.200.16.75'
-       name: 'ge-0/0/2.0'
+     - name: 'ge-0/0/2.0'
        address_family:
          - afi: 'ipv4'
            processes:
@@ -321,8 +322,7 @@ EXAMPLES = """
 - name: Override Junos OSPF interfaces config
   junipernetworks.junos.junos_ospf_interfaces:
   config:
-    - router_id: '10.200.16.75'
-      name: 'ge-0/0/1.0'
+    - name: 'ge-0/0/1.0'
       address_family:
         - afi: 'ipv4'
           processes:
@@ -360,8 +360,7 @@ EXAMPLES = """
 - name: Delete Junos OSPF interfaces config
   junipernetworks.junos.junos_ospf_interfaces:
     config:
-      - router_id: '10.200.16.75'
-        name: 'ge-0/0/1.0'
+      - name: 'ge-0/0/1.0'
     state: deleted
 
 # After state
@@ -412,7 +411,6 @@ EXAMPLES = """
 #                 }
 #             ],
 #             "name": "ge-0/0/3.0",
-#             "router_id": "10.200.16.75"
 #         },
 #         {
 #             "address_family": [
@@ -428,7 +426,6 @@ EXAMPLES = """
 #                 }
 #             ],
 #             "name": "ge-0/0/2.0",
-#             "router_id": "10.200.16.75"
 #         }
 #     ]
 #
@@ -438,8 +435,7 @@ EXAMPLES = """
 - name: Render the commands for provided  configuration
   junipernetworks.junos.junos_ospf_interfaces:
     config:
-    - router_id: '10.200.16.75'
-      name: 'ge-0/0/2.0'
+    - name: 'ge-0/0/2.0'
       address_family:
         - afi: 'ipv4'
           processes:
@@ -525,7 +521,6 @@ EXAMPLES = """
 #                 }
 #             ],
 #             "name": "ge-0/0/2.0",
-#             "router_id": "10.200.16.75"
 #         }
 #     ]
 #

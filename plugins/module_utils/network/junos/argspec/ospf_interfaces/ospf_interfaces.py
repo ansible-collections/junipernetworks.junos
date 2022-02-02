@@ -40,7 +40,7 @@ class Ospf_interfacesArgs(object):  # pylint: disable=R0903
         "config": {
             "elements": "dict",
             "options": {
-                "router_id": {"required": True, "type": "str"},
+                "router_id": {"type": "str"},
                 "address_family": {
                     "elements": "dict",
                     "options": {
@@ -109,6 +109,7 @@ class Ospf_interfacesArgs(object):  # pylint: disable=R0903
                                 "node_link_protection": {"type": "str"},
                                 "poll_interval": {"type": "int"},
                                 "priority": {"type": "int"},
+                                "passive": {"type": "bool"},
                                 "retransmit_interval": {"type": "int"},
                                 "secondary": {"type": "bool"},
                                 "te_metric": {"type": "int"},

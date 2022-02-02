@@ -86,6 +86,18 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.logging_global.logging_global import (
     Logging_globalFacts,
 )
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.ntp_global.ntp_global import (
+    Ntp_globalFacts,
+)
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.snmp_server.snmp_server import (
+    Snmp_serverFacts,
+)
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.routing_options.routing_options import (
+    Routing_optionsFacts,
+)
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.hostname.hostname import (
+    HostnameFacts,
+)
 
 FACT_LEGACY_SUBSETS = dict(
     default=Default, hardware=Hardware, config=Config, interfaces=Interfaces
@@ -111,6 +123,10 @@ FACT_RESOURCE_SUBSETS = dict(
     routing_instances=Routing_instancesFacts,
     prefix_lists=Prefix_listsFacts,
     logging_global=Logging_globalFacts,
+    ntp_global=Ntp_globalFacts,
+    snmp_server=Snmp_serverFacts,
+    routing_options=Routing_optionsFacts,
+    hostname=HostnameFacts,
 )
 
 

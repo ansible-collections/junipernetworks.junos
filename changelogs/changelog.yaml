@@ -334,3 +334,73 @@ releases:
     - ospfv2_test_coverage_improvement.yaml
     - vlans_tests_coverage_improvement.yaml
     release_date: '2021-08-30'
+  2.6.0:
+    changes:
+      deprecated_features:
+      - Deprecated router_id from ospfv2 resource module.
+      minor_changes:
+      - Add junos_ntp_global resource module.
+    fragments:
+    - deprecate_ospfv2_router_id.yaml
+    - junos_ntp_global.yaml
+    - rename_key_to_key_id_junos_ntp_global.yaml
+    - set_allow_duplicates.yaml
+    modules:
+    - description: Manage NTP configuration on Junos devices.
+      name: junos_ntp_global
+      namespace: ''
+    release_date: '2021-09-24'
+  2.7.0:
+    changes:
+      doc_changes:
+      - Add note for router_id deprecation from ospf-interfaces resource module.
+      - make sure router_id facts and config operation works fine for ospfv2 and ospfv3
+        RM
+    fragments:
+    - 0-copy_ignore_txt.yml
+    - junos_ospf_router_if_fix.yaml
+    release_date: '2021-11-25'
+  2.7.1:
+    changes:
+      bugfixes:
+      - Fix ospf router_id overlap issue.
+    fragments:
+    - fix_ospf_facts_issue.yaml
+    release_date: '2021-12-07'
+  2.8.0:
+    changes:
+      deprecated_features:
+      - '''router_id'' options is deprecated from junos_ospf_interfaces, junos_ospfv2
+        and junos_ospfv3 resuorce module.'
+      minor_changes:
+      - Add junos_routing_options resource module.
+      - Add junos_snmp_server resource module.
+    fragments:
+    - junos_routing_options_resource_module.yaml
+    - junos_snmp_server_module.yaml
+    modules:
+    - description: Manage routing-options configuration on Junos devices.
+      name: junos_routing_options
+      namespace: ''
+    release_date: '2021-12-09'
+  2.9.0:
+    changes:
+      bugfixes:
+      - Fix junos_command output when empty config response is received for show commands
+        (https://github.com/ansible-collections/junipernetworks.junos/issues/249).
+      minor_changes:
+      - Add junos_hostname resource module.
+      - Allow interfaces resource module to configure and gather logical interface
+        description.
+    fragments:
+    - 249_fix_junos_command_output.yaml
+    - implement_intf_unit_description.yaml
+    - junos_hostname_module.yaml
+    modules:
+    - description: Manage Hostname server configuration on Junos devices.
+      name: junos_hostname
+      namespace: ''
+    - description: Manage SNMP server configuration on Junos devices.
+      name: junos_snmp_server
+      namespace: ''
+    release_date: '2022-02-01'

@@ -16,6 +16,7 @@ __metaclass__ = type
 from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
+from ansible.module_utils.basic import missing_required_lib
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
     utils,
 )
@@ -33,6 +34,13 @@ try:
     HAS_LXML = True
 except ImportError:
     HAS_LXML = False
+
+try:
+    import xmltodict
+
+    HAS_XMLTODICT = True
+except ImportError:
+    HAS_XMLTODICT = False
 
 
 class InterfacesFacts(object):
@@ -107,6 +115,15 @@ class InterfacesFacts(object):
 
         return ansible_facts
 
+    def _get_xml_dict(self, xml_root):
+        if not HAS_XMLTODICT:
+            self._module.fail_json(msg=missing_required_lib("xmltodict"))
+
+        xml_dict = xmltodict.parse(
+            etree.tostring(xml_root), dict_constructor=dict
+        )
+        return xml_dict
+
     def render_config(self, spec, conf):
         """
         Render config as dictionary structure and delete keys
@@ -135,4 +152,24 @@ class InterfacesFacts(object):
             config["enabled"] = False
         else:
             config["enabled"] = True
+        cfg = self._get_xml_dict(conf)
+        unit_cfg = cfg.get("interface")
+        if "unit" in unit_cfg.keys():
+            units = unit_cfg.get("unit")
+            unit_lst = []
+            unit_dict = {}
+            if isinstance(units, dict):
+                if "description" in units.keys():
+                    unit_dict["name"] = units["name"]
+                    unit_dict["description"] = units["description"]
+                    unit_lst.append(unit_dict)
+            else:
+                for unit in units:
+                    if "description" in unit.keys():
+                        unit_dict["name"] = unit["name"]
+                        unit_dict["description"] = unit["description"]
+                        unit_lst.append(unit_dict)
+                        unit_dict = {}
+            config["units"] = unit_lst
+
         return utils.remove_empties(config)

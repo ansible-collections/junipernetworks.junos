@@ -621,6 +621,28 @@ Parameters
                     <td class="elbow-placeholder"></td>
                 <td colspan="3">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>passive</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                    </div>
+                </td>
+                <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>no</li>
+                                    <li>yes</li>
+                        </ul>
+                </td>
+                <td>
+                        <div>Do not run OSPF, but advertise it.</div>
+                </td>
+            </tr>
+            <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="3">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>poll_interval</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -754,13 +776,12 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
-                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>The OSPFv3 router id.</div>
+                        <div>The OSPF router id.</div>
                 </td>
             </tr>
 
@@ -834,8 +855,7 @@ Examples
     - name: Merge Junos OSPF interfaces config
       junipernetworks.junos.junos_ospf_interfaces:
         config:
-        - router_id: '10.200.16.75'
-          name: 'ge-0/0/2.0'
+        - name: 'ge-0/0/2.0'
           address_family:
             - afi: 'ipv4'
               processes:
@@ -871,8 +891,7 @@ Examples
     - name: Replace Junos OSPF interfaces config
       junipernetworks.junos.junos_ospf_interfaces:
        config:
-         - router_id: '10.200.16.75'
-           name: 'ge-0/0/2.0'
+         - name: 'ge-0/0/2.0'
            address_family:
              - afi: 'ipv4'
                processes:
@@ -915,8 +934,7 @@ Examples
     - name: Override Junos OSPF interfaces config
       junipernetworks.junos.junos_ospf_interfaces:
       config:
-        - router_id: '10.200.16.75'
-          name: 'ge-0/0/1.0'
+        - name: 'ge-0/0/1.0'
           address_family:
             - afi: 'ipv4'
               processes:
@@ -954,8 +972,7 @@ Examples
     - name: Delete Junos OSPF interfaces config
       junipernetworks.junos.junos_ospf_interfaces:
         config:
-          - router_id: '10.200.16.75'
-            name: 'ge-0/0/1.0'
+          - name: 'ge-0/0/1.0'
         state: deleted
 
     # After state
@@ -1006,7 +1023,6 @@ Examples
     #                 }
     #             ],
     #             "name": "ge-0/0/3.0",
-    #             "router_id": "10.200.16.75"
     #         },
     #         {
     #             "address_family": [
@@ -1022,7 +1038,6 @@ Examples
     #                 }
     #             ],
     #             "name": "ge-0/0/2.0",
-    #             "router_id": "10.200.16.75"
     #         }
     #     ]
     #
@@ -1032,8 +1047,7 @@ Examples
     - name: Render the commands for provided  configuration
       junipernetworks.junos.junos_ospf_interfaces:
         config:
-        - router_id: '10.200.16.75'
-          name: 'ge-0/0/2.0'
+        - name: 'ge-0/0/2.0'
           address_family:
             - afi: 'ipv4'
               processes:
@@ -1119,7 +1133,6 @@ Examples
     #                 }
     #             ],
     #             "name": "ge-0/0/2.0",
-    #             "router_id": "10.200.16.75"
     #         }
     #     ]
     #

@@ -629,7 +629,6 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
-                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
@@ -757,7 +756,8 @@ Notes
 
 .. note::
    - This module requires the netconf system service be enabled on the device being managed.
-   - This module works with connection ``netconf``. See `the Junos OS Platform Options <../network/user_guide/platform_junos.html>`_.
+   - This module works with connection ``netconf``.
+   - See `the Junos OS Platform Options <https://docs.ansible.com/ansible/latest/network/user_guide/platform_junos.html>`_.
    - Tested against JunOS v18.4R1
 
 
@@ -777,8 +777,7 @@ Examples
     - name: Merge Junos OSPFv2 config
       junipernetworks.junos.junos_ospfv2:
         config:
-        - router_id: 10.200.16.75
-          reference_bandwidth: 10g
+        - reference_bandwidth: 10g
           areas:
           - area_id: 0.0.0.100
             area_range: 10.200.16.0/24

@@ -45,7 +45,7 @@ requirements:
 notes:
 - This module requires the netconf system service be enabled on the device being managed.
 - This module works with connection C(netconf).
-  - See L(the Junos OS Platform Options,https://docs.ansible.com/ansible/latest/network/user_guide/platform_junos.html).
+- See L(the Junos OS Platform Options,https://docs.ansible.com/ansible/latest/network/user_guide/platform_junos.html).
 - Tested against JunOS v18.4R1
 options:
   config:
@@ -57,7 +57,6 @@ options:
         description:
         - The OSPFv2 router id.
         type: str
-        required: true
       areas:
         description:
         - A list of OSPFv2 areas' configuration.
@@ -237,8 +236,7 @@ EXAMPLES = """
 - name: Merge Junos OSPFv2 config
   junipernetworks.junos.junos_ospfv2:
     config:
-    - router_id: 10.200.16.75
-      reference_bandwidth: 10g
+    - reference_bandwidth: 10g
       areas:
       - area_id: 0.0.0.100
         area_range: 10.200.16.0/24

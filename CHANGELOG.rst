@@ -5,6 +5,80 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v2.9.0
+======
+
+Minor Changes
+-------------
+
+- Add junos_hostname resource module.
+- Allow interfaces resource module to configure and gather logical interface description.
+
+Bugfixes
+--------
+
+- Fix junos_command output when empty config response is received for show commands (https://github.com/ansible-collections/junipernetworks.junos/issues/249).
+
+New Modules
+-----------
+
+- junos_hostname - Manage Hostname server configuration on Junos devices.
+- junos_snmp_server - Manage SNMP server configuration on Junos devices.
+
+v2.8.0
+======
+
+Minor Changes
+-------------
+
+- Add junos_routing_options resource module.
+- Add junos_snmp_server resource module.
+
+Deprecated Features
+-------------------
+
+- 'router_id' options is deprecated from junos_ospf_interfaces, junos_ospfv2 and junos_ospfv3 resuorce module.
+
+New Modules
+-----------
+
+- junos_routing_options - Manage routing-options configuration on Junos devices.
+
+v2.7.1
+======
+
+Bugfixes
+--------
+
+- Fix ospf router_id overlap issue.
+
+v2.7.0
+======
+
+Documentation Changes
+---------------------
+
+- Add note for router_id deprecation from ospf-interfaces resource module.
+- make sure router_id facts and config operation works fine for ospfv2 and ospfv3 RM
+
+v2.6.0
+======
+
+Minor Changes
+-------------
+
+- Add junos_ntp_global resource module.
+
+Deprecated Features
+-------------------
+
+- Deprecated router_id from ospfv2 resource module.
+
+New Modules
+-----------
+
+- junos_ntp_global - Manage NTP configuration on Junos devices.
+
 v2.5.0
 ======
 

@@ -153,14 +153,8 @@ class TestJunosInterfacesModule(TestJunosModule):
         commands = [
             '<nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:interface><nc:name>ge-0/0/2</nc:name>"
-            '<nc:description delete="delete"/><nc:speed delete="delete"/>'
-            '<nc:mtu delete="delete"/><nc:link-mode delete="delete"/>'
-            '<nc:disable delete="delete"/><nc:hold-time><nc:up delete="delete"/>'
-            '<nc:down delete="delete"/></nc:hold-time></nc:interface>'
-            "<nc:interface><nc:name>ge-0/0/2</nc:name>"
             "<nc:description>This is configured with ansible</nc:description>"
-            "<nc:speed>100m</nc:speed><nc:mtu>1024</nc:mtu>"
-            "</nc:interface></nc:interfaces>"
+            "<nc:speed>100m</nc:speed><nc:mtu>1024</nc:mtu></nc:interface></nc:interfaces>"
         ]
 
         self.assertEqual(sorted(result["commands"]), commands)
@@ -201,14 +195,8 @@ class TestJunosInterfacesModule(TestJunosModule):
         commands = [
             '<nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:interface><nc:name>ge-0/0/2</nc:name>"
-            '<nc:description delete="delete"/><nc:speed delete="delete"/>'
-            '<nc:mtu delete="delete"/><nc:link-mode delete="delete"/>'
-            '<nc:disable delete="delete"/><nc:hold-time><nc:up delete="delete"/>'
-            '<nc:down delete="delete"/></nc:hold-time></nc:interface>'
-            "<nc:interface><nc:name>ge-0/0/2</nc:name>"
             "<nc:description>This is configured with ansible</nc:description>"
-            "<nc:speed>100m</nc:speed><nc:mtu>1024</nc:mtu>"
-            "</nc:interface></nc:interfaces>"
+            "<nc:speed>100m</nc:speed><nc:mtu>1024</nc:mtu></nc:interface></nc:interfaces>"
         ]
         result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), commands)
@@ -236,14 +224,8 @@ class TestJunosInterfacesModule(TestJunosModule):
         set_module_args(dict(config=[dict(name="ge-0/0/2")], state="deleted"))
 
         commands = [
-            '<nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
-            "<nc:interface><nc:name>ge-0/0/2</nc:name>"
-            '<nc:description delete="delete"/>'
-            '<nc:speed delete="delete"/><nc:mtu delete="delete"/>'
-            '<nc:link-mode delete="delete"/><nc:disable delete="delete"/>'
-            '<nc:hold-time><nc:up delete="delete"/><nc:down delete="delete"/></nc:hold-time></nc:interface></nc:interfaces>'
+            '<nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>'
         ]
-
         result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), commands)
 

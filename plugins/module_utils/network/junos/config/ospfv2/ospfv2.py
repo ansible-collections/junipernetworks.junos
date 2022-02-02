@@ -243,6 +243,7 @@ class Ospfv2(ConfigBase):
         ospf_xml = []
         protocol = build_root_xml_node("ospf")
         for ospf in want:
+            ospf = remove_empties(ospf)
             if "router_id" in ospf.keys():
                 self.routing_options = build_child_xml_node(
                     self.root, "routing-options"
