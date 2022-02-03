@@ -44,7 +44,10 @@ import re
 from ansible.module_utils._text import to_text, to_native
 from ansible.module_utils.six import string_types
 from ansible.errors import AnsibleConnectionFailure
-from ansible.plugins.netconf import NetconfBase, ensure_ncclient
+from ansible_collections.ansible.netcommon.plugins.plugin_utils.netconf_base import (
+    NetconfBase,
+    ensure_ncclient,
+)
 
 try:
     from ncclient import manager
