@@ -98,6 +98,10 @@ plugin_routing:
       redirect: junipernetworks.junos.junos
     ntp_global:
       redirect: junipernetworks.junos.junos
+    security_policies:
+      redirect: junipernetworks.junos.junos
+    junos_security_policies:
+      redirect: junipernetworks.junos.junos
     junos_snmp_server:
       redirect: junipernetworks.junos.junos
     snmp_server:

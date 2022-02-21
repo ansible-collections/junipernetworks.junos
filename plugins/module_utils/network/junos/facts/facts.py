@@ -89,6 +89,9 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.ntp_global.ntp_global import (
     Ntp_globalFacts,
 )
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.security_policies.security_policies import (
+    Security_policiesFacts,
+)
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.snmp_server.snmp_server import (
     Snmp_serverFacts,
 )
@@ -124,6 +127,7 @@ FACT_RESOURCE_SUBSETS = dict(
     prefix_lists=Prefix_listsFacts,
     logging_global=Logging_globalFacts,
     ntp_global=Ntp_globalFacts,
+    security_policies=Security_policiesFacts,
     snmp_server=Snmp_serverFacts,
     routing_options=Routing_optionsFacts,
     hostname=HostnameFacts,
@@ -140,9 +144,7 @@ class Facts(FactsBase):
     def __init__(self, module):
         super(Facts, self).__init__(module)
 
-    def get_facts(
-        self, legacy_facts_type=None, resource_facts_type=None, data=None
-    ):
+    def get_facts(self, legacy_facts_type=None, resource_facts_type=None, data=None):
         """ Collect the facts for junos
         :param legacy_facts_type: List of legacy facts types
         :param resource_facts_type: List of resource fact types
@@ -168,14 +170,10 @@ class Facts(FactsBase):
                             "It can be installed using `pip install junos-eznc`"
                         ]
                     )
-                self.ansible_facts["ansible_net_gather_subset"].append(
-                    "ofacts"
-                )
+                self.ansible_facts["ansible_net_gather_subset"].append("ofacts")
                 legacy_facts_type.remove("ofacts")
 
         if self.VALID_LEGACY_GATHER_SUBSETS:
-            self.get_network_legacy_facts(
-                FACT_LEGACY_SUBSETS, legacy_facts_type
-            )
+            self.get_network_legacy_facts(FACT_LEGACY_SUBSETS, legacy_facts_type)
 
         return self.ansible_facts, self._warnings
