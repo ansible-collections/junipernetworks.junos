@@ -101,7 +101,7 @@ options:
                           - Specify the IP or remote procedure call (RPC) application or set of applications to be used as match criteria
                         type: dict
                         suboptions:
-                          application_names:
+                          names:
                             description: Name of the predefined or custom application or application set used as match criteria
                             type: list
                             elements: str
@@ -113,7 +113,7 @@ options:
                           - Specify the dynamic applications or dynamic application groups used as match criteria within a security policy
                         type: dict
                         suboptions:
-                          dynamic_application_names:
+                          names:
                             description: Specify dynamic applications or dynamic application groups
                             type: list
                             elements: str
@@ -121,9 +121,9 @@ options:
                             description:
                               - Configuring the dynamic application as any installs the policy with the application as a wildcard (default)
                             type: bool
-                          no_application:
+                          none:
                             description:
-                              - Configuring the dynamic application as none(no_application) ignores classification results from AppID and does not use the dynamic application in security policy lookups
+                              - Configuring the dynamic application as none ignores classification results from AppID and does not use the dynamic application in security policy lookups
                             type: bool
                       destination_address:
                         description:
@@ -201,12 +201,26 @@ options:
                         type: str
                       url_category:
                         description: URL category
-                        type: str
+                        type: dict
+                        suboptions:
+                          names:
+                            description:
+                              - Names of url category to match
+                            type: list
+                            elements: str
+                          any:
+                            description:
+                              - Apply to any url category
+                            type: bool
+                          none:
+                            description:
+                              - Do not apply to the url category
+                            type: bool
                       from_zone:
                         description: Identify a single source zone or multiple source zones to be used as a match criteria for a policy 
                         type: dict
                         suboptions:
-                          zone_names:
+                          names:
                             description: Name of single or multiple source zone
                             type: list
                             elements: str
@@ -221,7 +235,7 @@ options:
                         description: Identify a single destination zone or multiple destination zones to be used as a match criteria for a policy 
                         type: dict
                         suboptions:
-                          zone_names:
+                          names:
                             description: Name of single or multiple destination zone
                             type: list
                             elements: str
@@ -248,31 +262,16 @@ options:
                           - Block the service at the firewall The device drops the packet and sends a TCP reset (RST) segment to the source host for TCP traffic and an ICMP “destination unreachable, port unreachable” message (type 3, code 3) for UDP traffic
                         type: dict
                         suboptions:
-                          enable:
-                            description:
-                              - Enable rejection of packets based on match criteria
-                            type: bool
-                          action:
-                            description:
-                              - You can configure reject action with one of the following options for the dynamic_applications;
-                              - profile - You can chose to provide a notification to the clients or redirect client request to an informative Web page when a policy blocks HTTP or HTTPS traffic with a deny or reject action
-                              - ssl_proxy - You can apply a redirect SSL proxy profile when a policy blocks HTTPS traffic with a reject action When you apply am SSL proxy profile, SSL proxy decrypts the traffic and application identification functionality identifies the application 
+                          profile:
+                            description: You can chose to provide a notification to the clients or redirect client request to an informative Web page when a policy blocks HTTP or HTTPS traffic with a deny or reject action
+                            type: str
+                          ssl_proxy:
+                            description: You can apply a redirect SSL proxy profile when a policy blocks HTTPS traffic with a reject action When you apply am SSL proxy profile, SSL proxy decrypts the traffic and application identification functionality identifies the application
                             type: dict
                             suboptions:
-                              profile:
-                                description: You can chose to provide a notification to the clients or redirect client request to an informative Web page when a policy blocks HTTP or HTTPS traffic with a deny or reject action
+                              profile_name:
+                                description: Name of SSL proxy profile
                                 type: str
-                              ssl_proxy:
-                                description: You can apply a redirect SSL proxy profile when a policy blocks HTTPS traffic with a reject action When you apply am SSL proxy profile, SSL proxy decrypts the traffic and application identification functionality identifies the application
-                                type: dict
-                                suboptions:
-                                  enable:
-                                    description:
-                                      - Enable SSL proxy
-                                    type: bool
-                                  profile_name:
-                                    description: Name of SSL proxy profile
-                                    type: str
                       log:
                         description: Log traffic information for a specific policy Traffic information is logged when a session begins (session_init) or closes (session_close)
                         choices:
@@ -302,16 +301,10 @@ options:
                                     description: 
                                       - name of rule set to use
                                     type: str
-                              application_traffic_control_rules:
+                              application_traffic_control_rule_set:
                                 description:
-                                  - Specify the rule sets configured as part of AppQoS, application_aware quality of service, to be applied to the permitted traffic 
-                                type: list
-                                elements: dict
-                                suboptions:
-                                  rule_set:
-                                    description:
-                                      - name of rule set to use
-                                    type: str
+                                  - Specify the rule set configured as part of AppQoS, application_aware quality of service, to be applied to the permitted traffic 
+                                type: str
                               gprs_gtp_profile:
                                 description:
                                   - Specify GPRS tunneling protocol profile name
@@ -368,10 +361,6 @@ options:
                                 description: You can apply a redirect SSL proxy profile when a policy blocks HTTPS traffic with a reject action
                                 type: dict
                                 suboptions:
-                                  enable:
-                                    description:
-                                      - Enable SSL proxy
-                                    type: bool
                                   profile_name:
                                     description: Name of SSL proxy profile
                                     type: str
@@ -380,10 +369,6 @@ options:
                                   - Enable Unified Access Control (UAC) for the security policy
                                 type: dict
                                 suboptions:
-                                  enable:
-                                    description:
-                                      - Enable uac_policy
-                                    type: bool
                                   captive_portal:
                                     description:
                                       - Specify the preconfigured security policy for captive portal on the Junos OS Enforcer to enable the captive portal feature
@@ -392,19 +377,6 @@ options:
                                 description:
                                   - Specify UTM policy name
                                 type: str
-                              web_proxy:
-                                description:
-                                  - Enable web proxy
-                                type: dict
-                                suboptions:
-                                  enable:
-                                    description:
-                                      - Enable web proxy
-                                    type: bool
-                                  profile_name:
-                                    description:
-                                      - Specify secure Web proxy profile name
-                                    type: str
                           destination_address:
                             description: 
                               - Specify whether the traffic permitted by the security policy is limited to packets 
@@ -446,16 +418,7 @@ options:
                                   auth_only_browser:
                                     description:
                                       - Configure firewall authentication to ignore non-browser HTTP/HTTPS traffic
-                                    type: dict
-                                    suboptions:
-                                      enable:
-                                        description:
-                                          - Ignore non-browser HTTP/HTTPS traffic
-                                        type: bool
-                                      auth_user_agent:
-                                        description:
-                                          - Use the auth-user-agent in conjunction with auth-only-browser
-                                        type: str
+                                    type: bool
                                   auth_user_agent:
                                     description:
                                       - Specify a user-agent value to be used to verify that the user's browser traffic is HTTP/HTTPS traffic
@@ -533,10 +496,6 @@ options:
                             description: Encapsulate outgoing IP packets and decapsulate incoming IP packets
                             type: dict
                             suboptions:
-                              ipsec_group_vpn:
-                                description:
-                                  - name of the ipsec group policy
-                                type: str
                               ipsec_vpn:
                                 description:
                                   - name of the ipsec policy
