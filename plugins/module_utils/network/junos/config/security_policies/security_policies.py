@@ -10,6 +10,8 @@ is compared to the provided configuration (as dict) and the command set
 necessary to bring the current configuration to it's desired end-state is
 created
 """
+from lxml import etree
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     locked_config,
     load_config,
@@ -22,6 +24,11 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.c
 )
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
     to_list,
+    remove_empties,
+)
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
+    build_root_xml_node,
+    build_child_xml_node,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
     Facts,
@@ -53,7 +60,7 @@ class Security_policies(ConfigBase):
             "security_policies"
         )
         if not security_policies_facts:
-            return []
+            return {}
         return security_policies_facts
 
     def execute_module(self):
@@ -62,7 +69,6 @@ class Security_policies(ConfigBase):
         :rtype: A dictionary
         :returns: The result from module execution
         """
-        state = self._module.params["state"]
         result = {"changed": False}
 
         warnings = list()
@@ -71,7 +77,7 @@ class Security_policies(ConfigBase):
             existing_security_policies_facts = self.get_security_policies_facts()
         else:
             existing_security_policies_facts = {}
-        if state == "gathered":
+        if self.state == "gathered":
             existing_security_policies_facts = self.get_security_policies_facts()
             result["gathered"] = existing_security_policies_facts
 
@@ -94,8 +100,7 @@ class Security_policies(ConfigBase):
             diff = None
             config_xmls = self.set_config(existing_security_policies_facts)
             with locked_config(self._module):
-                for config_xml in config_xmls:
-                    diff = load_config(self._module, config_xml, [])
+                diff = load_config(self._module, config_xmls, [])
 
                 commit = not self._module.check_mode
                 if diff:
@@ -130,7 +135,7 @@ class Security_policies(ConfigBase):
         want = self._module.params["config"]
         have = existing_security_policies_facts
         resp = self.set_state(want, have)
-        return to_list(resp)
+        return resp
 
     def set_state(self, want, have):
         """Select the appropriate function based on the state provided
@@ -141,42 +146,39 @@ class Security_policies(ConfigBase):
         :returns: the commands necessary to migrate the current configuration
                   to the desired configuration
         """
+        self.root = build_root_xml_node("security")
         state = self._module.params["state"]
+        if state in ("merged", "replaced", "rendered", "overridden") and not want:
+            self._module.fail_json(
+                msg="value of config parameter must not be empty for state {0}".format(
+                    state
+                )
+            )
+        config_xmls = []
         if state == "overridden":
-            kwargs = {}
-            commands = self._state_overridden(**kwargs)
+            config_xmls = self._state_overridden(want, have)
         elif state == "deleted":
-            kwargs = {}
-            commands = self._state_deleted(**kwargs)
+            config_xmls = self._state_deleted(want, have)
         elif state == "merged":
-            kwargs = {}
-            commands = self._state_merged(**kwargs)
+            config_xmls = self._state_merged(want, have)
         elif state == "replaced":
-            kwargs = {}
-            commands = self._state_replaced(**kwargs)
-        return commands
+            config_xmls = self._state_replaced(want, have)
+        for xml in config_xmls:
+            self.root.append(xml)
+        return tostring(self.root)
 
     @staticmethod
-    def _state_gathered(**kwargs):
-        """The command generator when state is gathered
-
-        :rtype: A list
-        :returns: the commands necessary to migrate the current configuration
-                  to the desired configuration
-        """
-        commands = []
-        return commands
-
-    @staticmethod
-    def _state_replaced(**kwargs):
+    def _state_replaced(self, want, have):
         """The command generator when state is replaced
 
         :rtype: A list
         :returns: the commands necessary to migrate the current configuration
                   to the desired configuration
         """
-        commands = []
-        return commands
+        security_policies_xml = []
+        security_policies_xml.extend(self._state_deleted(want, have))
+        security_policies_xml.extend(self._state_merged(want, have))
+        return security_policies_xml
 
     @staticmethod
     def _state_overridden(**kwargs):
@@ -190,23 +192,162 @@ class Security_policies(ConfigBase):
         return commands
 
     @staticmethod
-    def _state_merged(**kwargs):
+    def _state_merged(self, want):
         """The command generator when state is merged
 
         :rtype: A list
         :returns: the commands necessary to merge the provided into
                   the current configuration
         """
-        commands = []
-        return commands
+        security_policies_xml = []
+        want = remove_empties(want)
+        security_policies_node = build_root_xml_node("policies")
+
+        def build_policies(node, policies):
+            for policy in policies:
+                policy_node = build_child_xml_node(node, "policy")
+
+                build_child_xml_node(policy_node, "name", policy["name"])
+
+                if "description" in policy:
+                    build_child_xml_node(
+                        policy_node, "description", policy["description"]
+                    )
+
+                if "scheduler-name" in policy:
+                    build_child_xml_node(
+                        policy_node, "scheduler-name", policy["scheduler_name"]
+                    )
+
+                # add match criteria node
+                match_node = build_child_xml_node(policy_node, "match")
+                match = policy["match"]
+
+                for source_address in match["source_address"]:
+                    if source_address == "any_ipv6":
+                        build_child_xml_node(match_node, "source-address", "any-ipv6")
+                    elif source_address == "any_ipv4":
+                        build_child_xml_node(match_node, "source-address", "any-ipv4")
+                    elif source_address == "any":
+                        build_child_xml_node(match_node, "source-address", "any")
+                    elif source_address == "addresses":
+                        for address in source_address["addresses"]:
+                            build_child_xml_node(match_node, "source-address", address)
+
+                for destination_address in match["destination_address"]:
+                    if destination_address == "any_ipv6":
+                        build_child_xml_node(
+                            match_node, "destination-address", "any-ipv6"
+                        )
+                    elif destination_address == "any_ipv4":
+                        build_child_xml_node(
+                            match_node, "destination-address", "any-ipv4"
+                        )
+                    elif destination_address == "any":
+                        build_child_xml_node(match_node, "destination-address", "any")
+                    elif destination_address == "addresses":
+                        for address in destination_address["addresses"]:
+                            build_child_xml_node(
+                                match_node, "destination-address", address
+                            )
+                for application in match["application"]:
+                    if application == "any":
+                        build_child_xml_node(match_node, "application", "any")
+                    elif application == "names":
+                        for name in application["names"]:
+                            build_child_xml_node(match_node, "application", name)
+
+                if "source_identity" in match:
+                    source_identities = match["source_identity"]
+                    for source_identity in source_identities:
+                        if source_identity == "any":
+                            build_child_xml_node(match_node, "source-identity", "any")
+                        elif source_identity == "names":
+                            for name in source_identity["names"]:
+                                build_child_xml_node(
+                                    match_node, "source-identity", name
+                                )
+
+                # add action node
+                then_node = build_child_xml_node(policy_node, "then")
+                then = policy["then"]
+                if "deny" in then:
+                    build_child_xml_node(then_node, "deny")
+                if "count" in then:
+                    build_child_xml_node(then_node, "count", " ")
+                if "log" in then:
+                    log_node = build_child_xml_node(then_node, "log")
+                    build_child_xml_node(log_node, policy["then"]["log"])
+                if "reject" in then:
+                    pass
+                if "permit" in then:
+                    permit_node = build_child_xml_node(then_node, "permit")
+                    if "application_services" in then["permit"]:
+                        application_services = then["permit"]["application_services"]
+                        application_services_node = build_child_xml_node(
+                            permit_node, "application-services"
+                        )
+                        if "ssl_proxy" in application_services:
+                            build_child_xml_node(
+                                application_services_node, "ssl-proxy", " "
+                            )
+                        if "uac_policy" in application_services:
+                            build_child_xml_node(
+                                application_services_node, "uac-policy", " "
+                            )
+                        if (
+                            "application_traffic_control_rule_set"
+                            in application_services
+                        ):
+                            application_traffic_control_node = build_child_xml_node(
+                                application_services_node, "application-traffic-control"
+                            )
+                            build_child_xml_node(
+                                application_traffic_control_node,
+                                "rule-set",
+                                application_services[
+                                    "application_traffic_control_rule_set"
+                                ],
+                            )
+
+        # add zone-pair policies
+        if "from_zones" in want.keys():
+            from_zones = want.get("from_zones")
+            for from_zone in from_zones:
+                for to_zone in from_zone["to_zones"]:
+                    policy_node = build_child_xml_node(security_policies_node, "policy")
+                    build_child_xml_node(
+                        policy_node, "from-zone-name", from_zone["name"]
+                    )
+                    build_child_xml_node(policy_node, "to-zone-name", to_zone["name"])
+                    build_policies(policy_node, to_zone["policies"])
+
+        # add global policies
+        if "global" in want.keys():
+            global_node = build_child_xml_node(security_policies_node, "global")
+            global_policies = want.get("global").get("policies")
+            build_policies(global_node, global_policies)
+
+        if security_policies_node is not None:
+            security_policies_xml.append(security_policies_node)
+        return security_policies_xml
 
     @staticmethod
-    def _state_deleted(**kwargs):
+    def _state_deleted(self, want, have):
         """The command generator when state is deleted
 
         :rtype: A list
         :returns: the commands necessary to remove the current configuration
                   of the provided objects
         """
-        commands = []
-        return commands
+        security_policies_xml = []
+        security_policies_root = None
+        delete = {"delete": "delete"}
+        if have is not None:
+            security_policies_root = build_child_xml_node(
+                self.root, "security_policies", None, delete
+            )
+
+        if security_policies_root is not None:
+            security_policies_xml.append(security_policies_root)
+        return security_policies_xml
