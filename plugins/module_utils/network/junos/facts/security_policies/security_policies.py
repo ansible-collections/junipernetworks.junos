@@ -308,12 +308,17 @@ class Security_policiesFacts(object):
                 action["reject"] = {}
                 reject = action["reject"]
                 policy_reject = policy_action["reject"]
+                reject["enable"] = True
 
-                if "profile" in policy_reject:
+                if policy_reject and "profile" in policy_reject:
                     reject["profile"] = policy_reject["policy"]
-                if "ssl-proxy" in policy_reject:
+                if policy_reject and "ssl-proxy" in policy_reject:
                     reject["ssl_proxy"] = {}
-                    if "profile-name" in policy_reject["ssl-proxy"]:
+                    reject["ssl_proxy"]["enable"] = True
+                    if (
+                        policy_reject["ssl-proxy"]
+                        and "profile-name" in policy_reject["ssl-proxy"]
+                    ):
                         reject["ssl_proxy"]["profile_name"] = policy_reject[
                             "ssl-proxy"
                         ]["profile-name"]
@@ -366,7 +371,7 @@ class Security_policiesFacts(object):
                         ] = policy_application_services["security-intelligence-policy"]
                     if "ssl-proxy" in policy_application_services:
                         application_services["ssl_proxy"] = {}
-                        # TODO: add enabled
+                        application_services["ssl_proxy"]["enable"] = True
                         if (
                             policy_application_services["ssl-proxy"]
                             and "profile-name"
@@ -375,14 +380,12 @@ class Security_policiesFacts(object):
                             application_services["ssl_proxy"][
                                 "captive_portal"
                             ] = policy_application_services["ssl-proxy"]["profile-name"]
-                    if (
-                        policy_application_services["ssl-proxy"]
-                        and "uac-policy" in policy_application_services
-                    ):
-                        # TODO: add enabled
+                    if "uac-policy" in policy_application_services:
                         application_services["uac_policy"] = {}
+                        application_services["uac_policy"]["enable"] = True
                         if (
-                            "captive-portal"
+                            policy_application_services["uac-policy"]
+                            and "captive-portal"
                             in policy_application_services["uac-policy"]
                         ):
                             application_services["uac_policy"][
@@ -396,11 +399,11 @@ class Security_policiesFacts(object):
                         ] = policy_application_services["utm-policy"]
 
                 if "destination-address" in policy_permit:
-                    permit["destination-address"] = policy_action["destination-address"]
+                    permit["destination_address"] = policy_action["destination-address"]
 
                 if "firewall-authentication" in policy_permit:
-                    permit["firewall-authentication"] = {}
-                    f_a = permit["firewall-authentication"]
+                    permit["firewall_authentication"] = {}
+                    f_a = permit["firewall_authentication"]
                     policy_f_a = policy_permit["firewall-authentication"]
 
                     if "pass-through" in policy_f_a:
@@ -458,7 +461,6 @@ class Security_policiesFacts(object):
 
                     if "web-authentication" in policy_f_a:
                         f_a["web_authentication"] = {}
-                        # TODO: Verify this
                         if isinstance(
                             policy_f_a["web-authentication"]["client-match"], str
                         ):
@@ -471,20 +473,23 @@ class Security_policiesFacts(object):
 
                 if "tcp-options" in policy_permit:
                     permit["tcp_options"] = {}
-                    if "initial-tcp-mss" in policy_permit["tcp-options"]:
-                        permit["tcp_options"]["initial_tcp_mss"] = policy_permit[
-                            "tcp-options"
-                        ]["initial-tcp-mss"]
-                    if "reverse-tcp-mss" in policy_permit["tcp-options"]:
-                        permit["tcp_options"]["reverse_tcp_mss"] = policy_permit[
-                            "tcp-options"
-                        ]["reverse-tcp-mss"]
-                    if "sequence-check-required" in policy_permit["tcp-options"]:
-                        permit["tcp_options"]["sequence_check_required"] = True
-                    if "syn-check-required" in policy_permit["tcp-options"]:
-                        permit["tcp_options"]["syn_check_required"] = True
-                    if "window-scale" in policy_permit["tcp-options"]:
-                        permit["tcp_options"]["window_scale"] = True
+                    tcp_options = permit["tcp_options"]
+                    policy_tcp_options = policy_permit["tcp-options"]
+
+                    if "initial-tcp-mss" in policy_tcp_options:
+                        tcp_options["initial_tcp_mss"] = policy_permit["tcp-options"][
+                            "initial-tcp-mss"
+                        ]
+                    if "reverse-tcp-mss" in policy_tcp_options:
+                        tcp_options["reverse_tcp_mss"] = policy_permit["tcp-options"][
+                            "reverse-tcp-mss"
+                        ]
+                    if "sequence-check-required" in policy_tcp_options:
+                        tcp_options["sequence_check_required"] = True
+                    if "syn-check-required" in policy_tcp_options:
+                        tcp_options["syn_check_required"] = True
+                    if "window-scale" in policy_tcp_options:
+                        tcp_options["window_scale"] = True
 
                 if "tunnel" in policy_permit:
                     permit["tunnel"] = {}

@@ -262,6 +262,10 @@ options:
                           - Block the service at the firewall The device drops the packet and sends a TCP reset (RST) segment to the source host for TCP traffic and an ICMP “destination unreachable, port unreachable” message (type 3, code 3) for UDP traffic
                         type: dict
                         suboptions:
+                          enable:
+                            description:
+                              - Enable rejection of packets based on match criteria
+                            type: bool
                           profile:
                             description: You can chose to provide a notification to the clients or redirect client request to an informative Web page when a policy blocks HTTP or HTTPS traffic with a deny or reject action
                             type: str
@@ -269,6 +273,10 @@ options:
                             description: You can apply a redirect SSL proxy profile when a policy blocks HTTPS traffic with a reject action When you apply am SSL proxy profile, SSL proxy decrypts the traffic and application identification functionality identifies the application
                             type: dict
                             suboptions:
+                              enable:
+                                description:
+                                  - Enable SSL proxy
+                                type: bool
                               profile_name:
                                 description: Name of SSL proxy profile
                                 type: str
@@ -361,6 +369,10 @@ options:
                                 description: You can apply a redirect SSL proxy profile when a policy blocks HTTPS traffic with a reject action
                                 type: dict
                                 suboptions:
+                                  enable:
+                                    description:
+                                      - Enable SSL proxy
+                                    type: bool
                                   profile_name:
                                     description: Name of SSL proxy profile
                                     type: str
@@ -369,6 +381,10 @@ options:
                                   - Enable Unified Access Control (UAC) for the security policy
                                 type: dict
                                 suboptions:
+                                  enable:
+                                    description:
+                                      - Enable Unified Access Control (UAC)
+                                    type: bool
                                   captive_portal:
                                     description:
                                       - Specify the preconfigured security policy for captive portal on the Junos OS Enforcer to enable the captive portal feature
