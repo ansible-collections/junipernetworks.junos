@@ -199,8 +199,8 @@ class Security_policiesFacts(object):
                         match["source_address"]["addresses"] = []
                     match["source_address"]["addresses"].append(source_address)
 
-            if "source-address-exclude" in policy_match:
-                match["source_address_exclude"] = True
+            if "source-address-excluded" in policy_match:
+                match["source_address_excluded"] = True
 
             match["destination_address"] = {}
             if isinstance(policy_match["destination-address"], str):
@@ -221,8 +221,8 @@ class Security_policiesFacts(object):
                         destination_address
                     )
 
-            if "destination-address-exclude" in policy_match:
-                match["destination_address_exclude"] = True
+            if "destination-address-excluded" in policy_match:
+                match["destination_address_excluded"] = True
 
             match["application"] = {}
             if policy_match["application"] == "any":
@@ -235,7 +235,7 @@ class Security_policiesFacts(object):
             if "source-end-user-profile" in policy_match:
                 match["source_end_user_profile"] = policy_match[
                     "source-end-user-profile"
-                ]
+                ]["source-end-user-profile-name"]
 
             if "source-identity" in policy_match:
                 if isinstance(policy_match["source-identity"], str):
@@ -259,6 +259,7 @@ class Security_policiesFacts(object):
             if "url-category" in policy_match:
                 if isinstance(policy_match["url-category"], str):
                     policy_match["url-category"] = [policy_match["url-category"]]
+                match["url_category"] = {}
                 for url_category in policy_match["url-category"]:
                     if url_category == "any":
                         match["url_category"]["any"] = True
@@ -274,6 +275,7 @@ class Security_policiesFacts(object):
                     policy_match["dynamic-application"] = [
                         policy_match["dynamic-application"]
                     ]
+                match["dynamic_application"] = {}
                 for dynamic_application in policy_match["dynamic-application"]:
                     if url_category == "any":
                         match["dynamic_application"]["any"] = True
@@ -311,7 +313,7 @@ class Security_policiesFacts(object):
                 reject["enable"] = True
 
                 if policy_reject and "profile" in policy_reject:
-                    reject["profile"] = policy_reject["policy"]
+                    reject["profile"] = policy_reject["profile"]
                 if policy_reject and "ssl-proxy" in policy_reject:
                     reject["ssl_proxy"] = {}
                     reject["ssl_proxy"]["enable"] = True
@@ -399,7 +401,7 @@ class Security_policiesFacts(object):
                         ] = policy_application_services["utm-policy"]
 
                 if "destination-address" in policy_permit:
-                    permit["destination_address"] = policy_action["destination-address"]
+                    permit["destination_address"] = policy_permit["destination-address"]
 
                 if "firewall-authentication" in policy_permit:
                     permit["firewall_authentication"] = {}

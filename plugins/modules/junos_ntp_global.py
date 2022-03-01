@@ -29,6 +29,11 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+import debugpy
+
+debugpy.listen(3000)
+debugpy.wait_for_client()
+
 DOCUMENTATION = """
 ---
 module: junos_ntp_global

@@ -27,13 +27,8 @@ The module file for junos_security_policies
 """
 
 from __future__ import absolute_import, division, print_function
-__metaclass__ = type
 
-ANSIBLE_METADATA = {
-  'metadata_version': '1.1',
-  'status': ['preview'],
-  'supported_by': 'network'
-}
+__metaclass__ = type
 
 DOCUMENTATION = """
 ---
@@ -41,7 +36,7 @@ module: junos_security_policies
 version_added: 2.9.0
 short_description: Create and manage security policies on Juniper JUNOS devices
 description: This module provides declarative creation and management of security policies on Juniper JUNOS devices
-author: Pranav Bhatt (pbhatt@redhat.com)
+author: Pranav Bhatt (adpranavb2000@gmail.com)
 requirements:
   - ncclient (>=v0.6.4)
   - xmltodict (>=0.12.0)
@@ -144,7 +139,7 @@ options:
                           any_ipv6:
                             description: Any IPv6 address
                             type: bool
-                      destination_address_exclude:
+                      destination_address_excluded:
                         description:
                           - Exclude destination addresses
                         type: bool
@@ -167,7 +162,7 @@ options:
                           any_ipv6:
                             description: Any IPv6 address
                             type: bool
-                      source_address_exclude:
+                      source_address_excluded:
                         description:
                           - Exclude source addresses
                         type: bool
@@ -589,28 +584,64 @@ EXAMPLES = """
 """
 RETURN = """
 before:
-  description: The configuration prior to the model invocation.
-  returned: always
+  description: The configuration prior to the module execution.
+  returned: when state is I(merged), I(replaced), I(overridden), I(deleted) or I(purged)
+  type: dict
   sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
+    This output will always be in the same format as the
+    module argspec.
 after:
-  description: The resulting configuration model invocation.
+  description: The resulting configuration after module execution.
   returned: when changed
+  type: dict
   sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
+    This output will always be in the same format as the
+    module argspec.
 commands:
   description: The set of commands pushed to the remote device.
-  returned: always
+  returned: when state is I(merged), I(replaced), I(overridden), I(deleted) or I(purged)
   type: list
-  sample: ['command 1', 'command 2', 'command 3']
+  sample:
+    - "logging console 3"
+    - "logging monitor 4"
+    - "logging ip access-list cache entries 16384"
+    - "logging ip access-list cache interval 200"
+    - "logging ip access-list cache threshold 5000"
+rendered:
+  description: The provided configuration in the task rendered in device-native format (offline).
+  returned: when state is I(rendered)
+  type: list
+  sample:
+    - "logging ip access-list cache entries 4096"
+    - "no logging ip access-list cache interval 200"
+    - "no logging ip access-list cache threshold 5000"
+    - "no logging origin-id hostname"
+    - "logging origin-id ip 192.0.2.100"
+    - "logging server 198.51.100.101 1 port 6538 use-vrf management"
+gathered:
+  description: Facts about the network resource gathered from the remote device as structured data.
+  returned: when state is I(gathered)
+  type: list
+  sample: >
+    This output will always be in the same format as the
+    module argspec.
+parsed:
+  description: The device native config provided in I(running_config) option parsed into structured data as per module argspec.
+  returned: when state is I(parsed)
+  type: list
+  sample: >
+    This output will always be in the same format as the
+    module argspec.
 """
 
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.security_policies.security_policies import Security_policiesArgs
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.security_policies.security_policies import Security_policies
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.security_policies.security_policies import (
+    Security_policiesArgs,
+)
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.security_policies.security_policies import (
+    Security_policies,
+)
 
 
 def main():
@@ -619,12 +650,13 @@ def main():
 
     :returns: the result form module invocation
     """
-    module = AnsibleModule(argument_spec=Security_policiesArgs.argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(
+        argument_spec=Security_policiesArgs.argument_spec, supports_check_mode=True
+    )
 
     result = Security_policies(module).execute_module()
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
