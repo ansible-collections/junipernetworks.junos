@@ -610,7 +610,7 @@ commands:
 rendered:
   description: The provided configuration in the task rendered in device-native format (offline).
   returned: when state is I(rendered)
-  type: list
+  type: dict
   sample:
     - "logging ip access-list cache entries 4096"
     - "no logging ip access-list cache interval 200"
@@ -621,14 +621,14 @@ rendered:
 gathered:
   description: Facts about the network resource gathered from the remote device as structured data.
   returned: when state is I(gathered)
-  type: list
+  type: dict
   sample: >
     This output will always be in the same format as the
     module argspec.
 parsed:
   description: The device native config provided in I(running_config) option parsed into structured data as per module argspec.
   returned: when state is I(parsed)
-  type: list
+  type: dict
   sample: >
     This output will always be in the same format as the
     module argspec.
@@ -650,8 +650,17 @@ def main():
 
     :returns: the result form module invocation
     """
+    required_if = [
+        ("state", "merged", ("config",)),
+        ("state", "replaced", ("config",)),
+        ("state", "overridden", ("config",)),
+        ("state", "rendered", ("config",)),
+        ("state", "parsed", ("running_config",)),
+    ]
     module = AnsibleModule(
-        argument_spec=Security_policiesArgs.argument_spec, supports_check_mode=True
+        argument_spec=Security_policiesArgs.argument_spec,
+        required_if=required_if,
+        supports_check_mode=True,
     )
 
     result = Security_policies(module).execute_module()
