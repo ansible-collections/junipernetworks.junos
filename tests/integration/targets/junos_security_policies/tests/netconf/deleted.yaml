@@ -8,7 +8,7 @@
     - include_tasks: _populate_config.yaml
     - set_fact:
         config: {}
-  
+
     - name: Delete all security policies from the device
       junipernetworks.junos.junos_security_policies:
         state: deleted

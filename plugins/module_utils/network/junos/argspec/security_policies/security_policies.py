@@ -57,7 +57,9 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                             "options": {
                                                 "application": {
                                                     "options": {
-                                                        "any": {"type": "bool"},
+                                                        "any": {
+                                                            "type": "bool"
+                                                        },
                                                         "names": {
                                                             "elements": "str",
                                                             "type": "list",
@@ -71,9 +73,15 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                             "elements": "str",
                                                             "type": "list",
                                                         },
-                                                        "any": {"type": "bool"},
-                                                        "any_ipv4": {"type": "bool"},
-                                                        "any_ipv6": {"type": "bool"},
+                                                        "any": {
+                                                            "type": "bool"
+                                                        },
+                                                        "any_ipv4": {
+                                                            "type": "bool"
+                                                        },
+                                                        "any_ipv6": {
+                                                            "type": "bool"
+                                                        },
                                                     },
                                                     "type": "dict",
                                                 },
@@ -82,19 +90,27 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 },
                                                 "dynamic_application": {
                                                     "options": {
-                                                        "any": {"type": "bool"},
+                                                        "any": {
+                                                            "type": "bool"
+                                                        },
                                                         "names": {
                                                             "elements": "str",
                                                             "type": "list",
                                                         },
-                                                        "none": {"type": "bool"},
+                                                        "none": {
+                                                            "type": "bool"
+                                                        },
                                                     },
                                                     "type": "dict",
                                                 },
                                                 "from_zone": {
                                                     "options": {
-                                                        "any": {"type": "bool"},
-                                                        "junos_host": {"type": "bool"},
+                                                        "any": {
+                                                            "type": "bool"
+                                                        },
+                                                        "junos_host": {
+                                                            "type": "bool"
+                                                        },
                                                         "names": {
                                                             "elements": "str",
                                                             "type": "list",
@@ -108,9 +124,15 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                             "elements": "str",
                                                             "type": "list",
                                                         },
-                                                        "any": {"type": "bool"},
-                                                        "any_ipv4": {"type": "bool"},
-                                                        "any_ipv6": {"type": "bool"},
+                                                        "any": {
+                                                            "type": "bool"
+                                                        },
+                                                        "any_ipv4": {
+                                                            "type": "bool"
+                                                        },
+                                                        "any_ipv6": {
+                                                            "type": "bool"
+                                                        },
                                                     },
                                                     "type": "dict",
                                                 },
@@ -122,7 +144,9 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 },
                                                 "source_identity": {
                                                     "options": {
-                                                        "any": {"type": "bool"},
+                                                        "any": {
+                                                            "type": "bool"
+                                                        },
                                                         "authenticated_user": {
                                                             "type": "bool"
                                                         },
@@ -141,8 +165,12 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 },
                                                 "to_zone": {
                                                     "options": {
-                                                        "any": {"type": "bool"},
-                                                        "junos_host": {"type": "bool"},
+                                                        "any": {
+                                                            "type": "bool"
+                                                        },
+                                                        "junos_host": {
+                                                            "type": "bool"
+                                                        },
                                                         "names": {
                                                             "elements": "str",
                                                             "type": "list",
@@ -152,12 +180,16 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 },
                                                 "url_category": {
                                                     "options": {
-                                                        "any": {"type": "bool"},
+                                                        "any": {
+                                                            "type": "bool"
+                                                        },
                                                         "names": {
                                                             "elements": "str",
                                                             "type": "list",
                                                         },
-                                                        "none": {"type": "bool"},
+                                                        "none": {
+                                                            "type": "bool"
+                                                        },
                                                     },
                                                     "type": "dict",
                                                 },
@@ -205,7 +237,9 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                                 "icap_redirect": {
                                                                     "type": "str"
                                                                 },
-                                                                "idp": {"type": "bool"},
+                                                                "idp": {
+                                                                    "type": "bool"
+                                                                },
                                                                 "idp_policy": {
                                                                     "type": "str"
                                                                 },
@@ -373,8 +407,12 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 },
                                                 "reject": {
                                                     "options": {
-                                                        "enable": {"type": "bool"},
-                                                        "profile": {"type": "str"},
+                                                        "enable": {
+                                                            "type": "bool"
+                                                        },
+                                                        "profile": {
+                                                            "type": "str"
+                                                        },
                                                         "ssl_proxy": {
                                                             "options": {
                                                                 "enable": {
@@ -468,12 +506,18 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                             },
                                             "type": "dict",
                                         },
-                                        "source_address_excluded": {"type": "bool"},
-                                        "source_end_user_profile": {"type": "str"},
+                                        "source_address_excluded": {
+                                            "type": "bool"
+                                        },
+                                        "source_end_user_profile": {
+                                            "type": "str"
+                                        },
                                         "source_identity": {
                                             "options": {
                                                 "any": {"type": "bool"},
-                                                "authenticated_user": {"type": "bool"},
+                                                "authenticated_user": {
+                                                    "type": "bool"
+                                                },
                                                 "names": {
                                                     "elements": "str",
                                                     "type": "list",
@@ -481,7 +525,9 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 "unauthenticated_user": {
                                                     "type": "bool"
                                                 },
-                                                "unknown_user": {"type": "bool"},
+                                                "unknown_user": {
+                                                    "type": "bool"
+                                                },
                                             },
                                             "type": "dict",
                                         },
@@ -551,12 +597,18 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                         "icap_redirect": {
                                                             "type": "str"
                                                         },
-                                                        "idp": {"type": "bool"},
-                                                        "idp_policy": {"type": "str"},
+                                                        "idp": {
+                                                            "type": "bool"
+                                                        },
+                                                        "idp_policy": {
+                                                            "type": "str"
+                                                        },
                                                         "packet_capture": {
                                                             "type": "bool"
                                                         },
-                                                        "redirect_wx": {"type": "str"},
+                                                        "redirect_wx": {
+                                                            "type": "str"
+                                                        },
                                                         "reverse_redirect_wx": {
                                                             "type": "str"
                                                         },
@@ -602,7 +654,9 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                             },
                                                             "type": "dict",
                                                         },
-                                                        "utm_policy": {"type": "str"},
+                                                        "utm_policy": {
+                                                            "type": "str"
+                                                        },
                                                     },
                                                     "type": "dict",
                                                 },
@@ -699,8 +753,12 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 },
                                                 "tunnel": {
                                                     "options": {
-                                                        "ipsec_vpn": {"type": "str"},
-                                                        "pair_policy": {"type": "str"},
+                                                        "ipsec_vpn": {
+                                                            "type": "str"
+                                                        },
+                                                        "pair_policy": {
+                                                            "type": "str"
+                                                        },
                                                     },
                                                     "type": "dict",
                                                 },
@@ -713,8 +771,12 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 "profile": {"type": "str"},
                                                 "ssl_proxy": {
                                                     "options": {
-                                                        "enable": {"type": "bool"},
-                                                        "profile_name": {"type": "str"},
+                                                        "enable": {
+                                                            "type": "bool"
+                                                        },
+                                                        "profile_name": {
+                                                            "type": "str"
+                                                        },
                                                     },
                                                     "type": "dict",
                                                 },

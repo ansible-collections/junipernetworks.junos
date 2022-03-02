@@ -9,8 +9,6 @@ It is in this file the configuration is collected from the device
 for a given resource, parsed, and the facts tree is populated
 based on the configuration.
 """
-import profile
-import re
 from copy import deepcopy
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
@@ -59,7 +57,9 @@ class Security_policiesFacts(object):
     def _get_xml_dict(self, xml_root):
         if not HAS_XMLTODICT:
             self._module.fail_json(msg=missing_required_lib("xmltodict"))
-        xml_dict = xmltodict.parse(etree.tostring(xml_root), dict_constructor=dict)
+        xml_dict = xmltodict.parse(
+            etree.tostring(xml_root), dict_constructor=dict
+        )
         return xml_dict
 
     def _get_device_data(self, connection, config_filters):
@@ -88,13 +88,15 @@ class Security_policiesFacts(object):
                             <policies>
                             </policies>
                         </security>
-                    </configuration>               
+                    </configuration>
                     """
             data = self._get_device_data(connection, config_filter)
 
         # split the config into instances of the resource
         if isinstance(data, string_types):
-            data = etree.fromstring(to_bytes(data, errors="surrogate_then_replace"))
+            data = etree.fromstring(
+                to_bytes(data, errors="surrogate_then_replace")
+            )
         objs = {}
         resources = data.xpath("configuration/security/policies")
         for resource in resources:
@@ -105,7 +107,9 @@ class Security_policiesFacts(object):
         facts = {}
         if objs:
             facts["security_policies"] = {}
-            params = utils.validate_config(self.argument_spec, {"config": objs})
+            params = utils.validate_config(
+                self.argument_spec, {"config": objs}
+            )
 
             facts["security_policies"] = utils.remove_empties(params["config"])
 
@@ -144,13 +148,19 @@ class Security_policiesFacts(object):
                         "to_zones"
                     ] = {}
 
-                from_zone = from_zone_dict[zone_pair_policies["from-zone-name"]]
+                from_zone = from_zone_dict[
+                    zone_pair_policies["from-zone-name"]
+                ]
 
                 from_zone["to_zones"][zone_pair_policies["to-zone-name"]] = {}
-                to_zone = from_zone["to_zones"][zone_pair_policies["to-zone-name"]]
+                to_zone = from_zone["to_zones"][
+                    zone_pair_policies["to-zone-name"]
+                ]
 
                 to_zone["name"] = zone_pair_policies["to-zone-name"]
-                to_zone["policies"] = self.parse_policies(zone_pair_policies["policy"])
+                to_zone["policies"] = self.parse_policies(
+                    zone_pair_policies["policy"]
+                )
 
             for from_zone in from_zone_dict.values():
                 from_zone["to_zones"] = list(from_zone["to_zones"].values())
@@ -160,9 +170,9 @@ class Security_policiesFacts(object):
             global_policies = conf.get("global")
             global_policies = global_policies.get("policy")
             security_policies_config["global"] = {}
-            security_policies_config["global"]["policies"] = self.parse_policies(
-                global_policies
-            )
+            security_policies_config["global"][
+                "policies"
+            ] = self.parse_policies(global_policies)
 
         return security_policies_config
 
@@ -186,7 +196,9 @@ class Security_policiesFacts(object):
 
             match["source_address"] = {}
             if isinstance(policy_match["source-address"], str):
-                policy_match["source-address"] = [policy_match["source-address"]]
+                policy_match["source-address"] = [
+                    policy_match["source-address"]
+                ]
             for source_address in policy_match["source-address"]:
                 if source_address == "any-ipv6":
                     match["source_address"]["any_ipv6"] = True
@@ -239,26 +251,36 @@ class Security_policiesFacts(object):
 
             if "source-identity" in policy_match:
                 if isinstance(policy_match["source-identity"], str):
-                    policy_match["source-identity"] = [policy_match["source-identity"]]
+                    policy_match["source-identity"] = [
+                        policy_match["source-identity"]
+                    ]
                 for source_identity in policy_match["source-identity"]:
                     match["source_identity"] = {}
                     if source_identity == "any":
                         match["source_identity"]["any"] = True
                     else:
                         if "authenticated-user" in source_identity:
-                            match["source_identity"]["authenticated_user"] = True
+                            match["source_identity"][
+                                "authenticated_user"
+                            ] = True
                         elif "unauthenticated-user" in source_identity:
-                            match["source_identity"]["unauthenticated_user"] = True
+                            match["source_identity"][
+                                "unauthenticated_user"
+                            ] = True
                         elif "unknown-user" in source_identity:
                             match["source_identity"]["unknown_user"] = True
                         else:
                             if "names" not in match["source_identity"]:
                                 match["source_identity"]["names"] = []
-                            match["source_identity"]["names"].append(source_identity)
+                            match["source_identity"]["names"].append(
+                                source_identity
+                            )
 
             if "url-category" in policy_match:
                 if isinstance(policy_match["url-category"], str):
-                    policy_match["url-category"] = [policy_match["url-category"]]
+                    policy_match["url-category"] = [
+                        policy_match["url-category"]
+                    ]
                 match["url_category"] = {}
                 for url_category in policy_match["url-category"]:
                     if url_category == "any":
@@ -333,16 +355,28 @@ class Security_policiesFacts(object):
                 if "application-services" in policy_permit:
                     permit["application_services"] = {}
                     application_services = permit["application_services"]
-                    policy_application_services = policy_permit["application-services"]
+                    policy_application_services = policy_permit[
+                        "application-services"
+                    ]
 
-                    if "advanced-anti-malware-policy" in policy_application_services:
+                    if (
+                        "advanced-anti-malware-policy"
+                        in policy_application_services
+                    ):
                         application_services[
                             "advanced_anti_malware_policy"
-                        ] = policy_application_services["advanced-anti-malware-policy"]
-                    if "application-traffic-control" in policy_application_services:
+                        ] = policy_application_services[
+                            "advanced-anti-malware-policy"
+                        ]
+                    if (
+                        "application-traffic-control"
+                        in policy_application_services
+                    ):
                         application_services[
                             "application_traffic_control_rule_set"
-                        ] = policy_application_services["application-traffic-control"][
+                        ] = policy_application_services[
+                            "application-traffic-control"
+                        ][
                             "rule-set"
                         ]
                     if "gprs-gtp-profile" in policy_application_services:
@@ -367,10 +401,15 @@ class Security_policiesFacts(object):
                         application_services["redirect_wx"] = True
                     if "reverse-redirect-wx" in policy_application_services:
                         application_services["reverse_redirect_wx"] = True
-                    if "security-intelligence-policy" in policy_application_services:
+                    if (
+                        "security-intelligence-policy"
+                        in policy_application_services
+                    ):
                         application_services[
                             "security_intelligence_policy"
-                        ] = policy_application_services["security-intelligence-policy"]
+                        ] = policy_application_services[
+                            "security-intelligence-policy"
+                        ]
                     if "ssl-proxy" in policy_application_services:
                         application_services["ssl_proxy"] = {}
                         application_services["ssl_proxy"]["enable"] = True
@@ -381,7 +420,9 @@ class Security_policiesFacts(object):
                         ):
                             application_services["ssl_proxy"][
                                 "captive_portal"
-                            ] = policy_application_services["ssl-proxy"]["profile-name"]
+                            ] = policy_application_services["ssl-proxy"][
+                                "profile-name"
+                            ]
                     if "uac-policy" in policy_application_services:
                         application_services["uac_policy"] = {}
                         application_services["uac_policy"]["enable"] = True
@@ -401,7 +442,9 @@ class Security_policiesFacts(object):
                         ] = policy_application_services["utm-policy"]
 
                 if "destination-address" in policy_permit:
-                    permit["destination_address"] = policy_permit["destination-address"]
+                    permit["destination_address"] = policy_permit[
+                        "destination-address"
+                    ]
 
                 if "firewall-authentication" in policy_permit:
                     permit["firewall_authentication"] = {}
@@ -417,20 +460,28 @@ class Security_policiesFacts(object):
                         if "auth-only-browser" in policy_f_a["pass-through"]:
                             f_a["pass_through"]["auth_only_browser"] = True
                         if "auth-user-agent" in policy_f_a["pass-through"]:
-                            f_a["pass_through"]["auth_user_agent"] = policy_f_a[
-                                "pass-through"
-                            ]["auth-user-agent"]
+                            f_a["pass_through"][
+                                "auth_user_agent"
+                            ] = policy_f_a["pass-through"]["auth-user-agent"]
                         if "client-match" in policy_f_a["pass-through"]:
                             f_a["pass_through"]["client_match"] = policy_f_a[
                                 "pass-through"
                             ]["client-match"]
-                        if "ssl-termination-profile" in policy_f_a["pass-through"]:
-                            f_a["pass_through"]["ssl_termination_profile"] = policy_f_a[
-                                "pass-through"
-                            ]["ssl-termination-profile"]
+                        if (
+                            "ssl-termination-profile"
+                            in policy_f_a["pass-through"]
+                        ):
+                            f_a["pass_through"][
+                                "ssl_termination_profile"
+                            ] = policy_f_a["pass-through"][
+                                "ssl-termination-profile"
+                            ]
                         if "web-redirect" in policy_f_a["pass-through"]:
                             f_a["pass_through"]["web_redirect"] = True
-                        if "web-redirect-to-https" in policy_f_a["pass-through"]:
+                        if (
+                            "web-redirect-to-https"
+                            in policy_f_a["pass-through"]
+                        ):
                             f_a["pass_through"]["web_redirect_to_https"] = True
 
                     if "push-to-identity-management" in policy_f_a:
@@ -439,39 +490,54 @@ class Security_policiesFacts(object):
                     if "user-firewall" in policy_f_a:
                         f_a["user_firewall"] = {}
                         if "access-profile" in policy_f_a["user-firewall"]:
-                            f_a["user_firewall"]["access_profile"] = policy_f_a[
-                                "user-firewall"
-                            ]["access-profile"]
+                            f_a["user_firewall"][
+                                "access_profile"
+                            ] = policy_f_a["user-firewall"]["access-profile"]
                         if "auth-only-browser" in policy_f_a["user-firewall"]:
                             f_a["user_firewall"]["auth_only_browser"] = True
                         if "auth-user-agent" in policy_f_a["user-firewall"]:
-                            f_a["user_firewall"]["auth_user_agent"] = policy_f_a[
-                                "user-firewall"
-                            ]["auth-user-agent"]
+                            f_a["user_firewall"][
+                                "auth_user_agent"
+                            ] = policy_f_a["user-firewall"]["auth-user-agent"]
                         if "domain" in policy_f_a["user-firewall"]:
                             f_a["user_firewall"]["domain"] = policy_f_a[
                                 "user-firewall"
                             ]["domain"]
-                        if "ssl-termination-profile" in policy_f_a["user-firewall"]:
+                        if (
+                            "ssl-termination-profile"
+                            in policy_f_a["user-firewall"]
+                        ):
                             f_a["user_firewall"][
                                 "ssl_termination_profile"
-                            ] = policy_f_a["user-firewall"]["ssl-termination-profile"]
+                            ] = policy_f_a["user-firewall"][
+                                "ssl-termination-profile"
+                            ]
                         if "web-redirect" in policy_f_a["user-firewall"]:
                             f_a["user_firewall"]["web_redirect"] = True
-                        if "web-redirect-to-https" in policy_f_a["user-firewall"]:
-                            f_a["user_firewall"]["web_redirect_to_https"] = True
+                        if (
+                            "web-redirect-to-https"
+                            in policy_f_a["user-firewall"]
+                        ):
+                            f_a["user_firewall"][
+                                "web_redirect_to_https"
+                            ] = True
 
                     if "web-authentication" in policy_f_a:
                         f_a["web_authentication"] = {}
                         if isinstance(
-                            policy_f_a["web-authentication"]["client-match"], str
+                            policy_f_a["web-authentication"]["client-match"],
+                            str,
                         ):
-                            policy_f_a["web-authentication"]["client-match"] = [
-                                policy_f_a["web-authentication"]["client-match"]
+                            policy_f_a["web-authentication"][
+                                "client-match"
+                            ] = [
+                                policy_f_a["web-authentication"][
+                                    "client-match"
+                                ]
                             ]
-                        f_a["web_authentication"] = policy_f_a["web-authentication"][
-                            "client-match"
-                        ]
+                        f_a["web_authentication"] = policy_f_a[
+                            "web-authentication"
+                        ]["client-match"]
 
                 if "tcp-options" in policy_permit:
                     permit["tcp_options"] = {}
@@ -479,13 +545,13 @@ class Security_policiesFacts(object):
                     policy_tcp_options = policy_permit["tcp-options"]
 
                     if "initial-tcp-mss" in policy_tcp_options:
-                        tcp_options["initial_tcp_mss"] = policy_permit["tcp-options"][
-                            "initial-tcp-mss"
-                        ]
+                        tcp_options["initial_tcp_mss"] = policy_permit[
+                            "tcp-options"
+                        ]["initial-tcp-mss"]
                     if "reverse-tcp-mss" in policy_tcp_options:
-                        tcp_options["reverse_tcp_mss"] = policy_permit["tcp-options"][
-                            "reverse-tcp-mss"
-                        ]
+                        tcp_options["reverse_tcp_mss"] = policy_permit[
+                            "tcp-options"
+                        ]["reverse-tcp-mss"]
                     if "sequence-check-required" in policy_tcp_options:
                         tcp_options["sequence_check_required"] = True
                     if "syn-check-required" in policy_tcp_options:
@@ -496,13 +562,13 @@ class Security_policiesFacts(object):
                 if "tunnel" in policy_permit:
                     permit["tunnel"] = {}
                     if "ipsec-vpn" in policy_permit["tunnel"]:
-                        permit["tunnel"]["ipsec_vpn"] = policy_permit["tunnel"][
-                            "ipsec-vpn"
-                        ]
+                        permit["tunnel"]["ipsec_vpn"] = policy_permit[
+                            "tunnel"
+                        ]["ipsec-vpn"]
                     if "pair-policy" in policy_permit["tunnel"]:
-                        permit["tunnel"]["pair_policy"] = policy_permit["tunnel"][
-                            "pair-policy"
-                        ]
+                        permit["tunnel"]["pair_policy"] = policy_permit[
+                            "tunnel"
+                        ]["pair-policy"]
 
             # end of match action parsing
 

@@ -17,7 +17,7 @@
       - set security address-book global address a2 201.0.113.0/24
       - set security address-book global address a3 202.0.113.0/24
       - set security address-book global address a4 203.0.113.0/24
-      - set security dynamic-application profile test_dyn_app redirect-message type custom-text content hello_world 
+      - set security dynamic-application profile test_dyn_app redirect-message type custom-text content hello_world
       - set security gprs gtp profile gtp1
       - set interfaces ge-0/0/0 unit 0 family inet address 200.0.113.1/24
       - set interfaces ge-0/0/1 unit 0 family inet address 201.0.113.1/24

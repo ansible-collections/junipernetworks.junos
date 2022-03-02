@@ -10,8 +10,6 @@ is compared to the provided configuration (as dict) and the command set
 necessary to bring the current configuration to it's desired end-state is
 created
 """
-from lxml import etree
-
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     locked_config,
     load_config,
@@ -23,7 +21,6 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.c
     ConfigBase,
 )
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    to_list,
     remove_empties,
 )
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
@@ -74,11 +71,15 @@ class Security_policies(ConfigBase):
         warnings = list()
 
         if self.state in self.ACTION_STATES or self.state == "purged":
-            existing_security_policies_facts = self.get_security_policies_facts()
+            existing_security_policies_facts = (
+                self.get_security_policies_facts()
+            )
         else:
             existing_security_policies_facts = {}
         if self.state == "gathered":
-            existing_security_policies_facts = self.get_security_policies_facts()
+            existing_security_policies_facts = (
+                self.get_security_policies_facts()
+            )
             result["gathered"] = existing_security_policies_facts
 
         elif self.state == "parsed":
@@ -87,7 +88,9 @@ class Security_policies(ConfigBase):
                 self._module.fail_json(
                     msg="value of running_config parameter must not be empty for state parsed"
                 )
-            result["parsed"] = self.get_security_policies_facts(data=running_config)
+            result["parsed"] = self.get_security_policies_facts(
+                data=running_config
+            )
 
         elif self.state == "rendered":
             config_xmls = self.set_config(existing_security_policies_facts)
@@ -113,7 +116,9 @@ class Security_policies(ConfigBase):
 
             result["commands"] = config_xmls
 
-            changed_security_policies_facts = self.get_security_policies_facts()
+            changed_security_policies_facts = (
+                self.get_security_policies_facts()
+            )
 
             result["before"] = existing_security_policies_facts
             if result["changed"]:
@@ -146,7 +151,10 @@ class Security_policies(ConfigBase):
         """
         self.root = build_root_xml_node("security")
         state = self._module.params["state"]
-        if state in ("merged", "replaced", "rendered", "overridden") and not want:
+        if (
+            state in ("merged", "replaced", "rendered", "overridden")
+            and not want
+        ):
             self._module.fail_json(
                 msg="value of config parameter must not be empty for state {0}".format(
                     state
@@ -222,14 +230,22 @@ class Security_policies(ConfigBase):
 
                 for source_address in match["source_address"]:
                     if source_address == "any_ipv6":
-                        build_child_xml_node(match_node, "source-address", "any-ipv6")
+                        build_child_xml_node(
+                            match_node, "source-address", "any-ipv6"
+                        )
                     elif source_address == "any_ipv4":
-                        build_child_xml_node(match_node, "source-address", "any-ipv4")
+                        build_child_xml_node(
+                            match_node, "source-address", "any-ipv4"
+                        )
                     elif source_address == "any":
-                        build_child_xml_node(match_node, "source-address", "any")
+                        build_child_xml_node(
+                            match_node, "source-address", "any"
+                        )
                     elif source_address == "addresses":
                         for address in match["source_address"]["addresses"]:
-                            build_child_xml_node(match_node, "source-address", address)
+                            build_child_xml_node(
+                                match_node, "source-address", address
+                            )
 
                 if "source_address_excluded" in match:
                     build_child_xml_node(match_node, "source-address-excluded")
@@ -244,9 +260,13 @@ class Security_policies(ConfigBase):
                             match_node, "destination-address", "any-ipv4"
                         )
                     elif destination_address == "any":
-                        build_child_xml_node(match_node, "destination-address", "any")
+                        build_child_xml_node(
+                            match_node, "destination-address", "any"
+                        )
                     elif destination_address == "addresses":
-                        for address in match["destination_address"]["addresses"]:
+                        for address in match["destination_address"][
+                            "addresses"
+                        ]:
                             build_child_xml_node(
                                 match_node, "destination-address", address
                             )
@@ -254,14 +274,18 @@ class Security_policies(ConfigBase):
                         pass
 
                 if "destination_address_excluded" in match:
-                    build_child_xml_node(match_node, "destination-address-excluded")
+                    build_child_xml_node(
+                        match_node, "destination-address-excluded"
+                    )
 
                 for application in match["application"]:
                     if application == "any":
                         build_child_xml_node(match_node, "application", "any")
                     elif application == "names":
                         for name in match["application"]["names"]:
-                            build_child_xml_node(match_node, "application", name)
+                            build_child_xml_node(
+                                match_node, "application", name
+                            )
 
                 if "source_end_user_profile" in match:
                     build_child_xml_node(
@@ -274,14 +298,20 @@ class Security_policies(ConfigBase):
                     source_identities = match["source_identity"]
                     for source_identity in source_identities:
                         if source_identity == "any":
-                            build_child_xml_node(match_node, "source-identity", "any")
+                            build_child_xml_node(
+                                match_node, "source-identity", "any"
+                            )
                         if source_identity == "authenticated_user":
                             build_child_xml_node(
-                                match_node, "source-identity", "authenticated-user"
+                                match_node,
+                                "source-identity",
+                                "authenticated-user",
                             )
                         if source_identity == "unauthenticated_user":
                             build_child_xml_node(
-                                match_node, "source-identity", "unauthenticated-user"
+                                match_node,
+                                "source-identity",
+                                "unauthenticated-user",
                             )
                         if source_identity == "unknown_user":
                             build_child_xml_node(
@@ -297,12 +327,18 @@ class Security_policies(ConfigBase):
                     url_categories = match["url_category"]
                     for url_category in url_categories:
                         if url_category == "any":
-                            build_child_xml_node(match_node, "url-category", "any")
+                            build_child_xml_node(
+                                match_node, "url-category", "any"
+                            )
                         elif url_category == "none":
-                            build_child_xml_node(match_node, "url-category", "none")
+                            build_child_xml_node(
+                                match_node, "url-category", "none"
+                            )
                         elif url_category == "names":
                             for name in match["url_category"]["names"]:
-                                build_child_xml_node(match_node, "url-category", name)
+                                build_child_xml_node(
+                                    match_node, "url-category", name
+                                )
 
                 if "dynamic_application" in match:
                     dynamic_applications = match["dynamic_application"]
@@ -337,11 +373,17 @@ class Security_policies(ConfigBase):
 
                 if "reject" in then:
                     reject = then["reject"]
-                    reject_node = build_child_xml_node(then_node, "reject", " ")
+                    reject_node = build_child_xml_node(
+                        then_node, "reject", " "
+                    )
                     if reject and "profile" in reject:
-                        build_child_xml_node(reject_node, "profile", reject["profile"])
+                        build_child_xml_node(
+                            reject_node, "profile", reject["profile"]
+                        )
                     if reject and "ssl_proxy" in reject:
-                        ssl_node = build_child_xml_node(reject_node, "ssl-proxy", " ")
+                        ssl_node = build_child_xml_node(
+                            reject_node, "ssl-proxy", " "
+                        )
                         if (
                             reject["ssl_proxy"]
                             and "profile_name" in reject["ssl_proxy"]
@@ -360,18 +402,24 @@ class Security_policies(ConfigBase):
                         application_services_node = build_child_xml_node(
                             permit_node, "application-services"
                         )
-                        if "advanced_anti_malware_policy" in application_services:
+                        if (
+                            "advanced_anti_malware_policy"
+                            in application_services
+                        ):
                             build_child_xml_node(
                                 application_services_node,
                                 "advanced-anti-malware-policy",
-                                application_services["advanced_anti_malware_policy"],
+                                application_services[
+                                    "advanced_anti_malware_policy"
+                                ],
                             )
                         if (
                             "application_traffic_control_rule_set"
                             in application_services
                         ):
                             application_traffic_control_node = build_child_xml_node(
-                                application_services_node, "application-traffic-control"
+                                application_services_node,
+                                "application-traffic-control",
                             )
                             build_child_xml_node(
                                 application_traffic_control_node,
@@ -399,7 +447,9 @@ class Security_policies(ConfigBase):
                                 application_services["icap_redirect"],
                             )
                         if "idp" in application_services:
-                            build_child_xml_node(application_services_node, "idp")
+                            build_child_xml_node(
+                                application_services_node, "idp"
+                            )
                         if "idp_policy" in application_services:
                             build_child_xml_node(
                                 application_services_node,
@@ -412,13 +462,19 @@ class Security_policies(ConfigBase):
                             )
                         if "reverse_redirect_wx" in application_services:
                             build_child_xml_node(
-                                application_services_node, "reverse-redirect-wx"
+                                application_services_node,
+                                "reverse-redirect-wx",
                             )
-                        if "security_intelligence_policy" in application_services:
+                        if (
+                            "security_intelligence_policy"
+                            in application_services
+                        ):
                             build_child_xml_node(
                                 application_services_node,
                                 "security-intelligence-policy",
-                                application_services["security_intelligence_policy"],
+                                application_services[
+                                    "security_intelligence_policy"
+                                ],
                             )
                         if "ssl_proxy" in application_services:
                             ssl_node = build_child_xml_node(
@@ -426,12 +482,15 @@ class Security_policies(ConfigBase):
                             )
                             if (
                                 application_services["ssl_proxy"]
-                                and "profile_name" in application_services["ssl_proxy"]
+                                and "profile_name"
+                                in application_services["ssl_proxy"]
                             ):
                                 build_child_xml_node(
                                     ssl_node,
                                     "profile-name",
-                                    application_services["ssl_proxy"]["profile_name"],
+                                    application_services["ssl_proxy"][
+                                        "profile_name"
+                                    ],
                                 )
                         if "uac_policy" in application_services:
                             uac_node = build_child_xml_node(
@@ -459,13 +518,18 @@ class Security_policies(ConfigBase):
                         permit_destination_address_node = build_child_xml_node(
                             permit_node, "destination-address"
                         )
-                        if permit["destination_address"] == "drop-untranslated":
+                        if (
+                            permit["destination_address"]
+                            == "drop-untranslated"
+                        ):
                             build_child_xml_node(
-                                permit_destination_address_node, "drop-untranslated"
+                                permit_destination_address_node,
+                                "drop-untranslated",
                             )
                         if permit["destination_address"] == "drop-translated":
                             build_child_xml_node(
-                                permit_destination_address_node, "drop-translated"
+                                permit_destination_address_node,
+                                "drop-translated",
                             )
                     if "firewall_authentication" in permit:
                         f_a_node = build_child_xml_node(
@@ -489,7 +553,8 @@ class Security_policies(ConfigBase):
                             if "auth_user_agent" in f_a["pass_through"]:
                                 if (
                                     f_a["pass_through"]["auth_user_agent"]
-                                    and f_a["pass_through"]["auth_user_agent"] != True
+                                    and f_a["pass_through"]["auth_user_agent"]
+                                    is not True
                                 ):
                                     build_child_xml_node(
                                         pass_through_node,
@@ -498,7 +563,9 @@ class Security_policies(ConfigBase):
                                     )
                                 else:
                                     build_child_xml_node(
-                                        pass_through_node, "auth-user-agent", " "
+                                        pass_through_node,
+                                        "auth-user-agent",
+                                        " ",
                                     )
 
                             if "client_match" in f_a["pass_through"]:
@@ -507,19 +574,28 @@ class Security_policies(ConfigBase):
                                     "client-match",
                                     f_a["pass_through"]["client_match"],
                                 )
-                            if "ssl_termination_profile" in f_a["pass_through"]:
+                            if (
+                                "ssl_termination_profile"
+                                in f_a["pass_through"]
+                            ):
                                 build_child_xml_node(
                                     pass_through_node,
                                     "ssl-termination-profile",
-                                    f_a["pass_through"]["ssl_termination_profile"],
+                                    f_a["pass_through"][
+                                        "ssl_termination_profile"
+                                    ],
                                 )
                             if "web_redirect" in f_a["pass_through"]:
-                                build_child_xml_node(pass_through_node, "web-redirect")
+                                build_child_xml_node(
+                                    pass_through_node, "web-redirect"
+                                )
                             if "web_redirect_to_https" in f_a["pass_through"]:
                                 build_child_xml_node(
                                     pass_through_node,
                                     "web-redirect-to-https",
-                                    f_a["pass_through"]["web_redirect_to_https"],
+                                    f_a["pass_through"][
+                                        "web_redirect_to_https"
+                                    ],
                                 )
                         if "push_to_identity_management" in f_a:
                             build_child_xml_node(
@@ -538,7 +614,8 @@ class Security_policies(ConfigBase):
                             if "auth_only_browser" in f_a["user_firewall"]:
                                 if (
                                     f_a["pass_through"]["auth_user_agent"]
-                                    and f_a["pass_through"]["auth_user_agent"] != True
+                                    and f_a["pass_through"]["auth_user_agent"]
+                                    is not True
                                 ):
                                     build_child_xml_node(
                                         pass_through_node,
@@ -547,7 +624,9 @@ class Security_policies(ConfigBase):
                                     )
                                 else:
                                     build_child_xml_node(
-                                        pass_through_node, "auth-user-agent", " "
+                                        pass_through_node,
+                                        "auth-user-agent",
+                                        " ",
                                     )
                             if "domain" in f_a["user_firewall"]:
                                 build_child_xml_node(
@@ -555,11 +634,16 @@ class Security_policies(ConfigBase):
                                     "domain",
                                     f_a["user_firewall"]["domain"],
                                 )
-                            if "ssl_termination_profile" in f_a["user_firewall"]:
+                            if (
+                                "ssl_termination_profile"
+                                in f_a["user_firewall"]
+                            ):
                                 build_child_xml_node(
                                     user_firewall_node,
                                     "ssl-termination-profile",
-                                    f_a["user_firewall"]["ssl_termination_profile"],
+                                    f_a["user_firewall"][
+                                        "ssl_termination_profile"
+                                    ],
                                 )
                             if "web_redirect" in f_a["user_firewall"]:
                                 build_child_xml_node(
@@ -567,7 +651,9 @@ class Security_policies(ConfigBase):
                                 )
                             if "web_redirect_to_https" in f_a["user_firewall"]:
                                 build_child_xml_node(
-                                    user_firewall_node, "web-redirect-to-https", " "
+                                    user_firewall_node,
+                                    "web-redirect-to-https",
+                                    " ",
                                 )
 
                         if "web_authentication" in f_a:
@@ -603,12 +689,18 @@ class Security_policies(ConfigBase):
                                 tcp_options_node, "sequence-check-required"
                             )
                         if "syn_check_required" in tcp_options:
-                            build_child_xml_node(tcp_options_node, "syn-check-required")
+                            build_child_xml_node(
+                                tcp_options_node, "syn-check-required"
+                            )
                         if "window_scale" in tcp_options:
-                            build_child_xml_node(tcp_options_node, "window-scale")
+                            build_child_xml_node(
+                                tcp_options_node, "window-scale"
+                            )
 
                     if "tunnel" in permit:
-                        tunnel_node = build_child_xml_node(permit_node, "tunnel", " ")
+                        tunnel_node = build_child_xml_node(
+                            permit_node, "tunnel", " "
+                        )
                         if "ipsec_vpn" in permit["tunnel"]:
                             build_child_xml_node(tunnel_node, "ipsec-vpn")
                         if "pair_policy" in permit["tunnel"]:
@@ -619,16 +711,22 @@ class Security_policies(ConfigBase):
             from_zones = want.get("from_zones")
             for from_zone in from_zones:
                 for to_zone in from_zone["to_zones"]:
-                    policy_node = build_child_xml_node(security_policies_node, "policy")
+                    policy_node = build_child_xml_node(
+                        security_policies_node, "policy"
+                    )
                     build_child_xml_node(
                         policy_node, "from-zone-name", from_zone["name"]
                     )
-                    build_child_xml_node(policy_node, "to-zone-name", to_zone["name"])
+                    build_child_xml_node(
+                        policy_node, "to-zone-name", to_zone["name"]
+                    )
                     build_policies(policy_node, to_zone["policies"])
 
         # add global policies
         if "global" in want.keys():
-            global_node = build_child_xml_node(security_policies_node, "global")
+            global_node = build_child_xml_node(
+                security_policies_node, "global"
+            )
             global_policies = want.get("global").get("policies")
             build_policies(global_node, global_policies)
 

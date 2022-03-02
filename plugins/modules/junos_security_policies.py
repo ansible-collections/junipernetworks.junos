@@ -42,7 +42,8 @@ requirements:
   - xmltodict (>=0.12.0)
 notes:
   - This module requires the netconf system service be enabled on the device being managed
-  - This module works with connection C(netconf) See L(the Junos OS Platform Options,https://docsansiblecom/ansible/latest/network/user_guide/platform_junoshtml)
+  - This module works with connection C(netconf) See L(the Junos OS Platform Options,
+    https://docsansiblecom/ansible/latest/network/user_guide/platform_junoshtml)
   - Tested against JunOS v18.4R1
 options:
   config:
@@ -118,7 +119,8 @@ options:
                             type: bool
                           none:
                             description:
-                              - Configuring the dynamic application as none ignores classification results from AppID and does not use the dynamic application in security policy lookups
+                              - Configuring the dynamic application as none ignores classification results from AppID and does not use the
+                                dynamic application in security policy lookups
                             type: bool
                       destination_address:
                         description:
@@ -127,7 +129,7 @@ options:
                         suboptions:
                           addresses:
                             description:
-                              - IP address, IP address set, or address book entry, or wildcard address (represented as ABCD/wildcard_mask) 
+                              - IP address, IP address set, or address book entry, or wildcard address (represented as ABCD/wildcard_mask)
                             type: list
                             elements: str
                           any:
@@ -150,7 +152,7 @@ options:
                         suboptions:
                           addresses:
                             description:
-                              - IP address, IP address set, or address book entry, or wildcard address (represented as ABCD/wildcard_mask) 
+                              - IP address, IP address set, or address book entry, or wildcard address (represented as ABCD/wildcard_mask)
                             type: list
                             elements: str
                           any:
@@ -168,7 +170,7 @@ options:
                         type: bool
                       source_identity:
                         description:
-                          - Identifies users and roles to be used as match criteria for a policy 
+                          - Identifies users and roles to be used as match criteria for a policy
                         type: dict
                         suboptions:
                           names:
@@ -176,20 +178,22 @@ options:
                             type: list
                             elements: str
                           any:
-                            description: 
-                              - Any user or role, as well as the keywords authenticated_user, unauthenticated_user, 
+                            description:
+                              - Any user or role, as well as the keywords authenticated_user, unauthenticated_user,
                                 and unknown_user
                             type: bool
                           authenticated_user:
                             description: All users and roles that have been authenticated
                             type: bool
                           unauthenticated_user:
-                            description: 
-                              - Any user or role that does not have an IP_address mapped to authentication sources and the authentication source is up and running
+                            description:
+                              - Any user or role that does not have an IP_address mapped to authentication sources
+                                and the authentication source is up and running
                             type: bool
                           unknown_user:
-                            description: 
-                              - Any user or role that does not have an IP address mapped to authentication sources, because the authentication source is disconnected from the SRX Series device 
+                            description:
+                              - Any user or role that does not have an IP address mapped to authentication sources,
+                                because the authentication source is disconnected from the SRX Series device
                             type: bool
                       source_end_user_profile:
                         description: Source end user profile name
@@ -212,7 +216,7 @@ options:
                               - Do not apply to the url category
                             type: bool
                       from_zone:
-                        description: Identify a single source zone or multiple source zones to be used as a match criteria for a policy 
+                        description: Identify a single source zone or multiple source zones to be used as a match criteria for a policy
                         type: dict
                         suboptions:
                           names:
@@ -220,14 +224,14 @@ options:
                             type: list
                             elements: str
                           any:
-                            description: Match any zone 
+                            description: Match any zone
                             type: bool
                           junos_host:
                             description:
                               - junos-host
                             type: bool
                       to_zone:
-                        description: Identify a single destination zone or multiple destination zones to be used as a match criteria for a policy 
+                        description: Identify a single destination zone or multiple destination zones to be used as a match criteria for a policy
                         type: dict
                         suboptions:
                           names:
@@ -235,7 +239,7 @@ options:
                             type: list
                             elements: str
                           any:
-                            description: Match any zone 
+                            description: Match any zone
                             type: bool
                           junos_host:
                             description:
@@ -246,15 +250,18 @@ options:
                     type: dict
                     suboptions:
                       count:
-                        description: 
-                          - Enable a count, in bytes or kilobytes, of all network traffic the policy allows to pass through the device in both directions; the originating traffic from the client to the server (from the from_zone to the to_zone), and the return traffic from the server to the originating client
+                        description:
+                          - Enable a count, in bytes or kilobytes, of all network traffic the policy allows to pass through the device in both directions;
+                            the originating traffic from the client to the server (from the from_zone to the to_zone), and the return traffic from the server
+                            to the originating client
                         type: bool
                       deny:
                         description: Block the service at the firewall The device drops the packets
                         type: bool
                       reject:
                         description:
-                          - Block the service at the firewall The device drops the packet and sends a TCP reset (RST) segment to the source host for TCP traffic and an ICMP “destination unreachable, port unreachable” message (type 3, code 3) for UDP traffic
+                          - Block the service at the firewall The device drops the packet and sends a TCP reset (RST) segment to the source host for TCP traffic
+                            and an ICMP “destination unreachable, port unreachable” message (type 3, code 3) for UDP traffic
                         type: dict
                         suboptions:
                           enable:
@@ -262,10 +269,15 @@ options:
                               - Enable rejection of packets based on match criteria
                             type: bool
                           profile:
-                            description: You can chose to provide a notification to the clients or redirect client request to an informative Web page when a policy blocks HTTP or HTTPS traffic with a deny or reject action
+                            description:
+                              - You can chose to provide a notification to the clients or redirect client request to an informative Web page
+                                when a policy blocks HTTP or HTTPS traffic with a deny or reject action
                             type: str
                           ssl_proxy:
-                            description: You can apply a redirect SSL proxy profile when a policy blocks HTTPS traffic with a reject action When you apply am SSL proxy profile, SSL proxy decrypts the traffic and application identification functionality identifies the application
+                            description:
+                              - You can apply a redirect SSL proxy profile when a policy blocks HTTPS traffic with a reject action.
+                                When you apply am SSL proxy profile, SSL proxy decrypts the traffic
+                                and application identification functionality identifies the application
                             type: dict
                             suboptions:
                               enable:
@@ -276,7 +288,9 @@ options:
                                 description: Name of SSL proxy profile
                                 type: str
                       log:
-                        description: Log traffic information for a specific policy Traffic information is logged when a session begins (session_init) or closes (session_close)
+                        description:
+                          - Log traffic information for a specific policy Traffic information
+                            is logged when a session begins (session_init) or closes (session_close)
                         choices:
                           - session-close
                           - session-init
@@ -286,7 +300,7 @@ options:
                         type: dict
                         suboptions:
                           application_services:
-                            description: 
+                            description:
                               - Enable application services within a security policy
                             type: dict
                             suboptions:
@@ -296,17 +310,18 @@ options:
                                 type: str
                               application_firewalls:
                                 description:
-                                  - Specify the rule sets configured as part of application firewall to be applied to the permitted traffic 
+                                  - Specify the rule sets configured as part of application firewall to be applied to the permitted traffic
                                 type: list
                                 elements: dict
                                 suboptions:
                                   rule_set:
-                                    description: 
+                                    description:
                                       - name of rule set to use
                                     type: str
                               application_traffic_control_rule_set:
                                 description:
-                                  - Specify the rule set configured as part of AppQoS, application_aware quality of service, to be applied to the permitted traffic 
+                                  - Specify the rule set configured as part of AppQoS, application_aware quality of service, to be applied to the
+                                    permitted traffic
                                 type: str
                               gprs_gtp_profile:
                                 description:
@@ -334,11 +349,11 @@ options:
                                 type: bool
                               redirect_wx:
                                 description:
-                                  - Specify the WX redirection needed for the packets that arrive from the LAN 
+                                  - Specify the WX redirection needed for the packets that arrive from the LAN
                                 type: str
                               reverse_redirect_wx:
                                 description:
-                                  - Specify the WX redirection needed for the reverse flow of the packets that arrive from the WAN 
+                                  - Specify the WX redirection needed for the reverse flow of the packets that arrive from the WAN
                                 type: str
                               security_intelligence_policy:
                                 description:
@@ -382,17 +397,18 @@ options:
                                     type: bool
                                   captive_portal:
                                     description:
-                                      - Specify the preconfigured security policy for captive portal on the Junos OS Enforcer to enable the captive portal feature
+                                      - Specify the preconfigured security policy for captive portal on the Junos OS Enforcer to enable the
+                                        captive portal feature
                                     type: str
                               utm_policy:
                                 description:
                                   - Specify UTM policy name
                                 type: str
                           destination_address:
-                            description: 
-                              - Specify whether the traffic permitted by the security policy is limited to packets 
-                                where the destination IP address has been translated by means of a destination NAT rule 
-                                or to packets where the destination IP address has not been translated 
+                            description:
+                              - Specify whether the traffic permitted by the security policy is limited to packets
+                                where the destination IP address has been translated by means of a destination NAT rule
+                                or to packets where the destination IP address has not been translated
                             choices:
                               - drop-translated
                               - drop-untranslated
@@ -448,8 +464,9 @@ options:
                                     type: str
                                   domain:
                                     description:
-                                      - Specify the name of the domain where firewall authentication occurs in the event that the Windows Management Instrumentation client (WMIC)
-                                        is not available to get IP_to_user mapping for the integrated user firewall feature
+                                      - Specify the name of the domain where firewall authentication occurs in the event that the
+                                        Windows Management Instrumentation client (WMIC) is not available to get IP_to_user mapping for the
+                                        integrated user firewall feature
                                     type: str
                                   ssl_termination_profile:
                                     description:
@@ -485,11 +502,12 @@ options:
                               initial_tcp_mss:
                                 description:
                                   - Configure the TCP maximum segment size (MSS) for packets that arrive at the ingress interface (initial direction),
-                                    match a specific policy, and for which a session is created 
+                                    match a specific policy, and for which a session is created
                                 type: int
                               reverse_tcp_mss:
                                 description:
-                                  - Configure the TCP maximum segment size (MSS) for packets that match a specific policy and travel in the reverse direction of a session
+                                  - Configure the TCP maximum segment size (MSS) for packets that match a specific policy and travel in the
+                                    reverse direction of a session
                                 type: int
                               sequence_check_required:
                                 description:
@@ -519,7 +537,7 @@ options:
         description:
           - List of global security policies
         type: dict
-        suboptions: 
+        suboptions:
           policies: *policy_attributes
   running_config:
     description:
@@ -560,27 +578,6 @@ options:
     type: str
 """
 EXAMPLES = """
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 """
 RETURN = """
 before:
