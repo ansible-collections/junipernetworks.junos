@@ -1,0 +1,12 @@
+[junos]
+junosv ansible_host=192.168.121.235
+
+[junos:vars]
+ansible_network_os=junipernetworks.junos.junos
+ansible_connection=ansible.netcommon.netconf
+ansible_user=vagrant
+ansible_ssh_private_key_file="~/.vagrant.d/insecure_private_key"
+
+[all:vars]
+ansible_python_interpreter=python
+ansible_network_import_modules=True

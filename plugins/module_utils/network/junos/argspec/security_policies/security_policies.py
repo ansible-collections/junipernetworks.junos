@@ -32,8 +32,7 @@ The arg spec for the junos_security_policies module
 
 
 class Security_policiesArgs(object):  # pylint: disable=R0903
-    """The arg spec for the junos_security_policies module
-    """
+    """The arg spec for the junos_security_policies module"""
 
     def __init__(self, **kwargs):
         pass
@@ -57,9 +56,7 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                             "options": {
                                                 "application": {
                                                     "options": {
-                                                        "any": {
-                                                            "type": "bool"
-                                                        },
+                                                        "any": {"type": "bool"},
                                                         "names": {
                                                             "elements": "str",
                                                             "type": "list",
@@ -73,44 +70,28 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                             "elements": "str",
                                                             "type": "list",
                                                         },
-                                                        "any": {
-                                                            "type": "bool"
-                                                        },
-                                                        "any_ipv4": {
-                                                            "type": "bool"
-                                                        },
-                                                        "any_ipv6": {
-                                                            "type": "bool"
-                                                        },
+                                                        "any": {"type": "bool"},
+                                                        "any_ipv4": {"type": "bool"},
+                                                        "any_ipv6": {"type": "bool"},
                                                     },
                                                     "type": "dict",
                                                 },
-                                                "destination_address_excluded": {
-                                                    "type": "bool"
-                                                },
+                                                "destination_address_excluded": {"type": "bool"},
                                                 "dynamic_application": {
                                                     "options": {
-                                                        "any": {
-                                                            "type": "bool"
-                                                        },
+                                                        "any": {"type": "bool"},
                                                         "names": {
                                                             "elements": "str",
                                                             "type": "list",
                                                         },
-                                                        "none": {
-                                                            "type": "bool"
-                                                        },
+                                                        "none": {"type": "bool"},
                                                     },
                                                     "type": "dict",
                                                 },
                                                 "from_zone": {
                                                     "options": {
-                                                        "any": {
-                                                            "type": "bool"
-                                                        },
-                                                        "junos_host": {
-                                                            "type": "bool"
-                                                        },
+                                                        "any": {"type": "bool"},
+                                                        "junos_host": {"type": "bool"},
                                                         "names": {
                                                             "elements": "str",
                                                             "type": "list",
@@ -124,53 +105,31 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                             "elements": "str",
                                                             "type": "list",
                                                         },
-                                                        "any": {
-                                                            "type": "bool"
-                                                        },
-                                                        "any_ipv4": {
-                                                            "type": "bool"
-                                                        },
-                                                        "any_ipv6": {
-                                                            "type": "bool"
-                                                        },
+                                                        "any": {"type": "bool"},
+                                                        "any_ipv4": {"type": "bool"},
+                                                        "any_ipv6": {"type": "bool"},
                                                     },
                                                     "type": "dict",
                                                 },
-                                                "source_address_excluded": {
-                                                    "type": "bool"
-                                                },
-                                                "source_end_user_profile": {
-                                                    "type": "str"
-                                                },
+                                                "source_address_excluded": {"type": "bool"},
+                                                "source_end_user_profile": {"type": "str"},
                                                 "source_identity": {
                                                     "options": {
-                                                        "any": {
-                                                            "type": "bool"
-                                                        },
-                                                        "authenticated_user": {
-                                                            "type": "bool"
-                                                        },
+                                                        "any": {"type": "bool"},
+                                                        "authenticated_user": {"type": "bool"},
                                                         "names": {
                                                             "elements": "str",
                                                             "type": "list",
                                                         },
-                                                        "unauthenticated_user": {
-                                                            "type": "bool"
-                                                        },
-                                                        "unknown_user": {
-                                                            "type": "bool"
-                                                        },
+                                                        "unauthenticated_user": {"type": "bool"},
+                                                        "unknown_user": {"type": "bool"},
                                                     },
                                                     "type": "dict",
                                                 },
                                                 "to_zone": {
                                                     "options": {
-                                                        "any": {
-                                                            "type": "bool"
-                                                        },
-                                                        "junos_host": {
-                                                            "type": "bool"
-                                                        },
+                                                        "any": {"type": "bool"},
+                                                        "junos_host": {"type": "bool"},
                                                         "names": {
                                                             "elements": "str",
                                                             "type": "list",
@@ -180,16 +139,12 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 },
                                                 "url_category": {
                                                     "options": {
-                                                        "any": {
-                                                            "type": "bool"
-                                                        },
+                                                        "any": {"type": "bool"},
                                                         "names": {
                                                             "elements": "str",
                                                             "type": "list",
                                                         },
-                                                        "none": {
-                                                            "type": "bool"
-                                                        },
+                                                        "none": {"type": "bool"},
                                                     },
                                                     "type": "dict",
                                                 },
@@ -213,90 +168,46 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                     "options": {
                                                         "application_services": {
                                                             "options": {
-                                                                "advanced_anti_malware_policy": {
-                                                                    "type": "str"
-                                                                },
+                                                                "advanced_anti_malware_policy": {"type": "str"},
                                                                 "application_firewalls": {
                                                                     "elements": "dict",
-                                                                    "options": {
-                                                                        "rule_set": {
-                                                                            "type": "str"
-                                                                        }
-                                                                    },
+                                                                    "options": {"rule_set": {"type": "str"}},
                                                                     "type": "list",
                                                                 },
-                                                                "application_traffic_control_rule_set": {
-                                                                    "type": "str"
-                                                                },
-                                                                "gprs_gtp_profile": {
-                                                                    "type": "str"
-                                                                },
-                                                                "gprs_sctp_profile": {
-                                                                    "type": "str"
-                                                                },
-                                                                "icap_redirect": {
-                                                                    "type": "str"
-                                                                },
-                                                                "idp": {
-                                                                    "type": "bool"
-                                                                },
-                                                                "idp_policy": {
-                                                                    "type": "str"
-                                                                },
-                                                                "packet_capture": {
-                                                                    "type": "bool"
-                                                                },
-                                                                "redirect_wx": {
-                                                                    "type": "str"
-                                                                },
-                                                                "reverse_redirect_wx": {
-                                                                    "type": "str"
-                                                                },
+                                                                "application_traffic_control_rule_set": {"type": "str"},
+                                                                "gprs_gtp_profile": {"type": "str"},
+                                                                "gprs_sctp_profile": {"type": "str"},
+                                                                "icap_redirect": {"type": "str"},
+                                                                "idp": {"type": "bool"},
+                                                                "idp_policy": {"type": "str"},
+                                                                "packet_capture": {"type": "bool"},
+                                                                "redirect_wx": {"type": "str"},
+                                                                "reverse_redirect_wx": {"type": "str"},
                                                                 "security_intelligence": {
                                                                     "options": {
-                                                                        "add_destination_identity_to_feed": {
-                                                                            "type": "str"
-                                                                        },
-                                                                        "add_destination_ip_to_feed": {
-                                                                            "type": "str"
-                                                                        },
-                                                                        "add_source_identity_to_feed": {
-                                                                            "type": "str"
-                                                                        },
-                                                                        "add_source_ip_to_feed": {
-                                                                            "type": "str"
-                                                                        },
+                                                                        "add_destination_identity_to_feed": {"type": "str"},
+                                                                        "add_destination_ip_to_feed": {"type": "str"},
+                                                                        "add_source_identity_to_feed": {"type": "str"},
+                                                                        "add_source_ip_to_feed": {"type": "str"},
                                                                     },
                                                                     "type": "dict",
                                                                 },
-                                                                "security_intelligence_policy": {
-                                                                    "type": "str"
-                                                                },
+                                                                "security_intelligence_policy": {"type": "str"},
                                                                 "ssl_proxy": {
                                                                     "options": {
-                                                                        "enable": {
-                                                                            "type": "bool"
-                                                                        },
-                                                                        "profile_name": {
-                                                                            "type": "str"
-                                                                        },
+                                                                        "enable": {"type": "bool"},
+                                                                        "profile_name": {"type": "str"},
                                                                     },
                                                                     "type": "dict",
                                                                 },
                                                                 "uac_policy": {
                                                                     "options": {
-                                                                        "captive_portal": {
-                                                                            "type": "str"
-                                                                        },
-                                                                        "enable": {
-                                                                            "type": "bool"
-                                                                        },
+                                                                        "captive_portal": {"type": "str"},
+                                                                        "enable": {"type": "bool"},
                                                                     },
                                                                     "type": "dict",
                                                                 },
-                                                                "utm_policy": {
-                                                                    "type": "str"
-                                                                },
+                                                                "utm_policy": {"type": "str"},
                                                             },
                                                             "type": "dict",
                                                         },
@@ -310,57 +221,28 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                         "firewall_authentication": {
                                                             "options": {
                                                                 "pass_through": {
+                                                                    "no_log": False,
                                                                     "options": {
-                                                                        "access_profile": {
-                                                                            "type": "str"
-                                                                        },
-                                                                        "auth_only_browser": {
-                                                                            "type": "bool"
-                                                                        },
-                                                                        "auth_user_agent": {
-                                                                            "type": "str"
-                                                                        },
-                                                                        "client_match": {
-                                                                            "type": "str"
-                                                                        },
-                                                                        "ssl_termination_profile": {
-                                                                            "type": "str"
-                                                                        },
-                                                                        "web_redirect": {
-                                                                            "type": "bool"
-                                                                        },
-                                                                        "web_redirect_to_https": {
-                                                                            "type": "bool"
-                                                                        },
+                                                                        "access_profile": {"type": "str"},
+                                                                        "auth_only_browser": {"type": "bool"},
+                                                                        "auth_user_agent": {"type": "str"},
+                                                                        "client_match": {"type": "str"},
+                                                                        "ssl_termination_profile": {"type": "str"},
+                                                                        "web_redirect": {"type": "bool"},
+                                                                        "web_redirect_to_https": {"type": "bool"},
                                                                     },
                                                                     "type": "dict",
                                                                 },
-                                                                "push_to_identity_management": {
-                                                                    "type": "bool"
-                                                                },
+                                                                "push_to_identity_management": {"type": "bool"},
                                                                 "user_firewall": {
                                                                     "options": {
-                                                                        "access_profile": {
-                                                                            "type": "str"
-                                                                        },
-                                                                        "auth_only_browser": {
-                                                                            "type": "bool"
-                                                                        },
-                                                                        "auth_user_agent": {
-                                                                            "type": "str"
-                                                                        },
-                                                                        "domain": {
-                                                                            "type": "str"
-                                                                        },
-                                                                        "ssl_termination_profile": {
-                                                                            "type": "str"
-                                                                        },
-                                                                        "web_redirect": {
-                                                                            "type": "bool"
-                                                                        },
-                                                                        "web_redirect_to_https": {
-                                                                            "type": "bool"
-                                                                        },
+                                                                        "access_profile": {"type": "str"},
+                                                                        "auth_only_browser": {"type": "bool"},
+                                                                        "auth_user_agent": {"type": "str"},
+                                                                        "domain": {"type": "str"},
+                                                                        "ssl_termination_profile": {"type": "str"},
+                                                                        "web_redirect": {"type": "bool"},
+                                                                        "web_redirect_to_https": {"type": "bool"},
                                                                     },
                                                                     "type": "dict",
                                                                 },
@@ -373,32 +255,18 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                         },
                                                         "tcp_options": {
                                                             "options": {
-                                                                "initial_tcp_mss": {
-                                                                    "type": "int"
-                                                                },
-                                                                "reverse_tcp_mss": {
-                                                                    "type": "int"
-                                                                },
-                                                                "sequence_check_required": {
-                                                                    "type": "bool"
-                                                                },
-                                                                "syn_check_required": {
-                                                                    "type": "bool"
-                                                                },
-                                                                "window_scale": {
-                                                                    "type": "bool"
-                                                                },
+                                                                "initial_tcp_mss": {"type": "int"},
+                                                                "reverse_tcp_mss": {"type": "int"},
+                                                                "sequence_check_required": {"type": "bool"},
+                                                                "syn_check_required": {"type": "bool"},
+                                                                "window_scale": {"type": "bool"},
                                                             },
                                                             "type": "dict",
                                                         },
                                                         "tunnel": {
                                                             "options": {
-                                                                "ipsec_vpn": {
-                                                                    "type": "str"
-                                                                },
-                                                                "pair_policy": {
-                                                                    "type": "str"
-                                                                },
+                                                                "ipsec_vpn": {"type": "str"},
+                                                                "pair_policy": {"type": "str"},
                                                             },
                                                             "type": "dict",
                                                         },
@@ -407,20 +275,12 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 },
                                                 "reject": {
                                                     "options": {
-                                                        "enable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "profile": {
-                                                            "type": "str"
-                                                        },
+                                                        "enable": {"type": "bool"},
+                                                        "profile": {"type": "str"},
                                                         "ssl_proxy": {
                                                             "options": {
-                                                                "enable": {
-                                                                    "type": "bool"
-                                                                },
-                                                                "profile_name": {
-                                                                    "type": "str"
-                                                                },
+                                                                "enable": {"type": "bool"},
+                                                                "profile_name": {"type": "str"},
                                                             },
                                                             "type": "dict",
                                                         },
@@ -469,9 +329,7 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                             },
                                             "type": "dict",
                                         },
-                                        "destination_address_excluded": {
-                                            "type": "bool"
-                                        },
+                                        "destination_address_excluded": {"type": "bool"},
                                         "dynamic_application": {
                                             "options": {
                                                 "any": {"type": "bool"},
@@ -506,28 +364,18 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                             },
                                             "type": "dict",
                                         },
-                                        "source_address_excluded": {
-                                            "type": "bool"
-                                        },
-                                        "source_end_user_profile": {
-                                            "type": "str"
-                                        },
+                                        "source_address_excluded": {"type": "bool"},
+                                        "source_end_user_profile": {"type": "str"},
                                         "source_identity": {
                                             "options": {
                                                 "any": {"type": "bool"},
-                                                "authenticated_user": {
-                                                    "type": "bool"
-                                                },
+                                                "authenticated_user": {"type": "bool"},
                                                 "names": {
                                                     "elements": "str",
                                                     "type": "list",
                                                 },
-                                                "unauthenticated_user": {
-                                                    "type": "bool"
-                                                },
-                                                "unknown_user": {
-                                                    "type": "bool"
-                                                },
+                                                "unauthenticated_user": {"type": "bool"},
+                                                "unknown_user": {"type": "bool"},
                                             },
                                             "type": "dict",
                                         },
@@ -573,90 +421,46 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                             "options": {
                                                 "application_services": {
                                                     "options": {
-                                                        "advanced_anti_malware_policy": {
-                                                            "type": "str"
-                                                        },
+                                                        "advanced_anti_malware_policy": {"type": "str"},
                                                         "application_firewalls": {
                                                             "elements": "dict",
-                                                            "options": {
-                                                                "rule_set": {
-                                                                    "type": "str"
-                                                                }
-                                                            },
+                                                            "options": {"rule_set": {"type": "str"}},
                                                             "type": "list",
                                                         },
-                                                        "application_traffic_control_rule_set": {
-                                                            "type": "str"
-                                                        },
-                                                        "gprs_gtp_profile": {
-                                                            "type": "str"
-                                                        },
-                                                        "gprs_sctp_profile": {
-                                                            "type": "str"
-                                                        },
-                                                        "icap_redirect": {
-                                                            "type": "str"
-                                                        },
-                                                        "idp": {
-                                                            "type": "bool"
-                                                        },
-                                                        "idp_policy": {
-                                                            "type": "str"
-                                                        },
-                                                        "packet_capture": {
-                                                            "type": "bool"
-                                                        },
-                                                        "redirect_wx": {
-                                                            "type": "str"
-                                                        },
-                                                        "reverse_redirect_wx": {
-                                                            "type": "str"
-                                                        },
+                                                        "application_traffic_control_rule_set": {"type": "str"},
+                                                        "gprs_gtp_profile": {"type": "str"},
+                                                        "gprs_sctp_profile": {"type": "str"},
+                                                        "icap_redirect": {"type": "str"},
+                                                        "idp": {"type": "bool"},
+                                                        "idp_policy": {"type": "str"},
+                                                        "packet_capture": {"type": "bool"},
+                                                        "redirect_wx": {"type": "str"},
+                                                        "reverse_redirect_wx": {"type": "str"},
                                                         "security_intelligence": {
                                                             "options": {
-                                                                "add_destination_identity_to_feed": {
-                                                                    "type": "str"
-                                                                },
-                                                                "add_destination_ip_to_feed": {
-                                                                    "type": "str"
-                                                                },
-                                                                "add_source_identity_to_feed": {
-                                                                    "type": "str"
-                                                                },
-                                                                "add_source_ip_to_feed": {
-                                                                    "type": "str"
-                                                                },
+                                                                "add_destination_identity_to_feed": {"type": "str"},
+                                                                "add_destination_ip_to_feed": {"type": "str"},
+                                                                "add_source_identity_to_feed": {"type": "str"},
+                                                                "add_source_ip_to_feed": {"type": "str"},
                                                             },
                                                             "type": "dict",
                                                         },
-                                                        "security_intelligence_policy": {
-                                                            "type": "str"
-                                                        },
+                                                        "security_intelligence_policy": {"type": "str"},
                                                         "ssl_proxy": {
                                                             "options": {
-                                                                "enable": {
-                                                                    "type": "bool"
-                                                                },
-                                                                "profile_name": {
-                                                                    "type": "str"
-                                                                },
+                                                                "enable": {"type": "bool"},
+                                                                "profile_name": {"type": "str"},
                                                             },
                                                             "type": "dict",
                                                         },
                                                         "uac_policy": {
                                                             "options": {
-                                                                "captive_portal": {
-                                                                    "type": "str"
-                                                                },
-                                                                "enable": {
-                                                                    "type": "bool"
-                                                                },
+                                                                "captive_portal": {"type": "str"},
+                                                                "enable": {"type": "bool"},
                                                             },
                                                             "type": "dict",
                                                         },
-                                                        "utm_policy": {
-                                                            "type": "str"
-                                                        },
+                                                        "utm_policy": {"type": "str"},
                                                     },
                                                     "type": "dict",
                                                 },
@@ -670,57 +474,28 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 "firewall_authentication": {
                                                     "options": {
                                                         "pass_through": {
+                                                            "no_log": False,
                                                             "options": {
-                                                                "access_profile": {
-                                                                    "type": "str"
-                                                                },
-                                                                "auth_only_browser": {
-                                                                    "type": "bool"
-                                                                },
-                                                                "auth_user_agent": {
-                                                                    "type": "str"
-                                                                },
-                                                                "client_match": {
-                                                                    "type": "str"
-                                                                },
-                                                                "ssl_termination_profile": {
-                                                                    "type": "str"
-                                                                },
-                                                                "web_redirect": {
-                                                                    "type": "bool"
-                                                                },
-                                                                "web_redirect_to_https": {
-                                                                    "type": "bool"
-                                                                },
+                                                                "access_profile": {"type": "str"},
+                                                                "auth_only_browser": {"type": "bool"},
+                                                                "auth_user_agent": {"type": "str"},
+                                                                "client_match": {"type": "str"},
+                                                                "ssl_termination_profile": {"type": "str"},
+                                                                "web_redirect": {"type": "bool"},
+                                                                "web_redirect_to_https": {"type": "bool"},
                                                             },
                                                             "type": "dict",
                                                         },
-                                                        "push_to_identity_management": {
-                                                            "type": "bool"
-                                                        },
+                                                        "push_to_identity_management": {"type": "bool"},
                                                         "user_firewall": {
                                                             "options": {
-                                                                "access_profile": {
-                                                                    "type": "str"
-                                                                },
-                                                                "auth_only_browser": {
-                                                                    "type": "bool"
-                                                                },
-                                                                "auth_user_agent": {
-                                                                    "type": "str"
-                                                                },
-                                                                "domain": {
-                                                                    "type": "str"
-                                                                },
-                                                                "ssl_termination_profile": {
-                                                                    "type": "str"
-                                                                },
-                                                                "web_redirect": {
-                                                                    "type": "bool"
-                                                                },
-                                                                "web_redirect_to_https": {
-                                                                    "type": "bool"
-                                                                },
+                                                                "access_profile": {"type": "str"},
+                                                                "auth_only_browser": {"type": "bool"},
+                                                                "auth_user_agent": {"type": "str"},
+                                                                "domain": {"type": "str"},
+                                                                "ssl_termination_profile": {"type": "str"},
+                                                                "web_redirect": {"type": "bool"},
+                                                                "web_redirect_to_https": {"type": "bool"},
                                                             },
                                                             "type": "dict",
                                                         },
@@ -733,32 +508,18 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 },
                                                 "tcp_options": {
                                                     "options": {
-                                                        "initial_tcp_mss": {
-                                                            "type": "int"
-                                                        },
-                                                        "reverse_tcp_mss": {
-                                                            "type": "int"
-                                                        },
-                                                        "sequence_check_required": {
-                                                            "type": "bool"
-                                                        },
-                                                        "syn_check_required": {
-                                                            "type": "bool"
-                                                        },
-                                                        "window_scale": {
-                                                            "type": "bool"
-                                                        },
+                                                        "initial_tcp_mss": {"type": "int"},
+                                                        "reverse_tcp_mss": {"type": "int"},
+                                                        "sequence_check_required": {"type": "bool"},
+                                                        "syn_check_required": {"type": "bool"},
+                                                        "window_scale": {"type": "bool"},
                                                     },
                                                     "type": "dict",
                                                 },
                                                 "tunnel": {
                                                     "options": {
-                                                        "ipsec_vpn": {
-                                                            "type": "str"
-                                                        },
-                                                        "pair_policy": {
-                                                            "type": "str"
-                                                        },
+                                                        "ipsec_vpn": {"type": "str"},
+                                                        "pair_policy": {"type": "str"},
                                                     },
                                                     "type": "dict",
                                                 },
@@ -771,12 +532,8 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 "profile": {"type": "str"},
                                                 "ssl_proxy": {
                                                     "options": {
-                                                        "enable": {
-                                                            "type": "bool"
-                                                        },
-                                                        "profile_name": {
-                                                            "type": "str"
-                                                        },
+                                                        "enable": {"type": "bool"},
+                                                        "profile_name": {"type": "str"},
                                                     },
                                                     "type": "dict",
                                                 },

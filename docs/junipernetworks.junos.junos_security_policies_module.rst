@@ -2537,7 +2537,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Block the service at the firewall The device drops the packet and sends a TCP reset (RST) segment to the source host for TCP traffic and an ICMP “destination unreachable, port unreachable” message (type 3, code 3) for UDP traffic</div>
+                        <div>Block the service at the firewall The device drops the packet and sends a TCP reset (RST) segment to the source host for TCP traffic and an ICMP &quot;destination unreachable, port unreachable&quot; message (type 3, code 3) for UDP traffic</div>
                 </td>
             </tr>
                                 <tr>
@@ -4985,7 +4985,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Block the service at the firewall The device drops the packet and sends a TCP reset (RST) segment to the source host for TCP traffic and an ICMP “destination unreachable, port unreachable” message (type 3, code 3) for UDP traffic</div>
+                        <div>Block the service at the firewall The device drops the packet and sends a TCP reset (RST) segment to the source host for TCP traffic and an ICMP &quot;destination unreachable, port unreachable&quot; message (type 3, code 3) for UDP traffic</div>
                 </td>
             </tr>
                                 <tr>
@@ -5146,6 +5146,9 @@ Parameters
                         <div>The states <em>rendered</em>, <em>gathered</em> and <em>parsed</em> does not perform any change on the device</div>
                         <div>The state <em>rendered</em> will transform the configuration in <code>config</code> option to platform specific CLI commands which will be returned in the <em>rendered</em> key within the result For state <em>rendered</em> active connection to remote host is not required</div>
                         <div>The state <em>gathered</em> will fetch the running configuration from device and transform it into structured data in the format as per the resource module argspec and the value is returned in the <em>gathered</em> key within the result</div>
+                        <div>The state <em>merged</em> will additively update the on-device configuration with the provided configuration.</div>
+                        <div>The states <em>replaced</em> and <em>overridden</em> exhibit the same behaviour</div>
+                        <div>The state <em>replaced</em> will replace the on-device configuration with the provided configuration. It yields the same result as running the state <em>deleted</em>, followed by the state <em>merged</em>.</div>
                         <div>The state <em>parsed</em> reads the configuration from <code>running_config</code> option and transforms it into JSON format as per the resource module parameters and the value is returned in the <em>parsed</em> key within the result The value of <code>running_config</code> option should be the same format as the output of command <em>show security policies detail</em> executed on device For state <em>parsed</em> active connection to remote host is not required</div>
                 </td>
             </tr>
@@ -5163,6 +5166,1988 @@ Notes
 
 
 
+Examples
+--------
+
+.. code-block:: yaml
+
+    # Using merged
+    #
+    # Before state
+    # ------------
+    #
+    # vagrant@vsrx> show security policies
+    # Default policy: deny-all
+    # Pre ID default policy: permit-all
+    # Global policies:
+    # Policy: test_glob, State: enabled, Index: 4, Scope Policy: 0, Sequence number: 1
+    #   From zones: any
+    #     To zones: any
+    #     Source addresses: any-ipv4
+    #     Destination addresses: any-ipv4
+    #     Applications: any
+    #     Action: deny
+    #
+    # vagrant@vsrx> show security zones
+    #
+    # Security zone: one
+    # Send reset for non-SYN session TCP packets: Off
+    # Policy configurable: Yes
+    # Interfaces bound: 1
+    # Interfaces:
+    # ge-0/0/0.0
+    #
+    # Security zone: three
+    # Send reset for non-SYN session TCP packets: Off
+    # Policy configurable: Yes
+    # Interfaces bound: 1
+    # Interfaces:
+    # ge-0/0/2.0
+    #
+    # Security zone: two
+    # Send reset for non-SYN session TCP packets: Off
+    # Policy configurable: Yes
+    # Interfaces bound: 1
+    # Interfaces:
+    # ge-0/0/1.0
+    #
+    # Security zone: junos-host
+    # Send reset for non-SYN session TCP packets: Off
+    # Policy configurable: Yes
+    # Interfaces bound: 0
+    # Interfaces:
+    #
+    - junipernetworks.junos.junos_security_policies:
+        config:
+          from_zones:
+            - name: one
+              to_zones:
+                - name: two
+                  policies:
+                    - match:
+                        application:
+                          names:
+                            - junos-dhcp-relay
+                            - junos-finger
+                        destination_address:
+                          addresses:
+                            - a2
+                            - a4
+                        destination_address_excluded: true
+                        dynamic_application:
+                          names:
+                            - any
+                        source_address:
+                          addresses:
+                            - a1
+                            - a3
+                        source_address_excluded: true
+                        source_end_user_profile: test_end_user_profile
+                        source_identity:
+                          unknown_user: true
+                        url_category:
+                          names:
+                            - Enhanced_Web_Chat
+                      name: test_policy_1
+                      then:
+                        count: true
+                        deny: true
+                        log: session-close
+                    - match:
+                        application:
+                          any: true
+                        destination_address:
+                          any_ipv6: true
+                        source_address:
+                          addresses:
+                            - a1
+                      name: test_policy_2
+                      then:
+                        reject:
+                          enable: true
+                          profile: test_dyn_app
+                          ssl_proxy:
+                            enable: true
+                            profile_name: SECURITY-SSL-PROXY
+                - name: three
+                  policies:
+                    - match:
+                        application:
+                          any: true
+                        destination_address:
+                          addresses:
+                            - a2
+                        source_address:
+                          addresses:
+                            - a1
+                      name: test_policy_3
+                      then:
+                        permit:
+                          application_services:
+                            application_traffic_control_rule_set: test_traffic_control
+                            gprs_gtp_profile: gtp1
+                            icap_redirect: test_icap
+                            reverse_redirect_wx: 'True'
+                            uac_policy:
+                              enable: true
+                          firewall_authentication:
+                            push_to_identity_management: true
+                            web_authentication:
+                              - FWClient1
+                          tcp_options:
+                            initial_tcp_mss: 64
+                            window_scale: true
+          global:
+            policies:
+              - match:
+                  application:
+                    any: true
+                  destination_address:
+                    any_ipv6: true
+                  source_address:
+                    any_ipv6: true
+                name: test_glob_1
+                then:
+                  deny: true
+              - match:
+                  application:
+                    any: true
+                  destination_address:
+                    any_ipv6: true
+                  source_address:
+                    any_ipv6: true
+                name: test_glob_2
+                then:
+                  deny: true
+        state: merged
+    #
+    # -------------------------
+    # Module Execution Result
+    # -------------------------
+    #   "after": {
+    #     "from_zones": [
+    #       {
+    #         "name": "one",
+    #         "to_zones": [
+    #           {
+    #             "name": "two",
+    #             "policies": [
+    #               {
+    #                 "match": {
+    #                   "application": {
+    #                     "names": [
+    #                       "junos-dhcp-relay",
+    #                       "junos-finger"
+    #                     ]
+    #                   },
+    #                   "destination_address": {
+    #                     "addresses": [
+    #                       "a2",
+    #                       "a4"
+    #                     ]
+    #                   },
+    #                   "destination_address_excluded": true,
+    #                   "dynamic_application": {
+    #                     "names": [
+    #                       "any"
+    #                     ]
+    #                   },
+    #                   "source_address": {
+    #                     "addresses": [
+    #                       "a1",
+    #                       "a3"
+    #                     ]
+    #                   },
+    #                   "source_address_excluded": true,
+    #                   "source_end_user_profile": "test_end_user_profile",
+    #                   "source_identity": {
+    #                     "unknown_user": true
+    #                   },
+    #                   "url_category": {
+    #                     "names": [
+    #                       "Enhanced_Web_Chat"
+    #                     ]
+    #                   }
+    #                 },
+    #                 "name": "test_policy_1",
+    #                 "then": {
+    #                   "count": true,
+    #                   "deny": true,
+    #                   "log": "session-close"
+    #                 }
+    #               },
+    #               {
+    #                 "match": {
+    #                   "application": {
+    #                     "any": true
+    #                   },
+    #                   "destination_address": {
+    #                     "any_ipv6": true
+    #                   },
+    #                   "source_address": {
+    #                     "addresses": [
+    #                       "a1"
+    #                     ]
+    #                   }
+    #                 },
+    #                 "name": "test_policy_2",
+    #                 "then": {
+    #                   "reject": {
+    #                     "enable": true,
+    #                     "profile": "test_dyn_app",
+    #                     "ssl_proxy": {
+    #                       "enable": true,
+    #                       "profile_name": "SECURITY-SSL-PROXY"
+    #                     }
+    #                   }
+    #                 }
+    #               }
+    #             ]
+    #           },
+    #           {
+    #             "name": "three",
+    #             "policies": [
+    #               {
+    #                 "match": {
+    #                   "application": {
+    #                     "any": true
+    #                   },
+    #                   "destination_address": {
+    #                     "addresses": [
+    #                       "a2"
+    #                     ]
+    #                   },
+    #                   "source_address": {
+    #                     "addresses": [
+    #                       "a1"
+    #                     ]
+    #                   }
+    #                 },
+    #                 "name": "test_policy_3",
+    #                 "then": {
+    #                   "permit": {
+    #                     "application_services": {
+    #                       "application_traffic_control_rule_set": "test_traffic_control",
+    #                       "gprs_gtp_profile": "gtp1",
+    #                       "icap_redirect": "test_icap",
+    #                       "reverse_redirect_wx": "True",
+    #                       "uac_policy": {
+    #                         "enable": true
+    #                       }
+    #                     },
+    #                     "firewall_authentication": {
+    #                       "push_to_identity_management": true,
+    #                       "web_authentication": [
+    #                         "FWClient1"
+    #                       ]
+    #                     },
+    #                     "tcp_options": {
+    #                       "initial_tcp_mss": 64,
+    #                       "window_scale": true
+    #                     }
+    #                   }
+    #                 }
+    #               }
+    #             ]
+    #           }
+    #         ]
+    #       }
+    #     ],
+    #     "global": {
+    #       "policies": [
+    #         {
+    #           "match": {
+    #             "application": {
+    #               "any": true
+    #             },
+    #             "destination_address": {
+    #               "any_ipv4": true
+    #             },
+    #             "source_address": {
+    #               "any_ipv4": true
+    #             }
+    #           },
+    #           "name": "test_glob",
+    #           "then": {
+    #             "deny": true
+    #           }
+    #         },
+    #         {
+    #           "match": {
+    #             "application": {
+    #               "any": true
+    #             },
+    #             "destination_address": {
+    #               "any_ipv6": true
+    #             },
+    #             "source_address": {
+    #               "any_ipv6": true
+    #             }
+    #           },
+    #           "name": "test_glob_1",
+    #           "then": {
+    #             "deny": true
+    #           }
+    #         },
+    #         {
+    #           "match": {
+    #             "application": {
+    #               "any": true
+    #             },
+    #             "destination_address": {
+    #               "any_ipv6": true
+    #             },
+    #             "source_address": {
+    #               "any_ipv6": true
+    #             }
+    #           },
+    #           "name": "test_glob_2",
+    #           "then": {
+    #             "deny": true
+    #           }
+    #         }
+    #       ]
+    #     }
+    #   },
+    #   "before": {
+    #     "global": {
+    #       "policies": [
+    #         {
+    #           "match": {
+    #             "application": {
+    #               "any": true
+    #             },
+    #             "destination_address": {
+    #               "any_ipv4": true
+    #             },
+    #             "source_address": {
+    #               "any_ipv4": true
+    #             }
+    #           },
+    #           "name": "test_glob",
+    #           "then": {
+    #             "deny": true
+    #           }
+    #         }
+    #       ]
+    #     }
+    #   },
+    #   "changed": true,
+    #   "commands": "<nc:security
+    #                   xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+    #                   <nc:policies>
+    #                     <nc:policy>
+    #                       <nc:from-zone-name>one</nc:from-zone-name>
+    #                       <nc:to-zone-name>two</nc:to-zone-name>
+    #                       <nc:policy>
+    #                         <nc:name>test_policy_1</nc:name>
+    #                         <nc:match>
+    #                           <nc:source-address>a1</nc:source-address>
+    #                           <nc:source-address>a3</nc:source-address>
+    #                           <nc:source-address-excluded/>
+    #                           <nc:destination-address>a2</nc:destination-address>
+    #                           <nc:destination-address>a4</nc:destination-address>
+    #                           <nc:destination-address-excluded/>
+    #                           <nc:application>junos-dhcp-relay</nc:application>
+    #                           <nc:application>junos-finger</nc:application>
+    #                           <nc:source-end-user-profile>test_end_user_profile</nc:source-end-user-profile>
+    #                           <nc:source-identity>unknown-user</nc:source-identity>
+    #                           <nc:url-category>Enhanced_Web_Chat</nc:url-category>
+    #                           <nc:dynamic-application>any</nc:dynamic-application>
+    #                         </nc:match>
+    #                         <nc:then>
+    #                           <nc:deny/>
+    #                           <nc:count></nc:count>
+    #                           <nc:log>
+    #                             <nc:session-close/>
+    #                           </nc:log>
+    #                         </nc:then>
+    #                       </nc:policy>
+    #                       <nc:policy>
+    #                         <nc:name>test_policy_2</nc:name>
+    #                         <nc:match>
+    #                           <nc:source-address>a1</nc:source-address>
+    #                           <nc:destination-address>any-ipv6</nc:destination-address>
+    #                           <nc:application>any</nc:application>
+    #                         </nc:match>
+    #                         <nc:then>
+    #                           <nc:reject>
+    #                             <nc:profile>test_dyn_app</nc:profile>
+    #                             <nc:ssl-proxy>
+    #                               <nc:profile-name>SECURITY-SSL-PROXY</nc:profile-name>
+    #                             </nc:ssl-proxy>
+    #                           </nc:reject>
+    #                         </nc:then>
+    #                       </nc:policy>
+    #                     </nc:policy>
+    #                     <nc:policy>
+    #                       <nc:from-zone-name>one</nc:from-zone-name>
+    #                       <nc:to-zone-name>three</nc:to-zone-name>
+    #                       <nc:policy>
+    #                         <nc:name>test_policy_3</nc:name>
+    #                         <nc:match>
+    #                           <nc:source-address>a1</nc:source-address>
+    #                           <nc:destination-address>a2</nc:destination-address>
+    #                           <nc:application>any</nc:application>
+    #                         </nc:match>
+    #                         <nc:then>
+    #                           <nc:permit>
+    #                             <nc:application-services>
+    #                               <nc:application-traffic-control>
+    #                                 <nc:rule-set>test_traffic_control</nc:rule-set>
+    #                               </nc:application-traffic-control>
+    #                               <nc:gprs-gtp-profile>gtp1</nc:gprs-gtp-profile>
+    #                               <nc:icap-redirect>test_icap</nc:icap-redirect>
+    #                               <nc:reverse-redirect-wx/>
+    #                               <nc:uac-policy></nc:uac-policy>
+    #                             </nc:application-services>
+    #                             <nc:firewall-authentication>
+    #                               <nc:push-to-identity-management/>
+    #                               <nc:web-authentication>
+    #                                 <nc:client-match>FWClient1</nc:client-match>
+    #                               </nc:web-authentication>
+    #                             </nc:firewall-authentication>
+    #                             <nc:tcp-options>
+    #                               <nc:initial-tcp-mss>64</nc:initial-tcp-mss>
+    #                               <nc:window-scale/>
+    #                             </nc:tcp-options>
+    #                           </nc:permit>
+    #                         </nc:then>
+    #                       </nc:policy>
+    #                     </nc:policy>
+    #                     <nc:global>
+    #                       <nc:policy>
+    #                         <nc:name>test_glob_1</nc:name>
+    #                         <nc:match>
+    #                           <nc:source-address>any-ipv6</nc:source-address>
+    #                           <nc:destination-address>any-ipv6</nc:destination-address>
+    #                           <nc:application>any</nc:application>
+    #                         </nc:match>
+    #                         <nc:then>
+    #                           <nc:deny/>
+    #                         </nc:then>
+    #                       </nc:policy>
+    #                       <nc:policy>
+    #                         <nc:name>test_glob_2</nc:name>
+    #                         <nc:match>
+    #                           <nc:source-address>any-ipv6</nc:source-address>
+    #                           <nc:destination-address>any-ipv6</nc:destination-address>
+    #                           <nc:application>any</nc:application>
+    #                         </nc:match>
+    #                         <nc:then>
+    #                           <nc:deny/>
+    #                         </nc:then>
+    #                       </nc:policy>
+    #                     </nc:global>
+    #                   </nc:policies>
+    #                 </nc:security>
+    #                 "
+    # After state
+    # -----------
+    #
+    # vagrant@vsrx> show security policies
+    # Default policy: deny-all
+    # Pre ID default policy: permit-all
+    # From zone: one, To zone: two
+    # Policy: test_policy_1, State: enabled, Index: 5, Scope Policy: 0, Sequence number: 1
+    # Source addresses(excluded): a1, a3
+    # Destination addresses(excluded): a2, a4
+    # Source-end-user-profile: test_end_user_profile(1)
+    # Applications: junos-dhcp-relay, junos-finger
+    # Dynamic Applications: any
+    # Url-category: Enhanced_Web_Chat
+    # Source identities: unknown-user
+    # Action: deny, log, count
+    # Policy: test_policy_2, State: enabled, Index: 6, Scope Policy: 0, Sequence number: 2
+    # Source addresses: a1
+    # Destination addresses: any-ipv6
+    # Applications: any
+    # Action: reject
+    # dynapp-redir-profile: test_dyn_app(1)
+    # From zone: one, To zone: three
+    # Policy: test_policy_3, State: enabled, Index: 7, Scope Policy: 0, Sequence number: 1
+    # Source addresses: a1
+    # Destination addresses: a2
+    # Applications: any
+    # Action: permit, firewall authentication, application services, unified access control
+    # Application traffic control: test_traffic_control
+    # Global policies:
+    # Policy: test_glob, State: enabled, Index: 4, Scope Policy: 0, Sequence number: 1
+    # From zones: any
+    # To zones: any
+    # Source addresses: any-ipv4
+    # Destination addresses: any-ipv4
+    # Applications: any
+    # Action: deny
+    # Policy: test_glob_1, State: enabled, Index: 8, Scope Policy: 0, Sequence number: 2
+    # From zones: any
+    # To zones: any
+    # Source addresses: any-ipv6
+    # Destination addresses: any-ipv6
+    # Applications: any
+    # Action: deny
+    # Policy: test_glob_2, State: enabled, Index: 9, Scope Policy: 0, Sequence number: 3
+    # From zones: any
+    # To zones: any
+    # Source addresses: any-ipv6
+    # Destination addresses: any-ipv6
+    # Applications: any
+    # Action: deny
+    #
+    #
+    # Using Replaced
+    # Before state
+    # ------------
+    #
+    # vagrant@vsrx> show security policies
+    # Default policy: deny-all
+    # Pre ID default policy: permit-all
+    # From zone: one, To zone: two
+    # Policy: test_policy_1, State: enabled, Index: 5, Scope Policy: 0, Sequence number: 1
+    # Source addresses(excluded): a1, a3
+    # Destination addresses(excluded): a2, a4
+    # Source-end-user-profile: test_end_user_profile(1)
+    # Applications: junos-dhcp-relay, junos-finger
+    # Dynamic Applications: any
+    # Url-category: Enhanced_Web_Chat
+    # Source identities: unknown-user
+    # Action: deny, log, count
+    # Policy: test_policy_2, State: enabled, Index: 6, Scope Policy: 0, Sequence number: 2
+    # Source addresses: a1
+    # Destination addresses: any-ipv6
+    # Applications: any
+    # Action: reject
+    # dynapp-redir-profile: test_dyn_app(1)
+    # From zone: one, To zone: three
+    # Policy: test_policy_3, State: enabled, Index: 7, Scope Policy: 0, Sequence number: 1
+    # Source addresses: a1
+    # Destination addresses: a2
+    # Applications: any
+    # Action: permit, firewall authentication, application services, unified access control
+    # Application traffic control: test_traffic_control
+    # Global policies:
+    # Policy: test_glob, State: enabled, Index: 4, Scope Policy: 0, Sequence number: 1
+    # From zones: any
+    # To zones: any
+    # Source addresses: any-ipv4
+    # Destination addresses: any-ipv4
+    # Applications: any
+    # Action: deny
+    # Policy: test_glob_1, State: enabled, Index: 8, Scope Policy: 0, Sequence number: 2
+    # From zones: any
+    # To zones: any
+    # Source addresses: any-ipv6
+    # Destination addresses: any-ipv6
+    # Applications: any
+    # Action: deny
+    # Policy: test_glob_2, State: enabled, Index: 9, Scope Policy: 0, Sequence number: 3
+    # From zones: any
+    # To zones: any
+    # Source addresses: any-ipv6
+    # Destination addresses: any-ipv6
+    # Applications: any
+    # Action: deny
+    #
+    - junipernetworks.junos.junos_security_policies:
+        config:
+          global:
+            policies:
+              - description: test update
+                match:
+                  application:
+                    any: true
+                  destination_address:
+                    any_ipv6: true
+                  source_address:
+                    any: true
+                name: test_glob_3
+                then:
+                  deny: true
+        state: replaced
+    #
+    # -------------------------
+    # Module Execution Result
+    # -------------------------
+    #   "after": {
+    #     "global": {
+    #       "policies": [
+    #         {
+    #           "description": "test update",
+    #           "match": {
+    #             "application": {
+    #               "any": true
+    #             },
+    #             "destination_address": {
+    #               "any_ipv6": true
+    #             },
+    #             "source_address": {
+    #               "any": true
+    #             }
+    #           },
+    #           "name": "test_glob_3",
+    #           "then": {
+    #             "deny": true
+    #           }
+    #         }
+    #       ]
+    #     }
+    #   },
+    #   "before": {
+    #     "from_zones": [
+    #       {
+    #         "name": "one",
+    #         "to_zones": [
+    #           {
+    #             "name": "two",
+    #             "policies": [
+    #               {
+    #                 "match": {
+    #                   "application": {
+    #                     "names": [
+    #                       "junos-dhcp-relay",
+    #                       "junos-finger"
+    #                     ]
+    #                   },
+    #                   "destination_address": {
+    #                     "addresses": [
+    #                       "a2",
+    #                       "a4"
+    #                     ]
+    #                   },
+    #                   "destination_address_excluded": true,
+    #                   "dynamic_application": {
+    #                     "names": [
+    #                       "any"
+    #                     ]
+    #                   },
+    #                   "source_address": {
+    #                     "addresses": [
+    #                       "a1",
+    #                       "a3"
+    #                     ]
+    #                   },
+    #                   "source_address_excluded": true,
+    #                   "source_end_user_profile": "test_end_user_profile",
+    #                   "source_identity": {
+    #                     "unknown_user": true
+    #                   },
+    #                   "url_category": {
+    #                     "names": [
+    #                       "Enhanced_Web_Chat"
+    #                     ]
+    #                   }
+    #                 },
+    #                 "name": "test_policy_1",
+    #                 "then": {
+    #                   "count": true,
+    #                   "deny": true,
+    #                   "log": "session-close"
+    #                 }
+    #               },
+    #               {
+    #                 "match": {
+    #                   "application": {
+    #                     "any": true
+    #                   },
+    #                   "destination_address": {
+    #                     "any_ipv6": true
+    #                   },
+    #                   "source_address": {
+    #                     "addresses": [
+    #                       "a1"
+    #                     ]
+    #                   }
+    #                 },
+    #                 "name": "test_policy_2",
+    #                 "then": {
+    #                   "reject": {
+    #                     "enable": true,
+    #                     "profile": "test_dyn_app",
+    #                     "ssl_proxy": {
+    #                       "enable": true,
+    #                       "profile_name": "SECURITY-SSL-PROXY"
+    #                     }
+    #                   }
+    #                 }
+    #               }
+    #             ]
+    #           },
+    #           {
+    #             "name": "three",
+    #             "policies": [
+    #               {
+    #                 "match": {
+    #                   "application": {
+    #                     "any": true
+    #                   },
+    #                   "destination_address": {
+    #                     "addresses": [
+    #                       "a2"
+    #                     ]
+    #                   },
+    #                   "source_address": {
+    #                     "addresses": [
+    #                       "a1"
+    #                     ]
+    #                   }
+    #                 },
+    #                 "name": "test_policy_3",
+    #                 "then": {
+    #                   "permit": {
+    #                     "application_services": {
+    #                       "application_traffic_control_rule_set": "test_traffic_control",
+    #                       "gprs_gtp_profile": "gtp1",
+    #                       "icap_redirect": "test_icap",
+    #                       "reverse_redirect_wx": "True",
+    #                       "uac_policy": {
+    #                         "enable": true
+    #                       }
+    #                     },
+    #                     "firewall_authentication": {
+    #                       "push_to_identity_management": true,
+    #                       "web_authentication": [
+    #                         "FWClient1"
+    #                       ]
+    #                     },
+    #                     "tcp_options": {
+    #                       "initial_tcp_mss": 64,
+    #                       "window_scale": true
+    #                     }
+    #                   }
+    #                 }
+    #               }
+    #             ]
+    #           }
+    #         ]
+    #       }
+    #     ],
+    #     "global": {
+    #       "policies": [
+    #         {
+    #           "match": {
+    #             "application": {
+    #               "any": true
+    #             },
+    #             "destination_address": {
+    #               "any_ipv4": true
+    #             },
+    #             "source_address": {
+    #               "any_ipv4": true
+    #             }
+    #           },
+    #           "name": "test_glob",
+    #           "then": {
+    #             "deny": true
+    #           }
+    #         },
+    #         {
+    #           "match": {
+    #             "application": {
+    #               "any": true
+    #             },
+    #             "destination_address": {
+    #               "any_ipv6": true
+    #             },
+    #             "source_address": {
+    #               "any_ipv6": true
+    #             }
+    #           },
+    #           "name": "test_glob_1",
+    #           "then": {
+    #             "deny": true
+    #           }
+    #         },
+    #         {
+    #           "match": {
+    #             "application": {
+    #               "any": true
+    #             },
+    #             "destination_address": {
+    #               "any_ipv6": true
+    #             },
+    #             "source_address": {
+    #               "any_ipv6": true
+    #             }
+    #           },
+    #           "name": "test_glob_2",
+    #           "then": {
+    #             "deny": true
+    #           }
+    #         }
+    #       ]
+    #     }
+    #   },
+    #   "changed": true,
+    #   "commands": "<nc:security
+    #                   xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+    #                   <nc:policies delete="delete"/>
+    #                   <nc:policies>
+    #                     <nc:global>
+    #                       <nc:policy>
+    #                         <nc:name>test_glob_3</nc:name>
+    #                         <nc:description>test update</nc:description>
+    #                         <nc:match>
+    #                           <nc:source-address>any</nc:source-address>
+    #                           <nc:destination-address>any-ipv6</nc:destination-address>
+    #                           <nc:application>any</nc:application>
+    #                         </nc:match>
+    #                         <nc:then>
+    #                           <nc:deny/>
+    #                         </nc:then>
+    #                       </nc:policy>
+    #                     </nc:global>
+    #                   </nc:policies>
+    #                 </nc:security>"
+    # }
+    # After state
+    # -----------
+    #
+    # vagrant@vsrx> show security policies
+    # Default policy: deny-all
+    # Pre ID default policy: permit-all
+    # Global policies:
+    # Policy: test_glob_3, State: enabled, Index: 10, Scope Policy: 0, Sequence number: 1
+    # From zones: any
+    # To zones: any
+    # Source addresses: any
+    # Destination addresses: any-ipv6
+    # Applications: any
+    # Action: deny
+    #
+    # Using overridden
+    #
+    # Before state
+    # ------------
+    #
+    # vagrant@vsrx> show security policies
+    # Default policy: deny-all
+    # Pre ID default policy: permit-all
+    # From zone: one, To zone: two
+    # Policy: test_policy_1, State: enabled, Index: 5, Scope Policy: 0, Sequence number: 1
+    # Source addresses(excluded): a1, a3
+    # Destination addresses(excluded): a2, a4
+    # Source-end-user-profile: test_end_user_profile(1)
+    # Applications: junos-dhcp-relay, junos-finger
+    # Dynamic Applications: any
+    # Url-category: Enhanced_Web_Chat
+    # Source identities: unknown-user
+    # Action: deny, log, count
+    # Policy: test_policy_2, State: enabled, Index: 6, Scope Policy: 0, Sequence number: 2
+    # Source addresses: a1
+    # Destination addresses: any-ipv6
+    # Applications: any
+    # Action: reject
+    # dynapp-redir-profile: test_dyn_app(1)
+    # From zone: one, To zone: three
+    # Policy: test_policy_3, State: enabled, Index: 7, Scope Policy: 0, Sequence number: 1
+    # Source addresses: a1
+    # Destination addresses: a2
+    # Applications: any
+    # Action: permit, firewall authentication, application services, unified access control
+    # Application traffic control: test_traffic_control
+    # Global policies:
+    # Policy: test_glob, State: enabled, Index: 4, Scope Policy: 0, Sequence number: 1
+    # From zones: any
+    # To zones: any
+    # Source addresses: any-ipv4
+    # Destination addresses: any-ipv4
+    # Applications: any
+    # Action: deny
+    # Policy: test_glob_1, State: enabled, Index: 8, Scope Policy: 0, Sequence number: 2
+    # From zones: any
+    # To zones: any
+    # Source addresses: any-ipv6
+    # Destination addresses: any-ipv6
+    # Applications: any
+    # Action: deny
+    # Policy: test_glob_2, State: enabled, Index: 9, Scope Policy: 0, Sequence number: 3
+    # From zones: any
+    # To zones: any
+    # Source addresses: any-ipv6
+    # Destination addresses: any-ipv6
+    # Applications: any
+    # Action: deny
+    #
+    - junipernetworks.junos.junos_security_policies:
+        config:
+          global:
+            policies:
+              - description: test update
+                match:
+                  application:
+                    any: true
+                  destination_address:
+                    any_ipv6: true
+                  source_address:
+                    any: true
+                name: test_glob_3
+                then:
+                  deny: true
+        state: overridden
+    #
+    # -------------------------
+    # Module Execution Result
+    # -------------------------
+    #   "after": {
+    #     "global": {
+    #       "policies": [
+    #         {
+    #           "description": "test update",
+    #           "match": {
+    #             "application": {
+    #               "any": true
+    #             },
+    #             "destination_address": {
+    #               "any_ipv6": true
+    #             },
+    #             "source_address": {
+    #               "any": true
+    #             }
+    #           },
+    #           "name": "test_glob_3",
+    #           "then": {
+    #             "deny": true
+    #           }
+    #         }
+    #       ]
+    #     }
+    #   },
+    #   "before": {
+    #     "from_zones": [
+    #       {
+    #         "name": "one",
+    #         "to_zones": [
+    #           {
+    #             "name": "two",
+    #             "policies": [
+    #               {
+    #                 "match": {
+    #                   "application": {
+    #                     "names": [
+    #                       "junos-dhcp-relay",
+    #                       "junos-finger"
+    #                     ]
+    #                   },
+    #                   "destination_address": {
+    #                     "addresses": [
+    #                       "a2",
+    #                       "a4"
+    #                     ]
+    #                   },
+    #                   "destination_address_excluded": true,
+    #                   "dynamic_application": {
+    #                     "names": [
+    #                       "any"
+    #                     ]
+    #                   },
+    #                   "source_address": {
+    #                     "addresses": [
+    #                       "a1",
+    #                       "a3"
+    #                     ]
+    #                   },
+    #                   "source_address_excluded": true,
+    #                   "source_end_user_profile": "test_end_user_profile",
+    #                   "source_identity": {
+    #                     "unknown_user": true
+    #                   },
+    #                   "url_category": {
+    #                     "names": [
+    #                       "Enhanced_Web_Chat"
+    #                     ]
+    #                   }
+    #                 },
+    #                 "name": "test_policy_1",
+    #                 "then": {
+    #                   "count": true,
+    #                   "deny": true,
+    #                   "log": "session-close"
+    #                 }
+    #               },
+    #               {
+    #                 "match": {
+    #                   "application": {
+    #                     "any": true
+    #                   },
+    #                   "destination_address": {
+    #                     "any_ipv6": true
+    #                   },
+    #                   "source_address": {
+    #                     "addresses": [
+    #                       "a1"
+    #                     ]
+    #                   }
+    #                 },
+    #                 "name": "test_policy_2",
+    #                 "then": {
+    #                   "reject": {
+    #                     "enable": true,
+    #                     "profile": "test_dyn_app",
+    #                     "ssl_proxy": {
+    #                       "enable": true,
+    #                       "profile_name": "SECURITY-SSL-PROXY"
+    #                     }
+    #                   }
+    #                 }
+    #               }
+    #             ]
+    #           },
+    #           {
+    #             "name": "three",
+    #             "policies": [
+    #               {
+    #                 "match": {
+    #                   "application": {
+    #                     "any": true
+    #                   },
+    #                   "destination_address": {
+    #                     "addresses": [
+    #                       "a2"
+    #                     ]
+    #                   },
+    #                   "source_address": {
+    #                     "addresses": [
+    #                       "a1"
+    #                     ]
+    #                   }
+    #                 },
+    #                 "name": "test_policy_3",
+    #                 "then": {
+    #                   "permit": {
+    #                     "application_services": {
+    #                       "application_traffic_control_rule_set": "test_traffic_control",
+    #                       "gprs_gtp_profile": "gtp1",
+    #                       "icap_redirect": "test_icap",
+    #                       "reverse_redirect_wx": "True",
+    #                       "uac_policy": {
+    #                         "enable": true
+    #                       }
+    #                     },
+    #                     "firewall_authentication": {
+    #                       "push_to_identity_management": true,
+    #                       "web_authentication": [
+    #                         "FWClient1"
+    #                       ]
+    #                     },
+    #                     "tcp_options": {
+    #                       "initial_tcp_mss": 64,
+    #                       "window_scale": true
+    #                     }
+    #                   }
+    #                 }
+    #               }
+    #             ]
+    #           }
+    #         ]
+    #       }
+    #     ],
+    #     "global": {
+    #       "policies": [
+    #         {
+    #           "match": {
+    #             "application": {
+    #               "any": true
+    #             },
+    #             "destination_address": {
+    #               "any_ipv4": true
+    #             },
+    #             "source_address": {
+    #               "any_ipv4": true
+    #             }
+    #           },
+    #           "name": "test_glob",
+    #           "then": {
+    #             "deny": true
+    #           }
+    #         },
+    #         {
+    #           "match": {
+    #             "application": {
+    #               "any": true
+    #             },
+    #             "destination_address": {
+    #               "any_ipv6": true
+    #             },
+    #             "source_address": {
+    #               "any_ipv6": true
+    #             }
+    #           },
+    #           "name": "test_glob_1",
+    #           "then": {
+    #             "deny": true
+    #           }
+    #         },
+    #         {
+    #           "match": {
+    #             "application": {
+    #               "any": true
+    #             },
+    #             "destination_address": {
+    #               "any_ipv6": true
+    #             },
+    #             "source_address": {
+    #               "any_ipv6": true
+    #             }
+    #           },
+    #           "name": "test_glob_2",
+    #           "then": {
+    #             "deny": true
+    #           }
+    #         }
+    #       ]
+    #     }
+    #   },
+    #   "changed": true,
+    #   "commands": "<nc:security
+    #                   xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+    #                   <nc:policies delete="delete"/>
+    #                   <nc:policies>
+    #                     <nc:global>
+    #                       <nc:policy>
+    #                         <nc:name>test_glob_3</nc:name>
+    #                         <nc:description>test update</nc:description>
+    #                         <nc:match>
+    #                           <nc:source-address>any</nc:source-address>
+    #                           <nc:destination-address>any-ipv6</nc:destination-address>
+    #                           <nc:application>any</nc:application>
+    #                         </nc:match>
+    #                         <nc:then>
+    #                           <nc:deny/>
+    #                         </nc:then>
+    #                       </nc:policy>
+    #                     </nc:global>
+    #                   </nc:policies>
+    #                 </nc:security>"
+    # }
+    # After state
+    # -----------
+    #
+    # vagrant@vsrx> show security policies
+    # Default policy: deny-all
+    # Pre ID default policy: permit-all
+    # Global policies:
+    # Policy: test_glob_3, State: enabled, Index: 10, Scope Policy: 0, Sequence number: 1
+    # From zones: any
+    # To zones: any
+    # Source addresses: any
+    # Destination addresses: any-ipv6
+    # Applications: any
+    # Action: deny
+    #
+    # Using deleted
+    #
+    # Before state
+    # ------------
+    #
+    # vagrant@vsrx> show security policies
+    # Default policy: deny-all
+    # Pre ID default policy: permit-all
+    # Global policies:
+    # Policy: test_glob_3, State: enabled, Index: 10, Scope Policy: 0, Sequence number: 1
+    # From zones: any
+    # To zones: any
+    # Source addresses: any
+    # Destination addresses: any-ipv6
+    # Applications: any
+    # Action: deny
+    #
+    - junipernetworks.junos.junos_security_policies:
+        config:
+        state: deleted
+    #
+    # -------------------------
+    # Module Execution Result
+    # -------------------------
+    #
+    #   "after": {},
+    #   "before": {
+    #     "global": {
+    #       "policies": [
+    #         {
+    #           "description": "test update",
+    #           "match": {
+    #             "application": {
+    #               "any": true
+    #             },
+    #             "destination_address": {
+    #               "any_ipv6": true
+    #             },
+    #             "source_address": {
+    #               "any": true
+    #             }
+    #           },
+    #           "name": "test_glob_3",
+    #           "then": {
+    #             "deny": true
+    #           }
+    #         }
+    #       ]
+    #     }
+    #   },
+    #   "changed": true,
+    #   "commands": "<nc:security xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+    #   <nc:policies delete="delete"/></nc:security>"
+    #
+    # After state
+    # -----------
+    #
+    # vagrant@vsrx> show security policies
+    # Default policy: deny-all
+    # Pre ID default policy: permit-all
+    #
+    # Using gathered
+    #
+    # Before state
+    # ------------
+    #
+    # vagrant@vsrx> show security policies
+    # Default policy: deny-all
+    # Pre ID default policy: permit-all
+    # From zone: one, To zone: two
+    # Policy: test_policy_1, State: enabled, Index: 4, Scope Policy: 0, Sequence number: 1
+    # Source addresses(excluded): a1, a3
+    # Destination addresses(excluded): a2, a4
+    # Source-end-user-profile: test_end_user_profile(1)
+    # Applications: junos-dhcp-relay, junos-finger
+    # Dynamic Applications: any
+    # Url-category: Enhanced_Web_Chat
+    # Source identities: authenticated-user, unknown-user
+    # Action: deny, log, count
+    # Policy: test_policy_2, State: enabled, Index: 5, Scope Policy: 0, Sequence number: 2
+    # Source addresses: a1
+    # Destination addresses: any-ipv6
+    # Applications: any
+    # Action: reject
+    # dynapp-redir-profile: test_dyn_app(1)
+    # From zone: one, To zone: three
+    # Policy: test_policy_3, State: enabled, Index: 6, Scope Policy: 0, Sequence number: 1
+    # Source addresses: a1
+    # Destination addresses: a2
+    # Applications: any
+    # Action: permit, drop-untranslated, firewall authentication, application services, unified access control
+    # Application traffic control: test_traffic_control
+    # Global policies:
+    # Policy: test_glob_1, State: enabled, Index: 7, Scope Policy: 0, Sequence number: 1
+    # From zones: any
+    # To zones: any
+    # Source addresses: any-ipv6
+    # Destination addresses: any-ipv6
+    # Applications: any
+    # Action: deny
+    # Policy: test_glob_2, State: enabled, Index: 8, Scope Policy: 0, Sequence number: 2
+    # From zones: any
+    # To zones: any
+    # Source addresses: any-ipv6
+    # Destination addresses: any-ipv6
+    # Applications: any
+    # Action: deny
+    #
+    - junipernetworks.junos.junos_security_policies:
+        state: gathered
+    #
+    # -------------------------
+    # Module Execution Result
+    # -------------------------
+    #
+    #   "changed": false,
+    #   "gathered": {
+    #     "from_zones": [
+    #       {
+    #         "name": "one",
+    #         "to_zones": [
+    #           {
+    #             "name": "two",
+    #             "policies": [
+    #               {
+    #                 "match": {
+    #                   "application": {
+    #                     "names": [
+    #                       "junos-dhcp-relay",
+    #                       "junos-finger"
+    #                     ]
+    #                   },
+    #                   "destination_address": {
+    #                     "addresses": [
+    #                       "a2",
+    #                       "a4"
+    #                     ]
+    #                   },
+    #                   "destination_address_excluded": true,
+    #                   "dynamic_application": {
+    #                     "names": [
+    #                       "any"
+    #                     ]
+    #                   },
+    #                   "source_address": {
+    #                     "addresses": [
+    #                       "a1",
+    #                       "a3"
+    #                     ]
+    #                   },
+    #                   "source_address_excluded": true,
+    #                   "source_end_user_profile": "test_end_user_profile",
+    #                   "source_identity": {
+    #                     "unknown_user": true
+    #                   },
+    #                   "url_category": {
+    #                     "names": [
+    #                       "Enhanced_Web_Chat"
+    #                     ]
+    #                   }
+    #                 },
+    #                 "name": "test_policy_1",
+    #                 "then": {
+    #                   "count": true,
+    #                   "deny": true,
+    #                   "log": "session-close"
+    #                 }
+    #               },
+    #               {
+    #                 "match": {
+    #                   "application": {
+    #                     "any": true
+    #                   },
+    #                   "destination_address": {
+    #                     "any_ipv6": true
+    #                   },
+    #                   "source_address": {
+    #                     "addresses": [
+    #                       "a1"
+    #                     ]
+    #                   }
+    #                 },
+    #                 "name": "test_policy_2",
+    #                 "then": {
+    #                   "reject": {
+    #                     "enable": true,
+    #                     "profile": "test_dyn_app",
+    #                     "ssl_proxy": {
+    #                       "enable": true,
+    #                       "profile_name": "SECURITY-SSL-PROXY"
+    #                     }
+    #                   }
+    #                 }
+    #               }
+    #             ]
+    #           },
+    #           {
+    #             "name": "three",
+    #             "policies": [
+    #               {
+    #                 "match": {
+    #                   "application": {
+    #                     "any": true
+    #                   },
+    #                   "destination_address": {
+    #                     "addresses": [
+    #                       "a2"
+    #                     ]
+    #                   },
+    #                   "source_address": {
+    #                     "addresses": [
+    #                       "a1"
+    #                     ]
+    #                   }
+    #                 },
+    #                 "name": "test_policy_3",
+    #                 "then": {
+    #                   "permit": {
+    #                     "application_services": {
+    #                       "application_traffic_control_rule_set": "test_traffic_control",
+    #                       "gprs_gtp_profile": "gtp1",
+    #                       "icap_redirect": "test_icap",
+    #                       "reverse_redirect_wx": "True",
+    #                       "uac_policy": {
+    #                         "enable": true
+    #                       }
+    #                     },
+    #                     "firewall_authentication": {
+    #                       "push_to_identity_management": true,
+    #                       "web_authentication": [
+    #                         "FWClient1"
+    #                       ]
+    #                     },
+    #                     "tcp_options": {
+    #                       "initial_tcp_mss": 64,
+    #                       "window_scale": true
+    #                     }
+    #                   }
+    #                 }
+    #               }
+    #             ]
+    #           }
+    #         ]
+    #       }
+    #     ],
+    #     "global": {
+    #       "policies": [
+    #         {
+    #           "match": {
+    #             "application": {
+    #               "any": true
+    #             },
+    #             "destination_address": {
+    #               "any_ipv6": true
+    #             },
+    #             "source_address": {
+    #               "any_ipv6": true
+    #             }
+    #           },
+    #           "name": "test_glob_1",
+    #           "then": {
+    #             "deny": true
+    #           }
+    #         },
+    #         {
+    #           "match": {
+    #             "application": {
+    #               "any": true
+    #             },
+    #             "destination_address": {
+    #               "any_ipv6": true
+    #             },
+    #             "source_address": {
+    #               "any_ipv6": true
+    #             }
+    #           },
+    #           "name": "test_glob_2",
+    #           "then": {
+    #             "deny": true
+    #           }
+    #         }
+    #       ]
+    #     }
+    #   }
+    # }
+    #
+    # Using rendered
+    #
+    # Before state
+    # ------------
+    #
+    - junipernetworks.junos.junos_security_policies:
+        config:
+          global:
+              policies:
+                - description: test update
+                  match:
+                    application:
+                      any: true
+                    destination_address:
+                      any_ipv6: true
+                    source_address:
+                      any: true
+                  name: test_glob_3
+                  then:
+                    deny: true
+        state: rendered
+    #
+    # -------------------------
+    # Module Execution Result
+    # -------------------------
+    #     "rendered": "<nc:security
+    #                 xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+    #                 <nc:policies>
+    #                   <nc:global>
+    #                     <nc:policy>
+    #                       <nc:name>test_glob_3</nc:name>
+    #                       <nc:description>test update</nc:description>
+    #                       <nc:match>
+    #                         <nc:source-address>any</nc:source-address>
+    #                         <nc:destination-address>any-ipv6</nc:destination-address>
+    #                         <nc:application>any</nc:application>
+    #                       </nc:match>
+    #                       <nc:then>
+    #                         <nc:deny/>
+    #                       </nc:then>
+    #                     </nc:policy>
+    #                   </nc:global>
+    #                 </nc:policies>
+    #               </nc:security>"
+    #
+    # Using parsed
+    # parsed.cfg
+    # ------------
+    # <?xml version="1.0" encoding="UTF-8"?>
+    # <rpc-reply>
+    #     <configuration>
+    #         <version>18.4R1-S3.1</version>
+    #         <services>
+    #             <ssl>
+    #                 <termination>
+    #                     <profile>
+    #                         <name>test_ssl_term</name>
+    #                         <server-certificate>SECURITY-cert</server-certificate>
+    #                     </profile>
+    #                 </termination>
+    #                 <proxy>
+    #                     <profile>
+    #                         <name>SECURITY-SSL-PROXY</name>
+    #                         <root-ca>SECURITY-cert</root-ca>
+    #                     </profile>
+    #                 </proxy>
+    #             </ssl>
+    #             <icap-redirect>
+    #                 <profile>
+    #                     <name>test_icap</name>
+    #                     <server>
+    #                         <name>test_icap_server</name>
+    #                         <host>10.10.10.11</host>
+    #                     </server>
+    #                 </profile>
+    #             </icap-redirect>
+    #             <user-identification>
+    #                 <device-information>
+    #                     <end-user-profile>
+    #                         <profile-name>
+    #                             <name>test_end_user_profile</name>
+    #                             <domain-name>test_domain</domain-name>
+    #                             <attribute>
+    #                                 <name>device-identity</name>
+    #                                 <string>Windows</string>
+    #                             </attribute>
+    #                         </profile-name>
+    #                     </end-user-profile>
+    #                 </device-information>
+    #             </user-identification>
+    #         </services>
+    #         <security>
+    #             <address-book>
+    #                 <name>global</name>
+    #                 <address>
+    #                     <name>a1</name>
+    #                     <ip-prefix>200.0.113.0/24</ip-prefix>
+    #                 </address>
+    #                 <address>
+    #                     <name>a2</name>
+    #                     <ip-prefix>201.0.113.0/24</ip-prefix>
+    #                 </address>
+    #                 <address>
+    #                     <name>a3</name>
+    #                     <ip-prefix>202.0.113.0/24</ip-prefix>
+    #                 </address>
+    #                 <address>
+    #                     <name>a4</name>
+    #                     <ip-prefix>203.0.113.0/24</ip-prefix>
+    #                 </address>
+    #             </address-book>
+    #             <dynamic-application>
+    #                 <profile>
+    #                     <name>test_dyn_app</name>
+    #                     <redirect-message>
+    #                         <type>
+    #                             <custom-text>
+    #                                 <content>hello_world</content>
+    #                             </custom-text>
+    #                         </type>
+    #                     </redirect-message>
+    #                 </profile>
+    #             </dynamic-application>
+    #             <policies>
+    #                 <policy>
+    #                     <from-zone-name>one</from-zone-name>
+    #                     <to-zone-name>two</to-zone-name>
+    #                     <policy>
+    #                         <name>test_policy_1</name>
+    #                         <match>
+    #                             <source-address>a1</source-address>
+    #                             <source-address>a3</source-address>
+    #                             <destination-address>a2</destination-address>
+    #                             <destination-address>a4</destination-address>
+    #                             <source-address-excluded />
+    #                             <destination-address-excluded />
+    #                             <application>junos-dhcp-relay</application>
+    #                             <application>junos-finger</application>
+    #                             <source-identity>authenticated-user</source-identity>
+    #                             <source-identity>unknown-user</source-identity>
+    #                             <source-end-user-profile>
+    #                                 <source-end-user-profile-name>test_end_user_profile</source-end-user-profile-name>
+    #                             </source-end-user-profile>
+    #                             <dynamic-application>any</dynamic-application>
+    #                             <url-category>Enhanced_Web_Chat</url-category>
+    #                         </match>
+    #                         <then>
+    #                             <deny />
+    #                             <log>
+    #                                 <session-close />
+    #                             </log>
+    #                             <count></count>
+    #                         </then>
+    #                     </policy>
+    #                     <policy>
+    #                         <name>test_policy_2</name>
+    #                         <match>
+    #                             <source-address>a1</source-address>
+    #                             <destination-address>any-ipv6</destination-address>
+    #                             <application>any</application>
+    #                         </match>
+    #                         <then>
+    #                             <reject>
+    #                                 <profile>test_dyn_app</profile>
+    #                                 <ssl-proxy>
+    #                                     <profile-name>SECURITY-SSL-PROXY</profile-name>
+    #                                 </ssl-proxy>
+    #                             </reject>
+    #                         </then>
+    #                     </policy>
+    #                 </policy>
+    #                 <policy>
+    #                     <from-zone-name>one</from-zone-name>
+    #                     <to-zone-name>three</to-zone-name>
+    #                     <policy>
+    #                         <name>test_policy_3</name>
+    #                         <match>
+    #                             <source-address>a1</source-address>
+    #                             <destination-address>a2</destination-address>
+    #                             <application>any</application>
+    #                         </match>
+    #                         <then>
+    #                             <permit>
+    #                                 <firewall-authentication>
+    #                                     <web-authentication>
+    #                                         <client-match>FWClient1</client-match>
+    #                                     </web-authentication>
+    #                                     <push-to-identity-management />
+    #                                 </firewall-authentication>
+    #                                 <destination-address>
+    #                                     <drop-untranslated />
+    #                                 </destination-address>
+    #                                 <application-services>
+    #                                     <gprs-gtp-profile>gtp1</gprs-gtp-profile>
+    #                                     <uac-policy></uac-policy>
+    #                                     <icap-redirect>test_icap</icap-redirect>
+    #                                     <application-traffic-control>
+    #                                         <rule-set>test_traffic_control</rule-set>
+    #                                     </application-traffic-control>
+    #                                     <reverse-redirect-wx />
+    #                                 </application-services>
+    #                                 <tcp-options>
+    #                                     <initial-tcp-mss>64</initial-tcp-mss>
+    #                                     <window-scale />
+    #                                 </tcp-options>
+    #                             </permit>
+    #                         </then>
+    #                     </policy>
+    #                 </policy>
+    #                 <global>
+    #                     <policy>
+    #                         <name>test_glob_1</name>
+    #                         <match>
+    #                             <source-address>any-ipv6</source-address>
+    #                             <destination-address>any-ipv6</destination-address>
+    #                             <application>any</application>
+    #                         </match>
+    #                         <then>
+    #                             <deny />
+    #                         </then>
+    #                     </policy>
+    #                     <policy>
+    #                         <name>test_glob_2</name>
+    #                         <match>
+    #                             <source-address>any-ipv6</source-address>
+    #                             <destination-address>any-ipv6</destination-address>
+    #                             <application>any</application>
+    #                         </match>
+    #                         <then>
+    #                             <deny />
+    #                         </then>
+    #                     </policy>
+    #                 </global>
+    #             </policies>
+    #             <zones>
+    #                 <security-zone>
+    #                     <name>one</name>
+    #                     <interfaces>
+    #                         <name>ge-0/0/0.0</name>
+    #                     </interfaces>
+    #                 </security-zone>
+    #                 <security-zone>
+    #                     <name>two</name>
+    #                     <interfaces>
+    #                         <name>ge-0/0/1.0</name>
+    #                     </interfaces>
+    #                 </security-zone>
+    #                 <security-zone>
+    #                     <name>three</name>
+    #                     <interfaces>
+    #                         <name>ge-0/0/2.0</name>
+    #                     </interfaces>
+    #                 </security-zone>
+    #             </zones>
+    #             <gprs>
+    #                 <gtp>
+    #                     <profile>
+    #                         <name>gtp1</name>
+    #                     </profile>
+    #                 </gtp>
+    #             </gprs>
+    #         </security>
+    #         <interfaces>
+    #             <interface>
+    #                 <name>ge-0/0/0</name>
+    #                 <unit>
+    #                     <name>0</name>
+    #                     <family>
+    #                         <inet>
+    #                             <address>
+    #                                 <name>200.0.113.1/24</name>
+    #                             </address>
+    #                         </inet>
+    #                     </family>
+    #                 </unit>
+    #             </interface>
+    #             <interface>
+    #                 <name>ge-0/0/1</name>
+    #                 <unit>
+    #                     <name>0</name>
+    #                     <family>
+    #                         <inet>
+    #                             <address>
+    #                                 <name>201.0.113.1/24</name>
+    #                             </address>
+    #                         </inet>
+    #                     </family>
+    #                 </unit>
+    #             </interface>
+    #             <interface>
+    #                 <name>ge-0/0/2</name>
+    #                 <unit>
+    #                     <name>0</name>
+    #                     <family>
+    #                         <inet>
+    #                             <address>
+    #                                 <name>202.0.113.1/24</name>
+    #                             </address>
+    #                         </inet>
+    #                     </family>
+    #                 </unit>
+    #             </interface>
+    #             <interface>
+    #                 <name>fxp0</name>
+    #                 <unit>
+    #                     <name>0</name>
+    #                     <family>
+    #                         <inet>
+    #                             <dhcp></dhcp>
+    #                         </inet>
+    #                     </family>
+    #                 </unit>
+    #             </interface>
+    #         </interfaces>
+    #         <class-of-service>
+    #             <application-traffic-control>
+    #                 <rule-sets>
+    #                     <name>test_traffic_control</name>
+    #                     <rule>
+    #                         <name>test_rule</name>
+    #                         <match>
+    #                             <application-known />
+    #                         </match>
+    #                         <then>
+    #                             <log />
+    #                         </then>
+    #                     </rule>
+    #                 </rule-sets>
+    #             </application-traffic-control>
+    #         </class-of-service>
+    #         <access>
+    #             <profile>
+    #                 <name>WEBAUTH</name>
+    #                 <client>
+    #                     <name>FWClient1</name>
+    #                     <firewall-user>
+    #                         <password>$9$kq5Ftu1cSe</password>
+    #                     </firewall-user>
+    #                 </client>
+    #             </profile>
+    #             <firewall-authentication>
+    #                 <web-authentication>
+    #                     <default-profile>WEBAUTH</default-profile>
+    #                 </web-authentication>
+    #             </firewall-authentication>
+    #         </access>
+    #     </configuration>
+    #     <database-status-information></database-status-information>
+    # </rpc-reply>
+    #
+    - name: Parse NTP global running config
+      junipernetworks.junos.junos_security_policies:
+        running_config: "{{ lookup('file', './parsed.cfg') }}"
+        state: parsed
+    #
+    #
+    # -------------------------
+    # Module Execution Result
+    # -------------------------
+    #
+    #   "parsed": {
+    #     "from_zones": [
+    #       {
+    #         "name": "one",
+    #         "to_zones": [
+    #           {
+    #             "name": "two",
+    #             "policies": [
+    #               {
+    #                 "match": {
+    #                   "application": {
+    #                     "names": [
+    #                       "junos-dhcp-relay",
+    #                       "junos-finger"
+    #                     ]
+    #                   },
+    #                   "destination_address": {
+    #                     "addresses": [
+    #                       "a2",
+    #                       "a4"
+    #                     ]
+    #                   },
+    #                   "destination_address_excluded": true,
+    #                   "dynamic_application": {
+    #                     "names": [
+    #                       "any"
+    #                     ]
+    #                   },
+    #                   "source_address": {
+    #                     "addresses": [
+    #                       "a1",
+    #                       "a3"
+    #                     ]
+    #                   },
+    #                   "source_address_excluded": true,
+    #                   "source_end_user_profile": "test_end_user_profile",
+    #                   "source_identity": {
+    #                     "unknown_user": true
+    #                   },
+    #                   "url_category": {
+    #                     "names": [
+    #                       "Enhanced_Web_Chat"
+    #                     ]
+    #                   }
+    #                 },
+    #                 "name": "test_policy_1",
+    #                 "then": {
+    #                   "count": true,
+    #                   "deny": true,
+    #                   "log": "session-close"
+    #                 }
+    #               },
+    #               {
+    #                 "match": {
+    #                   "application": {
+    #                     "any": true
+    #                   },
+    #                   "destination_address": {
+    #                     "any_ipv6": true
+    #                   },
+    #                   "source_address": {
+    #                     "addresses": [
+    #                       "a1"
+    #                     ]
+    #                   }
+    #                 },
+    #                 "name": "test_policy_2",
+    #                 "then": {
+    #                   "reject": {
+    #                     "enable": true,
+    #                     "profile": "test_dyn_app",
+    #                     "ssl_proxy": {
+    #                       "enable": true,
+    #                       "profile_name": "SECURITY-SSL-PROXY"
+    #                     }
+    #                   }
+    #                 }
+    #               }
+    #             ]
+    #           },
+    #           {
+    #             "name": "three",
+    #             "policies": [
+    #               {
+    #                 "match": {
+    #                   "application": {
+    #                     "any": true
+    #                   },
+    #                   "destination_address": {
+    #                     "addresses": [
+    #                       "a2"
+    #                     ]
+    #                   },
+    #                   "source_address": {
+    #                     "addresses": [
+    #                       "a1"
+    #                     ]
+    #                   }
+    #                 },
+    #                 "name": "test_policy_3",
+    #                 "then": {
+    #                   "permit": {
+    #                     "application_services": {
+    #                       "application_traffic_control_rule_set": "test_traffic_control",
+    #                       "gprs_gtp_profile": "gtp1",
+    #                       "icap_redirect": "test_icap",
+    #                       "reverse_redirect_wx": "True",
+    #                       "uac_policy": {
+    #                         "enable": true
+    #                       }
+    #                     },
+    #                     "firewall_authentication": {
+    #                       "push_to_identity_management": true,
+    #                       "web_authentication": [
+    #                         "FWClient1"
+    #                       ]
+    #                     },
+    #                     "tcp_options": {
+    #                       "initial_tcp_mss": 64,
+    #                       "window_scale": true
+    #                     }
+    #                   }
+    #                 }
+    #               }
+    #             ]
+    #           }
+    #         ]
+    #       }
+    #     ],
+    #     "global": {
+    #       "policies": [
+    #         {
+    #           "match": {
+    #             "application": {
+    #               "any": true
+    #             },
+    #             "destination_address": {
+    #               "any_ipv6": true
+    #             },
+    #             "source_address": {
+    #               "any_ipv6": true
+    #             }
+    #           },
+    #           "name": "test_glob_1",
+    #           "then": {
+    #             "deny": true
+    #           }
+    #         },
+    #         {
+    #           "match": {
+    #             "application": {
+    #               "any": true
+    #             },
+    #             "destination_address": {
+    #               "any_ipv6": true
+    #             },
+    #             "source_address": {
+    #               "any_ipv6": true
+    #             }
+    #           },
+    #           "name": "test_glob_2",
+    #           "then": {
+    #             "deny": true
+    #           }
+    #         }
+    #       ]
+    #     }
+    #   }
 
 
 
@@ -5226,7 +7211,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>The set of commands pushed to the remote device.</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[&#x27;logging console 3&#x27;, &#x27;logging monitor 4&#x27;, &#x27;logging ip access-list cache entries 16384&#x27;, &#x27;logging ip access-list cache interval 200&#x27;, &#x27;logging ip access-list cache threshold 5000&#x27;]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[&#x27;&lt;rpc-reply&gt; &lt;configuration&gt; &lt;security&gt; &lt;policies&gt; &lt;global&gt; &lt;policy&gt; &lt;name&gt;test_glob_1&lt;/name&gt; &lt;match&gt; &lt;source-address&gt;any-ipv6&lt;/source-address&gt; &lt;destination-address&gt;any-ipv6&lt;/destination-address&gt; &lt;application&gt;any&lt;/application&gt; &lt;/match&gt; &lt;then&gt; &lt;deny /&gt; &lt;/then&gt; &lt;/policy&gt; &lt;/global&gt; &lt;/policies&gt; &lt;/security&gt; &lt;/configuration&gt; &lt;/rpc-reply&gt;&#x27;]</div>
                 </td>
             </tr>
             <tr>
@@ -5277,7 +7262,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>The provided configuration in the task rendered in device-native format (offline).</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[&#x27;logging ip access-list cache entries 4096&#x27;, &#x27;no logging ip access-list cache interval 200&#x27;, &#x27;no logging ip access-list cache threshold 5000&#x27;, &#x27;no logging origin-id hostname&#x27;, &#x27;logging origin-id ip 192.0.2.100&#x27;, &#x27;logging server 198.51.100.101 1 port 6538 use-vrf management&#x27;]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[&#x27;&lt;rpc-reply&gt; &lt;configuration&gt; &lt;security&gt; &lt;policies&gt; &lt;global&gt; &lt;policy&gt; &lt;name&gt;test_glob_1&lt;/name&gt; &lt;match&gt; &lt;source-address&gt;any-ipv6&lt;/source-address&gt; &lt;destination-address&gt;any-ipv6&lt;/destination-address&gt; &lt;application&gt;any&lt;/application&gt; &lt;/match&gt; &lt;then&gt; &lt;deny /&gt; &lt;/then&gt; &lt;/policy&gt; &lt;/global&gt; &lt;/policies&gt; &lt;/security&gt; &lt;/configuration&gt; &lt;/rpc-reply&gt;&#x27;]</div>
                 </td>
             </tr>
     </table>
@@ -5291,4 +7276,4 @@ Status
 Authors
 ~~~~~~~
 
-- Pranav Bhatt (adpranavb2000@gmail.com)
+- Pranav Bhatt (@pranav-bhatt)
