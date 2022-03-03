@@ -1,0 +1,7 @@
+- hosts: junos
+  gather_facts: false
+  
+  tasks:
+    - block:
+      - include_vars: targets/junos_security_policies/vars/main.yaml
+      - include_tasks: targets/junos_security_policies/tests/netconf/rendered.yaml
