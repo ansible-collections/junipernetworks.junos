@@ -350,11 +350,11 @@ options:
                               redirect_wx:
                                 description:
                                   - Specify the WX redirection needed for the packets that arrive from the LAN
-                                type: str
+                                type: bool
                               reverse_redirect_wx:
                                 description:
                                   - Specify the WX redirection needed for the reverse flow of the packets that arrive from the WAN
-                                type: str
+                                type: bool
                               security_intelligence_policy:
                                 description:
                                   - Specify security_intelligence policy name

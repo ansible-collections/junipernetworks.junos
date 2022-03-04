@@ -23,6 +23,8 @@
 
 from __future__ import absolute_import, division, print_function
 
+from click import command
+
 __metaclass__ = type
 
 from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
@@ -83,497 +85,465 @@ class TestJunossecurity_policiesModule(TestJunosModule):
     def test_junos_security_policies_merged_01(self):
         set_module_args(
             dict(
-                config=dict(
-                    boot_server="78.46.194.186",
-                    broadcasts=[
-                        dict(
-                            address="172.16.255.255",
-                            key="50",
-                            ttl=200,
-                            version=3,
-                            routing_instance_name="rt1",
-                        ),
-                        dict(
-                            address="192.16.255.255",
-                            key="50",
-                            ttl=200,
-                            version=3,
-                            routing_instance_name="rt1",
-                        ),
+                config={
+                    "from_zones": [{"name": "one"}],
+                    "to_zones": [
+                        {
+                            "name": "two",
+                            "policies": [
+                                {
+                                    "match": {
+                                        "application": {"names": ["junos-dhcp-relay", "junos-finger"]},
+                                        "destination_address": {"addresses": ["a2", "a4"]},
+                                        "destination_address_excluded": True,
+                                        "dynamic_application": {"any": True},
+                                        "source_address": {"addresses": ["a1", "a3"]},
+                                        "source_address_excluded": True,
+                                        "source_end_user_profile": "test_end_user_profile",
+                                        "source_identity": {"unknown_user": True},
+                                        "url_category": {"names": ["Enhanced_Web_Chat", "Enhanced_Web_Collaboration"]},
+                                    },
+                                    "name": "test_policy_1",
+                                    "then": {"count": True, "deny": True, "log": "session-close"},
+                                },
+                                {
+                                    "match": {
+                                        "application": {"names": ["junos-dhcp-relay"]},
+                                        "destination_address": {"addresses": ["a2"]},
+                                        "source_address": {"addresses": ["a1"]},
+                                    },
+                                    "name": "test_policy_2",
+                                    "then": {
+                                        "reject": {
+                                            "enable": True,
+                                            "profile": "test_dyn_app",
+                                            "ssl_proxy": {"enable": True, "profile_name": "SECURITY-SSL-PROXY"},
+                                        }
+                                    },
+                                },
+                            ],
+                        },
+                        {
+                            "name": "three",
+                            "policies": [
+                                {
+                                    "match": {
+                                        "application": {"names": ["junos-dhcp-relay"]},
+                                        "destination_address": {"addresses": ["a2"]},
+                                        "source_address": {"addresses": ["a1"]},
+                                    },
+                                    "name": "test_policy_3",
+                                    "then": {
+                                        "permit": {
+                                            "application_services": {
+                                                "advanced_anti_malware_policy": "test_anti_malware",
+                                                "application_traffic_control_rule_set": "test_traffic_control",
+                                                "gprs_gtp_profile": "gtp1",
+                                                "gprs_sctp_profile": "sctp1",
+                                                "icap_redirect": "test_icap",
+                                                "idp_policy": "test_idp",
+                                                "reverse_redirect_wx": True,
+                                                "ssl_proxy": {"enable": True, "profile_name": "SECURITY-SSL-PROXY"},
+                                                "uac_policy": {"enable": True},
+                                                "utm_policy": "test_utm",
+                                            },
+                                            "firewall_authentication": {
+                                                "web_authentication": ["FWClient1", "FWClient2"],
+                                                "pass_through": {
+                                                    "access_profile": "WEBAUTH",
+                                                    "auth_only_browser": True,
+                                                    "auth_user_agent": "Opera1",
+                                                    "client_match": "test-client",
+                                                    "ssl_termination_profile": "test_ssl_term",
+                                                    "web_redirect": True,
+                                                    "web_redirect_to_https": True,
+                                                },
+                                                "user_firewall": {
+                                                    "access_profile": "WEBAUTH",
+                                                    "auth_only_browser": True,
+                                                    "auth_user_agent": "Opera1",
+                                                    "ssl_termination_profile": "test_ssl_term",
+                                                    "web_redirect": True,
+                                                    "web_redirect_to_https": True,
+                                                },
+                                                "push_to_identity_management": True,
+                                            },
+                                            "tcp_options": {"initial_tcp_mss": 64, "reverse_tcp_mss": 64, "window_scale": True},
+                                        }
+                                    },
+                                }
+                            ],
+                        },
                     ],
-                    broadcast_client=True,
-                    interval_range=2,
-                    multicast_client="224.0.0.1",
-                    peers=[
-                        dict(peer="78.44.194.186"),
-                        dict(
-                            peer="172.44.194.186",
-                            key_id="10000",
-                            prefer=True,
-                            version=3,
-                        ),
-                    ],
-                    servers=[
-                        dict(
-                            server="48.46.194.186",
-                            key_id=34,
-                            prefer=True,
-                            version=2,
-                            routing_instance="rt1",
-                        ),
-                        dict(
-                            server="48.45.194.186",
-                            key_id=34,
-                            prefer=True,
-                            version=2,
-                        ),
-                    ],
-                    source_addresses=[
-                        dict(
-                            source_address="172.45.194.186",
-                            routing_instance="rt1",
-                        ),
-                        dict(
-                            source_address="171.45.194.186",
-                            routing_instance="rt2",
-                        ),
-                    ],
-                    threshold=dict(action="accept", value=300),
-                    trusted_keys=[dict(key_id=3000), dict(key_id=2000)],
-                ),
+                    "global": {
+                        "policies": [
+                            {
+                                "match": {
+                                    "application": {"names": ["junos-dhcp-relay"]},
+                                    "destination_address": {"addresses": ["a2"]},
+                                    "source_address": {"addresses": ["a1"]},
+                                },
+                                "name": "test_glob_1",
+                                "then": {"deny": True},
+                            },
+                            {
+                                "match": {
+                                    "application": {"names": ["junos-dhcp-relay"]},
+                                    "destination_address": {"addresses": ["a2"]},
+                                    "source_address": {"addresses": ["a1"]},
+                                },
+                                "name": "test_glob_2",
+                                "then": {"deny": True},
+                            },
+                        ]
+                    },
+                },
                 state="merged",
             )
-        )
-        result = self.execute_module(changed=True)
-        self.assertIn(
-            "<nc:ntp><nc:boot-server>78.46.194.186</nc:boot-server>",
-            str(result["commands"]),
-        )
-        self.assertIn(
-            "<nc:broadcast><nc:name>172.16.255.255</nc:name><nc:key>50</nc:key>",
-            str(result["commands"]),
-        )
-        self.assertIn(
-            "<nc:routing-instance-name>rt1</nc:routing-instance-name><nc:ttl>200</nc:ttl>",
-            str(result["commands"]),
-        )
-        self.assertIn(
-            "<nc:version>3</nc:version></nc:broadcast><nc:broadcast>",
-            str(result["commands"]),
-        )
-        self.assertIn(
-            "<nc:name>192.16.255.255</nc:name><nc:key>50</nc:key>",
-            str(result["commands"]),
         )
 
-    def test_junos_security_policies_merged_02(self):
-        set_module_args(
-            dict(
-                config=dict(
-                    boot_server="78.46.194.186",
-                    authentication_keys=[
-                        dict(id="2", algorithm="md5", key="asdfghd"),
-                        dict(id="5", algorithm="sha1", key="aasdad"),
-                    ],
-                ),
-                state="merged",
-            )
-        )
         result = self.execute_module(changed=True)
-        self.assertIn(
-            "<nc:ntp><nc:authentication-key><nc:name>2</nc:name><nc:type>md5</nc:type><nc:value>asdfghd</nc:value></nc:authentication-key>",
-            str(result["commands"]),
+
+        commands = (
+            '<nc:security xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:policies><nc:policy><nc:from-zone-name>one</nc:from-zone-name>'
+            "<nc:to-zone-name>two</nc:to-zone-name><nc:policy><nc:name>test_policy_1</nc:name><nc:match><nc:source-address>a1</nc:source-address>"
+            "<nc:source-address>a3</nc:source-address><nc:source-address-excluded/><nc:destination-address>a2</nc:destination-address>"
+            "<nc:destination-address>a4</nc:destination-address><nc:destination-address-excluded/><nc:application>junos-dhcp-relay</nc:application>"
+            "<nc:application>junos-finger</nc:application><nc:source-end-user-profile>test_end_user_profile</nc:source-end-user-profile>"
+            "<nc:source-identity>unknown-user</nc:source-identity><nc:url-category>Enhanced_Web_Chat</nc:url-category>"
+            "<nc:url-category>Enhanced_Web_Collaboration</nc:url-category><nc:dynamic-application>any</nc:dynamic-application></nc:match>"
+            "<nc:then><nc:deny/><nc:count> </nc:count><nc:log><nc:session-close/></nc:log></nc:then></nc:policy><nc:policy>"
+            "<nc:name>test_policy_2</nc:name><nc:match><nc:source-address>a1</nc:source-address><nc:destination-address>a2</nc:destination-address>"
+            "<nc:application>junos-dhcp-relay</nc:application></nc:match><nc:then><nc:reject> <nc:profile>test_dyn_app</nc:profile><nc:ssl-proxy>"
+            "<nc:profile-name>SECURITY-SSL-PROXY</nc:profile-name></nc:ssl-proxy></nc:reject></nc:then></nc:policy></nc:policy><nc:policy>"
+            "<nc:from-zone-name>one</nc:from-zone-name><nc:to-zone-name>three</nc:to-zone-name><nc:policy><nc:name>test_policy_3</nc:name><nc:match>"
+            "<nc:source-address>a1</nc:source-address><nc:destination-address>a2</nc:destination-address>"
+            "<nc:application>junos-dhcp-relay</nc:application></nc:match><nc:then><nc:permit><nc:application-services>"
+            "<nc:advanced-anti-malware-policy>test_anti_malware</nc:advanced-anti-malware-policy><nc:application-traffic-control>"
+            "<nc:rule-set>test_traffic_control</nc:rule-set></nc:application-traffic-control><nc:gprs-gtp-profile>gtp1</nc:gprs-gtp-profile>"
+            "<nc:gprs-sctp-profile>sctp1</nc:gprs-sctp-profile><nc:icap-redirect>test_icap</nc:icap-redirect><nc:idp-policy>test_idp</nc:idp-policy>"
+            "<nc:reverse-redirect-wx/><nc:ssl-proxy><nc:profile-name>SECURITY-SSL-PROXY</nc:profile-name></nc:ssl-proxy><nc:uac-policy> </nc:uac-policy>"
+            "<nc:utm-policy>test_utm</nc:utm-policy></nc:application-services><nc:firewall-authentication><nc:pass-through>"
+            "<nc:access-profile>WEBAUTH</nc:access-profile><nc:auth-only-browser> </nc:auth-only-browser>"
+            "<nc:auth-user-agent>Opera1</nc:auth-user-agent><nc:client-match>test-client</nc:client-match>"
+            "<nc:ssl-termination-profile>test_ssl_term</nc:ssl-termination-profile><nc:web-redirect/><nc:web-redirect-to-https/>"
+            "<nc:auth-user-agent>Opera1</nc:auth-user-agent></nc:pass-through><nc:push-to-identity-management/><nc:user-firewall>"
+            "<nc:access-profile>WEBAUTH</nc:access-profile><nc:ssl-termination-profile>test_ssl_term</nc:ssl-termination-profile><nc:web-redirect>"
+            "</nc:web-redirect><nc:web-redirect-to-https> </nc:web-redirect-to-https></nc:user-firewall><nc:web-authentication>"
+            "<nc:client-match>FWClient1</nc:client-match><nc:client-match>FWClient2</nc:client-match></nc:web-authentication>"
+            "</nc:firewall-authentication><nc:tcp-options> <nc:initial-tcp-mss>64</nc:initial-tcp-mss>"
+            "<nc:reverse-tcp-mss>64</nc:reverse-tcp-mss><nc:window-scale/></nc:tcp-options></nc:permit></nc:then></nc:policy>"
+            "</nc:policy><nc:global><nc:policy><nc:name>test_glob_1</nc:name><nc:match><nc:source-address>a1</nc:source-address>"
+            "<nc:destination-address>a2</nc:destination-address><nc:application>junos-dhcp-relay</nc:application></nc:match>"
+            "<nc:then><nc:deny/></nc:then></nc:policy><nc:policy><nc:name>test_glob_2</nc:name><nc:match><nc:source-address>a1</nc:source-address>"
+            "<nc:destination-address>a2</nc:destination-address><nc:application>junos-dhcp-relay</nc:application></nc:match><nc:then><nc:deny/>"
+            "</nc:then></nc:policy></nc:global></nc:policies></nc:security>"
         )
+
         self.assertIn(
-            "<nc:authentication-key><nc:name>5</nc:name><nc:type>sha1</nc:type><nc:value>aasdad</nc:value>",
+            commands,
             str(result["commands"]),
         )
 
     def test_junos_security_policies_parsed_01(self):
         parsed_str = """
-            <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
-                <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
-                    <version>18.4R1-S2.4</version>
-                    <system>
-        <ntp>
-            <boot-server>78.46.194.186</boot-server>
-            <interval-range>
-                <value>2</value>
-            </interval-range>
-            <peer>
-                <name>78.44.194.186</name>
-            </peer>
-            <peer>
-                <name>172.44.194.186</name>
-                <key>10000</key>
-                <version>3</version>
-                <prefer/>
-            </peer>
-            <server>
-                <name>48.46.194.186</name>
-                <key>34</key>
-                <version>2</version>
-                <prefer/>
-                <routing-instance>rt1</routing-instance>
-            </server>
-            <server>
-                <name>48.45.194.186</name>
-                <key>34</key>
-                <version>2</version>
-                <prefer/>
-            </server>
-            <broadcast>
-                <name>172.16.255.255</name>
-                <routing-instance-name>rt1</routing-instance-name>
-                <key>50</key>
-                <version>3</version>
-                <ttl>200</ttl>
-            </broadcast>
-            <broadcast>
-                <name>192.16.255.255</name>
-                <routing-instance-name>rt2</routing-instance-name>
-                <key>50</key>
-                <version>3</version>
-                <ttl>200</ttl>
-            </broadcast>
-            <broadcast-client/>
-            <multicast-client>
-                <address>224.0.0.1</address>
-            </multicast-client>
-            <trusted-key>3000</trusted-key>
-            <trusted-key>2000</trusted-key>
-            <threshold>
-                <value>300</value>
-                <action>accept</action>
-            </threshold>
-            <source-address>
-                <name>172.45.194.186</name>
-                <routing-instance>rt1</routing-instance>
-            </source-address>
-            <source-address>
-                <name>171.45.194.186</name>
-                <routing-instance>rt2</routing-instance>
-            </source-address>
-        </ntp>
-    </system>
-    <interfaces xmlns="http://yang.juniper.net/junos-es/conf/interfaces">
-        <interface>
-            <name>fxp0</name>
-            <unit>
-                <name>0</name>
-                <family>
-                    <inet>
-                        <dhcp>
-                        </dhcp>
-                    </inet>
-                </family>
-            </unit>
-        </interface>
-    </interfaces>
-    <routing-instances xmlns="http://yang.juniper.net/junos-es/conf/routing-instances">
-        <instance>
-            <name>rt1</name>
-            <description>rt1</description>
-        </instance>
-        <instance>
-            <name>rt2</name>
-            <description>rt2</description>
-        </instance>
-    </routing-instances>
-                </configuration>
+            <rpc-reply>
+                <data>
+                    <configuration>
+                        <security>
+                            <policies>
+                                <policy>
+                                    <from-zone-name>one</from-zone-name>
+                                    <to-zone-name>two</to-zone-name>
+                                    <policy>
+                                        <name>test_policy_1</name>
+                                        <match>
+                                            <source-address>a1</source-address>
+                                            <source-address>a3</source-address>
+                                            <destination-address>a2</destination-address>
+                                            <destination-address>a4</destination-address>
+                                            <source-address-excluded />
+                                            <destination-address-excluded />
+                                            <application>junos-dhcp-relay</application>
+                                            <application>junos-finger</application>
+                                            <source-identity>authenticated-user</source-identity>
+                                            <source-identity>unknown-user</source-identity>
+                                            <source-end-user-profile>
+                                                <source-end-user-profile-name>test_end_user_profile</source-end-user-profile-name>
+                                            </source-end-user-profile>
+                                            <dynamic-application>any</dynamic-application>
+                                            <url-category>Enhanced_Web_Chat</url-category>
+                                            <url-category>Enhanced_Web_Collaboration</url-category>
+                                        </match>
+                                        <then>
+                                            <deny />
+                                            <log>
+                                                <session-close />
+                                            </log>
+                                            <count></count>
+                                        </then>
+                                    </policy>
+                                    <policy>
+                                        <name>test_policy_2</name>
+                                        <match>
+                                            <source-address>a1</source-address>
+                                            <destination-address>a2</destination-address>
+                                            <application>junos-dhcp-relay</application>
+                                        </match>
+                                        <then>
+                                            <reject>
+                                                <profile>test_dyn_app</profile>
+                                                <ssl-proxy>
+                                                    <profile-name>SECURITY-SSL-PROXY</profile-name>
+                                                </ssl-proxy>
+                                            </reject>
+                                        </then>
+                                    </policy>
+                                </policy>
+                                <policy>
+                                    <from-zone-name>one</from-zone-name>
+                                    <to-zone-name>three</to-zone-name>
+                                    <policy>
+                                        <name>test_policy_3</name>
+                                        <match>
+                                            <source-address>a1</source-address>
+                                            <destination-address>a2</destination-address>
+                                            <application>junos-dhcp-relay</application>
+                                        </match>
+                                        <then>
+                                            <permit>
+                                                <firewall-authentication>
+                                                    <web-authentication>
+                                                        <client-match>FWClient1</client-match>
+                                                        <client-match>FWClient2</client-match>
+                                                    </web-authentication>
+                                                    <pass-through>
+                                                        <access-profile>WEBAUTH</access-profile>
+                                                        <auth-only-browser />
+                                                        <auth-user-agent>Opera1</auth-user-agent>
+                                                        <client-match>test-client</client-match>
+                                                        <ssl-termination-profile>test_ssl_term</ssl-termination-profile>
+                                                        <web-redirect />
+                                                        <web-redirect-to-https />
+                                                    </pass-through>
+                                                    <user-firewall>
+                                                        <access-profile>WEBAUTH</access-profile>
+                                                        <auth-only-browser />
+                                                        <auth-user-agent>Opera1</auth-user-agent>
+                                                        <client-match>test-client</client-match>
+                                                        <ssl-termination-profile>test_ssl_term</ssl-termination-profile>
+                                                        <web-redirect />
+                                                        <web-redirect-to-https />
+                                                    </user-firewall>
+                                                    <push-to-identity-management />
+                                                </firewall-authentication>
+                                                <destination-address>
+                                                    <drop-untranslated />
+                                                </destination-address>
+                                                <application-services>
+                                                    <gprs-gtp-profile>gtp1</gprs-gtp-profile>
+                                                    <gprs-sctp-profile>sctp1</gprs-sctp-profile>
+                                                    <idp-policy>test_idp</idp-policy>
+                                                    <ssl-proxy>
+                                                        <profile-name>SECURITY-SSL-PROXY</profile-name>
+                                                    </ssl-proxy>
+                                                    <uac-policy></uac-policy>
+                                                    <utm-policy>test_utm</utm-policy>
+                                                    <icap-redirect>test_icap</icap-redirect>
+                                                    <application-traffic-control>
+                                                        <rule-set>test_traffic_control</rule-set>
+                                                    </application-traffic-control>
+                                                    <reverse-redirect-wx />
+                                                    <advanced-anti-malware-policy>test_anti_malware</advanced-anti-malware-policy>
+                                                </application-services>
+                                                <tcp-options>
+                                                    <initial-tcp-mss>64</initial-tcp-mss>
+                                                    <reverse-tcp-mss>64</reverse-tcp-mss>
+                                                    <window-scale />
+                                                </tcp-options>
+                                            </permit>
+                                        </then>
+                                    </policy>
+                                </policy>
+                                <global>
+                                    <policy>
+                                        <name>test_glob_1</name>
+                                        <match>
+                                            <source-address>a1</source-address>
+                                            <destination-address>a2</destination-address>
+                                            <application>junos-dhcp-relay</application>
+                                        </match>
+                                        <then>
+                                            <deny />
+                                        </then>
+                                    </policy>
+                                    <policy>
+                                        <name>test_glob_2</name>
+                                        <match>
+                                            <source-address>a1</source-address>
+                                            <destination-address>a2</destination-address>
+                                            <application>junos-dhcp-relay</application>
+                                        </match>
+                                        <then>
+                                            <deny />
+                                        </then>
+                                    </policy>
+                                </global>
+                            </policies>
+                        </security>
+                    </configuration>
+                    <database-status-information></database-status-information>
+                </data>
             </rpc-reply>
         """
         set_module_args(dict(running_config=parsed_str, state="parsed"))
         result = self.execute_module(changed=False)
         parsed_dict = {
-            "boot_server": "78.46.194.186",
-            "broadcast_client": True,
-            "broadcasts": [
+            "from_zones": [
                 {
-                    "address": "172.16.255.255",
-                    "key": "50",
-                    "routing_instance_name": "rt1",
-                    "ttl": 200,
-                    "version": 3,
-                },
-                {
-                    "address": "192.16.255.255",
-                    "key": "50",
-                    "routing_instance_name": "rt2",
-                    "ttl": 200,
-                    "version": 3,
-                },
-            ],
-            "interval_range": 2,
-            "multicast_client": "224.0.0.1",
-            "peers": [
-                {"peer": "78.44.194.186"},
-                {
-                    "key_id": 10000,
-                    "peer": "172.44.194.186",
-                    "prefer": True,
-                    "version": 3,
-                },
-            ],
-            "servers": [
-                {
-                    "key_id": 34,
-                    "prefer": True,
-                    "routing_instance": "rt1",
-                    "server": "48.46.194.186",
-                    "version": 2,
-                },
-                {
-                    "key_id": 34,
-                    "prefer": True,
-                    "server": "48.45.194.186",
-                    "version": 2,
-                },
-            ],
-            "source_addresses": [
-                {
-                    "routing_instance": "rt1",
-                    "source_address": "172.45.194.186",
-                },
-                {
-                    "routing_instance": "rt2",
-                    "source_address": "171.45.194.186",
-                },
-            ],
-            "threshold": {"action": "accept", "value": 300},
-            "trusted_keys": [{"key_id": 2000}, {"key_id": 3000}],
-        }
-        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
-
-    def test_junos_security_policies_parsed_02(self):
-        parsed_str = """
-            <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
-                <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
-                    <version>18.4R1-S2.4</version>
-                    <system>
-                        <ntp>
-                            <boot-server>78.46.194.186</boot-server>
-                            <interval-range>
-                                <value>2</value>
-                            </interval-range>
-                            <peer>
-                                <name>172.44.194.186</name>
-                                <key>10000</key>
-                                <version>3</version>
-                                <prefer/>
-                            </peer>
-                            <server>
-                                <name>48.45.194.186</name>
-                                <key>34</key>
-                                <version>2</version>
-                                <prefer/>
-                            </server>
-                            <broadcast>
-                                <name>192.16.255.255</name>
-                                <routing-instance-name>rt2</routing-instance-name>
-                                <key>50</key>
-                                <version>3</version>
-                                <ttl>200</ttl>
-                            </broadcast>
-                            <broadcast-client/>
-                            <multicast-client>
-                                <address>224.0.0.1</address>
-                            </multicast-client>
-                            <trusted-key>2000</trusted-key>
-                            <threshold>
-                                <value>300</value>
-                                <action>accept</action>
-                            </threshold>
-                            <source-address>
-                                <name>171.45.194.186</name>
-                                <routing-instance>rt2</routing-instance>
-                            </source-address>
-                        </ntp>
-                    </system>
-                    <routing-instances xmlns="http://yang.juniper.net/junos-es/conf/routing-instances">
-                        <instance>
-                            <name>rt1</name>
-                            <description>rt1</description>
-                        </instance>
-                        <instance>
-                            <name>rt2</name>
-                            <description>rt2</description>
-                        </instance>
-                    </routing-instances>
-                </configuration>
-            </rpc-reply>
-        """
-        set_module_args(dict(running_config=parsed_str, state="parsed"))
-        result = self.execute_module(changed=False)
-        parsed_dict = {
-            "boot_server": "78.46.194.186",
-            "broadcast_client": True,
-            "broadcasts": [
-                {
-                    "address": "192.16.255.255",
-                    "key": "50",
-                    "routing_instance_name": "rt2",
-                    "ttl": 200,
-                    "version": 3,
+                    "name": "one",
+                    "to_zones": [
+                        {
+                            "name": "two",
+                            "policies": [
+                                {
+                                    "match": {
+                                        "application": {"names": ["junos-dhcp-relay", "junos-finger"]},
+                                        "destination_address": {"addresses": ["a2", "a4"]},
+                                        "destination_address_excluded": True,
+                                        "dynamic_application": {"any": True},
+                                        "source_address": {"addresses": ["a1", "a3"]},
+                                        "source_address_excluded": True,
+                                        "source_end_user_profile": "test_end_user_profile",
+                                        "source_identity": {"unknown_user": True},
+                                        "url_category": {"names": ["Enhanced_Web_Chat", "Enhanced_Web_Collaboration"]},
+                                    },
+                                    "name": "test_policy_1",
+                                    "then": {"count": True, "deny": True, "log": "session-close"},
+                                },
+                                {
+                                    "match": {
+                                        "application": {"names": ["junos-dhcp-relay"]},
+                                        "destination_address": {"addresses": ["a2"]},
+                                        "source_address": {"addresses": ["a1"]},
+                                    },
+                                    "name": "test_policy_2",
+                                    "then": {
+                                        "reject": {
+                                            "enable": True,
+                                            "profile": "test_dyn_app",
+                                            "ssl_proxy": {"enable": True, "profile_name": "SECURITY-SSL-PROXY"},
+                                        }
+                                    },
+                                },
+                            ],
+                        },
+                        {
+                            "name": "three",
+                            "policies": [
+                                {
+                                    "match": {
+                                        "application": {"names": ["junos-dhcp-relay"]},
+                                        "destination_address": {"addresses": ["a2"]},
+                                        "source_address": {"addresses": ["a1"]},
+                                    },
+                                    "name": "test_policy_3",
+                                    "then": {
+                                        "permit": {
+                                            "application_services": {
+                                                "advanced_anti_malware_policy": "test_anti_malware",
+                                                "application_traffic_control_rule_set": "test_traffic_control",
+                                                "gprs_gtp_profile": "gtp1",
+                                                "gprs_sctp_profile": "sctp1",
+                                                "icap_redirect": "test_icap",
+                                                "idp_policy": "test_idp",
+                                                "reverse_redirect_wx": True,
+                                                "ssl_proxy": {"enable": True, "profile_name": "SECURITY-SSL-PROXY"},
+                                                "uac_policy": {"enable": True},
+                                                "utm_policy": "test_utm",
+                                            },
+                                            "firewall_authentication": {
+                                                "pass_through": {
+                                                    "access_profile": "WEBAUTH",
+                                                    "auth_only_browser": True,
+                                                    "auth_user_agent": "Opera1",
+                                                    "client_match": "test-client",
+                                                    "ssl_termination_profile": "test_ssl_term",
+                                                    "web_redirect": True,
+                                                    "web_redirect_to_https": True,
+                                                },
+                                                "push_to_identity_management": True,
+                                                "user_firewall": {
+                                                    "access_profile": "WEBAUTH",
+                                                    "auth_only_browser": True,
+                                                    "auth_user_agent": "Opera1",
+                                                    "ssl_termination_profile": "test_ssl_term",
+                                                    "web_redirect": True,
+                                                    "web_redirect_to_https": True,
+                                                },
+                                                "web_authentication": ["FWClient1", "FWClient2"],
+                                            },
+                                            "tcp_options": {"initial_tcp_mss": 64, "reverse_tcp_mss": 64, "window_scale": True},
+                                        }
+                                    },
+                                }
+                            ],
+                        },
+                    ],
                 }
             ],
-            "interval_range": 2,
-            "multicast_client": "224.0.0.1",
-            "peers": [
-                {
-                    "key_id": 10000,
-                    "peer": "172.44.194.186",
-                    "prefer": True,
-                    "version": 3,
-                }
-            ],
-            "servers": [
-                {
-                    "key_id": 34,
-                    "prefer": True,
-                    "server": "48.45.194.186",
-                    "version": 2,
-                }
-            ],
-            "source_addresses": [{"routing_instance": "rt2", "source_address": "171.45.194.186"}],
-            "threshold": {"action": "accept", "value": 300},
-            "trusted_keys": [{"key_id": 2000}],
-        }
-        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
-
-    def test_junos_security_policies_parsed_03(self):
-        parsed_str = """
-            <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
-                <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
-                    <version>18.4R1-S2.4</version>
-                    <system>
-                        <ntp>
-                            <authentication-key>
-                                <name>2</name>
-                                <type>md5</type>
-                                <value>$9$GxDjqfT3CA0UjfzF6u0RhS</value>
-                            </authentication-key>
-                            <authentication-key>
-                                <name>5</name>
-                                <type>sha1</type>
-                                <value>$9$ZsUDk.mT3/toJGiHqQz</value>
-                            </authentication-key>
-                        </ntp>
-                    </system>
-                    <routing-instances xmlns="http://yang.juniper.net/junos-es/conf/routing-instances">
-                        <instance>
-                            <name>rt1</name>
-                            <description>rt1</description>
-                        </instance>
-                        <instance>
-                            <name>rt2</name>
-                            <description>rt2</description>
-                        </instance>
-                    </routing-instances>
-                </configuration>
-            </rpc-reply>
-        """
-        set_module_args(dict(running_config=parsed_str, state="parsed"))
-        result = self.execute_module(changed=False)
-        parsed_dict = {
-            "authentication_keys": [
-                {
-                    "algorithm": "md5",
-                    "id": 2,
-                    "key": "$9$GxDjqfT3CA0UjfzF6u0RhS",
-                },
-                {
-                    "algorithm": "sha1",
-                    "id": 5,
-                    "key": "$9$ZsUDk.mT3/toJGiHqQz",
-                },
-            ]
+            "global": {
+                "policies": [
+                    {
+                        "match": {
+                            "application": {"names": ["junos-dhcp-relay"]},
+                            "destination_address": {"addresses": ["a2"]},
+                            "source_address": {"addresses": ["a1"]},
+                        },
+                        "name": "test_glob_1",
+                        "then": {"deny": True},
+                    },
+                    {
+                        "match": {
+                            "application": {"names": ["junos-dhcp-relay"]},
+                            "destination_address": {"addresses": ["a2"]},
+                            "source_address": {"addresses": ["a1"]},
+                        },
+                        "name": "test_glob_2",
+                        "then": {"deny": True},
+                    },
+                ]
+            },
         }
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_security_policies_overridden_01(self):
         set_module_args(
             dict(
-                config=dict(
-                    boot_server="78.46.194.186",
-                    broadcasts=[
-                        dict(
-                            address="172.16.255.255",
-                            key="50",
-                            ttl=200,
-                            version=3,
-                            routing_instance_name="rt1",
-                        ),
-                        dict(
-                            address="192.16.255.255",
-                            key="50",
-                            ttl=200,
-                            version=3,
-                            routing_instance_name="rt1",
-                        ),
-                    ],
-                    broadcast_client=True,
-                    interval_range=2,
-                    multicast_client="224.0.0.1",
-                    peers=[
-                        dict(peer="78.44.194.186"),
-                        dict(
-                            peer="172.44.194.186",
-                            key_id="10000",
-                            prefer=True,
-                            version=3,
-                        ),
-                    ],
-                    servers=[
-                        dict(
-                            server="48.46.194.186",
-                            key_id=34,
-                            prefer=True,
-                            version=2,
-                            routing_instance="rt1",
-                        ),
-                        dict(
-                            server="48.45.194.186",
-                            key_id=34,
-                            prefer=True,
-                            version=2,
-                        ),
-                    ],
-                    source_addresses=[
-                        dict(
-                            source_address="172.45.194.186",
-                            routing_instance="rt1",
-                        ),
-                        dict(
-                            source_address="171.45.194.186",
-                            routing_instance="rt2",
-                        ),
-                    ],
-                    threshold=dict(action="accept", value=300),
-                    trusted_keys=[dict(key_id=3000), dict(key_id=2000)],
-                ),
+                config={
+                    "global": {
+                        "policies": [
+                            {
+                                "description": "test update",
+                                "match": {"application": {"any": True}, "destination_address": {"any_ipv6": True}, "source_address": {"any": True}},
+                                "name": "test_glob_3",
+                                "then": {"deny": True},
+                            }
+                        ]
+                    }
+                },
                 state="overridden",
             )
         )
+        commands = (
+            '<nc:security xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:policies delete="delete"/><nc:policies><nc:global><nc:policy>'
+            "<nc:name>test_glob_3</nc:name><nc:description>test update</nc:description><nc:match><nc:source-address>any</nc:source-address>"
+            "<nc:destination-address>any-ipv6</nc:destination-address><nc:application>any</nc:application></nc:match><nc:then><nc:deny/>"
+            "</nc:then></nc:policy></nc:global></nc:policies></nc:security>"
+        )
         result = self.execute_module(changed=True)
         self.assertIn(
-            "<nc:ntp><nc:boot-server>78.46.194.186</nc:boot-server>",
-            str(result["commands"]),
-        )
-        self.assertIn(
-            "<nc:broadcast><nc:name>172.16.255.255</nc:name><nc:key>50</nc:key>",
-            str(result["commands"]),
-        )
-        self.assertIn(
-            "<nc:routing-instance-name>rt1</nc:routing-instance-name><nc:ttl>200</nc:ttl>",
-            str(result["commands"]),
-        )
-        self.assertIn(
-            "<nc:version>3</nc:version></nc:broadcast><nc:broadcast>",
-            str(result["commands"]),
-        )
-        self.assertIn(
-            "<nc:name>192.16.255.255</nc:name><nc:key>50</nc:key>",
+            commands,
             str(result["commands"]),
         )
 
@@ -584,126 +554,73 @@ class TestJunossecurity_policiesModule(TestJunosModule):
         set_module_args(dict(state="gathered"))
         result = self.execute_module(changed=False)
         gather_list = {
-            "authentication_keys": [
-                {
-                    "algorithm": "md5",
-                    "id": 3,
-                    "key": "$9$GxDjqfT3CA0UjfzF6u0RhS",
-                },
-                {
-                    "algorithm": "sha1",
-                    "id": 4,
-                    "key": "$9$ZsUDk.mT3/toJGiHqQz",
-                },
-            ]
+            "global": {
+                "policies": [
+                    {
+                        "description": "test update",
+                        "match": {"application": {"any": True}, "destination_address": {"any_ipv6": True}, "source_address": {"any": True}},
+                        "name": "test_glob_3",
+                        "then": {"deny": True},
+                    }
+                ]
+            }
         }
         self.assertEqual(sorted(gather_list), sorted(result["gathered"]))
 
     def test_junos_security_policies_rendered(self):
+
         set_module_args(
             dict(
-                config=dict(
-                    boot_server="78.46.194.186",
-                    authentication_keys=[
-                        dict(id="2", algorithm="md5", key="asdfghd"),
-                        dict(id="5", algorithm="sha1", key="aasdad"),
-                    ],
-                ),
-                state="rendered",
+                config={
+                    "global": {
+                        "policies": [
+                            {
+                                "description": "test update",
+                                "match": {"application": {"any": True}, "destination_address": {"any_ipv6": True}, "source_address": {"any": True}},
+                                "name": "test_glob_3",
+                                "then": {"deny": True},
+                            }
+                        ]
+                    }
+                },
+                state="overridden",
             )
         )
         rendered = (
-            '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
-            "<nc:ntp><nc:authentication-key><nc:name>2</nc:name><nc:type>md5</nc:type>"
-            "<nc:value>asdfghd</nc:value></nc:authentication-key><nc:authentication-key>"
-            "<nc:name>5</nc:name><nc:type>sha1</nc:type><nc:value>aasdad</nc:value>"
-            "</nc:authentication-key><nc:boot-server>78.46.194.186</nc:boot-server></nc:ntp></nc:system>"
+            '<nc:security xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:policies delete="delete"/><nc:policies><nc:global><nc:policy>'
+            "<nc:name>test_glob_3</nc:name><nc:description>test update</nc:description><nc:match><nc:source-address>any</nc:source-address>"
+            "<nc:destination-address>any-ipv6</nc:destination-address><nc:application>any</nc:application></nc:match><nc:then><nc:deny/>"
+            "</nc:then></nc:policy></nc:global></nc:policies></nc:security>"
         )
         result = self.execute_module(changed=False)
-        self.assertEqual(sorted(result["rendered"]), sorted(rendered))
+        self.assertEqual(sorted(result["rendered"]), rendered)
 
     def test_junos_security_policies_replaced_01(self):
         set_module_args(
             dict(
-                config=dict(
-                    boot_server="78.46.194.186",
-                    broadcasts=[
-                        dict(
-                            address="172.16.255.255",
-                            key="50",
-                            ttl=200,
-                            version=3,
-                            routing_instance_name="rt1",
-                        ),
-                        dict(
-                            address="192.16.255.255",
-                            key="50",
-                            ttl=200,
-                            version=3,
-                            routing_instance_name="rt1",
-                        ),
-                    ],
-                    broadcast_client=True,
-                    interval_range=2,
-                    multicast_client="224.0.0.1",
-                    peers=[
-                        dict(peer="78.44.194.186"),
-                        dict(
-                            peer="172.44.194.186",
-                            key_id="10000",
-                            prefer=True,
-                            version=3,
-                        ),
-                    ],
-                    servers=[
-                        dict(
-                            server="48.46.194.186",
-                            key_id=34,
-                            prefer=True,
-                            version=2,
-                            routing_instance="rt1",
-                        ),
-                        dict(
-                            server="48.45.194.186",
-                            key_id=34,
-                            prefer=True,
-                            version=2,
-                        ),
-                    ],
-                    source_addresses=[
-                        dict(
-                            source_address="172.45.194.186",
-                            routing_instance="rt1",
-                        ),
-                        dict(
-                            source_address="171.45.194.186",
-                            routing_instance="rt2",
-                        ),
-                    ],
-                    threshold=dict(action="accept", value=300),
-                    trusted_keys=[dict(key_id=3000), dict(key_id=2000)],
-                ),
+                config={
+                    "global": {
+                        "policies": [
+                            {
+                                "description": "test update",
+                                "match": {"application": {"any": True}, "destination_address": {"any_ipv6": True}, "source_address": {"any": True}},
+                                "name": "test_glob_3",
+                                "then": {"deny": True},
+                            }
+                        ]
+                    }
+                },
                 state="replaced",
             )
         )
         result = self.execute_module(changed=True)
-        self.assertIn(
-            "<nc:ntp><nc:boot-server>78.46.194.186</nc:boot-server>",
-            str(result["commands"]),
+        commands = (
+            '<nc:security xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:policies delete="delete"/><nc:policies><nc:global><nc:policy>'
+            "<nc:name>test_glob_3</nc:name><nc:description>test update</nc:description><nc:match><nc:source-address>any</nc:source-address>"
+            "<nc:destination-address>any-ipv6</nc:destination-address><nc:application>any</nc:application></nc:match><nc:then><nc:deny/>"
+            "</nc:then></nc:policy></nc:global></nc:policies></nc:security>"
         )
         self.assertIn(
-            "<nc:broadcast><nc:name>172.16.255.255</nc:name><nc:key>50</nc:key>",
-            str(result["commands"]),
-        )
-        self.assertIn(
-            "<nc:routing-instance-name>rt1</nc:routing-instance-name><nc:ttl>200</nc:ttl>",
-            str(result["commands"]),
-        )
-        self.assertIn(
-            "<nc:version>3</nc:version></nc:broadcast><nc:broadcast>",
-            str(result["commands"]),
-        )
-        self.assertIn(
-            "<nc:name>192.16.255.255</nc:name><nc:key>50</nc:key>",
+            commands,
             str(result["commands"]),
         )

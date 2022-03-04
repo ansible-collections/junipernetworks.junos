@@ -265,9 +265,9 @@ class Security_policiesFacts(object):
                     policy_match["dynamic-application"] = [policy_match["dynamic-application"]]
                 match["dynamic_application"] = {}
                 for dynamic_application in policy_match["dynamic-application"]:
-                    if url_category == "any":
+                    if dynamic_application == "any":
                         match["dynamic_application"]["any"] = True
-                    elif url_category == "none":
+                    elif dynamic_application == "none":
                         match["dynamic_application"]["none"] = True
                     else:
                         if "names" not in match["dynamic_application"]:
@@ -341,7 +341,7 @@ class Security_policiesFacts(object):
                         application_services["ssl_proxy"] = {}
                         application_services["ssl_proxy"]["enable"] = True
                         if policy_application_services["ssl-proxy"] and "profile-name" in policy_application_services["ssl-proxy"]:
-                            application_services["ssl_proxy"]["captive_portal"] = policy_application_services["ssl-proxy"]["profile-name"]
+                            application_services["ssl_proxy"]["profile_name"] = policy_application_services["ssl-proxy"]["profile-name"]
                     if "uac-policy" in policy_application_services:
                         application_services["uac_policy"] = {}
                         application_services["uac_policy"]["enable"] = True
@@ -396,7 +396,7 @@ class Security_policiesFacts(object):
                             f_a["user_firewall"]["web_redirect_to_https"] = True
 
                     if "web-authentication" in policy_f_a:
-                        f_a["web_authentication"] = {}
+                        f_a["web_authentication"] = []
                         if isinstance(
                             policy_f_a["web-authentication"]["client-match"],
                             str,
