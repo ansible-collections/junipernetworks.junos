@@ -19,8 +19,7 @@ merged:
                       - a4
                   destination_address_excluded: true
                   dynamic_application:
-                    names:
-                      - any
+                    any: true
                   source_address:
                     addresses:
                       - a1
@@ -71,7 +70,7 @@ merged:
                       application_traffic_control_rule_set: test_traffic_control
                       gprs_gtp_profile: gtp1
                       icap_redirect: test_icap
-                      reverse_redirect_wx: 'True'
+                      reverse_redirect_wx: true
                       uac_policy:
                         enable: true
                     firewall_authentication:
@@ -120,8 +119,7 @@ merged:
                       - a4
                   destination_address_excluded: true
                   dynamic_application:
-                    names:
-                      - any
+                    any: true
                   source_address:
                     addresses:
                       - a1
@@ -172,7 +170,7 @@ merged:
                       application_traffic_control_rule_set: test_traffic_control
                       gprs_gtp_profile: gtp1
                       icap_redirect: test_icap
-                      reverse_redirect_wx: 'True'
+                      reverse_redirect_wx: true
                       uac_policy:
                         enable: true
                     firewall_authentication:

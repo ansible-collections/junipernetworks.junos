@@ -63,7 +63,7 @@ class TestJunossecurity_policiesModule(TestJunosModule):
 
         self.mock_execute_show_command = patch(
             "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.security_policies.security_policies."
-            "security_policiesFacts.get_device_data"
+            "Security_policiesFacts.get_device_data"
         )
         self.execute_show_command = self.mock_execute_show_command.start()
 
