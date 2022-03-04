@@ -39,11 +39,11 @@ from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
 from .junos_module import TestJunosModule, load_fixture
 
 
-class TestJunossecurity_policiesModule(TestJunosModule):
+class TestJunosSecurity_policiesModule(TestJunosModule):
     module = junos_security_policies
 
     def setUp(self):
-        super(TestJunossecurity_policiesModule, self).setUp()
+        super(TestJunosSecurity_policiesModule, self).setUp()
 
         self.mock_lock_configuration = patch("ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration")
         self.lock_configuration = self.mock_lock_configuration.start()
@@ -62,13 +62,12 @@ class TestJunossecurity_policiesModule(TestJunosModule):
         self.mock_commit_configuration = self.mock_commit_configuration.start()
 
         self.mock_execute_show_command = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.security_policies.security_policies."
-            "Security_policiesFacts.get_device_data"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.security_policies.security_policies.Security_policiesFacts._get_device_data"
         )
         self.execute_show_command = self.mock_execute_show_command.start()
 
     def tearDown(self):
-        super(TestJunossecurity_policiesModule, self).tearDown()
+        super(TestJunosSecurity_policiesModule, self).tearDown()
         self.mock_load_config.stop()
         self.mock_lock_configuration.stop()
         self.mock_unlock_configuration.stop()
@@ -86,94 +85,98 @@ class TestJunossecurity_policiesModule(TestJunosModule):
         set_module_args(
             dict(
                 config={
-                    "from_zones": [{"name": "one"}],
-                    "to_zones": [
+                    "from_zones": [
                         {
-                            "name": "two",
-                            "policies": [
+                            "name": "one",
+                            "to_zones": [
                                 {
-                                    "match": {
-                                        "application": {"names": ["junos-dhcp-relay", "junos-finger"]},
-                                        "destination_address": {"addresses": ["a2", "a4"]},
-                                        "destination_address_excluded": True,
-                                        "dynamic_application": {"any": True},
-                                        "source_address": {"addresses": ["a1", "a3"]},
-                                        "source_address_excluded": True,
-                                        "source_end_user_profile": "test_end_user_profile",
-                                        "source_identity": {"unknown_user": True},
-                                        "url_category": {"names": ["Enhanced_Web_Chat", "Enhanced_Web_Collaboration"]},
-                                    },
-                                    "name": "test_policy_1",
-                                    "then": {"count": True, "deny": True, "log": "session-close"},
+                                    "name": "two",
+                                    "policies": [
+                                        {
+                                            "match": {
+                                                "application": {"names": ["junos-dhcp-relay", "junos-finger"]},
+                                                "destination_address": {"addresses": ["a2", "a4"]},
+                                                "destination_address_excluded": True,
+                                                "dynamic_application": {"any": True},
+                                                "source_address": {"addresses": ["a1", "a3"]},
+                                                "source_address_excluded": True,
+                                                "source_end_user_profile": "test_end_user_profile",
+                                                "source_identity": {"unknown_user": True},
+                                                "url_category": {"names": ["Enhanced_Web_Chat", "Enhanced_Web_Collaboration"]},
+                                            },
+                                            "name": "test_policy_1",
+                                            "then": {"count": True, "deny": True, "log": "session-close"},
+                                        },
+                                        {
+                                            "match": {
+                                                "application": {"names": ["junos-dhcp-relay"]},
+                                                "destination_address": {"addresses": ["a2"]},
+                                                "source_address": {"addresses": ["a1"]},
+                                            },
+                                            "name": "test_policy_2",
+                                            "then": {
+                                                "reject": {
+                                                    "enable": True,
+                                                    "profile": "test_dyn_app",
+                                                    "ssl_proxy": {"enable": True, "profile_name": "SECURITY-SSL-PROXY"},
+                                                }
+                                            },
+                                        },
+                                    ],
                                 },
                                 {
-                                    "match": {
-                                        "application": {"names": ["junos-dhcp-relay"]},
-                                        "destination_address": {"addresses": ["a2"]},
-                                        "source_address": {"addresses": ["a1"]},
-                                    },
-                                    "name": "test_policy_2",
-                                    "then": {
-                                        "reject": {
-                                            "enable": True,
-                                            "profile": "test_dyn_app",
-                                            "ssl_proxy": {"enable": True, "profile_name": "SECURITY-SSL-PROXY"},
+                                    "name": "three",
+                                    "policies": [
+                                        {
+                                            "match": {
+                                                "application": {"names": ["junos-dhcp-relay"]},
+                                                "destination_address": {"addresses": ["a2"]},
+                                                "source_address": {"addresses": ["a1"]},
+                                            },
+                                            "name": "test_policy_3",
+                                            "then": {
+                                                "permit": {
+                                                    "application_services": {
+                                                        "advanced_anti_malware_policy": "test_anti_malware",
+                                                        "application_traffic_control_rule_set": "test_traffic_control",
+                                                        "gprs_gtp_profile": "gtp1",
+                                                        "gprs_sctp_profile": "sctp1",
+                                                        "icap_redirect": "test_icap",
+                                                        "idp_policy": "test_idp",
+                                                        "reverse_redirect_wx": True,
+                                                        "ssl_proxy": {"enable": True, "profile_name": "SECURITY-SSL-PROXY"},
+                                                        "uac_policy": {"enable": True},
+                                                        "utm_policy": "test_utm",
+                                                    },
+                                                    "firewall_authentication": {
+                                                        "pass_through": {
+                                                            "access_profile": "WEBAUTH",
+                                                            "auth_only_browser": True,
+                                                            "auth_user_agent": "Opera1",
+                                                            "client_match": "test-client",
+                                                            "ssl_termination_profile": "test_ssl_term",
+                                                            "web_redirect": True,
+                                                            "web_redirect_to_https": True,
+                                                        },
+                                                        "push_to_identity_management": True,
+                                                        "user_firewall": {
+                                                            "access_profile": "WEBAUTH",
+                                                            "auth_only_browser": True,
+                                                            "auth_user_agent": "Opera1",
+                                                            "ssl_termination_profile": "test_ssl_term",
+                                                            "web_redirect": True,
+                                                            "web_redirect_to_https": True,
+                                                        },
+                                                        "web_authentication": ["FWClient1", "FWClient2"],
+                                                    },
+                                                    "tcp_options": {"initial_tcp_mss": 64, "reverse_tcp_mss": 64, "window_scale": True},
+                                                }
+                                            },
                                         }
-                                    },
+                                    ],
                                 },
                             ],
-                        },
-                        {
-                            "name": "three",
-                            "policies": [
-                                {
-                                    "match": {
-                                        "application": {"names": ["junos-dhcp-relay"]},
-                                        "destination_address": {"addresses": ["a2"]},
-                                        "source_address": {"addresses": ["a1"]},
-                                    },
-                                    "name": "test_policy_3",
-                                    "then": {
-                                        "permit": {
-                                            "application_services": {
-                                                "advanced_anti_malware_policy": "test_anti_malware",
-                                                "application_traffic_control_rule_set": "test_traffic_control",
-                                                "gprs_gtp_profile": "gtp1",
-                                                "gprs_sctp_profile": "sctp1",
-                                                "icap_redirect": "test_icap",
-                                                "idp_policy": "test_idp",
-                                                "reverse_redirect_wx": True,
-                                                "ssl_proxy": {"enable": True, "profile_name": "SECURITY-SSL-PROXY"},
-                                                "uac_policy": {"enable": True},
-                                                "utm_policy": "test_utm",
-                                            },
-                                            "firewall_authentication": {
-                                                "web_authentication": ["FWClient1", "FWClient2"],
-                                                "pass_through": {
-                                                    "access_profile": "WEBAUTH",
-                                                    "auth_only_browser": True,
-                                                    "auth_user_agent": "Opera1",
-                                                    "client_match": "test-client",
-                                                    "ssl_termination_profile": "test_ssl_term",
-                                                    "web_redirect": True,
-                                                    "web_redirect_to_https": True,
-                                                },
-                                                "user_firewall": {
-                                                    "access_profile": "WEBAUTH",
-                                                    "auth_only_browser": True,
-                                                    "auth_user_agent": "Opera1",
-                                                    "ssl_termination_profile": "test_ssl_term",
-                                                    "web_redirect": True,
-                                                    "web_redirect_to_https": True,
-                                                },
-                                                "push_to_identity_management": True,
-                                            },
-                                            "tcp_options": {"initial_tcp_mss": 64, "reverse_tcp_mss": 64, "window_scale": True},
-                                        }
-                                    },
-                                }
-                            ],
-                        },
+                        }
                     ],
                     "global": {
                         "policies": [
@@ -205,41 +208,49 @@ class TestJunossecurity_policiesModule(TestJunosModule):
         result = self.execute_module(changed=True)
 
         commands = (
-            '<nc:security xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:policies><nc:policy><nc:from-zone-name>one</nc:from-zone-name>'
-            "<nc:to-zone-name>two</nc:to-zone-name><nc:policy><nc:name>test_policy_1</nc:name><nc:match><nc:source-address>a1</nc:source-address>"
-            "<nc:source-address>a3</nc:source-address><nc:source-address-excluded/><nc:destination-address>a2</nc:destination-address>"
-            "<nc:destination-address>a4</nc:destination-address><nc:destination-address-excluded/><nc:application>junos-dhcp-relay</nc:application>"
-            "<nc:application>junos-finger</nc:application><nc:source-end-user-profile>test_end_user_profile</nc:source-end-user-profile>"
-            "<nc:source-identity>unknown-user</nc:source-identity><nc:url-category>Enhanced_Web_Chat</nc:url-category>"
-            "<nc:url-category>Enhanced_Web_Collaboration</nc:url-category><nc:dynamic-application>any</nc:dynamic-application></nc:match>"
-            "<nc:then><nc:deny/><nc:count> </nc:count><nc:log><nc:session-close/></nc:log></nc:then></nc:policy><nc:policy>"
-            "<nc:name>test_policy_2</nc:name><nc:match><nc:source-address>a1</nc:source-address><nc:destination-address>a2</nc:destination-address>"
-            "<nc:application>junos-dhcp-relay</nc:application></nc:match><nc:then><nc:reject> <nc:profile>test_dyn_app</nc:profile><nc:ssl-proxy>"
-            "<nc:profile-name>SECURITY-SSL-PROXY</nc:profile-name></nc:ssl-proxy></nc:reject></nc:then></nc:policy></nc:policy><nc:policy>"
-            "<nc:from-zone-name>one</nc:from-zone-name><nc:to-zone-name>three</nc:to-zone-name><nc:policy><nc:name>test_policy_3</nc:name><nc:match>"
+            '<nc:security xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
+            "<nc:policies><nc:policy><nc:from-zone-name>one</nc:from-zone-name>"
+            "<nc:to-zone-name>two</nc:to-zone-name><nc:policy><nc:name>test_policy_1</nc:name>"
+            "<nc:match><nc:source-address>a1</nc:source-address><nc:source-address>a3</nc:source-address>"
+            "<nc:source-address-excluded/><nc:destination-address>a2</nc:destination-address>"
+            "<nc:destination-address>a4</nc:destination-address><nc:destination-address-excluded/>"
+            "<nc:application>junos-dhcp-relay</nc:application><nc:application>junos-finger</nc:application>"
+            "<nc:source-end-user-profile>test_end_user_profile</nc:source-end-user-profile>"
+            "<nc:source-identity>unknown-user</nc:source-identity><nc:url-category>Enhanced_Web_Chat"
+            "</nc:url-category><nc:url-category>Enhanced_Web_Collaboration</nc:url-category><nc:dynamic-application>"
+            "any</nc:dynamic-application></nc:match><nc:then><nc:deny/><nc:count> </nc:count><nc:log>"
+            "<nc:session-close/></nc:log></nc:then></nc:policy><nc:policy><nc:name>test_policy_2</nc:name>"
+            "<nc:match><nc:source-address>a1</nc:source-address><nc:destination-address>a2</nc:destination-address>"
+            "<nc:application>junos-dhcp-relay</nc:application></nc:match><nc:then><nc:reject> <nc:profile>test_dyn_app"
+            "</nc:profile><nc:ssl-proxy> <nc:profile-name>SECURITY-SSL-PROXY</nc:profile-name></nc:ssl-proxy>"
+            "</nc:reject></nc:then></nc:policy></nc:policy><nc:policy><nc:from-zone-name>one</nc:from-zone-name>"
+            "<nc:to-zone-name>three</nc:to-zone-name><nc:policy><nc:name>test_policy_3</nc:name><nc:match>"
             "<nc:source-address>a1</nc:source-address><nc:destination-address>a2</nc:destination-address>"
             "<nc:application>junos-dhcp-relay</nc:application></nc:match><nc:then><nc:permit><nc:application-services>"
-            "<nc:advanced-anti-malware-policy>test_anti_malware</nc:advanced-anti-malware-policy><nc:application-traffic-control>"
-            "<nc:rule-set>test_traffic_control</nc:rule-set></nc:application-traffic-control><nc:gprs-gtp-profile>gtp1</nc:gprs-gtp-profile>"
-            "<nc:gprs-sctp-profile>sctp1</nc:gprs-sctp-profile><nc:icap-redirect>test_icap</nc:icap-redirect><nc:idp-policy>test_idp</nc:idp-policy>"
-            "<nc:reverse-redirect-wx/><nc:ssl-proxy><nc:profile-name>SECURITY-SSL-PROXY</nc:profile-name></nc:ssl-proxy><nc:uac-policy> </nc:uac-policy>"
-            "<nc:utm-policy>test_utm</nc:utm-policy></nc:application-services><nc:firewall-authentication><nc:pass-through>"
-            "<nc:access-profile>WEBAUTH</nc:access-profile><nc:auth-only-browser> </nc:auth-only-browser>"
-            "<nc:auth-user-agent>Opera1</nc:auth-user-agent><nc:client-match>test-client</nc:client-match>"
-            "<nc:ssl-termination-profile>test_ssl_term</nc:ssl-termination-profile><nc:web-redirect/><nc:web-redirect-to-https/>"
-            "<nc:auth-user-agent>Opera1</nc:auth-user-agent></nc:pass-through><nc:push-to-identity-management/><nc:user-firewall>"
-            "<nc:access-profile>WEBAUTH</nc:access-profile><nc:ssl-termination-profile>test_ssl_term</nc:ssl-termination-profile><nc:web-redirect>"
-            "</nc:web-redirect><nc:web-redirect-to-https> </nc:web-redirect-to-https></nc:user-firewall><nc:web-authentication>"
-            "<nc:client-match>FWClient1</nc:client-match><nc:client-match>FWClient2</nc:client-match></nc:web-authentication>"
+            "<nc:advanced-anti-malware-policy>test_anti_malware</nc:advanced-anti-malware-policy>"
+            "<nc:application-traffic-control><nc:rule-set>test_traffic_control</nc:rule-set>"
+            "</nc:application-traffic-control><nc:gprs-gtp-profile>gtp1</nc:gprs-gtp-profile><nc:gprs-sctp-profile>"
+            "sctp1</nc:gprs-sctp-profile><nc:icap-redirect>test_icap</nc:icap-redirect><nc:idp-policy>test_idp"
+            "</nc:idp-policy><nc:reverse-redirect-wx/><nc:ssl-proxy> <nc:profile-name>SECURITY-SSL-PROXY"
+            "</nc:profile-name></nc:ssl-proxy><nc:uac-policy> </nc:uac-policy><nc:utm-policy>test_utm"
+            "</nc:utm-policy></nc:application-services><nc:firewall-authentication><nc:pass-through> <nc:access-profile>"
+            "WEBAUTH</nc:access-profile><nc:auth-only-browser> </nc:auth-only-browser><nc:auth-user-agent>Opera1"
+            "</nc:auth-user-agent><nc:client-match>test-client</nc:client-match><nc:ssl-termination-profile>"
+            "test_ssl_term</nc:ssl-termination-profile><nc:web-redirect/><nc:web-redirect-to-https/>"
+            "<nc:auth-user-agent>Opera1</nc:auth-user-agent></nc:pass-through><nc:push-to-identity-management/>"
+            "<nc:user-firewall> <nc:access-profile>WEBAUTH</nc:access-profile><nc:ssl-termination-profile>"
+            "test_ssl_term</nc:ssl-termination-profile><nc:web-redirect> </nc:web-redirect><nc:web-redirect-to-https>"
+            " </nc:web-redirect-to-https></nc:user-firewall><nc:web-authentication> <nc:client-match>FWClient1"
+            "</nc:client-match><nc:client-match>FWClient2</nc:client-match></nc:web-authentication>"
             "</nc:firewall-authentication><nc:tcp-options> <nc:initial-tcp-mss>64</nc:initial-tcp-mss>"
-            "<nc:reverse-tcp-mss>64</nc:reverse-tcp-mss><nc:window-scale/></nc:tcp-options></nc:permit></nc:then></nc:policy>"
-            "</nc:policy><nc:global><nc:policy><nc:name>test_glob_1</nc:name><nc:match><nc:source-address>a1</nc:source-address>"
-            "<nc:destination-address>a2</nc:destination-address><nc:application>junos-dhcp-relay</nc:application></nc:match>"
-            "<nc:then><nc:deny/></nc:then></nc:policy><nc:policy><nc:name>test_glob_2</nc:name><nc:match><nc:source-address>a1</nc:source-address>"
-            "<nc:destination-address>a2</nc:destination-address><nc:application>junos-dhcp-relay</nc:application></nc:match><nc:then><nc:deny/>"
-            "</nc:then></nc:policy></nc:global></nc:policies></nc:security>"
+            "<nc:reverse-tcp-mss>64</nc:reverse-tcp-mss><nc:window-scale/></nc:tcp-options></nc:permit>"
+            "</nc:then></nc:policy></nc:policy><nc:global><nc:policy><nc:name>test_glob_1</nc:name><nc:match>"
+            "<nc:source-address>a1</nc:source-address><nc:destination-address>a2</nc:destination-address>"
+            "<nc:application>junos-dhcp-relay</nc:application></nc:match><nc:then><nc:deny/></nc:then></nc:policy>"
+            "<nc:policy><nc:name>test_glob_2</nc:name><nc:match><nc:source-address>a1</nc:source-address>"
+            "<nc:destination-address>a2</nc:destination-address><nc:application>junos-dhcp-relay</nc:application>"
+            "</nc:match><nc:then><nc:deny/></nc:then></nc:policy></nc:global></nc:policies></nc:security>"
         )
-
         self.assertIn(
             commands,
             str(result["commands"]),
@@ -248,152 +259,150 @@ class TestJunossecurity_policiesModule(TestJunosModule):
     def test_junos_security_policies_parsed_01(self):
         parsed_str = """
             <rpc-reply>
-                <data>
-                    <configuration>
-                        <security>
-                            <policies>
+                <configuration>
+                    <security>
+                        <policies>
+                            <policy>
+                                <from-zone-name>one</from-zone-name>
+                                <to-zone-name>two</to-zone-name>
                                 <policy>
-                                    <from-zone-name>one</from-zone-name>
-                                    <to-zone-name>two</to-zone-name>
-                                    <policy>
-                                        <name>test_policy_1</name>
-                                        <match>
-                                            <source-address>a1</source-address>
-                                            <source-address>a3</source-address>
-                                            <destination-address>a2</destination-address>
-                                            <destination-address>a4</destination-address>
-                                            <source-address-excluded />
-                                            <destination-address-excluded />
-                                            <application>junos-dhcp-relay</application>
-                                            <application>junos-finger</application>
-                                            <source-identity>authenticated-user</source-identity>
-                                            <source-identity>unknown-user</source-identity>
-                                            <source-end-user-profile>
-                                                <source-end-user-profile-name>test_end_user_profile</source-end-user-profile-name>
-                                            </source-end-user-profile>
-                                            <dynamic-application>any</dynamic-application>
-                                            <url-category>Enhanced_Web_Chat</url-category>
-                                            <url-category>Enhanced_Web_Collaboration</url-category>
-                                        </match>
-                                        <then>
-                                            <deny />
-                                            <log>
-                                                <session-close />
-                                            </log>
-                                            <count></count>
-                                        </then>
-                                    </policy>
-                                    <policy>
-                                        <name>test_policy_2</name>
-                                        <match>
-                                            <source-address>a1</source-address>
-                                            <destination-address>a2</destination-address>
-                                            <application>junos-dhcp-relay</application>
-                                        </match>
-                                        <then>
-                                            <reject>
-                                                <profile>test_dyn_app</profile>
+                                    <name>test_policy_1</name>
+                                    <match>
+                                        <source-address>a1</source-address>
+                                        <source-address>a3</source-address>
+                                        <destination-address>a2</destination-address>
+                                        <destination-address>a4</destination-address>
+                                        <source-address-excluded />
+                                        <destination-address-excluded />
+                                        <application>junos-dhcp-relay</application>
+                                        <application>junos-finger</application>
+                                        <source-identity>authenticated-user</source-identity>
+                                        <source-identity>unknown-user</source-identity>
+                                        <source-end-user-profile>
+                                            <source-end-user-profile-name>test_end_user_profile</source-end-user-profile-name>
+                                        </source-end-user-profile>
+                                        <dynamic-application>any</dynamic-application>
+                                        <url-category>Enhanced_Web_Chat</url-category>
+                                        <url-category>Enhanced_Web_Collaboration</url-category>
+                                    </match>
+                                    <then>
+                                        <deny />
+                                        <log>
+                                            <session-close />
+                                        </log>
+                                        <count></count>
+                                    </then>
+                                </policy>
+                                <policy>
+                                    <name>test_policy_2</name>
+                                    <match>
+                                        <source-address>a1</source-address>
+                                        <destination-address>a2</destination-address>
+                                        <application>junos-dhcp-relay</application>
+                                    </match>
+                                    <then>
+                                        <reject>
+                                            <profile>test_dyn_app</profile>
+                                            <ssl-proxy>
+                                                <profile-name>SECURITY-SSL-PROXY</profile-name>
+                                            </ssl-proxy>
+                                        </reject>
+                                    </then>
+                                </policy>
+                            </policy>
+                            <policy>
+                                <from-zone-name>one</from-zone-name>
+                                <to-zone-name>three</to-zone-name>
+                                <policy>
+                                    <name>test_policy_3</name>
+                                    <match>
+                                        <source-address>a1</source-address>
+                                        <destination-address>a2</destination-address>
+                                        <application>junos-dhcp-relay</application>
+                                    </match>
+                                    <then>
+                                        <permit>
+                                            <firewall-authentication>
+                                                <web-authentication>
+                                                    <client-match>FWClient1</client-match>
+                                                    <client-match>FWClient2</client-match>
+                                                </web-authentication>
+                                                <pass-through>
+                                                    <access-profile>WEBAUTH</access-profile>
+                                                    <auth-only-browser />
+                                                    <auth-user-agent>Opera1</auth-user-agent>
+                                                    <client-match>test-client</client-match>
+                                                    <ssl-termination-profile>test_ssl_term</ssl-termination-profile>
+                                                    <web-redirect />
+                                                    <web-redirect-to-https />
+                                                </pass-through>
+                                                <user-firewall>
+                                                    <access-profile>WEBAUTH</access-profile>
+                                                    <auth-only-browser />
+                                                    <auth-user-agent>Opera1</auth-user-agent>
+                                                    <client-match>test-client</client-match>
+                                                    <ssl-termination-profile>test_ssl_term</ssl-termination-profile>
+                                                    <web-redirect />
+                                                    <web-redirect-to-https />
+                                                </user-firewall>
+                                                <push-to-identity-management />
+                                            </firewall-authentication>
+                                            <destination-address>
+                                                <drop-untranslated />
+                                            </destination-address>
+                                            <application-services>
+                                                <gprs-gtp-profile>gtp1</gprs-gtp-profile>
+                                                <gprs-sctp-profile>sctp1</gprs-sctp-profile>
+                                                <idp-policy>test_idp</idp-policy>
                                                 <ssl-proxy>
                                                     <profile-name>SECURITY-SSL-PROXY</profile-name>
                                                 </ssl-proxy>
-                                            </reject>
-                                        </then>
-                                    </policy>
+                                                <uac-policy></uac-policy>
+                                                <utm-policy>test_utm</utm-policy>
+                                                <icap-redirect>test_icap</icap-redirect>
+                                                <application-traffic-control>
+                                                    <rule-set>test_traffic_control</rule-set>
+                                                </application-traffic-control>
+                                                <reverse-redirect-wx />
+                                                <advanced-anti-malware-policy>test_anti_malware</advanced-anti-malware-policy>
+                                            </application-services>
+                                            <tcp-options>
+                                                <initial-tcp-mss>64</initial-tcp-mss>
+                                                <reverse-tcp-mss>64</reverse-tcp-mss>
+                                                <window-scale />
+                                            </tcp-options>
+                                        </permit>
+                                    </then>
+                                </policy>
+                            </policy>
+                            <global>
+                                <policy>
+                                    <name>test_glob_1</name>
+                                    <match>
+                                        <source-address>a1</source-address>
+                                        <destination-address>a2</destination-address>
+                                        <application>junos-dhcp-relay</application>
+                                    </match>
+                                    <then>
+                                        <deny />
+                                    </then>
                                 </policy>
                                 <policy>
-                                    <from-zone-name>one</from-zone-name>
-                                    <to-zone-name>three</to-zone-name>
-                                    <policy>
-                                        <name>test_policy_3</name>
-                                        <match>
-                                            <source-address>a1</source-address>
-                                            <destination-address>a2</destination-address>
-                                            <application>junos-dhcp-relay</application>
-                                        </match>
-                                        <then>
-                                            <permit>
-                                                <firewall-authentication>
-                                                    <web-authentication>
-                                                        <client-match>FWClient1</client-match>
-                                                        <client-match>FWClient2</client-match>
-                                                    </web-authentication>
-                                                    <pass-through>
-                                                        <access-profile>WEBAUTH</access-profile>
-                                                        <auth-only-browser />
-                                                        <auth-user-agent>Opera1</auth-user-agent>
-                                                        <client-match>test-client</client-match>
-                                                        <ssl-termination-profile>test_ssl_term</ssl-termination-profile>
-                                                        <web-redirect />
-                                                        <web-redirect-to-https />
-                                                    </pass-through>
-                                                    <user-firewall>
-                                                        <access-profile>WEBAUTH</access-profile>
-                                                        <auth-only-browser />
-                                                        <auth-user-agent>Opera1</auth-user-agent>
-                                                        <client-match>test-client</client-match>
-                                                        <ssl-termination-profile>test_ssl_term</ssl-termination-profile>
-                                                        <web-redirect />
-                                                        <web-redirect-to-https />
-                                                    </user-firewall>
-                                                    <push-to-identity-management />
-                                                </firewall-authentication>
-                                                <destination-address>
-                                                    <drop-untranslated />
-                                                </destination-address>
-                                                <application-services>
-                                                    <gprs-gtp-profile>gtp1</gprs-gtp-profile>
-                                                    <gprs-sctp-profile>sctp1</gprs-sctp-profile>
-                                                    <idp-policy>test_idp</idp-policy>
-                                                    <ssl-proxy>
-                                                        <profile-name>SECURITY-SSL-PROXY</profile-name>
-                                                    </ssl-proxy>
-                                                    <uac-policy></uac-policy>
-                                                    <utm-policy>test_utm</utm-policy>
-                                                    <icap-redirect>test_icap</icap-redirect>
-                                                    <application-traffic-control>
-                                                        <rule-set>test_traffic_control</rule-set>
-                                                    </application-traffic-control>
-                                                    <reverse-redirect-wx />
-                                                    <advanced-anti-malware-policy>test_anti_malware</advanced-anti-malware-policy>
-                                                </application-services>
-                                                <tcp-options>
-                                                    <initial-tcp-mss>64</initial-tcp-mss>
-                                                    <reverse-tcp-mss>64</reverse-tcp-mss>
-                                                    <window-scale />
-                                                </tcp-options>
-                                            </permit>
-                                        </then>
-                                    </policy>
+                                    <name>test_glob_2</name>
+                                    <match>
+                                        <source-address>a1</source-address>
+                                        <destination-address>a2</destination-address>
+                                        <application>junos-dhcp-relay</application>
+                                    </match>
+                                    <then>
+                                        <deny />
+                                    </then>
                                 </policy>
-                                <global>
-                                    <policy>
-                                        <name>test_glob_1</name>
-                                        <match>
-                                            <source-address>a1</source-address>
-                                            <destination-address>a2</destination-address>
-                                            <application>junos-dhcp-relay</application>
-                                        </match>
-                                        <then>
-                                            <deny />
-                                        </then>
-                                    </policy>
-                                    <policy>
-                                        <name>test_glob_2</name>
-                                        <match>
-                                            <source-address>a1</source-address>
-                                            <destination-address>a2</destination-address>
-                                            <application>junos-dhcp-relay</application>
-                                        </match>
-                                        <then>
-                                            <deny />
-                                        </then>
-                                    </policy>
-                                </global>
-                            </policies>
-                        </security>
-                    </configuration>
-                    <database-status-information></database-status-information>
-                </data>
+                            </global>
+                        </policies>
+                    </security>
+                </configuration>
+                <database-status-information></database-status-information>
             </rpc-reply>
         """
         set_module_args(dict(running_config=parsed_str, state="parsed"))
@@ -554,21 +563,125 @@ class TestJunossecurity_policiesModule(TestJunosModule):
         set_module_args(dict(state="gathered"))
         result = self.execute_module(changed=False)
         gather_list = {
+            "from_zones": [
+                {
+                    "name": "one",
+                    "to_zones": [
+                        {
+                            "name": "two",
+                            "policies": [
+                                {
+                                    "match": {
+                                        "application": {"names": ["junos-dhcp-relay", "junos-finger"]},
+                                        "destination_address": {"addresses": ["a2", "a4"]},
+                                        "destination_address_excluded": True,
+                                        "dynamic_application": {"any": True},
+                                        "source_address": {"addresses": ["a1", "a3"]},
+                                        "source_address_excluded": True,
+                                        "source_end_user_profile": "test_end_user_profile",
+                                        "source_identity": {"unknown_user": True},
+                                        "url_category": {"names": ["Enhanced_Web_Chat", "Enhanced_Web_Collaboration"]},
+                                    },
+                                    "name": "test_policy_1",
+                                    "then": {"count": True, "deny": True, "log": "session-close"},
+                                },
+                                {
+                                    "match": {
+                                        "application": {"names": ["junos-dhcp-relay"]},
+                                        "destination_address": {"addresses": ["a2"]},
+                                        "source_address": {"addresses": ["a1"]},
+                                    },
+                                    "name": "test_policy_2",
+                                    "then": {
+                                        "reject": {
+                                            "enable": True,
+                                            "profile": "test_dyn_app",
+                                            "ssl_proxy": {"enable": True, "profile_name": "SECURITY-SSL-PROXY"},
+                                        }
+                                    },
+                                },
+                            ],
+                        },
+                        {
+                            "name": "three",
+                            "policies": [
+                                {
+                                    "match": {
+                                        "application": {"names": ["junos-dhcp-relay"]},
+                                        "destination_address": {"addresses": ["a2"]},
+                                        "source_address": {"addresses": ["a1"]},
+                                    },
+                                    "name": "test_policy_3",
+                                    "then": {
+                                        "permit": {
+                                            "application_services": {
+                                                "advanced_anti_malware_policy": "test_anti_malware",
+                                                "application_traffic_control_rule_set": "test_traffic_control",
+                                                "gprs_gtp_profile": "gtp1",
+                                                "gprs_sctp_profile": "sctp1",
+                                                "icap_redirect": "test_icap",
+                                                "idp_policy": "test_idp",
+                                                "reverse_redirect_wx": True,
+                                                "ssl_proxy": {"enable": True, "profile_name": "SECURITY-SSL-PROXY"},
+                                                "uac_policy": {"enable": True},
+                                                "utm_policy": "test_utm",
+                                            },
+                                            "firewall_authentication": {
+                                                "pass_through": {
+                                                    "access_profile": "WEBAUTH",
+                                                    "auth_only_browser": True,
+                                                    "auth_user_agent": "Opera1",
+                                                    "client_match": "test-client",
+                                                    "ssl_termination_profile": "test_ssl_term",
+                                                    "web_redirect": True,
+                                                    "web_redirect_to_https": True,
+                                                },
+                                                "push_to_identity_management": True,
+                                                "user_firewall": {
+                                                    "access_profile": "WEBAUTH",
+                                                    "auth_only_browser": True,
+                                                    "auth_user_agent": "Opera1",
+                                                    "ssl_termination_profile": "test_ssl_term",
+                                                    "web_redirect": True,
+                                                    "web_redirect_to_https": True,
+                                                },
+                                                "web_authentication": ["FWClient1", "FWClient2"],
+                                            },
+                                            "tcp_options": {"initial_tcp_mss": 64, "reverse_tcp_mss": 64, "window_scale": True},
+                                        }
+                                    },
+                                }
+                            ],
+                        },
+                    ],
+                }
+            ],
             "global": {
                 "policies": [
                     {
-                        "description": "test update",
-                        "match": {"application": {"any": True}, "destination_address": {"any_ipv6": True}, "source_address": {"any": True}},
-                        "name": "test_glob_3",
+                        "match": {
+                            "application": {"names": ["junos-dhcp-relay"]},
+                            "destination_address": {"addresses": ["a2"]},
+                            "source_address": {"addresses": ["a1"]},
+                        },
+                        "name": "test_glob_1",
                         "then": {"deny": True},
-                    }
+                    },
+                    {
+                        "match": {
+                            "application": {"names": ["junos-dhcp-relay"]},
+                            "destination_address": {"addresses": ["a2"]},
+                            "source_address": {"addresses": ["a1"]},
+                        },
+                        "name": "test_glob_2",
+                        "then": {"deny": True},
+                    },
                 ]
-            }
+            },
         }
         self.assertEqual(sorted(gather_list), sorted(result["gathered"]))
 
     def test_junos_security_policies_rendered(self):
-
         set_module_args(
             dict(
                 config={
@@ -583,17 +696,18 @@ class TestJunossecurity_policiesModule(TestJunosModule):
                         ]
                     }
                 },
-                state="overridden",
+                state="rendered",
             )
         )
         rendered = (
-            '<nc:security xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:policies delete="delete"/><nc:policies><nc:global><nc:policy>'
-            "<nc:name>test_glob_3</nc:name><nc:description>test update</nc:description><nc:match><nc:source-address>any</nc:source-address>"
-            "<nc:destination-address>any-ipv6</nc:destination-address><nc:application>any</nc:application></nc:match><nc:then><nc:deny/>"
-            "</nc:then></nc:policy></nc:global></nc:policies></nc:security>"
+            '<nc:security xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:policies><nc:global>'
+            "<nc:policy><nc:name>test_glob_3</nc:name><nc:description>test update</nc:description><nc:match>"
+            "<nc:source-address>any</nc:source-address><nc:destination-address>any-ipv6</nc:destination-address>"
+            "<nc:application>any</nc:application></nc:match><nc:then><nc:deny/></nc:then></nc:policy></nc:global>"
+            "</nc:policies></nc:security>"
         )
         result = self.execute_module(changed=False)
-        self.assertEqual(sorted(result["rendered"]), rendered)
+        self.assertEqual(sorted(result["rendered"]), sorted(rendered))
 
     def test_junos_security_policies_replaced_01(self):
         set_module_args(
