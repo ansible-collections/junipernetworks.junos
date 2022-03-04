@@ -21,7 +21,6 @@
 #   builder template.
 #
 #############################################
-
 """
 The module file for junos_acl_interfaces
 """
