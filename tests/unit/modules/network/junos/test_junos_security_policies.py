@@ -43,10 +43,14 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
     def setUp(self):
         super(TestJunosSecurity_policiesModule, self).setUp()
 
-        self.mock_lock_configuration = patch("ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration")
+        self.mock_lock_configuration = patch(
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration"
+        )
         self.lock_configuration = self.mock_lock_configuration.start()
 
-        self.mock_unlock_configuration = patch("ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration")
+        self.mock_unlock_configuration = patch(
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration"
+        )
         self.unlock_configuration = self.mock_unlock_configuration.start()
 
         self.mock_load_config = patch(
@@ -73,7 +77,9 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
         self.mock_commit_configuration.stop()
         self.mock_execute_show_command.stop()
 
-    def load_fixtures(self, commands=None, format="text", changed=False, filename=None):
+    def load_fixtures(
+        self, commands=None, format="text", changed=False, filename=None
+    ):
         def load_from_file(*args, **kwargs):
             output = load_fixture("junos_security_policies_config.cfg")
             return output
@@ -99,13 +105,21 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                                         "junos-finger",
                                                     ]
                                                 },
-                                                "destination_address": {"addresses": ["a2", "a4"]},
+                                                "destination_address": {
+                                                    "addresses": ["a2", "a4"]
+                                                },
                                                 "destination_address_excluded": True,
-                                                "dynamic_application": {"any": True},
-                                                "source_address": {"addresses": ["a1", "a3"]},
+                                                "dynamic_application": {
+                                                    "any": True
+                                                },
+                                                "source_address": {
+                                                    "addresses": ["a1", "a3"]
+                                                },
                                                 "source_address_excluded": True,
                                                 "source_end_user_profile": "test_end_user_profile",
-                                                "source_identity": {"unknown_user": True},
+                                                "source_identity": {
+                                                    "unknown_user": True
+                                                },
                                                 "url_category": {
                                                     "names": [
                                                         "Enhanced_Web_Chat",
@@ -122,9 +136,17 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                         },
                                         {
                                             "match": {
-                                                "application": {"names": ["junos-dhcp-relay"]},
-                                                "destination_address": {"addresses": ["a2"]},
-                                                "source_address": {"addresses": ["a1"]},
+                                                "application": {
+                                                    "names": [
+                                                        "junos-dhcp-relay"
+                                                    ]
+                                                },
+                                                "destination_address": {
+                                                    "addresses": ["a2"]
+                                                },
+                                                "source_address": {
+                                                    "addresses": ["a1"]
+                                                },
                                             },
                                             "name": "test_policy_2",
                                             "then": {
@@ -145,9 +167,17 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                     "policies": [
                                         {
                                             "match": {
-                                                "application": {"names": ["junos-dhcp-relay"]},
-                                                "destination_address": {"addresses": ["a2"]},
-                                                "source_address": {"addresses": ["a1"]},
+                                                "application": {
+                                                    "names": [
+                                                        "junos-dhcp-relay"
+                                                    ]
+                                                },
+                                                "destination_address": {
+                                                    "addresses": ["a2"]
+                                                },
+                                                "source_address": {
+                                                    "addresses": ["a1"]
+                                                },
                                             },
                                             "name": "test_policy_3",
                                             "then": {
@@ -165,7 +195,9 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                                             "enable": True,
                                                             "profile_name": "SECURITY-SSL-PROXY",
                                                         },
-                                                        "uac_policy": {"enable": True},
+                                                        "uac_policy": {
+                                                            "enable": True
+                                                        },
                                                         "utm_policy": "test_utm",
                                                     },
                                                     "firewall_authentication": {
@@ -209,8 +241,12 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                         "policies": [
                             {
                                 "match": {
-                                    "application": {"names": ["junos-dhcp-relay"]},
-                                    "destination_address": {"addresses": ["a2"]},
+                                    "application": {
+                                        "names": ["junos-dhcp-relay"]
+                                    },
+                                    "destination_address": {
+                                        "addresses": ["a2"]
+                                    },
                                     "source_address": {"addresses": ["a1"]},
                                 },
                                 "name": "test_glob_1",
@@ -218,8 +254,12 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                             },
                             {
                                 "match": {
-                                    "application": {"names": ["junos-dhcp-relay"]},
-                                    "destination_address": {"addresses": ["a2"]},
+                                    "application": {
+                                        "names": ["junos-dhcp-relay"]
+                                    },
+                                    "destination_address": {
+                                        "addresses": ["a2"]
+                                    },
                                     "source_address": {"addresses": ["a1"]},
                                 },
                                 "name": "test_glob_2",
@@ -298,19 +338,40 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                         {
                                             "match": {
                                                 "application": {"any": True},
-                                                "destination_address": {"any_ipv4": True, "any_ipv6": True, "any": True},
-                                                "dynamic_application": {"names": ["test1", "test2"], "none": True},
-                                                "source_address": {"any_ipv4": True, "any_ipv6": True, "any": True},
+                                                "destination_address": {
+                                                    "any_ipv4": True,
+                                                    "any_ipv6": True,
+                                                    "any": True,
+                                                },
+                                                "dynamic_application": {
+                                                    "names": [
+                                                        "test1",
+                                                        "test2",
+                                                    ],
+                                                    "none": True,
+                                                },
+                                                "source_address": {
+                                                    "any_ipv4": True,
+                                                    "any_ipv6": True,
+                                                    "any": True,
+                                                },
                                                 "source_identity": {
                                                     "unknown_user": True,
                                                     "unauthenticated_user": True,
                                                     "authenticated_user": True,
                                                     "names": ["test1"],
                                                 },
-                                                "url_category": {"any": True, "none": True},
+                                                "url_category": {
+                                                    "any": True,
+                                                    "none": True,
+                                                },
                                             },
                                             "name": "test_policy_1",
-                                            "then": {"count": True, "deny": True, "log": "session-init"},
+                                            "then": {
+                                                "count": True,
+                                                "deny": True,
+                                                "log": "session-init",
+                                            },
                                         }
                                     ],
                                 },
@@ -319,17 +380,38 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                     "policies": [
                                         {
                                             "match": {
-                                                "application": {"names": ["junos-dhcp-relay"]},
-                                                "destination_address": {"any": True},
-                                                "source_address": {"any": True},
+                                                "application": {
+                                                    "names": [
+                                                        "junos-dhcp-relay"
+                                                    ]
+                                                },
+                                                "destination_address": {
+                                                    "any": True
+                                                },
+                                                "source_address": {
+                                                    "any": True
+                                                },
                                             },
                                             "name": "test_policy_3",
                                             "then": {
                                                 "permit": {
-                                                    "application_services": {"idp": True, "redirect_wx": True, "uac_policy": {"captive_portal": "test"}},
-                                                    "firewall_authentication": {"user_firewall": {"domain": "test"}},
+                                                    "application_services": {
+                                                        "idp": True,
+                                                        "redirect_wx": True,
+                                                        "uac_policy": {
+                                                            "captive_portal": "test"
+                                                        },
+                                                    },
+                                                    "firewall_authentication": {
+                                                        "user_firewall": {
+                                                            "domain": "test"
+                                                        }
+                                                    },
                                                     "destination_address": "drop-untranslated",
-                                                    "tunnel": {"ipsec_vpn": "test_vpn", "pair_policy": "test_policy"},
+                                                    "tunnel": {
+                                                        "ipsec_vpn": "test_vpn",
+                                                        "pair_policy": "test_policy",
+                                                    },
                                                 }
                                             },
                                         }
@@ -539,13 +621,19 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                                 "junos-finger",
                                             ]
                                         },
-                                        "destination_address": {"addresses": ["a2", "a4"]},
+                                        "destination_address": {
+                                            "addresses": ["a2", "a4"]
+                                        },
                                         "destination_address_excluded": True,
                                         "dynamic_application": {"any": True},
-                                        "source_address": {"addresses": ["a1", "a3"]},
+                                        "source_address": {
+                                            "addresses": ["a1", "a3"]
+                                        },
                                         "source_address_excluded": True,
                                         "source_end_user_profile": "test_end_user_profile",
-                                        "source_identity": {"unknown_user": True},
+                                        "source_identity": {
+                                            "unknown_user": True
+                                        },
                                         "url_category": {
                                             "names": [
                                                 "Enhanced_Web_Chat",
@@ -562,9 +650,15 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                 },
                                 {
                                     "match": {
-                                        "application": {"names": ["junos-dhcp-relay"]},
-                                        "destination_address": {"addresses": ["a2"]},
-                                        "source_address": {"addresses": ["a1"]},
+                                        "application": {
+                                            "names": ["junos-dhcp-relay"]
+                                        },
+                                        "destination_address": {
+                                            "addresses": ["a2"]
+                                        },
+                                        "source_address": {
+                                            "addresses": ["a1"]
+                                        },
                                     },
                                     "name": "test_policy_2",
                                     "then": {
@@ -585,9 +679,15 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                             "policies": [
                                 {
                                     "match": {
-                                        "application": {"names": ["junos-dhcp-relay"]},
-                                        "destination_address": {"addresses": ["a2"]},
-                                        "source_address": {"addresses": ["a1"]},
+                                        "application": {
+                                            "names": ["junos-dhcp-relay"]
+                                        },
+                                        "destination_address": {
+                                            "addresses": ["a2"]
+                                        },
+                                        "source_address": {
+                                            "addresses": ["a1"]
+                                        },
                                     },
                                     "name": "test_policy_3",
                                     "then": {
@@ -722,13 +822,19 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                                 "junos-finger",
                                             ]
                                         },
-                                        "destination_address": {"addresses": ["a2", "a4"]},
+                                        "destination_address": {
+                                            "addresses": ["a2", "a4"]
+                                        },
                                         "destination_address_excluded": True,
                                         "dynamic_application": {"any": True},
-                                        "source_address": {"addresses": ["a1", "a3"]},
+                                        "source_address": {
+                                            "addresses": ["a1", "a3"]
+                                        },
                                         "source_address_excluded": True,
                                         "source_end_user_profile": "test_end_user_profile",
-                                        "source_identity": {"unknown_user": True},
+                                        "source_identity": {
+                                            "unknown_user": True
+                                        },
                                         "url_category": {
                                             "names": [
                                                 "Enhanced_Web_Chat",
@@ -745,9 +851,15 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                 },
                                 {
                                     "match": {
-                                        "application": {"names": ["junos-dhcp-relay"]},
-                                        "destination_address": {"addresses": ["a2"]},
-                                        "source_address": {"addresses": ["a1"]},
+                                        "application": {
+                                            "names": ["junos-dhcp-relay"]
+                                        },
+                                        "destination_address": {
+                                            "addresses": ["a2"]
+                                        },
+                                        "source_address": {
+                                            "addresses": ["a1"]
+                                        },
                                     },
                                     "name": "test_policy_2",
                                     "then": {
@@ -768,9 +880,15 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                             "policies": [
                                 {
                                     "match": {
-                                        "application": {"names": ["junos-dhcp-relay"]},
-                                        "destination_address": {"addresses": ["a2"]},
-                                        "source_address": {"addresses": ["a1"]},
+                                        "application": {
+                                            "names": ["junos-dhcp-relay"]
+                                        },
+                                        "destination_address": {
+                                            "addresses": ["a2"]
+                                        },
+                                        "source_address": {
+                                            "addresses": ["a1"]
+                                        },
                                     },
                                     "name": "test_policy_3",
                                     "then": {
