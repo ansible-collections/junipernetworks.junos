@@ -86,6 +86,25 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
 
         self.execute_show_command.side_effect = load_from_file
 
+    def sorted_xml(self, xml_string):
+        temp = []
+        index = 0
+        while index < len(xml_string):
+            temp_line = ""
+            if xml_string[index] == "<":
+                while index < len(xml_string) and xml_string[index] != ">":
+                    temp_line += xml_string[index]
+                    index += 1
+                temp_line += ">"
+                index += 1
+                temp.append(temp_line)
+            else:
+                while index < len(xml_string) and xml_string[index] != "<":
+                    temp_line += xml_string[index]
+                    index += 1
+                temp.append(temp_line)
+        return sorted(temp)
+
     def test_junos_security_policies_merged_01(self):
         set_module_args(
             dict(
@@ -321,7 +340,9 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
             "a2</nc:destination-address><nc:application>junos-dhcp-relay</nc:application></nc:match><nc:then>"
             "<nc:deny/></nc:then></nc:policy></nc:global></nc:policies></nc:security>"
         )
-        self.assertIn(commands, str(result["commands"]))
+        self.assertIn(
+            self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
+        )
 
     def test_junos_security_policies_merged_02(self):
 
@@ -452,7 +473,9 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
             "<nc:pair-policy/></nc:tunnel></nc:permit></nc:then></nc:policy></nc:policy></nc:policies>"
             "</nc:security>"
         )
-        self.assertIn(commands, str(result["commands"]))
+        self.assertIn(
+            self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
+        )
 
     def test_junos_security_policies_parsed_01(self):
         parsed_str = """
@@ -767,7 +790,9 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                 ]
             },
         }
-        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(
+            self.sorted_xml(parsed_dict), self.sorted_xml(result["parsed"])
+        )
 
     def test_junos_security_policies_overridden_01(self):
         set_module_args(
@@ -798,7 +823,9 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
             "</nc:then></nc:policy></nc:global></nc:policies></nc:security>"
         )
         result = self.execute_module(changed=True)
-        self.assertIn(commands, str(result["commands"]))
+        self.assertIn(
+            self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
+        )
 
     def test_junos_security_policies_gathered(self):
         """
@@ -1031,4 +1058,6 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
             "<nc:destination-address>any-ipv6</nc:destination-address><nc:application>any</nc:application></nc:match><nc:then><nc:deny/>"
             "</nc:then></nc:policy></nc:global></nc:policies></nc:security>"
         )
-        self.assertIn(commands, str(result["commands"]))
+        self.assertIn(
+            self.sorted_xml(commands), self.sorted(str(result["commands"]))
+        )
