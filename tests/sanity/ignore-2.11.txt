@@ -1,3 +1,3 @@
 plugins/action/junos.py action-plugin-docs # base class for deprecated network platform modules using `connection: local`
-plugins/cliconf/junos.py: validate-modules:invalid-documentation # Ignore Invalid author(ansible network team),extra key(cliconf),and missing name error 
-plugins/netconf/junos.py: validate-modules:invalid-documentation # Ignore Invalid author(ansible network team),extra key(netconf),and missing name error
+plugins/cliconf/junos.py validate-modules:invalid-documentation # Ignore Invalid author(ansible network team),extra key(cliconf),and missing name error 
+plugins/netconf/junos.py validate-modules:invalid-documentation # Ignore Invalid author(ansible network team),extra key(netconf),and missing name error
