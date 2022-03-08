@@ -34,6 +34,7 @@
                         source_address_excluded: true
                         source_end_user_profile: test_end_user_profile
                         source_identity:
+                          authenticated_user: true
                           unknown_user: true
                         url_category:
                           names:
