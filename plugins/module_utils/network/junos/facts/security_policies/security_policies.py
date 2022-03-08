@@ -204,9 +204,9 @@ class Security_policiesFacts(object):
 
             match["source_address"] = {}
             if isinstance(policy_match["source-address"], string_types):
-                temp = policy_match["source-address"]
-                policy_match["source-address"] = []
-                policy_match["source-address"].append(temp)
+                policy_match["source-address"] = [
+                    policy_match["source-address"]
+                ]
             for source_address in policy_match["source-address"]:
                 if source_address == "any-ipv6":
                     match["source_address"]["any_ipv6"] = True
@@ -224,9 +224,9 @@ class Security_policiesFacts(object):
 
             match["destination_address"] = {}
             if isinstance(policy_match["destination-address"], string_types):
-                temp = policy_match["destination-address"]
-                policy_match["destination-address"] = []
-                policy_match["destination-address"].append(temp)
+                policy_match["destination-address"] = [
+                    policy_match["destination-address"]
+                ]
             for destination_address in policy_match["destination-address"]:
                 if destination_address == "any-ipv6":
                     match["destination_address"]["any_ipv6"] = True
@@ -249,9 +249,7 @@ class Security_policiesFacts(object):
                 match["application"]["any"] = True
             else:
                 if isinstance(policy_match["application"], string_types):
-                    temp = policy_match["application"]
-                    policy_match["application"] = []
-                    policy_match["application"].append(temp)
+                    policy_match["application"] = [policy_match["application"]]
                 match["application"]["names"] = policy_match["application"]
 
             if "source-end-user-profile" in policy_match:
@@ -261,18 +259,18 @@ class Security_policiesFacts(object):
 
             if "source-identity" in policy_match:
                 if isinstance(policy_match["source-identity"], string_types):
-                    temp = policy_match["source-identity"]
-                    policy_match["source-identity"] = []
-                    policy_match["source-identity"].append(temp)
+                    policy_match["source-identity"] = [
+                        policy_match["source-identity"]
+                    ]
+                match["source_identity"] = {}
                 for source_identity in policy_match["source-identity"]:
-                    match["source_identity"] = {}
                     if source_identity == "any":
                         match["source_identity"]["any"] = True
-                    elif "authenticated-user" in source_identity:
+                    elif "authenticated-user" == source_identity:
                         match["source_identity"]["authenticated_user"] = True
-                    elif "unauthenticated-user" in source_identity:
+                    elif "unauthenticated-user" == source_identity:
                         match["source_identity"]["unauthenticated_user"] = True
-                    elif "unknown-user" in source_identity:
+                    elif "unknown-user" == source_identity:
                         match["source_identity"]["unknown_user"] = True
                     else:
                         if "names" not in match["source_identity"]:
@@ -283,9 +281,9 @@ class Security_policiesFacts(object):
 
             if "url-category" in policy_match:
                 if isinstance(policy_match["url-category"], string_types):
-                    temp = policy_match["url-category"]
-                    policy_match["url-category"] = []
-                    policy_match["url-category"].append(temp)
+                    policy_match["url-category"] = [
+                        policy_match["url-category"]
+                    ]
                 match["url_category"] = {}
                 for url_category in policy_match["url-category"]:
                     if url_category == "any":
@@ -301,9 +299,9 @@ class Security_policiesFacts(object):
                 if isinstance(
                     policy_match["dynamic-application"], string_types
                 ):
-                    temp = policy_match["dynamic-application"]
-                    policy_match["dynamic-application"] = []
-                    policy_match["dynamic-application"].append(temp)
+                    policy_match["dynamic-application"] = [
+                        policy_match["dynamic-application"]
+                    ]
                 match["dynamic_application"] = {}
                 for dynamic_application in policy_match["dynamic-application"]:
                     if dynamic_application == "any":

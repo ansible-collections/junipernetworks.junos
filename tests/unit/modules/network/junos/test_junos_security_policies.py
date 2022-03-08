@@ -831,6 +831,7 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
         """
         set_module_args(dict(state="gathered"))
         result = self.execute_module(changed=False)
+        q(str(result))
         gather_list = {
             "from_zones": [
                 {
@@ -851,20 +852,30 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                             "addresses": ["a2", "a4"]
                                         },
                                         "destination_address_excluded": True,
-                                        "dynamic_application": {"any": True},
+                                        "dynamic_application": {
+                                            "any": True,
+                                            "none": True,
+                                            "names": ["test"],
+                                        },
                                         "source_address": {
                                             "addresses": ["a1", "a3"]
                                         },
                                         "source_address_excluded": True,
                                         "source_end_user_profile": "test_end_user_profile",
                                         "source_identity": {
-                                            "unknown_user": True
+                                            "unknown_user": True,
+                                            "unauthenticated_user": True,
+                                            "authenticated_user": True,
+                                            "any": True,
+                                            "names": ["test"],
                                         },
                                         "url_category": {
+                                            "any": True,
+                                            "none": True,
                                             "names": [
                                                 "Enhanced_Web_Chat",
                                                 "Enhanced_Web_Collaboration",
-                                            ]
+                                            ],
                                         },
                                     },
                                     "name": "test_policy_1",
@@ -905,14 +916,16 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                             "policies": [
                                 {
                                     "match": {
-                                        "application": {
-                                            "names": ["junos-dhcp-relay"]
-                                        },
+                                        "application": {"any": True},
                                         "destination_address": {
-                                            "addresses": ["a2"]
+                                            "any": True,
+                                            "any_ipv4": True,
+                                            "any_ipv6": True,
                                         },
                                         "source_address": {
-                                            "addresses": ["a1"]
+                                            "any": True,
+                                            "any_ipv4": True,
+                                            "any_ipv6": True,
                                         },
                                     },
                                     "name": "test_policy_3",
@@ -924,13 +937,19 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                                 "gprs_gtp_profile": "gtp1",
                                                 "gprs_sctp_profile": "sctp1",
                                                 "icap_redirect": "test_icap",
+                                                "idp": True,
                                                 "idp_policy": "test_idp",
                                                 "reverse_redirect_wx": True,
+                                                "redirect_wx": True,
                                                 "ssl_proxy": {
                                                     "enable": True,
                                                     "profile_name": "SECURITY-SSL-PROXY",
                                                 },
-                                                "uac_policy": {"enable": True},
+                                                "security_intelligence_policy": "test",
+                                                "uac_policy": {
+                                                    "enable": True,
+                                                    "captive_portal": "test",
+                                                },
                                                 "utm_policy": "test_utm",
                                             },
                                             "firewall_authentication": {
@@ -951,6 +970,7 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                                     "ssl_termination_profile": "test_ssl_term",
                                                     "web_redirect": True,
                                                     "web_redirect_to_https": True,
+                                                    "domain": "test",
                                                 },
                                                 "web_authentication": [
                                                     "FWClient1",
@@ -961,6 +981,12 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                                 "initial_tcp_mss": 64,
                                                 "reverse_tcp_mss": 64,
                                                 "window_scale": True,
+                                                "sequence_check_required": True,
+                                                "syn_check_required": True,
+                                            },
+                                            "tunnel": {
+                                                "ipsec_vpn": "test",
+                                                "pair_policy": "test",
                                             },
                                         }
                                     },
@@ -979,7 +1005,7 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                             "source_address": {"addresses": ["a1"]},
                         },
                         "name": "test_glob_1",
-                        "then": {"deny": True},
+                        "then": {"deny": True, "log": "session-init"},
                     },
                     {
                         "match": {
@@ -993,7 +1019,7 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                 ]
             },
         }
-        self.assertEqual(sorted(gather_list), sorted(result["gathered"]))
+        self.assertEqual(gather_list, result["gathered"])
 
     def test_junos_security_policies_rendered(self):
         set_module_args(
