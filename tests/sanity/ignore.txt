@@ -1,2 +1,0 @@
-plugins/cliconf/junos.py: validate-modules:invalid-documentation # Ignore Invalid author(ansible network team),extra key(cliconf),and missing name error 
-plugins/netconf/junos.py: validate-modules:invalid-documentation # Ignore Invalid author(ansible network team),extra key(netconf),and missing name error
