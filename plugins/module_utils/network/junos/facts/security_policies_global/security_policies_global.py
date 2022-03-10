@@ -14,6 +14,7 @@ from inspect import trace
 
 __metaclass__ = type
 
+import q
 from copy import deepcopy
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
@@ -131,9 +132,9 @@ class Security_policies_globalFacts(object):
         global_policies = conf.get("policies")
 
         if "default-policy" in global_policies:
-            if global_policies["default-policy"] == "deny-all":
+            if "deny-all" in global_policies["default-policy"]:
                 security_policies_global_config["default_policy"] = "deny-all"
-            elif global_policies["default-policy"] == "permit-all":
+            elif "permit-all" in global_policies["default-policy"]:
                 security_policies_global_config["default_policy"] = "permit-all"
 
         if "policy-rematch" in global_policies:
@@ -142,7 +143,7 @@ class Security_policies_globalFacts(object):
 
             global_policies["policy-rematch"] = global_policies["policy-rematch"] or {}
             if "extensive" in global_policies["policy-rematch"]:
-                security_policies_global_config["policy_rematch"]["extensive"] = global_policies["policy-rematch"]["extensive"]
+                security_policies_global_config["policy_rematch"]["extensive"] = True
 
         if "policy-stats" in global_policies:
             security_policies_global_config["policy_stats"] = {}
@@ -150,7 +151,10 @@ class Security_policies_globalFacts(object):
 
             global_policies["policy-stats"] = global_policies["policy-stats"] or {}
             if "system-wide" in global_policies["policy-stats"]:
-                security_policies_global_config["policy_stats"]["system_wide"] = global_policies["policy-stats"]["system-wide"]
+                if global_policies["policy-stats"]["system-wide"] == "enable":
+                    security_policies_global_config["policy_stats"]["system_wide"] = True
+                elif global_policies["policy-stats"]["system-wide"] == "disable":
+                    security_policies_global_config["policy_stats"]["system_wide"] = False
 
         if "pre-id-default-policy" in global_policies:
             security_policies_global_config["pre_id_default_policy_action"] = {}
@@ -159,26 +163,25 @@ class Security_policies_globalFacts(object):
 
             if "log" in policy_pre_id_action:
                 pre_id_action["log"] = {}
-
-                if policy_pre_id_action["log"] == "session-close":
+                if "session-close" in policy_pre_id_action["log"]:
                     pre_id_action["log"] = "session-close"
-                elif policy_pre_id_action["log"] == "session-init":
+                elif "session-init" in policy_pre_id_action["log"]:
                     pre_id_action["log"] = "session-init"
 
             if "session-timeout" in policy_pre_id_action:
                 pre_id_action["session_timeout"] = {}
                 if "icmp" in policy_pre_id_action["session-timeout"]:
-                    pre_id_action["session_timeout"]["icmp"] = pre_id_action["session_timeout"]["icmp"]
+                    pre_id_action["session_timeout"]["icmp"] = policy_pre_id_action["session-timeout"]["icmp"]
                 if "icmp6" in policy_pre_id_action["session-timeout"]:
-                    pre_id_action["session_timeout"]["icmp6"] = pre_id_action["session_timeout"]["icmp6"]
+                    pre_id_action["session_timeout"]["icmp6"] = policy_pre_id_action["session-timeout"]["icmp6"]
                 if "ospf" in policy_pre_id_action["session-timeout"]:
-                    pre_id_action["session_timeout"]["ospf"] = pre_id_action["session_timeout"]["ospf"]
+                    pre_id_action["session_timeout"]["ospf"] = policy_pre_id_action["session-timeout"]["ospf"]
                 if "others" in policy_pre_id_action["session-timeout"]:
-                    pre_id_action["session_timeout"]["others"] = pre_id_action["session_timeout"]["others"]
+                    pre_id_action["session_timeout"]["others"] = policy_pre_id_action["session-timeout"]["others"]
                 if "tcp" in policy_pre_id_action["session-timeout"]:
-                    pre_id_action["session_timeout"]["tcp"] = pre_id_action["session_timeout"]["tcp"]
+                    pre_id_action["session_timeout"]["tcp"] = policy_pre_id_action["session-timeout"]["tcp"]
                 if "udp" in policy_pre_id_action["session-timeout"]:
-                    pre_id_action["session_timeout"]["udp"] = pre_id_action["session_timeout"]["udp"]
+                    pre_id_action["session_timeout"]["udp"] = policy_pre_id_action["session-timeout"]["udp"]
 
         if "traceoptions" in global_policies:
             security_policies_global_config["traceoptions"] = {}
@@ -186,8 +189,7 @@ class Security_policies_globalFacts(object):
             policy_traceoptions = global_policies["traceoptions"]
 
             if "file" in policy_traceoptions:
-                if "filename" in policy_traceoptions["file"]:
-                    traceoptions["file"]["filename"] = policy_traceoptions["file"]["filename"]
+                traceoptions["file"] = {}
                 if "files" in policy_traceoptions["file"]:
                     traceoptions["file"]["files"] = policy_traceoptions["file"]["files"]
                 if "match" in policy_traceoptions["file"]:
@@ -195,9 +197,9 @@ class Security_policies_globalFacts(object):
                 if "size" in policy_traceoptions["file"]:
                     traceoptions["file"]["size"] = policy_traceoptions["file"]["size"]
                 if "world-readable" in policy_traceoptions["file"]:
-                    traceoptions["file"]["world_readable"] = policy_traceoptions["file"]["world-readable"]
+                    traceoptions["file"]["world_readable"] = True
                 if "no-world-readable" in policy_traceoptions["file"]:
-                    traceoptions["file"]["no_world_readable"] = policy_traceoptions["file"]["no-world-readable"]
+                    traceoptions["file"]["no_world_readable"] = True
 
             if "flag" in policy_traceoptions:
                 policy_traceoptions["flag"] = {}

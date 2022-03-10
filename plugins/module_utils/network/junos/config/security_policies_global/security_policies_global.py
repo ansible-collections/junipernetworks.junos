@@ -203,7 +203,7 @@ class Security_policies_global(ConfigBase):
         if "policy_rematch" in want.keys():
             policy_rematch_node = build_child_xml_node(security_policies_global_node, "policy-rematch", " ")
             policy_rematch = want.get("policy_rematch") or {}
-            if "extensive" in policy_rematch:
+            if "extensive" in policy_rematch and policy_rematch["extensive"] is True:
                 build_child_xml_node(policy_rematch_node, "extensive")
 
         if "policy_stats" in want.keys():
@@ -211,9 +211,9 @@ class Security_policies_global(ConfigBase):
             policy_stats = want.get("policy_stats") or {}
             if "system_wide" in policy_stats:
                 if policy_stats["system_wide"] is True:
-                    build_child_xml_node(policy_stats_node, "extensive", "enabled")
+                    build_child_xml_node(policy_stats_node, "system-wide", "enable")
                 else:
-                    build_child_xml_node(policy_stats_node, "extensive", "disabled")
+                    build_child_xml_node(policy_stats_node, "system-wide", "disable")
 
         if "pre_id_default_policy_action" in want.keys():
             pre_id_node = build_child_xml_node(security_policies_global_node, "pre-id-default-policy")
@@ -248,8 +248,6 @@ class Security_policies_global(ConfigBase):
 
             if "file" in traceoptions:
                 file_node = build_child_xml_node(traceoptions_node, "file")
-                if "filename" in traceoptions["file"]:
-                    build_child_xml_node(file_node, "filename", traceoptions["file"]["filename"])
                 if "files" in traceoptions["file"]:
                     build_child_xml_node(file_node, "files", traceoptions["file"]["files"])
                 if "match" in traceoptions["file"]:
@@ -257,9 +255,9 @@ class Security_policies_global(ConfigBase):
                 if "size" in traceoptions["file"]:
                     build_child_xml_node(file_node, "size", traceoptions["file"]["size"])
                 if "world_readable" in traceoptions["file"]:
-                    build_child_xml_node(file_node, "world-readable", traceoptions["file"]["world_readable"])
+                    build_child_xml_node(file_node, "world-readable")
                 if "no_world_readable" in traceoptions["file"]:
-                    build_child_xml_node(file_node, "no-world-readable", traceoptions["file"]["no_world_readable"])
+                    build_child_xml_node(file_node, "no-world-readable")
 
             if "flag" in traceoptions:
                 if traceoptions["flag"] == "all":

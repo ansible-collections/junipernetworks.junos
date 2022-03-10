@@ -27,10 +27,13 @@ The module file for junos_security_policies_global
 """
 
 from __future__ import absolute_import, division, print_function
-
 __metaclass__ = type
 
-ANSIBLE_METADATA = {"metadata_version": "1.1", "status": ["preview"], "supported_by": "network"}
+ANSIBLE_METADATA = {
+  'metadata_version': '1.1',
+  'status': ['preview'],
+  'supported_by': 'network'
+}
 
 DOCUMENTATION = """
 ---
@@ -49,8 +52,7 @@ notes:
 options:
   config:
     description: A dictionary of security policies
-    type: list
-    elements: dict
+    type: dict
     suboptions:
       default_policy:
         description:
@@ -135,11 +137,6 @@ options:
             type: dict
             required: true
             suboptions:
-              filename:
-                description: 
-                  - Name of the file to receive the output of the tracing operation.
-                type: str
-                required: true
               files:
                 description: 
                   - Maximum number of trace files
@@ -148,8 +145,8 @@ options:
                 description: Refine the output to include lines that contain the regular expression.
                 type: str
               size:
-                description: The numerical value of the max file size in KB
-                type: int
+                description: The maximum tracefile size 
+                type: str
               world_readable:
                 description: The world_readable option enables any user to read the file.
                 type: bool
@@ -213,6 +210,25 @@ options:
 EXAMPLES = """
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 """
 RETURN = """
 before:
@@ -236,12 +252,8 @@ commands:
 
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.security_policies_global.security_policies_global import (
-    Security_policies_globalArgs,
-)
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.security_policies_global.security_policies_global import (
-    Security_policies_global,
-)
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.security_policies_global.security_policies_global import Security_policies_globalArgs
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.security_policies_global.security_policies_global import Security_policies_global
 
 
 def main():
@@ -250,22 +262,12 @@ def main():
 
     :returns: the result form module invocation
     """
-    required_if = [
-        ("state", "merged", ("config",)),
-        ("state", "replaced", ("config",)),
-        ("state", "overridden", ("config",)),
-        ("state", "rendered", ("config",)),
-        ("state", "parsed", ("running_config",)),
-    ]
-    module = AnsibleModule(
-        argument_spec=Security_policies_globalArgs.argument_spec,
-        required_if=required_if,
-        supports_check_mode=True,
-    )
+    module = AnsibleModule(argument_spec=Security_policies_globalArgs.argument_spec,
+                           supports_check_mode=True)
 
     result = Security_policies_global(module).execute_module()
     module.exit_json(**result)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
