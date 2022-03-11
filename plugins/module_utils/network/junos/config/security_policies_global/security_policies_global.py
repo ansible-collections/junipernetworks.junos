@@ -191,7 +191,6 @@ class Security_policies_global(ConfigBase):
         security_policies_global_xml = []
         want = remove_empties(want)
         security_policies_global_node = build_root_xml_node("policies")
-
         if "default_policy" in want.keys():
             default_policy_node = build_child_xml_node(security_policies_global_node, "default-policy")
             default_policy = want.get("default_policy")
@@ -222,9 +221,9 @@ class Security_policies_global(ConfigBase):
 
             if "log" in pre_id:
                 log_node = build_child_xml_node(pre_id_node, "log")
-                if pre_id["log"] == "session-close":
+                if "session-close" in pre_id["log"]:
                     build_child_xml_node(log_node, "session-close")
-                elif pre_id["log"] == "session-init":
+                elif "session-init" in pre_id["log"]:
                     build_child_xml_node(log_node, "session-init")
 
             if "session_timeout" in pre_id:
@@ -261,19 +260,26 @@ class Security_policies_global(ConfigBase):
 
             if "flag" in traceoptions:
                 if traceoptions["flag"] == "all":
-                    build_child_xml_node(traceoptions_node, "flag", "all")
+                    flag_node = build_child_xml_node(traceoptions_node, "flag")
+                    build_child_xml_node(flag_node, "name", "all")
                 elif traceoptions["flag"] == "configuration":
-                    build_child_xml_node(traceoptions_node, "flag", "configuration")
+                    flag_node = build_child_xml_node(traceoptions_node, "flag")
+                    build_child_xml_node(flag_node, "name", "configuration")
                 elif traceoptions["flag"] == "compilation":
-                    build_child_xml_node(traceoptions_node, "flag", "compilation")
+                    flag_node = build_child_xml_node(traceoptions_node, "flag")
+                    build_child_xml_node(flag_node, "name", "compilation")
                 elif traceoptions["flag"] == "ipc":
-                    build_child_xml_node(traceoptions_node, "flag", "ipc")
+                    flag_node = build_child_xml_node(traceoptions_node, "flag")
+                    build_child_xml_node(flag_node, "name", "ipc")
                 elif traceoptions["flag"] == "lookup":
-                    build_child_xml_node(traceoptions_node, "flag", "lookup")
+                    flag_node = build_child_xml_node(traceoptions_node, "flag")
+                    build_child_xml_node(flag_node, "name", "lookup")
                 elif traceoptions["flag"] == "routing-socket":
                     build_child_xml_node(traceoptions_node, "flag", "routing-socket")
+                    build_child_xml_node(flag_node, "name", "routing-socket")
                 elif traceoptions["flag"] == "rules":
-                    build_child_xml_node(traceoptions_node, "flag", "rules")
+                    flag_node = build_child_xml_node(traceoptions_node, "flag")
+                    build_child_xml_node(flag_node, "name", "rules")
 
             if "no_remote_trace" in traceoptions:
                 build_child_xml_node(traceoptions_node, "no-remote-trace")

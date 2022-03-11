@@ -14,7 +14,6 @@ from inspect import trace
 
 __metaclass__ = type
 
-import q
 from copy import deepcopy
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
@@ -164,9 +163,9 @@ class Security_policies_globalFacts(object):
             if "log" in policy_pre_id_action:
                 pre_id_action["log"] = {}
                 if "session-close" in policy_pre_id_action["log"]:
-                    pre_id_action["log"] = "session-close"
-                elif "session-init" in policy_pre_id_action["log"]:
-                    pre_id_action["log"] = "session-init"
+                    pre_id_action["log"]["session_close"] = True
+                if "session-init" in policy_pre_id_action["log"]:
+                    pre_id_action["log"]["session_init"] = True
 
             if "session-timeout" in policy_pre_id_action:
                 pre_id_action["session_timeout"] = {}
@@ -202,21 +201,21 @@ class Security_policies_globalFacts(object):
                     traceoptions["file"]["no_world_readable"] = True
 
             if "flag" in policy_traceoptions:
-                policy_traceoptions["flag"] = {}
+                traceoptions["flag"] = {}
 
-                if policy_traceoptions["flag"] == "all":
+                if policy_traceoptions["flag"]["name"] == "all":
                     traceoptions["flag"] = "all"
-                elif policy_traceoptions["flag"] == "configuration":
+                elif policy_traceoptions["flag"]["name"] == "configuration":
                     traceoptions["flag"] = "configuration"
-                elif policy_traceoptions["flag"] == "compilation":
+                elif policy_traceoptions["flag"]["name"] == "compilation":
                     traceoptions["flag"] = "compilation"
-                elif policy_traceoptions["flag"] == "ipc":
+                elif policy_traceoptions["flag"]["name"] == "ipc":
                     traceoptions["flag"] = "ipc"
-                elif policy_traceoptions["flag"] == "lookup":
+                elif policy_traceoptions["flag"]["name"] == "lookup":
                     traceoptions["flag"] = "lookup"
-                elif policy_traceoptions["flag"] == "routing-socket":
+                elif policy_traceoptions["flag"]["name"] == "routing-socket":
                     traceoptions["flag"] = "routing-socket"
-                elif policy_traceoptions["flag"] == "rules":
+                elif policy_traceoptions["flag"]["name"] == "rules":
                     traceoptions["flag"] = "rules"
 
             if "no-remote-trace" in policy_traceoptions:

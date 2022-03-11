@@ -95,10 +95,16 @@ options:
           log:
             description:
               - Specifies the log details at session close time and session initialization time.
-            choices:
-              - session-init
-              - session-close
-            type: str
+            type: dict
+            suboptions:
+              session_init:
+                description:
+                  - Enable logging on session initialization time
+                type: bool
+              session_close:
+                description:
+                  - Enable logging on session close time
+                type: bool
           session_timeout:
             description:
               - When you update a session, the session timeout is configured, which specifies the session timeout details in seconds.
