@@ -53,14 +53,19 @@ try:
     from ncclient.xml_ import to_ele, to_xml, new_ele, sub_ele
 
     HAS_NCCLIENT = True
-except (ImportError, AttributeError):  # paramiko and gssapi are incompatible and raise AttributeError not ImportError
+except (
+    ImportError,
+    AttributeError,
+):  # paramiko and gssapi are incompatible and raise AttributeError not ImportError
     HAS_NCCLIENT = False
 
 
 class Netconf(NetconfBase):
     def get_text(self, ele, tag):
         try:
-            return to_text(ele.find(tag).text, errors="surrogate_then_replace").strip()
+            return to_text(
+                ele.find(tag).text, errors="surrogate_then_replace"
+            ).strip()
         except AttributeError:
             pass
 
@@ -73,9 +78,15 @@ class Netconf(NetconfBase):
         reply = to_ele(data)
         sw_info = reply.find(".//software-information")
 
-        device_info["network_os_version"] = self.get_text(sw_info, "junos-version")
-        device_info["network_os_hostname"] = self.get_text(sw_info, "host-name")
-        device_info["network_os_model"] = self.get_text(sw_info, "product-model")
+        device_info["network_os_version"] = self.get_text(
+            sw_info, "junos-version"
+        )
+        device_info["network_os_hostname"] = self.get_text(
+            sw_info, "host-name"
+        )
+        device_info["network_os_model"] = self.get_text(
+            sw_info, "product-model"
+        )
 
         return device_info
 
@@ -88,7 +99,9 @@ class Netconf(NetconfBase):
         return self.rpc(name)
 
     @ensure_ncclient
-    def load_configuration(self, format="xml", action="merge", target="candidate", config=None):
+    def load_configuration(
+        self, format="xml", action="merge", target="candidate", config=None
+    ):
         """
         Load given configuration on device
         :param format: Format of configuration (xml, text, set)
@@ -102,7 +115,9 @@ class Netconf(NetconfBase):
                 config = to_ele(config)
 
         try:
-            return self.m.load_configuration(format=format, action=action, target=target, config=config).data_xml
+            return self.m.load_configuration(
+                format=format, action=action, target=target, config=config
+            ).data_xml
         except RPCError as exc:
             raise Exception(to_xml(exc.xml))
 
@@ -127,7 +142,9 @@ class Netconf(NetconfBase):
         result["server_capabilities"] = list(self.m.server_capabilities)
         result["client_capabilities"] = list(self.m.client_capabilities)
         result["session_id"] = self.m.session_id
-        result["device_operations"] = self.get_device_operations(result["server_capabilities"])
+        result["device_operations"] = self.get_device_operations(
+            result["server_capabilities"]
+        )
         return json.dumps(result)
 
     @staticmethod
@@ -175,7 +192,9 @@ class Netconf(NetconfBase):
         if filter is not None:
             if not isinstance(filter, string_types):
                 raise AnsibleConnectionFailure(
-                    "get configuration filter should be of type string," " received value '%s' is of type '%s'" % (filter, type(filter))
+                    "get configuration filter should be of type string,"
+                    " received value '%s' is of type '%s'"
+                    % (filter, type(filter))
                 )
             filter = to_ele(filter)
 
@@ -204,7 +223,15 @@ class Netconf(NetconfBase):
     # ncclient generic rpc() method to execute rpc on remote host.
     # Remove below method after the issue in ncclient is fixed.
     @ensure_ncclient
-    def commit(self, confirmed=False, check=False, timeout=None, comment=None, synchronize=False, at_time=None):
+    def commit(
+        self,
+        confirmed=False,
+        check=False,
+        timeout=None,
+        comment=None,
+        synchronize=False,
+        at_time=None,
+    ):
         """
         Commit the candidate configuration as the device's new current configuration.
         Depends on the `:candidate` capability.
