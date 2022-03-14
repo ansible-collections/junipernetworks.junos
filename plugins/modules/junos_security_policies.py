@@ -30,20 +30,26 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "network",
+}
+
 DOCUMENTATION = """
 ---
 module: junos_security_policies
 version_added: 2.9.0
 short_description: Create and manage security policies on Juniper JUNOS devices
 description: This module provides declarative creation and management of security policies on Juniper JUNOS devices
-author: Pranav Bhatt (@pranav-bhatt)
+author: Pranav Bhatt (pbhatt@redhat.com)
 requirements:
   - ncclient (>=v0.6.4)
   - xmltodict (>=0.12.0)
 notes:
   - This module requires the netconf system service be enabled on the device being managed
-  - This module works with connection C(netconf) See L(the Junos OS Platform Options,
-    https://docsansiblecom/ansible/latest/network/user_guide/platform_junoshtml)
+  - This module works with connection C(netconf)
+  - See L(the Junos OS Platform Options,https://docsansiblecom/ansible/latest/network/user_guide/platform_junoshtml)
   - Tested against JunOS v18.4R1
 options:
   config:
@@ -187,13 +193,13 @@ options:
                             type: bool
                           unauthenticated_user:
                             description:
-                              - Any user or role that does not have an IP_address mapped to authentication sources and the authentication source is up
-                                and running
+                              - Any user or role that does not have an IP_address mapped to authentication sources and the authentication source
+                                is up and running
                             type: bool
                           unknown_user:
                             description:
-                              - Any user or role that does not have an IP address mapped to authentication sources, because the authentication source is
-                                disconnected from the SRX Series device
+                              - Any user or role that does not have an IP address mapped to authentication sources, because the
+                                authentication source is disconnected from the SRX Series device
                             type: bool
                       source_end_user_profile:
                         description: Source end user profile name
@@ -251,17 +257,18 @@ options:
                     suboptions:
                       count:
                         description:
-                          - Enable a count, in bytes or kilobytes, of all network traffic the policy allows to pass through the device in both directions;
-                            the originating traffic from the client to the server (from the from_zone to the to_zone), and the return traffic from the server
-                            to the originating client
+                          - Enable a count, in bytes or kilobytes, of all network traffic the policy allows to pass through the device
+                            in both directions; the originating traffic from the client to the server (from the from_zone to the to_zone),
+                            and the return traffic from the server to the originating client
                         type: bool
                       deny:
                         description: Block the service at the firewall The device drops the packets
                         type: bool
                       reject:
                         description:
-                          - Block the service at the firewall The device drops the packet and sends a TCP reset (RST) segment to the source host for
-                            TCP traffic and an ICMP "destination unreachable, port unreachable" message (type 3, code 3) for UDP traffic
+                          - Block the service at the firewall The device drops the packet and sends a TCP reset (RST) segment to the
+                            source host for TCP traffic and an ICMP "destination unreachable, port unreachable"
+                            message (type 3, code 3) for UDP traffic
                         type: dict
                         suboptions:
                           enable:
@@ -270,14 +277,14 @@ options:
                             type: bool
                           profile:
                             description:
-                              - You can chose to provide a notification to the clients or redirect client request to an informative Web page when a
-                                policy blocks HTTP or HTTPS traffic with a deny or reject action
+                              - You can chose to provide a notification to the clients or redirect client request to an informative
+                                Web page when a policy blocks HTTP or HTTPS traffic with a deny or reject action
                             type: str
                           ssl_proxy:
                             description:
                               - You can apply a redirect SSL proxy profile when a policy blocks HTTPS traffic with a reject action
-                                When you apply am SSL proxy profile, SSL proxy decrypts the traffic and application identification functionality identifies the
-                                application
+                                When you apply am SSL proxy profile, SSL proxy decrypts the traffic and application
+                                identification functionality identifies the application
                             type: dict
                             suboptions:
                               enable:
@@ -289,8 +296,8 @@ options:
                                 type: str
                       log:
                         description:
-                          - Log traffic information for a specific policy Traffic information is logged when a session begins (session_init)
-                            or closes (session_close)
+                          - Log traffic information for a specific policy Traffic information is logged when a
+                            session begins (session_init) or closes (session_close)
                         type: dict
                         suboptions:
                           session_init:
@@ -326,8 +333,8 @@ options:
                                     type: str
                               application_traffic_control_rule_set:
                                 description:
-                                  - Specify the rule set configured as part of AppQoS, application_aware quality of service, to be applied to the
-                                    permitted traffic
+                                  - Specify the rule set configured as part of AppQoS, application_aware quality of service,
+                                    to be applied to the permitted traffic
                                 type: str
                               gprs_gtp_profile:
                                 description:
@@ -427,6 +434,7 @@ options:
                                 description:
                                   - Configure pass-through firewall user authentication
                                 type: dict
+                                no_log: True
                                 suboptions:
                                   access_profile:
                                     description:
@@ -442,7 +450,8 @@ options:
                                     type: str
                                   web_redirect:
                                     description:
-                                      - Enable redirecting an HTTP request to the device and redirecting the client system to a webpage for authentication
+                                      - Enable redirecting an HTTP request to the device and redirecting the client system to a
+                                        webpage for authentication
                                     type: bool
                                   web_redirect_to_https:
                                     description:
@@ -472,8 +481,8 @@ options:
                                   domain:
                                     description:
                                       - Specify the name of the domain where firewall authentication occurs in the event that the
-                                        Windows Management Instrumentation client (WMIC) is not available to get IP_to_user mapping for the
-                                        integrated user firewall feature
+                                        Windows Management Instrumentation client (WMIC) is not available to get
+                                        IP_to_user mapping for the integrated user firewall feature
                                     type: str
                                   ssl_termination_profile:
                                     description:
@@ -497,19 +506,21 @@ options:
                                     type: str
                               web_authentication:
                                 description:
-                                  - Specify that the policy allows access to users or user groups who have previously been authenticated by Web authentication
+                                  - Specify that the policy allows access to users or user groups who have previously been authenticated by
+                                    Web authentication
                                 type: list
                                 elements: str
                           tcp_options:
                             description:
-                              - Specify the TCP options for each policy You can configure sync and sequence checks for each policy based on your requirements,
-                                and, because each policy has two directions, you can configure a TCP MSS value for both directions or for just one direction
+                              - Specify the TCP options for each policy You can configure sync and sequence checks for each policy
+                                based on your requirements, and, because each policy has two directions, you can configure a
+                                TCP MSS value for both directions or for just one direction
                             type: dict
                             suboptions:
                               initial_tcp_mss:
                                 description:
-                                  - Configure the TCP maximum segment size (MSS) for packets that arrive at the ingress interface (initial direction),
-                                    match a specific policy, and for which a session is created
+                                  - Configure the TCP maximum segment size (MSS) for packets that arrive at the
+                                    ingress interface (initial direction), match a specific policy, and for which a session is created
                                 type: int
                               reverse_tcp_mss:
                                 description:
@@ -576,12 +587,6 @@ options:
       - The state I(gathered) will fetch the running configuration from device and transform
         it into structured data in the format as per the resource module argspec and
         the value is returned in the I(gathered) key within the result
-      - The state I(merged) will additively update the on-device configuration with the provided
-        configuration.
-      - The states I(replaced) and I(overridden) exhibit the same behaviour
-      - The state I(replaced) will replace the on-device configuration with the provided
-        configuration. It yields the same result as running the state I(deleted), followed
-        by the state I(merged).
       - The state I(parsed) reads the configuration from C(running_config) option and
         transforms it into JSON format as per the resource module parameters and the
         value is returned in the I(parsed) key within the result The value of C(running_config)
@@ -590,7 +595,6 @@ options:
         connection to remote host is not required
     type: str
 """
-
 EXAMPLES = """
 # Using merged
 #
@@ -2574,89 +2578,27 @@ EXAMPLES = """
 #                   </nc:global>
 #                 </nc:policies>
 #               </nc:security>"
-"""
 
+
+"""
 RETURN = """
 before:
-  description: The configuration prior to the module execution.
-  returned: when state is I(merged), I(replaced), I(overridden), I(deleted) or I(purged)
-  type: dict
+  description: The configuration prior to the model invocation.
+  returned: always
   sample: >
-    This output will always be in the same format as the
-    module argspec.
+    The configuration returned will always be in the same format
+     of the parameters above.
 after:
-  description: The resulting configuration after module execution.
+  description: The resulting configuration model invocation.
   returned: when changed
-  type: dict
   sample: >
-    This output will always be in the same format as the
-    module argspec.
+    The configuration returned will always be in the same format
+     of the parameters above.
 commands:
   description: The set of commands pushed to the remote device.
-  returned: when state is I(merged), I(replaced), I(overridden), I(deleted) or I(purged)
+  returned: always
   type: list
-  sample:
-    - "<rpc-reply>
-      <configuration>
-        <security>
-          <policies>
-            <global>
-              <policy>
-                  <name>test_glob_1</name>
-                  <match>
-                      <source-address>any-ipv6</source-address>
-                      <destination-address>any-ipv6</destination-address>
-                      <application>any</application>
-                  </match>
-                  <then>
-                      <deny />
-                  </then>
-              </policy>
-            </global>
-          </policies>
-        </security>
-      </configuration>
-    </rpc-reply>"
-rendered:
-  description: The provided configuration in the task rendered in device-native format (offline).
-  returned: when state is I(rendered)
-  type: dict
-  sample:
-    - "<rpc-reply>
-      <configuration>
-        <security>
-          <policies>
-            <global>
-              <policy>
-                  <name>test_glob_1</name>
-                  <match>
-                      <source-address>any-ipv6</source-address>
-                      <destination-address>any-ipv6</destination-address>
-                      <application>any</application>
-                  </match>
-                  <then>
-                      <deny />
-                  </then>
-              </policy>
-            </global>
-          </policies>
-        </security>
-      </configuration>
-    </rpc-reply>"
-gathered:
-  description: Facts about the network resource gathered from the remote device as structured data.
-  returned: when state is I(gathered)
-  type: dict
-  sample: >
-    This output will always be in the same format as the
-    module argspec.
-parsed:
-  description: The device native config provided in I(running_config) option parsed into structured data as per module argspec.
-  returned: when state is I(parsed)
-  type: dict
-  sample: >
-    This output will always be in the same format as the
-    module argspec.
+  sample: ['command 1', 'command 2', 'command 3']
 """
 
 
@@ -2675,16 +2617,8 @@ def main():
 
     :returns: the result form module invocation
     """
-    required_if = [
-        ("state", "merged", ("config",)),
-        ("state", "replaced", ("config",)),
-        ("state", "overridden", ("config",)),
-        ("state", "rendered", ("config",)),
-        ("state", "parsed", ("running_config",)),
-    ]
     module = AnsibleModule(
         argument_spec=Security_policiesArgs.argument_spec,
-        required_if=required_if,
         supports_check_mode=True,
     )
 
