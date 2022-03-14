@@ -150,7 +150,7 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                             "then": {
                                                 "count": True,
                                                 "deny": True,
-                                                "log": "session-close",
+                                                "log": {"session_close": True},
                                             },
                                         },
                                         {
@@ -391,7 +391,7 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                             "then": {
                                                 "count": True,
                                                 "deny": True,
-                                                "log": "session-init",
+                                                "log": {"session_init": True},
                                             },
                                         }
                                     ],
@@ -668,7 +668,7 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                     "then": {
                                         "count": True,
                                         "deny": True,
-                                        "log": "session-close",
+                                        "log": {"session_close": True},
                                     },
                                 },
                                 {
@@ -881,7 +881,7 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                     "then": {
                                         "count": True,
                                         "deny": True,
-                                        "log": "session-close",
+                                        "log": {"session_close": True},
                                     },
                                 },
                                 {
@@ -1004,7 +1004,7 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                             "source_address": {"addresses": ["a1"]},
                         },
                         "name": "test_glob_1",
-                        "then": {"deny": True, "log": "session-init"},
+                        "then": {"deny": True, "log": {"session_init": True}},
                     },
                     {
                         "match": {

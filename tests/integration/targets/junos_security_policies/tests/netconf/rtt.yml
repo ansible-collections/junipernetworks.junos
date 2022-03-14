@@ -42,7 +42,8 @@
                             - Enhanced_Web_Chat
                       then:
                         deny: true
-                        log: session-close
+                        log:
+                          session_close: true
                         count: true
                     - name: test_policy_2
                       description: hello world

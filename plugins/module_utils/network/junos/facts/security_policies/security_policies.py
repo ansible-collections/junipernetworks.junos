@@ -325,10 +325,11 @@ class Security_policiesFacts(object):
                 action["count"] = True
 
             if "log" in policy_action:
+                action["log"] = {}
                 if "session-close" in policy_action["log"]:
-                    action["log"] = "session-close"
+                    action["log"]["session_close"] = True
                 if "session-init" in policy_action["log"]:
-                    action["log"] = "session-init"
+                    action["log"]["session_init"] = True
 
             if "deny" in policy_action:
                 action["deny"] = True

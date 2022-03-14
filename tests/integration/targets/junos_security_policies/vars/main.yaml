@@ -36,7 +36,8 @@ merged:
                 then:
                   count: true
                   deny: true
-                  log: session-close
+                  log:
+                    session_close: true
               - match:
                   application:
                     any: true
@@ -137,7 +138,8 @@ merged:
                 then:
                   count: true
                   deny: true
-                  log: session-close
+                  log:
+                    session_close: true
               - match:
                   application:
                     any: true

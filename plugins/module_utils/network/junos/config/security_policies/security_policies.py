@@ -373,7 +373,16 @@ class Security_policies(ConfigBase):
 
                 if "log" in then:
                     log_node = build_child_xml_node(then_node, "log")
-                    build_child_xml_node(log_node, policy["then"]["log"])
+                    if (
+                        policy["then"]["log"]
+                        and "session_init" in policy["then"]["log"]
+                    ):
+                        build_child_xml_node(log_node, "session-init")
+                    if (
+                        policy["then"]["log"]
+                        and "session_close" in policy["then"]["log"]
+                    ):
+                        build_child_xml_node(log_node, "session-close")
 
                 if "reject" in then:
                     reject = then["reject"]

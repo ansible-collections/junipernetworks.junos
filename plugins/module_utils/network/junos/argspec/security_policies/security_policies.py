@@ -202,11 +202,15 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 "count": {"type": "bool"},
                                                 "deny": {"type": "bool"},
                                                 "log": {
-                                                    "choices": [
-                                                        "session-close",
-                                                        "session-init",
-                                                    ],
-                                                    "type": "str",
+                                                    "options": {
+                                                        "session_close": {
+                                                            "type": "bool"
+                                                        },
+                                                        "session_init": {
+                                                            "type": "bool"
+                                                        },
+                                                    },
+                                                    "type": "dict",
                                                 },
                                                 "permit": {
                                                     "options": {
@@ -309,7 +313,6 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                         "firewall_authentication": {
                                                             "options": {
                                                                 "pass_through": {
-                                                                    "no_log": False,
                                                                     "options": {
                                                                         "access_profile": {
                                                                             "type": "str"
@@ -563,11 +566,15 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                         "count": {"type": "bool"},
                                         "deny": {"type": "bool"},
                                         "log": {
-                                            "choices": [
-                                                "session-close",
-                                                "session-init",
-                                            ],
-                                            "type": "str",
+                                            "options": {
+                                                "session_close": {
+                                                    "type": "bool"
+                                                },
+                                                "session_init": {
+                                                    "type": "bool"
+                                                },
+                                            },
+                                            "type": "dict",
                                         },
                                         "permit": {
                                             "options": {
@@ -670,7 +677,6 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 "firewall_authentication": {
                                                     "options": {
                                                         "pass_through": {
-                                                            "no_log": False,
                                                             "options": {
                                                                 "access_profile": {
                                                                     "type": "str"
