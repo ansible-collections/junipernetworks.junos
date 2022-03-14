@@ -22,19 +22,10 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     discard_changes,
     tostring,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
-    ConfigBase,
-)
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    remove_empties,
-)
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
-    build_root_xml_node,
-    build_child_xml_node,
-)
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
-    Facts,
-)
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import ConfigBase
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import remove_empties
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import build_root_xml_node, build_child_xml_node
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import Facts
 
 
 class Security_policies_global(ConfigBase):
@@ -221,9 +212,9 @@ class Security_policies_global(ConfigBase):
 
             if "log" in pre_id:
                 log_node = build_child_xml_node(pre_id_node, "log")
-                if "session-close" in pre_id["log"]:
+                if "session_close" in pre_id["log"]:
                     build_child_xml_node(log_node, "session-close")
-                elif "session-init" in pre_id["log"]:
+                elif "session_init" in pre_id["log"]:
                     build_child_xml_node(log_node, "session-init")
 
             if "session_timeout" in pre_id:

@@ -12,11 +12,13 @@
           default_policy: permit-all
           policy_rematch:
             enable: true
+            extensive: true
           policy_stats:
             enable: true
             system_wide: true
           pre_id_default_policy_action:
-            log: session-init
+            log:
+              session_init: true
             session_timeout:
               icmp: 10
               others: 10
@@ -42,7 +44,7 @@
           - "{{ merged['after'] == result['after'] }}"
 
     - name: Merge the provided configuration with the existing running configuration (IDEMPOTENT)
-      junos_security_policies_global: *merged
+      junipernetworks.junos.junos_security_policies_global: *merged
       register: result
 
     - name: Assert that the previous task was idempotent
@@ -59,7 +61,8 @@
           policy_stats:
             enable: true
           pre_id_default_policy_action:
-            log: session-init
+            log:
+              session_init: true
             session_timeout:
               icmp: 10
               others: 10
@@ -77,12 +80,6 @@
     - name: Assert that before dicts were correctly generated
       assert:
         that: "{{ merged['after'] == result['before'] }}"
-
-    - debug:
-        msg: "result_after: {{ result['after'] }}"
-
-    - debug:
-        msg: "merged_update: {{ merged['updated'] }}"
 
     - name: Assert the configuration is reflected on host
       assert:

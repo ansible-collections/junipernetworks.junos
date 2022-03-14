@@ -8,10 +8,11 @@
       - set security policies default-policy permit-all
       - set security policies policy-rematch extensive
       - set security policies policy-stats system-wide enable
-      - set security policies pre-id-default-policy then log session-close
+      - set security policies pre-id-default-policy then log session-init
       - set security policies pre-id-default-policy then session-timeout icmp 10
       - set security policies pre-id-default-policy then session-timeout others 10
       - set security policies traceoptions no-remote-trace
+      - set security policies traceoptions flag all
       - set security policies traceoptions file files 3
       - set security policies traceoptions file match /[A-Z]*/gm
       - set security policies traceoptions file size 10240

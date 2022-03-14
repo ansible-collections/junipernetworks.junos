@@ -8,6 +8,11 @@
     - include_tasks: _populate_config.yaml
 
     - name: Override configuration
+      junipernetworks.junos.junos_security_policies_global:
+        config:
+        state: gathered
+
+    - name: Override configuration
       junipernetworks.junos.junos_security_policies_global: &overridden
         config:
           default_policy: deny-all
@@ -16,7 +21,8 @@
           policy_stats:
             enable: true
           pre_id_default_policy_action:
-            log: session-init
+            log:
+              session_init: true
           traceoptions:
             file:
               files: 4
@@ -25,6 +31,12 @@
             flag: all
         state: overridden
       register: result
+
+    - debug:
+        msg: "{{ merged['after'] }}"
+
+    - debug:
+        msg: "{{ result['before'] }}"
 
     - name: Assert that before dicts were correctly generated
       assert:
@@ -37,7 +49,7 @@
           - "{{ replaced['after'] == result.after }}"
 
     - name: Replaced the provided configuration with the existing running configuration (IDEMPOTENT)
-      junos_security_policies_global: *overridden
+      junipernetworks.junos.junos_security_policies_global: *overridden
       register: result
 
     - name: Assert that the previous task was idempotent

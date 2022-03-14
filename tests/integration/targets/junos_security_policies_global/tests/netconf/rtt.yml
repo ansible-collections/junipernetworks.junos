@@ -19,7 +19,8 @@
             enable: true
             system_wide: true
           pre_id_default_policy_action:
-            log: session-close
+            log:
+              session_close: true
             session_timeout:
               icmp: 10
               others: 10
@@ -49,7 +50,8 @@
           policy_stats:
             enable: true
           pre_id_default_policy_action:
-            log: session-init
+            log:
+              session_init: true
           traceoptions:
             file:
               files: 4

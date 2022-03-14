@@ -6,11 +6,13 @@ merged:
     default_policy: permit-all
     policy_rematch:
       enable: true
+      extensive: true
     policy_stats:
       enable: true
       system_wide: true
     pre_id_default_policy_action:
-      log: session-init
+      log:
+        session_init: true
       session_timeout:
         icmp: 10
         others: 10
@@ -27,11 +29,13 @@ merged:
     default_policy: deny-all
     policy_rematch:
       enable: true
+      extensive: true
     policy_stats:
       enable: true
       system_wide: true
     pre_id_default_policy_action:
-      log: session-init
+      log:
+        session_init: true
       session_timeout:
         icmp: 10
         others: 10
@@ -51,7 +55,8 @@ replaced:
     policy_stats:
       enable: true
     pre_id_default_policy_action:
-      log: session-init
+      log:
+        session_init: true
     traceoptions:
       file:
         files: 4
