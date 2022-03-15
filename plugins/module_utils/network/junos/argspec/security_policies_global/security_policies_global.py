@@ -40,12 +40,33 @@ class Security_policies_globalArgs(object):  # pylint: disable=R0903
     argument_spec = {
         "config": {
             "options": {
-                "default_policy": {"choices": ["deny-all", "permit-all"], "type": "str"},
-                "policy_rematch": {"options": {"enable": {"type": "bool"}, "extensive": {"type": "bool"}}, "type": "dict"},
-                "policy_stats": {"options": {"enable": {"type": "bool"}, "system_wide": {"type": "bool"}}, "type": "dict"},
+                "default_policy": {
+                    "choices": ["deny-all", "permit-all"],
+                    "type": "str",
+                },
+                "policy_rematch": {
+                    "options": {
+                        "enable": {"type": "bool"},
+                        "extensive": {"type": "bool"},
+                    },
+                    "type": "dict",
+                },
+                "policy_stats": {
+                    "options": {
+                        "enable": {"type": "bool"},
+                        "system_wide": {"type": "bool"},
+                    },
+                    "type": "dict",
+                },
                 "pre_id_default_policy_action": {
                     "options": {
-                        "log": {"options": {"session_close": {"type": "bool"}, "session_init": {"type": "bool"}}, "type": "dict"},
+                        "log": {
+                            "options": {
+                                "session_close": {"type": "bool"},
+                                "session_init": {"type": "bool"},
+                            },
+                            "type": "dict",
+                        },
                         "session_timeout": {
                             "options": {
                                 "icmp": {"type": "int"},
@@ -73,7 +94,18 @@ class Security_policies_globalArgs(object):  # pylint: disable=R0903
                             "required": True,
                             "type": "dict",
                         },
-                        "flag": {"choices": ["all", "configuration", "compilation", "ipc", "lookup", "routing-socket", "rules"], "type": "str"},
+                        "flag": {
+                            "choices": [
+                                "all",
+                                "configuration",
+                                "compilation",
+                                "ipc",
+                                "lookup",
+                                "routing-socket",
+                                "rules",
+                            ],
+                            "type": "str",
+                        },
                         "no_remote_trace": {"type": "bool"},
                     },
                     "type": "dict",
@@ -82,5 +114,17 @@ class Security_policies_globalArgs(object):  # pylint: disable=R0903
             "type": "dict",
         },
         "running_config": {"type": "str"},
-        "state": {"choices": ["merged", "replaced", "overridden", "deleted", "rendered", "gathered", "parsed"], "default": "merged", "type": "str"},
+        "state": {
+            "choices": [
+                "merged",
+                "replaced",
+                "overridden",
+                "deleted",
+                "rendered",
+                "gathered",
+                "parsed",
+            ],
+            "default": "merged",
+            "type": "str",
+        },
     }  # pylint: disable=C0301

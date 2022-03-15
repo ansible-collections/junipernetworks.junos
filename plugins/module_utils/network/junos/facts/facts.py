@@ -45,7 +45,9 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.routing_options.routing_options import Routing_optionsFacts
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.hostname.hostname import HostnameFacts
 
-FACT_LEGACY_SUBSETS = dict(default=Default, hardware=Hardware, config=Config, interfaces=Interfaces)
+FACT_LEGACY_SUBSETS = dict(
+    default=Default, hardware=Hardware, config=Config, interfaces=Interfaces
+)
 FACT_RESOURCE_SUBSETS = dict(
     acls=AclsFacts,
     acl_interfaces=Acl_interfacesFacts,
@@ -85,7 +87,9 @@ class Facts(FactsBase):
     def __init__(self, module):
         super(Facts, self).__init__(module)
 
-    def get_facts(self, legacy_facts_type=None, resource_facts_type=None, data=None):
+    def get_facts(
+        self, legacy_facts_type=None, resource_facts_type=None, data=None
+    ):
         """Collect the facts for junos
         :param legacy_facts_type: List of legacy facts types
         :param resource_facts_type: List of resource fact types
@@ -94,7 +98,9 @@ class Facts(FactsBase):
         :return: the facts gathered
         """
         if self.VALID_RESOURCE_SUBSETS:
-            self.get_network_resources_facts(FACT_RESOURCE_SUBSETS, resource_facts_type, data)
+            self.get_network_resources_facts(
+                FACT_RESOURCE_SUBSETS, resource_facts_type, data
+            )
 
         if not legacy_facts_type:
             legacy_facts_type = self._gather_subset
@@ -109,10 +115,14 @@ class Facts(FactsBase):
                             "It can be installed using `pip install junos-eznc`"
                         ]
                     )
-                self.ansible_facts["ansible_net_gather_subset"].append("ofacts")
+                self.ansible_facts["ansible_net_gather_subset"].append(
+                    "ofacts"
+                )
                 legacy_facts_type.remove("ofacts")
 
         if self.VALID_LEGACY_GATHER_SUBSETS:
-            self.get_network_legacy_facts(FACT_LEGACY_SUBSETS, legacy_facts_type)
+            self.get_network_legacy_facts(
+                FACT_LEGACY_SUBSETS, legacy_facts_type
+            )
 
         return self.ansible_facts, self._warnings
