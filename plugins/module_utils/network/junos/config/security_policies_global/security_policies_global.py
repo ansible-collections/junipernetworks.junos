@@ -262,7 +262,7 @@ class Security_policies_global(ConfigBase):
                 log_node = build_child_xml_node(pre_id_node, "log")
                 if "session_close" in pre_id["log"]:
                     build_child_xml_node(log_node, "session-close")
-                elif "session_init" in pre_id["log"]:
+                if "session_init" in pre_id["log"]:
                     build_child_xml_node(log_node, "session-init")
 
             if "session_timeout" in pre_id:
@@ -348,9 +348,7 @@ class Security_policies_global(ConfigBase):
                     flag_node = build_child_xml_node(traceoptions_node, "flag")
                     build_child_xml_node(flag_node, "name", "lookup")
                 elif traceoptions["flag"] == "routing-socket":
-                    build_child_xml_node(
-                        traceoptions_node, "flag", "routing-socket"
-                    )
+                    flag_node = build_child_xml_node(traceoptions_node, "flag")
                     build_child_xml_node(flag_node, "name", "routing-socket")
                 elif traceoptions["flag"] == "rules":
                     flag_node = build_child_xml_node(traceoptions_node, "flag")

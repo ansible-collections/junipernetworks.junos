@@ -91,7 +91,6 @@ class Security_policies_globalArgs(object):  # pylint: disable=R0903
                                 "size": {"type": "str"},
                                 "world_readable": {"type": "bool"},
                             },
-                            "required": True,
                             "type": "dict",
                         },
                         "flag": {

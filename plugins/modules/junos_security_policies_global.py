@@ -145,7 +145,6 @@ options:
           file:
             description: A dictionary to configure the trace file options
             type: dict
-            required: true
             suboptions:
               files:
                 description:
