@@ -27,13 +27,10 @@ The module file for junos_security_policies_global
 """
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-  'metadata_version': '1.1',
-  'status': ['preview'],
-  'supported_by': 'network'
-}
+ANSIBLE_METADATA = {"metadata_version": "1.1", "status": ["preview"], "supported_by": "network"}
 
 DOCUMENTATION = """
 ---
@@ -41,13 +38,14 @@ module: junos_security_policies_global
 version_added: 2.9.0
 short_description: Manage global security policy settings on Juniper JUNOS devices
 description: This module provides declarative management of global security policy settings on Juniper JUNOS devices
-author: Pranav Bhatt (pbhatt@redhat.com)
+author: Pranav Bhatt (@pranav-bhatt)
 requirements:
   - ncclient (>=v0.6.4)
   - xmltodict (>=0.12.0)
 notes:
 - This module requires the netconf system service be enabled on the device being managed.
-- This module works with connection C(netconf). See L(the Junos OS Platform Options,https://docs.ansible.com/ansible/latest/network/user_guide/platform_junos.html).
+- This module works with connection C(netconf).
+- See L(the Junos OS Platform Options,https://docs.ansible.com/ansible/latest/network/user_guide/platform_junos.html).
 - Tested against JunOS v18.4R1
 options:
   config:
@@ -63,12 +61,14 @@ options:
         type: str
       policy_rematch:
         description:
-          - Enable the device to reevaluate an active session when its associated security policy is modified. The session remains open if it still matches the policy that allowed the session initially.
+          - Enable the device to reevaluate an active session when its associated security policy is modified. The session remains open if it still matches
+            the policy that allowed the session initially.
         type: dict
         suboptions:
           enable:
             description:
-              - Enable the device to reevaluate an active session when its associated security policy is modified. The session remains open if it still matches the policy that allowed the session initially.
+              - Enable the device to reevaluate an active session when its associated security policy is modified.
+                The session remains open if it still matches the policy that allowed the session initially.
             type: bool
           extensive:
             description:
@@ -144,14 +144,14 @@ options:
             required: true
             suboptions:
               files:
-                description: 
+                description:
                   - Maximum number of trace files
                 type: int
               match:
                 description: Refine the output to include lines that contain the regular expression.
                 type: str
               size:
-                description: The maximum tracefile size 
+                description: The maximum tracefile size
                 type: str
               world_readable:
                 description: The world_readable option enables any user to read the file.
@@ -258,8 +258,12 @@ commands:
 
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.security_policies_global.security_policies_global import Security_policies_globalArgs
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.security_policies_global.security_policies_global import Security_policies_global
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.security_policies_global.security_policies_global import (
+    Security_policies_globalArgs,
+)
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.security_policies_global.security_policies_global import (
+    Security_policies_global,
+)
 
 
 def main():
@@ -268,12 +272,11 @@ def main():
 
     :returns: the result form module invocation
     """
-    module = AnsibleModule(argument_spec=Security_policies_globalArgs.argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(argument_spec=Security_policies_globalArgs.argument_spec, supports_check_mode=True)
 
     result = Security_policies_global(module).execute_module()
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
