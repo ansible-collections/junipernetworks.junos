@@ -30,11 +30,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "network",
-}
+ANSIBLE_METADATA = {"metadata_version": "1.1", "status": ["preview"], "supported_by": "network"}
 
 DOCUMENTATION = """
 ---
@@ -2583,32 +2579,91 @@ EXAMPLES = """
 """
 RETURN = """
 before:
-  description: The configuration prior to the model invocation.
-  returned: always
+  description: The configuration prior to the module execution.
+  returned: when state is I(merged), I(replaced), I(overridden), I(deleted) or I(purged)
+  type: dict
   sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
+    This output will always be in the same format as the
+    module argspec.
 after:
-  description: The resulting configuration model invocation.
+  description: The resulting configuration after module execution.
   returned: when changed
+  type: dict
   sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
+    This output will always be in the same format as the
+    module argspec.
 commands:
   description: The set of commands pushed to the remote device.
-  returned: always
+  returned: when state is I(merged), I(replaced), I(overridden), I(deleted) or I(purged)
   type: list
-  sample: ['command 1', 'command 2', 'command 3']
+  sample:
+    - "<rpc-reply>
+      <configuration>
+        <security>
+          <policies>
+            <global>
+              <policy>
+                  <name>test_glob_1</name>
+                  <match>
+                      <source-address>any-ipv6</source-address>
+                      <destination-address>any-ipv6</destination-address>
+                      <application>any</application>
+                  </match>
+                  <then>
+                      <deny />
+                  </then>
+              </policy>
+            </global>
+          </policies>
+        </security>
+      </configuration>
+    </rpc-reply>"
+rendered:
+  description: The provided configuration in the task rendered in device-native format (offline).
+  returned: when state is I(rendered)
+  type: dict
+  sample:
+    - "<rpc-reply>
+      <configuration>
+        <security>
+          <policies>
+            <global>
+              <policy>
+                  <name>test_glob_1</name>
+                  <match>
+                      <source-address>any-ipv6</source-address>
+                      <destination-address>any-ipv6</destination-address>
+                      <application>any</application>
+                  </match>
+                  <then>
+                      <deny />
+                  </then>
+              </policy>
+            </global>
+          </policies>
+        </security>
+      </configuration>
+    </rpc-reply>"
+gathered:
+  description: Facts about the network resource gathered from the remote device as structured data.
+  returned: when state is I(gathered)
+  type: dict
+  sample: >
+    This output will always be in the same format as the
+    module argspec.
+parsed:
+  description: The device native config provided in I(running_config) option parsed into structured data as per module argspec.
+  returned: when state is I(parsed)
+  type: dict
+  sample: >
+    This output will always be in the same format as the
+    module argspec.
 """
 
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.security_policies.security_policies import (
-    Security_policiesArgs,
-)
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.security_policies.security_policies import (
-    Security_policies,
-)
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.security_policies.security_policies import Security_policiesArgs
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.security_policies.security_policies import Security_policies
 
 
 def main():
@@ -2617,10 +2672,7 @@ def main():
 
     :returns: the result form module invocation
     """
-    module = AnsibleModule(
-        argument_spec=Security_policiesArgs.argument_spec,
-        supports_check_mode=True,
-    )
+    module = AnsibleModule(argument_spec=Security_policiesArgs.argument_spec, supports_check_mode=True)
 
     result = Security_policies(module).execute_module()
     module.exit_json(**result)
