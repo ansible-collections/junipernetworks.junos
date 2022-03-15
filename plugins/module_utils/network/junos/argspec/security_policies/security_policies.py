@@ -22,6 +22,10 @@
 #
 #############################################
 
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
 """
 The arg spec for the junos_security_policies module
 """
@@ -675,6 +679,7 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 "firewall_authentication": {
                                                     "options": {
                                                         "pass_through": {
+                                                            "no_log": True,
                                                             "options": {
                                                                 "access_profile": {
                                                                     "type": "str"

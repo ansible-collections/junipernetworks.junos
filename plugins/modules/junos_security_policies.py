@@ -30,7 +30,11 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {"metadata_version": "1.1", "status": ["preview"], "supported_by": "network"}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "network",
+}
 
 DOCUMENTATION = """
 ---
@@ -38,7 +42,7 @@ module: junos_security_policies
 version_added: 2.9.0
 short_description: Create and manage security policies on Juniper JUNOS devices
 description: This module provides declarative creation and management of security policies on Juniper JUNOS devices
-author: Pranav Bhatt (pbhatt@redhat.com)
+author: Pranav Bhatt (@pranav-bhatt)
 requirements:
   - ncclient (>=v0.6.4)
   - xmltodict (>=0.12.0)
@@ -430,7 +434,6 @@ options:
                                 description:
                                   - Configure pass-through firewall user authentication
                                 type: dict
-                                no_log: True
                                 suboptions:
                                   access_profile:
                                     description:
@@ -2662,8 +2665,12 @@ parsed:
 
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.security_policies.security_policies import Security_policiesArgs
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.security_policies.security_policies import Security_policies
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.security_policies.security_policies import (
+    Security_policiesArgs,
+)
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.security_policies.security_policies import (
+    Security_policies,
+)
 
 
 def main():
@@ -2672,7 +2679,10 @@ def main():
 
     :returns: the result form module invocation
     """
-    module = AnsibleModule(argument_spec=Security_policiesArgs.argument_spec, supports_check_mode=True)
+    module = AnsibleModule(
+        argument_spec=Security_policiesArgs.argument_spec,
+        supports_check_mode=True,
+    )
 
     result = Security_policies(module).execute_module()
     module.exit_json(**result)
