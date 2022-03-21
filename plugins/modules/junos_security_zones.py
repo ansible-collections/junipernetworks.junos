@@ -27,13 +27,14 @@ The module file for junos_security_zones
 """
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-  'metadata_version': '1.1',
-  'status': ['preview'],
-  'supported_by': 'network'
-}
+# import debugpy
+# debugpy.listen(3000)
+# debugpy.wait_for_client()
+
+ANSIBLE_METADATA = {"metadata_version": "1.1", "status": ["preview"], "supported_by": "network"}
 
 DOCUMENTATION = """
 ---
@@ -72,49 +73,31 @@ options:
               protocols:
                 description:
                   - Protocol type of incoming traffic to accept
-                type: dict
+                type: list
+                elements: dict
                 suboptions:
-                  all:
+                  name:
                     description:
-                      - All protocols
-                    type: dict
-                    suboptions:
-                      enable:
-                        description:
-                          - Enable all protocols option
-                        type: bool
-                      except:
-                        description:
-                          - Disallow all incoming traffic
-                        type: bool
-                  names:
+                      - Type of incoming protocol to accept
+                    type: str
+                  except:
                     description:
-                      - Protocol types of incoming traffic to accept
-                    type: list
-                    elements: str
+                      - Disallow the specified protocol traffic
+                    type: bool
               system_services:
                 description:
                   - Type of incoming system-service traffic to accept
-                type: dict
+                type: list
+                elements: dict
                 suboptions:
-                  all:
-                    description:
-                      - All system services
-                    type: dict
-                    suboptions:
-                      enable:
-                        description:
-                          - Enable all system services option
-                        type: bool
-                      except:
-                        description:
-                          - Disallow all incoming system-service traffic
-                        type: bool
-                  names:
+                  name:
                     description:
                       - Type of incoming system-service traffic to accept
-                    type: list
-                    elements: str
+                    type: str
+                  except:
+                    description:
+                      - Disallow the specified incoming system-service traffic
+                    type: bool
           interfaces: &interfaces
             description:
               - Interfaces that are part of this zone
@@ -130,7 +113,7 @@ options:
         type: list
         elements: dict
         suboptions:
-          names:
+          name:
             description:
               - Name of the security zone
             type: str
@@ -152,8 +135,7 @@ options:
                   ip_prefix:
                     description:
                       - Numeric IPv4 or IPv6 address with prefix
-                    type: list
-                    elements: str
+                    type: str
                   description:
                     description:
                       - Text description of address
@@ -161,7 +143,20 @@ options:
                   dns_name:
                     description:
                       - DNS address name
-                    type: str
+                    type: dict
+                    suboptions:
+                      name:
+                        description:
+                          - Fully qualified hostname
+                        type: str
+                      ipv4_only:
+                        description:
+                          - IPv4 dns address
+                        type: bool
+                      ipv6_only:
+                        description:
+                          - IPv6 dns address
+                        type: bool
                   range_address:
                     description:
                       - Address range
@@ -189,12 +184,12 @@ options:
                     description:
                       - Name of address set
                     type: str
-                  address:
+                  addresses:
                     description:
-                      - Address to be included in this set
+                      - Addresses to be included in this set
                     type: list
                     elements: str
-                  address_set:
+                  address_sets:
                     description:
                       - Define an address-set name
                     type: list
@@ -325,12 +320,11 @@ def main():
 
     :returns: the result form module invocation
     """
-    module = AnsibleModule(argument_spec=Security_zonesArgs.argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(argument_spec=Security_zonesArgs.argument_spec, supports_check_mode=True)
 
     result = Security_zones(module).execute_module()
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

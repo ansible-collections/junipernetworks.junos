@@ -183,27 +183,20 @@ class Security_zones(ConfigBase):
         zones_node = build_root_xml_node("zones")
 
         def build_host_inbound_traffic(node, host_inbound_traffic):
+            host_inbound_traffic_node = build_child_xml_node(node, "host-inbound-traffic")
 
             if "protocols" in host_inbound_traffic:
-                if "all" in host_inbound_traffic["protocols"]:
-                    protocol_node = build_child_xml_node(node, "protocols")
-                    build_child_xml_node(protocol_node, "name", "all")
-                    if "except" in host_inbound_traffic["protocols"]["all"]:
+                for protocol in host_inbound_traffic["protocols"]:
+                    protocol_node = build_child_xml_node(host_inbound_traffic_node, "protocols")
+                    build_child_xml_node(protocol_node, "name", protocol["name"])
+                    if "except" in protocol:
                         build_child_xml_node(protocol_node, "except")
-                if "names" in host_inbound_traffic["protocols"]:
-                    for protocol in host_inbound_traffic["protocols"]["names"]:
-                        protocol_node = build_child_xml_node(node, "protocols")
-                        build_child_xml_node(protocol_node, "name", protocol)
             if "system_services" in host_inbound_traffic:
-                if "all" in host_inbound_traffic["system_services"]:
-                    system_services_node = build_child_xml_node(node, "system-services")
-                    build_child_xml_node(system_services_node, "name", "all")
-                    if "except" in host_inbound_traffic["system_services"]["all"]:
-                        build_child_xml_node(system_services_node, "except")
-                if "names" in host_inbound_traffic["system_services"]:
-                    for system_services in host_inbound_traffic["system_services"]["names"]:
-                        system_services_node = build_child_xml_node(node, "system-services")
-                        build_child_xml_node(system_services_node, "name", system_services)
+                for system_service in host_inbound_traffic["system_services"]:
+                    system_service_node = build_child_xml_node(host_inbound_traffic_node, "system-services")
+                    build_child_xml_node(system_service_node, "name", system_service["name"])
+                    if "except" in system_service:
+                        build_child_xml_node(system_service_node, "except")
 
         # add zone-pair policies
         if "functional_zone_management" in want.keys():
@@ -224,11 +217,10 @@ class Security_zones(ConfigBase):
 
         # add global policies
         if "security_zones" in want.keys():
-            security_zones_node = build_child_xml_node(zones_node, "security-zone")
             security_zones = want.get("security_zones")
 
             for security_zone in security_zones:
-                security_zone_node = build_child_xml_node(security_zones_node, "security-zone")
+                security_zone_node = build_child_xml_node(zones_node, "security-zone")
                 if "name" in security_zone:
                     build_child_xml_node(security_zone_node, "name", security_zone["name"])
                 if "address_book" in security_zone:
@@ -242,34 +234,41 @@ class Security_zones(ConfigBase):
                             if "ip_prefix" in address:
                                 build_child_xml_node(address_node, "ip-prefix", address["ip_prefix"])
                             elif "dns_name" in address:
-                                build_child_xml_node(address_node, "dns-name", address["dns_name"])
+                                dns_node = build_child_xml_node(address_node, "dns-name")
+                                build_child_xml_node(dns_node, "name", address["dns_name"]["name"])
+                                if "ipv4_only" in address["dns_name"]:
+                                    build_child_xml_node(dns_node, "ipv4-only")
+                                if "ipv6_only" in address["dns_name"]:
+                                    build_child_xml_node(dns_node, "ipv6-only")
                             elif "range_address" in address:
                                 range_address_node = build_child_xml_node(address_node, "range-address")
                                 build_child_xml_node(range_address_node, "name", address["range_address"]["from"])
                                 to_node = build_child_xml_node(range_address_node, "to")
                                 build_child_xml_node(to_node, "range-high", address["range_address"]["to"])
                             elif "wildcard_address" in address:
-                                build_child_xml_node(address_node, "dns-name", address["dns_name"])
+                                wildcard_node = build_child_xml_node(address_node, "wildcard-address")
+                                build_child_xml_node(wildcard_node, "name", address["wildcard_address"])
                             if "description" in address:
-                                build_child_xml_node(address_node, "dns-name", address["dns_name"])
+                                build_child_xml_node(address_node, "description", address["description"])
                     if "address_sets" in security_zone["address_book"]:
                         for address_set in security_zone["address_book"]["address_sets"]:
                             address_set_node = build_child_xml_node(address_book_node, "address-set")
 
                             build_child_xml_node(address_set_node, "name", address_set["name"])
-                            if "address" in address_set:
-                                for address in address_set["address"]:
+                            if "addresses" in address_set:
+                                for address in address_set["addresses"]:
                                     addr_node = build_child_xml_node(address_set_node, "address")
-                                    build_child_xml_node(addr_node, "name", address["name"])
-                            if "address_set" in address_set:
-                                for address in address_set["address"]:
-                                    addr_node = build_child_xml_node(address_set_node, "address")
-                                    build_child_xml_node(addr_node, "name", address["name"])
+                                    build_child_xml_node(addr_node, "name", address)
+                            if "address_sets" in address_set:
+                                for address in address_set["address_sets"]:
+                                    addr_node = build_child_xml_node(address_set_node, "address-set")
+                                    build_child_xml_node(addr_node, "name", address)
                             if "description" in address_set:
-                                build_child_xml_node(address_set_node, "description", address["description"])
+                                build_child_xml_node(address_set_node, "description", address_set["description"])
 
                 if "advance_policy_based_routing_profile" in security_zone:
-                    build_child_xml_node(security_zone_node, "advance-policy-based-routing-profile", security_zone["advance_policy_based_routing_profile"])
+                    routing_profile_node = build_child_xml_node(security_zone_node, "advance-policy-based-routing-profile")
+                    build_child_xml_node(routing_profile_node, "profile", security_zone["advance_policy_based_routing_profile"])
                 if "application_tracking" in security_zone:
                     build_child_xml_node(security_zone_node, "application-tracking")
                 if "description" in security_zone:
@@ -283,11 +282,11 @@ class Security_zones(ConfigBase):
                         interface_node = build_child_xml_node(security_zone_node, "interfaces")
                         build_child_xml_node(interface_node, "name", interface)
                 if "screen" in security_zone:
-                    build_child_xml_node(security_zones_node, "screen", security_zone["screen"])
+                    build_child_xml_node(security_zone_node, "screen", security_zone["screen"])
                 if "source_identity_log" in security_zone:
-                    build_child_xml_node(security_zones_node, "source-identity-log")
+                    build_child_xml_node(security_zone_node, "source-identity-log")
                 if "tcp_rst" in security_zone:
-                    build_child_xml_node(security_zones_node, "tcp-rst")
+                    build_child_xml_node(security_zone_node, "tcp-rst")
 
         if zones_node is not None:
             zones_xml.append(zones_node)
