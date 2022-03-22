@@ -18,7 +18,7 @@
       - set security zones security-zone test_sec_zone1 enable-reverse-reroute
       - set security zones security-zone test_sec_zone1 description "test description"
       - set security zones security-zone test_sec_zone1 application-tracking
-      - set security zones security-zone test_sec_zone1 advance-policy-based-routing-profile test_profile      
+      - set security zones security-zone test_sec_zone1 advance-policy-based-routing-profile test_profile
       - set security zones security-zone test_sec_zone1 host-inbound-traffic protocols all
       - set security zones security-zone test_sec_zone1 host-inbound-traffic protocols bgp except
       - set security zones security-zone test_sec_zone1 host-inbound-traffic system-services all
@@ -36,4 +36,3 @@
       - set security zones security-zone test_sec_zone1 address-book address-set test_adrset3 address-set test_adrset1
       - set security zones security-zone test_sec_zone1 address-book address-set test_adrset3 address-set test_adrset2
       - set security zones security-zone test_sec_zone1 address-book address-set test_adrset3 description "test description"
-

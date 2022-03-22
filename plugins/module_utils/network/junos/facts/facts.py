@@ -42,6 +42,7 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     Security_policies_globalFacts,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.security_zones.security_zones import Security_zonesFacts
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.security_zones.security_zones import Security_zonesFacts
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.snmp_server.snmp_server import Snmp_serverFacts
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.routing_options.routing_options import Routing_optionsFacts
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.hostname.hostname import HostnameFacts

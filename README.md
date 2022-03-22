@@ -13,7 +13,7 @@ This collection has been tested against Juniper Networks Junos OS 18.4R1.
 This collection has been tested against following Ansible versions: **>=2.9.10**.
 
 For collections that support Ansible 2.9, please ensure you update your `network_os` to use the
-fully qualified collection name (for example, `junipernetworks.junos.junos`).
+fully qualified collection name (for example, `cisco.ios.ios`).
 Plugins and modules within a collection may be tested with only specific Ansible versions.
 A collection may contain metadata that identifies these versions.
 PEP440 is the schema used to describe the versions of Ansible.
@@ -83,6 +83,7 @@ The Juniper Networks Junos collection supports `network_cli` and `netconf` conne
 | [junipernetworks.junos.junos_scp](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_scp_module.rst)                                           | Transfer files from or to remote devices running Junos                                                       |
 | [junipernetworks.junos.junos_security_policies](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_security_policies_module.rst)               | Create and manage security policies on Juniper JUNOS devices                                                 |
 | [junipernetworks.junos.junos_security_policies_global](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_security_policies_global_module.rst) | Manage global security policy settings on Juniper JUNOS devices                                              |
+| [junipernetworks.junos.junos_security_zones](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_security_zones_module.rst)                     | Manage security zones on Juniper JUNOS devices                                                               |
 | [junipernetworks.junos.junos_snmp_server](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_snmp_server_module.rst)                           | Manage SNMP server configuration on Junos devices.                                                           |
 | [junipernetworks.junos.junos_static_route](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_static_route_module.rst)                         | (deprecated, removed after 2022-06-01) Manage static IP routes on Juniper JUNOS network devices              |
 | [junipernetworks.junos.junos_static_routes](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_static_routes_module.rst)                       | Static routes resource module                                                                                |

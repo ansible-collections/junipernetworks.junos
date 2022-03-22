@@ -17,8 +17,12 @@ from copy import deepcopy
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
 
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.security_zones.security_zones import Security_zonesArgs
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
+    utils,
+)
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.security_zones.security_zones import (
+    Security_zonesArgs,
+)
 
 from ansible.module_utils.six import string_types
 
@@ -57,7 +61,9 @@ class Security_zonesFacts(object):
     def _get_xml_dict(self, xml_root):
         if not HAS_XMLTODICT:
             self._module.fail_json(msg=missing_required_lib("xmltodict"))
-        xml_dict = xmltodict.parse(etree.tostring(xml_root), dict_constructor=dict)
+        xml_dict = xmltodict.parse(
+            etree.tostring(xml_root), dict_constructor=dict
+        )
         return xml_dict
 
     def _get_device_data(self, connection, config_filters):
@@ -92,7 +98,9 @@ class Security_zonesFacts(object):
 
         # split the config into instances of the resource
         if isinstance(data, string_types):
-            data = etree.fromstring(to_bytes(data, errors="surrogate_then_replace"))
+            data = etree.fromstring(
+                to_bytes(data, errors="surrogate_then_replace")
+            )
         objs = {}
         resources = data.xpath("configuration/security/zones")
         for resource in resources:
@@ -103,7 +111,9 @@ class Security_zonesFacts(object):
         facts = {}
         if objs:
             facts["security_zones"] = {}
-            params = utils.validate_config(self.argument_spec, {"config": objs})
+            params = utils.validate_config(
+                self.argument_spec, {"config": objs}
+            )
 
             facts["security_zones"] = utils.remove_empties(params["config"])
 
@@ -127,25 +137,38 @@ class Security_zonesFacts(object):
 
         if "functional-zone" in conf:
             security_zones_config["functional_zone_management"] = {}
-            functional_zone_management = conf.get("functional-zone").get("management") or {}
+            functional_zone_management = (
+                conf.get("functional-zone").get("management") or {}
+            )
 
             if "description" in functional_zone_management:
-                security_zones_config["functional_zone_management"]["description"] = functional_zone_management["description"]
+                security_zones_config["functional_zone_management"][
+                    "description"
+                ] = functional_zone_management["description"]
 
             if "host-inbound-traffic" in functional_zone_management:
-                security_zones_config["functional_zone_management"]["host_inbound_traffic"] = self.parse_host_inbound_traffic(
+                security_zones_config["functional_zone_management"][
+                    "host_inbound_traffic"
+                ] = self.parse_host_inbound_traffic(
                     functional_zone_management["host-inbound-traffic"]
                 )
 
             if "interfaces" in functional_zone_management:
                 if isinstance(functional_zone_management["interfaces"], dict):
-                    functional_zone_management["interfaces"] = [functional_zone_management["interfaces"]]
-                security_zones_config["functional_zone_management"]["interfaces"] = [
-                    interface["name"] for interface in functional_zone_management["interfaces"]
+                    functional_zone_management["interfaces"] = [
+                        functional_zone_management["interfaces"]
+                    ]
+                security_zones_config["functional_zone_management"][
+                    "interfaces"
+                ] = [
+                    interface["name"]
+                    for interface in functional_zone_management["interfaces"]
                 ]
 
             if "screen" in functional_zone_management:
-                security_zones_config["functional_zone_management"]["screen"] = functional_zone_management["screen"]
+                security_zones_config["functional_zone_management"][
+                    "screen"
+                ] = functional_zone_management["screen"]
 
         if "security-zone" in conf:
             security_zones_list = conf.get("security-zone")
@@ -162,56 +185,102 @@ class Security_zonesFacts(object):
 
                     if "address" in security_zone["address-book"]:
                         temp_sec_zone["address_book"]["addresses"] = []
-                        if isinstance(security_zone["address-book"]["address"], dict):
-                            security_zone["address-book"]["address"] = [security_zone["address-book"]["address"]]
+                        if isinstance(
+                            security_zone["address-book"]["address"], dict
+                        ):
+                            security_zone["address-book"]["address"] = [
+                                security_zone["address-book"]["address"]
+                            ]
 
-                        for address in security_zone["address-book"]["address"]:
+                        for address in security_zone["address-book"][
+                            "address"
+                        ]:
                             temp_address = {}
 
                             temp_address["name"] = address["name"]
                             if "ip-prefix" in address:
-                                temp_address["ip_prefix"] = address["ip-prefix"]
+                                temp_address["ip_prefix"] = address[
+                                    "ip-prefix"
+                                ]
                             elif "dns-name" in address:
                                 temp_address["dns_name"] = {}
-                                temp_address["dns_name"]["name"] = address["dns-name"]["name"]
+                                temp_address["dns_name"]["name"] = address[
+                                    "dns-name"
+                                ]["name"]
                                 if "ipv4-only" in address["dns-name"]:
-                                    temp_address["dns_name"]["ipv4_only"] = True
+                                    temp_address["dns_name"][
+                                        "ipv4_only"
+                                    ] = True
                                 if "ipv6-only" in address["dns-name"]:
-                                    temp_address["dns_name"]["ipv6_only"] = True
+                                    temp_address["dns_name"][
+                                        "ipv6_only"
+                                    ] = True
                             elif "range-address" in address:
                                 temp_address["range_address"] = {}
-                                temp_address["range_address"]["from"] = address["range-address"]["name"]
-                                temp_address["range_address"]["to"] = address["range-address"]["to"]["range-high"]
+                                temp_address["range_address"][
+                                    "from"
+                                ] = address["range-address"]["name"]
+                                temp_address["range_address"]["to"] = address[
+                                    "range-address"
+                                ]["to"]["range-high"]
                             elif "wildcard-address" in address:
-                                temp_address["wildcard_address"] = address["wildcard-address"]["name"]
+                                temp_address["wildcard_address"] = address[
+                                    "wildcard-address"
+                                ]["name"]
                             if "description" in address:
-                                temp_address["description"] = address["description"]
+                                temp_address["description"] = address[
+                                    "description"
+                                ]
 
-                            temp_sec_zone["address_book"]["addresses"].append(temp_address)
+                            temp_sec_zone["address_book"]["addresses"].append(
+                                temp_address
+                            )
 
                     if "address-set" in security_zone["address-book"]:
                         temp_sec_zone["address_book"]["address_sets"] = []
 
-                        for address_set in security_zone["address-book"]["address-set"]:
+                        for address_set in security_zone["address-book"][
+                            "address-set"
+                        ]:
 
                             temp_address_set = {}
 
                             temp_address_set["name"] = address_set["name"]
                             if "address" in address_set:
                                 if isinstance(address_set["address"], dict):
-                                    address_set["address"] = [address_set["address"]]
-                                temp_address_set["addresses"] = [address["name"] for address in address_set["address"]]
+                                    address_set["address"] = [
+                                        address_set["address"]
+                                    ]
+                                temp_address_set["addresses"] = [
+                                    address["name"]
+                                    for address in address_set["address"]
+                                ]
                             if "address-set" in address_set:
-                                if isinstance(address_set["address-set"], dict):
-                                    address_set["address-set"] = [address_set["address-set"]]
-                                temp_address_set["address_sets"] = [addr_set["name"] for addr_set in address_set["address-set"]]
+                                if isinstance(
+                                    address_set["address-set"], dict
+                                ):
+                                    address_set["address-set"] = [
+                                        address_set["address-set"]
+                                    ]
+                                temp_address_set["address_sets"] = [
+                                    addr_set["name"]
+                                    for addr_set in address_set["address-set"]
+                                ]
                             if "description" in address_set:
-                                temp_address_set["description"] = address_set["description"]
+                                temp_address_set["description"] = address_set[
+                                    "description"
+                                ]
 
-                            temp_sec_zone["address_book"]["address_sets"].append(temp_address_set)
+                            temp_sec_zone["address_book"][
+                                "address_sets"
+                            ].append(temp_address_set)
 
                 if "advance-policy-based-routing-profile" in security_zone:
-                    temp_sec_zone["advance_policy_based_routing_profile"] = security_zone["advance-policy-based-routing-profile"]["profile"]
+                    temp_sec_zone[
+                        "advance_policy_based_routing_profile"
+                    ] = security_zone["advance-policy-based-routing-profile"][
+                        "profile"
+                    ]
                 if "application-tracking" in security_zone:
                     temp_sec_zone["application_tracking"] = True
                 if "description" in security_zone:
@@ -219,11 +288,20 @@ class Security_zonesFacts(object):
                 if "enable-reverse-reroute" in security_zone:
                     temp_sec_zone["enable_reverse_reroute"] = True
                 if "host-inbound-traffic" in security_zone:
-                    temp_sec_zone["host_inbound_traffic"] = self.parse_host_inbound_traffic(security_zone["host-inbound-traffic"])
+                    temp_sec_zone[
+                        "host_inbound_traffic"
+                    ] = self.parse_host_inbound_traffic(
+                        security_zone["host-inbound-traffic"]
+                    )
                 if "interfaces" in security_zone:
                     if isinstance(security_zone["interfaces"], string_types):
-                        security_zone["interfaces"] = [security_zone["interfaces"]]
-                    temp_sec_zone["interfaces"] = [interface["name"] for interface in security_zone["interfaces"]]
+                        security_zone["interfaces"] = [
+                            security_zone["interfaces"]
+                        ]
+                    temp_sec_zone["interfaces"] = [
+                        interface["name"]
+                        for interface in security_zone["interfaces"]
+                    ]
                 if "screen" in security_zone:
                     temp_sec_zone["screen"] = security_zone["screen"]
                 if "source-identity-log" in security_zone:
@@ -241,7 +319,9 @@ class Security_zonesFacts(object):
         if "protocols" in host_inbound_traffic:
             temp_hit["protocols"] = []
             if isinstance(host_inbound_traffic["protocols"], dict):
-                host_inbound_traffic["protocols"] = [host_inbound_traffic["protocols"]]
+                host_inbound_traffic["protocols"] = [
+                    host_inbound_traffic["protocols"]
+                ]
             for protocol in host_inbound_traffic["protocols"]:
                 temp_protocol = {}
                 temp_protocol["name"] = protocol["name"]
@@ -253,7 +333,9 @@ class Security_zonesFacts(object):
         if "system-services" in host_inbound_traffic:
             temp_hit["system_services"] = []
             if isinstance(host_inbound_traffic["system-services"], dict):
-                host_inbound_traffic["system-services"] = [host_inbound_traffic["system-services"]]
+                host_inbound_traffic["system-services"] = [
+                    host_inbound_traffic["system-services"]
+                ]
             for system_services in host_inbound_traffic["system-services"]:
                 temp_system_services = {}
                 temp_system_services["name"] = system_services["name"]
