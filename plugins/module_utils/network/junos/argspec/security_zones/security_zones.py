@@ -46,8 +46,22 @@ class Security_zonesArgs(object):  # pylint: disable=R0903
                         "description": {"type": "str"},
                         "host_inbound_traffic": {
                             "options": {
-                                "protocols": {"elements": "dict", "options": {"except": {"type": "bool"}, "name": {"type": "str"}}, "type": "list"},
-                                "system_services": {"elements": "dict", "options": {"except": {"type": "bool"}, "name": {"type": "str"}}, "type": "list"},
+                                "protocols": {
+                                    "elements": "dict",
+                                    "options": {
+                                        "except": {"type": "bool"},
+                                        "name": {"type": "str"},
+                                    },
+                                    "type": "list",
+                                },
+                                "system_services": {
+                                    "elements": "dict",
+                                    "options": {
+                                        "except": {"type": "bool"},
+                                        "name": {"type": "str"},
+                                    },
+                                    "type": "list",
+                                },
                             },
                             "type": "dict",
                         },
@@ -64,8 +78,14 @@ class Security_zonesArgs(object):  # pylint: disable=R0903
                                 "address_sets": {
                                     "elements": "dict",
                                     "options": {
-                                        "address_sets": {"elements": "str", "type": "list"},
-                                        "addresses": {"elements": "str", "type": "list"},
+                                        "address_sets": {
+                                            "elements": "str",
+                                            "type": "list",
+                                        },
+                                        "addresses": {
+                                            "elements": "str",
+                                            "type": "list",
+                                        },
                                         "description": {"type": "str"},
                                         "name": {"type": "str"},
                                     },
@@ -76,12 +96,22 @@ class Security_zonesArgs(object):  # pylint: disable=R0903
                                     "options": {
                                         "description": {"type": "str"},
                                         "dns_name": {
-                                            "options": {"ipv4_only": {"type": "bool"}, "ipv6_only": {"type": "bool"}, "name": {"type": "str"}},
+                                            "options": {
+                                                "ipv4_only": {"type": "bool"},
+                                                "ipv6_only": {"type": "bool"},
+                                                "name": {"type": "str"},
+                                            },
                                             "type": "dict",
                                         },
                                         "ip_prefix": {"type": "str"},
                                         "name": {"type": "str"},
-                                        "range_address": {"options": {"from": {"type": "str"}, "to": {"type": "str"}}, "type": "dict"},
+                                        "range_address": {
+                                            "options": {
+                                                "from": {"type": "str"},
+                                                "to": {"type": "str"},
+                                            },
+                                            "type": "dict",
+                                        },
                                         "wildcard_address": {"type": "str"},
                                     },
                                     "type": "list",
@@ -89,14 +119,30 @@ class Security_zonesArgs(object):  # pylint: disable=R0903
                             },
                             "type": "dict",
                         },
-                        "advance_policy_based_routing_profile": {"type": "str"},
+                        "advance_policy_based_routing_profile": {
+                            "type": "str"
+                        },
                         "application_tracking": {"type": "bool"},
                         "description": {"type": "str"},
                         "enable_reverse_reroute": {"type": "bool"},
                         "host_inbound_traffic": {
                             "options": {
-                                "protocols": {"elements": "dict", "options": {"except": {"type": "bool"}, "name": {"type": "str"}}, "type": "list"},
-                                "system_services": {"elements": "dict", "options": {"except": {"type": "bool"}, "name": {"type": "str"}}, "type": "list"},
+                                "protocols": {
+                                    "elements": "dict",
+                                    "options": {
+                                        "except": {"type": "bool"},
+                                        "name": {"type": "str"},
+                                    },
+                                    "type": "list",
+                                },
+                                "system_services": {
+                                    "elements": "dict",
+                                    "options": {
+                                        "except": {"type": "bool"},
+                                        "name": {"type": "str"},
+                                    },
+                                    "type": "list",
+                                },
                             },
                             "type": "dict",
                         },
@@ -112,5 +158,17 @@ class Security_zonesArgs(object):  # pylint: disable=R0903
             "type": "dict",
         },
         "running_config": {"type": "str"},
-        "state": {"choices": ["merged", "replaced", "overridden", "deleted", "rendered", "gathered", "parsed"], "default": "merged", "type": "str"},
+        "state": {
+            "choices": [
+                "merged",
+                "replaced",
+                "overridden",
+                "deleted",
+                "rendered",
+                "gathered",
+                "parsed",
+            ],
+            "default": "merged",
+            "type": "str",
+        },
     }  # pylint: disable=C0301
