@@ -37,6 +37,7 @@ options:
       to the device is present in this list, the existing cache is invalidated.
     version_added: 2.0.0
     type: list
+    elements: str
     default: []
     vars:
     - name: ansible_junos_config_commands
@@ -51,9 +52,7 @@ from functools import wraps
 from ansible.errors import AnsibleConnectionFailure
 from ansible.module_utils._text import to_text
 from ansible.module_utils.common._collections_compat import Mapping
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    to_list,
-)
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import to_list
 from ansible.plugins.cliconf import CliconfBase
 
 
@@ -61,11 +60,7 @@ def configure(func):
     @wraps(func)
     def wrapped(self, *args, **kwargs):
         prompt = self._connection.get_prompt()
-        if (
-            not to_text(prompt, errors="surrogate_or_strict")
-            .strip()
-            .endswith("#")
-        ):
+        if not to_text(prompt, errors="surrogate_or_strict").strip().endswith("#"):
             self.send_command("configure")
         return func(self, *args, **kwargs)
 
@@ -79,9 +74,7 @@ class Cliconf(CliconfBase):
 
     def get_text(self, ele, tag):
         try:
-            return to_text(
-                ele.find(tag).text, errors="surrogate_then_replace"
-            ).strip()
+            return to_text(ele.find(tag).text, errors="surrogate_then_replace").strip()
         except AttributeError:
             pass
 
@@ -111,16 +104,11 @@ class Cliconf(CliconfBase):
 
     def get_config(self, source="running", format="text", flags=None):
         if source != "running":
-            raise ValueError(
-                "fetching configuration from %s is not supported" % source
-            )
+            raise ValueError("fetching configuration from %s is not supported" % source)
 
         options_values = self.get_option_values()
         if format not in options_values["format"]:
-            raise ValueError(
-                "'format' value %s is invalid. Valid values are %s"
-                % (format, ",".join(options_values["format"]))
-            )
+            raise ValueError("'format' value %s is invalid. Valid values are %s" % (format, ",".join(options_values["format"])))
 
         if format == "text":
             cmd = "show configuration"
@@ -132,14 +120,10 @@ class Cliconf(CliconfBase):
         return self.send_command(cmd)
 
     @configure
-    def edit_config(
-        self, candidate=None, commit=True, replace=None, comment=None
-    ):
+    def edit_config(self, candidate=None, commit=True, replace=None, comment=None):
 
         operations = self.get_device_operations()
-        self.check_edit_config_capability(
-            operations, candidate, commit, replace, comment
-        )
+        self.check_edit_config_capability(operations, candidate, commit, replace, comment)
 
         resp = {}
         results = []
@@ -177,31 +161,13 @@ class Cliconf(CliconfBase):
         resp["response"] = results
         return resp
 
-    def get(
-        self,
-        command,
-        prompt=None,
-        answer=None,
-        sendonly=False,
-        output=None,
-        newline=True,
-        check_all=False,
-    ):
+    def get(self, command, prompt=None, answer=None, sendonly=False, output=None, newline=True, check_all=False):
         if output:
             command = self._get_command_with_output(command, output)
-        return self.send_command(
-            command=command,
-            prompt=prompt,
-            answer=answer,
-            sendonly=sendonly,
-            newline=newline,
-            check_all=check_all,
-        )
+        return self.send_command(command=command, prompt=prompt, answer=answer, sendonly=sendonly, newline=newline, check_all=check_all)
 
     @configure
-    def commit(
-        self, comment=None, confirmed=False, at_time=None, synchronize=False
-    ):
+    def commit(self, comment=None, confirmed=False, at_time=None, synchronize=False):
         """
         Execute commit command on remote device.
         :param comment: Comment to be associated with commit
@@ -248,12 +214,7 @@ class Cliconf(CliconfBase):
         resp = self.send_command(command)
 
         r = resp.splitlines()
-        if (
-            len(r) == 1
-            and "[edit]" in r[0]
-            or len(r) == 4
-            and r[1].startswith("- version")
-        ):
+        if len(r) == 1 and "[edit]" in r[0] or len(r) == 4 and r[1].startswith("- version"):
             resp = ""
 
         return resp
@@ -292,23 +253,11 @@ class Cliconf(CliconfBase):
         }
 
     def get_option_values(self):
-        return {
-            "format": ["text", "set", "xml", "json"],
-            "diff_match": [],
-            "diff_replace": [],
-            "output": ["text", "set", "xml", "json"],
-        }
+        return {"format": ["text", "set", "xml", "json"], "diff_match": [], "diff_replace": [], "output": ["text", "set", "xml", "json"]}
 
     def get_capabilities(self):
         result = super(Cliconf, self).get_capabilities()
-        result["rpc"] += [
-            "commit",
-            "discard_changes",
-            "run_commands",
-            "compare_configuration",
-            "validate",
-            "get_diff",
-        ]
+        result["rpc"] += ["commit", "discard_changes", "run_commands", "compare_configuration", "validate", "get_diff"]
         result["device_operations"] = self.get_device_operations()
         result.update(self.get_option_values())
         return json.dumps(result)
@@ -324,19 +273,13 @@ class Cliconf(CliconfBase):
     def _get_command_with_output(self, command, output):
         options_values = self.get_option_values()
         if output not in options_values["output"]:
-            raise ValueError(
-                "'output' value %s is invalid. Valid values are %s"
-                % (output, ",".join(options_values["output"]))
-            )
+            raise ValueError("'output' value %s is invalid. Valid values are %s" % (output, ",".join(options_values["output"])))
 
         if output == "json" and not command.endswith("| display json"):
             cmd = "%s | display json" % command
         elif output == "xml" and not command.endswith("| display xml"):
             cmd = "%s | display xml" % command
-        elif output == "text" and (
-            command.endswith("| display json")
-            or command.endswith("| display xml")
-        ):
+        elif output == "text" and (command.endswith("| display json") or command.endswith("| display xml")):
             cmd = command.rsplit("|", 1)[0]
         else:
             cmd = command
