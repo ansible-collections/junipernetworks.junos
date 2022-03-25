@@ -1,6 +1,0 @@
----
-minor_changes:
-  - Added Security Policies Global module
-  - Added Security Policies module
-trivial:
-  - Fixed sanity tests
