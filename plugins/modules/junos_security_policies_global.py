@@ -205,6 +205,9 @@ options:
         within the result. For state I(rendered) active connection to remote host is
         not required.
         behaviour for this module.
+      - The state I(replaced) will replace the running configuration with the provided
+        configuration
+      - The state I(replaced) and state I(overridden) have the same behaviour
       - The state I(gathered) will fetch the running configuration from device and transform
         it into structured data in the format as per the resource module argspec and
         the value is returned in the I(gathered) key within the result.
@@ -890,7 +893,7 @@ EXAMPLES = """
 RETURN = """
 before:
   description: The configuration prior to the module execution.
-  returned: when state is I(merged), I(replaced), I(overridden), I(deleted) or I(purged)
+  returned: when state is I(merged), I(replaced), I(overridden), I(deleted)
   type: dict
   sample: >
     This output will always be in the same format as the
@@ -904,7 +907,7 @@ after:
     module argspec.
 commands:
   description: The set of commands pushed to the remote device.
-  returned: when state is I(merged), I(replaced), I(overridden), I(deleted) or I(purged)
+  returned: when state is I(merged), I(replaced), I(overridden) or I(deleted)
   type: list
   sample:
     - "<rpc-reply>
@@ -966,8 +969,18 @@ def main():
 
     :returns: the result form module invocation
     """
+
+    required_if = [
+        ("state", "merged", ("config",)),
+        ("state", "replaced", ("config",)),
+        ("state", "overridden", ("config",)),
+        ("state", "rendered", ("config",)),
+        ("state", "parsed", ("running_config",)),
+    ]
+
     module = AnsibleModule(
         argument_spec=Security_policies_globalArgs.argument_spec,
+        required_if=required_if,
         supports_check_mode=True,
     )
 

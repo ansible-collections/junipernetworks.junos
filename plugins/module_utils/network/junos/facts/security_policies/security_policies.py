@@ -133,7 +133,7 @@ class Security_policiesFacts(object):
         security_policies_config = {}
 
         # Parse facts for security policies
-        conf = conf.get("policies")
+        conf = conf.get("policies") or {}
 
         if "policy" in conf:
             security_policies_config["from_zones"] = []

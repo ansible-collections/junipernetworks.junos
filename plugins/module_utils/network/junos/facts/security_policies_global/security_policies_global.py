@@ -135,7 +135,7 @@ class Security_policies_globalFacts(object):
         security_policies_global_config = {}
 
         # Parse facts for security policies global settings
-        global_policies = conf.get("policies")
+        global_policies = conf.get("policies") or {}
 
         if "default-policy" in global_policies:
             if "deny-all" in global_policies["default-policy"]:
