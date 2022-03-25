@@ -89,6 +89,9 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.ntp_global.ntp_global import (
     Ntp_globalFacts,
 )
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.security_policies.security_policies import (
+    Security_policiesFacts,
+)
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.snmp_server.snmp_server import (
     Snmp_serverFacts,
 )
@@ -124,6 +127,7 @@ FACT_RESOURCE_SUBSETS = dict(
     prefix_lists=Prefix_listsFacts,
     logging_global=Logging_globalFacts,
     ntp_global=Ntp_globalFacts,
+    security_policies=Security_policiesFacts,
     snmp_server=Snmp_serverFacts,
     routing_options=Routing_optionsFacts,
     hostname=HostnameFacts,
