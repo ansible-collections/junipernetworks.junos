@@ -30,10 +30,6 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-# import debugpy
-# debugpy.listen(3000)
-# debugpy.wait_for_client()
-
 ANSIBLE_METADATA = {
     "metadata_version": "1.1",
     "status": ["preview"],
@@ -206,6 +202,27 @@ options:
             description:
               - Enable Advance Policy Based Routing on this zone
             type: str
+          advanced_connection_tracking:
+            description:
+              - Enable Advance Policy Based Routing on this zone
+            type: dict
+            suboptions:
+              mode:
+                description:
+                  - Set connection tracking mode
+                type: str
+                choices:
+                  - allow-any-host
+                  - allow-target-host
+                  - allow-target-host-port
+              timeout:
+                description:
+                  - Timeout value in seconds for advanced-connection-tracking table for this zone
+                type: int
+              track_all_policies_to_this_zone:
+                description:
+                  - Mandate all policies with to-zone set to this zone to do connection track table lookup
+                type: bool
           application_tracking:
             description:
               - Enable Application tracking support for this zone
@@ -228,6 +245,10 @@ options:
           tcp_rst:
             description:
               - Send RST for NON-SYN packet not matching TCP session
+            type: bool
+          unidirectional_session_refreshing:
+            description:
+              - Enable unidirectional session refreshing on this zone
             type: bool
 
   running_config:
@@ -1957,8 +1978,17 @@ def main():
 
     :returns: the result form module invocation
     """
+    required_if = [
+        ("state", "merged", ("config",)),
+        ("state", "replaced", ("config",)),
+        ("state", "overridden", ("config",)),
+        ("state", "rendered", ("config",)),
+        ("state", "parsed", ("running_config",)),
+    ]
+
     module = AnsibleModule(
         argument_spec=Security_zonesArgs.argument_spec,
+        required_if=required_if,
         supports_check_mode=True,
     )
 

@@ -122,6 +122,23 @@ class Security_zonesArgs(object):  # pylint: disable=R0903
                         "advance_policy_based_routing_profile": {
                             "type": "str"
                         },
+                        "advanced_connection_tracking": {
+                            "options": {
+                                "mode": {
+                                    "choices": [
+                                        "allow-any-host",
+                                        "allow-target-host",
+                                        "allow-target-host-port",
+                                    ],
+                                    "type": "str",
+                                },
+                                "timeout": {"type": "int"},
+                                "track_all_policies_to_this_zone": {
+                                    "type": "bool"
+                                },
+                            },
+                            "type": "dict",
+                        },
                         "application_tracking": {"type": "bool"},
                         "description": {"type": "str"},
                         "enable_reverse_reroute": {"type": "bool"},
@@ -151,6 +168,7 @@ class Security_zonesArgs(object):  # pylint: disable=R0903
                         "screen": {"type": "str"},
                         "source_identity_log": {"type": "bool"},
                         "tcp_rst": {"type": "bool"},
+                        "unidirectional_session_refreshing": {"type": "bool"},
                     },
                     "type": "list",
                 },
