@@ -25,9 +25,15 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import patch
-from ansible_collections.junipernetworks.junos.plugins.modules import junos_security_zones
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
+from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
+    patch,
+)
+from ansible_collections.junipernetworks.junos.plugins.modules import (
+    junos_security_zones,
+)
+from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
+    set_module_args,
+)
 from .junos_module import TestJunosModule, load_fixture
 
 
@@ -37,10 +43,14 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
     def setUp(self):
         super(TestJunosSecurity_zonesModule, self).setUp()
 
-        self.mock_lock_configuration = patch("ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration")
+        self.mock_lock_configuration = patch(
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration"
+        )
         self.lock_configuration = self.mock_lock_configuration.start()
 
-        self.mock_unlock_configuration = patch("ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration")
+        self.mock_unlock_configuration = patch(
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration"
+        )
         self.unlock_configuration = self.mock_unlock_configuration.start()
 
         self.mock_load_config = patch(
@@ -67,7 +77,9 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
         self.mock_commit_configuration.stop()
         self.mock_execute_show_command.stop()
 
-    def load_fixtures(self, commands=None, format="text", changed=False, filename=None):
+    def load_fixtures(
+        self, commands=None, format="text", changed=False, filename=None
+    ):
         def load_from_file(*args, **kwargs):
             output = load_fixture("junos_security_zones_config.cfg")
             return output
@@ -100,8 +112,14 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                     "functional_zone_management": {
                         "description": "test description",
                         "host_inbound_traffic": {
-                            "protocols": [{"name": "all"}, {"except": True, "name": "bgp"}],
-                            "system_services": [{"name": "all"}, {"except": True, "name": "dhcp"}],
+                            "protocols": [
+                                {"name": "all"},
+                                {"except": True, "name": "bgp"},
+                            ],
+                            "system_services": [
+                                {"name": "all"},
+                                {"except": True, "name": "dhcp"},
+                            ],
                         },
                         "interfaces": ["ge-0/0/1.0", "ge-0/0/2.0"],
                         "screen": "test_screen",
@@ -110,31 +128,79 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                         {
                             "address_book": {
                                 "address_sets": [
-                                    {"addresses": ["test_adr1", "test_adr2"], "name": "test_adrset1"},
-                                    {"addresses": ["test_adr3", "test_adr4"], "name": "test_adrset2"},
                                     {
-                                        "address_sets": ["test_adrset1", "test_adrset2"],
+                                        "addresses": [
+                                            "test_adr1",
+                                            "test_adr2",
+                                        ],
+                                        "name": "test_adrset1",
+                                    },
+                                    {
+                                        "addresses": [
+                                            "test_adr3",
+                                            "test_adr4",
+                                        ],
+                                        "name": "test_adrset2",
+                                    },
+                                    {
+                                        "address_sets": [
+                                            "test_adrset1",
+                                            "test_adrset2",
+                                        ],
                                         "addresses": ["test_adr5"],
                                         "description": "test description",
                                         "name": "test_adrset3",
                                     },
                                 ],
                                 "addresses": [
-                                    {"description": "test desc", "ip_prefix": "10.0.0.0/24", "name": "test_adr1"},
-                                    {"dns_name": {"ipv6_only": True, "name": "1.1.1.1"}, "name": "test_adr2"},
-                                    {"name": "test_adr3", "range_address": {"from": "10.2.0.1", "to": "10.2.0.2"}},
-                                    {"name": "test_adr4", "wildcard_address": "10.3.0.1/24"},
-                                    {"description": "test desc", "ip_prefix": "10.1.0.0/24", "name": "test_adr5"},
+                                    {
+                                        "description": "test desc",
+                                        "ip_prefix": "10.0.0.0/24",
+                                        "name": "test_adr1",
+                                    },
+                                    {
+                                        "dns_name": {
+                                            "ipv6_only": True,
+                                            "name": "1.1.1.1",
+                                        },
+                                        "name": "test_adr2",
+                                    },
+                                    {
+                                        "name": "test_adr3",
+                                        "range_address": {
+                                            "from": "10.2.0.1",
+                                            "to": "10.2.0.2",
+                                        },
+                                    },
+                                    {
+                                        "name": "test_adr4",
+                                        "wildcard_address": "10.3.0.1/24",
+                                    },
+                                    {
+                                        "description": "test desc",
+                                        "ip_prefix": "10.1.0.0/24",
+                                        "name": "test_adr5",
+                                    },
                                 ],
                             },
                             "advance_policy_based_routing_profile": "test_profile",
-                            "advanced_connection_tracking": {"mode": "allow-any-host", "timeout": "20", "track_all_policies_to_this_zone": True},
+                            "advanced_connection_tracking": {
+                                "mode": "allow-any-host",
+                                "timeout": "20",
+                                "track_all_policies_to_this_zone": True,
+                            },
                             "application_tracking": True,
                             "description": "test description",
                             "enable_reverse_reroute": True,
                             "host_inbound_traffic": {
-                                "protocols": [{"name": "all"}, {"except": True, "name": "bgp"}],
-                                "system_services": [{"name": "all"}, {"except": True, "name": "dhcp"}],
+                                "protocols": [
+                                    {"name": "all"},
+                                    {"except": True, "name": "bgp"},
+                                ],
+                                "system_services": [
+                                    {"name": "all"},
+                                    {"except": True, "name": "dhcp"},
+                                ],
                             },
                             "interfaces": ["ge-0/0/3.0", "ge-0/0/4.0"],
                             "name": "test_sec_zone1",
@@ -175,7 +241,9 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
             "c:interfaces><nc:name>ge-0/0/4.0</nc:name></nc:interfaces><nc:screen>test_screen</nc:screen><nc:source-identity-log/><nc:tcp-rst"
             "/><nc:unidirectional-session-refreshing/></nc:security-zone></nc:zones></nc:security>"
         )
-        self.assertEqual(self.sorted_xml(commands), self.sorted_xml(str(result["commands"])))
+        self.assertEqual(
+            self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
+        )
 
     def test_junos_security_zones_parsed_01(self):
         parsed_str = """
@@ -328,8 +396,16 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
             "functional_zone_management": {
                 "description": "test description 2",
                 "host_inbound_traffic": {
-                    "protocols": [{"name": "all"}, {"except": True, "name": "bgp"}, {"except": True, "name": "bfd"}],
-                    "system_services": [{"name": "all"}, {"except": True, "name": "dhcp"}, {"except": True, "name": "dhcpv6"}],
+                    "protocols": [
+                        {"name": "all"},
+                        {"except": True, "name": "bgp"},
+                        {"except": True, "name": "bfd"},
+                    ],
+                    "system_services": [
+                        {"name": "all"},
+                        {"except": True, "name": "dhcp"},
+                        {"except": True, "name": "dhcpv6"},
+                    ],
                 },
                 "interfaces": ["ge-0/0/1.0", "ge-0/0/2.0"],
                 "screen": "test_screen",
@@ -338,31 +414,73 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                 {
                     "address_book": {
                         "address_sets": [
-                            {"addresses": ["test_adr1", "test_adr2"], "name": "test_adrset1"},
-                            {"addresses": ["test_adr3", "test_adr4"], "name": "test_adrset2"},
                             {
-                                "address_sets": ["test_adrset1", "test_adrset2"],
+                                "addresses": ["test_adr1", "test_adr2"],
+                                "name": "test_adrset1",
+                            },
+                            {
+                                "addresses": ["test_adr3", "test_adr4"],
+                                "name": "test_adrset2",
+                            },
+                            {
+                                "address_sets": [
+                                    "test_adrset1",
+                                    "test_adrset2",
+                                ],
                                 "addresses": ["test_adr5"],
                                 "description": "test description",
                                 "name": "test_adrset3",
                             },
                         ],
                         "addresses": [
-                            {"description": "test desc", "ip_prefix": "10.0.0.0/24", "name": "test_adr1"},
-                            {"dns_name": {"ipv6_only": True, "name": "1.1.1.1"}, "name": "test_adr2"},
-                            {"name": "test_adr3", "range_address": {"from": "10.2.0.1", "to": "10.2.0.2"}},
-                            {"name": "test_adr4", "wildcard_address": "10.3.0.1/24"},
-                            {"description": "test desc", "ip_prefix": "10.1.0.0/24", "name": "test_adr5"},
+                            {
+                                "description": "test desc",
+                                "ip_prefix": "10.0.0.0/24",
+                                "name": "test_adr1",
+                            },
+                            {
+                                "dns_name": {
+                                    "ipv6_only": True,
+                                    "name": "1.1.1.1",
+                                },
+                                "name": "test_adr2",
+                            },
+                            {
+                                "name": "test_adr3",
+                                "range_address": {
+                                    "from": "10.2.0.1",
+                                    "to": "10.2.0.2",
+                                },
+                            },
+                            {
+                                "name": "test_adr4",
+                                "wildcard_address": "10.3.0.1/24",
+                            },
+                            {
+                                "description": "test desc",
+                                "ip_prefix": "10.1.0.0/24",
+                                "name": "test_adr5",
+                            },
                         ],
                     },
                     "advance_policy_based_routing_profile": "test_profile",
-                    "advanced_connection_tracking": {"mode": "allow-any-host", "timeout": "20", "track_all_policies_to_this_zone": True},
+                    "advanced_connection_tracking": {
+                        "mode": "allow-any-host",
+                        "timeout": "20",
+                        "track_all_policies_to_this_zone": True,
+                    },
                     "application_tracking": True,
                     "description": "test description",
                     "enable_reverse_reroute": True,
                     "host_inbound_traffic": {
-                        "protocols": [{"name": "all"}, {"except": True, "name": "bgp"}],
-                        "system_services": [{"name": "all"}, {"except": True, "name": "dhcp"}],
+                        "protocols": [
+                            {"name": "all"},
+                            {"except": True, "name": "bgp"},
+                        ],
+                        "system_services": [
+                            {"name": "all"},
+                            {"except": True, "name": "dhcp"},
+                        ],
                     },
                     "interfaces": ["ge-0/0/3.0", "ge-0/0/4.0"],
                     "name": "test_sec_zone1",
@@ -371,7 +489,11 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                     "tcp_rst": True,
                     "unidirectional_session_refreshing": True,
                 },
-                {"name": "test_sec_zone2", "source_identity_log": True, "tcp_rst": True},
+                {
+                    "name": "test_sec_zone2",
+                    "source_identity_log": True,
+                    "tcp_rst": True,
+                },
             ],
         }
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
@@ -382,7 +504,10 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                 config={
                     "functional_zone_management": {
                         "description": "test description 2",
-                        "host_inbound_traffic": {"protocols": [{"name": "all"}], "system_services": [{"name": "all"}]},
+                        "host_inbound_traffic": {
+                            "protocols": [{"name": "all"}],
+                            "system_services": [{"name": "all"}],
+                        },
                         "interfaces": ["ge-0/0/1.0", "ge-0/0/2.0"],
                         "screen": "test_screen",
                     },
@@ -390,21 +515,59 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                         {
                             "address_book": {
                                 "address_sets": [
-                                    {"addresses": ["test_adr1", "test_adr2"], "name": "test_adrset1"},
-                                    {"addresses": ["test_adr3", "test_adr4"], "name": "test_adrset2"},
                                     {
-                                        "address_sets": ["test_adrset1", "test_adrset2"],
+                                        "addresses": [
+                                            "test_adr1",
+                                            "test_adr2",
+                                        ],
+                                        "name": "test_adrset1",
+                                    },
+                                    {
+                                        "addresses": [
+                                            "test_adr3",
+                                            "test_adr4",
+                                        ],
+                                        "name": "test_adrset2",
+                                    },
+                                    {
+                                        "address_sets": [
+                                            "test_adrset1",
+                                            "test_adrset2",
+                                        ],
                                         "addresses": ["test_adr5"],
                                         "description": "test description",
                                         "name": "test_adrset3",
                                     },
                                 ],
                                 "addresses": [
-                                    {"description": "test desc", "ip_prefix": "10.0.0.0/24", "name": "test_adr1"},
-                                    {"dns_name": {"ipv6_only": True, "name": "1.1.1.1"}, "name": "test_adr2"},
-                                    {"name": "test_adr3", "range_address": {"from": "10.2.0.1", "to": "10.2.0.2"}},
-                                    {"name": "test_adr4", "wildcard_address": "10.3.0.1/24"},
-                                    {"description": "test desc", "ip_prefix": "10.1.0.0/24", "name": "test_adr5"},
+                                    {
+                                        "description": "test desc",
+                                        "ip_prefix": "10.0.0.0/24",
+                                        "name": "test_adr1",
+                                    },
+                                    {
+                                        "dns_name": {
+                                            "ipv6_only": True,
+                                            "name": "1.1.1.1",
+                                        },
+                                        "name": "test_adr2",
+                                    },
+                                    {
+                                        "name": "test_adr3",
+                                        "range_address": {
+                                            "from": "10.2.0.1",
+                                            "to": "10.2.0.2",
+                                        },
+                                    },
+                                    {
+                                        "name": "test_adr4",
+                                        "wildcard_address": "10.3.0.1/24",
+                                    },
+                                    {
+                                        "description": "test desc",
+                                        "ip_prefix": "10.1.0.0/24",
+                                        "name": "test_adr5",
+                                    },
                                 ],
                             },
                             "advance_policy_based_routing_profile": "test_profile",
@@ -412,8 +575,14 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                             "description": "test description",
                             "enable_reverse_reroute": True,
                             "host_inbound_traffic": {
-                                "protocols": [{"name": "all"}, {"except": True, "name": "bgp"}],
-                                "system_services": [{"name": "all"}, {"except": True, "name": "dhcp"}],
+                                "protocols": [
+                                    {"name": "all"},
+                                    {"except": True, "name": "bgp"},
+                                ],
+                                "system_services": [
+                                    {"name": "all"},
+                                    {"except": True, "name": "dhcp"},
+                                ],
                             },
                             "interfaces": ["ge-0/0/3.0", "ge-0/0/4.0"],
                             "name": "test_sec_zone1",
@@ -451,7 +620,9 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
             ":name>ge-0/0/4.0</nc:name></nc:interfaces><nc:screen>test_screen</nc:screen><nc:source-identity-log/><nc:tcp-rst/></nc:security-"
             "zone></nc:zones></nc:security>"
         )
-        self.assertEqual(self.sorted_xml(commands), self.sorted_xml(str(result["commands"])))
+        self.assertEqual(
+            self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
+        )
 
     def test_junos_security_zones_gathered(self):
         """
@@ -463,8 +634,16 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
             "functional_zone_management": {
                 "description": "test description 2",
                 "host_inbound_traffic": {
-                    "protocols": [{"name": "all"}, {"except": True, "name": "bgp"}, {"except": True, "name": "bfd"}],
-                    "system_services": [{"name": "all"}, {"except": True, "name": "dhcp"}, {"except": True, "name": "dhcpv6"}],
+                    "protocols": [
+                        {"name": "all"},
+                        {"except": True, "name": "bgp"},
+                        {"except": True, "name": "bfd"},
+                    ],
+                    "system_services": [
+                        {"name": "all"},
+                        {"except": True, "name": "dhcp"},
+                        {"except": True, "name": "dhcpv6"},
+                    ],
                 },
                 "interfaces": ["ge-0/0/1.0", "ge-0/0/2.0"],
                 "screen": "test_screen",
@@ -473,21 +652,53 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                 {
                     "address_book": {
                         "address_sets": [
-                            {"addresses": ["test_adr1", "test_adr2"], "name": "test_adrset1"},
-                            {"addresses": ["test_adr3", "test_adr4"], "name": "test_adrset2"},
                             {
-                                "address_sets": ["test_adrset1", "test_adrset2"],
+                                "addresses": ["test_adr1", "test_adr2"],
+                                "name": "test_adrset1",
+                            },
+                            {
+                                "addresses": ["test_adr3", "test_adr4"],
+                                "name": "test_adrset2",
+                            },
+                            {
+                                "address_sets": [
+                                    "test_adrset1",
+                                    "test_adrset2",
+                                ],
                                 "addresses": ["test_adr5"],
                                 "description": "test description",
                                 "name": "test_adrset3",
                             },
                         ],
                         "addresses": [
-                            {"description": "test desc", "ip_prefix": "10.0.0.0/24", "name": "test_adr1"},
-                            {"dns_name": {"ipv6_only": True, "name": "1.1.1.1"}, "name": "test_adr2"},
-                            {"name": "test_adr3", "range_address": {"from": "10.2.0.1", "to": "10.2.0.2"}},
-                            {"name": "test_adr4", "wildcard_address": "10.3.0.1/24"},
-                            {"description": "test desc", "ip_prefix": "10.1.0.0/24", "name": "test_adr5"},
+                            {
+                                "description": "test desc",
+                                "ip_prefix": "10.0.0.0/24",
+                                "name": "test_adr1",
+                            },
+                            {
+                                "dns_name": {
+                                    "ipv6_only": True,
+                                    "name": "1.1.1.1",
+                                },
+                                "name": "test_adr2",
+                            },
+                            {
+                                "name": "test_adr3",
+                                "range_address": {
+                                    "from": "10.2.0.1",
+                                    "to": "10.2.0.2",
+                                },
+                            },
+                            {
+                                "name": "test_adr4",
+                                "wildcard_address": "10.3.0.1/24",
+                            },
+                            {
+                                "description": "test desc",
+                                "ip_prefix": "10.1.0.0/24",
+                                "name": "test_adr5",
+                            },
                         ],
                     },
                     "advance_policy_based_routing_profile": "test_profile",
@@ -495,8 +706,14 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                     "description": "test description",
                     "enable_reverse_reroute": True,
                     "host_inbound_traffic": {
-                        "protocols": [{"name": "all"}, {"except": True, "name": "bgp"}],
-                        "system_services": [{"name": "all"}, {"except": True, "name": "dhcp"}],
+                        "protocols": [
+                            {"name": "all"},
+                            {"except": True, "name": "bgp"},
+                        ],
+                        "system_services": [
+                            {"name": "all"},
+                            {"except": True, "name": "dhcp"},
+                        ],
                     },
                     "interfaces": ["ge-0/0/3.0", "ge-0/0/4.0"],
                     "name": "test_sec_zone1",
@@ -504,7 +721,11 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                     "source_identity_log": True,
                     "tcp_rst": True,
                 },
-                {"name": "test_sec_zone2", "source_identity_log": True, "tcp_rst": True},
+                {
+                    "name": "test_sec_zone2",
+                    "source_identity_log": True,
+                    "tcp_rst": True,
+                },
             ],
         }
         self.assertEqual(sorted(gather_list), sorted(result["gathered"]))
@@ -516,8 +737,14 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                     "functional_zone_management": {
                         "description": "test description",
                         "host_inbound_traffic": {
-                            "protocols": [{"name": "all"}, {"except": True, "name": "bgp"}],
-                            "system_services": [{"name": "all"}, {"except": True, "name": "dhcp"}],
+                            "protocols": [
+                                {"name": "all"},
+                                {"except": True, "name": "bgp"},
+                            ],
+                            "system_services": [
+                                {"name": "all"},
+                                {"except": True, "name": "dhcp"},
+                            ],
                         },
                         "interfaces": ["ge-0/0/1.0", "ge-0/0/2.0"],
                         "screen": "test_screen",
@@ -526,21 +753,59 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                         {
                             "address_book": {
                                 "address_sets": [
-                                    {"addresses": ["test_adr1", "test_adr2"], "name": "test_adrset1"},
-                                    {"addresses": ["test_adr3", "test_adr4"], "name": "test_adrset2"},
                                     {
-                                        "address_sets": ["test_adrset1", "test_adrset2"],
+                                        "addresses": [
+                                            "test_adr1",
+                                            "test_adr2",
+                                        ],
+                                        "name": "test_adrset1",
+                                    },
+                                    {
+                                        "addresses": [
+                                            "test_adr3",
+                                            "test_adr4",
+                                        ],
+                                        "name": "test_adrset2",
+                                    },
+                                    {
+                                        "address_sets": [
+                                            "test_adrset1",
+                                            "test_adrset2",
+                                        ],
                                         "addresses": ["test_adr5"],
                                         "description": "test description",
                                         "name": "test_adrset3",
                                     },
                                 ],
                                 "addresses": [
-                                    {"description": "test desc", "ip_prefix": "10.0.0.0/24", "name": "test_adr1"},
-                                    {"dns_name": {"ipv6_only": True, "name": "1.1.1.1"}, "name": "test_adr2"},
-                                    {"name": "test_adr3", "range_address": {"from": "10.2.0.1", "to": "10.2.0.2"}},
-                                    {"name": "test_adr4", "wildcard_address": "10.3.0.1/24"},
-                                    {"description": "test desc", "ip_prefix": "10.1.0.0/24", "name": "test_adr5"},
+                                    {
+                                        "description": "test desc",
+                                        "ip_prefix": "10.0.0.0/24",
+                                        "name": "test_adr1",
+                                    },
+                                    {
+                                        "dns_name": {
+                                            "ipv6_only": True,
+                                            "name": "1.1.1.1",
+                                        },
+                                        "name": "test_adr2",
+                                    },
+                                    {
+                                        "name": "test_adr3",
+                                        "range_address": {
+                                            "from": "10.2.0.1",
+                                            "to": "10.2.0.2",
+                                        },
+                                    },
+                                    {
+                                        "name": "test_adr4",
+                                        "wildcard_address": "10.3.0.1/24",
+                                    },
+                                    {
+                                        "description": "test desc",
+                                        "ip_prefix": "10.1.0.0/24",
+                                        "name": "test_adr5",
+                                    },
                                 ],
                             },
                             "advance_policy_based_routing_profile": "test_profile",
@@ -548,8 +813,14 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                             "description": "test description",
                             "enable_reverse_reroute": True,
                             "host_inbound_traffic": {
-                                "protocols": [{"name": "all"}, {"except": True, "name": "bgp"}],
-                                "system_services": [{"name": "all"}, {"except": True, "name": "dhcp"}],
+                                "protocols": [
+                                    {"name": "all"},
+                                    {"except": True, "name": "bgp"},
+                                ],
+                                "system_services": [
+                                    {"name": "all"},
+                                    {"except": True, "name": "dhcp"},
+                                ],
                             },
                             "interfaces": ["ge-0/0/3.0", "ge-0/0/4.0"],
                             "name": "test_sec_zone1",
@@ -588,7 +859,9 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
             ":security>"
         )
         result = self.execute_module(changed=False)
-        self.assertEqual(self.sorted_xml(result["rendered"]), self.sorted_xml(rendered))
+        self.assertEqual(
+            self.sorted_xml(result["rendered"]), self.sorted_xml(rendered)
+        )
 
     def test_junos_security_zones_replaced_01(self):
         set_module_args(
@@ -596,7 +869,10 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                 config={
                     "functional_zone_management": {
                         "description": "test description 2",
-                        "host_inbound_traffic": {"protocols": [{"name": "all"}], "system_services": [{"name": "all"}]},
+                        "host_inbound_traffic": {
+                            "protocols": [{"name": "all"}],
+                            "system_services": [{"name": "all"}],
+                        },
                         "interfaces": ["ge-0/0/1.0", "ge-0/0/2.0"],
                         "screen": "test_screen",
                     },
@@ -604,21 +880,59 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                         {
                             "address_book": {
                                 "address_sets": [
-                                    {"addresses": ["test_adr1", "test_adr2"], "name": "test_adrset1"},
-                                    {"addresses": ["test_adr3", "test_adr4"], "name": "test_adrset2"},
                                     {
-                                        "address_sets": ["test_adrset1", "test_adrset2"],
+                                        "addresses": [
+                                            "test_adr1",
+                                            "test_adr2",
+                                        ],
+                                        "name": "test_adrset1",
+                                    },
+                                    {
+                                        "addresses": [
+                                            "test_adr3",
+                                            "test_adr4",
+                                        ],
+                                        "name": "test_adrset2",
+                                    },
+                                    {
+                                        "address_sets": [
+                                            "test_adrset1",
+                                            "test_adrset2",
+                                        ],
                                         "addresses": ["test_adr5"],
                                         "description": "test description",
                                         "name": "test_adrset3",
                                     },
                                 ],
                                 "addresses": [
-                                    {"description": "test desc", "ip_prefix": "10.0.0.0/24", "name": "test_adr1"},
-                                    {"dns_name": {"ipv6_only": True, "name": "1.1.1.1"}, "name": "test_adr2"},
-                                    {"name": "test_adr3", "range_address": {"from": "10.2.0.1", "to": "10.2.0.2"}},
-                                    {"name": "test_adr4", "wildcard_address": "10.3.0.1/24"},
-                                    {"description": "test desc", "ip_prefix": "10.1.0.0/24", "name": "test_adr5"},
+                                    {
+                                        "description": "test desc",
+                                        "ip_prefix": "10.0.0.0/24",
+                                        "name": "test_adr1",
+                                    },
+                                    {
+                                        "dns_name": {
+                                            "ipv6_only": True,
+                                            "name": "1.1.1.1",
+                                        },
+                                        "name": "test_adr2",
+                                    },
+                                    {
+                                        "name": "test_adr3",
+                                        "range_address": {
+                                            "from": "10.2.0.1",
+                                            "to": "10.2.0.2",
+                                        },
+                                    },
+                                    {
+                                        "name": "test_adr4",
+                                        "wildcard_address": "10.3.0.1/24",
+                                    },
+                                    {
+                                        "description": "test desc",
+                                        "ip_prefix": "10.1.0.0/24",
+                                        "name": "test_adr5",
+                                    },
                                 ],
                             },
                             "advance_policy_based_routing_profile": "test_profile",
@@ -626,8 +940,14 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                             "description": "test description",
                             "enable_reverse_reroute": True,
                             "host_inbound_traffic": {
-                                "protocols": [{"name": "all"}, {"except": True, "name": "bgp"}],
-                                "system_services": [{"name": "all"}, {"except": True, "name": "dhcp"}],
+                                "protocols": [
+                                    {"name": "all"},
+                                    {"except": True, "name": "bgp"},
+                                ],
+                                "system_services": [
+                                    {"name": "all"},
+                                    {"except": True, "name": "dhcp"},
+                                ],
                             },
                             "interfaces": ["ge-0/0/3.0", "ge-0/0/4.0"],
                             "name": "test_sec_zone1",
@@ -665,5 +985,6 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
             ":name>ge-0/0/4.0</nc:name></nc:interfaces><nc:screen>test_screen</nc:screen><nc:source-identity-log/><nc:tcp-rst/></nc:security-"
             "zone></nc:zones></nc:security>"
         )
-        self.assertEqual(self.sorted_xml(commands), self.sorted_xml(str(result["commands"])))
-
+        self.assertEqual(
+            self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
+        )
