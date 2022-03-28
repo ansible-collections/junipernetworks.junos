@@ -281,6 +281,25 @@ class Security_zonesFacts(object):
                     ] = security_zone["advance-policy-based-routing-profile"][
                         "profile"
                     ]
+                if "advanced-connection-tracking" in security_zone:
+                    temp_sec_zone["advanced_connection_tracking"] = {}
+                    temp_act = temp_sec_zone["advanced_connection_tracking"]
+                    if "mode" in security_zone["advanced-connection-tracking"]:
+                        temp_act["mode"] = security_zone[
+                            "advanced-connection-tracking"
+                        ]["mode"]
+                    if (
+                        "timeout"
+                        in security_zone["advanced-connection-tracking"]
+                    ):
+                        temp_act["timeout"] = security_zone[
+                            "advanced-connection-tracking"
+                        ]["timeout"]
+                    if (
+                        "track-all-policies-to-this-zone"
+                        in security_zone["advanced-connection-tracking"]
+                    ):
+                        temp_act["track_all_policies_to_this_zone"] = True
                 if "application-tracking" in security_zone:
                     temp_sec_zone["application_tracking"] = True
                 if "description" in security_zone:
@@ -308,6 +327,8 @@ class Security_zonesFacts(object):
                     temp_sec_zone["source_identity_log"] = True
                 if "tcp-rst" in security_zone:
                     temp_sec_zone["tcp_rst"] = True
+                if "unidirectional-session-refreshing" in security_zone:
+                    temp_sec_zone["unidirectional_session_refreshing"] = True
 
                 security_zones_config["security_zones"].append(temp_sec_zone)
 

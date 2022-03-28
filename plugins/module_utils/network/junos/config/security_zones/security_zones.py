@@ -389,6 +389,36 @@ class Security_zones(ConfigBase):
                         "profile",
                         security_zone["advance_policy_based_routing_profile"],
                     )
+                if "advanced_connection_tracking" in security_zone:
+                    act_node = build_child_xml_node(
+                        security_zone_node, "advanced-connection-tracking"
+                    )
+                    if "mode" in security_zone["advanced_connection_tracking"]:
+                        build_child_xml_node(
+                            act_node,
+                            "mode",
+                            security_zone["advanced_connection_tracking"][
+                                "mode"
+                            ],
+                        )
+                    if (
+                        "timeout"
+                        in security_zone["advanced_connection_tracking"]
+                    ):
+                        build_child_xml_node(
+                            act_node,
+                            "timeout",
+                            security_zone["advanced_connection_tracking"][
+                                "timeout"
+                            ],
+                        )
+                    if (
+                        "track_all_policies_to_this_zone"
+                        in security_zone["advanced_connection_tracking"]
+                    ):
+                        build_child_xml_node(
+                            act_node, "track-all-policies-to-this-zone"
+                        )
                 if "application_tracking" in security_zone:
                     build_child_xml_node(
                         security_zone_node, "application-tracking"
@@ -424,6 +454,10 @@ class Security_zones(ConfigBase):
                     )
                 if "tcp_rst" in security_zone:
                     build_child_xml_node(security_zone_node, "tcp-rst")
+                if "unidirectional_session_refreshing" in security_zone:
+                    build_child_xml_node(
+                        security_zone_node, "unidirectional-session-refreshing"
+                    )
 
         if zones_node is not None:
             zones_xml.append(zones_node)

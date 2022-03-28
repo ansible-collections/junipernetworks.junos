@@ -184,6 +184,11 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                                 ],
                             },
                             "advance_policy_based_routing_profile": "test_profile",
+                            "advanced_connection_tracking": {
+                                "mode": "allow-any-host",
+                                "timeout": "20",
+                                "track_all_policies_to_this_zone": True,
+                            },
                             "application_tracking": True,
                             "description": "test description",
                             "enable_reverse_reroute": True,
@@ -202,6 +207,7 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                             "screen": "test_screen",
                             "source_identity_log": True,
                             "tcp_rst": True,
+                            "unidirectional_session_refreshing": True,
                         }
                     ],
                 },
@@ -227,12 +233,13 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
             ":name><nc:address><nc:name>test_adr5</nc:name></nc:address><nc:address-set><nc:name>test_adrset1</nc:name></nc:address-set><nc:a"
             "ddress-set><nc:name>test_adrset2</nc:name></nc:address-set><nc:description>test description</nc:description></nc:address-set></n"
             "c:address-book><nc:advance-policy-based-routing-profile><nc:profile>test_profile</nc:profile></nc:advance-policy-based-routing-p"
-            "rofile><nc:application-tracking/><nc:description>test description</nc:description><nc:enable-reverse-reroute/><nc:host-inbound-t"
-            "raffic><nc:protocols><nc:name>all</nc:name></nc:protocols><nc:protocols><nc:name>bgp</nc:name><nc:except/></nc:protocols><nc:sys"
-            "tem-services><nc:name>all</nc:name></nc:system-services><nc:system-services><nc:name>dhcp</nc:name><nc:except/></nc:system-servi"
-            "ces></nc:host-inbound-traffic><nc:interfaces><nc:name>ge-0/0/3.0</nc:name></nc:interfaces><nc:interfaces><nc:name>ge-0/0/4.0</nc"
-            ":name></nc:interfaces><nc:screen>test_screen</nc:screen><nc:source-identity-log/><nc:tcp-rst/></nc:security-zone></nc:zones></nc"
-            ":security>"
+            "rofile><nc:advanced-connection-tracking><nc:mode>allow-any-host</nc:mode><nc:timeout>20</nc:timeout><nc:track-all-policies-to-th"
+            "is-zone/></nc:advanced-connection-tracking><nc:application-tracking/><nc:description>test description</nc:description><nc:enable"
+            "-reverse-reroute/><nc:host-inbound-traffic><nc:protocols><nc:name>all</nc:name></nc:protocols><nc:protocols><nc:name>bgp</nc:nam"
+            "e><nc:except/></nc:protocols><nc:system-services><nc:name>all</nc:name></nc:system-services><nc:system-services><nc:name>dhcp</n"
+            "c:name><nc:except/></nc:system-services></nc:host-inbound-traffic><nc:interfaces><nc:name>ge-0/0/3.0</nc:name></nc:interfaces><n"
+            "c:interfaces><nc:name>ge-0/0/4.0</nc:name></nc:interfaces><nc:screen>test_screen</nc:screen><nc:source-identity-log/><nc:tcp-rst"
+            "/><nc:unidirectional-session-refreshing/></nc:security-zone></nc:zones></nc:security>"
         )
         self.assertEqual(
             self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
@@ -343,6 +350,11 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                             <advance-policy-based-routing-profile>
                                 <profile>test_profile</profile>
                             </advance-policy-based-routing-profile>
+                            <advanced-connection-tracking>
+                                <mode>allow-any-host</mode>
+                                <timeout>20</timeout>
+                                <track-all-policies-to-this-zone/>
+                            </advanced-connection-tracking>
                             <application-tracking />
                             <description>test description</description>
                             <enable-reverse-reroute />
@@ -371,6 +383,7 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                             <screen>test_screen</screen>
                             <source-identity-log />
                             <tcp-rst />
+                            <unidirectional-session-refreshing />
                         </security-zone>
                     </zones>
                 </security>
@@ -451,6 +464,11 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                         ],
                     },
                     "advance_policy_based_routing_profile": "test_profile",
+                    "advanced_connection_tracking": {
+                        "mode": "allow-any-host",
+                        "timeout": "20",
+                        "track_all_policies_to_this_zone": True,
+                    },
                     "application_tracking": True,
                     "description": "test description",
                     "enable_reverse_reroute": True,
@@ -469,6 +487,7 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                     "screen": "test_screen",
                     "source_identity_log": True,
                     "tcp_rst": True,
+                    "unidirectional_session_refreshing": True,
                 },
                 {
                     "name": "test_sec_zone2",
