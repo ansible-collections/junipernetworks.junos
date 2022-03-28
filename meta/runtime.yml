@@ -72,6 +72,10 @@ plugin_routing:
       redirect: junipernetworks.junos.junos
     junos_lldp_global:
       redirect: junipernetworks.junos.junos
+    security_policies_global:
+      redirect: junipernetworks.junos.junos
+    junos_security_policies_global:
+      redirect: junipernetworks.junos.junos
     lldp_global:
       redirect: junipernetworks.junos.junos
     junos_bgp_global:
@@ -272,6 +276,8 @@ plugin_routing:
       redirect: junipernetworks.junos.junos_ntp_global
     security_policies:
       redirect: junipernetworks.junos.junos_security_policies
+    security_policies_global:
+      redirect: junipernetworks.junos.junos_security_policies_global
     snmp_server:
       redirect: junipernetworks.junos.junos_snmp_server
     hostname:
