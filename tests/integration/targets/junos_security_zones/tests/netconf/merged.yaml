@@ -24,7 +24,7 @@
               - ge-0/0/1.0
               - ge-0/0/2.0
             screen: test_screen
-          security_zones:
+          zones:
             - address_book:
                 address_sets:
                   - addresses:
@@ -119,7 +119,7 @@
                 - except: true
                   name: dhcpv6
                 - name: all
-          security_zones:
+          zones:
             - name: test_sec_zone2
               source_identity_log: true
               tcp_rst: true

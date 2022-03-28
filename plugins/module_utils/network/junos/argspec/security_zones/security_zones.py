@@ -70,7 +70,7 @@ class Security_zonesArgs(object):  # pylint: disable=R0903
                     },
                     "type": "dict",
                 },
-                "security_zones": {
+                "zones": {
                     "elements": "dict",
                     "options": {
                         "address_book": {

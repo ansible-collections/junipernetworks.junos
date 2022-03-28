@@ -267,8 +267,8 @@ class Security_zones(ConfigBase):
                 )
 
         # add global policies
-        if "security_zones" in want.keys():
-            security_zones = want.get("security_zones")
+        if "zones" in want.keys():
+            security_zones = want.get("zones")
 
             for security_zone in security_zones:
                 security_zone_node = build_child_xml_node(

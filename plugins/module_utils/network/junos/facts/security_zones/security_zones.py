@@ -174,7 +174,7 @@ class Security_zonesFacts(object):
             security_zones_list = conf.get("security-zone")
             if isinstance(security_zones_list, dict):
                 security_zones_list = [security_zones_list]
-            security_zones_config["security_zones"] = []
+            security_zones_config["zones"] = []
 
             for security_zone in security_zones_list:
                 temp_sec_zone = {}
@@ -330,7 +330,7 @@ class Security_zonesFacts(object):
                 if "unidirectional-session-refreshing" in security_zone:
                     temp_sec_zone["unidirectional_session_refreshing"] = True
 
-                security_zones_config["security_zones"].append(temp_sec_zone)
+                security_zones_config["zones"].append(temp_sec_zone)
 
         return security_zones_config
 

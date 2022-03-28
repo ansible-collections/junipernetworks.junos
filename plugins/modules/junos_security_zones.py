@@ -107,7 +107,7 @@ options:
             description:
               - Name of ids option object applied to the zone
             type: str
-      security_zones:
+      zones:
         description:
           - Security zones
         type: list
@@ -290,8 +290,7 @@ options:
         connection to remote host is not required.
     type: str
 """
-EXAMPLES = """
-# Using merged
+EXAMPLES = """# Using merged
 #
 # Before state
 # ------------
