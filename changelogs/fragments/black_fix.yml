@@ -1,0 +1,3 @@
+---
+bugfix:
+  - Updated black version to fix tox.
