@@ -5,6 +5,28 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v2.10.0
+=======
+
+Minor Changes
+-------------
+
+- Added junos_security_policies module.
+- Added junos_security_policies_global module.
+- Added junos_security_zones module.
+
+Bugfixes
+--------
+
+- Fixed sanity test issues
+
+New Modules
+-----------
+
+- junos_security_policies - Manage security policies on Junos devices.
+- junos_security_policies_global - Manage global security policy parameters on Junos devices.
+- junos_security_zones - Manage security zones on Junos devices.
+
 v2.9.0
 ======
 
@@ -171,8 +193,8 @@ v2.0.0
 Major Changes
 -------------
 
-- Requires ansible.netcommon v2.0.0+ to support `ansible_network_single_user_mode` and `ansible_network_import_modules`.
 - Please refer to ansible.netcommon `changelog <https://github.com/ansible-collections/ansible.netcommon/blob/main/changelogs/CHANGELOG.rst#ansible-netcommon-collection-release-notes>`_ for more details.
+- Requires ansible.netcommon v2.0.0+ to support `ansible_network_single_user_mode` and `ansible_network_import_modules`.
 
 Minor Changes
 -------------
