@@ -50,7 +50,7 @@ class Bgp_address_family(ConfigBase):
         super(Bgp_address_family, self).__init__(module)
 
     def get_bgp_address_family_facts(self, data=None):
-        """ Get the 'facts' (the current configuration)
+        """Get the 'facts' (the current configuration)
         :rtype: A dictionary
         :returns: The current configuration as a dictionary
         """
@@ -65,7 +65,7 @@ class Bgp_address_family(ConfigBase):
         return bgp_facts
 
     def execute_module(self):
-        """ Execute the module
+        """Execute the module
 
         :rtype: A dictionary
         :returns: The result from module execution
@@ -135,7 +135,7 @@ class Bgp_address_family(ConfigBase):
         return result
 
     def set_config(self, existing_bgp_address_family_facts):
-        """ Collect the configuration from the args passed to the module,
+        """Collect the configuration from the args passed to the module,
             collect the current configuration (as a dict from facts)
         :rtype: A list
         :returns: the commands necessary to migrate the current configuration
@@ -147,7 +147,7 @@ class Bgp_address_family(ConfigBase):
         return to_list(resp)
 
     def set_state(self, want, have):
-        """ Select the appropriate function based on the state provided
+        """Select the appropriate function based on the state provided
         :param want: the desired configuration as a dictionary
         :param have: the current configuration as a dictionary
         :rtype: A list
@@ -194,11 +194,11 @@ class Bgp_address_family(ConfigBase):
         return cfg_lst
 
     def _state_replaced(self, want, have):
-        """ The xml configuration generator when state is merged
-         :rtype: A list
-         :returns: the xml configuration necessary to merge the provided into
-                   the current configuration
-         """
+        """The xml configuration generator when state is merged
+        :rtype: A list
+        :returns: the xml configuration necessary to merge the provided into
+                  the current configuration
+        """
         bgp_xml = []
         bgp_xml.extend(self._state_deleted(want, have))
         bgp_xml.extend(self._state_merged(want, have))
@@ -206,7 +206,7 @@ class Bgp_address_family(ConfigBase):
         return bgp_xml
 
     def _state_merged(self, want, have):
-        """ Select the appropriate function based on the state provided
+        """Select the appropriate function based on the state provided
         :param want: the desired configuration as a dictionary
         :param have: the current configuration as a dictionary
         :rtype: A list
@@ -579,8 +579,9 @@ class Bgp_address_family(ConfigBase):
                             type_node, "output-queue-priority"
                         )
                         # add node expedited
-                        if "output_queue_priority_expedited" in type.keys() and type.get(
-                            "output_queue_priority_expedited"
+                        if (
+                            "output_queue_priority_expedited" in type.keys()
+                            and type.get("output_queue_priority_expedited")
                         ):
                             build_child_xml_node(oqp_node, "expedited")
                         # add node priority
@@ -668,8 +669,9 @@ class Bgp_address_family(ConfigBase):
                             type_node, "route-refresh-priority"
                         )
                         # add node expedited
-                        if "route_refresh_priority_expedited" in type.keys() and type.get(
-                            "route_refresh_priority_expedited"
+                        if (
+                            "route_refresh_priority_expedited" in type.keys()
+                            and type.get("route_refresh_priority_expedited")
                         ):
                             build_child_xml_node(rrp_node, "expedited")
                         # add node priority
@@ -697,8 +699,9 @@ class Bgp_address_family(ConfigBase):
                             type_node, "withdraw-priority"
                         )
                         # add node expedited
-                        if "withdraw_priority_expedited" in type.keys() and type.get(
-                            "withdraw_priority_expedited"
+                        if (
+                            "withdraw_priority_expedited" in type.keys()
+                            and type.get("withdraw_priority_expedited")
                         ):
                             build_child_xml_node(wp_node, "expedited")
                         # add node priority
@@ -748,7 +751,7 @@ class Bgp_address_family(ConfigBase):
                             build_child_xml_node(ts_node, "labeled-path")
 
     def _state_deleted(self, want, have):
-        """ The command generator when state is deleted
+        """The command generator when state is deleted
         :rtype: A list
         :returns: the commands necessary to remove the current configuration
                   of the provided objects
@@ -836,11 +839,11 @@ class Bgp_address_family(ConfigBase):
         return bgp_xml
 
     def _state_overridden(self, want, have):
-        """ The xml configuration generator when state is merged
-         :rtype: A list
-         :returns: the xml configuration necessary to merge the provided into
-                   the current configuration
-         """
+        """The xml configuration generator when state is merged
+        :rtype: A list
+        :returns: the xml configuration necessary to merge the provided into
+                  the current configuration
+        """
         bgp_xml = []
         family_root = None
         if have is not None and have.get("address_family"):

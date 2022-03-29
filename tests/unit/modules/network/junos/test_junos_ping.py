@@ -72,7 +72,7 @@ class TestJunosPingModule(TestJunosModule):
         self.assertEqual(result["commands"], "ping 10.10.10.20 count 4")
 
     def test_junos_ping_unexpected_success(self):
-        """ Test for successful pings when destination should not be reachable - FAIL. """
+        """Test for successful pings when destination should not be reachable - FAIL."""
         set_module_args(dict(count=2, dest="10.10.10.10", state="absent"))
         self.conn.get = MagicMock(
             return_value=load_fixture(
@@ -82,7 +82,7 @@ class TestJunosPingModule(TestJunosModule):
         self.execute_module(failed=True)
 
     def test_junos_ping_unexpected_failure(self):
-        """ Test for unsuccessful pings when destination should be reachable - FAIL. """
+        """Test for unsuccessful pings when destination should be reachable - FAIL."""
         set_module_args(dict(count=4, dest="10.10.10.20"))
         self.conn.get = MagicMock(
             return_value=load_fixture(

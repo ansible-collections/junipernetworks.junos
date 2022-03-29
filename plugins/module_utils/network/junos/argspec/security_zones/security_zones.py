@@ -32,8 +32,7 @@ __metaclass__ = type
 
 
 class Security_zonesArgs(object):  # pylint: disable=R0903
-    """The arg spec for the junos_security_zones module
-    """
+    """The arg spec for the junos_security_zones module"""
 
     def __init__(self, **kwargs):
         pass

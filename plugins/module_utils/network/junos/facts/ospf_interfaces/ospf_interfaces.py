@@ -44,8 +44,7 @@ except ImportError:
 
 
 class Ospf_interfacesFacts(object):
-    """ The junos ospf_interfaces fact class
-    """
+    """The junos ospf_interfaces fact class"""
 
     def __init__(self, module, subspec="config", options="options"):
         self._module = module
@@ -72,7 +71,7 @@ class Ospf_interfacesFacts(object):
         return connection.get_configuration(filter=config_filter)
 
     def populate_facts(self, connection, ansible_facts, data=None):
-        """ Populate the facts for ospf_interfaces
+        """Populate the facts for ospf_interfaces
         :param connection: the device connection
         :param ansible_facts: Facts dictionary
         :param data: previously collected conf

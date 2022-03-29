@@ -23,8 +23,7 @@ __metaclass__ = type
 
 
 class Ospfv2Args(object):  # pylint: disable=R0903
-    """The arg spec for the junos_ospfv2 module
-    """
+    """The arg spec for the junos_ospfv2 module"""
 
     def __init__(self, **kwargs):
         pass

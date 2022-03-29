@@ -31,8 +31,7 @@ __metaclass__ = type
 
 
 class VlansArgs(object):  # pylint: disable=R0903
-    """The arg spec for the junos_vlans module
-    """
+    """The arg spec for the junos_vlans module"""
 
     def __init__(self, **kwargs):
         pass

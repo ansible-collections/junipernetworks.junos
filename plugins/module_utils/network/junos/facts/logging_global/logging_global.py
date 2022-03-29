@@ -40,8 +40,7 @@ except ImportError:
 
 
 class Logging_globalFacts(object):
-    """ The junos logging_global fact class
-    """
+    """The junos logging_global fact class"""
 
     def __init__(self, module, subspec="config", options="options"):
         self._module = module
@@ -66,7 +65,7 @@ class Logging_globalFacts(object):
         return connection.get_configuration(filter=config_filter)
 
     def populate_facts(self, connection, ansible_facts, data=None):
-        """ Populate the facts for logging_gloabl
+        """Populate the facts for logging_gloabl
         :param connection: the device connection
         :param ansible_facts: Facts dictionary
         :param data: previously collected conf

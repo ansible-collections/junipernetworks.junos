@@ -167,8 +167,7 @@ def install_package(module, device):
 
 
 def main():
-    """ Main entry point for Ansible module execution
-    """
+    """Main entry point for Ansible module execution"""
     argument_spec = dict(
         src=dict(type="path", required=True, aliases=["package"]),
         version=dict(),

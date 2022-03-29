@@ -31,8 +31,7 @@ __metaclass__ = type
 
 
 class HostnameArgs(object):  # pylint: disable=R0903
-    """The arg spec for the junos_hostname module
-    """
+    """The arg spec for the junos_hostname module"""
 
     def __init__(self, **kwargs):
         pass

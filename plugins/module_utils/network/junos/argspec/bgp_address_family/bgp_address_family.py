@@ -30,8 +30,7 @@ __metaclass__ = type
 
 
 class Bgp_address_familyArgs(object):  # pylint: disable=R0903
-    """The arg spec for the junos_bgp_address_family module
-    """
+    """The arg spec for the junos_bgp_address_family module"""
 
     def __init__(self, **kwargs):
         pass
