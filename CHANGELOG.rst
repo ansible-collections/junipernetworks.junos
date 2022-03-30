@@ -5,6 +5,23 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v2.10.0
+=======
+
+Minor Changes
+-------------
+
+- Added junos_security_policies module.
+- Added junos_security_policies_global module.
+- Added junos_security_zones module.
+
+New Modules
+-----------
+
+- junos_security_policies - Manage security policies on Junos devices.
+- junos_security_policies_global - Manage global security policy parameters on Junos devices.
+- junos_security_zones - Manage security zones on Junos devices.
+
 v2.9.0
 ======
 
