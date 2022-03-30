@@ -49,7 +49,7 @@ class Lldp_global(ConfigBase):
         super(Lldp_global, self).__init__(module)
 
     def get_lldp_global_facts(self, data=None):
-        """ Get the 'facts' (the current configuration)
+        """Get the 'facts' (the current configuration)
         :rtype: A dictionary
         :returns: The current configuration as a dictionary
         """
@@ -62,7 +62,7 @@ class Lldp_global(ConfigBase):
         return lldp_facts
 
     def execute_module(self):
-        """ Execute the module
+        """Execute the module
         :rtype: A dictionary
         :returns: The result from module execution
         """
@@ -122,7 +122,7 @@ class Lldp_global(ConfigBase):
         return result
 
     def set_config(self, existing_lldp_global_facts):
-        """ Collect the configuration from the args passed to the module,
+        """Collect the configuration from the args passed to the module,
             collect the current configuration (as a dict from facts)
         :rtype: A list
         :returns: the commands necessary to migrate the current configuration
@@ -134,7 +134,7 @@ class Lldp_global(ConfigBase):
         return to_list(resp)
 
     def set_state(self, want, have):
-        """ Select the appropriate function based on the state provided
+        """Select the appropriate function based on the state provided
         :param want: the desired configuration as a dictionary
         :param have: the current configuration as a dictionary
         :rtype: A list
@@ -161,11 +161,11 @@ class Lldp_global(ConfigBase):
         return tostring(root)
 
     def _state_replaced(self, want, have):
-        """ The xml configuration generator when state is merged
-         :rtype: A list
-         :returns: the xml configuration necessary to merge the provided into
-                   the current configuration
-         """
+        """The xml configuration generator when state is merged
+        :rtype: A list
+        :returns: the xml configuration necessary to merge the provided into
+                  the current configuration
+        """
         lldp_xml = []
         lldp_xml.extend(self._state_deleted(want, have))
         lldp_xml.extend(self._state_merged(want, have))
@@ -173,7 +173,7 @@ class Lldp_global(ConfigBase):
         return lldp_xml
 
     def _state_merged(self, want, have):
-        """ Select the appropriate function based on the state provided
+        """Select the appropriate function based on the state provided
         :param want: the desired configuration as a dictionary
         :param have: the current configuration as a dictionary
         :rtype: A list
@@ -216,7 +216,7 @@ class Lldp_global(ConfigBase):
         return lldp_xml
 
     def _state_deleted(self, want, have):
-        """ The command generator when state is deleted
+        """The command generator when state is deleted
         :rtype: A list
         :returns: the commands necessary to remove the current configuration
                   of the provided objects

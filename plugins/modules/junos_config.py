@@ -397,8 +397,7 @@ def configure_device(module, warnings, candidate):
 
 
 def main():
-    """ main entry point for module execution
-    """
+    """main entry point for module execution"""
     backup_spec = dict(
         filename=dict(),
         dir_path=dict(type="path"),

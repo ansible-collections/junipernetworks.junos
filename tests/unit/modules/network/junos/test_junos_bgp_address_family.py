@@ -489,7 +489,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_bgp_address_family_groups_neighbors_single_entry_parsed(
-        self
+        self,
     ):
         parsed_str = """
             <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
@@ -647,7 +647,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_bgp_address_family_groups_neighbors_multiple_entry_parsed(
-        self
+        self,
     ):
         parsed_str = """
             <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
@@ -837,7 +837,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_bgp_address_family_single_groups_neighbors_multiple_entry_parsed(
-        self
+        self,
     ):
         parsed_str = """
             <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
@@ -982,7 +982,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_bgp_address_family_single_groups_neighbors_single_entry_parsed(
-        self
+        self,
     ):
         parsed_str = """
             <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
@@ -1111,7 +1111,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_bgp_address_family_single_groups_withdrow_priority_parser(
-        self
+        self,
     ):
         parsed_str = """
             <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
@@ -1427,7 +1427,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_bgp_address_family_single_groups_add_path_nested_parser(
-        self
+        self,
     ):
         parsed_str = """
             <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">

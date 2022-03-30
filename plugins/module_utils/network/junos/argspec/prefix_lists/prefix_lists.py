@@ -30,8 +30,7 @@ __metaclass__ = type
 
 
 class Prefix_listsArgs(object):  # pylint: disable=R0903
-    """The arg spec for the junos_prefix_lists module
-    """
+    """The arg spec for the junos_prefix_lists module"""
 
     def __init__(self, **kwargs):
         pass

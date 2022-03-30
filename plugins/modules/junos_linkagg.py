@@ -357,8 +357,7 @@ def configure_member_params(module, requests, item):
 
 
 def main():
-    """ main entry point for module execution
-    """
+    """main entry point for module execution"""
     element_spec = dict(
         name=dict(),
         mode=dict(default="on", choices=["on", "off", "active", "passive"]),

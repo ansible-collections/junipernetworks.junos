@@ -219,8 +219,7 @@ def validate_param_values(module, obj, param=None):
 
 
 def main():
-    """ main entry point for module execution
-    """
+    """main entry point for module execution"""
     element_spec = dict(
         name=dict(),
         vlan_id=dict(type="int"),

@@ -12,8 +12,7 @@ __metaclass__ = type
 
 
 class FactsArgs(object):
-    """ The arg spec for the junos facts module
-    """
+    """The arg spec for the junos facts module"""
 
     def __init__(self, **kwargs):
         pass

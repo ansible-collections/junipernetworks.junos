@@ -258,8 +258,7 @@ def validate_param_values(module, obj, param=None):
 
 
 def main():
-    """ main entry point for module execution
-    """
+    """main entry point for module execution"""
     element_spec = dict(
         dest=dict(choices=["console", "host", "file", "user"]),
         name=dict(),

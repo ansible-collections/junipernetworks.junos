@@ -31,8 +31,7 @@ __metaclass__ = type
 
 
 class Lacp_interfacesArgs(object):
-    """The arg spec for the junos_lacp_interfaces module
-    """
+    """The arg spec for the junos_lacp_interfaces module"""
 
     def __init__(self, **kwargs):
         pass

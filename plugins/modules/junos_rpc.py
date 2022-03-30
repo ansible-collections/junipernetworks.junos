@@ -110,8 +110,7 @@ except ImportError:
 
 
 def main():
-    """main entry point for Ansible module
-    """
+    """main entry point for Ansible module"""
     argument_spec = dict(
         rpc=dict(required=True),
         args=dict(type="dict"),

@@ -31,8 +31,7 @@ __metaclass__ = type
 
 
 class Security_policies_globalArgs(object):  # pylint: disable=R0903
-    """The arg spec for the junos_security_policies_global module
-    """
+    """The arg spec for the junos_security_policies_global module"""
 
     def __init__(self, **kwargs):
         pass

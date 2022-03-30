@@ -40,8 +40,7 @@ except ImportError:
 
 
 class Prefix_listsFacts(object):
-    """ The junos prefix_lists fact class
-    """
+    """The junos prefix_lists fact class"""
 
     def __init__(self, module, subspec="config", options="options"):
         self._module = module
@@ -66,7 +65,7 @@ class Prefix_listsFacts(object):
         return connection.get_configuration(filter=config_filter)
 
     def populate_facts(self, connection, ansible_facts, data=None):
-        """ Populate the facts for bgp_address_family
+        """Populate the facts for bgp_address_family
         :param connection: the device connection
         :param ansible_facts: Facts dictionary
         :param data: previously collected conf

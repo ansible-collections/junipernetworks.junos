@@ -32,8 +32,7 @@ The arg spec for the junos_security_policies module
 
 
 class Security_policiesArgs(object):  # pylint: disable=R0903
-    """The arg spec for the junos_security_policies module
-    """
+    """The arg spec for the junos_security_policies module"""
 
     def __init__(self, **kwargs):
         pass

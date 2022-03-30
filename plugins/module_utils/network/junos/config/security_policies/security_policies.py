@@ -430,9 +430,11 @@ class Security_policies(ConfigBase):
                             "application_traffic_control_rule_set"
                             in application_services
                         ):
-                            application_traffic_control_node = build_child_xml_node(
-                                application_services_node,
-                                "application-traffic-control",
+                            application_traffic_control_node = (
+                                build_child_xml_node(
+                                    application_services_node,
+                                    "application-traffic-control",
+                                )
                             )
                             build_child_xml_node(
                                 application_traffic_control_node,

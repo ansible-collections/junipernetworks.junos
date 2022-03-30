@@ -40,8 +40,7 @@ except ImportError:
 
 
 class Snmp_serverFacts(object):
-    """ The junos snmp_server fact class
-    """
+    """The junos snmp_server fact class"""
 
     def __init__(self, module, subspec="config", options="options"):
         self._module = module
@@ -66,7 +65,7 @@ class Snmp_serverFacts(object):
         return connection.get_configuration(filter=config_filter)
 
     def populate_facts(self, connection, ansible_facts, data=None):
-        """ Populate the facts for ntp_gloabl
+        """Populate the facts for ntp_gloabl
         :param connection: the device connection
         :param ansible_facts: Facts dictionary
         :param data: previously collected conf
