@@ -15,11 +15,6 @@ Minor Changes
 - Added junos_security_policies_global module.
 - Added junos_security_zones module.
 
-Bugfixes
---------
-
-- Fixed sanity test issues
-
 New Modules
 -----------
 

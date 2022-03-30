@@ -410,10 +410,9 @@ releases:
       - Added junos_security_policies module.
       - Added junos_security_policies_global module.
       - Added junos_security_zones module.
-      bugfixes:
-      - Fixed sanity test issues
     fragments:
     - fix_sanity_list.yml
+    - black_fix.yml
     - junos_security_policies_global_module.yaml
     - junos_security_policies_resource_module.yaml
     - junos_security_zones_module.yml
