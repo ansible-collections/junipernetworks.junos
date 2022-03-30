@@ -32,14 +32,12 @@ display = Display()
 
 class TerminalModule(TerminalBase):
 
-    terminal_stdout_re = [
-        re.compile(rb"({primary:node\d+})?[\r\n]?[\w@+\-\.:\/\[\]]+[>#%] ?$")
-    ]
+    terminal_stdout_re = [re.compile(r"({primary:node\d+})?[\r\n]?[\w@+\-\.:\/\[\]]+[>#%] ?$")]
 
     terminal_stderr_re = [
-        re.compile(rb"unknown command"),
-        re.compile(rb"syntax error"),
-        re.compile(rb"[\r\n]error:"),
+        re.compile(r"unknown command"),
+        re.compile(r"syntax error"),
+        re.compile(r"[\r\n]error:"),
     ]
 
     terminal_config_prompt = re.compile(r"^.+#$")
@@ -48,9 +46,7 @@ class TerminalModule(TerminalBase):
         try:
             prompt = self._get_prompt()
             if prompt.strip().endswith(b"%"):
-                display.vvv(
-                    "starting cli", self._connection._play_context.remote_addr
-                )
+                display.vvv("starting cli", self._connection._play_context.remote_addr)
                 self._exec_cli_command(b"cli")
             for c in (
                 b"set cli timestamp disable",
