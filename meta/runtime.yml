@@ -106,6 +106,10 @@ plugin_routing:
       redirect: junipernetworks.junos.junos
     security_policies:
       redirect: junipernetworks.junos.junos
+    junos_security_zones:
+      redirect: junipernetworks.junos.junos
+    security_zones:
+      redirect: junipernetworks.junos.junos
     junos_snmp_server:
       redirect: junipernetworks.junos.junos
     snmp_server:
@@ -278,6 +282,8 @@ plugin_routing:
       redirect: junipernetworks.junos.junos_security_policies
     security_policies_global:
       redirect: junipernetworks.junos.junos_security_policies_global
+    security_zones:
+      redirect: junipernetworks.junos.junos_security_zones
     snmp_server:
       redirect: junipernetworks.junos.junos_snmp_server
     hostname:

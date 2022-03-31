@@ -1,0 +1,3 @@
+---
+trivial:
+  - added back security_zones entries into runtime.yml
