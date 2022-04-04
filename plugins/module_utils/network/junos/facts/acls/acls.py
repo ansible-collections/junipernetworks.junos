@@ -186,6 +186,7 @@ class AclsFacts(object):
                                 "destination-prefix-list"
                             ]
                         if term["from"].get("destination-port"):
+                            ace["destination"] = ace.get("destination", {})
                             ace["destination"]["port_protocol"] = dict(
                                 eq=term["from"]["destination-port"]
                             )
@@ -279,7 +280,6 @@ class AclsFacts(object):
                                 ace["protocol_options"]["icmp"][
                                     "ttl_exceeded"
                                 ] = True
-
                     if term.get("then"):
                         if "accept" in term["then"]:
                             ace["grant"] = "permit"

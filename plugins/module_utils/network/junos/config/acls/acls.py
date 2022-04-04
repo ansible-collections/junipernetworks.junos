@@ -48,14 +48,14 @@ class Acls(ConfigBase):
     def __init__(self, module):
         super(Acls, self).__init__(module)
 
-    def get_acls_facts(self):
+    def get_acls_facts(self, data=None):
         """Get the 'facts' (the current configuration)
 
         :rtype: A dictionary
         :returns: The current configuration as a dictionary
         """
         facts, _warnings = Facts(self._module).get_facts(
-            self.gather_subset, self.gather_network_resources
+            self.gather_subset, self.gather_network_resources, data=data
         )
         acls_facts = facts["ansible_network_resources"].get("junos_acls")
         if not acls_facts:
@@ -70,37 +70,58 @@ class Acls(ConfigBase):
         """
         result = {"changed": False}
         state = self._module.params["state"]
+
         warnings = list()
 
-        existing_acls_facts = self.get_acls_facts()
-        config_xmls = self.set_config(existing_acls_facts)
-
+        if self.state in self.ACTION_STATES:
+            existing_acls_facts = self.get_acls_facts()
+        else:
+            existing_acls_facts = {}
         if state == "gathered":
+            existing_acls_facts = self.get_acls_facts()
             result["gathered"] = existing_acls_facts
+        elif self.state == "parsed":
+            running_config = self._module.params["running_config"]
+            if not running_config:
+                self._module.fail_json(
+                    msg="value of running_config parameter must not be empty for state parsed"
+                )
+            result["parsed"] = self.get_acls_facts(data=running_config)
+        elif self.state == "rendered":
+            config_xmls = self.set_config(existing_acls_facts)
+            if config_xmls:
+                result["rendered"] = config_xmls[0]
+            else:
+                result["rendered"] = ""
 
-        with locked_config(self._module):
-            for config_xml in to_list(config_xmls):
-                diff = load_config(self._module, config_xml, [])
+        else:
+            diff = None
+            config_xmls = self.set_config(existing_acls_facts)
+            with locked_config(self._module):
+                for config_xml in config_xmls:
+                    diff = load_config(self._module, config_xml, [])
 
-            commit = not self._module.check_mode
-            if diff:
-                if commit:
-                    commit_configuration(self._module)
-                else:
-                    discard_changes(self._module)
-                result["changed"] = True
+                commit = not self._module.check_mode
+                if diff:
+                    if commit:
+                        commit_configuration(self._module)
+                    else:
+                        discard_changes(self._module)
+                    result["changed"] = True
 
-                if self._module._diff:
-                    result["diff"] = {"prepared": diff}
+                    if self._module._diff:
+                        result["diff"] = {"prepared": diff}
 
-        result["xml"] = config_xmls
-        changed_acls_facts = self.get_acls_facts()
+            result["commands"] = config_xmls
 
-        result["before"] = existing_acls_facts
-        if result["changed"]:
-            result["after"] = changed_acls_facts
+            changed_acls_facts = self.get_acls_facts()
 
-        result["warnings"] = warnings
+            result["before"] = existing_acls_facts
+            if result["changed"]:
+                result["after"] = changed_acls_facts
+
+            result["warnings"] = warnings
+
         return result
 
     def set_config(self, existing_acls_facts):
@@ -127,12 +148,21 @@ class Acls(ConfigBase):
         """
         root = build_root_xml_node("firewall")
         state = self._module.params["state"]
+        if (
+            state in ("merged", "replaced", "rendered", "overridden")
+            and not want
+        ):
+            self._module.fail_json(
+                msg="value of config parameter must not be empty for state {0}".format(
+                    state
+                )
+            )
         config_xmls = []
         if state == "overridden":
             config_xmls = self._state_overridden(want, have)
         elif state == "deleted":
             config_xmls = self._state_deleted(want, have)
-        elif state == "merged":
+        elif state in ("merged", "rendered"):
             config_xmls = self._state_merged(want, have)
         elif state == "replaced":
             config_xmls = self._state_replaced(want, have)
