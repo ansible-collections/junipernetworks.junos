@@ -35,7 +35,7 @@ DOCUMENTATION = """
 module: junos_acl_interfaces
 short_description: ACL interfaces resource module
 description:
-- This module manages adding and removing Access Control Lists (ACLs) from interfaces
+- This module manages adding and removing Access Control Lists (ACL) from interfaces
   on devices running Juniper JUNOS.
 version_added: 1.0.0
 author: Daniel Mellado (@dmellado)
