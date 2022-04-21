@@ -41,8 +41,7 @@ except ImportError:
 
 
 class L3_interfacesFacts(object):
-    """ The junos l3_interfaces fact class
-    """
+    """The junos l3_interfaces fact class"""
 
     def __init__(self, module, subspec="config", options="options"):
         self._module = module
@@ -76,7 +75,7 @@ class L3_interfacesFacts(object):
         return xml_dict
 
     def populate_facts(self, connection, ansible_facts, data=None):
-        """ Populate the facts for l3_interfaces
+        """Populate the facts for l3_interfaces
         :param connection: the device connection
         :param ansible_facts: Facts dictionary
         :param data: previously collected conf

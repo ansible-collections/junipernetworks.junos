@@ -36,8 +36,7 @@ except ImportError:
 
 
 class L2_interfacesFacts(object):
-    """ The junos l2_interfaces fact class
-    """
+    """The junos l2_interfaces fact class"""
 
     def __init__(self, module, subspec="config", options="options"):
         self._module = module
@@ -63,7 +62,7 @@ class L2_interfacesFacts(object):
         return get_resource_config(connection, config_filter=config_filter)
 
     def populate_facts(self, connection, ansible_facts, data=None):
-        """ Populate the facts for interfaces
+        """Populate the facts for interfaces
         :param connection: the device connection
         :param data: previously collected configuration as lxml ElementTree root instance
                      or valid xml sting

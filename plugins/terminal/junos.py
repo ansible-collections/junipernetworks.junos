@@ -23,6 +23,8 @@ __metaclass__ = type
 
 import re
 
+
+from ansible.module_utils.common.text.converters import to_bytes
 from ansible.errors import AnsibleConnectionFailure
 from ansible.utils.display import Display
 from ansible_collections.ansible.netcommon.plugins.plugin_utils.terminal_base import (
@@ -35,13 +37,15 @@ display = Display()
 class TerminalModule(TerminalBase):
 
     terminal_stdout_re = [
-        re.compile(br"({primary:node\d+})?[\r\n]?[\w@+\-\.:\/\[\]]+[>#%] ?$")
+        re.compile(
+            to_bytes(r"({primary:node\d+})?[\r\n]?[\w@+\-\.:\/\[\]]+[>#%] ?$")
+        )
     ]
 
     terminal_stderr_re = [
-        re.compile(br"unknown command"),
-        re.compile(br"syntax error"),
-        re.compile(br"[\r\n]error:"),
+        re.compile(to_bytes(r"unknown command")),
+        re.compile(to_bytes(r"syntax error")),
+        re.compile(to_bytes(r"[\r\n]error:")),
     ]
 
     terminal_config_prompt = re.compile(r"^.+#$")

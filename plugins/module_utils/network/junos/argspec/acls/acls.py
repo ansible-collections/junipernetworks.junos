@@ -31,8 +31,7 @@ __metaclass__ = type
 
 
 class AclsArgs(object):  # pylint: disable=R0903
-    """The arg spec for the junos_acls module
-    """
+    """The arg spec for the junos_acls module"""
 
     def __init__(self, **kwargs):
         pass

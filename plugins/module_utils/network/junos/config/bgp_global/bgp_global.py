@@ -50,7 +50,7 @@ class Bgp_global(ConfigBase):
         super(Bgp_global, self).__init__(module)
 
     def get_bgp_global_facts(self, data=None):
-        """ Get the 'facts' (the current configuration)
+        """Get the 'facts' (the current configuration)
         :rtype: A dictionary
         :returns: The current configuration as a dictionary
         """
@@ -63,7 +63,7 @@ class Bgp_global(ConfigBase):
         return bgp_facts
 
     def execute_module(self):
-        """ Execute the module
+        """Execute the module
         :rtype: A dictionary
         :returns: The result from module execution
         """
@@ -123,7 +123,7 @@ class Bgp_global(ConfigBase):
         return result
 
     def set_config(self, existing_bgp_global_facts):
-        """ Collect the configuration from the args passed to the module,
+        """Collect the configuration from the args passed to the module,
             collect the current configuration (as a dict from facts)
         :rtype: A list
         :returns: the commands necessary to migrate the current configuration
@@ -135,7 +135,7 @@ class Bgp_global(ConfigBase):
         return to_list(resp)
 
     def set_state(self, want, have):
-        """ Select the appropriate function based on the state provided
+        """Select the appropriate function based on the state provided
         :param want: the desired configuration as a dictionary
         :param have: the current configuration as a dictionary
         :rtype: A list
@@ -179,11 +179,11 @@ class Bgp_global(ConfigBase):
         return temp_lst
 
     def _state_replaced(self, want, have):
-        """ The xml configuration generator when state is merged
-         :rtype: A list
-         :returns: the xml configuration necessary to merge the provided into
-                   the current configuration
-         """
+        """The xml configuration generator when state is merged
+        :rtype: A list
+        :returns: the xml configuration necessary to merge the provided into
+                  the current configuration
+        """
         bgp_xml = []
         bgp_xml.extend(self._state_deleted(want, have))
         bgp_xml.extend(self._state_merged(want, have))
@@ -191,7 +191,7 @@ class Bgp_global(ConfigBase):
         return bgp_xml
 
     def _state_merged(self, want, have):
-        """ Select the appropriate function based on the state provided
+        """Select the appropriate function based on the state provided
         :param want: the desired configuration as a dictionary
         :param have: the current configuration as a dictionary
         :rtype: A list
@@ -623,7 +623,7 @@ class Bgp_global(ConfigBase):
                 )
 
     def _state_deleted(self, want, have):
-        """ The command generator when state is deleted
+        """The command generator when state is deleted
         :rtype: A list
         :returns: the commands necessary to remove the current configuration
                   of the provided objects
@@ -701,7 +701,7 @@ class Bgp_global(ConfigBase):
         return bgp_xml
 
     def _state_purged(self, want, have):
-        """ The command generator when state is deleted
+        """The command generator when state is deleted
         :rtype: A list
         :returns: the commands necessary to remove the current configuration
                   of the provided objects
@@ -720,7 +720,7 @@ class Bgp_global(ConfigBase):
         return bgp_xml
 
     def _add_node(self, want, h_key, w_key, node, cfg=False):
-        """ Append the child node to the root node
+        """Append the child node to the root node
         :param want: the desired configuration as a dictionary
         :param h_key: the current configuration key
         :param: node: root node

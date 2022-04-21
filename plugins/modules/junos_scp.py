@@ -126,8 +126,7 @@ def transfer_files(module, device):
 
 
 def main():
-    """ Main entry point for Ansible module execution
-    """
+    """Main entry point for Ansible module execution"""
     argument_spec = dict(
         src=dict(type="list", required=True, elements="path"),
         dest=dict(type="path", required=False, default="."),

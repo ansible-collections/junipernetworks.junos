@@ -21,8 +21,8 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 DOCUMENTATION = """
-author: Ansible Networking Team
-cliconf: junos
+author: Ansible Networking Team (@ansible-network)
+name: junos
 short_description: Use junos cliconf to run command on Juniper Junos OS platform
 description:
 - This junos plugin provides low level abstraction apis for sending and receiving
@@ -37,6 +37,7 @@ options:
       to the device is present in this list, the existing cache is invalidated.
     version_added: 2.0.0
     type: list
+    elements: str
     default: []
     vars:
     - name: ansible_junos_config_commands

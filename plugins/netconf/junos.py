@@ -21,8 +21,8 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 DOCUMENTATION = """
-author: Ansible Networking Team
-netconf: junos
+author: Ansible Networking Team (@ansible-network)
+name: junos
 short_description: Use junos netconf plugin to run netconf commands on Juniper JUNOS
   platform
 description:

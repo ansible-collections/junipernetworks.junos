@@ -49,7 +49,7 @@ class Static_routes(ConfigBase):
         super(Static_routes, self).__init__(module)
 
     def get_static_routes_facts(self, data=None):
-        """ Get the 'facts' (the current configuration)
+        """Get the 'facts' (the current configuration)
 
         :rtype: A dictionary
         :returns: The current configuration as a dictionary
@@ -65,7 +65,7 @@ class Static_routes(ConfigBase):
         return static_routes_facts
 
     def execute_module(self):
-        """ Execute the module
+        """Execute the module
 
         :rtype: A dictionary
         :returns: The result from module execution
@@ -126,7 +126,7 @@ class Static_routes(ConfigBase):
         return result
 
     def set_config(self, existing_static_routes_facts):
-        """ Collect the configuration from the args passed to the module,
+        """Collect the configuration from the args passed to the module,
             collect the current configuration (as a dict from facts)
 
         :rtype: A list
@@ -139,7 +139,7 @@ class Static_routes(ConfigBase):
         return to_list(resp)
 
     def set_state(self, want, have):
-        """ Select the appropriate function based on the state provided
+        """Select the appropriate function based on the state provided
 
         :param want: the desired configuration as a dictionary
         :param have: the current configuration as a dictionary
@@ -178,7 +178,7 @@ class Static_routes(ConfigBase):
         return [tostring(xml) for xml in root.getchildren()]
 
     def _state_replaced(self, want, have):
-        """ The command generator when state is replaced
+        """The command generator when state is replaced
 
         :rtype: A list
         :returns: the xml necessary to migrate the current configuration
@@ -190,7 +190,7 @@ class Static_routes(ConfigBase):
         return static_route_xml
 
     def _state_overridden(self, want, have):
-        """ The command generator when state is overridden
+        """The command generator when state is overridden
 
         :rtype: A list
         :returns: the xml necessary to migrate the current configuration
@@ -202,7 +202,7 @@ class Static_routes(ConfigBase):
         return static_route_xml
 
     def _state_deleted(self, want, have):
-        """ The command generator when state is deleted
+        """The command generator when state is deleted
 
         :rtype: A list
         :returns: the xml necessary to migrate the current configuration
@@ -216,7 +216,7 @@ class Static_routes(ConfigBase):
         return static_route_xml
 
     def _state_merged(self, want, have, delete=None):
-        """ The command generator when state is merged
+        """The command generator when state is merged
 
         :rtype: A list
         :returns: the xml necessary to migrate the current configuration

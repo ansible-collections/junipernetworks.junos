@@ -404,3 +404,26 @@ releases:
       name: junos_snmp_server
       namespace: ''
     release_date: '2022-02-01'
+  2.10.0:
+    changes:
+      minor_changes:
+      - Added junos_security_policies module.
+      - Added junos_security_policies_global module.
+      - Added junos_security_zones module.
+    fragments:
+    - fix_sanity_list.yml
+    - black_fix.yml
+    - junos_security_policies_global_module.yaml
+    - junos_security_policies_resource_module.yaml
+    - junos_security_zones_module.yml
+    modules:
+    - description: Manage security policies on Junos devices.
+      name: junos_security_policies
+      namespace: ''
+    - description: Manage global security policy parameters on Junos devices.
+      name: junos_security_policies_global
+      namespace: ''
+    - description: Manage security zones on Junos devices.
+      name: junos_security_zones
+      namespace: ''
+    release_date: '2022-03-29'

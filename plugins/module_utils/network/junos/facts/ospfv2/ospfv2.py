@@ -52,8 +52,7 @@ except ImportError:
 
 
 class Ospfv2Facts(object):
-    """ The junos ospf fact class
-    """
+    """The junos ospf fact class"""
 
     def __init__(self, module, subspec="config", options="options"):
         self._module = module
@@ -80,7 +79,7 @@ class Ospfv2Facts(object):
         return connection.get_configuration(filter=config_filter)
 
     def populate_facts(self, connection, ansible_facts, data=None):
-        """ Populate the facts for ospf
+        """Populate the facts for ospf
         :param connection: the device connection
         :param ansible_facts: Facts dictionary
         :param data: previously collected conf

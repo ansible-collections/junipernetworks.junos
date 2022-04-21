@@ -51,7 +51,7 @@ class Logging_global(ConfigBase):
         super(Logging_global, self).__init__(module)
 
     def get_logging_global_facts(self, data=None):
-        """ Get the 'facts' (the current configuration)
+        """Get the 'facts' (the current configuration)
 
         :rtype: A dictionary
         :returns: The current configuration as a dictionary
@@ -67,7 +67,7 @@ class Logging_global(ConfigBase):
         return logging_global_facts
 
     def execute_module(self):
-        """ Execute the module
+        """Execute the module
 
         :rtype: A dictionary
         :returns: The result from module execution
@@ -129,7 +129,7 @@ class Logging_global(ConfigBase):
         return result
 
     def set_config(self, existing_logging_global_facts):
-        """ Collect the configuration from the args passed to the module,
+        """Collect the configuration from the args passed to the module,
             collect the current configuration (as a dict from facts)
 
         :rtype: A list
@@ -142,7 +142,7 @@ class Logging_global(ConfigBase):
         return to_list(resp)
 
     def set_state(self, want, have):
-        """ Select the appropriate function based on the state provided
+        """Select the appropriate function based on the state provided
 
         :param want: the desired configuration as a dictionary
         :param have: the current configuration as a dictionary
@@ -175,7 +175,7 @@ class Logging_global(ConfigBase):
         return tostring(self.root)
 
     def _state_replaced(self, want, have):
-        """ The command generator when state is replaced
+        """The command generator when state is replaced
 
         :rtype: A list
         :returns: the commands necessary to migrate the current configuration
@@ -187,7 +187,7 @@ class Logging_global(ConfigBase):
         return logging_xml
 
     def _state_merged(self, want, have):
-        """ The command generator when state is merged
+        """The command generator when state is merged
 
         :rtype: A list
         :returns: the commands necessary to merge the provided into
@@ -281,8 +281,9 @@ class Logging_global(ConfigBase):
                     s_data_node = build_child_xml_node(
                         file_node, "structured-data"
                     )
-                    if "brief" in structured_data.keys() and structured_data.get(
-                        "brief"
+                    if (
+                        "brief" in structured_data.keys()
+                        and structured_data.get("brief")
                     ):
                         build_child_xml_node(s_data_node, "brief")
 
@@ -351,14 +352,16 @@ class Logging_global(ConfigBase):
                 # add structured-data
                 if "structured_data" in host.keys():
                     structured_data = host.get("structured_data")
-                    if "set" not in structured_data.keys() or structured_data.get(
-                        "set"
+                    if (
+                        "set" not in structured_data.keys()
+                        or structured_data.get("set")
                     ):
                         s_data_node = build_child_xml_node(
                             host_node, "structured-data"
                         )
-                    if "brief" in structured_data.keys() and structured_data.get(
-                        "brief"
+                    if (
+                        "brief" in structured_data.keys()
+                        and structured_data.get("brief")
                     ):
                         build_child_xml_node(s_data_node, "brief")
 
@@ -387,8 +390,9 @@ class Logging_global(ConfigBase):
                     "all"
                 ):
                     build_child_xml_node(server_node, "all")
-                if "default" in routing_instance.keys() and routing_instance.get(
-                    "default"
+                if (
+                    "default" in routing_instance.keys()
+                    and routing_instance.get("default")
                 ):
                     build_child_xml_node(server_node, "default")
                 if "routing_instances" in routing_instance.keys():
@@ -456,7 +460,7 @@ class Logging_global(ConfigBase):
         return logging_xml
 
     def _state_deleted(self, want, have):
-        """ The command generator when state is deleted
+        """The command generator when state is deleted
 
         :rtype: A list
         :returns: the commands necessary to remove the current configuration

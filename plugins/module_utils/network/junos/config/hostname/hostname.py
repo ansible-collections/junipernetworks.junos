@@ -50,7 +50,7 @@ class Hostname(ConfigBase):
         super(Hostname, self).__init__(module)
 
     def get_hostname_facts(self, data=None):
-        """ Get the 'facts' (the current configuration)
+        """Get the 'facts' (the current configuration)
 
         :rtype: A dictionary
         :returns: The current configuration as a dictionary
@@ -64,7 +64,7 @@ class Hostname(ConfigBase):
         return hostname_facts
 
     def execute_module(self):
-        """ Execute the module
+        """Execute the module
 
         :rtype: A dictionary
         :returns: The result from module execution
@@ -124,7 +124,7 @@ class Hostname(ConfigBase):
         return result
 
     def set_config(self, existing_hostname_facts):
-        """ Collect the configuration from the args passed to the module,
+        """Collect the configuration from the args passed to the module,
             collect the current configuration (as a dict from facts)
 
         :rtype: A list
@@ -137,7 +137,7 @@ class Hostname(ConfigBase):
         return to_list(resp)
 
     def set_state(self, want, have):
-        """ Select the appropriate function based on the state provided
+        """Select the appropriate function based on the state provided
 
         :param want: the desired configuration as a dictionary
         :param have: the current configuration as a dictionary
@@ -163,7 +163,7 @@ class Hostname(ConfigBase):
         return tostring(self.root)
 
     def _state_merged(self, want, have):
-        """ The command generator when state is merged
+        """The command generator when state is merged
 
         :rtype: A list
         :returns: the commands necessary to merge the provided into
@@ -176,7 +176,7 @@ class Hostname(ConfigBase):
             build_child_xml_node(self.root, "host-name", want.get("hostname"))
 
     def _state_deleted(self, want, have):
-        """ The command generator when state is deleted
+        """The command generator when state is deleted
 
         :rtype: A list
         :returns: the commands necessary to remove the current configuration

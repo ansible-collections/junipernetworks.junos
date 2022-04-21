@@ -30,8 +30,7 @@ __metaclass__ = type
 
 
 class Routing_instancesArgs(object):  # pylint: disable=R0903
-    """The arg spec for the junos_routing_instances module
-    """
+    """The arg spec for the junos_routing_instances module"""
 
     def __init__(self, **kwargs):
         pass

@@ -341,8 +341,7 @@ def validate_param_values(module, obj, param=None):
 
 
 def main():
-    """ main entry point for module execution
-    """
+    """main entry point for module execution"""
     neighbors_spec = dict(host=dict(), port=dict())
 
     element_spec = dict(

@@ -122,8 +122,7 @@ USE_PERSISTENT_CONNECTION = True
 
 
 def main():
-    """ main entry point for module execution
-    """
+    """main entry point for module execution"""
     argument_spec = dict(
         name=dict(),
         state=dict(

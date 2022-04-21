@@ -30,8 +30,7 @@ __metaclass__ = type
 
 
 class Bgp_globalArgs(object):  # pylint: disable=R0903
-    """The arg spec for the junos_bgp_global module
-    """
+    """The arg spec for the junos_bgp_global module"""
 
     def __init__(self, **kwargs):
         pass

@@ -360,8 +360,7 @@ def parse_commands(module, warnings):
 
 
 def main():
-    """entry point for module execution
-    """
+    """entry point for module execution"""
     argument_spec = dict(
         commands=dict(type="list", elements="str"),
         rpcs=dict(type="list", elements="str"),

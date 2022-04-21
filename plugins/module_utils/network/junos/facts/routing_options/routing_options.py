@@ -41,8 +41,7 @@ except ImportError:
 
 
 class Routing_optionsFacts(object):
-    """ The junos routing_options fact class
-    """
+    """The junos routing_options fact class"""
 
     def __init__(self, module, subspec="config", options="options"):
         self._module = module
@@ -67,7 +66,7 @@ class Routing_optionsFacts(object):
         return connection.get_configuration(filter=config_filter)
 
     def populate_facts(self, connection, ansible_facts, data=None):
-        """ Populate the facts for routing_options
+        """Populate the facts for routing_options
         :param connection: the device connection
         :param ansible_facts: Facts dictionary
         :param data: previously collected conf

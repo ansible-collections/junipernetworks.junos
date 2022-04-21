@@ -31,8 +31,7 @@ __metaclass__ = type
 
 
 class Snmp_serverArgs(object):  # pylint: disable=R0903
-    """The arg spec for the junos_snmp_server module
-    """
+    """The arg spec for the junos_snmp_server module"""
 
     def __init__(self, **kwargs):
         pass
