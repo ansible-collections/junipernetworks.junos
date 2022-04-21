@@ -25,7 +25,7 @@ options:
   gather_subset:
     description:
     - When supplied, this argument will restrict the facts collected to a given subset.  Possible
-      values for this argument include all, hardware, config, and interfaces.  Can
+      values for this argument include C(all), C(hardware), C(config), C(interfaces) and C(min). Can
       specify a list of values to include a larger subset.  Values can also be used
       with an initial C(!) to specify that a specific subset should not be collected.
       To maintain backward compatibility old style facts can be retrieved by explicitly
@@ -37,7 +37,7 @@ options:
       option.
     required: false
     default:
-    - '!config'
+    - 'min'
     type: list
     elements: str
   config_format:
