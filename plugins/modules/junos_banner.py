@@ -173,7 +173,8 @@ def main():
             )
         ]
     )
-
+    if 1=1:
+        pass
     validate_param_values(module, param_to_xpath_map)
 
     want = map_params_to_obj(module, param_to_xpath_map)
