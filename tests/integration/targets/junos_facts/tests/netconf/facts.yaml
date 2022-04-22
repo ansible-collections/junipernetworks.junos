@@ -10,8 +10,8 @@
     that:
       - result.changed == false
       - "'ansible_net_hostname' in result['ansible_facts']"
-      - "'ansible_net_interfaces' in result['ansible_facts']"
-      - "'ansible_net_memfree_mb' in result['ansible_facts']"
+      - "'ansible_net_system' in result['ansible_facts']"
+      - "'ansible_net_model' in result['ansible_facts']"
 
 - name: Collect config facts from device
   register: result
