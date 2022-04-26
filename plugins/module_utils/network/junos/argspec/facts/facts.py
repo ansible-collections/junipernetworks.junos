@@ -18,9 +18,7 @@ class FactsArgs(object):
         pass
 
     argument_spec = {
-        "gather_subset": dict(
-            default=["!config"], type="list", elements="str"
-        ),
+        "gather_subset": dict(default=["min"], type="list", elements="str"),
         "config_format": dict(
             default="text", choices=["xml", "text", "set", "json"]
         ),

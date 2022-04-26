@@ -106,10 +106,10 @@ Parameters
                     </div>
                 </td>
                 <td>
-                        <b>Default:</b><br/><div style="color: blue">["!config"]</div>
+                        <b>Default:</b><br/><div style="color: blue">["min"]</div>
                 </td>
                 <td>
-                        <div>When supplied, this argument will restrict the facts collected to a given subset.  Possible values for this argument include all, hardware, config, and interfaces.  Can specify a list of values to include a larger subset.  Values can also be used with an initial <code>!</code> to specify that a specific subset should not be collected. To maintain backward compatibility old style facts can be retrieved by explicitly adding <code>ofacts</code>  to value, this requires junos-eznc to be installed as a prerequisite. Valid value of gather_subset are default, hardware, config, interfaces, ofacts. If <code>ofacts</code> is present in the list it fetches the old style facts (fact keys without &#x27;ansible_&#x27; prefix) and it requires junos-eznc library to be installed on control node and the device login credentials must be given in <code>provider</code> option.</div>
+                        <div>When supplied, this argument will restrict the facts collected to a given subset.  Possible values for this argument include <code>all</code>, <code>hardware</code>, <code>config</code>, <code>interfaces</code> and <code>min</code>. Can specify a list of values to include a larger subset.  Values can also be used with an initial <code>!</code> to specify that a specific subset should not be collected. To maintain backward compatibility old style facts can be retrieved by explicitly adding <code>ofacts</code>  to value, this requires junos-eznc to be installed as a prerequisite. Valid value of gather_subset are default, hardware, config, interfaces, ofacts. If <code>ofacts</code> is present in the list it fetches the old style facts (fact keys without &#x27;ansible_&#x27; prefix) and it requires junos-eznc library to be installed on control node and the device login credentials must be given in <code>provider</code> option.</div>
                 </td>
             </tr>
             <tr>

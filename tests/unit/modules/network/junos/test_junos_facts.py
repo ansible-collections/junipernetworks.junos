@@ -124,19 +124,12 @@ class TestJunosCommandModule(TestJunosModule):
         facts = result["ansible_facts"]
 
         self.assertEqual(facts["ansible_net_hostname"], "vsrx01")
-        self.assertTrue("em0" in facts["ansible_net_interfaces"])
-        self.assertEqual(
-            facts["ansible_net_interfaces"]["em0"]["type"], "Ethernet"
-        )
-        self.assertEqual(facts["ansible_net_memtotal_mb"], 983500)
-        self.assertEqual(facts["ansible_net_filesystems"][0], "/dev/vtbd0s1a")
-        self.assertTrue("ansible_net_config" not in facts)
-        self.assertEqual(
-            facts["ansible_net_routing_engines"]["0"]["model"],
-            "RE-S-EX9200-1800X4",
-        )
-        self.assertEqual(facts["ansible_net_modules"][0]["name"], "Midplane")
-        self.assertTrue(facts["ansible_net_has_2RE"])
+        self.assertEqual(facts["ansible_network_resources"], {})
+        self.assertEqual(facts["ansible_net_system"], "junos")
+        self.assertTrue("ansible_net_model" in facts)
+        self.assertTrue("ansible_net_version" in facts)
+        self.assertTrue("ansible_network_resources" in facts)
+        self.assertTrue("ansible_net_serialnum" in facts)
 
     def test_junos_get_facts_subset_config_set(self):
         self.get_config.return_value = load_fixture(
