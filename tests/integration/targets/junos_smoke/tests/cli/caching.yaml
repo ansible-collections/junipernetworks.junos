@@ -49,4 +49,4 @@
     - name: Remove description from interface
       ignore_errors: true
       junipernetworks.junos.junos_command: *rem
-  when: ansible_connection == "network_cli" and ansible_network_single_user_mode|d(False)
+  when: ansible_connection == "ansible.netcommon.network_cli" and ansible_network_single_user_mode|d(False)
