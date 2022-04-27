@@ -5,6 +5,21 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v3.0.0
+======
+
+Major Changes
+-------------
+
+- Minimum required ansible.netcommon version is 2.5.1.
+- Updated base plugin references to ansible.netcommon.
+- `junos_facts` - change default gather_subset to `min` from `!config`.
+
+Bugfixes
+--------
+
+- Fix junos_acl fact gathering when only destination port defined (https://github.com/ansible-collections/junipernetworks.junos/issues/268).
+
 v2.10.0
 =======
 
@@ -18,9 +33,9 @@ Minor Changes
 New Modules
 -----------
 
-- junos_security_policies - Manage security policies on Junos devices.
-- junos_security_policies_global - Manage global security policy parameters on Junos devices.
-- junos_security_zones - Manage security zones on Junos devices.
+- junos_security_policies - Create and manage security policies on Juniper JUNOS devices
+- junos_security_policies_global - Manage global security policy settings on Juniper JUNOS devices
+- junos_security_zones - Manage security zones on Juniper JUNOS devices
 
 v2.9.0
 ======

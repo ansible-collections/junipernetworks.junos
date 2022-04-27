@@ -1186,19 +1186,66 @@ Parameters
                     <b>log</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">dictionary</span>
                     </div>
                 </td>
                 <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>session-close</li>
-                                    <li>session-init</li>
-                        </ul>
                 </td>
                 <td>
                         <div>Log traffic information for a specific policy Traffic information is logged when a session begins (session_init) or closes (session_close)</div>
                 </td>
             </tr>
+                                <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="3">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>session_close</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                    </div>
+                </td>
+                <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>no</li>
+                                    <li>yes</li>
+                        </ul>
+                </td>
+                <td>
+                        <div>Enable logging on session close time</div>
+                </td>
+            </tr>
+            <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="3">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>session_init</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                    </div>
+                </td>
+                <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>no</li>
+                                    <li>yes</li>
+                        </ul>
+                </td>
+                <td>
+                        <div>Enable logging on session initialization time</div>
+                </td>
+            </tr>
+
             <tr>
                     <td class="elbow-placeholder"></td>
                     <td class="elbow-placeholder"></td>
@@ -1484,10 +1531,14 @@ Parameters
                     <b>redirect_wx</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">boolean</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>no</li>
+                                    <li>yes</li>
+                        </ul>
                 </td>
                 <td>
                         <div>Specify the WX redirection needed for the packets that arrive from the LAN</div>
@@ -1506,10 +1557,14 @@ Parameters
                     <b>reverse_redirect_wx</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">boolean</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>no</li>
+                                    <li>yes</li>
+                        </ul>
                 </td>
                 <td>
                         <div>Specify the WX redirection needed for the reverse flow of the packets that arrive from the WAN</div>
@@ -2604,7 +2659,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>You can apply a redirect SSL proxy profile when a policy blocks HTTPS traffic with a reject action. When you apply am SSL proxy profile, SSL proxy decrypts the traffic and application identification functionality identifies the application</div>
+                        <div>You can apply a redirect SSL proxy profile when a policy blocks HTTPS traffic with a reject action When you apply am SSL proxy profile, SSL proxy decrypts the traffic and application identification functionality identifies the application</div>
                 </td>
             </tr>
                                 <tr>
@@ -3691,19 +3746,64 @@ Parameters
                     <b>log</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">dictionary</span>
                     </div>
                 </td>
                 <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>session-close</li>
-                                    <li>session-init</li>
-                        </ul>
                 </td>
                 <td>
                         <div>Log traffic information for a specific policy Traffic information is logged when a session begins (session_init) or closes (session_close)</div>
                 </td>
             </tr>
+                                <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="4">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>session_close</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                    </div>
+                </td>
+                <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>no</li>
+                                    <li>yes</li>
+                        </ul>
+                </td>
+                <td>
+                        <div>Enable logging on session close time</div>
+                </td>
+            </tr>
+            <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="4">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>session_init</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                    </div>
+                </td>
+                <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>no</li>
+                                    <li>yes</li>
+                        </ul>
+                </td>
+                <td>
+                        <div>Enable logging on session initialization time</div>
+                </td>
+            </tr>
+
             <tr>
                     <td class="elbow-placeholder"></td>
                     <td class="elbow-placeholder"></td>
@@ -3976,10 +4076,14 @@ Parameters
                     <b>redirect_wx</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">boolean</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>no</li>
+                                    <li>yes</li>
+                        </ul>
                 </td>
                 <td>
                         <div>Specify the WX redirection needed for the packets that arrive from the LAN</div>
@@ -3997,10 +4101,14 @@ Parameters
                     <b>reverse_redirect_wx</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">boolean</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>no</li>
+                                    <li>yes</li>
+                        </ul>
                 </td>
                 <td>
                         <div>Specify the WX redirection needed for the reverse flow of the packets that arrive from the WAN</div>
@@ -5049,7 +5157,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>You can apply a redirect SSL proxy profile when a policy blocks HTTPS traffic with a reject action. When you apply am SSL proxy profile, SSL proxy decrypts the traffic and application identification functionality identifies the application</div>
+                        <div>You can apply a redirect SSL proxy profile when a policy blocks HTTPS traffic with a reject action When you apply am SSL proxy profile, SSL proxy decrypts the traffic and application identification functionality identifies the application</div>
                 </td>
             </tr>
                                 <tr>
@@ -5145,10 +5253,9 @@ Parameters
                         <div>The state the configuration should be left in</div>
                         <div>The states <em>rendered</em>, <em>gathered</em> and <em>parsed</em> does not perform any change on the device</div>
                         <div>The state <em>rendered</em> will transform the configuration in <code>config</code> option to platform specific CLI commands which will be returned in the <em>rendered</em> key within the result For state <em>rendered</em> active connection to remote host is not required</div>
+                        <div>The state <em>replaced</em> will replace the running configuration with the provided configuration</div>
+                        <div>The state <em>replaced</em> and state <em>overridden</em> have the same behaviour</div>
                         <div>The state <em>gathered</em> will fetch the running configuration from device and transform it into structured data in the format as per the resource module argspec and the value is returned in the <em>gathered</em> key within the result</div>
-                        <div>The state <em>merged</em> will additively update the on-device configuration with the provided configuration.</div>
-                        <div>The states <em>replaced</em> and <em>overridden</em> exhibit the same behaviour</div>
-                        <div>The state <em>replaced</em> will replace the on-device configuration with the provided configuration. It yields the same result as running the state <em>deleted</em>, followed by the state <em>merged</em>.</div>
                         <div>The state <em>parsed</em> reads the configuration from <code>running_config</code> option and transforms it into JSON format as per the resource module parameters and the value is returned in the <em>parsed</em> key within the result The value of <code>running_config</code> option should be the same format as the output of command <em>show security policies detail</em> executed on device For state <em>parsed</em> active connection to remote host is not required</div>
                 </td>
             </tr>
@@ -5161,7 +5268,8 @@ Notes
 
 .. note::
    - This module requires the netconf system service be enabled on the device being managed
-   - This module works with connection ``netconf`` See `the Junos OS Platform Options <https://docsansiblecom/ansible/latest/network/user_guide/platform_junoshtml>`_
+   - This module works with connection ``netconf``
+   - See `the Junos OS Platform Options <https://docsansiblecom/ansible/latest/network/user_guide/platform_junoshtml>`_
    - Tested against JunOS v18.4R1
 
 
@@ -5693,8 +5801,8 @@ Examples
     # Destination addresses: any-ipv6
     # Applications: any
     # Action: deny
-    #
-    #
+
+
     # Using Replaced
     # Before state
     # ------------
@@ -6013,7 +6121,8 @@ Examples
     # Destination addresses: any-ipv6
     # Applications: any
     # Action: deny
-    #
+
+
     # Using overridden
     #
     # Before state
@@ -6333,7 +6442,8 @@ Examples
     # Destination addresses: any-ipv6
     # Applications: any
     # Action: deny
-    #
+
+
     # Using deleted
     #
     # Before state
@@ -6394,277 +6504,8 @@ Examples
     # vagrant@vsrx> show security policies
     # Default policy: deny-all
     # Pre ID default policy: permit-all
-    #
-    # Using gathered
-    #
-    # Before state
-    # ------------
-    #
-    # vagrant@vsrx> show security policies
-    # Default policy: deny-all
-    # Pre ID default policy: permit-all
-    # From zone: one, To zone: two
-    # Policy: test_policy_1, State: enabled, Index: 4, Scope Policy: 0, Sequence number: 1
-    # Source addresses(excluded): a1, a3
-    # Destination addresses(excluded): a2, a4
-    # Source-end-user-profile: test_end_user_profile(1)
-    # Applications: junos-dhcp-relay, junos-finger
-    # Dynamic Applications: any
-    # Url-category: Enhanced_Web_Chat
-    # Source identities: authenticated-user, unknown-user
-    # Action: deny, log, count
-    # Policy: test_policy_2, State: enabled, Index: 5, Scope Policy: 0, Sequence number: 2
-    # Source addresses: a1
-    # Destination addresses: any-ipv6
-    # Applications: any
-    # Action: reject
-    # dynapp-redir-profile: test_dyn_app(1)
-    # From zone: one, To zone: three
-    # Policy: test_policy_3, State: enabled, Index: 6, Scope Policy: 0, Sequence number: 1
-    # Source addresses: a1
-    # Destination addresses: a2
-    # Applications: any
-    # Action: permit, drop-untranslated, firewall authentication, application services, unified access control
-    # Application traffic control: test_traffic_control
-    # Global policies:
-    # Policy: test_glob_1, State: enabled, Index: 7, Scope Policy: 0, Sequence number: 1
-    # From zones: any
-    # To zones: any
-    # Source addresses: any-ipv6
-    # Destination addresses: any-ipv6
-    # Applications: any
-    # Action: deny
-    # Policy: test_glob_2, State: enabled, Index: 8, Scope Policy: 0, Sequence number: 2
-    # From zones: any
-    # To zones: any
-    # Source addresses: any-ipv6
-    # Destination addresses: any-ipv6
-    # Applications: any
-    # Action: deny
-    #
-    - junipernetworks.junos.junos_security_policies:
-        state: gathered
-    #
-    # -------------------------
-    # Module Execution Result
-    # -------------------------
-    #
-    #   "changed": false,
-    #   "gathered": {
-    #     "from_zones": [
-    #       {
-    #         "name": "one",
-    #         "to_zones": [
-    #           {
-    #             "name": "two",
-    #             "policies": [
-    #               {
-    #                 "match": {
-    #                   "application": {
-    #                     "names": [
-    #                       "junos-dhcp-relay",
-    #                       "junos-finger"
-    #                     ]
-    #                   },
-    #                   "destination_address": {
-    #                     "addresses": [
-    #                       "a2",
-    #                       "a4"
-    #                     ]
-    #                   },
-    #                   "destination_address_excluded": true,
-    #                   "dynamic_application": {
-    #                     "names": [
-    #                       "any"
-    #                     ]
-    #                   },
-    #                   "source_address": {
-    #                     "addresses": [
-    #                       "a1",
-    #                       "a3"
-    #                     ]
-    #                   },
-    #                   "source_address_excluded": true,
-    #                   "source_end_user_profile": "test_end_user_profile",
-    #                   "source_identity": {
-    #                     "unknown_user": true
-    #                   },
-    #                   "url_category": {
-    #                     "names": [
-    #                       "Enhanced_Web_Chat"
-    #                     ]
-    #                   }
-    #                 },
-    #                 "name": "test_policy_1",
-    #                 "then": {
-    #                   "count": true,
-    #                   "deny": true,
-    #                   "log": "session-close"
-    #                 }
-    #               },
-    #               {
-    #                 "match": {
-    #                   "application": {
-    #                     "any": true
-    #                   },
-    #                   "destination_address": {
-    #                     "any_ipv6": true
-    #                   },
-    #                   "source_address": {
-    #                     "addresses": [
-    #                       "a1"
-    #                     ]
-    #                   }
-    #                 },
-    #                 "name": "test_policy_2",
-    #                 "then": {
-    #                   "reject": {
-    #                     "enable": true,
-    #                     "profile": "test_dyn_app",
-    #                     "ssl_proxy": {
-    #                       "enable": true,
-    #                       "profile_name": "SECURITY-SSL-PROXY"
-    #                     }
-    #                   }
-    #                 }
-    #               }
-    #             ]
-    #           },
-    #           {
-    #             "name": "three",
-    #             "policies": [
-    #               {
-    #                 "match": {
-    #                   "application": {
-    #                     "any": true
-    #                   },
-    #                   "destination_address": {
-    #                     "addresses": [
-    #                       "a2"
-    #                     ]
-    #                   },
-    #                   "source_address": {
-    #                     "addresses": [
-    #                       "a1"
-    #                     ]
-    #                   }
-    #                 },
-    #                 "name": "test_policy_3",
-    #                 "then": {
-    #                   "permit": {
-    #                     "application_services": {
-    #                       "application_traffic_control_rule_set": "test_traffic_control",
-    #                       "gprs_gtp_profile": "gtp1",
-    #                       "icap_redirect": "test_icap",
-    #                       "reverse_redirect_wx": "True",
-    #                       "uac_policy": {
-    #                         "enable": true
-    #                       }
-    #                     },
-    #                     "firewall_authentication": {
-    #                       "push_to_identity_management": true,
-    #                       "web_authentication": [
-    #                         "FWClient1"
-    #                       ]
-    #                     },
-    #                     "tcp_options": {
-    #                       "initial_tcp_mss": 64,
-    #                       "window_scale": true
-    #                     }
-    #                   }
-    #                 }
-    #               }
-    #             ]
-    #           }
-    #         ]
-    #       }
-    #     ],
-    #     "global": {
-    #       "policies": [
-    #         {
-    #           "match": {
-    #             "application": {
-    #               "any": true
-    #             },
-    #             "destination_address": {
-    #               "any_ipv6": true
-    #             },
-    #             "source_address": {
-    #               "any_ipv6": true
-    #             }
-    #           },
-    #           "name": "test_glob_1",
-    #           "then": {
-    #             "deny": true
-    #           }
-    #         },
-    #         {
-    #           "match": {
-    #             "application": {
-    #               "any": true
-    #             },
-    #             "destination_address": {
-    #               "any_ipv6": true
-    #             },
-    #             "source_address": {
-    #               "any_ipv6": true
-    #             }
-    #           },
-    #           "name": "test_glob_2",
-    #           "then": {
-    #             "deny": true
-    #           }
-    #         }
-    #       ]
-    #     }
-    #   }
-    # }
-    #
-    # Using rendered
-    #
-    # Before state
-    # ------------
-    #
-    - junipernetworks.junos.junos_security_policies:
-        config:
-          global:
-              policies:
-                - description: test update
-                  match:
-                    application:
-                      any: true
-                    destination_address:
-                      any_ipv6: true
-                    source_address:
-                      any: true
-                  name: test_glob_3
-                  then:
-                    deny: true
-        state: rendered
-    #
-    # -------------------------
-    # Module Execution Result
-    # -------------------------
-    #     "rendered": "<nc:security
-    #                 xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
-    #                 <nc:policies>
-    #                   <nc:global>
-    #                     <nc:policy>
-    #                       <nc:name>test_glob_3</nc:name>
-    #                       <nc:description>test update</nc:description>
-    #                       <nc:match>
-    #                         <nc:source-address>any</nc:source-address>
-    #                         <nc:destination-address>any-ipv6</nc:destination-address>
-    #                         <nc:application>any</nc:application>
-    #                       </nc:match>
-    #                       <nc:then>
-    #                         <nc:deny/>
-    #                       </nc:then>
-    #                     </nc:policy>
-    #                   </nc:global>
-    #                 </nc:policies>
-    #               </nc:security>"
-    #
+
+
     # Using parsed
     # parsed.cfg
     # ------------
@@ -7150,6 +6991,278 @@ Examples
     #   }
 
 
+    # Using gathered
+    #
+    # Before state
+    # ------------
+    #
+    # vagrant@vsrx> show security policies
+    # Default policy: deny-all
+    # Pre ID default policy: permit-all
+    # From zone: one, To zone: two
+    # Policy: test_policy_1, State: enabled, Index: 4, Scope Policy: 0, Sequence number: 1
+    # Source addresses(excluded): a1, a3
+    # Destination addresses(excluded): a2, a4
+    # Source-end-user-profile: test_end_user_profile(1)
+    # Applications: junos-dhcp-relay, junos-finger
+    # Dynamic Applications: any
+    # Url-category: Enhanced_Web_Chat
+    # Source identities: authenticated-user, unknown-user
+    # Action: deny, log, count
+    # Policy: test_policy_2, State: enabled, Index: 5, Scope Policy: 0, Sequence number: 2
+    # Source addresses: a1
+    # Destination addresses: any-ipv6
+    # Applications: any
+    # Action: reject
+    # dynapp-redir-profile: test_dyn_app(1)
+    # From zone: one, To zone: three
+    # Policy: test_policy_3, State: enabled, Index: 6, Scope Policy: 0, Sequence number: 1
+    # Source addresses: a1
+    # Destination addresses: a2
+    # Applications: any
+    # Action: permit, drop-untranslated, firewall authentication, application services, unified access control
+    # Application traffic control: test_traffic_control
+    # Global policies:
+    # Policy: test_glob_1, State: enabled, Index: 7, Scope Policy: 0, Sequence number: 1
+    # From zones: any
+    # To zones: any
+    # Source addresses: any-ipv6
+    # Destination addresses: any-ipv6
+    # Applications: any
+    # Action: deny
+    # Policy: test_glob_2, State: enabled, Index: 8, Scope Policy: 0, Sequence number: 2
+    # From zones: any
+    # To zones: any
+    # Source addresses: any-ipv6
+    # Destination addresses: any-ipv6
+    # Applications: any
+    # Action: deny
+    #
+    - junipernetworks.junos.junos_security_policies:
+        state: gathered
+    #
+    # -------------------------
+    # Module Execution Result
+    # -------------------------
+    #
+    #   "changed": false,
+    #   "gathered": {
+    #     "from_zones": [
+    #       {
+    #         "name": "one",
+    #         "to_zones": [
+    #           {
+    #             "name": "two",
+    #             "policies": [
+    #               {
+    #                 "match": {
+    #                   "application": {
+    #                     "names": [
+    #                       "junos-dhcp-relay",
+    #                       "junos-finger"
+    #                     ]
+    #                   },
+    #                   "destination_address": {
+    #                     "addresses": [
+    #                       "a2",
+    #                       "a4"
+    #                     ]
+    #                   },
+    #                   "destination_address_excluded": true,
+    #                   "dynamic_application": {
+    #                     "names": [
+    #                       "any"
+    #                     ]
+    #                   },
+    #                   "source_address": {
+    #                     "addresses": [
+    #                       "a1",
+    #                       "a3"
+    #                     ]
+    #                   },
+    #                   "source_address_excluded": true,
+    #                   "source_end_user_profile": "test_end_user_profile",
+    #                   "source_identity": {
+    #                     "unknown_user": true
+    #                   },
+    #                   "url_category": {
+    #                     "names": [
+    #                       "Enhanced_Web_Chat"
+    #                     ]
+    #                   }
+    #                 },
+    #                 "name": "test_policy_1",
+    #                 "then": {
+    #                   "count": true,
+    #                   "deny": true,
+    #                   "log": "session-close"
+    #                 }
+    #               },
+    #               {
+    #                 "match": {
+    #                   "application": {
+    #                     "any": true
+    #                   },
+    #                   "destination_address": {
+    #                     "any_ipv6": true
+    #                   },
+    #                   "source_address": {
+    #                     "addresses": [
+    #                       "a1"
+    #                     ]
+    #                   }
+    #                 },
+    #                 "name": "test_policy_2",
+    #                 "then": {
+    #                   "reject": {
+    #                     "enable": true,
+    #                     "profile": "test_dyn_app",
+    #                     "ssl_proxy": {
+    #                       "enable": true,
+    #                       "profile_name": "SECURITY-SSL-PROXY"
+    #                     }
+    #                   }
+    #                 }
+    #               }
+    #             ]
+    #           },
+    #           {
+    #             "name": "three",
+    #             "policies": [
+    #               {
+    #                 "match": {
+    #                   "application": {
+    #                     "any": true
+    #                   },
+    #                   "destination_address": {
+    #                     "addresses": [
+    #                       "a2"
+    #                     ]
+    #                   },
+    #                   "source_address": {
+    #                     "addresses": [
+    #                       "a1"
+    #                     ]
+    #                   }
+    #                 },
+    #                 "name": "test_policy_3",
+    #                 "then": {
+    #                   "permit": {
+    #                     "application_services": {
+    #                       "application_traffic_control_rule_set": "test_traffic_control",
+    #                       "gprs_gtp_profile": "gtp1",
+    #                       "icap_redirect": "test_icap",
+    #                       "reverse_redirect_wx": "True",
+    #                       "uac_policy": {
+    #                         "enable": true
+    #                       }
+    #                     },
+    #                     "firewall_authentication": {
+    #                       "push_to_identity_management": true,
+    #                       "web_authentication": [
+    #                         "FWClient1"
+    #                       ]
+    #                     },
+    #                     "tcp_options": {
+    #                       "initial_tcp_mss": 64,
+    #                       "window_scale": true
+    #                     }
+    #                   }
+    #                 }
+    #               }
+    #             ]
+    #           }
+    #         ]
+    #       }
+    #     ],
+    #     "global": {
+    #       "policies": [
+    #         {
+    #           "match": {
+    #             "application": {
+    #               "any": true
+    #             },
+    #             "destination_address": {
+    #               "any_ipv6": true
+    #             },
+    #             "source_address": {
+    #               "any_ipv6": true
+    #             }
+    #           },
+    #           "name": "test_glob_1",
+    #           "then": {
+    #             "deny": true
+    #           }
+    #         },
+    #         {
+    #           "match": {
+    #             "application": {
+    #               "any": true
+    #             },
+    #             "destination_address": {
+    #               "any_ipv6": true
+    #             },
+    #             "source_address": {
+    #               "any_ipv6": true
+    #             }
+    #           },
+    #           "name": "test_glob_2",
+    #           "then": {
+    #             "deny": true
+    #           }
+    #         }
+    #       ]
+    #     }
+    #   }
+    # }
+
+
+    # Using rendered
+    #
+    # Before state
+    # ------------
+    #
+    - junipernetworks.junos.junos_security_policies:
+        config:
+          global:
+              policies:
+                - description: test update
+                  match:
+                    application:
+                      any: true
+                    destination_address:
+                      any_ipv6: true
+                    source_address:
+                      any: true
+                  name: test_glob_3
+                  then:
+                    deny: true
+        state: rendered
+    #
+    # -------------------------
+    # Module Execution Result
+    # -------------------------
+    #     "rendered": "<nc:security
+    #                 xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+    #                 <nc:policies>
+    #                   <nc:global>
+    #                     <nc:policy>
+    #                       <nc:name>test_glob_3</nc:name>
+    #                       <nc:description>test update</nc:description>
+    #                       <nc:match>
+    #                         <nc:source-address>any</nc:source-address>
+    #                         <nc:destination-address>any-ipv6</nc:destination-address>
+    #                         <nc:application>any</nc:application>
+    #                       </nc:match>
+    #                       <nc:then>
+    #                         <nc:deny/>
+    #                       </nc:then>
+    #                     </nc:policy>
+    #                   </nc:global>
+    #                 </nc:policies>
+    #               </nc:security>"
+
+
 
 Return Values
 -------------
@@ -7189,7 +7302,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                       <span style="color: purple">dictionary</span>
                     </div>
                 </td>
-                <td>when state is <em>merged</em>, <em>replaced</em>, <em>overridden</em>, <em>deleted</em> or <em>purged</em></td>
+                <td>when state is <em>merged</em>, <em>replaced</em>, <em>overridden</em> or <em>deleted</em></td>
                 <td>
                             <div>The configuration prior to the module execution.</div>
                     <br/>
@@ -7206,7 +7319,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                       <span style="color: purple">list</span>
                     </div>
                 </td>
-                <td>when state is <em>merged</em>, <em>replaced</em>, <em>overridden</em>, <em>deleted</em> or <em>purged</em></td>
+                <td>when state is <em>merged</em>, <em>replaced</em>, <em>overridden</em> or <em>deleted</em></td>
                 <td>
                             <div>The set of commands pushed to the remote device.</div>
                     <br/>

@@ -1,3 +1,0 @@
----
-major_changes:
-  - "`junos_facts` - change default gather_subset to `min` from `!config`."
