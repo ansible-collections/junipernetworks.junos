@@ -23,10 +23,13 @@ __metaclass__ = type
 
 import re
 
+
 from ansible.module_utils.common.text.converters import to_bytes
-from ansible.plugins.terminal import TerminalBase
 from ansible.errors import AnsibleConnectionFailure
 from ansible.utils.display import Display
+from ansible_collections.ansible.netcommon.plugins.plugin_utils.terminal_base import (
+    TerminalBase,
+)
 
 display = Display()
 

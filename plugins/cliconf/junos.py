@@ -55,7 +55,9 @@ from ansible.module_utils.common._collections_compat import Mapping
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
     to_list,
 )
-from ansible.plugins.cliconf import CliconfBase
+from ansible_collections.ansible.netcommon.plugins.plugin_utils.cliconf_base import (
+    CliconfBase,
+)
 
 
 def configure(func):
