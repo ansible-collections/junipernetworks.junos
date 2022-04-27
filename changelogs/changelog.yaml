@@ -274,7 +274,7 @@ releases:
     - description: Manage routing instances on Junos devices.
       name: junos_routing_instances
       namespace: ''
-    release_date: '2021-04-28'
+    release_date: '2021-04-28' 
   2.2.0:
     changes:
       minor_changes:
@@ -411,19 +411,35 @@ releases:
       - Added junos_security_policies_global module.
       - Added junos_security_zones module.
     fragments:
-    - fix_sanity_list.yml
     - black_fix.yml
+    - fix_sanity_list.yml
     - junos_security_policies_global_module.yaml
     - junos_security_policies_resource_module.yaml
     - junos_security_zones_module.yml
     modules:
-    - description: Manage security policies on Junos devices.
+    - description: Create and manage security policies on Juniper JUNOS devices
       name: junos_security_policies
       namespace: ''
-    - description: Manage global security policy parameters on Junos devices.
+    - description: Manage global security policy settings on Juniper JUNOS devices
       name: junos_security_policies_global
       namespace: ''
-    - description: Manage security zones on Junos devices.
+    - description: Manage security zones on Juniper JUNOS devices
       name: junos_security_zones
       namespace: ''
     release_date: '2022-03-29'
+  3.0.0:
+    changes:
+      bugfixes:
+      - Fix junos_acl fact gathering when only destination port defined (https://github.com/ansible-collections/junipernetworks.junos/issues/268).
+      major_changes:
+      - Minimum required ansible.netcommon version is 2.5.1.
+      - Updated base plugin references to ansible.netcommon.
+      - '`junos_facts` - change default gather_subset to `min` from `!config`.'
+    fragments:
+    - 0-ignore.yml
+    - add_fqcn_ansible_connection.yaml
+    - fix_acl_facts_gathering_issue.yml
+    - junos_facts.yaml
+    - netcommon_ref_update.yaml
+    - runtime_fix.yml
+    release_date: '2022-04-27'

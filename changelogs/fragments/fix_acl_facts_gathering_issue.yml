@@ -1,3 +1,0 @@
----
-bugfixes:
-  - Fix junos_acl fact gathering when only destination port defined (https://github.com/ansible-collections/junipernetworks.junos/issues/268).
