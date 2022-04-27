@@ -1,0 +1,3 @@
+---
+trivial:
+  - "increase the timers when waiting for connection after reboot"
