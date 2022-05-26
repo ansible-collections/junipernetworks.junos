@@ -40,7 +40,7 @@ DOCUMENTATION = """
 ---
 module: junos_hostname
 version_added: 2.9.0
-short_description: Manage Hostname server configuration on Junos devices.
+short_description: Manage Host-name server configuration on Junos devices.
 description: This module manages hostname configuration on devices running Junos.
 author: Rohit Thakur (@rohitthakur2590)
 requirements:
