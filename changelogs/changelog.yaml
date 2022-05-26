@@ -274,7 +274,7 @@ releases:
     - description: Manage routing instances on Junos devices.
       name: junos_routing_instances
       namespace: ''
-    release_date: '2021-04-28' 
+    release_date: '2021-04-28'
   2.2.0:
     changes:
       minor_changes:
