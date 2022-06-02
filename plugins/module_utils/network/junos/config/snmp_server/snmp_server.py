@@ -614,9 +614,7 @@ class Snmp_server(ConfigBase):
             if "notify_filter" in snmpv3.keys():
                 filters = snmpv3.get("notify_filter")
                 for filter in filters:
-                    fil_node = build_child_xml_node(
-                        v3_node, "notify-filter"
-                    )
+                    fil_node = build_child_xml_node(v3_node, "notify-filter")
                     if "name" in filter.keys():
                         build_child_xml_node(
                             fil_node, "name", filter.get("name")
@@ -624,9 +622,7 @@ class Snmp_server(ConfigBase):
                     if "oids" in filter.keys():
                         oids = filter.get("oids")
                         for oid in oids:
-                            oids_node = build_child_xml_node(
-                                fil_node, "oid"
-                            )
+                            oids_node = build_child_xml_node(fil_node, "oid")
                             if "oid" in oid.keys():
                                 build_child_xml_node(
                                     oids_node, "name", oid["oid"]
@@ -638,9 +634,7 @@ class Snmp_server(ConfigBase):
             if "snmp_community" in snmpv3.keys():
                 snmp_community = snmpv3.get("snmp_community")
                 for snmp in snmp_community:
-                    snmp_node = build_child_xml_node(
-                        v3_node, "snmp-community"
-                    )
+                    snmp_node = build_child_xml_node(v3_node, "snmp-community")
                     for key in snmp.keys():
                         if key == "community_index":
                             build_child_xml_node(
@@ -656,9 +650,7 @@ class Snmp_server(ConfigBase):
             if "target_addresses" in snmpv3.keys():
                 addresses = snmpv3.get("target_addresses")
                 for address in addresses:
-                    tar_node = build_child_xml_node(
-                        v3_node, "target-address"
-                    )
+                    tar_node = build_child_xml_node(v3_node, "target-address")
                     for key in address:
                         build_child_xml_node(
                             tar_node,
@@ -704,9 +696,7 @@ class Snmp_server(ConfigBase):
                 if "local_engine" in usm.keys():
                     local = usm.get("local_engine")
 
-                    local_node = build_child_xml_node(
-                        usm_node, "local-engine"
-                    )
+                    local_node = build_child_xml_node(usm_node, "local-engine")
                     if "users" in local.keys():
                         users = local.get("users")
                         for user in users:
