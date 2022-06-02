@@ -7,4 +7,3 @@
 	}
     </configuration-text>
 </rpc-reply>
-
