@@ -600,118 +600,176 @@ class Snmp_server(ConfigBase):
                             build_child_xml_node(
                                 source_node, "lowest-loopback"
                             )
-            # snmp_v3
-            if "snmp_v3" in want.keys():
-                snmpv3 = want.get("snmp_v3")
-                v3_node = build_child_xml_node(snmp_node, "v3")
+        # snmp_v3
+        if "snmp_v3" in want.keys():
+            snmpv3 = want.get("snmp_v3")
+            v3_node = build_child_xml_node(snmp_node, "v3")
 
-                if "notify" in snmpv3.keys():
-                    notify = snmpv3.get("notify")
-                    for item in notify:
-                        not_node = build_child_xml_node(v3_node, "notify")
-                        for key in item.keys():
-                            build_child_xml_node(not_node, key, item.get(key))
-                if "notify_filter" in snmpv3.keys():
-                    filters = snmpv3.get("notify_filter")
-                    for filter in filters:
-                        fil_node = build_child_xml_node(
-                            v3_node, "notify-filter"
+            if "notify" in snmpv3.keys():
+                notify = snmpv3.get("notify")
+                for item in notify:
+                    not_node = build_child_xml_node(v3_node, "notify")
+                    for key in item.keys():
+                        build_child_xml_node(not_node, key, item.get(key))
+            if "notify_filter" in snmpv3.keys():
+                filters = snmpv3.get("notify_filter")
+                for filter in filters:
+                    fil_node = build_child_xml_node(
+                        v3_node, "notify-filter"
+                    )
+                    if "name" in filter.keys():
+                        build_child_xml_node(
+                            fil_node, "name", filter.get("name")
                         )
-                        if "name" in filter.keys():
-                            build_child_xml_node(
-                                fil_node, "name", filter.get("name")
+                    if "oids" in filter.keys():
+                        oids = filter.get("oids")
+                        for oid in oids:
+                            oids_node = build_child_xml_node(
+                                fil_node, "oid"
                             )
-                        if "oids" in filter.keys():
-                            oids = filter.get("oids")
-                            for oid in oids:
-                                oids_node = build_child_xml_node(
-                                    fil_node, "oid"
-                                )
-                                if "oid" in oid.keys():
-                                    build_child_xml_node(
-                                        oids_node, "name", oid["oid"]
-                                    )
-                                if "exclude" in oid.keys():
-                                    build_child_xml_node(oids_node, "exclude")
-                                if "include" in oid.keys():
-                                    build_child_xml_node(oids_node, "include")
-                if "snmp_community" in snmpv3.keys():
-                    snmp_community = snmpv3.get("snmp_community")
-                    for snmp in snmp_community:
-                        snmp_node = build_child_xml_node(
-                            v3_node, "snmp-community"
-                        )
-                        for key in snmp.keys():
-                            if key == "community_index":
+                            if "oid" in oid.keys():
                                 build_child_xml_node(
-                                    snmp_node, "name", snmp.get(key)
+                                    oids_node, "name", oid["oid"]
                                 )
-                            else:
-                                build_child_xml_node(
-                                    snmp_node,
-                                    key.replace("_", "-"),
-                                    snmp.get(key),
-                                )
-
-                if "target_addresses" in snmpv3.keys():
-                    addresses = snmpv3.get("target_addresses")
-                    for address in addresses:
-                        tar_node = build_child_xml_node(
-                            v3_node, "target-address"
-                        )
-                        for key in address:
+                            if "exclude" in oid.keys():
+                                build_child_xml_node(oids_node, "exclude")
+                            if "include" in oid.keys():
+                                build_child_xml_node(oids_node, "include")
+            if "snmp_community" in snmpv3.keys():
+                snmp_community = snmpv3.get("snmp_community")
+                for snmp in snmp_community:
+                    snmp_node = build_child_xml_node(
+                        v3_node, "snmp-community"
+                    )
+                    for key in snmp.keys():
+                        if key == "community_index":
                             build_child_xml_node(
-                                tar_node,
+                                snmp_node, "name", snmp.get(key)
+                            )
+                        else:
+                            build_child_xml_node(
+                                snmp_node,
                                 key.replace("_", "-"),
-                                address.get(key),
+                                snmp.get(key),
                             )
 
-                # target_parameters
-                if "target_parameters" in snmpv3.keys():
-                    parameters = snmpv3.get("target_parameters")
-
-                    for param in parameters:
-                        param_node = build_child_xml_node(
-                            v3_node, "target-parameters"
+            if "target_addresses" in snmpv3.keys():
+                addresses = snmpv3.get("target_addresses")
+                for address in addresses:
+                    tar_node = build_child_xml_node(
+                        v3_node, "target-address"
+                    )
+                    for key in address:
+                        build_child_xml_node(
+                            tar_node,
+                            key.replace("_", "-"),
+                            address.get(key),
                         )
 
-                        if "name" in param:
-                            build_child_xml_node(
-                                param_node, "name", param.get("name")
-                            )
-                        if "notify_filter" in param:
-                            build_child_xml_node(
-                                param_node,
-                                "notify-filter",
-                                param.get("notify_filter"),
-                            )
-                        if "parameters" in param:
-                            subnode = build_child_xml_node(
-                                param_node, "parameters"
-                            )
-                            parameter = param.get("parameters")
-                            for key in parameter.keys():
-                                build_child_xml_node(
-                                    subnode,
-                                    key.replace("_", "-"),
-                                    parameter.get(key),
-                                )
-                # usm
-                if "usm" in snmpv3.keys():
-                    usm = snmpv3.get("usm")
+            # target_parameters
+            if "target_parameters" in snmpv3.keys():
+                parameters = snmpv3.get("target_parameters")
 
-                    usm_node = build_child_xml_node(v3_node, "usm")
-                    if "local_engine" in usm.keys():
-                        local = usm.get("local_engine")
+                for param in parameters:
+                    param_node = build_child_xml_node(
+                        v3_node, "target-parameters"
+                    )
 
-                        local_node = build_child_xml_node(
-                            usm_node, "local-engine"
+                    if "name" in param:
+                        build_child_xml_node(
+                            param_node, "name", param.get("name")
                         )
-                        if "users" in local.keys():
-                            users = local.get("users")
+                    if "notify_filter" in param:
+                        build_child_xml_node(
+                            param_node,
+                            "notify-filter",
+                            param.get("notify_filter"),
+                        )
+                    if "parameters" in param:
+                        subnode = build_child_xml_node(
+                            param_node, "parameters"
+                        )
+                        parameter = param.get("parameters")
+                        for key in parameter.keys():
+                            build_child_xml_node(
+                                subnode,
+                                key.replace("_", "-"),
+                                parameter.get(key),
+                            )
+            # usm
+            if "usm" in snmpv3.keys():
+                usm = snmpv3.get("usm")
+
+                usm_node = build_child_xml_node(v3_node, "usm")
+                if "local_engine" in usm.keys():
+                    local = usm.get("local_engine")
+
+                    local_node = build_child_xml_node(
+                        usm_node, "local-engine"
+                    )
+                    if "users" in local.keys():
+                        users = local.get("users")
+                        for user in users:
+                            user_node = build_child_xml_node(
+                                local_node, "user"
+                            )
+                            for key in user.keys():
+                                if key == "name":
+                                    build_child_xml_node(
+                                        user_node, "name", user["name"]
+                                    )
+                                elif key == "authentication_none":
+                                    build_child_xml_node(
+                                        user_node, "authentication-none"
+                                    )
+                                elif key == "privacy_none":
+                                    build_child_xml_node(
+                                        user_node, "privacy-none"
+                                    )
+                                else:
+                                    sub_dict = user.get(key)
+                                    sub_node = build_child_xml_node(
+                                        user_node, key.replace("_", "-")
+                                    )
+
+                                    if "authentication" in key:
+                                        build_child_xml_node(
+                                            sub_node,
+                                            "authentication-key",
+                                            sub_dict["key"],
+                                        )
+                                        build_child_xml_node(
+                                            sub_node,
+                                            "authentication-password",
+                                            sub_dict["password"],
+                                        )
+                                    else:
+                                        build_child_xml_node(
+                                            sub_node,
+                                            "privacy-key",
+                                            sub_dict["key"],
+                                        )
+                                        build_child_xml_node(
+                                            sub_node,
+                                            "privacy-password",
+                                            sub_dict["password"],
+                                        )
+                if "remote_engine" in usm.keys():
+                    remotes = usm.get("remote_engine")
+
+                    for remote in remotes:
+                        remote_node = build_child_xml_node(
+                            usm_node, "remote-engine"
+                        )
+                        if "id" in remote:
+                            build_child_xml_node(
+                                remote_node, "name", remote.get("id")
+                            )
+                        if "users" in remote.keys():
+                            users = remote.get("users")
                             for user in users:
                                 user_node = build_child_xml_node(
-                                    local_node, "user"
+                                    remote_node, "user"
                                 )
                                 for key in user.keys():
                                     if key == "name":
@@ -720,7 +778,8 @@ class Snmp_server(ConfigBase):
                                         )
                                     elif key == "authentication_none":
                                         build_child_xml_node(
-                                            user_node, "authentication-none"
+                                            user_node,
+                                            "authentication-none",
                                         )
                                     elif key == "privacy_none":
                                         build_child_xml_node(
@@ -729,7 +788,8 @@ class Snmp_server(ConfigBase):
                                     else:
                                         sub_dict = user.get(key)
                                         sub_node = build_child_xml_node(
-                                            user_node, key.replace("_", "-")
+                                            user_node,
+                                            key.replace("_", "-"),
                                         )
 
                                         if "authentication" in key:
@@ -754,66 +814,6 @@ class Snmp_server(ConfigBase):
                                                 "privacy-password",
                                                 sub_dict["password"],
                                             )
-                    if "remote_engine" in usm.keys():
-                        remotes = usm.get("remote_engine")
-
-                        for remote in remotes:
-                            remote_node = build_child_xml_node(
-                                usm_node, "remote-engine"
-                            )
-                            if "id" in remote:
-                                build_child_xml_node(
-                                    remote_node, "name", remote.get("id")
-                                )
-                            if "users" in remote.keys():
-                                users = remote.get("users")
-                                for user in users:
-                                    user_node = build_child_xml_node(
-                                        remote_node, "user"
-                                    )
-                                    for key in user.keys():
-                                        if key == "name":
-                                            build_child_xml_node(
-                                                user_node, "name", user["name"]
-                                            )
-                                        elif key == "authentication_none":
-                                            build_child_xml_node(
-                                                user_node,
-                                                "authentication-none",
-                                            )
-                                        elif key == "privacy_none":
-                                            build_child_xml_node(
-                                                user_node, "privacy-none"
-                                            )
-                                        else:
-                                            sub_dict = user.get(key)
-                                            sub_node = build_child_xml_node(
-                                                user_node,
-                                                key.replace("_", "-"),
-                                            )
-
-                                            if "authentication" in key:
-                                                build_child_xml_node(
-                                                    sub_node,
-                                                    "authentication-key",
-                                                    sub_dict["key"],
-                                                )
-                                                build_child_xml_node(
-                                                    sub_node,
-                                                    "authentication-password",
-                                                    sub_dict["password"],
-                                                )
-                                            else:
-                                                build_child_xml_node(
-                                                    sub_node,
-                                                    "privacy-key",
-                                                    sub_dict["key"],
-                                                )
-                                                build_child_xml_node(
-                                                    sub_node,
-                                                    "privacy-password",
-                                                    sub_dict["password"],
-                                                )
             if "views" in want.keys():
                 views = want.get("views")
                 for view in views:
