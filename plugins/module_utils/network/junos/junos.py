@@ -89,7 +89,6 @@ def tostring(element, encoding="UTF-8", pretty_print=False):
         return to_text(
             xml_to_string(element, encoding),
             encoding=encoding,
-            pretty_print=pretty_print,
         )
 
 
