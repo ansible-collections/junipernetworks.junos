@@ -5,6 +5,14 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v3.0.1
+======
+
+Bugfixes
+--------
+
+- Fix incorrect param pass to to_text.
+
 v3.0.0
 ======
 

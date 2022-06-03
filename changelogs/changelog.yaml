@@ -275,6 +275,29 @@ releases:
       name: junos_routing_instances
       namespace: ''
     release_date: '2021-04-28'
+  2.10.0:
+    changes:
+      minor_changes:
+      - Added junos_security_policies module.
+      - Added junos_security_policies_global module.
+      - Added junos_security_zones module.
+    fragments:
+    - black_fix.yml
+    - fix_sanity_list.yml
+    - junos_security_policies_global_module.yaml
+    - junos_security_policies_resource_module.yaml
+    - junos_security_zones_module.yml
+    modules:
+    - description: Create and manage security policies on Juniper JUNOS devices
+      name: junos_security_policies
+      namespace: ''
+    - description: Manage global security policy settings on Juniper JUNOS devices
+      name: junos_security_policies_global
+      namespace: ''
+    - description: Manage security zones on Juniper JUNOS devices
+      name: junos_security_zones
+      namespace: ''
+    release_date: '2022-03-29'
   2.2.0:
     changes:
       minor_changes:
@@ -404,29 +427,6 @@ releases:
       name: junos_snmp_server
       namespace: ''
     release_date: '2022-02-01'
-  2.10.0:
-    changes:
-      minor_changes:
-      - Added junos_security_policies module.
-      - Added junos_security_policies_global module.
-      - Added junos_security_zones module.
-    fragments:
-    - black_fix.yml
-    - fix_sanity_list.yml
-    - junos_security_policies_global_module.yaml
-    - junos_security_policies_resource_module.yaml
-    - junos_security_zones_module.yml
-    modules:
-    - description: Create and manage security policies on Juniper JUNOS devices
-      name: junos_security_policies
-      namespace: ''
-    - description: Manage global security policy settings on Juniper JUNOS devices
-      name: junos_security_policies_global
-      namespace: ''
-    - description: Manage security zones on Juniper JUNOS devices
-      name: junos_security_zones
-      namespace: ''
-    release_date: '2022-03-29'
   3.0.0:
     changes:
       bugfixes:
@@ -443,3 +443,12 @@ releases:
     - netcommon_ref_update.yaml
     - runtime_fix.yml
     release_date: '2022-04-27'
+  3.0.1:
+    changes:
+      bugfixes:
+      - Fix incorrect param pass to to_text.
+    fragments:
+    - 225_fix_to_string.yaml
+    - 308.yaml
+    - enable_unit_and_sanity_using_github_action.yaml
+    release_date: '2022-06-03'
