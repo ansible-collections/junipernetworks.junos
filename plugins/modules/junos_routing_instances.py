@@ -98,6 +98,7 @@ options:
           - l2backhaul-vpn
           - l2vpn
           - layer2-control
+          - mac-vrf
           - mpls-forwarding
           - mpls-internet-multicast
           - no-forwarding
