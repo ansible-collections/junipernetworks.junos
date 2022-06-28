@@ -422,6 +422,7 @@ Parameters
                                     <li>l2backhaul-vpn</li>
                                     <li>l2vpn</li>
                                     <li>layer2-control</li>
+                                    <li>mac-vrf</li>
                                     <li>mpls-forwarding</li>
                                     <li>mpls-internet-multicast</li>
                                     <li>no-forwarding</li>
