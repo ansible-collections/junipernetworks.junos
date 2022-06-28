@@ -5,6 +5,19 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v3.1.0
+======
+
+Minor Changes
+-------------
+
+- Add mac-vrf instance type.
+
+Bugfixes
+--------
+
+- fixes the nighbors list overwrite issue.
+
 v3.0.1
 ======
 
