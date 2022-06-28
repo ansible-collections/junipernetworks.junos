@@ -28,7 +28,6 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
 )
 from ansible.module_utils.six import string_types
 
-
 try:
     from lxml import etree
 
@@ -201,6 +200,7 @@ class Bgp_globalFacts(object):
                             )
                             if neighbors_dict:
                                 neighbors_lst.append(neighbors_dict)
+                            neighbors_dict = {}
                     if neighbors_lst:
                         bgp_group["neighbors"] = neighbors_lst
 
