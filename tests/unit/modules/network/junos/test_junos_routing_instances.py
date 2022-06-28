@@ -295,6 +295,43 @@ class TestJunosRouting_instancesModule(TestJunosModule):
         result = self.execute_module(changed=False)
         self.assertEqual(sorted(result["rendered"]), sorted(rendered))
 
+    def test_junos_routing_instances_rendered_02(self):
+        """
+        :return:
+        """
+        set_module_args(
+            dict(
+                config=[
+                    dict(
+                        name="test",
+                        type="mac-vrf",
+                        route_distinguisher="10.58.255.1:37",
+                        vrf_imports=["test-policy"],
+                        vrf_exports=["test-policy", "test-policy-1"],
+                        interfaces=[
+                            dict(name="sp-0/0/0.0"),
+                            dict(name="gr-0/0/0.0"),
+                        ],
+                        connector_id_advertise=True,
+                    )
+                ],
+                state="rendered",
+            )
+        )
+
+        rendered = (
+            '<nc:routing-instances xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
+            "<nc:instance><nc:name>test</nc:name><nc:connector-id-advertise/>"
+            "<nc:instance-type>mac-vrf</nc:instance-type><nc:interface><nc:name>sp-0/0/0.0</nc:name>"
+            "</nc:interface><nc:interface><nc:name>gr-0/0/0.0</nc:name>"
+            "</nc:interface><nc:route-distinguisher><nc:rd-type>10.58.255.1:37</nc:rd-type>"
+            "</nc:route-distinguisher><nc:vrf-import>test-policy</nc:vrf-import>"
+            "<nc:vrf-export>test-policy</nc:vrf-export><nc:vrf-export>test-policy-1</nc:vrf-export>"
+            "</nc:instance></nc:routing-instances>"
+        )
+        result = self.execute_module(changed=False)
+        self.assertEqual(sorted(result["rendered"]), sorted(rendered))
+
     def test_junos_routing_instances_gathered(self):
         """
         :return:
