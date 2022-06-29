@@ -452,3 +452,13 @@ releases:
     - 308.yaml
     - enable_unit_and_sanity_using_github_action.yaml
     release_date: '2022-06-03'
+  3.1.0:
+    changes:
+      bugfixes:
+      - fixes the nighbors list overwrite issue.
+      minor_changes:
+      - Add mac-vrf instance type.
+    fragments:
+    - add_mac_vrf_type.yaml
+    - read_neighbors_list_fix.yaml
+    release_date: '2022-06-28'
