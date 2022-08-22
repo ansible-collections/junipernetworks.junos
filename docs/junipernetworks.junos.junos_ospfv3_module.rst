@@ -17,7 +17,7 @@ Version added: 1.2.0
 
 Synopsis
 --------
-- This module manages global OSPFv3 configuration on devices running Juniper JUNOS.
+- This module manages global OSPFv3 DNM configuration on devices running Juniper JUNOS.
 
 
 
