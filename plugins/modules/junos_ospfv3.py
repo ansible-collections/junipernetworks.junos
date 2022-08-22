@@ -35,7 +35,7 @@ DOCUMENTATION = """
 module: junos_ospfv3
 short_description: OSPFv3 resource module
 description:
-- This module manages global OSPFv3 configuration on devices running Juniper JUNOS.
+- This module manages global OSPFv3 DNM configuration on devices running Juniper JUNOS.
 version_added: 1.2.0
 author: Rohit Thakur (@rohitthakur2590)
 requirements:
