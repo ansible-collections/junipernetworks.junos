@@ -229,8 +229,9 @@ class Netconf(NetconfBase):
     def commit(
         self,
         confirmed=False,
-        check=False,
         timeout=None,
+        persist=None,
+        check=False,
         comment=None,
         synchronize=False,
         at_time=None,
