@@ -26,25 +26,13 @@ plugin_routing:
       redirect: junipernetworks.junos.junos
     facts:
       redirect: junipernetworks.junos.junos
-    junos_interface:
-      redirect: junipernetworks.junos.junos
-    interface:
-      redirect: junipernetworks.junos.junos
     junos_interfaces:
       redirect: junipernetworks.junos.junos
     interfaces:
       redirect: junipernetworks.junos.junos
-    junos_l2_interface:
-      redirect: junipernetworks.junos.junos
-    l2_interface:
-      redirect: junipernetworks.junos.junos
     junos_l2_interfaces:
       redirect: junipernetworks.junos.junos
     l2_interfaces:
-      redirect: junipernetworks.junos.junos
-    junos_l3_interface:
-      redirect: junipernetworks.junos.junos
-    l3_interface:
       redirect: junipernetworks.junos.junos
     junos_l3_interfaces:
       redirect: junipernetworks.junos.junos
@@ -61,14 +49,6 @@ plugin_routing:
     junos_lag_interfaces:
       redirect: junipernetworks.junos.junos
     lag_interfaces:
-      redirect: junipernetworks.junos.junos
-    junos_linkagg:
-      redirect: junipernetworks.junos.junos
-    linkagg:
-      redirect: junipernetworks.junos.junos
-    junos_lldp:
-      redirect: junipernetworks.junos.junos
-    lldp:
       redirect: junipernetworks.junos.junos
     junos_lldp_global:
       redirect: junipernetworks.junos.junos
@@ -124,8 +104,6 @@ plugin_routing:
       redirect: junipernetworks.junos.junos
     junos_lldp_interface:
       redirect: junipernetworks.junos.junos
-    lldp_interface:
-      redirect: junipernetworks.junos.junos
     junos_lldp_interfaces:
       redirect: junipernetworks.junos.junos
     lldp_interfaces:
@@ -166,10 +144,6 @@ plugin_routing:
       redirect: junipernetworks.junos.junos
     scp:
       redirect: junipernetworks.junos.junos
-    junos_static_route:
-      redirect: junipernetworks.junos.junos
-    static_route:
-      redirect: junipernetworks.junos.junos
     junos_static_routes:
       redirect: junipernetworks.junos.junos
     static_routes:
@@ -181,10 +155,6 @@ plugin_routing:
     junos_user:
       redirect: junipernetworks.junos.junos
     user:
-      redirect: junipernetworks.junos.junos
-    junos_vlan:
-      redirect: junipernetworks.junos.junos
-    vlan:
       redirect: junipernetworks.junos.junos
     junos_vlans:
       redirect: junipernetworks.junos.junos
@@ -207,37 +177,10 @@ plugin_routing:
       redirect: junipernetworks.junos.junos_config
     facts:
       redirect: junipernetworks.junos.junos_facts
-    interface:
-      redirect: junipernetworks.junos.junos_interface
-      deprecation:
-        removal_date: '2022-06-01'
-        warning_text: See the plugin documentation for more details
-    junos_interface:
-      deprecation:
-        removal_date: '2022-06-01'
-        warning_text: See the plugin documentation for more details
     interfaces:
       redirect: junipernetworks.junos.junos_interfaces
-    l2_interface:
-      redirect: junipernetworks.junos.junos_l2_interface
-      deprecation:
-        removal_date: '2022-06-01'
-        warning_text: See the plugin documentation for more details
-    junos_l2_interface:
-      deprecation:
-        removal_date: '2022-06-01'
-        warning_text: See the plugin documentation for more details
     l2_interfaces:
       redirect: junipernetworks.junos.junos_l2_interfaces
-    l3_interface:
-      redirect: junipernetworks.junos.junos_l3_interface
-      deprecation:
-        removal_date: '2022-06-01'
-        warning_text: See the plugin documentation for more details
-    junos_l3_interface:
-      deprecation:
-        removal_date: '2022-06-01'
-        warning_text: See the plugin documentation for more details
     l3_interfaces:
       redirect: junipernetworks.junos.junos_l3_interfaces
     lacp:
@@ -246,24 +189,6 @@ plugin_routing:
       redirect: junipernetworks.junos.junos_lacp_interfaces
     lag_interfaces:
       redirect: junipernetworks.junos.junos_lag_interfaces
-    linkagg:
-      redirect: junipernetworks.junos.junos_linkagg
-      deprecation:
-        removal_date: '2022-06-01'
-        warning_text: See the plugin documentation for more details
-    junos_linkagg:
-      deprecation:
-        removal_date: '2022-06-01'
-        warning_text: See the plugin documentation for more details
-    lldp:
-      redirect: junipernetworks.junos.junos_lldp
-      deprecation:
-        removal_date: '2022-06-01'
-        warning_text: See the plugin documentation for more details
-    junos_lldp:
-      deprecation:
-        removal_date: '2022-06-01'
-        warning_text: See the plugin documentation for more details
     lldp_global:
       redirect: junipernetworks.junos.junos_lldp_global
     bgp_global:
@@ -290,15 +215,6 @@ plugin_routing:
       redirect: junipernetworks.junos.junos_hostname
     routing_options:
       redirect: junipernetworks.junos.junos_routing_options
-    lldp_interface:
-      redirect: junipernetworks.junos.junos_lldp_interface
-      deprecation:
-        removal_date: '2022-06-01'
-        warning_text: See the plugin documentation for more details
-    junos_lldp_interface:
-      deprecation:
-        removal_date: '2022-06-01'
-        warning_text: See the plugin documentation for more details
     lldp_interfaces:
       redirect: junipernetworks.junos.junos_lldp_interfaces
     logging:
@@ -326,30 +242,12 @@ plugin_routing:
       redirect: junipernetworks.junos.junos_rpc
     scp:
       redirect: junipernetworks.junos.junos_scp
-    static_route:
-      redirect: junipernetworks.junos.junos_static_route
-      deprecation:
-        removal_date: '2022-06-01'
-        warning_text: See the plugin documentation for more details
-    junos_static_route:
-      deprecation:
-        removal_date: '2022-06-01'
-        warning_text: See the plugin documentation for more details
     static_routes:
       redirect: junipernetworks.junos.junos_static_routes
     system:
       redirect: junipernetworks.junos.junos_system
     user:
       redirect: junipernetworks.junos.junos_user
-    vlan:
-      redirect: junipernetworks.junos.junos_vlan
-      deprecation:
-        removal_date: '2022-06-01'
-        warning_text: See the plugin documentation for more details
-    junos_vlan:
-      deprecation:
-        removal_date: '2022-06-01'
-        warning_text: See the plugin documentation for more details
     vlans:
       redirect: junipernetworks.junos.junos_vlans
     vrf:
