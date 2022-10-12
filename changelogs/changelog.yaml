@@ -432,7 +432,7 @@ releases:
     release_date: '2022-06-28'
   4.0.0:
     changes:
-      major_changes:
+      removed_features:
       - Remove following deprecated Junos Modules.
       - junos_interface
       - junos_l2_interface
@@ -444,6 +444,7 @@ releases:
       - junos_vlan
     fragments:
     - ignores-2.15.yaml
+    - net_remove.yaml
     - remove_deprecated_modules.yaml
     - sanity.yaml
     release_date: '2022-10-12'
