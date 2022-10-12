@@ -432,7 +432,7 @@ releases:
     release_date: '2022-06-28'
   4.0.0:
     changes:
-      major_changes:
+      removed_features:
       - Remove following deprecated Junos Modules.
       - junos_interface
       - junos_l2_interface
