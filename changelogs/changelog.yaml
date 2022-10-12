@@ -20,23 +20,11 @@ releases:
     - description: Collect facts from remote devices running Juniper Junos
       name: junos_facts
       namespace: ''
-    - description: (deprecated, removed after 2022-06-01) Manage Interface on Juniper
-        JUNOS network devices
-      name: junos_interface
-      namespace: ''
     - description: Junos Interfaces resource module
       name: junos_interfaces
       namespace: ''
-    - description: (deprecated, removed after 2022-06-01) Manage L2 Interface on Juniper
-        JUNOS network devices
-      name: junos_l2_interface
-      namespace: ''
     - description: L2 interfaces resource module
       name: junos_l2_interfaces
-      namespace: ''
-    - description: (deprecated, removed after 2022-06-01) Manage L3 interfaces on
-        Juniper JUNOS network devices
-      name: junos_l3_interface
       namespace: ''
     - description: L3 interfaces resource module
       name: junos_l3_interfaces
@@ -51,20 +39,8 @@ releases:
     - description: Link Aggregation Juniper JUNOS resource module
       name: junos_lag_interfaces
       namespace: ''
-    - description: (deprecated, removed after 2022-06-01) Manage link aggregation
-        groups on Juniper JUNOS network devices
-      name: junos_linkagg
-      namespace: ''
-    - description: (deprecated, removed after 2022-06-01) Manage LLDP configuration
-        on Juniper JUNOS network devices
-      name: junos_lldp
-      namespace: ''
     - description: LLDP resource module
       name: junos_lldp_global
-      namespace: ''
-    - description: (deprecated, removed after 2022-06-01) Manage LLDP interfaces configuration
-        on Juniper JUNOS network devices
-      name: junos_lldp_interface
       namespace: ''
     - description: LLDP interfaces resource module
       name: junos_lldp_interfaces
@@ -90,10 +66,6 @@ releases:
     - description: Transfer files from or to remote devices running Junos
       name: junos_scp
       namespace: ''
-    - description: (deprecated, removed after 2022-06-01) Manage static IP routes
-        on Juniper JUNOS network devices
-      name: junos_static_route
-      namespace: ''
     - description: Static routes resource module
       name: junos_static_routes
       namespace: ''
@@ -102,10 +74,6 @@ releases:
       namespace: ''
     - description: Manage local user accounts on Juniper JUNOS devices
       name: junos_user
-      namespace: ''
-    - description: (deprecated, removed after 2022-06-01) Manage VLANs on Juniper
-        JUNOS network devices
-      name: junos_vlan
       namespace: ''
     - description: VLANs resource module
       name: junos_vlans
@@ -462,3 +430,20 @@ releases:
     - add_mac_vrf_type.yaml
     - read_neighbors_list_fix.yaml
     release_date: '2022-06-28'
+  4.0.0:
+    changes:
+      major_changes:
+      - Remove following deprecated Junos Modules.
+      - junos_interface
+      - junos_l2_interface
+      - junos_l3_interface
+      - junos_linkagg
+      - junos_lldp
+      - junos_lldp_interface
+      - junos_static_route
+      - junos_vlan
+    fragments:
+    - ignores-2.15.yaml
+    - remove_deprecated_modules.yaml
+    - sanity.yaml
+    release_date: '2022-10-12'
