@@ -125,7 +125,6 @@ EXAMPLES = """
 """
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    junos_argument_spec,
     get_device,
 )
 
@@ -181,14 +180,9 @@ def main():
         ssh_config=dict(type="path"),
     )
 
-    argument_spec.update(junos_argument_spec)
-
     module = AnsibleModule(
         argument_spec=argument_spec, supports_check_mode=True
     )
-
-    if module.params["provider"] is None:
-        module.params["provider"] = {}
 
     if not HAS_PYEZ:
         module.fail_json(

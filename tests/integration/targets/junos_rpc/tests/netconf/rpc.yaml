@@ -5,7 +5,6 @@
   register: result
   junipernetworks.junos.junos_rpc:
     rpc: get-interface-information
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -20,7 +19,6 @@
     args:
       interface-name: lo0
       media: true
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -34,7 +32,6 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-interface-information
     output: text
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -51,7 +48,6 @@
     args:
       interface-name: lo0
       media: true
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -65,7 +61,6 @@
   ignore_errors: true
   junipernetworks.junos.junos_rpc:
     rpc: show-interface-information
-    provider: '{{ netconf }}'
 
 - assert:
     that:

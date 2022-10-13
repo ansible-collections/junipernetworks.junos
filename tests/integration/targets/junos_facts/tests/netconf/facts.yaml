@@ -4,7 +4,6 @@
 - name: Collect default facts from device
   register: result
   junipernetworks.junos.junos_facts:
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -17,7 +16,6 @@
   register: result
   junipernetworks.junos.junos_facts:
     gather_subset: config
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -30,7 +28,6 @@
   register: result
   junipernetworks.junos.junos_facts:
     gather_subset: '!hardware'
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -44,7 +41,6 @@
   register: result
   junipernetworks.junos.junos_facts:
     gather_subset: test
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -56,7 +52,6 @@
   junipernetworks.junos.junos_facts:
     gather_subset: config
     config_format: set
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -68,7 +63,6 @@
   junipernetworks.junos.junos_facts:
     gather_subset: config
     config_format: xml
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -80,7 +74,6 @@
   junipernetworks.junos.junos_facts:
     gather_subset: config
     config_format: json
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -100,7 +93,6 @@
   junipernetworks.junos.junos_facts:
     gather_subset: config
     config_format: text
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -113,7 +105,6 @@
   junipernetworks.junos.junos_facts:
     available_network_resources: true
     gather_network_resources: all
-    provider: '{{ netconf }}'
 
 - name: Assert that correct available_network_resources returned
   assert:

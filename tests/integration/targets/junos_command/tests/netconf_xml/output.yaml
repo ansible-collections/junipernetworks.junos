@@ -8,7 +8,6 @@
     commands:
       - show version
     format: xml
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -23,7 +22,6 @@
       - show version
       - show route
     format: xml
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -36,8 +34,6 @@
   connection: ansible.netcommon.network_cli
   junipernetworks.junos.junos_command:
     commands: show version | display xml
-    provider:
-      transport: cli
 
 - assert:
     that:
@@ -53,8 +49,6 @@
       - show version
       - show route
     display: xml
-    provider:
-      transport: cli
 
 - assert:
     that:

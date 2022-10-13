@@ -5,14 +5,12 @@
   junipernetworks.junos.junos_config:
     lines:
       - set system host-name {{ inventory_hostname_short }}
-    provider: '{{ netconf }}'
 
 - name: configure single command
   register: result
   junipernetworks.junos.junos_config:
     lines:
       - set system host-name localhost
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -24,7 +22,6 @@
   junipernetworks.junos.junos_config:
     lines:
       - set system host-name localhost
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -34,7 +31,6 @@
   register: result
   junipernetworks.junos.junos_config:
     confirm_commit: true
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -44,14 +40,12 @@
   junipernetworks.junos.junos_config:
     lines:
       - delete system syslog file test1
-    provider: '{{ netconf }}'
 
 - name: Configure syslog file
   register: result
   junipernetworks.junos.junos_config:
     lines:
       - set system syslog file test1 any any
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -63,7 +57,6 @@
   register: result
   junipernetworks.junos.junos_config:
     rollback: 1
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -75,6 +68,5 @@
   junipernetworks.junos.junos_config:
     lines:
       - set system host-name {{ inventory_hostname_short }}
-    provider: '{{ netconf }}'
 
 - debug: msg="END netconf/single.yaml on connection={{ ansible_connection }}"

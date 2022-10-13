@@ -7,7 +7,6 @@
   junipernetworks.junos.junos_config:
     lines:
       - set system foo
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -20,7 +19,6 @@
     lines:
       - set system host-name {{ inventory_hostname_short }}
       - set system foo
-    provider: '{{ netconf }}'
 
 - assert:
     that:

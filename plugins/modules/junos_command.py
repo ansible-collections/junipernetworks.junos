@@ -24,7 +24,7 @@ extends_documentation_fragment:
 options:
   commands:
     description:
-    - The commands to send to the remote junos device over the configured provider.  The
+    - The commands to send to the remote junos device.  The
       resulting output from the command is returned.  If the I(wait_for) argument
       is provided, the module is not returned until the condition is satisfied or
       the number of I(retries) has been exceeded.
@@ -173,7 +173,6 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.n
     exec_rpc,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    junos_argument_spec,
     get_configuration,
     get_connection,
     get_capabilities,
@@ -373,8 +372,6 @@ def main():
         retries=dict(default=10, type="int"),
         interval=dict(default=1, type="int"),
     )
-
-    argument_spec.update(junos_argument_spec)
 
     required_one_of = [("commands", "rpcs")]
 

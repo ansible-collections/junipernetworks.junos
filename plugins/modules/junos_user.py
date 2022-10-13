@@ -212,7 +212,6 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.u
     remove_default_spec,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    junos_argument_spec,
     get_connection,
     tostring,
 )
@@ -415,7 +414,6 @@ def main():
     aggregate_spec["purge"] = dict(type="bool", default=False)
 
     argument_spec.update(element_spec)
-    argument_spec.update(junos_argument_spec)
 
     mutually_exclusive = [["aggregate", "name"]]
 

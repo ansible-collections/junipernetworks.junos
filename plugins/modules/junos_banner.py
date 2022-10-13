@@ -17,6 +17,8 @@ description:
 - This will configure both login and motd banners on network devices. It allows playbooks
   to add or remote banner text from the active running configuration.
 version_added: 1.0.0
+extends_documentation_fragment:
+- junipernetworks.junos.junos
 options:
   banner:
     description:
@@ -55,8 +57,6 @@ notes:
 - Tested against vSRX JUNOS version 15.1X49-D15.4, vqfx-10000 JUNOS Version 15.1X53-D60.4.
 - Recommended connection is C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
 - This module also works with C(local) connections for legacy playbooks.
-extends_documentation_fragment:
-- junipernetworks.junos.junos
 """
 
 EXAMPLES = """
@@ -106,7 +106,6 @@ import collections
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    junos_argument_spec,
     tostring,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
@@ -139,8 +138,6 @@ def main():
         state=dict(default="present", choices=["present", "absent"]),
         active=dict(default=True, type="bool"),
     )
-
-    argument_spec.update(junos_argument_spec)
 
     required_if = [("state", "present", ("text",))]
 

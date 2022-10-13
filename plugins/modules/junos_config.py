@@ -286,7 +286,6 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     locked_config,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    junos_argument_spec,
     load_configuration,
     tostring,
 )
@@ -425,8 +424,6 @@ def main():
         rollback=dict(type="int"),
         zeroize=dict(default=False, type="bool"),
     )
-
-    argument_spec.update(junos_argument_spec)
 
     mutually_exclusive = [("lines", "src", "rollback", "zeroize")]
 

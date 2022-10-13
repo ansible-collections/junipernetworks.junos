@@ -12,7 +12,6 @@
     wait_for:
       - result[1].rpc-reply.interface-information.physical-interface.name contains
         lo0
-    provider: '{{ netconf }}'
 
 - assert:
     that:

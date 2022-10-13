@@ -6,20 +6,17 @@
   junipernetworks.junos.junos_system:
     hostname: vsrx01
     state: absent
-    provider: '{{ netconf }}'
 
 - name: Set hostname
   register: result
   junipernetworks.junos.junos_system:
     hostname: vsrx01
     state: present
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -31,7 +28,6 @@
   junipernetworks.junos.junos_system:
     hostname: vsrx01
     state: present
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -43,13 +39,11 @@
     hostname: vsrx01
     state: present
     active: false
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -62,13 +56,11 @@
     hostname: vsrx01
     state: present
     active: true
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -80,7 +72,6 @@
   junipernetworks.junos.junos_system:
     hostname: vsrx01
     state: absent
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -91,26 +82,22 @@
   junipernetworks.junos.junos_system:
     hostname: vsrx01
     state: present
-    provider: '{{ netconf }}'
 
 - name: setup - remove domain name
   junipernetworks.junos.junos_system:
     domain_name: ansible.com
     state: absent
-    provider: '{{ netconf }}'
 
 - name: Set domain name
   register: result
   junipernetworks.junos.junos_system:
     domain_name: ansible.com
     state: present
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -122,7 +109,6 @@
   junipernetworks.junos.junos_system:
     domain_name: ansible.com
     state: present
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -134,13 +120,11 @@
     domain_name: ansible.com
     state: present
     active: false
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -153,13 +137,11 @@
     domain_name: ansible.com
     state: present
     active: true
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -171,13 +153,11 @@
   junipernetworks.junos.junos_system:
     domain_name: ansible.com
     state: absent
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -188,7 +168,6 @@
   junipernetworks.junos.junos_system:
     domain_name: ansible.com
     state: present
-    provider: '{{ netconf }}'
 
 - name: Setup - delete domain search
   register: result
@@ -197,7 +176,6 @@
       - test.com
       - sample.com
     state: absent
-    provider: '{{ netconf }}'
 
 - name: Set domain search
   register: result
@@ -206,13 +184,11 @@
       - test.com
       - sample.com
     state: present
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -227,7 +203,6 @@
       - test.com
       - sample.com
     state: present
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -241,13 +216,11 @@
       - sample.com
     state: present
     active: false
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -263,13 +236,11 @@
       - sample.com
     state: present
     active: true
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -284,13 +255,11 @@
       - test.com
       - sample.com
     state: absent
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -305,7 +274,6 @@
       - 8.8.8.8
       - 8.8.4.4
     state: absent
-    provider: '{{ netconf }}'
 
 - name: Set name servers
   register: result
@@ -314,13 +282,11 @@
       - 8.8.8.8
       - 8.8.4.4
     state: present
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -335,7 +301,6 @@
       - 8.8.8.8
       - 8.8.4.4
     state: present
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -349,13 +314,11 @@
       - 8.8.4.4
     state: present
     active: false
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -370,13 +333,11 @@
       - 8.8.4.4
     state: present
     active: true
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -391,13 +352,11 @@
       - 8.8.8.8
       - 8.8.4.4
     state: absent
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:

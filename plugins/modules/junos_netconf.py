@@ -78,7 +78,6 @@ from ansible.module_utils._text import to_text
 from ansible.module_utils.connection import ConnectionError
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    junos_argument_spec,
     get_connection,
 )
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
@@ -164,8 +163,6 @@ def main():
         netconf_port=dict(type="int", default=830, aliases=["listens_on"]),
         state=dict(default="present", choices=["present", "absent"]),
     )
-
-    argument_spec.update(junos_argument_spec)
 
     module = AnsibleModule(
         argument_spec=argument_spec, supports_check_mode=True

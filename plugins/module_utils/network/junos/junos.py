@@ -24,7 +24,6 @@ import json
 from contextlib import contextmanager
 from copy import deepcopy
 
-from ansible.module_utils.basic import env_fallback
 from ansible.module_utils.connection import Connection, ConnectionError
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
     NetconfConnection,
@@ -57,28 +56,6 @@ JSON_ACTIONS = frozenset(["merge", "override", "update"])
 FORMATS = frozenset(["xml", "text", "json"])
 CONFIG_FORMATS = frozenset(["xml", "text", "json", "set"])
 
-junos_provider_spec = {
-    "host": dict(),
-    "port": dict(type="int"),
-    "username": dict(fallback=(env_fallback, ["ANSIBLE_NET_USERNAME"])),
-    "password": dict(
-        fallback=(env_fallback, ["ANSIBLE_NET_PASSWORD"]), no_log=True
-    ),
-    "ssh_keyfile": dict(
-        fallback=(env_fallback, ["ANSIBLE_NET_SSH_KEYFILE"]), type="path"
-    ),
-    "timeout": dict(type="int"),
-    "transport": dict(default="netconf", choices=["cli", "netconf"]),
-}
-junos_argument_spec = {
-    "provider": dict(
-        type="dict",
-        options=junos_provider_spec,
-        removed_at_date="2022-06-01",
-        removed_from_collection="junipernetworks.junos",
-    )
-}
-
 
 def tostring(element, encoding="UTF-8", pretty_print=False):
     if HAS_LXML:
@@ -90,10 +67,6 @@ def tostring(element, encoding="UTF-8", pretty_print=False):
             xml_to_string(element, encoding),
             encoding=encoding,
         )
-
-
-def get_provider_argspec():
-    return junos_provider_spec
 
 
 def get_connection(module):

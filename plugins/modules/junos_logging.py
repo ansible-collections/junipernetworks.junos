@@ -16,6 +16,8 @@ short_description: Manage logging on network devices
 description:
 - This module provides declarative management of logging on Juniper JUNOS devices.
 version_added: 1.0.0
+extends_documentation_fragment:
+- junipernetworks.junos.junos
 deprecated:
   alternative: junos_logging_global
   why: Updated module released with more functionality.
@@ -141,8 +143,6 @@ notes:
 - Tested against vSRX JUNOS version 15.1X49-D15.4, vqfx-10000 JUNOS Version 15.1X53-D60.4.
 - Recommended connection is C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
 - This module also works with C(local) connections for legacy playbooks.
-extends_documentation_fragment:
-- junipernetworks.junos.junos
 """
 
 EXAMPLES = """
@@ -214,7 +214,6 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.u
     remove_default_spec,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    junos_argument_spec,
     tostring,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
@@ -281,7 +280,6 @@ def main():
     )
 
     argument_spec.update(element_spec)
-    argument_spec.update(junos_argument_spec)
 
     required_if = [
         ("dest", "host", ["name", "facility", "level"]),

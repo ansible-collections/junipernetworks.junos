@@ -12,7 +12,6 @@
     wait_for:
       - result[1]['interface-information'][0]['physical-interface'][0]['name'][0]['data']
         contains lo0
-    provider: '{{ netconf }}'
 
 - assert:
     that:

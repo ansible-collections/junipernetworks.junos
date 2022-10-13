@@ -12,7 +12,6 @@
     wait_for:
       - result[1].rpc-reply.interface-information.physical-interface.local-index
         gt 5
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -30,7 +29,6 @@
     wait_for:
       - result[1].rpc-reply.interface-information.physical-interface.local-index
         > 5
-    provider: '{{ netconf }}'
 
 - assert:
     that:

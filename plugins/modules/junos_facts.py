@@ -32,9 +32,7 @@ options:
       adding C(ofacts)  to value, this requires junos-eznc to be installed as a prerequisite.
       Valid value of gather_subset are default, hardware, config, interfaces, ofacts.
       If C(ofacts) is present in the list it fetches the old style facts (fact keys
-      without 'ansible_' prefix) and it requires junos-eznc library to be installed
-      on control node and the device login credentials must be given in C(provider)
-      option.
+      without 'ansible_' prefix) and it requires junos-eznc library to be installed.
     required: false
     default:
     - 'min'
@@ -84,8 +82,6 @@ notes:
 - Tested against vSRX JUNOS version 15.1X49-D15.4, vqfx-10000 JUNOS Version 15.1X53-D60.4.
 - Recommended connection is C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
 - This module also works with C(local) connections for legacy playbooks.
-- Fetching old style facts requires junos-eznc library to be installed on control
-  node and the device login credentials must be given in provider option.
 """
 
 EXAMPLES = """
@@ -116,9 +112,6 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     Facts,
     FACT_RESOURCE_SUBSETS,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    junos_argument_spec,
-)
 
 
 def main():
@@ -128,7 +121,6 @@ def main():
     :returns: ansible_facts
     """
     argument_spec = FactsArgs.argument_spec
-    argument_spec.update(junos_argument_spec)
 
     module = AnsibleModule(
         argument_spec=argument_spec, supports_check_mode=True

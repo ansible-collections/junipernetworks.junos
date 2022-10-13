@@ -9,7 +9,6 @@
     commands:
       - show configuration system ntp
     display: text
-    provider: '{{ netconf }}'
 
 - assert:
     that:
