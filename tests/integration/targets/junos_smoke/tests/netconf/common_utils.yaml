@@ -4,7 +4,6 @@
 
 - name: get facts
   junos_facts:
-    provider: "{{ netconf }}"
   register: result
 
 
