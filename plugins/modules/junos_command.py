@@ -171,7 +171,6 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.n
     exec_rpc,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    junos_argument_spec,
     get_configuration,
     get_connection,
     get_capabilities,
