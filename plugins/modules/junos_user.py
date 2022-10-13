@@ -18,6 +18,8 @@ description:
   the JUNOS operating system.  It provides a set of arguments for creating, removing
   and updating locally defined accounts
 version_added: 1.0.0
+extends_documentation_fragment:
+- junipernetworks.junos.junos
 options:
   aggregate:
     description:

@@ -81,6 +81,9 @@ Notes
    - Recommended connection is ``network_cli``. See `the Junos OS Platform Options <../network/user_guide/platform_junos.html>`_.
    - This module also works with ``local`` connections for legacy playbooks.
    - If ``netconf_port`` value is not mentioned in task by default it will be enabled on port 830 only. Although ``netconf_port`` value can be from 1 through 65535, avoid configuring access on a port that is normally assigned for another service. This practice avoids potential resource conflicts.
+   - For information on using CLI and netconf see the :ref:`Junos OS Platform Options guide <junos_platform_options>`
+   - For more information on using Ansible to manage network devices see the :ref:`Ansible Network Guide <network_guide>`
+   - For more information on using Ansible to manage Juniper network devices see https://www.ansible.com/ansible-juniper.
 
 
 

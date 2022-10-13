@@ -20,6 +20,8 @@ description:
   and state resources as defined in RFC 6242. If the C(netconf_port) is not mentioned
   in the task by default netconf will be enabled on port 830 only.
 version_added: 1.0.0
+extends_documentation_fragment:
+- junipernetworks.junos.junos
 options:
   netconf_port:
     description:

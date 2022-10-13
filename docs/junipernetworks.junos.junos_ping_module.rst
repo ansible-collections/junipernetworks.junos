@@ -213,6 +213,9 @@ Notes
    - For Windows targets, use the :ref:`ansible.windows.win_ping <ansible.windows.win_ping_module>` module instead.
    - For targets running Python, use the :ref:`ansible.builtin.ping <ansible.builtin.ping_module>` module instead.
    - This module works only with connection ``network_cli``.
+   - For information on using CLI and netconf see the :ref:`Junos OS Platform Options guide <junos_platform_options>`
+   - For more information on using Ansible to manage network devices see the :ref:`Ansible Network Guide <network_guide>`
+   - For more information on using Ansible to manage Juniper network devices see https://www.ansible.com/ansible-juniper.
 
 
 

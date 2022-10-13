@@ -19,6 +19,8 @@ description:
   C(xml) key.  If an alternate output format is requested, the reply is transformed
   to the requested output.
 version_added: 1.0.0
+extends_documentation_fragment:
+- junipernetworks.junos.junos
 options:
   rpc:
     description:

@@ -153,6 +153,9 @@ Notes
    - Tested against vMX JUNOS version 17.3R1.10.
    - Works with ``local`` connections only.
    - Since this module uses junos-eznc to establish connection with junos device the netconf configuration parameters needs to be passed using module options for example ``ssh_config`` unlike other junos modules that uses ``netconf`` connection type.
+   - For information on using CLI and netconf see the :ref:`Junos OS Platform Options guide <junos_platform_options>`
+   - For more information on using Ansible to manage network devices see the :ref:`Ansible Network Guide <network_guide>`
+   - For more information on using Ansible to manage Juniper network devices see https://www.ansible.com/ansible-juniper.
 
 
 

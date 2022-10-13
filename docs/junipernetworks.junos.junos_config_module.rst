@@ -342,6 +342,9 @@ Notes
    - Tested against vSRX JUNOS version 15.1X49-D15.4, vqfx-10000 JUNOS Version 15.1X53-D60.4.
    - Recommended connection is ``netconf``. See `the Junos OS Platform Options <../network/user_guide/platform_junos.html>`_.
    - This module also works with ``local`` connections for legacy playbooks.
+   - For information on using CLI and netconf see the :ref:`Junos OS Platform Options guide <junos_platform_options>`
+   - For more information on using Ansible to manage network devices see the :ref:`Ansible Network Guide <network_guide>`
+   - For more information on using Ansible to manage Juniper network devices see https://www.ansible.com/ansible-juniper.
 
 
 

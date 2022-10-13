@@ -19,6 +19,8 @@ description:
 - For Windows targets, use the M(ansible.windows.win_ping) module instead.
 - For targets running Python, use the M(ansible.builtin.ping) module instead.
 version_added: 1.0.0
+extends_documentation_fragment:
+- junipernetworks.junos.junos
 author:
 - Nilashish Chakraborty (@NilashishC)
 options:

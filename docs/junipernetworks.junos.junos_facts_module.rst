@@ -8,6 +8,7 @@ junipernetworks.junos.junos_facts
 **Collect facts from remote devices running Juniper Junos**
 
 
+Version added: 1.0.0
 
 .. contents::
    :local:
@@ -17,7 +18,6 @@ junipernetworks.junos.junos_facts
 Synopsis
 --------
 - Collects fact information from a remote device running the Junos operating system.  By default, the module will collect basic fact information from the device to be included with the hostvars. Additional fact information can be collected based on the configured set of arguments.
-- junipernetworks.junos.junos
 
 
 
@@ -126,6 +126,9 @@ Notes
    - Tested against vSRX JUNOS version 15.1X49-D15.4, vqfx-10000 JUNOS Version 15.1X53-D60.4.
    - Recommended connection is ``netconf``. See `the Junos OS Platform Options <../network/user_guide/platform_junos.html>`_.
    - This module also works with ``local`` connections for legacy playbooks.
+   - For information on using CLI and netconf see the :ref:`Junos OS Platform Options guide <junos_platform_options>`
+   - For more information on using Ansible to manage network devices see the :ref:`Ansible Network Guide <network_guide>`
+   - For more information on using Ansible to manage Juniper network devices see https://www.ansible.com/ansible-juniper.
 
 
 

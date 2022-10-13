@@ -18,6 +18,8 @@ description:
   running on Juniper JUNOS devices.  It provides a set of arguments for loading configuration,
   performing rollback operations and zeroing the active configuration on the device.
 version_added: 1.0.0
+extends_documentation_fragment:
+- junipernetworks.junos.junos
 options:
   lines:
     description:
