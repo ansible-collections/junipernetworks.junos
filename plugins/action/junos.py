@@ -43,11 +43,11 @@ class ActionModule(ActionNetworkModule):
 
         if persistent_connection not in ("netconf", "network_cli"):
             return {
-                    "failed": True,
-                    "msg": "Connection type '%s' is not valid for '%s' module. "
-                    "Please see https://docs.ansible.com/ansible/latest/network/user_guide/platform_junos.html"
-                    % (self._play_context.connection, module_name),
-                }
+                "failed": True,
+                "msg": "Connection type '%s' is not valid for '%s' module. "
+                "Please see https://docs.ansible.com/ansible/latest/network/user_guide/platform_junos.html"
+                % (self._play_context.connection, module_name),
+            }
 
         result = super(ActionModule, self).run(task_vars=task_vars)
         if warnings:

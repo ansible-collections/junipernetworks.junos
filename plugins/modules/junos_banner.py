@@ -137,7 +137,6 @@ def main():
         active=dict(default=True, type="bool"),
     )
 
-
     required_if = [("state", "present", ("text",))]
 
     module = AnsibleModule(

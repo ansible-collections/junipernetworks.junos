@@ -141,7 +141,6 @@ def main():
         active=dict(default=True, type="bool"),
     )
 
-
     params = ["hostname", "domain_name", "domain_search", "name_servers"]
     required_if = [
         ("state", "present", params, True),

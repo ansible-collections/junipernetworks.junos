@@ -423,7 +423,6 @@ def main():
         zeroize=dict(default=False, type="bool"),
     )
 
-
     mutually_exclusive = [("lines", "src", "rollback", "zeroize")]
 
     module = AnsibleModule(

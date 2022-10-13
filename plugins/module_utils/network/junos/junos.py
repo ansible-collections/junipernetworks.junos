@@ -96,6 +96,7 @@ def get_capabilities(module):
     module._junos_capabilities = json.loads(capabilities)
     return module._junos_capabilities
 
+
 def get_device(module):
     provider = module.params.get("provider") or {}
     host = provider.get("host")
