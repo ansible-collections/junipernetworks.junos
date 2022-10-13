@@ -432,6 +432,9 @@ releases:
     release_date: '2022-06-28'
   4.0.0:
     changes:
+      major_changes:
+      - 'Use of connection: local and the provider option are no longer valid on any
+        modules in this collection.'
       removed_features:
       - Remove following deprecated Junos Modules.
       - junos_interface
@@ -446,5 +449,6 @@ releases:
     - ignores-2.15.yaml
     - net_remove.yaml
     - remove_deprecated_modules.yaml
+    - remove_provider.yaml
     - sanity.yaml
     release_date: '2022-10-12'
