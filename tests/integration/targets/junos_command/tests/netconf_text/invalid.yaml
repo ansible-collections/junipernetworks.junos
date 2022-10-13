@@ -8,7 +8,6 @@
   junipernetworks.junos.junos_command:
     commands: show foo
     display: text
-    provider: '{{ netconf }}'
 
 - debug: var=result
 
@@ -25,7 +24,6 @@
       - show version
       - show foo
     display: text
-    provider: '{{ netconf }}'
 
 - assert:
     that:

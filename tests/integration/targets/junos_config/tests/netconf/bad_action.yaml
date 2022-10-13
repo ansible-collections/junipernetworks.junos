@@ -8,7 +8,6 @@
   junipernetworks.junos.junos_config:
     lines:
       - invalid system foo
-    provider: '{{ netconf }}'
 
 - assert:
     that:

@@ -7,7 +7,6 @@
     lines:
       - set system host-name {{ inventory_hostname_short }}
       - delete interfaces lo0
-    provider: '{{ netconf }}'
 
 - name: configure multiple commands
   register: result
@@ -15,7 +14,6 @@
     lines:
       - set system host-name {{ inventory_hostname_short }}
       - set interfaces lo0 unit 0 family inet address 192.0.2.1/32
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -29,7 +27,6 @@
     lines:
       - set system host-name {{ inventory_hostname_short }}
       - set interfaces lo0 unit 0 family inet address 192.0.2.1/32
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -42,6 +39,5 @@
     lines:
       - set system host-name {{ inventory_hostname_short }}
       - delete interfaces lo0
-    provider: '{{ netconf }}'
 
 - debug: msg="END netconf/multiple.yaml on connection={{ ansible_connection }}"

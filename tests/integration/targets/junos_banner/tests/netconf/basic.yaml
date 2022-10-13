@@ -6,7 +6,6 @@
   junipernetworks.junos.junos_banner:
     banner: login
     state: absent
-    provider: '{{ netconf }}'
 
 - name: Create login banner
   register: result
@@ -14,13 +13,11 @@
     banner: login
     text: this is my login banner
     state: present
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -33,7 +30,6 @@
     banner: login
     text: this is my login banner
     state: present
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -46,13 +42,11 @@
     text: this is my login banner
     state: present
     active: false
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -66,13 +60,11 @@
     text: this is my login banner
     state: present
     active: true
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -86,7 +78,6 @@
     banner: login
     text: this is not the login banner you're looking for
     state: present
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -98,13 +89,11 @@
   junipernetworks.junos.junos_banner:
     banner: login
     state: absent
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -115,7 +104,6 @@
   junipernetworks.junos.junos_banner:
     banner: motd
     state: absent
-    provider: '{{ netconf }}'
 
 - name: Create motd banner
   register: result
@@ -123,13 +111,11 @@
     banner: motd
     text: this is my motd banner
     state: present
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -142,7 +128,6 @@
     banner: motd
     text: this is my motd banner
     state: present
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -155,13 +140,11 @@
     text: this is my motd banner
     state: present
     active: false
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -176,13 +159,11 @@
     text: this is my motd banner
     state: present
     active: true
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -194,13 +175,11 @@
   junipernetworks.junos.junos_banner:
     banner: motd
     state: absent
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:

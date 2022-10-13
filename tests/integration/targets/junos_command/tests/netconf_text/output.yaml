@@ -7,7 +7,6 @@
   junipernetworks.junos.junos_command:
     commands: show version
     display: text
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -22,7 +21,6 @@
       - show version
       - show route
     display: text
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -36,7 +34,6 @@
     commands:
       - show configuration system syslog
     display: text
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -49,8 +46,6 @@
   junipernetworks.junos.junos_command:
     commands: show version
     display: text
-    provider:
-      transport: cli
 
 - assert:
     that:
@@ -65,8 +60,6 @@
       - show version
       - show route
     display: text
-    provider:
-      transport: cli
 
 - assert:
     that:

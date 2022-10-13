@@ -10,7 +10,6 @@
     wait_for:
       - result[1].rpc-reply.interface-information.physical-interface.name == lo0
     format: xml
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -27,7 +26,6 @@
     wait_for:
       - result[1].rpc-reply.interface-information.physical-interface.name eq lo0
     format: xml
-    provider: '{{ netconf }}'
 
 - assert:
     that:

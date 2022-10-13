@@ -16,8 +16,6 @@ short_description: Transfer files from or to remote devices running Junos
 description:
 - This module transfers files via SCP from or to remote devices running Junos.
 version_added: 1.0.0
-extends_documentation_fragment:
-- junipernetworks.junos.junos
 options:
   src:
     description:
@@ -100,7 +98,6 @@ changed:
 """
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    junos_argument_spec,
     get_device,
 )
 from ansible.module_utils._text import to_native
@@ -136,14 +133,9 @@ def main():
         ssh_config=dict(type="path"),
     )
 
-    argument_spec.update(junos_argument_spec)
-
     module = AnsibleModule(
         argument_spec=argument_spec, supports_check_mode=True
     )
-
-    if module.params["provider"] is None:
-        module.params["provider"] = {}
 
     if not HAS_PYEZ:
         module.fail_json(

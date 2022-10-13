@@ -5,13 +5,11 @@
   junipernetworks.junos.config:
     lines:
       - delete interfaces lo0
-    provider: '{{ netconf }}'
 
 - name: Use src with module alias
   register: result
   junipernetworks.junos.config:
     src: basic/config.j2
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -23,7 +21,6 @@
   junipernetworks.junos.config:
     lines:
       - delete interfaces lo0
-    provider: '{{ netconf }}'
 
 - name: use module alias to take configuration backup
   register: result
@@ -32,7 +29,6 @@
     backup_options:
       filename: backup_with_alias.cfg
       dir_path: '{{ role_path }}/backup_test_dir/{{ inventory_hostname_short }}'
-    provider: '{{ netconf }}'
 
 - assert:
     that:

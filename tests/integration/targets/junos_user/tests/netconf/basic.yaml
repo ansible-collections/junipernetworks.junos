@@ -6,7 +6,6 @@
   junipernetworks.junos.junos_user:
     name: test_user
     state: absent
-    provider: '{{ netconf }}'
 
 - name: Create user
   register: result
@@ -15,13 +14,11 @@
     state: present
     full_name: test_user
     role: operator
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -37,7 +34,6 @@
     state: present
     full_name: test_user
     role: operator
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -51,13 +47,11 @@
     full_name: test_user
     role: operator
     active: false
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -73,13 +67,11 @@
     full_name: test_user
     role: operator
     active: true
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -95,13 +87,11 @@
     state: absent
     full_name: test_user
     role: operator
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -116,7 +106,6 @@
     state: absent
     full_name: test_user
     role: operator
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -132,7 +121,6 @@
 
       - name: test_user2
         state: absent
-    provider: '{{ netconf }}'
 
 - name: Create list of users
   register: result
@@ -148,13 +136,11 @@
         full_name: test_user2
         role: read-only
         state: present
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -176,13 +162,11 @@
         full_name: test_user2
         role: read-only
         state: absent
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -204,7 +188,6 @@
       - name: test_user2
         full_name: test_user2
         role: read-only
-    provider: '{{ netconf }}'
 
 - name: Purge users except the users in aggregate
   register: result
@@ -213,7 +196,6 @@
 
       - name: "{{ ansible_user|default('ansible') }}"
     purge: true
-    provider: '{{ netconf }}'
 
 - assert:
     that:

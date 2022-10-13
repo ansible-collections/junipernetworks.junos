@@ -9,7 +9,6 @@
     facility: pfe
     level: error
     state: absent
-    provider: '{{ netconf }}'
 
 - name: Create file logging
   register: result
@@ -19,13 +18,11 @@
     facility: pfe
     level: error
     state: present
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -42,7 +39,6 @@
     facility: pfe
     level: error
     state: present
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -57,13 +53,11 @@
     level: error
     state: present
     active: false
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -80,13 +74,11 @@
     level: error
     state: present
     active: true
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -103,13 +95,11 @@
     facility: pfe
     level: error
     state: absent
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -124,13 +114,11 @@
     level: emergency
     state: present
     active: true
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -147,7 +135,6 @@
     level: emergency
     state: present
     active: true
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -161,13 +148,11 @@
     level: emergency
     state: present
     active: false
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -181,13 +166,11 @@
     facility: kernel
     level: emergency
     state: absent
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -201,13 +184,11 @@
     files: 40
     rotate_frequency: 20
     state: present
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -224,7 +205,6 @@
     rotate_frequency: 20
     state: present
     active: true
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -238,13 +218,11 @@
     rotate_frequency: 20
     state: present
     active: false
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -262,13 +240,11 @@
     rotate_frequency: 20
     state: present
     active: true
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -284,13 +260,11 @@
     files: 40
     rotate_frequency: 20
     state: absent
-    provider: '{{ netconf }}'
 
 - name: Get running configuration
   register: config
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -315,7 +289,6 @@
         facility: kernel
         level: emergency
         state: absent
-    provider: '{{ netconf }}'
 
 - name: Configure file logging using aggregate
   register: result
@@ -333,7 +306,6 @@
         facility: kernel
         level: emergency
         active: true
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -358,7 +330,6 @@
         facility: kernel
         level: emergency
     active: false
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -383,7 +354,6 @@
         facility: kernel
         level: emergency
     active: true
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -408,7 +378,6 @@
         facility: kernel
         level: emergency
     state: absent
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -433,7 +402,6 @@
         facility: kernel
         level: emergency
     state: absent
-    provider: '{{ netconf }}'
 
 - assert:
     that:

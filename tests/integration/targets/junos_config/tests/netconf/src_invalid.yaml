@@ -7,7 +7,6 @@
   ignore_errors: true
   junipernetworks.junos.junos_config:
     src: basic/foobar.j2
-    provider: '{{ netconf }}'
 
 - assert:
     that:

@@ -6,13 +6,11 @@
     lines:
       - set system host-name {{ inventory_hostname_short }}
       - delete interfaces lo0
-    provider: '{{ netconf }}'
 
 - name: configure device with text config
   register: result
   junipernetworks.junos.junos_config:
     src: basic/config.j2
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -22,7 +20,6 @@
   register: result
   junipernetworks.junos.junos_config:
     src: basic/config.j2
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -33,7 +30,6 @@
   junipernetworks.junos.junos_config:
     lines:
       - delete interfaces lo0
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -43,7 +39,6 @@
   register: result
   junipernetworks.junos.junos_config:
     src: basic/config.set
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -54,7 +49,6 @@
   register: result
   junipernetworks.junos.junos_config:
     src: basic/config.set
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -65,7 +59,6 @@
   junipernetworks.junos.junos_config:
     lines:
       - delete interfaces lo0
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -75,7 +68,6 @@
   register: result
   junipernetworks.junos.junos_config:
     src: basic/config.xml
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -86,7 +78,6 @@
   register: result
   junipernetworks.junos.junos_config:
     src: basic/config.xml
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -97,7 +88,6 @@
   junipernetworks.junos.junos_config:
     lines:
       - delete interfaces lo0
-    provider: '{{ netconf }}'
 
 - assert:
     that:

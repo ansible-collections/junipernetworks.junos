@@ -12,7 +12,6 @@
       - result[1]['interface-information'][0]['physical-interface'][0]['name'][0]['data']
         == lo0
     format: json
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -30,7 +29,6 @@
       - result[1]['interface-information'][0]['physical-interface'][0]['name'][0]['data']
         eq lo0
     format: json
-    provider: '{{ netconf }}'
 
 - assert:
     that:

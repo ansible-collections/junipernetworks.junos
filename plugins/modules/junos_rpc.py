@@ -19,8 +19,6 @@ description:
   C(xml) key.  If an alternate output format is requested, the reply is transformed
   to the requested output.
 version_added: 1.0.0
-extends_documentation_fragment:
-- junipernetworks.junos.junos
 options:
   rpc:
     description:
@@ -96,7 +94,6 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.n
     exec_rpc,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    junos_argument_spec,
     tostring,
 )
 from ansible.module_utils.six import iteritems
@@ -117,8 +114,6 @@ def main():
         attrs=dict(type="dict"),
         output=dict(default="xml", choices=["xml", "json", "text"]),
     )
-
-    argument_spec.update(junos_argument_spec)
 
     module = AnsibleModule(
         argument_spec=argument_spec, supports_check_mode=False

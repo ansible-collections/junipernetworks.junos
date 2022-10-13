@@ -7,7 +7,6 @@
   junos_command:
     commands: ['show version']
     format: json
-    provider: "{{ netconf }}"
   register: result
 
 - assert:
@@ -21,20 +20,17 @@
   junos_banner:
     banner: login
     state: absent
-    provider: "{{ netconf }}"
 
 - name: Create login banner
   junos_banner:
     banner: login
     text: this is my login banner
     state: present
-    provider: "{{ netconf }}"
   register: result
 
 - name: Get running configuration
   junos_rpc:
     rpc: get-configuration
-    provider: "{{ netconf }}"
   register: config
 
 - assert:
@@ -48,7 +44,6 @@
     banner: login
     text: this is not the banner you're looking for
     state: present
-    provider: "{{ netconf }}"
   register: result
   check_mode: true
 

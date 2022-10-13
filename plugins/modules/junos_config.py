@@ -18,8 +18,6 @@ description:
   running on Juniper JUNOS devices.  It provides a set of arguments for loading configuration,
   performing rollback operations and zeroing the active configuration on the device.
 version_added: 1.0.0
-extends_documentation_fragment:
-- junipernetworks.junos.junos
 options:
   lines:
     description:
@@ -286,7 +284,6 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     locked_config,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    junos_argument_spec,
     load_configuration,
     tostring,
 )
@@ -426,7 +423,6 @@ def main():
         zeroize=dict(default=False, type="bool"),
     )
 
-    argument_spec.update(junos_argument_spec)
 
     mutually_exclusive = [("lines", "src", "rollback", "zeroize")]
 

@@ -12,7 +12,6 @@
     wait_for:
       - result[1]['interface-information'][0]['physical-interface'][0]['local-index'][0]['data']
         gt 5
-    provider: '{{ netconf }}'
 
 - assert:
     that:
@@ -30,7 +29,6 @@
     wait_for:
       - result[1]['interface-information'][0]['physical-interface'][0]['local-index'][0]['data']
         > 5
-    provider: '{{ netconf }}'
 
 - assert:
     that:
