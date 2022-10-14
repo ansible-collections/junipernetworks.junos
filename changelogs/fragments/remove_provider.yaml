@@ -1,3 +1,0 @@
----
-major_changes:
-  - "Use of connection: local and the provider option are no longer valid on any modules in this collection."

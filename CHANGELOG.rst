@@ -8,6 +8,11 @@ Junipernetworks Junos Collection Release Notes
 v4.0.0
 ======
 
+Major Changes
+-------------
+
+- Use of connection: local and the provider option are no longer valid on any modules in this collection.
+
 Removed Features (previously deprecated)
 ----------------------------------------
 
