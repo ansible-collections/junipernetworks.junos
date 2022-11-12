@@ -1,11 +1,11 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_bgp_address_family deleted integration tests on connection={{ ansible_connection }}"
 
 - block:
-    - include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
 
-    - set_fact:
+    - ansible.builtin.set_fact:
         expected_deleted_output:
           address_family:
             - afi: 'evpn'
@@ -89,21 +89,21 @@
       register: result
 
     - name: Assert configuration
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == True
           - "{{ expected_deleted_output == result.after }}"
 
     - name: Delete the existing running configuration (IDEMPOTENT)
-      junos_bgp_address_family: *deleted
+      junipernetworks.junos.junos_bgp_address_family: *deleted
       register: result
 
     - name: Assert that the previous task was idempotent
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == False
 
-    - set_fact:
+    - ansible.builtin.set_fact:
         expected_deleted_res_output: {}
 
     - name: Merge the existing config with provided configuration
@@ -117,14 +117,14 @@
       register: result
 
     - name: Assert configuration
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == True
           - "{{ expected_deleted_res_output == result.after }}"
 
   tags: deleted
   always:
-    - include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_bgp_address_family deleted integration tests on connection={{ ansible_connection }}"

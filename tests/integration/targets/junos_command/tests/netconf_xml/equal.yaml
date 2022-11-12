@@ -1,5 +1,5 @@
 ---
-- debug: msg="START netconf_xml/equal.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="START netconf_xml/equal.yaml on connection={{ ansible_connection }}"
 
 - name: test == operator with xml encoding
   register: result
@@ -11,7 +11,7 @@
       - result[1].rpc-reply.interface-information.physical-interface.name == lo0
     format: xml
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
@@ -27,10 +27,10 @@
       - result[1].rpc-reply.interface-information.physical-interface.name eq lo0
     format: xml
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
       - result.stdout_lines is defined
 
-- debug: msg="END netconf_xml/equal.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="END netconf_xml/equal.yaml on connection={{ ansible_connection }}"

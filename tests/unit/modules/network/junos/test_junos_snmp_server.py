@@ -94,11 +94,11 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             '<nc:snmp xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             "<nc:arp><nc:host-name-resolution/></nc:arp></nc:snmp>",
             str(result["commands"]),
         )
@@ -118,18 +118,18 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             '<nc:snmp xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             "<nc:client-list><nc:name>cl2</nc:name><nc:client-address-list>",
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             "<nc:name>192.16.4.0/24</nc:name>", str(result["commands"])
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             "</nc:client-address-list></nc:client-list></nc:snmp>",
             str(result["commands"]),
         )
@@ -167,7 +167,7 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             "</nc:client-address-list></nc:client-list></nc:snmp>",
         ]
         for command in commands:
-            self.assertIn(command, str(result["commands"]))
+            self.ansible.builtin.assertIn(command, str(result["commands"]))
 
     def test_junos_snmp_server_merged_routing_access_04(self):
         set_module_args(
@@ -187,7 +187,7 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             "</nc:access-list></nc:routing-instance-access></nc:snmp>",
         ]
         for command in commands:
-            self.assertIn(command, str(result["commands"]))
+            self.ansible.builtin.assertIn(command, str(result["commands"]))
 
     def test_junos_snmp_server_merged_communities_05(self):
         set_module_args(
@@ -226,7 +226,7 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             "</nc:routing-instance></nc:community></nc:snmp>",
         ]
         for command in commands:
-            self.assertIn(command, str(result["commands"]))
+            self.ansible.builtin.assertIn(command, str(result["commands"]))
 
     def test_junos_snmp_server_merged_06(self):
         set_module_args(
@@ -433,7 +433,7 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             "<nc:local>local1</nc:local><nc:use-default-ip-address/><nc:use-mac-address/></nc:engine-id>",
         ]
         for command in commands:
-            self.assertIn(command, str(result["commands"]))
+            self.ansible.builtin.assertIn(command, str(result["commands"]))
 
     def test_junos_snmp_server_parsed_07(self):
         parsed_str = """
@@ -861,7 +861,7 @@ class TestJunosSnmp_serverModule(TestJunosModule):
                 }
             ],
         }
-        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_ntp_global_rendered(self):
         set_module_args(
@@ -883,4 +883,4 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             "</nc:client-list></nc:snmp>"
         )
         result = self.execute_module(changed=False)
-        self.assertEqual(sorted(result["rendered"]), sorted(rendered))
+        self.ansible.builtin.assertEqual(sorted(result["rendered"]), sorted(rendered))

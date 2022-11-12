@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: Start junos_lag_interfaces base config ansible_connection={{ ansible_connection
       }}
 
@@ -9,6 +9,6 @@
       - set interfaces ae1 description "Configured by Ansible"
       - set interfaces ae2 description "Configured by Ansible"
 
-- debug:
+- ansible.builtin.debug:
     msg: End junos_lag_interfaces base config ansible_connection={{ ansible_connection
       }}

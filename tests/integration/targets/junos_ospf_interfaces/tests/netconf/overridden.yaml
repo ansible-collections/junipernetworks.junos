@@ -1,12 +1,12 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_ospf_interfaces overridden integration tests on connection={{ ansible_connection }}"
 
 - block:
-    - include_tasks: _reset_config.yaml
-    - include_tasks: _initial_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _initial_config.yaml
 
-    - set_fact:
+    - ansible.builtin.set_fact:
         expected_config:
           - address_family:
               - afi: 'ipv4'
@@ -46,7 +46,7 @@
       register: result
 
     - name: Assert the configuration is reflected on host
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == True
           - "{{ expected_config | symmetric_difference(result['after']) |length\
@@ -57,13 +57,13 @@
       register: result
 
     - name: Assert that the previous task was idempotent
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == False
 
   tags: overridden
   always:
-    - include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_ospf_interfaces overridden integration tests on connection={{ ansible_connection }}"

@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_acls reset ACL config on connection={{ ansible_connection }}"
 
 - name: Set initial state
@@ -13,5 +13,5 @@
       - set firewall family inet filter third_acl term thirteen_dot from source-port bgp protocol tcp source-address 13.1.0.0/16
       - "set firewall family inet6 filter initial_acl6 term colon_eleven from source-port 631 source-address ::11"
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_acls reset ACL config on connection={{ ansible_connection }}"

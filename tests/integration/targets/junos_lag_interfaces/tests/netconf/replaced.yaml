@@ -1,13 +1,13 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: START junos_lag_interfaces replaced integration tests on connection={{
       ansible_connection }}
 
-- include_tasks: _remove_config.yaml
+- ansible.builtin.include_tasks: _remove_config.yaml
 
-- include_tasks: _base_config.yaml
+- ansible.builtin.include_tasks: _base_config.yaml
 
-- set_fact:
+- ansible.builtin.set_fact:
     expected_replaced_output:
 
       - name: ae1
@@ -66,7 +66,7 @@
         state: replaced
 
     - name: Assert the configuration is reflected on host
-      assert:
+      ansible.builtin.assert:
         that:
           - "{{ expected_replaced_output | symmetric_difference(result['after'])\
             \ |length == 0 }}"
@@ -77,13 +77,13 @@
       junipernetworks.junos.junos_lag_interfaces: *id001
 
     - name: Assert that the previous task was idempotent
-      assert:
+      ansible.builtin.assert:
         that:
           - result['changed'] == false
   always:
 
-    - include_tasks: _remove_config.yaml
+    - ansible.builtin.include_tasks: _remove_config.yaml
 
-- debug:
+- ansible.builtin.debug:
     msg: END junos_lag_interfaces replaced integration tests on connection={{ ansible_connection
       }}

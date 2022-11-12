@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: START junos_lldp_global gathered integration tests on connection={{
       ansible_connection }}
 
@@ -10,16 +10,16 @@
     commands: show lldp
 
 - name: lldp supported
-  set_fact:
+  ansible.builtin.set_fact:
     lldp_supported: true
   when: not result.failed
 
 - name: lldp not supported
-  set_fact:
+  ansible.builtin.set_fact:
     lldp_supported: false
   when: result.failed
 
-- set_fact:
+- ansible.builtin.set_fact:
     expected_merged_output:
       - interval: 10000
         address: 10.1.1.1
@@ -44,14 +44,14 @@
         state: gathered
 
     - name: Assert that facts were correctly generated
-      assert:
+      ansible.builtin.assert:
         that: "{{ expected_merged_output == result['gathered'] }}"
 
   always:
 
-    - include_tasks: _remove_config.yaml
+    - ansible.builtin.include_tasks: _remove_config.yaml
   when: lldp_supported
 
-- debug:
+- ansible.builtin.debug:
     msg: END junos_lldp_global gathered integration tests on connection={{ ansible_connection
       }}

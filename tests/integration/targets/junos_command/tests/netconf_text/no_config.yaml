@@ -1,5 +1,5 @@
 ---
-- debug: msg="START netconf_text/no_config.yaml on connection={{ ansible_connection
+- ansible.builtin.debug: msg="START netconf_text/no_config.yaml on connection={{ ansible_connection
     }}"
 
 - name: test handling of show command's empty response received from network device
@@ -10,12 +10,12 @@
       - show configuration system ntp
     display: text
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.failed == false
       - result.changed == false
       - result.stdout|symmetric_difference([""]) == []
       - result.stdout_lines|symmetric_difference([[""]]) == []
 
-- debug: msg="END netconf_text/no_config.yaml on connection={{ ansible_connection
+- ansible.builtin.debug: msg="END netconf_text/no_config.yaml on connection={{ ansible_connection
     }}"

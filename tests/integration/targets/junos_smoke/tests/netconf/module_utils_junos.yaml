@@ -1,5 +1,5 @@
 ---
-- debug: msg="START netconf/module_utils_junos.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="START netconf/module_utils_junos.yaml on connection={{ ansible_connection }}"
 
 # hit get_capabilities()
 
@@ -9,7 +9,7 @@
     format: json
   register: result
 
-- assert:
+- ansible.builtin.assert:
     that:
       - "result.changed == false"
       - "result.stdout is defined"
@@ -33,7 +33,7 @@
     rpc: get-configuration
   register: config
 
-- assert:
+- ansible.builtin.assert:
     that:
       - "result.changed == true"
       - "'<message>this is my login banner</message>' in config.xml"
@@ -47,7 +47,7 @@
   register: result
   check_mode: true
 
-- assert:
+- ansible.builtin.assert:
     that:
       - "result.changed == true"
       - "result.failed == false"

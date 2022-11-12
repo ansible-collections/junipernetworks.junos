@@ -114,7 +114,7 @@ class TestJunosL3InterfacesModule(TestJunosModule):
             "</nc:unit></nc:interface></nc:interfaces>"
         ]
         result = self.execute_module(changed=True)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_l3_interfaces_merged_idempotent(self):
         self.get_config.return_value = load_fixture(
@@ -162,7 +162,7 @@ class TestJunosL3InterfacesModule(TestJunosModule):
         ]
         result = self.execute_module(changed=True)
 
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_l3_interfaces_replaced_idempotent(self):
         self.get_config.return_value = load_fixture(
@@ -210,7 +210,7 @@ class TestJunosL3InterfacesModule(TestJunosModule):
         ]
         result = self.execute_module(changed=True)
 
-        self.assertEqual(sorted(result["commands"]), commands)
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), commands)
 
     def test_junos_l3_interfaces_overridden_idempotent(self):
         self.get_config.return_value = load_fixture(

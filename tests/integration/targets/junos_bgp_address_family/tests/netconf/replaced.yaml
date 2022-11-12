@@ -1,11 +1,11 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_bgp_address_family replaced integration tests on connection={{ ansible_connection }}"
 
 - block:
-    - include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
 
-    - set_fact:
+    - ansible.builtin.set_fact:
         expected_replaced_output:
           address_family:
             - af_type:
@@ -150,23 +150,23 @@
       register: result
 
     - name: Assert configuration
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == True
           - "{{ expected_replaced_output == result.after }}"
 
     - name: Merge the provided configuration with the existing running configuration (IDEMPOTENT)
-      junos_bgp_address_family: *replaced
+      junipernetworks.junos.junos_bgp_address_family: *replaced
       register: result
 
     - name: Assert that the previous task was idempotent
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == False
 
   tags: replaced
   always:
-    - include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_bgp_address_family replaced integration tests on connection={{ ansible_connection }}"

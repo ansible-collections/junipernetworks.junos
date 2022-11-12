@@ -131,7 +131,7 @@ class TestJunosOspfv3Module(TestJunosModule):
             "<nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>",
         ]
         result = self.execute_module(changed=True)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_ospf_interfaces_merged_idempotent(self):
         self.get_connection.return_value = load_fixture(
@@ -192,7 +192,7 @@ class TestJunosOspfv3Module(TestJunosModule):
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>",
         ]
-        self.assertEqual(sorted(result["commands"]), commands)
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), commands)
 
     def test_junos_ospf_interfaces_replaced_idempotent(self):
         self.get_connection.return_value = load_fixture(
@@ -254,7 +254,7 @@ class TestJunosOspfv3Module(TestJunosModule):
             "<nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>",
         ]
         result = self.execute_module(changed=True)
-        self.assertEqual(sorted(result["commands"]), commands)
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), commands)
 
     def test_junos_ospf_interfaces_overridden_idempotent(self):
         self.get_connection.return_value = load_fixture(
@@ -305,7 +305,7 @@ class TestJunosOspfv3Module(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.assertEqual(sorted(result["commands"]), commands)
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), commands)
 
     def test_junos_ospf_interfaces_delete_idempotent(self):
         set_module_args(

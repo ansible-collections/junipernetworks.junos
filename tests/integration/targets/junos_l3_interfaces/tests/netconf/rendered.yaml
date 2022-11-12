@@ -1,9 +1,9 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: START junos_l3_interfaces rendered integration tests on connection={{
       ansible_connection }}
 
-- set_fact:
+- ansible.builtin.set_fact:
     expected_rendered_output: "<nc:interfaces
                                    xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
                                    <nc:interface>
@@ -56,10 +56,10 @@
     state: rendered
 
 - name: Assert that correct set of commands were rendered
-  assert:
+  ansible.builtin.assert:
     that:
       - "{{ expected_rendered_output == result['rendered'] }}"
 
-- debug:
+- ansible.builtin.debug:
     msg: END junos_l3_interfaces rendered integration tests on connection={{
       ansible_connection }}

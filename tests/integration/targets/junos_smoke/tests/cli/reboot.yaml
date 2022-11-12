@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: START cli/cli_reboot.yaml on connection={{ ansible_connection }}
 - block:
 
@@ -18,4 +18,4 @@
         command: show version
   when: ansible_connection == 'ansible.netcommon.network_cli'
 
-- debug: msg="END cli/reboot.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="END cli/reboot.yaml on connection={{ ansible_connection }}"

@@ -64,14 +64,14 @@ class TestJunosPackageModule(TestJunosModule):
         self.execute_module(changed=True)
 
         args, _kwargs = jnpr_mock.junos.utils.sw.SW().install.call_args
-        self.assertEqual(args, ("junos-vsrx-12.1X46-D10.2-domestic.tgz",))
+        self.ansible.builtin.assertEqual(args, ("junos-vsrx-12.1X46-D10.2-domestic.tgz",))
 
     def test_junos_package_src_fail(self):
         jnpr_mock.junos.utils.sw.SW().install.return_value = 0
         set_module_args(dict(src="junos-vsrx-12.1X46-D10.2-domestic.tgz"))
         result = self.execute_module(changed=True, failed=True)
 
-        self.assertEqual(result["msg"], "Unable to install package on device")
+        self.ansible.builtin.assertEqual(result["msg"], "Unable to install package on device")
 
     def test_junos_package_src_no_copy(self):
         jnpr_mock.junos.utils.sw.SW().install.return_value = 1
@@ -81,5 +81,5 @@ class TestJunosPackageModule(TestJunosModule):
         self.execute_module(changed=True)
 
         args, kwargs = jnpr_mock.junos.utils.sw.SW().install.call_args
-        self.assertEqual(args, ("junos-vsrx-12.1X46-D10.2-domestic.tgz",))
-        self.assertEqual(kwargs["no_copy"], True)
+        self.ansible.builtin.assertEqual(args, ("junos-vsrx-12.1X46-D10.2-domestic.tgz",))
+        self.ansible.builtin.assertEqual(kwargs["no_copy"], True)

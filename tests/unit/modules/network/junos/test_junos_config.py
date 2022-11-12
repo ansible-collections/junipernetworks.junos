@@ -129,13 +129,13 @@ class TestJunosConfigModule(TestJunosModule):
         set_module_args(dict(src=src))
         self.execute_module(changed=True)
         args, kwargs = self.load_config.call_args
-        self.assertEqual(kwargs["action"], "set")
-        self.assertEqual(kwargs["format"], "text")
+        self.ansible.builtin.assertEqual(kwargs["action"], "set")
+        self.ansible.builtin.assertEqual(kwargs["format"], "text")
 
     def test_junos_config_backup(self):
         set_module_args(dict(backup=True))
         result = self.execute_module()
-        self.assertIn("__backup__", result)
+        self.ansible.builtin.assertIn("__backup__", result)
 
     def test_junos_config_lines(self):
         set_module_args(
@@ -148,82 +148,82 @@ class TestJunosConfigModule(TestJunosModule):
         )
         self.execute_module(changed=True)
         args, kwargs = self.load_config.call_args
-        self.assertEqual(
+        self.ansible.builtin.assertEqual(
             args[1][0], "set interfaces ae11 unit 0 description Test"
         )
-        self.assertEqual(kwargs["action"], "set")
-        self.assertEqual(kwargs["format"], "text")
+        self.ansible.builtin.assertEqual(kwargs["action"], "set")
+        self.ansible.builtin.assertEqual(kwargs["format"], "text")
 
     def test_junos_config_confirm(self):
         src = load_fixture("junos_config.set", content="str")
         set_module_args(dict(src=src, confirm=40))
         self.execute_module(changed=True)
         args, kwargs = self.commit_configuration.call_args
-        self.assertEqual(kwargs["confirm_timeout"], to_text(40))
+        self.ansible.builtin.assertEqual(kwargs["confirm_timeout"], to_text(40))
 
     def test_junos_config_rollback(self):
         rollback = 10
         set_module_args(dict(rollback=rollback))
         self.execute_module(changed=True)
-        self.assertEqual(self.get_diff.call_count, 1)
-        self.assertEqual(self.load_configuration.call_count, 1)
-        self.assertEqual(self.commit_configuration.call_count, 1)
+        self.ansible.builtin.assertEqual(self.get_diff.call_count, 1)
+        self.ansible.builtin.assertEqual(self.load_configuration.call_count, 1)
+        self.ansible.builtin.assertEqual(self.commit_configuration.call_count, 1)
         load_configuration_args = self.load_configuration.call_args
-        self.assertEqual(rollback, load_configuration_args[1].get("rollback"))
+        self.ansible.builtin.assertEqual(rollback, load_configuration_args[1].get("rollback"))
 
     def test_junos_config_src_text(self):
         src = load_fixture("junos_config.text", content="str")
         set_module_args(dict(src=src))
         self.execute_module(changed=True)
         args, kwargs = self.load_config.call_args
-        self.assertEqual(kwargs["action"], "merge")
-        self.assertEqual(kwargs["format"], "text")
+        self.ansible.builtin.assertEqual(kwargs["action"], "merge")
+        self.ansible.builtin.assertEqual(kwargs["format"], "text")
 
     def test_junos_config_src_xml(self):
         src = load_fixture("junos_config.xml", content="str")
         set_module_args(dict(src=src))
         self.execute_module(changed=True)
         args, kwargs = self.load_config.call_args
-        self.assertEqual(kwargs["action"], "merge")
-        self.assertEqual(kwargs["format"], "xml")
+        self.ansible.builtin.assertEqual(kwargs["action"], "merge")
+        self.ansible.builtin.assertEqual(kwargs["format"], "xml")
 
     def test_junos_config_src_json(self):
         src = load_fixture("junos_config.json", content="str")
         set_module_args(dict(src=src))
         self.execute_module(changed=True)
         args, kwargs = self.load_config.call_args
-        self.assertEqual(kwargs["action"], "merge")
-        self.assertEqual(kwargs["format"], "json")
+        self.ansible.builtin.assertEqual(kwargs["action"], "merge")
+        self.ansible.builtin.assertEqual(kwargs["format"], "json")
 
     def test_junos_config_update_override(self):
         src = load_fixture("junos_config.xml", content="str")
         set_module_args(dict(src=src, update="override"))
         self.execute_module()
         args, kwargs = self.load_config.call_args
-        self.assertEqual(kwargs["action"], "override")
-        self.assertEqual(kwargs["format"], "xml")
+        self.ansible.builtin.assertEqual(kwargs["action"], "override")
+        self.ansible.builtin.assertEqual(kwargs["format"], "xml")
 
     def test_junos_config_update_replace(self):
         src = load_fixture("junos_config.json", content="str")
         set_module_args(dict(src=src, update="replace"))
         self.execute_module()
         args, kwargs = self.load_config.call_args
-        self.assertEqual(kwargs["action"], "replace")
-        self.assertEqual(kwargs["format"], "json")
+        self.ansible.builtin.assertEqual(kwargs["action"], "replace")
+        self.ansible.builtin.assertEqual(kwargs["format"], "json")
 
     def test_junos_config_zeroize(self):
         set_module_args(dict(zeroize="yes"))
         self.execute_module(changed=True)
-        self.assertEqual(self.exec_rpc.call_count, 1)
+        self.ansible.builtin.assertEqual(self.exec_rpc.call_count, 1)
 
     def test_junos_config_src_format_xml(self):
         src = load_fixture("junos_config.json", content="str")
         set_module_args(dict(src=src, src_format="xml"))
         self.execute_module()
         args, kwargs = self.load_config.call_args
-        self.assertEqual(kwargs["format"], "xml")
+        self.ansible.builtin.assertEqual(kwargs["format"], "xml")
 
     def test_junos_config_confirm_commit(self):
         set_module_args(dict(confirm_commit=True))
         self.execute_module(changed=True)
-        self.assertEqual(self.commit_configuration.call_count, 1)
+        self.ansible.builtin.assertEqual(self.commit_configuration.call_count, 1)

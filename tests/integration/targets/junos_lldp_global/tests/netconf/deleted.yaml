@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: START junos_lldp_global deleted integration tests on connection={{ ansible_connection
       }}
 
@@ -10,20 +10,20 @@
     commands: show lldp
 
 - name: lldp supported
-  set_fact:
+  ansible.builtin.set_fact:
     lldp_supported: true
   when: not result.failed
 
 - name: lldp not supported
-  set_fact:
+  ansible.builtin.set_fact:
     lldp_supported: false
   when: result.failed
 
 - block:
 
-    - include_tasks: _remove_config.yaml
+    - ansible.builtin.include_tasks: _remove_config.yaml
 
-    - set_fact:
+    - ansible.builtin.set_fact:
         expected_deleted_output: []
 
     - name: Configure initial state for lldp global
@@ -43,7 +43,7 @@
         state: deleted
 
     - name: Assert the configuration is reflected on host
-      assert:
+      ansible.builtin.assert:
         that:
           - "{{ result['after'] == {} }}"
 
@@ -52,14 +52,14 @@
       junipernetworks.junos.junos_lldp_global: *id001
 
     - name: Assert that the previous task was idempotent
-      assert:
+      ansible.builtin.assert:
         that:
           - result['changed'] == false
   always:
 
-    - include_tasks: _remove_config.yaml
+    - ansible.builtin.include_tasks: _remove_config.yaml
   when: lldp_supported
 
-- debug:
+- ansible.builtin.debug:
     msg: END junos_lldp_global deleted integration tests on connection={{ ansible_connection
       }}

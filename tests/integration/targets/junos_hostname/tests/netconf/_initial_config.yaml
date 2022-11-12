@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_hostname initial config on connection={{ ansible_connection }}"
 
 - name: Configure basic config relevant to ntp global
@@ -7,5 +7,5 @@
     lines:
       - set system host-name "vsrx12"
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_hostname initial config on connection={{ ansible_connection }}"

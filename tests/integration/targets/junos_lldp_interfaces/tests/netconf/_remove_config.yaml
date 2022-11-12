@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: Start junos_lldp_interfaces deleted remove interface config ansible_connection={{
       ansible_connection }}
 
@@ -8,6 +8,6 @@
     lines:
       - delete protocols lldp
 
-- debug:
+- ansible.builtin.debug:
     msg: End junos_lldp_interfaces deleted remove interface config ansible_connection={{
       ansible_connection }}

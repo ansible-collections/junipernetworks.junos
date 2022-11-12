@@ -1,9 +1,9 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: START junos_lacp_interfaces rendered integration tests on connection={{
       ansible_connection }}
 
-- set_fact:
+- ansible.builtin.set_fact:
     expected_rendered_output: "<nc:interfaces xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"><nc:interface><nc:name>ae1</nc:name><nc:aggregated-ether-options><nc:lacp><nc:periodic>fast</nc:periodic><nc:sync-reset>enable</nc:sync-reset><nc:system-id>00:00:00:00:00:02</nc:system-id><nc:system-priority>100</nc:system-priority></nc:lacp></nc:aggregated-ether-options></nc:interface><nc:interface><nc:name>ge-0/0/1</nc:name><nc:ether-options><nc:ieee-802.3ad><nc:lacp><nc:port-priority>100</nc:port-priority><nc:force-up/></nc:lacp></nc:ieee-802.3ad></nc:ether-options></nc:interface></nc:interfaces>"
 
 
@@ -25,10 +25,10 @@
     state: rendered
 
 - name: Assert that correct set of commands were rendered
-  assert:
+  ansible.builtin.assert:
     that:
       - "{{ expected_rendered_output == result['rendered'] }}"
 
-- debug:
+- ansible.builtin.debug:
     msg: END junos_lacp_interfaces rendered integration tests on connection={{
       ansible_connection }}

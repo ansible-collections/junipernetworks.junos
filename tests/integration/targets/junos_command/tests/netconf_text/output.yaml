@@ -1,5 +1,5 @@
 ---
-- debug: msg="START netconf_text/output.yaml on connection={{ ansible_connection
+- ansible.builtin.debug: msg="START netconf_text/output.yaml on connection={{ ansible_connection
     }}"
 
 - name: get output for single command
@@ -8,7 +8,7 @@
     commands: show version
     display: text
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
@@ -22,7 +22,7 @@
       - show route
     display: text
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
@@ -35,7 +35,7 @@
       - show configuration system syslog
     display: text
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
@@ -47,7 +47,7 @@
     commands: show version
     display: text
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
@@ -61,10 +61,10 @@
       - show route
     display: text
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
       - result.stdout_lines is defined
 
-- debug: msg="END netconf_text/output.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="END netconf_text/output.yaml on connection={{ ansible_connection }}"

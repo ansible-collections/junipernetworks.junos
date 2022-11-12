@@ -1,13 +1,13 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_routing_instances overridden integration tests on connection={{ ansible_connection }}"
 
 - block:
-    - include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
 
-    - include_tasks: _initial_config.yaml
+    - ansible.builtin.include_tasks: _initial_config.yaml
 
-    - set_fact:
+    - ansible.builtin.set_fact:
         expected_overridden_output:
           - description: "Configured by Ansible Content Team"
             name: "forwardinst"
@@ -88,7 +88,7 @@
       register: result
 
     - name: Assert configuration
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == True
           - "{{ expected_overridden_output | symmetric_difference(result['after']) |length\
@@ -99,13 +99,13 @@
       register: result
 
     - name: Assert that the previous task was idempotent
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == False
 
   tags: overridden
   always:
-    - include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_routing_instances overridden integration tests on connection={{ ansible_connection }}"

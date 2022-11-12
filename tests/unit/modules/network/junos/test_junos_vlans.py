@@ -102,14 +102,14 @@ class TestJunosVlansModule(TestJunosModule):
             "<nc:l3-interface>irb.12</nc:l3-interface></nc:vlan></nc:vlans>"
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_vlans_merged_idempotent(self):
         set_module_args(
             dict(config=[dict(name="vlan1", vlan_id=1)], state="merged")
         )
         result = self.execute_module(changed=True)
-        self.assertEqual(result["before"], result["after"])
+        self.ansible.builtin.assertEqual(result["before"], result["after"])
 
     def test_junos_vlans_replaced(self):
         """
@@ -134,14 +134,14 @@ class TestJunosVlansModule(TestJunosModule):
             "<nc:name>vlan2</nc:name><nc:vlan-id>2</nc:vlan-id></nc:vlan></nc:vlans>"
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_vlans_replaced_idempotent(self):
         set_module_args(
             dict(config=[dict(name="vlan1", vlan_id=1)], state="replaced")
         )
         result = self.execute_module(changed=True)
-        self.assertEqual(result["before"], result["after"])
+        self.ansible.builtin.assertEqual(result["before"], result["after"])
 
     def test_junos_vlans_overridden(self):
         """
@@ -161,14 +161,14 @@ class TestJunosVlansModule(TestJunosModule):
             "<nc:l3-interface>irb.13</nc:l3-interface></nc:vlan></nc:vlans>"
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_vlans_overridden_idempotent(self):
         set_module_args(
             dict(config=[dict(name="vlan1", vlan_id=1)], state="overridden")
         )
         result = self.execute_module(changed=True)
-        self.assertEqual(result["before"], result["after"])
+        self.ansible.builtin.assertEqual(result["before"], result["after"])
 
     def test_junos_vlans_gathered(self):
         """
@@ -177,7 +177,7 @@ class TestJunosVlansModule(TestJunosModule):
         set_module_args(dict(state="gathered"))
         result = self.execute_module(changed=False)
         gather_list = [{"name": "vlan1", "vlan_id": 1}]
-        self.assertEqual(sorted(gather_list), sorted(result["gathered"]))
+        self.ansible.builtin.assertEqual(sorted(gather_list), sorted(result["gathered"]))
 
     def test_junos_vlans_deleted(self):
         """
@@ -190,7 +190,7 @@ class TestJunosVlansModule(TestJunosModule):
             '<nc:vlan delete="delete"><nc:name>vlan1</nc:name></nc:vlan></nc:vlans>'
         ]
         result = self.execute_module(changed=True)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_vlans_deleted_01(self):
         """
@@ -203,7 +203,7 @@ class TestJunosVlansModule(TestJunosModule):
             '<nc:vlan delete="delete"><nc:name>vlan1</nc:name></nc:vlan></nc:vlans>'
         ]
         result = self.execute_module(changed=True)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_vlans_rendered(self):
         """
@@ -225,7 +225,7 @@ class TestJunosVlansModule(TestJunosModule):
             "<nc:l3-interface>irb.12</nc:l3-interface></nc:vlan></nc:vlans>"
         )
         result = self.execute_module(changed=False)
-        self.assertEqual(sorted(result["rendered"]), sorted(rendered))
+        self.ansible.builtin.assertEqual(sorted(result["rendered"]), sorted(rendered))
 
     def test_junos_vlans_parsed(self):
         parsed_str = """
@@ -254,4 +254,4 @@ class TestJunosVlansModule(TestJunosModule):
         ]
         self.sort_vlans(result["parsed"])
         self.sort_vlans(parsed_list)
-        self.assertEqual(result["parsed"], parsed_list)
+        self.ansible.builtin.assertEqual(result["parsed"], parsed_list)

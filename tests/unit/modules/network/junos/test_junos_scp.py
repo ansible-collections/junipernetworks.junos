@@ -72,7 +72,7 @@ class TestJunosScpModule(TestJunosModule):
         set_module_args(dict(src="test.txt"))
         self.execute_module(changed=True)
 
-        self.scp_mock.put.assert_called_once_with(
+        self.scp_mock.put.ansible.builtin.assert_called_once_with(
             "test.txt", remote_path=".", recursive=False
         )
 
@@ -80,7 +80,7 @@ class TestJunosScpModule(TestJunosModule):
         set_module_args(dict(src="~/test.txt"))
         self.execute_module(changed=True)
 
-        self.scp_mock.put.assert_called_once_with(
+        self.scp_mock.put.ansible.builtin.assert_called_once_with(
             os.path.expanduser("~/test.txt"), remote_path=".", recursive=False
         )
 
@@ -91,7 +91,7 @@ class TestJunosScpModule(TestJunosModule):
         set_module_args(dict(src="test.txt"))
         result = self.execute_module(changed=True, failed=True)
 
-        self.assertEqual(
+        self.ansible.builtin.assertEqual(
             result["msg"], "[Errno 2] No such file or directory: 'text.txt'"
         )
 
@@ -99,7 +99,7 @@ class TestJunosScpModule(TestJunosModule):
         set_module_args(dict(src="test.txt", remote_src=True))
         self.execute_module(changed=True)
 
-        self.scp_mock.get.assert_called_once_with(
+        self.scp_mock.get.ansible.builtin.assert_called_once_with(
             "test.txt", local_path=".", recursive=False
         )
 
@@ -109,6 +109,6 @@ class TestJunosScpModule(TestJunosModule):
         )
         self.execute_module(changed=True)
 
-        self.scp_mock.get.assert_called_once_with(
+        self.scp_mock.get.ansible.builtin.assert_called_once_with(
             "test", local_path="tmp", recursive=True
         )

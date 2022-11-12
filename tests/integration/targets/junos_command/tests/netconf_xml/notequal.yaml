@@ -1,5 +1,5 @@
 ---
-- debug: msg="START netconf_xml/notequal.yaml on connection={{ ansible_connection
+- ansible.builtin.debug: msg="START netconf_xml/notequal.yaml on connection={{ ansible_connection
     }}"
 
 - name: test neq operator
@@ -12,7 +12,7 @@
     wait_for:
       - result[1].rpc-reply.interface-information.physical-interface.name neq em0
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
@@ -28,11 +28,11 @@
     wait_for:
       - result[1].rpc-reply.interface-information.physical-interface.name neq em0
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
       - result.stdout_lines is defined
 
-- debug: msg="END netconf_xml/notequal.yaml on connection={{ ansible_connection
+- ansible.builtin.debug: msg="END netconf_xml/notequal.yaml on connection={{ ansible_connection
     }}"

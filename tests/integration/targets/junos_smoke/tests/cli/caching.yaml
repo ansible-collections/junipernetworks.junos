@@ -1,6 +1,6 @@
 ---
 - block:
-  - debug: msg="START connection={{ ansible_connection }} cli/caching.yaml"
+  - ansible.builtin.debug: msg="START connection={{ ansible_connection }} cli/caching.yaml"
 
   - name: Remove description from interface
     ignore_errors: true
@@ -17,7 +17,7 @@
       commands: show configuration interfaces ge-0/0/1
     register: result
 
-  - assert:
+  - ansible.builtin.assert:
       that:
         - '"description test-1;" not in result.stdout_lines'
 
@@ -41,7 +41,7 @@
       commands: show configuration interfaces ge-0/0/1
     register: result
 
-  - assert:
+  - ansible.builtin.assert:
       that:
         - '"description test-1;" in result.stdout_lines[0]'
 

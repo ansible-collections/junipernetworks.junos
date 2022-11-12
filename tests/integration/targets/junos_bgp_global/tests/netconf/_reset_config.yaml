@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_bgp_global reset config on connection={{ ansible_connection }}"
 
 - name: Reset the config releavent to bgp global resource
@@ -31,5 +31,5 @@
       - delete protocols bgp group external
       - delete protocols bgp group internal
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_bgp_global reset config on connection={{ ansible_connection }}"

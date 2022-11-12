@@ -1,5 +1,5 @@
 ---
-- debug: msg="START netconf_text/bad_operator.yaml on connection={{ ansible_connection
+- ansible.builtin.debug: msg="START netconf_text/bad_operator.yaml on connection={{ ansible_connection
     }}"
 
 - name: test bad operator with text encoding
@@ -14,10 +14,10 @@
         lo0
     encoding: text
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.failed == true
       - result.msg is defined
 
-- debug: msg="END netconf_text/bad_operator.yaml on connection={{ ansible_connection
+- ansible.builtin.debug: msg="END netconf_text/bad_operator.yaml on connection={{ ansible_connection
     }}"

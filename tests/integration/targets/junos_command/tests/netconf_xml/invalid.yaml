@@ -1,5 +1,5 @@
 ---
-- debug: msg="START netconf_xml/invalid.yaml on connection={{ ansible_connection
+- ansible.builtin.debug: msg="START netconf_xml/invalid.yaml on connection={{ ansible_connection
     }}"
 
 - name: run invalid command
@@ -9,9 +9,9 @@
     commands:
       - show foo
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.failed == true
       - result.msg is defined
@@ -24,9 +24,9 @@
       - show version
       - show foo
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.failed == true
       - result.msg is defined
 
-- debug: msg="END netconf_xml/invalid.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="END netconf_xml/invalid.yaml on connection={{ ansible_connection }}"

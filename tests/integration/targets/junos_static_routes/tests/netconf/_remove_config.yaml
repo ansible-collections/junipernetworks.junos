@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: Start junos_static_routes teardown ansible_connection={{ ansible_connection
       }}
 
@@ -14,6 +14,6 @@
           - afi: ipv6
     state: deleted
 
-- debug:
+- ansible.builtin.debug:
     msg: End junos_static_routes teardown ansible_connection={{ ansible_connection
       }}

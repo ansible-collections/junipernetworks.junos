@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_bgp_address_family reset config on connection={{ ansible_connection }}"
 
 - name: Reset the config releavent to bgp address family resource
@@ -7,5 +7,5 @@
     lines:
       - delete protocols bgp family
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_bgp_address_family reset config on connection={{ ansible_connection }}"

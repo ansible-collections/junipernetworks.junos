@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_logging_global reset config on connection={{ ansible_connection }}"
 
 - name: Reset the config releavent to logging global resource
@@ -9,5 +9,5 @@
       - delete routing-instances
 
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_logging_global reset config on connection={{ ansible_connection }}"

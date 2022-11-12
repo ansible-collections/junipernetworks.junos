@@ -1,11 +1,11 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_bgp_address_family overridden integration tests on connection={{ ansible_connection }}"
 
 - block:
-    - include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
 
-    - set_fact:
+    - ansible.builtin.set_fact:
         expected_overridden_output:
           address_family:
             - afi: 'evpn'
@@ -104,23 +104,23 @@
       register: result
 
     - name: Assert configuration
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == True
           - "{{ expected_overridden_output == result.after }}"
 
     - name: Override the existing running configuration with the provided configuration (IDEMPOTENT)
-      junos_bgp_address_family: *overridden
+      junipernetworks.junos.junos_bgp_address_family: *overridden
       register: result
 
     - name: Assert that the previous task was idempotent
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == False
 
   tags: overridden
   always:
-    - include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_bgp_address_family overridden integration tests on connection={{ ansible_connection }}"

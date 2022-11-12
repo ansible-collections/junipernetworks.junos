@@ -1,5 +1,5 @@
 ---
-- debug: msg="START netconf_json/notequal.yaml on connection={{ ansible_connection
+- ansible.builtin.debug: msg="START netconf_json/notequal.yaml on connection={{ ansible_connection
     }}"
 
 - name: test neq operator
@@ -13,7 +13,7 @@
       - result[1]['interface-information'][0]['physical-interface'][0]['name'][0]['data']
         neq em0
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
@@ -30,11 +30,11 @@
       - result[1]['interface-information'][0]['physical-interface'][0]['name'][0]['data']
         neq em0
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
       - result.stdout_lines is defined
 
-- debug: msg="END netconf_json/notequal.yaml on connection={{ ansible_connection
+- ansible.builtin.debug: msg="END netconf_json/notequal.yaml on connection={{ ansible_connection
     }}"

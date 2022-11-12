@@ -26,7 +26,7 @@
           - address: 10.200.16.22/24
     state: replaced
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result is changed
       - "'<nc:address><nc:name>192.168.100.1/24</nc:name></nc:address>' in result.commands[0]"
@@ -62,7 +62,7 @@
           - address: 10.200.16.22/24
     state: replaced
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result is not changed
 
@@ -72,7 +72,7 @@
     state: gathered
 
 - name: Assert that facts were correctly generated
-  assert:
+  ansible.builtin.assert:
     that:
       - result.gathered[0].name == 'ge-1/0/0'
       - result.gathered[0].ipv4[0]['address'] == '192.168.100.1/24'
@@ -97,7 +97,7 @@
           - address: 100.64.0.2/10
     state: merged
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result is changed
       - "'<nc:address><nc:name>100.64.0.1/10</nc:name></nc:address>' in result.commands[0]"
@@ -116,7 +116,7 @@
       - name: ge-2/0/0
     state: deleted
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result is changed
       - "'<nc:name>ge-2/0/0</nc:name><nc:unit><nc:name>0</nc:name><nc:family><nc:inet><nc:address\
@@ -138,7 +138,7 @@
           - address: dhcp
     state: overridden
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result is changed
       - "'<nc:name>fxp0</nc:name><nc:unit><nc:name>0</nc:name><nc:family><nc:inet><nc:dhcp/></nc:inet>'\

@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: START cli/cli_command.yaml on connection={{ ansible_connection }}
 
 - block:
@@ -9,7 +9,7 @@
       ansible.netcommon.cli_command:
         command: show version
 
-    - assert:
+    - ansible.builtin.assert:
         that:
           - result.changed == false
           - result.stdout is defined
@@ -27,7 +27,7 @@
           - Exit with uncommitted changes
         answer: true
 
-    - assert:
+    - ansible.builtin.assert:
         that:
           - result.changed == false
 
@@ -48,7 +48,7 @@
           - Test1234
         check_all: true
 
-    - assert:
+    - ansible.builtin.assert:
         that:
           - "'failed' not in result"
 
@@ -56,9 +56,9 @@
       ignore_errors: true
       junipernetworks.junos.junos_netconf:
 
-    - assert:
+    - ansible.builtin.assert:
         that:
           - result.failed == false
   when: ansible_connection == 'ansible.netcommon.network_cli'
 
-- debug: msg="END cli/cli_command.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="END cli/cli_command.yaml on connection={{ ansible_connection }}"

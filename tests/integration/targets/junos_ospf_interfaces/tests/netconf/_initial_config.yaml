@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_ospf_interfaces initial config on connection={{ ansible_connection }}"
 
 - name: Set initial configuration for ospf interfaces
@@ -16,5 +16,5 @@
               metric: 5
     state: merged
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_ospf_interfaces initial config on connection={{ ansible_connection }}"

@@ -1,5 +1,5 @@
 ---
-- debug: msg="START netconf_json/equal.yaml on connection={{ ansible_connection
+- ansible.builtin.debug: msg="START netconf_json/equal.yaml on connection={{ ansible_connection
     }}"
 
 - name: test == operator with xml encoding
@@ -13,7 +13,7 @@
         == lo0
     format: json
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
@@ -30,10 +30,10 @@
         eq lo0
     format: json
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
       - result.stdout_lines is defined
 
-- debug: msg="END netconf_json/equal.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="END netconf_json/equal.yaml on connection={{ ansible_connection }}"

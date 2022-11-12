@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: Start junos_vlans teardown ansible_connection={{ ansible_connection }}
 
 - name: Remove interface config
@@ -8,5 +8,5 @@
       - delete vlans vlan1
       - delete vlans vlan2
 
-- debug:
+- ansible.builtin.debug:
     msg: End junos_vlans teardown ansible_connection={{ ansible_connection }}

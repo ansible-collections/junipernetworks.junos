@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: Start junos_static_routes base config ansible_connection={{ ansible_connection
       }}
 
@@ -25,6 +25,6 @@
 
                   - forward_router_address: 2001:db8:0:1:2a0:a502:0:19da
 
-- debug:
+- ansible.builtin.debug:
     msg: End junos_static_routes base config ansible_connection={{ ansible_connection
       }}

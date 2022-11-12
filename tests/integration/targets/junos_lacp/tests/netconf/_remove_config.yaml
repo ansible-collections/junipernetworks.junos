@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: Start junos_lacp deleted remove lacp config ansible_connection={{ ansible_connection
       }}
 
@@ -8,6 +8,6 @@
     lines:
       - delete chassis aggregated-devices ethernet lacp
 
-- debug:
+- ansible.builtin.debug:
     msg: End junos_lacp deleted remove lacp config ansible_connection={{ ansible_connection
       }}

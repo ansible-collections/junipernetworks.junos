@@ -1,5 +1,5 @@
 ---
-- debug: msg="START netconf/netconf.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="START netconf/netconf.yaml on connection={{ ansible_connection }}"
 
 - name: Ensure netconf is enabled
   junipernetworks.junos.junos_netconf:
@@ -10,7 +10,7 @@
   junipernetworks.junos.junos_netconf:
     state: present
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
@@ -33,7 +33,7 @@
   junipernetworks.junos.junos_netconf:
     state: absent
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
 
@@ -55,7 +55,7 @@
   junipernetworks.junos.junos_netconf:
     state: absent
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
 
@@ -64,7 +64,7 @@
   junipernetworks.junos.junos_netconf:
     state: absent
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
@@ -82,7 +82,7 @@
   include: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
     ansible_port=830 is_ignore_errors=true'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.failed == true
 
@@ -92,7 +92,7 @@
   junipernetworks.junos.junos_netconf:
     state: present
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
 
@@ -110,7 +110,7 @@
   include: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
     ansible_port=830 is_ignore_errors=true'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.failed == true
 
@@ -118,4 +118,4 @@
   junipernetworks.junos.junos_netconf:
     state: present
 
-- debug: msg="END netconf/netconfg.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="END netconf/netconfg.yaml on connection={{ ansible_connection }}"

@@ -1,5 +1,5 @@
 ---
-- debug: msg="START netconf/changeport.yaml on connection={{ ansible_connection
+- ansible.builtin.debug: msg="START netconf/changeport.yaml on connection={{ ansible_connection
     }}"
 
 - name: Setup
@@ -12,7 +12,7 @@
     state: present
     netconf_port: 8022
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
 
@@ -22,7 +22,7 @@
     state: present
     netconf_port: 8022
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
@@ -50,7 +50,7 @@
   include: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
     ansible_port=830 is_ignore_errors=true'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.failed == true
 
@@ -78,7 +78,7 @@
     state: present
     netconf_port: 12345
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
 
@@ -96,7 +96,7 @@
   include: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
     ansible_port=12345 is_ignore_errors=true'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.failed == true
 
@@ -104,4 +104,4 @@
   include: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
     ansible_port=830 is_ignore_errors=false'
 
-- debug: msg="END netconf/changeport.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="END netconf/changeport.yaml on connection={{ ansible_connection }}"

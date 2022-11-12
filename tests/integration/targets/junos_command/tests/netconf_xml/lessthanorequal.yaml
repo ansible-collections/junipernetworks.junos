@@ -1,5 +1,5 @@
 ---
-- debug: msg="START netconf_xml/lessthanorequal.yaml on connection={{ ansible_connection
+- ansible.builtin.debug: msg="START netconf_xml/lessthanorequal.yaml on connection={{ ansible_connection
     }}"
 
 - name: test le operator
@@ -13,7 +13,7 @@
       - result[1].rpc-reply.interface-information.physical-interface.local-index
         le 6
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
@@ -30,11 +30,11 @@
       - result[1].rpc-reply.interface-information.physical-interface.local-index
         <= 6
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
       - result.stdout_lines is defined
 
-- debug: msg="END netconf_xml/lessthanorequal.yaml on connection={{ ansible_connection
+- ansible.builtin.debug: msg="END netconf_xml/lessthanorequal.yaml on connection={{ ansible_connection
     }}"

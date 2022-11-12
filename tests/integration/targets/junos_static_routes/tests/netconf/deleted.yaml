@@ -1,11 +1,11 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: START junos_static_routes deleted integration tests on connection={{ ansible_connection
       }}
 
-- include_tasks: _remove_config.yaml
+- ansible.builtin.include_tasks: _remove_config.yaml
 
-- include_tasks: _base_config.yaml
+- ansible.builtin.include_tasks: _base_config.yaml
 
 - block:
 
@@ -22,10 +22,10 @@
         state: deleted
 
     - name: Assert the configuration is reflected on host
-      assert:
+      ansible.builtin.assert:
         that:
           - not result.after
-      debugger: on_failed
+      ansible.builtin.debugger: on_failed
 
     - name: Delete the provided configuration with the existing running configuration
         (IDEMPOTENT)
@@ -33,13 +33,13 @@
       junipernetworks.junos.junos_static_routes: *id001
 
     - name: Assert that the previous task was idempotent
-      assert:
+      ansible.builtin.assert:
         that:
           - result['changed'] == false
   always:
 
-    - include_tasks: _remove_config.yaml
+    - ansible.builtin.include_tasks: _remove_config.yaml
 
-- debug:
+- ansible.builtin.debug:
     msg: END junos_static_routes deleted integration tests on connection={{ ansible_connection
       }}

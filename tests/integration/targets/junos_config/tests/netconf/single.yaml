@@ -1,5 +1,5 @@
 ---
-- debug: msg="START netconf/single.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="START netconf/single.yaml on connection={{ ansible_connection }}"
 
 - name: setup
   junipernetworks.junos.junos_config:
@@ -12,7 +12,7 @@
     lines:
       - set system host-name localhost
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'+  host-name localhost;' in result.diff.prepared"
@@ -23,7 +23,7 @@
     lines:
       - set system host-name localhost
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
@@ -32,7 +32,7 @@
   junipernetworks.junos.junos_config:
     confirm_commit: true
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
 
@@ -47,7 +47,7 @@
     lines:
       - set system syslog file test1 any any
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - result.diff.prepared is search("\+ *file test1")
@@ -58,7 +58,7 @@
   junipernetworks.junos.junos_config:
     rollback: 1
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - result.diff.prepared is search("\+ *file test1")
@@ -69,4 +69,4 @@
     lines:
       - set system host-name {{ inventory_hostname_short }}
 
-- debug: msg="END netconf/single.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="END netconf/single.yaml on connection={{ ansible_connection }}"

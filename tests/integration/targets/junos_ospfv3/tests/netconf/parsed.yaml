@@ -1,9 +1,9 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: START junos_ospfv3 parsed integration tests on connection={{ ansible_connection
       }}
 
-- set_fact:
+- ansible.builtin.set_fact:
     expected_parsed_output:
 
       - router_id: 10.200.16.75
@@ -30,10 +30,10 @@
     state: parsed
 
 - name: Assert that config was correctly parsed
-  assert:
+  ansible.builtin.assert:
     that:
       - "{{ expected_parsed_output | symmetric_difference(result['parsed']) |length ==\
         \ 0 }}"
-- debug:
+- ansible.builtin.debug:
     msg: END junos_ospfv3 parsed integration tests on connection={{ ansible_connection
       }}

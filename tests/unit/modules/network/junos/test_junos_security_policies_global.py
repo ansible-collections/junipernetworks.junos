@@ -144,7 +144,7 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
             "<nc:name>all</nc:name></nc:flag><nc:no-remote-trace/></nc:traceoptions></nc:policies>"
             "</nc:security>"
         )
-        self.assertEqual(
+        self.ansible.builtin.assertEqual(
             self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
         )
 
@@ -192,7 +192,7 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
             "<nc:world-readable/></nc:file><nc:flag><nc:name>configuration</nc:name></nc:flag><nc:no-remote-trace/>"
             "</nc:traceoptions></nc:policies></nc:security>"
         )
-        self.assertEqual(
+        self.ansible.builtin.assertEqual(
             self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
         )
 
@@ -209,7 +209,7 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
             "<nc:traceoptions><nc:flag><nc:name>compilation</nc:name></nc:flag>"
             "</nc:traceoptions></nc:policies></nc:security>"
         )
-        self.assertEqual(
+        self.ansible.builtin.assertEqual(
             self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
         )
 
@@ -223,7 +223,7 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
             "<nc:traceoptions><nc:flag><nc:name>lookup</nc:name></nc:flag>"
             "</nc:traceoptions></nc:policies></nc:security>"
         )
-        self.assertEqual(
+        self.ansible.builtin.assertEqual(
             self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
         )
 
@@ -292,7 +292,7 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
                 "no_remote_trace": True,
             },
         }
-        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_security_policies_global_parsed_02(self):
         parsed_str = """
@@ -364,7 +364,7 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
                 "flag": "compilation",
             },
         }
-        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_security_policies_global_parsed_03(self):
         parsed_str = """
@@ -386,7 +386,7 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
         set_module_args(dict(running_config=parsed_str, state="parsed"))
         result = self.execute_module(changed=False)
         parsed_dict = {"traceoptions": {"flag": "configuration"}}
-        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_security_policies_global_parsed_04(self):
         parsed_str = """
@@ -408,7 +408,7 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
         set_module_args(dict(running_config=parsed_str, state="parsed"))
         result = self.execute_module(changed=False)
         parsed_dict = {"traceoptions": {"flag": "ipc"}}
-        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_security_policies_global_parsed_05(self):
         parsed_str = """
@@ -430,7 +430,7 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
         set_module_args(dict(running_config=parsed_str, state="parsed"))
         result = self.execute_module(changed=False)
         parsed_dict = {"traceoptions": {"flag": "lookup"}}
-        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_security_policies_global_parsed_06(self):
         parsed_str = """
@@ -452,7 +452,7 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
         set_module_args(dict(running_config=parsed_str, state="parsed"))
         result = self.execute_module(changed=False)
         parsed_dict = {"traceoptions": {"flag": "routing-socket"}}
-        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_security_policies_global_parsed_07(self):
         parsed_str = """
@@ -474,7 +474,7 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
         set_module_args(dict(running_config=parsed_str, state="parsed"))
         result = self.execute_module(changed=False)
         parsed_dict = {"traceoptions": {"flag": "rules"}}
-        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_security_policies_global_overridden_01(self):
         set_module_args(
@@ -514,7 +514,7 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
             "<nc:name>ipc</nc:name></nc:flag><nc:no-remote-trace/></nc:traceoptions></nc:policies>"
             '</nc:security><nc:policies delete="delete"/>'
         )
-        self.assertEqual(
+        self.ansible.builtin.assertEqual(
             self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
         )
 
@@ -543,7 +543,7 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
                 "no_remote_trace": True,
             },
         }
-        self.assertEqual(sorted(gather_list), sorted(result["gathered"]))
+        self.ansible.builtin.assertEqual(sorted(gather_list), sorted(result["gathered"]))
 
     def test_junos_security_policies_global_rendered(self):
         set_module_args(
@@ -584,7 +584,7 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
         result = self.execute_module(changed=False)
         print(self.sorted_xml(result["rendered"]))
         print(self.sorted_xml(rendered))
-        self.assertEqual(
+        self.ansible.builtin.assertEqual(
             self.sorted_xml(result["rendered"]), self.sorted_xml(rendered)
         )
 
@@ -625,6 +625,6 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
             "<nc:name>rules</nc:name></nc:flag><nc:no-remote-trace/></nc:traceoptions></nc:policies>"
             '</nc:security><nc:policies delete="delete"/>'
         )
-        self.assertEqual(
+        self.ansible.builtin.assertEqual(
             self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
         )

@@ -116,7 +116,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_global_merged_idempotent(self):
         set_module_args(
@@ -142,7 +142,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.assertEqual(result["before"], result["after"])
+        self.ansible.builtin.assertEqual(result["before"], result["after"])
 
     def test_junos_bgp_global_replaced(self):
         """
@@ -230,7 +230,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             "<nc:autonomous-system>65432</nc:autonomous-system></nc:routing-options>",
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_global_replaced_idempotent(self):
         set_module_args(
@@ -256,7 +256,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.assertEqual(result["before"], result["after"])
+        self.ansible.builtin.assertEqual(result["before"], result["after"])
 
     def test_junos_bgp_global_rendered(self):
         """
@@ -292,7 +292,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             "</nc:group></nc:bgp></nc:protocols>"
         )
         result = self.execute_module(changed=False)
-        self.assertEqual(sorted(result["rendered"]), sorted(rendered))
+        self.ansible.builtin.assertEqual(sorted(result["rendered"]), sorted(rendered))
 
     def test_junos_bgp_global_rendered_empty(self):
         """
@@ -301,7 +301,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
         set_module_args(dict(config=dict(description=""), state="rendered"))
         rendered = ""
         result = self.execute_module(changed=False)
-        self.assertEqual(sorted(result["rendered"]), sorted(rendered))
+        self.ansible.builtin.assertEqual(sorted(result["rendered"]), sorted(rendered))
 
     def test_junos_bgp_global_gathered(self):
         """
@@ -326,7 +326,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             "out_delay": "10",
             "preference": "2",
         }
-        self.assertEqual(sorted(gather_dict), sorted(result["gathered"]))
+        self.ansible.builtin.assertEqual(sorted(gather_dict), sorted(result["gathered"]))
 
     def test_junos_bgp_global_parsed(self):
         parsed_str = """
@@ -387,7 +387,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             "out_delay": "10",
             "preference": "2",
         }
-        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_bgp_global_parsed_empty_running_config(self):
         set_module_args(dict(running_config="", state="parsed"))
@@ -433,7 +433,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_global_delete_purged(self):
         set_module_args(dict(config=dict(), state="purged"))
@@ -443,7 +443,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:autonomous-system delete="delete"/></nc:routing-options>',
         ]
         result = self.execute_module(changed=True)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_global_merged_routing_options(self):
         """
@@ -466,7 +466,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             "</nc:routing-options>",
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_global_merge_groups(self):
         """
@@ -510,7 +510,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_global_merged_advertise_bgp_static(self):
         """
@@ -530,7 +530,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_global_merged_advertise_external(self):
         """
@@ -551,7 +551,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_global_merged_bfd_liveness_detection(self):
         """
@@ -596,7 +596,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_global_merged_bgp_error_tolerance(self):
         """
@@ -624,7 +624,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_global_merged_bmp(self):
         """
@@ -655,7 +655,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_global_merged_bmp_2(self):
         """
@@ -685,7 +685,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_global_merged_egress_te(self):
         """
@@ -704,7 +704,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_global_merged_egress_te_backup_paths(self):
         """
@@ -737,7 +737,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_global_merged_groups_allow(self):
         """
@@ -759,7 +759,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_global_merged_optimal_route_reflection(self):
         """
@@ -790,7 +790,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_global_parsed_bgp_global(self):
         parsed_str = """

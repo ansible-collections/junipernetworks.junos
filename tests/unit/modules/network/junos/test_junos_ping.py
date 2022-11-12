@@ -59,7 +59,7 @@ class TestJunosPingModule(TestJunosModule):
             )
         )
         result = self.execute_module()
-        self.assertEqual(result["commands"], "ping 10.10.10.10 count 2")
+        self.ansible.builtin.assertEqual(result["commands"], "ping 10.10.10.10 count 2")
 
     def test_junos_ping_expected_failure(self):
         set_module_args(dict(count=4, dest="10.10.10.20", state="absent"))
@@ -69,7 +69,7 @@ class TestJunosPingModule(TestJunosModule):
             )
         )
         result = self.execute_module()
-        self.assertEqual(result["commands"], "ping 10.10.10.20 count 4")
+        self.ansible.builtin.assertEqual(result["commands"], "ping 10.10.10.20 count 4")
 
     def test_junos_ping_unexpected_success(self):
         """Test for successful pings when destination should not be reachable - FAIL."""
@@ -92,7 +92,7 @@ class TestJunosPingModule(TestJunosModule):
         self.execute_module(failed=True)
 
     def test_junos_ping_failure_stats(self):
-        """Test for asserting stats when ping fails"""
+        """Test for ansible.builtin.asserting stats when ping fails"""
         set_module_args(dict(count=4, dest="10.10.10.20"))
         self.conn.get = MagicMock(
             return_value=load_fixture(
@@ -100,9 +100,9 @@ class TestJunosPingModule(TestJunosModule):
             )
         )
         result = self.execute_module(failed=True)
-        self.assertEqual(result["packet_loss"], "100%")
-        self.assertEqual(result["packets_rx"], 0)
-        self.assertEqual(result["packets_tx"], 4)
+        self.ansible.builtin.assertEqual(result["packet_loss"], "100%")
+        self.ansible.builtin.assertEqual(result["packets_rx"], 0)
+        self.ansible.builtin.assertEqual(result["packets_tx"], 4)
 
     def test_junos_ping_success_stats(self):
         set_module_args(dict(count=2, dest="10.10.10.10"))
@@ -112,14 +112,14 @@ class TestJunosPingModule(TestJunosModule):
             )
         )
         result = self.execute_module()
-        self.assertEqual(result["commands"], "ping 10.10.10.10 count 2")
-        self.assertEqual(result["packet_loss"], "0%")
-        self.assertEqual(result["packets_rx"], 2)
-        self.assertEqual(result["packets_tx"], 2)
-        self.assertEqual(result["rtt"]["min"], 15.71)
-        self.assertEqual(result["rtt"]["avg"], 16.87)
-        self.assertEqual(result["rtt"]["max"], 18.04)
-        self.assertEqual(result["rtt"]["stddev"], 1.165)
+        self.ansible.builtin.assertEqual(result["commands"], "ping 10.10.10.10 count 2")
+        self.ansible.builtin.assertEqual(result["packet_loss"], "0%")
+        self.ansible.builtin.assertEqual(result["packets_rx"], 2)
+        self.ansible.builtin.assertEqual(result["packets_tx"], 2)
+        self.ansible.builtin.assertEqual(result["rtt"]["min"], 15.71)
+        self.ansible.builtin.assertEqual(result["rtt"]["avg"], 16.87)
+        self.ansible.builtin.assertEqual(result["rtt"]["max"], 18.04)
+        self.ansible.builtin.assertEqual(result["rtt"]["stddev"], 1.165)
 
     def test_junos_ping_success_stats_with_options(self):
         set_module_args(
@@ -132,16 +132,16 @@ class TestJunosPingModule(TestJunosModule):
             )
         )
         result = self.execute_module()
-        self.assertEqual(
+        self.ansible.builtin.assertEqual(
             result["commands"], "ping 10.10.10.11 count 5 size 512 interval 2"
         )
-        self.assertEqual(result["packet_loss"], "0%")
-        self.assertEqual(result["packets_rx"], 5)
-        self.assertEqual(result["packets_tx"], 5)
-        self.assertEqual(result["rtt"]["min"], 18.71)
-        self.assertEqual(result["rtt"]["avg"], 17.87)
-        self.assertEqual(result["rtt"]["max"], 20.04)
-        self.assertEqual(result["rtt"]["stddev"], 2.165)
+        self.ansible.builtin.assertEqual(result["packet_loss"], "0%")
+        self.ansible.builtin.assertEqual(result["packets_rx"], 5)
+        self.ansible.builtin.assertEqual(result["packets_tx"], 5)
+        self.ansible.builtin.assertEqual(result["rtt"]["min"], 18.71)
+        self.ansible.builtin.assertEqual(result["rtt"]["avg"], 17.87)
+        self.ansible.builtin.assertEqual(result["rtt"]["max"], 20.04)
+        self.ansible.builtin.assertEqual(result["rtt"]["stddev"], 2.165)
 
     def test_junos_ping_success_stats_with_df_rapid(self):
         set_module_args(dict(df_bit=True, rapid=True, dest="10.10.10.12"))
@@ -152,14 +152,14 @@ class TestJunosPingModule(TestJunosModule):
             )
         )
         result = self.execute_module()
-        self.assertEqual(
+        self.ansible.builtin.assertEqual(
             result["commands"],
             "ping 10.10.10.12 count 5 do-not-fragment rapid",
         )
-        self.assertEqual(result["packet_loss"], "0%")
-        self.assertEqual(result["packets_rx"], 5)
-        self.assertEqual(result["packets_tx"], 5)
-        self.assertEqual(result["rtt"]["min"], 2.58)
-        self.assertEqual(result["rtt"]["avg"], 2.63)
-        self.assertEqual(result["rtt"]["max"], 2.74)
-        self.assertEqual(result["rtt"]["stddev"], 0.058)
+        self.ansible.builtin.assertEqual(result["packet_loss"], "0%")
+        self.ansible.builtin.assertEqual(result["packets_rx"], 5)
+        self.ansible.builtin.assertEqual(result["packets_tx"], 5)
+        self.ansible.builtin.assertEqual(result["rtt"]["min"], 2.58)
+        self.ansible.builtin.assertEqual(result["rtt"]["avg"], 2.63)
+        self.ansible.builtin.assertEqual(result["rtt"]["max"], 2.74)
+        self.ansible.builtin.assertEqual(result["rtt"]["stddev"], 0.058)

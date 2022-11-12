@@ -1,5 +1,5 @@
 ---
-- debug: msg="START redirection/netconf/shortname.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="START redirection/netconf/shortname.yaml on connection={{ ansible_connection }}"
 
 - name: setup
   junipernetworks.junos.config:
@@ -11,7 +11,7 @@
   junipernetworks.junos.config:
     src: basic/config.j2
 
-- assert:
+- ansible.builtin.assert:
     that:
       # make sure that the template content was read and not the path
       - result.changed == true
@@ -30,7 +30,7 @@
       filename: backup_with_alias.cfg
       dir_path: '{{ role_path }}/backup_test_dir/{{ inventory_hostname_short }}'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
 
@@ -40,8 +40,8 @@
   register: backup_file
   connection: local
 
-- assert:
+- ansible.builtin.assert:
     that:
       - backup_file.files is defined
 
-- debug: msg="END redirection/netconf/shortname.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="END redirection/netconf/shortname.yaml on connection={{ ansible_connection }}"

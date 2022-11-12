@@ -1,5 +1,5 @@
 ---
-- debug: msg="START netconf_xml/greaterthan.yaml on connection={{ ansible_connection
+- ansible.builtin.debug: msg="START netconf_xml/greaterthan.yaml on connection={{ ansible_connection
     }}"
 
 - name: test gt operator
@@ -13,7 +13,7 @@
       - result[1].rpc-reply.interface-information.physical-interface.local-index
         gt 5
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
@@ -30,11 +30,11 @@
       - result[1].rpc-reply.interface-information.physical-interface.local-index
         > 5
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
       - result.stdout_lines is defined
 
-- debug: msg="END netconf_xml/greaterthan.yaml on connection={{ ansible_connection
+- ansible.builtin.debug: msg="END netconf_xml/greaterthan.yaml on connection={{ ansible_connection
     }}"

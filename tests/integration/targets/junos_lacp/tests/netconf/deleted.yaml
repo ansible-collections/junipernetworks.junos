@@ -1,11 +1,11 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: START junos_lacp deleted lacp tests on connection={{ ansible_connection
       }}
 
-- include_tasks: _remove_config.yaml
+- ansible.builtin.include_tasks: _remove_config.yaml
 
-- set_fact:
+- ansible.builtin.set_fact:
     expected_deleted_output: []
 
 - block:
@@ -25,7 +25,7 @@
         state: deleted
 
     - name: Assert the configuration is reflected on host
-      assert:
+      ansible.builtin.assert:
         that:
           - "{{ result['after'] == {} }}"
 
@@ -35,13 +35,13 @@
       junipernetworks.junos.junos_lacp: *id001
 
     - name: Assert that the previous task was idempotent
-      assert:
+      ansible.builtin.assert:
         that:
           - result['changed'] == false
   always:
 
-    - include_tasks: _remove_config.yaml
+    - ansible.builtin.include_tasks: _remove_config.yaml
 
-- debug:
+- ansible.builtin.debug:
     msg: END junos_lacp deleted lacp integration tests on connection={{ ansible_connection
       }}

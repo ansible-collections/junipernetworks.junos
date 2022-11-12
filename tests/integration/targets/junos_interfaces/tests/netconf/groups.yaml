@@ -1,11 +1,11 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: START junos_interfaces groups integration tests on connection={{ ansible_connection
       }}
 
-- include_tasks: _remove_config.yaml
+- ansible.builtin.include_tasks: _remove_config.yaml
 
-- set_fact:
+- ansible.builtin.set_fact:
     expected_group_output:
 
       - name: ge-0/0/11
@@ -42,7 +42,7 @@
         gather_network_resources: interfaces
 
     - name: Assert the configuration is reflected on host
-      assert:
+      ansible.builtin.assert:
         that:
           - "{{ expected_group_output | symmetric_difference(result['ansible_facts']['ansible_network_resources']['interfaces'])|length\
             \ == 0 }}"
@@ -51,6 +51,6 @@
     - name: Teardown delete interface configuration
       junipernetworks.junos.junos_config: *id001
 
-- debug:
+- ansible.builtin.debug:
     msg: END junos_interfaces merged integration tests on connection={{ ansible_connection
       }}

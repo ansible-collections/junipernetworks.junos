@@ -1,11 +1,11 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_acls deleted integration tests on connection={{ ansible_connection }}"
 
 - block:
-    - include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
 
-    - set_fact:
+    - ansible.builtin.set_fact:
         config:
           - acls:
               - aces:
@@ -57,12 +57,12 @@
       register: result
 
     - name: Assert changed
-      assert: &changed
+      ansible.builtin.assert: &changed
         that:
           - result.changed == True
           - "{{ config|symmetric_difference(result.after) == [] }}"
 
-    - set_fact:
+    - ansible.builtin.set_fact:
         config:
           - acls:
               - aces:
@@ -104,9 +104,9 @@
       register: result
 
     - name: Assert changed
-      assert: *changed
+      ansible.builtin.assert: *changed
 
-    - set_fact:
+    - ansible.builtin.set_fact:
         config:
           - acls:
               - aces:
@@ -137,9 +137,9 @@
       register: result
 
     - name: Assert changed
-      assert: *changed
+      ansible.builtin.assert: *changed
 
-    - set_fact:
+    - ansible.builtin.set_fact:
         config: []
 
     - name: Delete all ACLs from the device
@@ -148,11 +148,11 @@
       register: result
 
     - name: Assert changed
-      assert: *changed
+      ansible.builtin.assert: *changed
 
   tags: deleted
   always:
-    - include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_acls deleted integration tests on connection={{ ansible_connection }}"

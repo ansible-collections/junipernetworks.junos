@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_acls reset policy options config on connection={{ ansible_connection }}"
 
 - name: Reset policy options config
@@ -10,5 +10,5 @@
       - delete policy-options prefix-list ospf-all-routers
       - delete policy-options prefix-list ipv4-interfaces
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_acls reset policy options config on connection={{ ansible_connection }}"

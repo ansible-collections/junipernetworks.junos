@@ -1,5 +1,5 @@
 ---
-- debug: msg="START netconf_text/contains.yaml on connection={{ ansible_connection
+- ansible.builtin.debug: msg="START netconf_text/contains.yaml on connection={{ ansible_connection
     }}"
 
 - name: test contains operator with text encoding
@@ -12,11 +12,11 @@
     wait_for:
       - result[1] contains lo0
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
       - result.stdout_lines is defined
 
-- debug: msg="END netconf_text/contains.yaml on connection={{ ansible_connection
+- ansible.builtin.debug: msg="END netconf_text/contains.yaml on connection={{ ansible_connection
     }}"

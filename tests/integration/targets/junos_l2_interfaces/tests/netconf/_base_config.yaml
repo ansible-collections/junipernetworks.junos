@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: Start junos_l2_interfaces base config ansible_connection={{ ansible_connection
       }}
 
@@ -11,6 +11,6 @@
       - set vlans vlan300 vlan-id 300
       - set vlans vlan400 vlan-id 400
 
-- debug:
+- ansible.builtin.debug:
     msg: End junos_l2_interfaces base config ansible_connection={{ ansible_connection
       }}

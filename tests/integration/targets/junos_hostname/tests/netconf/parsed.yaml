@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: START junos_hostname parsed integration tests on connection={{ ansible_connection
       }}
 
@@ -10,9 +10,9 @@
     state: parsed
 
 - name: Assert that config was correctly parsed
-  assert:
+  ansible.builtin.assert:
     that:
       - "{{ merged['after']  == result['parsed'] }}"
-- debug:
+- ansible.builtin.debug:
     msg: END junos_hostname parsed integration tests on connection={{ ansible_connection
       }}

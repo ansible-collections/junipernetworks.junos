@@ -1,5 +1,5 @@
 ---
-- debug: msg="END cli_config/backup.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="END cli_config/backup.yaml on connection={{ ansible_connection }}"
 
 - name: delete configurable backup file path
   file:
@@ -27,7 +27,7 @@
   ansible.netcommon.cli_config:
     backup: true
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
 
@@ -38,7 +38,7 @@
   register: backup_files
   connection: local
 
-- assert:
+- ansible.builtin.assert:
     that:
       - backup_files.files is defined
 
@@ -50,7 +50,7 @@
       filename: backup.cfg
       dir_path: '{{ role_path }}/backup_test_dir/{{ inventory_hostname_short }}'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
 
@@ -60,7 +60,7 @@
   register: backup_file
   connection: local
 
-- assert:
+- ansible.builtin.assert:
     that:
       - backup_file.files is defined
 
@@ -71,7 +71,7 @@
     backup_options:
       filename: backup.cfg
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
 
@@ -81,7 +81,7 @@
   register: backup_file
   connection: local
 
-- assert:
+- ansible.builtin.assert:
     that:
       - backup_file.files is defined
 
@@ -92,7 +92,7 @@
     backup_options:
       dir_path: '{{ role_path }}/backup_test_dir/{{ inventory_hostname_short }}'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
 
@@ -103,8 +103,8 @@
   register: backup_file
   connection: local
 
-- assert:
+- ansible.builtin.assert:
     that:
       - backup_file.files is defined
 
-- debug: msg="END cli_config/backup.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="END cli_config/backup.yaml on connection={{ ansible_connection }}"

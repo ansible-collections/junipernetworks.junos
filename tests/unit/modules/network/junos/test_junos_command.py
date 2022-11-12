@@ -103,14 +103,14 @@ class TestJunosCommandModule(TestJunosModule):
     def test_junos_command_simple(self):
         set_module_args(dict(commands=["show version"]))
         result = self.execute_module()
-        self.assertEqual(len(result["stdout"]), 1)
-        self.assertTrue(result["stdout"][0].startswith("Hostname:"))
+        self.ansible.builtin.assertEqual(len(result["stdout"]), 1)
+        self.ansible.builtin.assertTrue(result["stdout"][0].startswith("Hostname:"))
 
     def test_junos_command_multiple(self):
         set_module_args(dict(commands=["show version", "show version"]))
         result = self.execute_module()
-        self.assertEqual(len(result["stdout"]), 2)
-        self.assertTrue(result["stdout"][0].startswith("Hostname:"))
+        self.ansible.builtin.assertEqual(len(result["stdout"]), 2)
+        self.ansible.builtin.assertTrue(result["stdout"][0].startswith("Hostname:"))
 
     def test_junos_command_wait_for(self):
         wait_for = 'result[0] contains "Junos:"'
@@ -121,7 +121,7 @@ class TestJunosCommandModule(TestJunosModule):
         wait_for = 'result[0] contains "test string"'
         set_module_args(dict(commands=["show version"], wait_for=wait_for))
         self.execute_module(failed=True)
-        self.assertEqual(self.exec_rpc.call_count, 10)
+        self.ansible.builtin.assertEqual(self.exec_rpc.call_count, 10)
 
     def test_junos_command_retries(self):
         wait_for = 'result[0] contains "test string"'
@@ -129,7 +129,7 @@ class TestJunosCommandModule(TestJunosModule):
             dict(commands=["show version"], wait_for=wait_for, retries=2)
         )
         self.execute_module(failed=True)
-        self.assertEqual(self.exec_rpc.call_count, 2)
+        self.ansible.builtin.assertEqual(self.exec_rpc.call_count, 2)
 
     def test_junos_command_match_any(self):
         wait_for = [
@@ -165,21 +165,21 @@ class TestJunosCommandModule(TestJunosModule):
     def test_junos_command_simple_json(self):
         set_module_args(dict(commands=["show version"], display="json"))
         result = self.execute_module(format="json")
-        self.assertEqual(len(result["stdout"]), 1)
-        self.assertTrue("software-information" in result["stdout"][0])
+        self.ansible.builtin.assertEqual(len(result["stdout"]), 1)
+        self.ansible.builtin.assertTrue("software-information" in result["stdout"][0])
 
     def test_junos_command_simple_rpc_text(self):
         set_module_args(
             dict(rpcs=["get-software-information"], display="text")
         )
         result = self.execute_module(format="text")
-        self.assertEqual(len(result["stdout"]), 1)
-        self.assertTrue(result["stdout"][0].startswith("Hostname:"))
+        self.ansible.builtin.assertEqual(len(result["stdout"]), 1)
+        self.ansible.builtin.assertTrue(result["stdout"][0].startswith("Hostname:"))
 
     def test_junos_command_simple_rpc_json(self):
         set_module_args(
             dict(rpcs=["get-software-information"], display="json")
         )
         result = self.execute_module(format="json")
-        self.assertEqual(len(result["stdout"]), 1)
-        self.assertTrue("software-information" in result["stdout"][0])
+        self.ansible.builtin.assertEqual(len(result["stdout"]), 1)
+        self.ansible.builtin.assertTrue("software-information" in result["stdout"][0])

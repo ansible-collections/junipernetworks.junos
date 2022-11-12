@@ -120,7 +120,7 @@ class TestJunosOspfv2Module(TestJunosModule):
             "<nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>",
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_ospfv2_merged_bandwith(self):
         set_module_args(
@@ -148,24 +148,24 @@ class TestJunosOspfv2Module(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
             str(result["commands"]),
         )
-        self.assertIn("<nc:name>0.0.0.10</nc:name>", str(result["commands"]))
-        self.assertIn(
+        self.ansible.builtin.assertIn("<nc:name>0.0.0.10</nc:name>", str(result["commands"]))
+        self.ansible.builtin.assertIn(
             "<nc:interface><nc:name>so-0/0/0.0</nc:name>",
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             "<nc:bandwidth-based-metrics><nc:bandwidth><nc:name>10g</nc:name>",
             str(result["commands"]),
         )
-        self.assertIn("<nc:metric>5</nc:metric>", str(result["commands"]))
+        self.ansible.builtin.assertIn("<nc:metric>5</nc:metric>", str(result["commands"]))
 
     def test_junos_ospfv2_merged_02(self):
         set_module_args(
@@ -201,44 +201,44 @@ class TestJunosOspfv2Module(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             "<nc:ospf><nc:area><nc:name>0.0.0.100</nc:name>",
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             "<nc:interface><nc:name>so-0/0/0.0</nc:name>",
             str(result["commands"]),
         )
-        self.assertIn("<nc:priority>3</nc:priority>", str(result["commands"]))
-        self.assertIn("<nc:flood-reduction/>", str(result["commands"]))
-        self.assertIn("<nc:metric>5</nc:metric>", str(result["commands"]))
-        self.assertIn("<nc:passive/>", str(result["commands"]))
-        self.assertIn(
+        self.ansible.builtin.assertIn("<nc:priority>3</nc:priority>", str(result["commands"]))
+        self.ansible.builtin.assertIn("<nc:flood-reduction/>", str(result["commands"]))
+        self.ansible.builtin.assertIn("<nc:metric>5</nc:metric>", str(result["commands"]))
+        self.ansible.builtin.assertIn("<nc:passive/>", str(result["commands"]))
+        self.ansible.builtin.assertIn(
             "<nc:dead-interval>100</nc:dead-interval>", str(result["commands"])
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             "<nc:hello-interval>80</nc:hello-interval>",
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             "<nc:retransmit-interval>90</nc:retransmit-interval>",
             str(result["commands"]),
         )
-        self.assertIn("</nc:interface>", str(result["commands"]))
-        self.assertIn(
+        self.ansible.builtin.assertIn("</nc:interface>", str(result["commands"]))
+        self.ansible.builtin.assertIn(
             "<nc:stub/></nc:area></nc:ospf></nc:protocols>",
             str(result["commands"]),
         )
-        self.assertIn("</nc:interface>", str(result["commands"]))
-        self.assertIn(
+        self.ansible.builtin.assertIn("</nc:interface>", str(result["commands"]))
+        self.ansible.builtin.assertIn(
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             "<nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>",
             str(result["commands"]),
         )
@@ -264,35 +264,35 @@ class TestJunosOspfv2Module(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             "<nc:spf-options><nc:delay>1000</nc:delay>",
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             "<nc:overload><nc:timeout>80</nc:timeout></nc:overload>",
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             "<nc:external-preference>2</nc:external-preference>",
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             "<nc:preference>1</nc:preference>", str(result["commands"])
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             "<nc:prefix-export-limit>20000</nc:prefix-export-limit>",
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             "<nc:reference-bandwidth>10g</nc:reference-bandwidth>",
             str(result["commands"]),
         )
-        self.assertIn("<nc:no-rfc-1583/>", str(result["commands"]))
-        self.assertIn(
+        self.ansible.builtin.assertIn("<nc:no-rfc-1583/>", str(result["commands"]))
+        self.ansible.builtin.assertIn(
             "<nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>",
             str(result["commands"]),
         )
@@ -333,33 +333,33 @@ class TestJunosOspfv2Module(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             '<nc:ospf><nc:area delete="delete">0.0.0.20</nc:area></nc:ospf>',
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             '<nc:ospf><nc:area delete="delete">0.0.0.10</nc:area></nc:ospf>',
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
             str(result["commands"]),
         )
-        self.assertIn("<nc:metric>2</nc:metric>", str(result["commands"]))
-        self.assertIn("<nc:priority>3</nc:priority>", str(result["commands"]))
-        self.assertIn(
+        self.ansible.builtin.assertIn("<nc:metric>2</nc:metric>", str(result["commands"]))
+        self.ansible.builtin.assertIn("<nc:priority>3</nc:priority>", str(result["commands"]))
+        self.ansible.builtin.assertIn(
             "<nc:interface><nc:name>so-0/0/0.1</nc:name>",
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             "<nc:stub><nc:default-metric>200</nc:default-metric></nc:stub>",
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             "<nc:router-id>10.200.16.77</nc:router-id></nc:routing-options>",
             str(result["commands"]),
         )
@@ -400,33 +400,33 @@ class TestJunosOspfv2Module(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             '<nc:ospf><nc:area delete="delete">0.0.0.20</nc:area></nc:ospf>',
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             '<nc:ospf><nc:area delete="delete">0.0.0.10</nc:area></nc:ospf>',
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
             str(result["commands"]),
         )
-        self.assertIn("<nc:metric>2</nc:metric>", str(result["commands"]))
-        self.assertIn("<nc:priority>3</nc:priority>", str(result["commands"]))
-        self.assertIn(
+        self.ansible.builtin.assertIn("<nc:metric>2</nc:metric>", str(result["commands"]))
+        self.ansible.builtin.assertIn("<nc:priority>3</nc:priority>", str(result["commands"]))
+        self.ansible.builtin.assertIn(
             "<nc:interface><nc:name>so-0/0/0.1</nc:name>",
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             "<nc:stub><nc:default-metric>200</nc:default-metric></nc:stub>",
             str(result["commands"]),
         )
-        self.assertIn(
+        self.ansible.builtin.assertIn(
             "<nc:router-id>10.200.16.77</nc:router-id></nc:routing-options>",
             str(result["commands"]),
         )
@@ -444,7 +444,7 @@ class TestJunosOspfv2Module(TestJunosModule):
             "</nc:protocols>"
         ]
         result = self.execute_module(changed=True)
-        self.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_ospfv2_rendered(self):
         set_module_args(
@@ -476,7 +476,7 @@ class TestJunosOspfv2Module(TestJunosModule):
             "<nc:stub><nc:default-metric>200</nc:default-metric></nc:stub></nc:area></nc:ospf></nc:protocols>"
         )
         result = self.execute_module(changed=False)
-        self.assertEqual(sorted(result["rendered"]), sorted(rendered))
+        self.ansible.builtin.assertEqual(sorted(result["rendered"]), sorted(rendered))
 
     def test_junos_vlans_gathered(self):
         """
@@ -511,7 +511,7 @@ class TestJunosOspfv2Module(TestJunosModule):
                 ],
             )
         ]
-        self.assertEqual(sorted(gather_list), sorted(result["gathered"]))
+        self.ansible.builtin.assertEqual(sorted(gather_list), sorted(result["gathered"]))
 
     def test_junos_vlans_parsed(self):
         parsed_str = """
@@ -582,7 +582,7 @@ class TestJunosOspfv2Module(TestJunosModule):
                 "router_id": "10.200.16.7",
             }
         ]
-        self.assertEqual(result["parsed"], parsed_list)
+        self.ansible.builtin.assertEqual(result["parsed"], parsed_list)
 
     def test_junos_vlans_parsed_02(self):
         parsed_str = """
@@ -658,4 +658,4 @@ class TestJunosOspfv2Module(TestJunosModule):
                 "router_id": "10.200.16.7",
             }
         ]
-        self.assertEqual(result["parsed"], parsed_list)
+        self.ansible.builtin.assertEqual(result["parsed"], parsed_list)

@@ -1,5 +1,5 @@
 ---
-- debug: msg="START junos_system netconf/basic.yaml on connection={{ ansible_connection
+- ansible.builtin.debug: msg="START junos_system netconf/basic.yaml on connection={{ ansible_connection
     }}"
 
 - name: setup - remove hostname
@@ -18,7 +18,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<host-name>vsrx01</host-name>' in config.xml"
@@ -29,7 +29,7 @@
     hostname: vsrx01
     state: present
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
@@ -45,7 +45,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<host-name inactive=\"inactive\">' in config.xml"
@@ -62,7 +62,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<host-name>vsrx01</host-name>' in config.xml"
@@ -73,7 +73,7 @@
     hostname: vsrx01
     state: absent
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<host-name>vsrx01</host-name>' in config.xml"
@@ -99,7 +99,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<domain-name>ansible.com</domain-name>' in config.xml"
@@ -110,7 +110,7 @@
     domain_name: ansible.com
     state: present
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
@@ -126,7 +126,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<domain-name inactive=\"inactive\">' in config.xml"
@@ -143,7 +143,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<domain-name>ansible.com</domain-name>' in config.xml"
@@ -159,7 +159,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<domain-name>ansible.com</domain-name>' not in config.xml"
@@ -190,7 +190,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<domain-search>test.com</domain-search>' in config.xml"
@@ -204,7 +204,7 @@
       - sample.com
     state: present
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
@@ -222,7 +222,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<domain-search inactive=\"inactive\">test.com</domain-search>' in config.xml"
@@ -242,7 +242,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<domain-search>test.com</domain-search>' in config.xml"
@@ -261,7 +261,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<domain-search>test.com</domain-search>' not in config.xml"
@@ -288,7 +288,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<name>8.8.8.8</name>' in config.xml"
@@ -302,7 +302,7 @@
       - 8.8.4.4
     state: present
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
@@ -320,7 +320,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<name-server inactive=\"inactive\">' in config.xml"
@@ -339,7 +339,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<name>8.8.8.8</name>' in config.xml"
@@ -358,11 +358,11 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<name>8.8.8.8</name>' not in config.xml"
       - "'<name>8.8.4.4</name>' not in config.xml"
 
-- debug: msg="END junos_system netconf/basic.yaml on connection={{ ansible_connection
+- ansible.builtin.debug: msg="END junos_system netconf/basic.yaml on connection={{ ansible_connection
     }}"

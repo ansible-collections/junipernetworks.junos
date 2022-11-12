@@ -1,11 +1,11 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: START junos_lacp RTT integration tests on connection={{ ansible_connection
       }}
 
-- include_tasks: _remove_config.yaml
+- ansible.builtin.include_tasks: _remove_config.yaml
 
-- set_fact:
+- ansible.builtin.set_fact:
     expected_revert_output:
 
       - system_priority: 63
@@ -36,7 +36,7 @@
         state: replaced
 
     - name: Assert that changes were applied
-      assert:
+      ansible.builtin.assert:
         that: result['changed'] == true
 
     - name: Revert back to base config using facts round trip
@@ -46,13 +46,13 @@
         state: replaced
 
     - name: Assert that config was reverted
-      assert:
+      ansible.builtin.assert:
         that: "{{ expected_revert_output | symmetric_difference([revert['after']])\
           \ |length == 0 }}"
   always:
 
-    - include_tasks: _remove_config.yaml
+    - ansible.builtin.include_tasks: _remove_config.yaml
 
-- debug:
+- ansible.builtin.debug:
     msg: END junos_lacp RTT integration tests on connection={{ ansible_connection
       }}

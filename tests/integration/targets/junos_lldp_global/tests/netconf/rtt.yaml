@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: START junos_lldp_global round trip integration tests on connection={{ ansible_connection
       }}
 
@@ -10,20 +10,20 @@
     commands: show lldp
 
 - name: lldp supported
-  set_fact:
+  ansible.builtin.set_fact:
     lldp_supported: true
   when: not result.failed
 
 - name: lldp not supported
-  set_fact:
+  ansible.builtin.set_fact:
     lldp_supported: false
   when: result.failed
 
 - block:
 
-    - include_tasks: _remove_config.yaml
+    - ansible.builtin.include_tasks: _remove_config.yaml
 
-    - set_fact:
+    - ansible.builtin.set_fact:
         expected_revert_output:
 
           - interval: 10000
@@ -60,7 +60,7 @@
         state: replaced
 
     - name: Assert that changes were applied
-      assert:
+      ansible.builtin.assert:
         that: result['changed'] == true
 
     - name: Revert back to base config using facts round trip
@@ -70,14 +70,14 @@
         state: replaced
 
     - name: Assert that config was reverted
-      assert:
+      ansible.builtin.assert:
         that: "{{ expected_revert_output | symmetric_difference([revert['after']])\
                         \ |length == 0 }}"
   always:
 
-    - include_tasks: _remove_config.yaml
+    - ansible.builtin.include_tasks: _remove_config.yaml
   when: lldp_supported
 
-- debug:
+- ansible.builtin.debug:
     msg: END junos_lldp_global round trip integration tests on connection={{ ansible_connection
       }}
