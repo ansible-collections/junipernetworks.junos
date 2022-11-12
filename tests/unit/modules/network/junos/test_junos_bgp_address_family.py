@@ -1291,7 +1291,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                                 <receive/>
                                                 <send>
                                                     <multipath/>
-                                                    <include-backup-path>1</include-backup-path>
+                                                    <ansible.builtin.include-backup-path>1</ansible.builtin.include-backup-path>
                                                     <path-count>10</path-count>
                                                     <prefix-policy>customer65443</prefix-policy>
                                                     <path-selection-mode>
@@ -1359,7 +1359,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                         "receive": True,
                                         "send": {
                                             "multipath": True,
-                                            "include_backup_path": 1,
+                                            "ansible.builtin.include_backup_path": 1,
                                             "path_count": 10,
                                             "prefix_policy": "customer65443",
                                             "path_selection_mode": {
@@ -1484,7 +1484,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                                 <receive/>
                                                 <send>
                                                     <multipath/>
-                                                    <include-backup-path>1</include-backup-path>
+                                                    <ansible.builtin.include-backup-path>1</ansible.builtin.include-backup-path>
                                                     <path-count>10</path-count>
                                                     <prefix-policy>customer65443</prefix-policy>
                                                     <path-selection-mode>
@@ -1552,7 +1552,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                         "receive": True,
                                         "send": {
                                             "multipath": True,
-                                            "include_backup_path": 1,
+                                            "ansible.builtin.include_backup_path": 1,
                                             "path_count": 10,
                                             "prefix_policy": "customer65443",
                                             "path_selection_mode": {
@@ -1750,7 +1750,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                         receive=True,
                                         send=dict(
                                             multipath=True,
-                                            include_backup_path=1,
+                                            ansible.builtin.include_backup_path=1,
                                             path_count=10,
                                             prefix_policy="customer65443",
                                             path_selection_mode=dict(
@@ -1771,7 +1771,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:bgp><nc:family><nc:evpn><nc:signaling><nc:add-path><nc:receive/>"
             "<nc:send><nc:path-count>10</nc:path-count>"
-            "<nc:include-backup-path>1</nc:include-backup-path>"
+            "<nc:ansible.builtin.include-backup-path>1</nc:ansible.builtin.include-backup-path>"
             "<nc:path-selection-mode><nc:all-paths/><nc:equal-cost-paths/>"
             "</nc:path-selection-mode><nc:prefix-policy>customer65443</nc:prefix-policy></nc:send>"
             "</nc:add-path></nc:signaling></nc:evpn></nc:family></nc:bgp></nc:protocols>",

@@ -1,2 +1,2 @@
 ---
-- { include: netconf.yaml, tags: ['netconf'] }
+- { ansible.builtin.include: netconf.yaml, tags: ['netconf'] }

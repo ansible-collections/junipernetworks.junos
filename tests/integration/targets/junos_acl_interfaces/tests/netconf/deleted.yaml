@@ -1,6 +1,6 @@
 ---
 - ansible.builtin.debug:
-    msg: "START junos_acl_interfaces deleted integration tests on connection={{ ansible_connection }}"
+    msg: "START junipernetworks.junos.junos_acl_interfaces deleted integration tests on connection={{ ansible_connection }}"
 
 - block:
     - ansible.builtin.include_tasks: _reset_config.yaml
@@ -16,7 +16,7 @@
                     direction: in
 
     - name: Delete a single ACL
-      junos_acl_interfaces:
+      junipernetworks.junos.junos_acl_interfaces:
         config:
           - name: ge-1/0/0
             access_groups:
@@ -37,7 +37,7 @@
         config: []
 
     - name: Delete all ACLs from the device
-      junos_acl_interfaces:
+      junipernetworks.junos.junos_acl_interfaces:
         config:
           - name: ge-1/0/0
             access_groups:
@@ -53,4 +53,4 @@
     - ansible.builtin.include_tasks: _reset_config.yaml
 
 - ansible.builtin.debug:
-    msg: "END junos_acl_interfaces deleted integration tests on connection={{ ansible_connection }}"
+    msg: "END junipernetworks.junos.junos_acl_interfaces deleted integration tests on connection={{ ansible_connection }}"

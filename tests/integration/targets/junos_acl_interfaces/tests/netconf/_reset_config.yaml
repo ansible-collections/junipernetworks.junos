@@ -1,6 +1,6 @@
 ---
 - ansible.builtin.debug:
-    msg: "START junos_acl_interfaces reset ACL and ACL interfaces config on connection={{ ansible_connection }}"
+    msg: "START junipernetworks.junos.junos_acl_interfaces reset ACL and ACL interfaces config on connection={{ ansible_connection }}"
 
 - name: Set initial state for firewalls and interfaces
   junos_config:
@@ -12,4 +12,4 @@
       - "delete interfaces ge-1/0/0"
       - "delete interfaces ge-2/0/0"
 - ansible.builtin.debug:
-    msg: "END junos_acl_interfaces reset ACL and ACL interfaces config on connection={{ ansible_connection }}"
+    msg: "END junipernetworks.junos.junos_acl_interfaces reset ACL and ACL interfaces config on connection={{ ansible_connection }}"

@@ -313,13 +313,13 @@ class TestJunosSnmp_serverModule(TestJunosModule):
                         notify_filter=[
                             dict(
                                 name="not_fil_01",
-                                oids=[dict(include=True, oid="1.a.s.b.d")],
+                                oids=[dict(ansible.builtin.include=True, oid="1.a.s.b.d")],
                             ),
                             dict(
                                 name="not_fil_02",
                                 oids=[
-                                    dict(include=True, oid="1.x.b.b.d"),
-                                    dict(include=True, oid="1.a.c.b.d"),
+                                    dict(ansible.builtin.include=True, oid="1.x.b.b.d"),
+                                    dict(ansible.builtin.include=True, oid="1.a.c.b.d"),
                                 ],
                             ),
                         ],
@@ -506,18 +506,18 @@ class TestJunosSnmp_serverModule(TestJunosModule):
                 <name>not_fil_01</name>
                 <oid>
                     <name>1.a.s.b.d</name>
-                    <include/>
+                    <ansible.builtin.include/>
                 </oid>
             </notify-filter>
             <notify-filter>
                 <name>not_fil_02</name>
                 <oid>
                     <name>1.x.b.b.d</name>
-                    <include/>
+                    <ansible.builtin.include/>
                 </oid>
                 <oid>
                     <name>1.a.c.b.d</name>
-                    <include/>
+                    <ansible.builtin.include/>
                 </oid>
             </notify-filter>
             <snmp-community>
@@ -759,13 +759,13 @@ class TestJunosSnmp_serverModule(TestJunosModule):
                 "notify_filter": [
                     {
                         "name": "not_fil_01",
-                        "oids": [{"include": True, "oid": "1.a.s.b.d"}],
+                        "oids": [{"ansible.builtin.include": True, "oid": "1.a.s.b.d"}],
                     },
                     {
                         "name": "not_fil_02",
                         "oids": [
-                            {"include": True, "oid": "1.x.b.b.d"},
-                            {"include": True, "oid": "1.a.c.b.d"},
+                            {"ansible.builtin.include": True, "oid": "1.x.b.b.d"},
+                            {"ansible.builtin.include": True, "oid": "1.a.c.b.d"},
                         ],
                     },
                 ],

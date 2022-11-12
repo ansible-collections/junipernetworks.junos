@@ -26,7 +26,7 @@
           egress_te_sid_stats: true
           hold_time: 5
           holddown_all_stale_labels: true
-          include_mp_next_hop: true
+          ansible.builtin.include_mp_next_hop: true
           log_updown: true
           loops: 3
           no_advertise_peer_as: true

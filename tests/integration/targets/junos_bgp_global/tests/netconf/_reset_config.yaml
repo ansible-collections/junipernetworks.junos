@@ -18,7 +18,7 @@
       - delete protocols bgp egress-te-sid-stats
       - delete protocols bgp hold-time
       - delete protocols bgp holddown-all-stale-labels
-      - delete protocols bgp include-mp-next-hop
+      - delete protocols bgp ansible.builtin.include-mp-next-hop
       - delete protocols bgp log-updown
       - delete protocols bgp no-advertise-peer-as
       - delete protocols bgp no-aggregator-id

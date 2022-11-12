@@ -198,7 +198,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             '<nc:enforce-first-as delete="delete"/><nc:export delete="delete"/>'
             '<nc:forwarding-context delete="delete"/><nc:hold-time delete="delete"/>'
             '<nc:holddown-all-stale-labels delete="delete"/><nc:import delete="delete"/>'
-            '<nc:include-mp-next-hop delete="delete"/><nc:ipsec-sa delete="delete"/>'
+            '<nc:ansible.builtin.include-mp-next-hop delete="delete"/><nc:ipsec-sa delete="delete"/>'
             '<nc:keep delete="delete"/><nc:local-address delete="delete"/>'
             '<nc:local-interface delete="delete"/><nc:local-preference delete="delete"/>'
             '<nc:log-updown delete="delete"/><nc:mtu-discovery delete="delete"/>'
@@ -269,7 +269,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
                     groups=[dict(name="internal", out_delay=22)],
                     hold_time=4,
                     holddown_all_stale_labels=True,
-                    include_mp_next_hop=True,
+                    ansible.builtin.include_mp_next_hop=True,
                     log_updown=True,
                     loops=5,
                     keep="all",
@@ -283,7 +283,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
 
         rendered = (
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:bgp>'
-            "<nc:holddown-all-stale-labels/><nc:include-mp-next-hop/><nc:log-updown/>"
+            "<nc:holddown-all-stale-labels/><nc:ansible.builtin.include-mp-next-hop/><nc:log-updown/>"
             "<nc:mtu-discovery/>"
             "<nc:description>This is configured with Junos_bgp resource module</nc:description>"
             "<nc:hold-time>4</nc:hold-time><nc:keep>all</nc:keep><nc:preference>2</nc:preference>"
@@ -412,7 +412,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             '<nc:egress-te-sid-stats delete="delete"/><nc:enforce-first-as delete="delete"/>'
             '<nc:export delete="delete"/><nc:forwarding-context delete="delete"/>'
             '<nc:hold-time delete="delete"/><nc:holddown-all-stale-labels delete="delete"/>'
-            '<nc:import delete="delete"/><nc:include-mp-next-hop delete="delete"/>'
+            '<nc:import delete="delete"/><nc:ansible.builtin.include-mp-next-hop delete="delete"/>'
             '<nc:ipsec-sa delete="delete"/><nc:keep delete="delete"/><nc:local-address delete="delete"/>'
             '<nc:local-interface delete="delete"/>'
             '<nc:local-preference delete="delete"/><nc:log-updown delete="delete"/>'
@@ -824,7 +824,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
                             <damping/>
                             <authentication-algorithm>md5</authentication-algorithm>
                             <no-client-reflect/>
-                            <include-mp-next-hop/>
+                            <ansible.builtin.include-mp-next-hop/>
                             <bmp>
                                 <monitor>enable</monitor>
                                 <route-monitoring>

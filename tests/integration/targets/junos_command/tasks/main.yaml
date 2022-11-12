@@ -1,10 +1,10 @@
 ---
-- include: netconf_xml.yaml
+- ansible.builtin.include: netconf_xml.yaml
 
-- include: netconf_text.yaml
+- ansible.builtin.include: netconf_text.yaml
 
-- include: netconf_json.yaml
+- ansible.builtin.include: netconf_json.yaml
 
-- include: cli.yaml
+- ansible.builtin.include: cli.yaml
   tags:
     - network_cli

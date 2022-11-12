@@ -20,7 +20,7 @@
       - set protocols bgp egress-te-sid-stats
       - set protocols bgp hold-time 5
       - set protocols bgp holddown-all-stale-labels
-      - set protocols bgp include-mp-next-hop
+      - set protocols bgp ansible.builtin.include-mp-next-hop
       - set protocols bgp log-updown
       - set protocols bgp no-advertise-peer-as
       - set protocols bgp no-aggregator-id

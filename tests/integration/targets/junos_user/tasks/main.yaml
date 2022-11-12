@@ -1,2 +1,2 @@
 ---
-- include: netconf.yaml
+- ansible.builtin.include: netconf.yaml
