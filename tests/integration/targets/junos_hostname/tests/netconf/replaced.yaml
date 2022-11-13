@@ -1,9 +1,13 @@
 ---
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: "START junos_hostname replaced integration tests on connection={{ ansible_connection }}"
 
 - block:
-    - ansible.builtin.include_tasks: _reset_config.yaml
+    - name: Reset configuration
+      ansible.builtin.include_tasks: _reset_config.yaml
+
+    - name: Initial configuration
     - ansible.builtin.include_tasks: _initial_config.yaml
 
     - name: Override configuration
@@ -36,5 +40,6 @@
   always:
     - ansible.builtin.include_tasks: _reset_config.yaml
 
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: "END junos_hostname replaced integration tests on connection={{ ansible_connection }}"

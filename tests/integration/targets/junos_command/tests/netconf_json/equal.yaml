@@ -1,8 +1,9 @@
 ---
-- ansible.builtin.debug: msg="START netconf_json/equal.yaml on connection={{ ansible_connection
+- name: Debug task
+  ansible.builtin.debug: msg="START netconf_json/equal.yaml on connection={{ ansible_connection
     }}"
 
-- name: test == operator with xml encoding
+- name: Perform test == operator with xml encoding
   register: result
   junipernetworks.junos.junos_command:
     commands:
@@ -13,13 +14,14 @@
         == lo0
     format: json
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
       - result.stdout_lines is defined
 
-- name: test eq operator with json encoding
+- name: Run test eq operator with json encoding
   register: result
   junipernetworks.junos.junos_command:
     commands:
@@ -30,10 +32,12 @@
         eq lo0
     format: json
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
       - result.stdout_lines is defined
 
-- ansible.builtin.debug: msg="END netconf_json/equal.yaml on connection={{ ansible_connection }}"
+- name: Debug task
+  ansible.builtin.debug: msg="END netconf_json/equal.yaml on connection={{ ansible_connection }}"
