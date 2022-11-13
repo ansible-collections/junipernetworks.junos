@@ -21,7 +21,7 @@
   vars:
     ansible_connection: ansible.netcommon.network_cli
     ansible_network_single_user_mode: True
-     connection: {{ cli }}
+    connection: "{{ cli }}"
 
   tags:
     - network_cli
