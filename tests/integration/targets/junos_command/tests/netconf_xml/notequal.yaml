@@ -1,8 +1,9 @@
 ---
-- ansible.builtin.debug: msg="START netconf_xml/notequal.yaml on connection={{ ansible_connection
+- name: Debug task
+  ansible.builtin.debug: msg="START netconf_xml/notequal.yaml on connection={{ ansible_connection
     }}"
 
-- name: test neq operator
+- name: Test neq operator
   register: result
   junipernetworks.junos.junos_command:
     commands:
@@ -12,13 +13,14 @@
     wait_for:
       - result[1].rpc-reply.interface-information.physical-interface.name neq em0
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
       - result.stdout_lines is defined
 
-- name: test != operator
+- name: Test != operator
   register: result
   junipernetworks.junos.junos_command:
     commands:
@@ -28,11 +30,13 @@
     wait_for:
       - result[1].rpc-reply.interface-information.physical-interface.name neq em0
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
       - result.stdout_lines is defined
 
-- ansible.builtin.debug: msg="END netconf_xml/notequal.yaml on connection={{ ansible_connection
+- name: Debug task
+  ansible.builtin.debug: msg="END netconf_xml/notequal.yaml on connection={{ ansible_connection
     }}"

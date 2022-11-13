@@ -1,10 +1,14 @@
 ---
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: START junos_bgp_global gathered integration tests on connection={{ ansible_connection }}
 
 - block:
-    - ansible.builtin.include_tasks: _reset_config.yaml
-    - ansible.builtin.include_tasks: _initial_config.yaml
+    - name: Reset configuration
+      ansible.builtin.include_tasks: _reset_config.yaml
+
+    - name: Initial config
+      ansible.builtin.include_tasks: _initial_config.yaml
 
     - name: Gather interfaces facts using gathered state
       register: result
@@ -16,9 +20,10 @@
         that: "{{ merged['after'] == result['gathered'] }}"
 
   always:
+    - name: Reset configuration
+      ansible.builtin.include_tasks: _reset_config.yaml
 
-    - ansible.builtin.include_tasks: _reset_config.yaml
-
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: END junos_bgp_global gathered integration tests on connection={{ ansible_connection
       }}

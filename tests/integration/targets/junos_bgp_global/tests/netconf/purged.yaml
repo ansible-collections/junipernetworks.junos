@@ -1,12 +1,19 @@
 ---
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: "START junos_bgp_global purged integration tests on connection={{ ansible_connection }}"
 
 - block:
-    - ansible.builtin.include_tasks: _reset_config.yaml
-    - ansible.builtin.include_tasks: _initial_config.yaml
-    - ansible.builtin.set_fact:
+    - name: Reset configuration
+      ansible.builtin.include_tasks: _reset_config.yaml
+
+    - name: Initial config
+      ansible.builtin.include_tasks: _initial_config.yaml
+
+    - name: Set facts
+      ansible.builtin.set_fact:
         config: {}
+
     - name: Purge all ospf config from the device
       junipernetworks.junos.junos_bgp_global:
         state: purged
@@ -19,7 +26,9 @@
           - "{{ config == result.after }}"
 
   always:
-    - ansible.builtin.include_tasks: _reset_config.yaml
+    - name: Reset configuration
+      ansible.builtin.include_tasks: _reset_config.yaml
 
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: "END junos_bgp_global purged integration tests on connection={{ ansible_connection }}"

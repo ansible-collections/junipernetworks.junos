@@ -1,9 +1,11 @@
 ---
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: START junos_bgp_global parsed integration tests on connection={{ ansible_connection
       }}
 
-- ansible.builtin.set_fact:
+- name: Set facts
+  ansible.builtin.set_fact:
     expected_parsed_output:
       accept_remote_nexthop: true
       add_path_display_ipv4_address: true
@@ -42,6 +44,8 @@
   ansible.builtin.assert:
     that:
       - "{{ expected_parsed_output  == result['parsed'] }}"
-- ansible.builtin.debug:
+
+- name: Debug task
+  ansible.builtin.debug:
     msg: END junos_bgp_global parsed integration tests on connection={{ ansible_connection
       }}

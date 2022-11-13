@@ -1,5 +1,6 @@
 ---
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: "START junos_bgp_global initial config on connection={{ ansible_connection }}"
 
 - name: Configure basic config relevant to BGP GLOBAL
@@ -29,5 +30,6 @@
       - set protocols bgp precision-timers
       - set protocols bgp preference 2
 
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: "END junos_bgp_global initial config on connection={{ ansible_connection }}"

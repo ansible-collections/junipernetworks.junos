@@ -1,11 +1,12 @@
 ---
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: START junos_bgp_global round trip integration tests on connection={{
       ansible_connection }}
 
-- ansible.builtin.include_tasks: _reset_config.yaml
-
 - block:
+    - name: Reset configuration
+      ansible.builtin.include_tasks: _reset_config.yaml
 
     - name: Apply the provided configuration (base config)
       register: base_config
@@ -81,9 +82,11 @@
           - result.changed == True
           - "{{ base_config['after'] == revert['after'] }}"
   always:
+    - name: Reset configuration
+      ansible.builtin.include_tasks: _reset_config.yaml
 
-    - ansible.builtin.include_tasks: _reset_config.yaml
 
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: END junos_bgp_global round trip integration tests on connection={{ ansible_connection
       }}

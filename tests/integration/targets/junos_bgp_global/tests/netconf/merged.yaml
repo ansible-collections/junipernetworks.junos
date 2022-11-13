@@ -1,9 +1,11 @@
 ---
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: "START junos_bgp_global merged integration tests on connection={{ ansible_connection }}"
 
 - block:
-    - ansible.builtin.include_tasks: _reset_config.yaml
+    - name: Reset configuration
+      ansible.builtin.include_tasks: _reset_config.yaml
 
     - name: Merge the provided configuration with the exisiting running configuration
       junipernetworks.junos.junos_bgp_global: &merged
@@ -119,7 +121,9 @@
 
   tags: merged
   always:
-    - ansible.builtin.include_tasks: _reset_config.yaml
+    - name: Reset configuration
+      ansible.builtin.include_tasks: _reset_config.yaml
 
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: "END junos_bgp_global merged integration tests on connection={{ ansible_connection }}"

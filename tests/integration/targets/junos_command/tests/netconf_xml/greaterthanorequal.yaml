@@ -1,8 +1,9 @@
 ---
-- ansible.builtin.debug: msg="START netconf_xml/greaterthanorequal.yaml on connection={{ ansible_connection
+- name: Debug task
+  ansible.builtin.debug: msg="START netconf_xml/greaterthanorequal.yaml on connection={{ ansible_connection
     }}"
 
-- name: test ge operator
+- name: Test ge operator
   register: result
   junipernetworks.junos.junos_command:
     commands:
@@ -13,13 +14,14 @@
       - result[1].rpc-reply.interface-information.physical-interface.local-index
         ge 6
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
       - result.stdout_lines is defined
 
-- name: test >= operator
+- name: Test >= operator
   register: result
   junipernetworks.junos.junos_command:
     commands:
@@ -30,11 +32,13 @@
       - result[1].rpc-reply.interface-information.physical-interface.local-index
         >= 6
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
       - result.stdout_lines is defined
 
-- ansible.builtin.debug: msg="END netconf_xml/greaterthanorequal.yaml on connection={{ ansible_connection
+- name: Debug task
+  ansible.builtin.debug: msg="END netconf_xml/greaterthanorequal.yaml on connection={{ ansible_connection
     }}"
