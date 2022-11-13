@@ -1,11 +1,14 @@
 ---
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: "START junos_bgp_address_family deleted integration tests on connection={{ ansible_connection }}"
 
 - block:
-    - ansible.builtin.include_tasks: _reset_config.yaml
+    - name: Initial configuration
+      ansible.builtin.include_tasks: _reset_config.yaml
 
-    - ansible.builtin.set_fact:
+    - name: Set facts
+      ansible.builtin.set_fact:
         expected_deleted_output:
           address_family:
             - afi: 'evpn'
@@ -103,7 +106,8 @@
         that:
           - result.changed == False
 
-    - ansible.builtin.set_fact:
+    - name: Set facts
+      ansible.builtin.set_fact:
         expected_deleted_res_output: {}
 
     - name: Merge the existing config with provided configuration
@@ -124,7 +128,9 @@
 
   tags: deleted
   always:
-    - ansible.builtin.include_tasks: _reset_config.yaml
+    - name: Reset configuration
+      ansible.builtin.include_tasks: _reset_config.yaml
 
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: "END junos_bgp_address_family deleted integration tests on connection={{ ansible_connection }}"

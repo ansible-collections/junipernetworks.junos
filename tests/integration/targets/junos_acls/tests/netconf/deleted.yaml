@@ -1,11 +1,14 @@
 ---
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: "START junos_acls deleted integration tests on connection={{ ansible_connection }}"
 
 - block:
-    - ansible.builtin.include_tasks: _reset_config.yaml
+    - name: Reset config
+      ansible.builtin.include_tasks: _reset_config.yaml
 
-    - ansible.builtin.set_fact:
+    - name: Set facts
+      ansible.builtin.set_fact:
         config:
           - acls:
               - aces:
@@ -46,7 +49,7 @@
             afi: ipv6
 
     - name: Delete a single ACE
-      junos_acls:
+      junipernetworks.junos.junos_acls:
         config:
           - afi: ipv4
             acls:
@@ -62,7 +65,8 @@
           - result.changed == True
           - "{{ config|symmetric_difference(result.after) == [] }}"
 
-    - ansible.builtin.set_fact:
+    - name: Set facts
+      ansible.builtin.set_fact:
         config:
           - acls:
               - aces:
@@ -95,7 +99,7 @@
             afi: ipv6
 
     - name: Delete a whole ACL
-      junos_acls:
+      junipernetworks.junos.junos_acls:
         config:
           - afi: ipv4
             acls:
@@ -106,7 +110,8 @@
     - name: Assert changed
       ansible.builtin.assert: *changed
 
-    - ansible.builtin.set_fact:
+    - name: Set facts
+      ansible.builtin.set_fact:
         config:
           - acls:
               - aces:
@@ -130,7 +135,7 @@
             afi: ipv4
 
     - name: Delete all ACLs under one AFI
-      junos_acls:
+      junipernetworks.junos.junos_acls:
         config:
           - afi: ipv6
         state: deleted
@@ -139,11 +144,12 @@
     - name: Assert changed
       ansible.builtin.assert: *changed
 
-    - ansible.builtin.set_fact:
+    - name: Set facts
+      ansible.builtin.set_fact:
         config: []
 
     - name: Delete all ACLs from the device
-      junos_acls:
+      junipernetworks.junos.junos_acls:
         state: deleted
       register: result
 
@@ -152,7 +158,9 @@
 
   tags: deleted
   always:
-    - ansible.builtin.include_tasks: _reset_config.yaml
+    - name: Reset configuration
+      ansible.builtin.include_tasks: _reset_config.yaml
 
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: "END junos_acls deleted integration tests on connection={{ ansible_connection }}"

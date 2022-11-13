@@ -64,7 +64,7 @@
             afi: ipv6
 
     - name: Merge the provided configuration with the exisiting running configuration
-      junos_acls: &merged
+      junipernetworks.junos.junos_acls: &merged
         config:
           - afi: ipv4
             acls:
@@ -88,7 +88,7 @@
           - "{{ config|symmetric_difference(result.after) == [] }}"
 
     - name: Merge the provided configuration with the existing running configuration (IDEMPOTENT)
-      junos_acls: *merged
+      junipernetworks.junos.junos_acls: *merged
       register: result
 
     - name: Assert that the previous task was idempotent

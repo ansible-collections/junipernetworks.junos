@@ -1,11 +1,14 @@
 ---
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: "START junos_acls replaced integration tests on connection={{ ansible_connection }}"
 
 - block:
-    - ansible.builtin.include_tasks: _reset_config.yaml
+    - name: Reset configuration
+      ansible.builtin.include_tasks: _reset_config.yaml
 
-    - ansible.builtin.set_fact:
+    - name: Set facts
+      ansible.builtin.set_fact:
         config:
           - acls:
               - aces:
@@ -60,7 +63,7 @@
             afi: ipv6
 
     - name: Replace the specified ACL with given config
-      junos_acls: &replaced
+      junipernetworks.junos.junos_acls: &replaced
         config:
           - afi: ipv4
             acls:
@@ -84,7 +87,7 @@
           - "{{ config|symmetric_difference(result.after) == [] }}"
 
     - name: Replace the specified ACL with given config (IDEMPOTENT)
-      junos_acls: *replaced
+      junipernetworks.junos.junos_acls: *replaced
       register: result
 
     - name: Assert that the previous task was idempotent
@@ -94,7 +97,9 @@
 
   tags: replaced
   always:
-    - ansible.builtin.include_tasks: _reset_config.yaml
+    - name: Reset configuration
+      ansible.builtin.include_tasks: _reset_config.yaml
 
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: "END junos_acls replaced integration tests on connection={{ ansible_connection }}"

@@ -1,5 +1,6 @@
 ---
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: START junos_acls empty_config integration tests on connection={{
       ansible_connection }}
 
@@ -10,7 +11,8 @@
     config:
     state: merged
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.msg == 'value of config parameter must not be empty for state merged'
 
@@ -21,7 +23,8 @@
     config:
     state: replaced
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.msg == 'value of config parameter must not be empty for state replaced'
 
@@ -32,7 +35,8 @@
     config:
     state: overridden
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.msg == 'value of config parameter must not be empty for state overridden'
 
@@ -43,7 +47,8 @@
     running_config:
     state: parsed
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.msg == 'value of running_config parameter must not be empty for state
         parsed'
@@ -55,6 +60,7 @@
     config:
     state: rendered
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.msg == 'value of config parameter must not be empty for state rendered'

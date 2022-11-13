@@ -21,7 +21,7 @@
             afi: ipv4
 
     - name: Override the entire running configuration with the provided configuration
-      junos_acls: &overridden
+      junipernetworks.junos.junos_acls: &overridden
         config: "{{ config }}"
         state: overridden
       register: result
@@ -33,7 +33,7 @@
           - "{{ config|symmetric_difference(result.after) == [] }}"
 
     - name: Override the entire running configuration with the provided configuration (IDEMPOTENT)
-      junos_acls: *overridden
+      junipernetworks.junos.junos_acls: *overridden
       register: result
 
     - name: Assert that the previous task was idempotent

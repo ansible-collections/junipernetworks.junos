@@ -1,11 +1,14 @@
 ---
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: START junos_bgp_address_family gathered integration tests on connection={{ ansible_connection }}
 
 - block:
-    - ansible.builtin.include_tasks: _reset_config.yaml
+    - name: Reset configuration
+      ansible.builtin.include_tasks: _reset_config.yaml
 
-    - ansible.builtin.set_fact:
+    - name: Set facts
+      ansible.builtin.set_fact:
         expected_gathered_output:
           address_family:
             - af_type:
@@ -137,8 +140,10 @@
 
   always:
 
-    - ansible.builtin.include_tasks: _reset_config.yaml
+    - name: Reset configuration
+      ansible.builtin.include_tasks: _reset_config.yaml
 
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: END junos_bgp_address_family gathered integration tests on connection={{ ansible_connection
       }}

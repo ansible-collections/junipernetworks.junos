@@ -1,8 +1,9 @@
 ---
-- ansible.builtin.debug: msg="START junos_banner netconf/basic.yaml on connection={{ ansible_connection
+- name: Debug task
+  ansible.builtin.debug: msg="START junos_banner netconf/basic.yaml on connection={{ ansible_connection
     }}"
 
-- name: setup - remove login banner
+- name: Setup - remove login banner
   junipernetworks.junos.junos_banner:
     banner: login
     state: absent
@@ -19,7 +20,8 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<message>this is my login banner</message>' in config.xml"
@@ -31,7 +33,8 @@
     text: this is my login banner
     state: present
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == false
 
@@ -48,7 +51,8 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<message inactive=\"inactive\">this is my login banner</message>' in config.xml"
@@ -66,7 +70,8 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<message>this is my login banner</message>' in config.xml"
@@ -79,12 +84,13 @@
     text: this is not the login banner you're looking for
     state: present
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == true
       - result.failed == false
 
-- name: delete login banner
+- name: Delete login banner
   register: result
   junipernetworks.junos.junos_banner:
     banner: login
@@ -95,12 +101,13 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<message>this is my login banner</message>' not in config.xml"
 
-- name: setup - remove motd banner
+- name: Setup - remove motd banner
   junipernetworks.junos.junos_banner:
     banner: motd
     state: absent
@@ -117,7 +124,8 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<announcement>this is my motd banner</announcement>' in config.xml"
@@ -129,7 +137,8 @@
     text: this is my motd banner
     state: present
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == false
 
@@ -146,7 +155,8 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<announcement inactive=\"inactive\">this is my motd banner</announcement>'\
@@ -165,12 +175,13 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<announcement>this is my motd banner</announcement>' in config.xml"
 
-- name: delete motd banner
+- name: Delete motd banner
   register: result
   junipernetworks.junos.junos_banner:
     banner: motd
@@ -181,10 +192,12 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- ansible.builtin.assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<announcement>this is my motd banner</announcement>' not in config.xml"
 
-- ansible.builtin.debug: msg="END junos_banner netconf/basic.yaml on connection={{ ansible_connection
+- name: Debug task
+  ansible.builtin.debug: msg="END junos_banner netconf/basic.yaml on connection={{ ansible_connection
     }}"

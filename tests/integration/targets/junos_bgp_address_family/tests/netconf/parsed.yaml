@@ -1,9 +1,11 @@
 ---
-- ansible.builtin.debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: START junos_bgp_address_family parsed integration tests on connection={{ ansible_connection
       }}
 
-- ansible.builtin.set_fact:
+- name: Set facts
+  ansible.builtin.set_fact:
     expected_parsed_output:
       address_family:
         - af_type:
@@ -73,6 +75,8 @@
   ansible.builtin.assert:
     that:
       - "{{ expected_parsed_output  == result['parsed'] }}"
-- ansible.builtin.debug:
+
+- name: Debug task
+  ansible.builtin.debug:
     msg: END junos_bgp_address_family parsed integration tests on connection={{ ansible_connection
       }}
