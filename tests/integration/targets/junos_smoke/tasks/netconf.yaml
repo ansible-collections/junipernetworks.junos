@@ -6,10 +6,10 @@
   connection: local
   register: test_cases
 
-- name: set test_items
+- name: Set test_items
   ansible.builtin.set_fact: test_items="{{ test_cases.files | map(attribute='path') | list }}"
 
-- name: run test case (connection=netconf)
+- name: Run test case (connection=netconf)
   ansible.builtin.include_tasks: "{{ test_case_to_run }} ansible_connection=netconf"
   with_items: "{{ test_items }}"
   loop_control:

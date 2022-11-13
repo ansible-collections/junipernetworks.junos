@@ -1,15 +1,15 @@
 ---
-- name: collect redirection test cases
+- name: Collect redirection test cases
   ansible.builtin.find:
     paths: '{{ role_path }}/tests/redirection/'
     patterns: '{{ testcase }}.yaml'
   connection: local
   register: test_cases
 
-- name: set test_items
+- name: Set test_items
   ansible.builtin.set_fact: test_items="{{ test_cases.files | map(attribute='path') | list }}"
 
-- name: run test case (connection=ansible.netcommon.netconf)
+- name: Run test case (connection=ansible.netcommon.netconf)
   ansible.builtin.include_tasks: '{{ test_case_to_run }} ansible_connection=ansible.netcommon.netconf'
   with_items: '{{ test_items }}'
   loop_control:
