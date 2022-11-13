@@ -13,7 +13,7 @@
       arp:
         set: true
         host_name_resolution: true
-      routing_instance_access:  # ATTR-----3
+      routing_instance_access:
         set: true
         access_lists:
           - "clv1"
