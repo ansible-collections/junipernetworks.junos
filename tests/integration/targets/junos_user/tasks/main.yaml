@@ -1,2 +1,2 @@
 ---
-- ansible.builtin.include: netconf.yaml
+- ansible.builtin.include_tasks: netconf.yaml

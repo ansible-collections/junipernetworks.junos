@@ -36,7 +36,7 @@
   meta: reset_connection
 
 - name: Ensure we can communicate over 8022
-  ansible.builtin.include: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
+  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
     ansible_port=8022 is_ignore_errors=false'
 
 - name: wait for netconf port tcp/830 to be closed
@@ -47,7 +47,7 @@
   with_inventory_hostnames: junos
 
 - name: Ensure we can NOT communicate over default port
-  ansible.builtin.include: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
+  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
     ansible_port=830 is_ignore_errors=true'
 
 - ansible.builtin.assert:
@@ -68,7 +68,7 @@
   meta: reset_connection
 
 - name: Ensure we can communicate over netconf
-  ansible.builtin.include: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
+  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
     ansible_port=830 is_ignore_errors=false'
 
 - name: Change port (check mode)
@@ -93,7 +93,7 @@
   meta: reset_connection
 
 - name: Ensure we can NOT communicate over non-default port
-  ansible.builtin.include: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
+  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
     ansible_port=12345 is_ignore_errors=true'
 
 - ansible.builtin.assert:
@@ -101,7 +101,7 @@
       - result.failed == true
 
 - name: Ensure we can communicate over default port
-  ansible.builtin.include: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
+  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
     ansible_port=830 is_ignore_errors=false'
 
 - ansible.builtin.debug: msg="END netconf/changeport.yaml on connection={{ ansible_connection }}"
