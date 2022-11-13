@@ -3,7 +3,7 @@
     msg: "START junos_acls reset ACL config on connection={{ ansible_connection }}"
 
 - name: Set initial state
-  junos_config:
+  junipernetworks.junos.junos_config:
     lines:
       - delete firewall
       - set firewall family inet filter initial_acl term ten_dot from source-port bgp protocol tcp source-address 10.0.0.0/8

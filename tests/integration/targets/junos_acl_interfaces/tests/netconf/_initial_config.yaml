@@ -1,5 +1,6 @@
 ---
-- ansible.builtin.debug:
+- name: Debug
+  ansible.builtin.debug:
     msg: "START junipernetworks.junos.junos_acl_interfaces ACL interfaces initial config on connection={{ ansible_connection }}"
 
 - name: Set initial state for firewalls and interfaces
@@ -14,5 +15,6 @@
               - name: second_acl
                 direction: out
 
-- ansible.builtin.debug:
+- name: Debug
+  ansible.builtin.debug:
     msg: "END junipernetworks.junos.junos_acl_interfaces ACL interfaces initial config on connection={{ ansible_connection }}"

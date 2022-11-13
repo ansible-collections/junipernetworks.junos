@@ -1,6 +1,6 @@
 ---
 - name: collect netconf_json test cases with json encoding
-  find:
+  ansible.builtin.find:
     paths: '{{ role_path }}/tests/netconf_json'
     patterns: '{{ testcase }}.yaml'
   connection: local

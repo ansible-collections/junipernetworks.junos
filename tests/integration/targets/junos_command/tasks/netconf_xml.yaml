@@ -1,6 +1,6 @@
 ---
 - name: collect netconf_xml test cases with xml encoding
-  find:
+  ansible.builtin.find:
     paths: '{{ role_path }}/tests/netconf_xml'
     patterns: '{{ testcase }}.yaml'
   connection: local

@@ -1,2 +1,4 @@
 ---
-- { ansible.builtin.include: netconf.yaml, tags: ['netconf'] }
+- name: Execute natconf tasks
+  ansible.builtin.include: netconf.yaml
+  tags: ['netconf']
