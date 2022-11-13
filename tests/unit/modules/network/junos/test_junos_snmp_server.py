@@ -94,11 +94,11 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             '<nc:snmp xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:arp><nc:host-name-resolution/></nc:arp></nc:snmp>",
             str(result["commands"]),
         )
@@ -118,18 +118,18 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             '<nc:snmp xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:client-list><nc:name>cl2</nc:name><nc:client-address-list>",
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:name>192.16.4.0/24</nc:name>", str(result["commands"])
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "</nc:client-address-list></nc:client-list></nc:snmp>",
             str(result["commands"]),
         )
@@ -167,7 +167,7 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             "</nc:client-address-list></nc:client-list></nc:snmp>",
         ]
         for command in commands:
-            self.ansible.builtin.assertIn(command, str(result["commands"]))
+            self.assertIn(command, str(result["commands"]))
 
     def test_junos_snmp_server_merged_routing_access_04(self):
         set_module_args(
@@ -187,7 +187,7 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             "</nc:access-list></nc:routing-instance-access></nc:snmp>",
         ]
         for command in commands:
-            self.ansible.builtin.assertIn(command, str(result["commands"]))
+            self.assertIn(command, str(result["commands"]))
 
     def test_junos_snmp_server_merged_communities_05(self):
         set_module_args(
@@ -226,7 +226,7 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             "</nc:routing-instance></nc:community></nc:snmp>",
         ]
         for command in commands:
-            self.ansible.builtin.assertIn(command, str(result["commands"]))
+            self.assertIn(command, str(result["commands"]))
 
     def test_junos_snmp_server_merged_06(self):
         set_module_args(
@@ -313,13 +313,13 @@ class TestJunosSnmp_serverModule(TestJunosModule):
                         notify_filter=[
                             dict(
                                 name="not_fil_01",
-                                oids=[dict(ansible.builtin.include=True, oid="1.a.s.b.d")],
+                                oids=[dict(include=True, oid="1.a.s.b.d")],
                             ),
                             dict(
                                 name="not_fil_02",
                                 oids=[
-                                    dict(ansible.builtin.include=True, oid="1.x.b.b.d"),
-                                    dict(ansible.builtin.include=True, oid="1.a.c.b.d"),
+                                    dict(include=True, oid="1.x.b.b.d"),
+                                    dict(include=True, oid="1.a.c.b.d"),
                                 ],
                             ),
                         ],
@@ -433,7 +433,7 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             "<nc:local>local1</nc:local><nc:use-default-ip-address/><nc:use-mac-address/></nc:engine-id>",
         ]
         for command in commands:
-            self.ansible.builtin.assertIn(command, str(result["commands"]))
+            self.assertIn(command, str(result["commands"]))
 
     def test_junos_snmp_server_parsed_07(self):
         parsed_str = """
@@ -506,18 +506,18 @@ class TestJunosSnmp_serverModule(TestJunosModule):
                 <name>not_fil_01</name>
                 <oid>
                     <name>1.a.s.b.d</name>
-                    <ansible.builtin.include/>
+                    <include/>
                 </oid>
             </notify-filter>
             <notify-filter>
                 <name>not_fil_02</name>
                 <oid>
                     <name>1.x.b.b.d</name>
-                    <ansible.builtin.include/>
+                    <include/>
                 </oid>
                 <oid>
                     <name>1.a.c.b.d</name>
-                    <ansible.builtin.include/>
+                    <include/>
                 </oid>
             </notify-filter>
             <snmp-community>
@@ -759,13 +759,13 @@ class TestJunosSnmp_serverModule(TestJunosModule):
                 "notify_filter": [
                     {
                         "name": "not_fil_01",
-                        "oids": [{"ansible.builtin.include": True, "oid": "1.a.s.b.d"}],
+                        "oids": [{"include": True, "oid": "1.a.s.b.d"}],
                     },
                     {
                         "name": "not_fil_02",
                         "oids": [
-                            {"ansible.builtin.include": True, "oid": "1.x.b.b.d"},
-                            {"ansible.builtin.include": True, "oid": "1.a.c.b.d"},
+                            {"include": True, "oid": "1.x.b.b.d"},
+                            {"include": True, "oid": "1.a.c.b.d"},
                         ],
                     },
                 ],
@@ -861,7 +861,7 @@ class TestJunosSnmp_serverModule(TestJunosModule):
                 }
             ],
         }
-        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_ntp_global_rendered(self):
         set_module_args(
@@ -883,4 +883,4 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             "</nc:client-list></nc:snmp>"
         )
         result = self.execute_module(changed=False)
-        self.ansible.builtin.assertEqual(sorted(result["rendered"]), sorted(rendered))
+        self.assertEqual(sorted(result["rendered"]), sorted(rendered))

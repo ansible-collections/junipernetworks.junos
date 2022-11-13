@@ -122,7 +122,7 @@ class TestJunosPrefix_listsModule(TestJunosModule):
             "</nc:prefix-list></nc:policy-options>"
         ]
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_prefix_lists_merged_idempotent_01(self):
         set_module_args(
@@ -139,7 +139,7 @@ class TestJunosPrefix_listsModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(result["before"], result["after"])
+        self.assertEqual(result["before"], result["after"])
 
     def test_junos_prefix_lists_replaced_01(self):
         set_module_args(
@@ -173,7 +173,7 @@ class TestJunosPrefix_listsModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_prefix_lists_replaced_idempotent_01(self):
         set_module_args(
@@ -190,7 +190,7 @@ class TestJunosPrefix_listsModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(result["before"], result["after"])
+        self.assertEqual(result["before"], result["after"])
 
     def test_junos_prefix_lists_overridden_01(self):
         set_module_args(
@@ -214,7 +214,7 @@ class TestJunosPrefix_listsModule(TestJunosModule):
             "</nc:prefix-list></nc:policy-options>"
         ]
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_prefix_lists_overridden_idempotent_01(self):
         set_module_args(
@@ -231,7 +231,7 @@ class TestJunosPrefix_listsModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(result["before"], result["after"])
+        self.assertEqual(result["before"], result["after"])
 
     def test_junos_prefix_lists_parsed_01(self):
         parsed_str = """
@@ -265,7 +265,7 @@ class TestJunosPrefix_listsModule(TestJunosModule):
                 "address_prefixes": ["172.16.1.16/28", "172.16.1.32/28"],
             },
         ]
-        self.ansible.builtin.assertEqual(result["parsed"], parsed_list)
+        self.assertEqual(result["parsed"], parsed_list)
 
     def test_junos_prefix_lists_gathered_01(self):
         """
@@ -281,7 +281,7 @@ class TestJunosPrefix_listsModule(TestJunosModule):
                 "address_prefixes": ["172.16.1.16/28", "172.16.1.32/28"],
             },
         ]
-        self.ansible.builtin.assertEqual(gather_list, result["gathered"])
+        self.assertEqual(gather_list, result["gathered"])
 
     def test_junos_prefix_lists_rendered_01(self):
         """
@@ -323,4 +323,4 @@ class TestJunosPrefix_listsModule(TestJunosModule):
             "</nc:prefix-list></nc:policy-options>"
         )
         result = self.execute_module(changed=False)
-        self.ansible.builtin.assertEqual(sorted(result["rendered"]), sorted(rendered))
+        self.assertEqual(sorted(result["rendered"]), sorted(rendered))

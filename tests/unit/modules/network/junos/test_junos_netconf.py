@@ -81,7 +81,7 @@ class TestJunosCommandModule(TestJunosModule):
         self.netconf_conn().get.return_value = ""
         set_module_args(dict(state="present"))
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(
+        self.assertEqual(
             result["commands"], ["set system services netconf ssh port 830"]
         )
 
@@ -94,7 +94,7 @@ class TestJunosCommandModule(TestJunosModule):
         self.netconf_conn().get.return_value = out
         set_module_args(dict(state="absent"))
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(
+        self.assertEqual(
             result["commands"], ["delete system services netconf"]
         )
 
@@ -107,7 +107,7 @@ class TestJunosCommandModule(TestJunosModule):
         self.netconf_conn().get.return_value = out
         set_module_args(dict(state="present", netconf_port=22))
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(
+        self.assertEqual(
             result["commands"], ["set system services netconf ssh port 22"]
         )
 
@@ -120,7 +120,7 @@ class TestJunosCommandModule(TestJunosModule):
         self.netconf_conn().get.return_value = out
         set_module_args(dict(state="present", netconf_port=0))
         result = self.execute_module(changed=True, failed=True)
-        self.ansible.builtin.assertEqual(
+        self.assertEqual(
             result["msg"], "netconf_port must be between 1 and 65535"
         )
 
@@ -128,4 +128,4 @@ class TestJunosCommandModule(TestJunosModule):
         self.netconf_conn().get.return_value = None
         set_module_args(dict(state="present"))
         result = self.execute_module(failed=True)
-        self.ansible.builtin.assertEqual(result["msg"], "unable to retrieve current config")
+        self.assertEqual(result["msg"], "unable to retrieve current config")

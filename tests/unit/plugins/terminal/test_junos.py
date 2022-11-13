@@ -30,7 +30,7 @@ def test_on_open_shell_sets_terminal_parameters(junos_terminal):
 
     junos_terminal._get_prompt.return_value = b"user@localhost >"
     junos_terminal.on_open_shell()
-    junos_terminal._exec_cli_command.ansible.builtin.assert_has_calls(expected_calls)
+    junos_terminal._exec_cli_command.assert_has_calls(expected_calls)
 
 
 def test_on_open_shell_enters_cli_if_root_prompt(junos_terminal):
@@ -45,7 +45,7 @@ def test_on_open_shell_enters_cli_if_root_prompt(junos_terminal):
 
     junos_terminal._connection.get_prompt.return_value = b"root@localhost%"
     junos_terminal.on_open_shell()
-    junos_terminal._exec_cli_command.ansible.builtin.assert_has_calls(expected_calls)
+    junos_terminal._exec_cli_command.assert_has_calls(expected_calls)
 
 
 def test_on_open_shell_raises_problem_setting_terminal_config(junos_terminal):
@@ -55,4 +55,4 @@ def test_on_open_shell_raises_problem_setting_terminal_config(junos_terminal):
     with pytest.raises(AnsibleConnectionFailure) as exc:
         junos_terminal.on_open_shell()
 
-    ansible.builtin.assert "unable to set terminal parameters" in str(exc.value)
+    assert "unable to set terminal parameters" in str(exc.value)

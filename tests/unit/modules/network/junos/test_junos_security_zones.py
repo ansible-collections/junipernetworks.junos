@@ -241,7 +241,7 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
             "c:interfaces><nc:name>ge-0/0/4.0</nc:name></nc:interfaces><nc:screen>test_screen</nc:screen><nc:source-identity-log/><nc:tcp-rst"
             "/><nc:unidirectional-session-refreshing/></nc:security-zone></nc:zones></nc:security>"
         )
-        self.ansible.builtin.assertEqual(
+        self.assertEqual(
             self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
         )
 
@@ -496,7 +496,7 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                 },
             ],
         }
-        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_security_zones_overridden_01(self):
         set_module_args(
@@ -620,7 +620,7 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
             ":name>ge-0/0/4.0</nc:name></nc:interfaces><nc:screen>test_screen</nc:screen><nc:source-identity-log/><nc:tcp-rst/></nc:security-"
             "zone></nc:zones></nc:security>"
         )
-        self.ansible.builtin.assertEqual(
+        self.assertEqual(
             self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
         )
 
@@ -728,7 +728,7 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
                 },
             ],
         }
-        self.ansible.builtin.assertEqual(sorted(gather_list), sorted(result["gathered"]))
+        self.assertEqual(sorted(gather_list), sorted(result["gathered"]))
 
     def test_junos_security_zones_rendered(self):
         set_module_args(
@@ -859,7 +859,7 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
             ":security>"
         )
         result = self.execute_module(changed=False)
-        self.ansible.builtin.assertEqual(
+        self.assertEqual(
             self.sorted_xml(result["rendered"]), self.sorted_xml(rendered)
         )
 
@@ -985,6 +985,6 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
             ":name>ge-0/0/4.0</nc:name></nc:interfaces><nc:screen>test_screen</nc:screen><nc:source-identity-log/><nc:tcp-rst/></nc:security-"
             "zone></nc:zones></nc:security>"
         )
-        self.ansible.builtin.assertEqual(
+        self.assertEqual(
             self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
         )

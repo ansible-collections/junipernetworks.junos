@@ -151,23 +151,23 @@ class TestJunosNtp_globalModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:ntp><nc:boot-server>78.46.194.186</nc:boot-server>",
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:broadcast><nc:name>172.16.255.255</nc:name><nc:key>50</nc:key>",
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:routing-instance-name>rt1</nc:routing-instance-name><nc:ttl>200</nc:ttl>",
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:version>3</nc:version></nc:broadcast><nc:broadcast>",
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:name>192.16.255.255</nc:name><nc:key>50</nc:key>",
             str(result["commands"]),
         )
@@ -186,11 +186,11 @@ class TestJunosNtp_globalModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:ntp><nc:authentication-key><nc:name>2</nc:name><nc:type>md5</nc:type><nc:value>asdfghd</nc:value></nc:authentication-key>",
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:authentication-key><nc:name>5</nc:name><nc:type>sha1</nc:type><nc:value>aasdad</nc:value>",
             str(result["commands"]),
         )
@@ -349,7 +349,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
             "threshold": {"action": "accept", "value": 300},
             "trusted_keys": [{"key_id": 2000}, {"key_id": 3000}],
         }
-        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_ntp_global_parsed_02(self):
         parsed_str = """
@@ -447,7 +447,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
             "threshold": {"action": "accept", "value": 300},
             "trusted_keys": [{"key_id": 2000}],
         }
-        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_ntp_global_parsed_03(self):
         parsed_str = """
@@ -497,7 +497,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
                 },
             ]
         }
-        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_ntp_global_overridden_01(self):
         set_module_args(
@@ -564,23 +564,23 @@ class TestJunosNtp_globalModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:ntp><nc:boot-server>78.46.194.186</nc:boot-server>",
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:broadcast><nc:name>172.16.255.255</nc:name><nc:key>50</nc:key>",
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:routing-instance-name>rt1</nc:routing-instance-name><nc:ttl>200</nc:ttl>",
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:version>3</nc:version></nc:broadcast><nc:broadcast>",
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:name>192.16.255.255</nc:name><nc:key>50</nc:key>",
             str(result["commands"]),
         )
@@ -605,7 +605,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
                 },
             ]
         }
-        self.ansible.builtin.assertEqual(sorted(gather_list), sorted(result["gathered"]))
+        self.assertEqual(sorted(gather_list), sorted(result["gathered"]))
 
     def test_junos_ntp_global_rendered(self):
         set_module_args(
@@ -628,7 +628,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
             "</nc:authentication-key><nc:boot-server>78.46.194.186</nc:boot-server></nc:ntp></nc:system>"
         )
         result = self.execute_module(changed=False)
-        self.ansible.builtin.assertEqual(sorted(result["rendered"]), sorted(rendered))
+        self.assertEqual(sorted(result["rendered"]), sorted(rendered))
 
     def test_junos_ntp_global_replaced_01(self):
         set_module_args(
@@ -695,23 +695,23 @@ class TestJunosNtp_globalModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:ntp><nc:boot-server>78.46.194.186</nc:boot-server>",
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:broadcast><nc:name>172.16.255.255</nc:name><nc:key>50</nc:key>",
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:routing-instance-name>rt1</nc:routing-instance-name><nc:ttl>200</nc:ttl>",
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:version>3</nc:version></nc:broadcast><nc:broadcast>",
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:name>192.16.255.255</nc:name><nc:key>50</nc:key>",
             str(result["commands"]),
         )

@@ -76,27 +76,27 @@ class TestJunosModule(ModuleTestCase):
 
         if failed:
             result = self.failed()
-            self.ansible.builtin.assertTrue(result["failed"], result)
+            self.assertTrue(result["failed"], result)
         else:
             result = self.changed(changed)
-            self.ansible.builtin.assertEqual(result["changed"], changed, result)
+            self.assertEqual(result["changed"], changed, result)
 
         return result
 
     def failed(self):
-        with self.ansible.builtin.assertRaises(AnsibleFailJson) as exc:
+        with self.assertRaises(AnsibleFailJson) as exc:
             self.module.main()
 
         result = exc.exception.args[0]
-        self.ansible.builtin.assertTrue(result["failed"], result)
+        self.assertTrue(result["failed"], result)
         return result
 
     def changed(self, changed=False):
-        with self.ansible.builtin.assertRaises(AnsibleExitJson) as exc:
+        with self.assertRaises(AnsibleExitJson) as exc:
             self.module.main()
 
         result = exc.exception.args[0]
-        self.ansible.builtin.assertEqual(result["changed"], changed, result)
+        self.assertEqual(result["changed"], changed, result)
         return result
 
     def load_fixtures(self, commands=None, format=None, changed=None):

@@ -89,7 +89,7 @@ class TestJunosHostnameModule(TestJunosModule):
     def test_junos_hostname_merged_01(self):
         set_module_args(dict(config=dict(hostname="vsrx"), state="merged"))
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:host-name>vsrx</nc:host-name>", str(result["commands"])
         )
 
@@ -107,14 +107,14 @@ class TestJunosHostnameModule(TestJunosModule):
         set_module_args(dict(running_config=parsed_str, state="parsed"))
         result = self.execute_module(changed=False)
         parsed_dict = {"hostname": "vsrx"}
-        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_hostname_overridden_01(self):
         set_module_args(
             dict(config=dict(hostname="vsrx12"), state="overridden")
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:host-name>vsrx12</nc:host-name>", str(result["commands"])
         )
 
@@ -125,7 +125,7 @@ class TestJunosHostnameModule(TestJunosModule):
         set_module_args(dict(state="gathered"))
         result = self.execute_module(changed=False)
         gathered_hostname = {"hostname": "vsrx10"}
-        self.ansible.builtin.assertEqual(sorted(gathered_hostname), sorted(result["gathered"]))
+        self.assertEqual(sorted(gathered_hostname), sorted(result["gathered"]))
 
     def test_junos_hostname_rendered(self):
         set_module_args(dict(config=dict(hostname="vsrx10"), state="rendered"))
@@ -134,11 +134,11 @@ class TestJunosHostnameModule(TestJunosModule):
             "<nc:host-name>vsrx10</nc:host-name></nc:system>"
         )
         result = self.execute_module(changed=False)
-        self.ansible.builtin.assertEqual(sorted(result["rendered"]), sorted(rendered))
+        self.assertEqual(sorted(result["rendered"]), sorted(rendered))
 
     def test_junos_hostname_replaced(self):
         set_module_args(dict(config=dict(hostname="vsrx12"), state="replaced"))
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:host-name>vsrx12</nc:host-name>", str(result["commands"])
         )

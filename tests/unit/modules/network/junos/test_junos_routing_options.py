@@ -98,7 +98,7 @@ class TestJunosRouting_optionsModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:autonomous-system>2<nc:loops>4</nc:loops><nc:asdot-notation/>",
             str(result["commands"]),
         )
@@ -117,7 +117,7 @@ class TestJunosRouting_optionsModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(result["before"], result["after"])
+        self.assertEqual(result["before"], result["after"])
 
     def test_junos_routing_options_parsed_01(self):
         parsed_str = """
@@ -145,7 +145,7 @@ class TestJunosRouting_optionsModule(TestJunosModule):
             },
             "router_id": "12.12.12.12",
         }
-        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_routing_options_replaced_01(self):
         set_module_args(
@@ -159,7 +159,7 @@ class TestJunosRouting_optionsModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:autonomous-system>1<nc:loops>4</nc:loops><nc:asdot-notation/>",
             str(result["commands"]),
         )
@@ -182,7 +182,7 @@ class TestJunosRouting_optionsModule(TestJunosModule):
             "<nc:router-id>12.12.12.12</nc:router-id></nc:routing-options>"
         )
         result = self.execute_module(changed=False)
-        self.ansible.builtin.assertEqual(sorted(result["rendered"]), sorted(rendered))
+        self.assertEqual(sorted(result["rendered"]), sorted(rendered))
 
     def test_junos_routing_options_overridden(self):
         set_module_args(
@@ -196,7 +196,7 @@ class TestJunosRouting_optionsModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:autonomous-system>1<nc:loops>4</nc:loops><nc:asdot-notation/>",
             str(result["commands"]),
         )

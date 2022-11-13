@@ -97,19 +97,19 @@ class TestJunosCommandModule(TestJunosModule):
     def test_junos_rpc_xml(self):
         set_module_args(dict(rpc="get-chassis-inventory"))
         result = self.execute_module(format="xml")
-        self.ansible.builtin.assertTrue(result["xml"].find("<chassis-inventory>\n"))
+        self.assertTrue(result["xml"].find("<chassis-inventory>\n"))
 
     def test_junos_rpc_text(self):
         set_module_args(dict(rpc="get-software-information", output="text"))
         result = self.execute_module(format="text")
-        self.ansible.builtin.assertTrue(
+        self.assertTrue(
             result["output_lines"][0].startswith("Hostname: vsrx01")
         )
 
     def test_junos_rpc_json(self):
         set_module_args(dict(rpc="get-software-information", output="json"))
         result = self.execute_module(format="json")
-        self.ansible.builtin.assertTrue("software-information" in result["output"])
+        self.assertTrue("software-information" in result["output"])
 
     def test_junos_rpc_args(self):
         set_module_args(
@@ -121,7 +121,7 @@ class TestJunosCommandModule(TestJunosModule):
         self.execute_module(format="xml")
         args, kwargs = self.exec_rpc.call_args
         reply = args[1]
-        self.ansible.builtin.assertTrue(
+        self.assertTrue(
             reply.find(
                 "<interface>em0</interface><media /></get-software-information>"
             )
@@ -136,4 +136,4 @@ class TestJunosCommandModule(TestJunosModule):
             )
         )
         result = self.execute_module(format="xml")
-        self.ansible.builtin.assertTrue(result["xml"].find("<load-success/>"))
+        self.assertTrue(result["xml"].find("<load-success/>"))

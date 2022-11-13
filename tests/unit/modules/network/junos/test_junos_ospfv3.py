@@ -131,7 +131,7 @@ class TestJunosOspfv3Module(TestJunosModule):
             "<nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>",
         ]
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_ospfv3_merged_idempotent(self):
         self.get_connection.return_value = load_fixture(
@@ -198,7 +198,7 @@ class TestJunosOspfv3Module(TestJunosModule):
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:router-id>10.200.16.75</nc:router-id><nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>",
         ]
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), commands)
+        self.assertEqual(sorted(result["commands"]), commands)
 
     def test_junos_ospfv3_replaced_idempotent(self):
         self.get_connection.return_value = load_fixture(
@@ -262,7 +262,7 @@ class TestJunosOspfv3Module(TestJunosModule):
             "<nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>",
         ]
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), commands)
+        self.assertEqual(sorted(result["commands"]), commands)
 
     def test_junos_ospfv3_overridden_idempotent(self):
         self.get_connection.return_value = load_fixture(
@@ -322,7 +322,7 @@ class TestJunosOspfv3Module(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), commands)
+        self.assertEqual(sorted(result["commands"]), commands)
 
     def test_junos_ospfv3_delete_idempotent(self):
         set_module_args(
@@ -361,7 +361,7 @@ class TestJunosOspfv3Module(TestJunosModule):
             )
         )
         result = self.execute_module(changed=False)
-        self.ansible.builtin.assertEqual([], result["parsed"])
+        self.assertEqual([], result["parsed"])
 
     def test_junos_ospfv3_rendered(self):
         set_module_args(

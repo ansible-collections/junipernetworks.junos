@@ -123,13 +123,13 @@ class TestJunosCommandModule(TestJunosModule):
         result = self.execute_module(format="xml")
         facts = result["ansible_facts"]
 
-        self.ansible.builtin.assertEqual(facts["ansible_net_hostname"], "vsrx01")
-        self.ansible.builtin.assertEqual(facts["ansible_network_resources"], {})
-        self.ansible.builtin.assertEqual(facts["ansible_net_system"], "junos")
-        self.ansible.builtin.assertTrue("ansible_net_model" in facts)
-        self.ansible.builtin.assertTrue("ansible_net_version" in facts)
-        self.ansible.builtin.assertTrue("ansible_network_resources" in facts)
-        self.ansible.builtin.assertTrue("ansible_net_serialnum" in facts)
+        self.assertEqual(facts["ansible_net_hostname"], "vsrx01")
+        self.assertEqual(facts["ansible_network_resources"], {})
+        self.assertEqual(facts["ansible_net_system"], "junos")
+        self.assertTrue("ansible_net_model" in facts)
+        self.assertTrue("ansible_net_version" in facts)
+        self.assertTrue("ansible_network_resources" in facts)
+        self.assertTrue("ansible_net_serialnum" in facts)
 
     def test_junos_get_facts_subset_config_set(self):
         self.get_config.return_value = load_fixture(
@@ -139,10 +139,10 @@ class TestJunosCommandModule(TestJunosModule):
         result = self.execute_module(format="xml")
         facts = result["ansible_facts"]
 
-        self.ansible.builtin.assertTrue("ansible_net_config" in facts)
-        self.ansible.builtin.assertTrue(facts["ansible_net_config"].startswith("set"))
-        self.ansible.builtin.assertEqual(facts["ansible_net_hostname"], "vsrx01")
-        self.ansible.builtin.assertTrue("ansible_net_interfaces" not in facts)
+        self.assertTrue("ansible_net_config" in facts)
+        self.assertTrue(facts["ansible_net_config"].startswith("set"))
+        self.assertEqual(facts["ansible_net_hostname"], "vsrx01")
+        self.assertTrue("ansible_net_interfaces" not in facts)
 
     def test_junos_get_facts_subset_config_json(self):
         self.get_config.return_value = load_fixture(
@@ -152,24 +152,24 @@ class TestJunosCommandModule(TestJunosModule):
         result = self.execute_module(format="xml")
         facts = result["ansible_facts"]
 
-        self.ansible.builtin.assertTrue("ansible_net_config" in facts)
-        self.ansible.builtin.assertTrue("configuration" in facts["ansible_net_config"])
-        self.ansible.builtin.assertEqual(facts["ansible_net_hostname"], "vsrx01")
-        self.ansible.builtin.assertTrue("ansible_net_interfaces" not in facts)
+        self.assertTrue("ansible_net_config" in facts)
+        self.assertTrue("configuration" in facts["ansible_net_config"])
+        self.assertEqual(facts["ansible_net_hostname"], "vsrx01")
+        self.assertTrue("ansible_net_interfaces" not in facts)
 
     def test_junos_get_facts_subset_list(self):
         set_module_args(dict(gather_subset=["hardware", "interfaces"]))
         result = self.execute_module(format="xml")
         facts = result["ansible_facts"]
 
-        self.ansible.builtin.assertTrue("ansible_net_config" not in facts)
-        self.ansible.builtin.assertEqual(
+        self.assertTrue("ansible_net_config" not in facts)
+        self.assertEqual(
             facts["ansible_net_interfaces"]["em0"]["oper-status"], "up"
         )
-        self.ansible.builtin.assertEqual(facts["ansible_net_memfree_mb"], 200684)
+        self.assertEqual(facts["ansible_net_memfree_mb"], 200684)
 
     def test_junos_get_facts_wrong_subset(self):
         set_module_args(dict(gather_subset=["hardware", "interfaces", "test"]))
         result = self.execute_module(format="xml", failed=True)
 
-        self.ansible.builtin.assertTrue(result["msg"].startswith("Subset must be one"))
+        self.assertTrue(result["msg"].startswith("Subset must be one"))

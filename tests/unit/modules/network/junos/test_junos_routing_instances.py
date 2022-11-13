@@ -125,7 +125,7 @@ class TestJunosRouting_instancesModule(TestJunosModule):
             "</nc:instance></nc:routing-instances>"
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_routing_instances_merged_idempotent(self):
         set_module_args(
@@ -141,7 +141,7 @@ class TestJunosRouting_instancesModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(result["before"], result["after"])
+        self.assertEqual(result["before"], result["after"])
 
     def test_junos_routing_instances_replaced(self):
         """
@@ -187,7 +187,7 @@ class TestJunosRouting_instancesModule(TestJunosModule):
             "</nc:instance></nc:routing-instances>"
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_routing_instances_replaced_idempotent(self):
         set_module_args(
@@ -203,7 +203,7 @@ class TestJunosRouting_instancesModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(result["before"], result["after"])
+        self.assertEqual(result["before"], result["after"])
 
     def test_junos_routing_instances_overridden(self):
         """
@@ -240,7 +240,7 @@ class TestJunosRouting_instancesModule(TestJunosModule):
             "<nc:vrf-export>test-policy-1</nc:vrf-export></nc:instance></nc:routing-instances>"
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_routing_instances_overridden_idempotent(self):
         set_module_args(
@@ -256,7 +256,7 @@ class TestJunosRouting_instancesModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(result["before"], result["after"])
+        self.assertEqual(result["before"], result["after"])
 
     def test_junos_routing_instances_rendered(self):
         """
@@ -293,7 +293,7 @@ class TestJunosRouting_instancesModule(TestJunosModule):
             "</nc:instance></nc:routing-instances>"
         )
         result = self.execute_module(changed=False)
-        self.ansible.builtin.assertEqual(sorted(result["rendered"]), sorted(rendered))
+        self.assertEqual(sorted(result["rendered"]), sorted(rendered))
 
     def test_junos_routing_instances_rendered_02(self):
         """
@@ -330,7 +330,7 @@ class TestJunosRouting_instancesModule(TestJunosModule):
             "</nc:instance></nc:routing-instances>"
         )
         result = self.execute_module(changed=False)
-        self.ansible.builtin.assertEqual(sorted(result["rendered"]), sorted(rendered))
+        self.assertEqual(sorted(result["rendered"]), sorted(rendered))
 
     def test_junos_routing_instances_gathered(self):
         """
@@ -345,7 +345,7 @@ class TestJunosRouting_instancesModule(TestJunosModule):
                 "description": "Configured by Ansible Content Team",
             }
         ]
-        self.ansible.builtin.assertEqual(sorted(gather_list), sorted(result["gathered"]))
+        self.assertEqual(sorted(gather_list), sorted(result["gathered"]))
 
     def test_junos_routing_instances_deleted(self):
         """
@@ -358,7 +358,7 @@ class TestJunosRouting_instancesModule(TestJunosModule):
             '<nc:instance delete="delete"/></nc:routing-instances>'
         ]
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_routing_instances_delted_single_entry(self):
         """
@@ -373,7 +373,7 @@ class TestJunosRouting_instancesModule(TestJunosModule):
             '<nc:instance delete="delete"><nc:name>forwardinst</nc:name></nc:instance></nc:routing-instances>'
         ]
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_routing_instances_parsed(self):
         parsed_str = """
@@ -436,4 +436,4 @@ class TestJunosRouting_instancesModule(TestJunosModule):
         ]
         self.sort_routing_instances(result["parsed"])
         self.sort_routing_instances(parsed_list)
-        self.ansible.builtin.assertEqual(result["parsed"], parsed_list)
+        self.assertEqual(result["parsed"], parsed_list)

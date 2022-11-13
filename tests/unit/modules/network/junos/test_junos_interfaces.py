@@ -114,7 +114,7 @@ class TestJunosInterfacesModule(TestJunosModule):
             "</nc:interface></nc:interfaces>"
         ]
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_interfaces_merged_idempotent(self):
         self.get_config.return_value = load_fixture(
@@ -157,7 +157,7 @@ class TestJunosInterfacesModule(TestJunosModule):
             "<nc:speed>100m</nc:speed><nc:mtu>1024</nc:mtu></nc:interface></nc:interfaces>"
         ]
 
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), commands)
+        self.assertEqual(sorted(result["commands"]), commands)
 
     def test_junos_interfaces_replaced_idempotent(self):
         self.get_config.return_value = load_fixture(
@@ -199,7 +199,7 @@ class TestJunosInterfacesModule(TestJunosModule):
             "<nc:speed>100m</nc:speed><nc:mtu>1024</nc:mtu></nc:interface></nc:interfaces>"
         ]
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), commands)
+        self.assertEqual(sorted(result["commands"]), commands)
 
     def test_junos_interfaces_overridden_idempotent(self):
         self.get_config.return_value = load_fixture(
@@ -227,7 +227,7 @@ class TestJunosInterfacesModule(TestJunosModule):
             '<nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>'
         ]
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), commands)
+        self.assertEqual(sorted(result["commands"]), commands)
 
     def test_junos_interfaces_delete_idempotent(self):
         set_module_args(dict(config=[dict(name="ge-0/0/4")], state="deleted"))

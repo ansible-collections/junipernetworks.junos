@@ -108,7 +108,7 @@ class TestJunosLogging_globalModule(TestJunosModule):
             "</nc:archive></nc:syslog></nc:system>"
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_logging_global_merged_console_02(self):
         set_module_args(
@@ -125,19 +125,19 @@ class TestJunosLogging_globalModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:console><nc:name>any</nc:name><nc:info/>",
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:console><nc:name>authorization</nc:name><nc:any/>",
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:console><nc:name>change-log</nc:name><nc:critical/>",
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:console><nc:name>ftp</nc:name><nc:none/>",
             str(result["commands"]),
         )
@@ -157,7 +157,7 @@ class TestJunosLogging_globalModule(TestJunosModule):
             "<nc:allow-duplicates/></nc:file></nc:syslog></nc:system>"
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_logging_global_merged_files_04(self):
         set_module_args(
@@ -200,7 +200,7 @@ class TestJunosLogging_globalModule(TestJunosModule):
             "<nc:match-strings>^prompt</nc:match-strings></nc:file></nc:syslog></nc:system>"
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_logging_global_merged_hosts_05(self):
         set_module_args(
@@ -223,7 +223,7 @@ class TestJunosLogging_globalModule(TestJunosModule):
             "<nc:exclude-hostname/></nc:host></nc:syslog></nc:system>"
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_logging_global_merged_hosts_idempotent_06(self):
         set_module_args(
@@ -250,7 +250,7 @@ class TestJunosLogging_globalModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(result["before"], result["after"])
+        self.assertEqual(result["before"], result["after"])
 
     def test_junos_logging_global_merged_07(self):
         set_module_args(
@@ -272,7 +272,7 @@ class TestJunosLogging_globalModule(TestJunosModule):
             "<nc:time-format><nc:millisecond/><nc:year/></nc:time-format></nc:syslog></nc:system>"
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_logging_global_merged_user_08(self):
         set_module_args(
@@ -292,15 +292,15 @@ class TestJunosLogging_globalModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:user><nc:name>user1</nc:name><nc:allow-duplicates/>",
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:user><nc:name>user2</nc:name><nc:allow-duplicates/>",
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:contents><nc:name>any</nc:name><nc:any/></nc:contents>",
             str(result["commands"]),
         )
@@ -323,19 +323,19 @@ class TestJunosLogging_globalModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             '<nc:syslog delete="delete"/><nc:syslog><nc:user><nc:name>user1</nc:name>',
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:allow-duplicates/></nc:user><nc:user><nc:name>user2</nc:name>",
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "</nc:contents></nc:user></nc:syslog></nc:system>",
             str(result["commands"]),
         )
@@ -358,15 +358,15 @@ class TestJunosLogging_globalModule(TestJunosModule):
             )
         )
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             '<nc:syslog delete="delete"/><nc:syslog><nc:user><nc:name>user1</nc:name>',
             str(result["commands"]),
         )
-        self.ansible.builtin.assertIn(
+        self.assertIn(
             "<nc:allow-duplicates/></nc:user><nc:user><nc:name>user2</nc:name>",
             str(result["commands"]),
         )
@@ -378,7 +378,7 @@ class TestJunosLogging_globalModule(TestJunosModule):
             '<nc:syslog delete="delete"/></nc:system>'
         ]
         result = self.execute_module(changed=True, commands=commands)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_logging_global_rendered_12(self):
         set_module_args(
@@ -402,7 +402,7 @@ class TestJunosLogging_globalModule(TestJunosModule):
         )
         result = self.execute_module(changed=False)
 
-        self.ansible.builtin.assertEqual(sorted(result["rendered"]), sorted(rendered))
+        self.assertEqual(sorted(result["rendered"]), sorted(rendered))
 
     def test_junos_logging_global_parsed_13(self):
         parsed_str = """
@@ -576,7 +576,7 @@ class TestJunosLogging_globalModule(TestJunosModule):
                 },
             ],
         }
-        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_logging_global_gathered_14(self):
         """
@@ -602,7 +602,7 @@ class TestJunosLogging_globalModule(TestJunosModule):
                 }
             ]
         }
-        self.ansible.builtin.assertEqual(sorted(gather_list), sorted(result["gathered"]))
+        self.assertEqual(sorted(gather_list), sorted(result["gathered"]))
 
     def test_junos_logging_global_parsed_15(self):
         parsed_str = """
@@ -781,7 +781,7 @@ class TestJunosLogging_globalModule(TestJunosModule):
                 },
             ],
         }
-        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_logging_global_parsed_16(self):
         parsed_str = """
@@ -940,7 +940,7 @@ class TestJunosLogging_globalModule(TestJunosModule):
                 },
             ],
         }
-        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_logging_global_parsed_17(self):
         parsed_str = """
@@ -1025,4 +1025,4 @@ class TestJunosLogging_globalModule(TestJunosModule):
                 }
             ],
         }
-        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))

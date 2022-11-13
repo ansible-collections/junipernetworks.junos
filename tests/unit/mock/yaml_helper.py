@@ -49,9 +49,9 @@ class YamlTestUtils(object):
         )
 
         # The gen 1 and gen 2 yaml strings
-        self.ansible.builtin.assertEqual(string_from_object_dump, string_from_object_dump_2)
+        self.assertEqual(string_from_object_dump, string_from_object_dump_2)
         # the gen 1 (orig) and gen 2 py object
-        self.ansible.builtin.assertEqual(obj, obj_2)
+        self.assertEqual(obj, obj_2)
 
         # again! gen 3... load strings into py objects
         stream_3 = io.StringIO(string_from_object_dump_2)
@@ -62,10 +62,10 @@ class YamlTestUtils(object):
             obj_3, dumper=AnsibleDumper
         )
 
-        self.ansible.builtin.assertEqual(obj, obj_3)
+        self.assertEqual(obj, obj_3)
         # should be transitive, but...
-        self.ansible.builtin.assertEqual(obj_2, obj_3)
-        self.ansible.builtin.assertEqual(string_from_object_dump, string_from_object_dump_3)
+        self.assertEqual(obj_2, obj_3)
+        self.assertEqual(string_from_object_dump, string_from_object_dump_3)
 
     def _old_dump_load_cycle(self, obj):
         """Dump the passed in object to yaml, load it back up, dump again, compare."""
@@ -133,24 +133,24 @@ class YamlTestUtils(object):
                 obj_from_string, Dumper=AnsibleDumper, encoding=None
             )
 
-        ansible.builtin.assert yaml_string == yaml_string_obj_from_stream
-        ansible.builtin.assert (
+        assert yaml_string == yaml_string_obj_from_stream
+        assert (
             yaml_string
             == yaml_string_obj_from_stream
             == yaml_string_obj_from_string
         )
-        ansible.builtin.assert (
+        assert (
             yaml_string
             == yaml_string_obj_from_stream
             == yaml_string_obj_from_string
             == yaml_string_stream_obj_from_stream
             == yaml_string_stream_obj_from_string
         )
-        ansible.builtin.assert obj == obj_from_stream
-        ansible.builtin.assert obj == obj_from_string
-        ansible.builtin.assert obj == yaml_string_obj_from_stream
-        ansible.builtin.assert obj == yaml_string_obj_from_string
-        ansible.builtin.assert (
+        assert obj == obj_from_stream
+        assert obj == obj_from_string
+        assert obj == yaml_string_obj_from_stream
+        assert obj == yaml_string_obj_from_string
+        assert (
             obj
             == obj_from_stream
             == obj_from_string

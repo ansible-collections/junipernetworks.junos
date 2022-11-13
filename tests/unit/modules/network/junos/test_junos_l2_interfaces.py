@@ -114,7 +114,7 @@ class TestJunosL2InterfacesModule(TestJunosModule):
             "</nc:interface></nc:interfaces>"
         ]
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_l2_interfaces_merged_idempotent(self):
         self.get_config.return_value = load_fixture(
@@ -154,7 +154,7 @@ class TestJunosL2InterfacesModule(TestJunosModule):
         ]
         result = self.execute_module(changed=True)
 
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_l2_interfaces_replaced_idempotent(self):
         self.get_res_config.return_value = load_fixture(
@@ -186,7 +186,7 @@ class TestJunosL2InterfacesModule(TestJunosModule):
         ]
         result = self.execute_module(changed=True)
 
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), commands)
+        self.assertEqual(sorted(result["commands"]), commands)
 
     def test_junos_l2_interfaces_overridden_idempotent(self):
         self.get_res_config.return_value = load_fixture(
@@ -217,7 +217,7 @@ class TestJunosL2InterfacesModule(TestJunosModule):
             '<nc:native-vlan-id delete="delete"/></nc:interface></nc:interfaces>'
         ]
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), commands)
+        self.assertEqual(sorted(result["commands"]), commands)
 
     def test_junos_l2_interfaces_delete_idempotent(self):
         set_module_args(dict(config=[dict(name="ge-0/0/4")], state="deleted"))

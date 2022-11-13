@@ -287,7 +287,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                 },
             ]
         }
-        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_bgp_address_family_groups_single_entry_parsed(self):
         parsed_str = """
@@ -364,7 +364,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                 }
             ]
         }
-        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_bgp_address_family_groups_multiple_entry_parsed(self):
         parsed_str = """
@@ -486,7 +486,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                 },
             ]
         }
-        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_bgp_address_family_groups_neighbors_single_entry_parsed(
         self,
@@ -644,7 +644,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                 },
             ]
         }
-        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_bgp_address_family_groups_neighbors_multiple_entry_parsed(
         self,
@@ -834,7 +834,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                 },
             ]
         }
-        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_bgp_address_family_single_groups_neighbors_multiple_entry_parsed(
         self,
@@ -979,7 +979,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                 }
             ]
         }
-        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_bgp_address_family_single_groups_neighbors_single_entry_parsed(
         self,
@@ -1108,7 +1108,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                 }
             ]
         }
-        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_bgp_address_family_single_groups_withdrow_priority_parser(
         self,
@@ -1237,7 +1237,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                 }
             ]
         }
-        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_bgp_address_family_single_groups_add_path_parser(self):
         parsed_str = """
@@ -1291,7 +1291,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                                 <receive/>
                                                 <send>
                                                     <multipath/>
-                                                    <ansible.builtin.include-backup-path>1</ansible.builtin.include-backup-path>
+                                                    <include-backup-path>1</include-backup-path>
                                                     <path-count>10</path-count>
                                                     <prefix-policy>customer65443</prefix-policy>
                                                     <path-selection-mode>
@@ -1359,7 +1359,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                         "receive": True,
                                         "send": {
                                             "multipath": True,
-                                            "ansible.builtin.include_backup_path": 1,
+                                            "include_backup_path": 1,
                                             "path_count": 10,
                                             "prefix_policy": "customer65443",
                                             "path_selection_mode": {
@@ -1424,7 +1424,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                 }
             ]
         }
-        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_bgp_address_family_single_groups_add_path_nested_parser(
         self,
@@ -1484,7 +1484,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                                 <receive/>
                                                 <send>
                                                     <multipath/>
-                                                    <ansible.builtin.include-backup-path>1</ansible.builtin.include-backup-path>
+                                                    <include-backup-path>1</include-backup-path>
                                                     <path-count>10</path-count>
                                                     <prefix-policy>customer65443</prefix-policy>
                                                     <path-selection-mode>
@@ -1552,7 +1552,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                         "receive": True,
                                         "send": {
                                             "multipath": True,
-                                            "ansible.builtin.include_backup_path": 1,
+                                            "include_backup_path": 1,
                                             "path_count": 10,
                                             "prefix_policy": "customer65443",
                                             "path_selection_mode": {
@@ -1622,7 +1622,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                 }
             ]
         }
-        self.ansible.builtin.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
     def test_junos_bgp_address_family_config_001(self):
         """
@@ -1651,7 +1651,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_002(self):
         """
@@ -1690,7 +1690,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_002_001(self):
         """
@@ -1730,7 +1730,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_003(self):
         """
@@ -1750,7 +1750,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                         receive=True,
                                         send=dict(
                                             multipath=True,
-                                            ansible.builtin.include_backup_path=1,
+                                            include_backup_path=1,
                                             path_count=10,
                                             prefix_policy="customer65443",
                                             path_selection_mode=dict(
@@ -1771,7 +1771,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:bgp><nc:family><nc:evpn><nc:signaling><nc:add-path><nc:receive/>"
             "<nc:send><nc:path-count>10</nc:path-count>"
-            "<nc:ansible.builtin.include-backup-path>1</nc:ansible.builtin.include-backup-path>"
+            "<nc:include-backup-path>1</nc:include-backup-path>"
             "<nc:path-selection-mode><nc:all-paths/><nc:equal-cost-paths/>"
             "</nc:path-selection-mode><nc:prefix-policy>customer65443</nc:prefix-policy></nc:send>"
             "</nc:add-path></nc:signaling></nc:evpn></nc:family></nc:bgp></nc:protocols>",
@@ -1779,7 +1779,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_004(self):
         """
@@ -1815,7 +1815,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_005(self):
         """
@@ -1847,7 +1847,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_005_001(self):
         """
@@ -1882,7 +1882,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_006(self):
         """
@@ -1913,7 +1913,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_007(self):
         """
@@ -1949,7 +1949,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_007_001(self):
         """
@@ -1986,7 +1986,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_008(self):
         """
@@ -2028,7 +2028,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_009(self):
         """
@@ -2064,7 +2064,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_010(self):
         """
@@ -2100,7 +2100,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_011(self):
         """
@@ -2130,7 +2130,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_012(self):
         """
@@ -2162,7 +2162,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_013(self):
         """
@@ -2196,7 +2196,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_013_001(self):
         """
@@ -2230,7 +2230,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_014(self):
         """
@@ -2263,7 +2263,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_015(self):
         """
@@ -2299,7 +2299,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_016(self):
         """
@@ -2324,7 +2324,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_017(self):
         """
@@ -2352,7 +2352,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_018(self):
         """
@@ -2380,7 +2380,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_019(self):
         """
@@ -2413,7 +2413,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_020(self):
         """
@@ -2447,7 +2447,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_021(self):
         """
@@ -2480,7 +2480,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_022(self):
         """
@@ -2513,7 +2513,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_023(self):
         """
@@ -2554,7 +2554,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_023_001(self):
         """
@@ -2591,7 +2591,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_024(self):
         """
@@ -2621,7 +2621,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_025(self):
         """
@@ -2651,7 +2651,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_026(self):
         """
@@ -2684,7 +2684,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_027(self):
         """
@@ -2718,7 +2718,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_028(self):
         """
@@ -2752,7 +2752,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_029(self):
         """
@@ -2785,7 +2785,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_030(self):
         """
@@ -2832,7 +2832,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_deleted_031(self):
         """
@@ -2850,7 +2850,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_deleted_032(self):
         """
@@ -2900,7 +2900,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_bgp_address_family_config_033(self):
         """
@@ -2947,7 +2947,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), sorted(commands))
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     """
     def test_junos_bgp_address_family_merged_idempotent(self):
@@ -3007,7 +3007,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         ]
 
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), commands)
+        self.assertEqual(sorted(result["commands"]), commands)
 
     def test_junos_bgp_group_address_family_rep(self):
         set_module_args(
@@ -3044,7 +3044,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
         ]
         result = self.execute_module(changed=True)
-        self.ansible.builtin.assertEqual(sorted(result["commands"]), commands)
+        self.assertEqual(sorted(result["commands"]), commands)
 
     def test_junos_bgp_address_family_rep_idempotent(self):
         self.get_connection.return_value = load_fixture(
