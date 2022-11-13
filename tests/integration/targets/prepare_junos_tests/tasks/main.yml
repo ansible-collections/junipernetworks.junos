@@ -11,7 +11,7 @@
 - name: Wait for netconf server to come up
   delegate_to: localhost
   tags: netconf
-  wait_for:
+  ansible.builtin.wait_for:
     host: '{{ hostvars[item].ansible_host }}'
     port: 830
   with_inventory_hostnames: junos

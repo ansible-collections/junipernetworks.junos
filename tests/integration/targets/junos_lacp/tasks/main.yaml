@@ -1,5 +1,5 @@
 ---
 - name: Invoke netconf task
-- ansible.builtin.include_tasks: netconf.yaml
+  ansible.builtin.include_tasks: netconf.yaml
   tags:
     - netconf
