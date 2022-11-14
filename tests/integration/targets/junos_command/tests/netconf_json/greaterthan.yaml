@@ -15,7 +15,7 @@
         gt 5
 
 - name: Assertion
-- ansible.builtin.assert:
+  ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
