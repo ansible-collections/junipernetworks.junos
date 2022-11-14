@@ -220,7 +220,7 @@ def rpc(module, items):
 
         if (
             name == "command"
-            and text == "show configuration"
+            and text.startswith('show configuration')
             or name == "get-configuration"
         ):
             fetch_config = True
@@ -265,6 +265,8 @@ def rpc(module, items):
                 responses.append(reply.text.strip())
 
         elif xattrs["format"] == "json":
+            import q
+            q(reply)
             responses.append(module.from_json(reply.text.strip()))
 
         elif xattrs["format"] == "set":
