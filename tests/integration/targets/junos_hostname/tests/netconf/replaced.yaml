@@ -8,7 +8,7 @@
       ansible.builtin.include_tasks: _reset_config.yaml
 
     - name: Initial configuration
-    - ansible.builtin.include_tasks: _initial_config.yaml
+      ansible.builtin.include_tasks: _initial_config.yaml
 
     - name: Override configuration
       junipernetworks.junos.junos_hostname: &replaced
