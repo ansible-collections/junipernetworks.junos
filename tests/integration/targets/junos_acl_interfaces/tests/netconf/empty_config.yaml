@@ -1,13 +1,13 @@
 ---
 - name: Debug
-- ansible.builtin.debug:
+  ansible.builtin.debug:
     msg: START junipernetworks.junos.junos_acl_interfaces empty_config integration tests on connection={{
       ansible_connection }}
 
 - name: Merged with empty config should give appropriate error message
   register: result
   ignore_errors: true
-  junipernetworks.junos.junipernetworks.junos.junos_acl_interfaces:
+  junipernetworks.junos.junos_acl_interfaces:
     config:
     state: merged
 
@@ -19,7 +19,7 @@
 - name: Replaced with empty config should give appropriate error message
   register: result
   ignore_errors: true
-  junipernetworks.junos.junipernetworks.junos.junos_acl_interfaces:
+  junipernetworks.junos.junos_acl_interfaces:
     config:
     state: replaced
 
@@ -31,7 +31,7 @@
 - name: Parsed with empty running_config should give appropriate error message
   register: result
   ignore_errors: true
-  junipernetworks.junos.junipernetworks.junos.junos_acl_interfaces:
+  junipernetworks.junos.junos_acl_interfaces:
     running_config:
     state: parsed
 
@@ -44,7 +44,7 @@
 - name: Rendered with empty config should give appropriate error message
   register: result
   ignore_errors: true
-  junipernetworks.junos.junipernetworks.junos.junos_acl_interfaces:
+  junipernetworks.junos.junos_acl_interfaces:
     config:
     state: rendered
 

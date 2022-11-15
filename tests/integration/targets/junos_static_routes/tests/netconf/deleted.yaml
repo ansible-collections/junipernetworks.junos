@@ -13,11 +13,8 @@
       register: result
       junipernetworks.junos.junos_static_routes: &id001
         config:
-
           - address_families:
-
               - afi: ipv4
-
               - afi: ipv6
         state: deleted
 
@@ -25,7 +22,7 @@
       ansible.builtin.assert:
         that:
           - not result.after
-      ansible.builtin.debugger: on_failed
+      debugger: on_failed
 
     - name: Delete the provided configuration with the existing running configuration
         (IDEMPOTENT)

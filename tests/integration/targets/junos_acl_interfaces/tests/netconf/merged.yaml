@@ -1,6 +1,6 @@
 ---
 - name: Debug
-- ansible.builtin.debug:
+  ansible.builtin.debug:
     msg: "START junipernetworks.junos.junos_acl_interfaces merged integration tests on connection={{ ansible_connection }}"
 
 - block:
