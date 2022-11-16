@@ -15,7 +15,7 @@
         set: true
         no_binary_data: true
         files: 10
-        file_size: 65578
+        file_size: "65578"
         no_world_readable: true
     state: rendered
 

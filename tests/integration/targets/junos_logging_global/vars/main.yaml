@@ -5,7 +5,7 @@ merged:
   after:
     allow_duplicates: true
     archive:
-      file_size: 65578
+      file_size: "5m"
       files: 10
       no_binary_data: true
       no_world_readable: true
@@ -31,7 +31,7 @@ merged:
         archive:
           no_binary_data: true
           files: 10
-          file_size: 65578
+          file_size: "65578"
           no_world_readable: true
         explicit_priority: true
         match: "^set*"
@@ -75,7 +75,7 @@ merged:
     archive:
       no_binary_data: true
       files: 10
-      file_size: 65578
+      file_size: "5m"
       no_world_readable: true
     console:
       any:
@@ -99,7 +99,7 @@ merged:
         archive:
           no_binary_data: true
           files: 10
-          file_size: 65578
+          file_size: "65578"
           no_world_readable: true
         explicit_priority: true
         match: "^set*"
@@ -148,7 +148,7 @@ replaced:
   after:
     allow_duplicates: true
     archive:
-      file_size: 65578
+      file_size: "5m"
       files: 10
       no_binary_data: true
       no_world_readable: true
@@ -165,7 +165,7 @@ replaced:
         archive:
           no_binary_data: true
           files: 10
-          file_size: 65578
+          file_size: "65578"
           no_world_readable: true
         explicit_priority: true
         match: "^set*"

@@ -44,7 +44,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                 "archive": {
                     "options": {
                         "binary_data": {"type": "bool"},
-                        "file_size": {"type": "int"},
+                        "file_size": {"type": "str"},
                         "files": {"type": "int"},
                         "no_binary_data": {"type": "bool"},
                         "no_world_readable": {"type": "bool"},
@@ -389,7 +389,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     "type": "list",
                                 },
                                 "binary_data": {"type": "bool"},
-                                "file_size": {"type": "int"},
+                                "file_size": {"type": "str"},
                                 "files": {"type": "int"},
                                 "no_binary_data": {"type": "bool"},
                                 "no_world_readable": {"type": "bool"},

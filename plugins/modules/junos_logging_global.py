@@ -84,7 +84,7 @@ options:
             type: bool
           file_size:
             description: Size of files to be archived (65536..1073741824 bytes).
-            type: int
+            type: str
           world_readable:
             description: Allow any user to read the log file.
             type: bool
@@ -206,7 +206,7 @@ options:
                 type: bool
               file_size:
                 description: Size of files to be archived (65536..1073741824 bytes).
-                type: int
+                type: str
               start_time:
                 description: Specify start time for file transmission (yyyy-mm-dd.hh:mm).
                 type: str

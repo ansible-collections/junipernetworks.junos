@@ -14,7 +14,7 @@
             set: true
             no_binary_data: true
             files: 10
-            file_size: 65578
+            file_size: "5m"
             no_world_readable: true
           console:
             any:
@@ -39,7 +39,7 @@
                 set: true
                 no_binary_data: true
                 files: 10
-                file_size: 65578
+                file_size: "65578"
                 no_world_readable: true
               explicit_priority: true
               match: "^set*"
@@ -89,7 +89,7 @@
             set: true
             no_binary_data: true
             files: 10
-            file_size: 65578
+            file_size: "5m"
             no_world_readable: true
           files:
             - name: "file101"
@@ -105,7 +105,7 @@
                 set: true
                 no_binary_data: true
                 files: 10
-                file_size: 65578
+                file_size: "65578"
                 no_world_readable: true
               explicit_priority: true
               match: "^set*"
