@@ -18,29 +18,29 @@
 #
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 import collections
 import json
+
 from contextlib import contextmanager
 from copy import deepcopy
 
-from ansible.module_utils.basic import env_fallback
+from ansible.module_utils._text import to_text
 from ansible.module_utils.connection import Connection, ConnectionError
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
     NetconfConnection,
 )
-from ansible.module_utils._text import to_text
+
 
 try:
-    from lxml.etree import Element, SubElement, tostring as xml_to_string
+    from lxml.etree import Element, SubElement
+    from lxml.etree import tostring as xml_to_string
 
     HAS_LXML = True
 except ImportError:
-    from xml.etree.ElementTree import (
-        Element,
-        SubElement,
-        tostring as xml_to_string,
-    )
+    from xml.etree.ElementTree import Element, SubElement
+    from xml.etree.ElementTree import tostring as xml_to_string
 
     HAS_LXML = False
 
@@ -57,43 +57,19 @@ JSON_ACTIONS = frozenset(["merge", "override", "update"])
 FORMATS = frozenset(["xml", "text", "json"])
 CONFIG_FORMATS = frozenset(["xml", "text", "json", "set"])
 
-junos_provider_spec = {
-    "host": dict(),
-    "port": dict(type="int"),
-    "username": dict(fallback=(env_fallback, ["ANSIBLE_NET_USERNAME"])),
-    "password": dict(
-        fallback=(env_fallback, ["ANSIBLE_NET_PASSWORD"]), no_log=True
-    ),
-    "ssh_keyfile": dict(
-        fallback=(env_fallback, ["ANSIBLE_NET_SSH_KEYFILE"]), type="path"
-    ),
-    "timeout": dict(type="int"),
-    "transport": dict(default="netconf", choices=["cli", "netconf"]),
-}
-junos_argument_spec = {
-    "provider": dict(
-        type="dict",
-        options=junos_provider_spec,
-        removed_at_date="2022-06-01",
-        removed_from_collection="junipernetworks.junos",
-    )
-}
-
 
 def tostring(element, encoding="UTF-8", pretty_print=False):
     if HAS_LXML:
         return xml_to_string(
-            element, encoding="unicode", pretty_print=pretty_print
+            element,
+            encoding="unicode",
+            pretty_print=pretty_print,
         )
     else:
         return to_text(
             xml_to_string(element, encoding),
             encoding=encoding,
         )
-
-
-def get_provider_argspec():
-    return junos_provider_spec
 
 
 def get_connection(module):
@@ -171,7 +147,11 @@ def _validate_rollback_id(module, value):
 
 
 def load_configuration(
-    module, candidate=None, action="merge", rollback=None, format="xml"
+    module,
+    candidate=None,
+    action="merge",
+    rollback=None,
+    format="xml",
 ):
 
     if all((candidate is None, rollback is None)):
@@ -198,14 +178,20 @@ def load_configuration(
             conn.execute_rpc(tostring(obj))
         else:
             return conn.load_configuration(
-                config=candidate, action=action, format=format
+                config=candidate,
+                action=action,
+                format=format,
             )
     except ConnectionError as exc:
         module.fail_json(msg=to_text(exc, errors="surrogate_then_replace"))
 
 
 def get_configuration(
-    module, compare=False, format="xml", rollback="0", filter=None
+    module,
+    compare=False,
+    format="xml",
+    rollback="0",
+    filter=None,
 ):
     if format not in CONFIG_FORMATS:
         module.fail_json(msg="invalid config format specified")
@@ -218,7 +204,7 @@ def get_configuration(
             xattrs["compare"] = "rollback"
             xattrs["rollback"] = str(rollback)
             reply = conn.execute_rpc(
-                tostring(Element("get-configuration", xattrs))
+                tostring(Element("get-configuration", xattrs)),
             )
         else:
             reply = conn.get_configuration(format=format, filter=filter)
@@ -310,7 +296,10 @@ def discard_changes(module):
 
 def get_diff(module, rollback="0"):
     reply = get_configuration(
-        module, compare=True, format="text", rollback=rollback
+        module,
+        compare=True,
+        format="text",
+        rollback=rollback,
     )
     # if warning is received from device diff is empty.
     if isinstance(reply, list):

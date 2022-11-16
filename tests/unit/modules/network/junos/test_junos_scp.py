@@ -18,18 +18,16 @@
 # Make coding more python3-ish
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 import os
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
-    patch,
-    MagicMock,
-)
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
-    set_module_args,
-)
+from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import MagicMock, patch
+from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
+
 from .junos_module import TestJunosModule
+
 
 jnpr_mock = MagicMock()
 modules = {
@@ -51,12 +49,12 @@ class TestJunosScpModule(TestJunosModule):
     def setUp(self):
         super(TestJunosScpModule, self).setUp()
         self.mock_get_device = patch(
-            "ansible_collections.junipernetworks.junos.plugins.modules.junos_scp.get_device"
+            "ansible_collections.junipernetworks.junos.plugins.modules.junos_scp.get_device",
         )
         self.get_device = self.mock_get_device.start()
 
         self.mock_scp = patch(
-            "ansible_collections.junipernetworks.junos.plugins.modules.junos_scp.SCP"
+            "ansible_collections.junipernetworks.junos.plugins.modules.junos_scp.SCP",
         )
         self.scp = self.mock_scp.start()
 
@@ -73,7 +71,9 @@ class TestJunosScpModule(TestJunosModule):
         self.execute_module(changed=True)
 
         self.scp_mock.put.assert_called_once_with(
-            "test.txt", remote_path=".", recursive=False
+            "test.txt",
+            remote_path=".",
+            recursive=False,
         )
 
     def test_junos_scp_src_expand_tilde(self):
@@ -81,18 +81,21 @@ class TestJunosScpModule(TestJunosModule):
         self.execute_module(changed=True)
 
         self.scp_mock.put.assert_called_once_with(
-            os.path.expanduser("~/test.txt"), remote_path=".", recursive=False
+            os.path.expanduser("~/test.txt"),
+            remote_path=".",
+            recursive=False,
         )
 
     def test_junos_scp_src_fail(self):
         self.scp_mock.put.side_effect = OSError(
-            "[Errno 2] No such file or directory: 'text.txt'"
+            "[Errno 2] No such file or directory: 'text.txt'",
         )
         set_module_args(dict(src="test.txt"))
         result = self.execute_module(changed=True, failed=True)
 
         self.assertEqual(
-            result["msg"], "[Errno 2] No such file or directory: 'text.txt'"
+            result["msg"],
+            "[Errno 2] No such file or directory: 'text.txt'",
         )
 
     def test_junos_scp_remote_src(self):
@@ -100,15 +103,19 @@ class TestJunosScpModule(TestJunosModule):
         self.execute_module(changed=True)
 
         self.scp_mock.get.assert_called_once_with(
-            "test.txt", local_path=".", recursive=False
+            "test.txt",
+            local_path=".",
+            recursive=False,
         )
 
     def test_junos_scp_all(self):
         set_module_args(
-            dict(src="test", remote_src=True, dest="tmp", recursive=True)
+            dict(src="test", remote_src=True, dest="tmp", recursive=True),
         )
         self.execute_module(changed=True)
 
         self.scp_mock.get.assert_called_once_with(
-            "test", local_path="tmp", recursive=True
+            "test",
+            local_path="tmp",
+            recursive=True,
         )

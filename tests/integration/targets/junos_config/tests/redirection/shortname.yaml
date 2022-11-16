@@ -1,19 +1,17 @@
 ---
-- debug: msg="START redirection/netconf/shortname.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="START redirection/netconf/shortname.yaml on connection={{ ansible_connection }}"
 
 - name: setup
   junipernetworks.junos.config:
     lines:
       - delete interfaces lo0
-    provider: '{{ netconf }}'
 
 - name: Use src with module alias
   register: result
   junipernetworks.junos.config:
     src: basic/config.j2
-    provider: '{{ netconf }}'
 
-- assert:
+- ansible.builtin.assert:
     that:
       # make sure that the template content was read and not the path
       - result.changed == true
@@ -23,7 +21,6 @@
   junipernetworks.junos.config:
     lines:
       - delete interfaces lo0
-    provider: '{{ netconf }}'
 
 - name: use module alias to take configuration backup
   register: result
@@ -31,21 +28,20 @@
     backup: true
     backup_options:
       filename: backup_with_alias.cfg
-      dir_path: '{{ role_path }}/backup_test_dir/{{ inventory_hostname_short }}'
-    provider: '{{ netconf }}'
+      dir_path: "{{ role_path }}/backup_test_dir/{{ inventory_hostname_short }}"
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
 
 - name: check if the backup file-4 exist
-  find:
-    paths: '{{ role_path }}/backup_test_dir/{{ inventory_hostname_short }}/backup_with_alias.cfg'
+  ansible.builtin.find:
+    paths: "{{ role_path }}/backup_test_dir/{{ inventory_hostname_short }}/backup_with_alias.cfg"
   register: backup_file
   connection: local
 
-- assert:
+- ansible.builtin.assert:
     that:
       - backup_file.files is defined
 
-- debug: msg="END redirection/netconf/shortname.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="END redirection/netconf/shortname.yaml on connection={{ ansible_connection }}"

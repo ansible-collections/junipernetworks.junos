@@ -1,5 +1,5 @@
 ---
-- debug: msg="START netconf/invalid.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="START netconf/invalid.yaml on connection={{ ansible_connection }}"
 
 - name: configure single invalid command
   register: result
@@ -7,9 +7,8 @@
   junipernetworks.junos.junos_config:
     lines:
       - set system foo
-    provider: '{{ netconf }}'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.failed == true
 
@@ -20,10 +19,9 @@
     lines:
       - set system host-name {{ inventory_hostname_short }}
       - set system foo
-    provider: '{{ netconf }}'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.failed == true
 
-- debug: msg="END netconf/invalid.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="END netconf/invalid.yaml on connection={{ ansible_connection }}"

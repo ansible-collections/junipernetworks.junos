@@ -1,11 +1,17 @@
 ---
-- debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: "START junos_hostname deleted integration tests on connection={{ ansible_connection }}"
 
 - block:
-    - include_tasks: _reset_config.yaml
-    - include_tasks: _initial_config.yaml
-    - set_fact:
+    - name: Reset configuration
+      ansible.builtin.include_tasks: _reset_config.yaml
+
+    - name: Initial configuration
+      ansible.builtin.include_tasks: _initial_config.yaml
+
+    - name: Set facts
+      ansible.builtin.set_fact:
         config: {}
     - name: Delete hostname config
       junipernetworks.junos.junos_hostname:
@@ -13,13 +19,15 @@
       register: result
 
     - name: Assert changed
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == True
           - "{{ config == result.after }}"
 
   always:
-    - include_tasks: _reset_config.yaml
+    - name: Reset configuration
+      ansible.builtin.include_tasks: _reset_config.yaml
 
-- debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: "END junos_hostname deleted integration tests on connection={{ ansible_connection }}"

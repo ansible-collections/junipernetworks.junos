@@ -12,30 +12,31 @@ created
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    remove_empties,
-    to_list,
-)
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    locked_config,
-    load_config,
-    commit_configuration,
-    discard_changes,
-    tostring,
-)
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
-    build_root_xml_node,
-    build_child_xml_node,
-)
 
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
     ConfigBase,
 )
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
+    build_child_xml_node,
+    build_root_xml_node,
+)
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
+    remove_empties,
+    to_list,
+)
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
     Facts,
+)
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
+    commit_configuration,
+    discard_changes,
+    load_config,
+    locked_config,
+    tostring,
 )
 
 
@@ -58,10 +59,12 @@ class Ospf_interfaces(ConfigBase):
         :returns: The current configuration as a dictionary
         """
         facts, _warnings = Facts(self._module).get_facts(
-            self.gather_subset, self.gather_network_resources, data=data
+            self.gather_subset,
+            self.gather_network_resources,
+            data=data,
         )
         ospf_interfaces_facts = facts["ansible_network_resources"].get(
-            "junos_ospf_interfaces"
+            "junos_ospf_interfaces",
         )
         if not ospf_interfaces_facts:
             return []
@@ -88,10 +91,10 @@ class Ospf_interfaces(ConfigBase):
             running_config = self._module.params["running_config"]
             if not running_config:
                 self._module.fail_json(
-                    msg="value of running_config parameter must not be empty for state parsed"
+                    msg="value of running_config parameter must not be empty for state parsed",
                 )
             result["parsed"] = self.get_ospf_interfaces_facts(
-                data=running_config
+                data=running_config,
             )
         elif self.state == "rendered":
             config_xmls = self.set_config(existing_ospf_interfaces_facts)
@@ -154,17 +157,15 @@ class Ospf_interfaces(ConfigBase):
         self.root = build_root_xml_node("configuration")
         self.protocols = build_child_xml_node(self.root, "protocols")
         self.routing_options = build_child_xml_node(
-            self.root, "routing-options"
+            self.root,
+            "routing-options",
         )
         state = self._module.params["state"]
-        if (
-            state in ("merged", "replaced", "overridden", "rendered")
-            and not want
-        ):
+        if state in ("merged", "replaced", "overridden", "rendered") and not want:
             self._module.fail_json(
                 msg="value of config parameter must not be empty for state {0}".format(
-                    state
-                )
+                    state,
+                ),
             )
         config_xmls = []
         if state == "overridden":
@@ -224,10 +225,13 @@ class Ospf_interfaces(ConfigBase):
                     area_id = area.get("area_id")
                     build_child_xml_node(area_node, "name", area_id)
                     ospf_interfacesnode = build_child_xml_node(
-                        area_node, "interface"
+                        area_node,
+                        "interface",
                     )
                     build_child_xml_node(
-                        ospf_interfacesnode, "name", h.get("name")
+                        ospf_interfacesnode,
+                        "name",
+                        h.get("name"),
                     )
                     ospf_interfacesnode.attrib.update(delete)
         else:
@@ -241,10 +245,13 @@ class Ospf_interfaces(ConfigBase):
                             area_id = area.get("area_id")
                             build_child_xml_node(area_node, "name", area_id)
                             ospf_interfacesnode = build_child_xml_node(
-                                area_node, "interface"
+                                area_node,
+                                "interface",
                             )
                             build_child_xml_node(
-                                ospf_interfacesnode, "name", h.get("name")
+                                ospf_interfacesnode,
+                                "name",
+                                h.get("name"),
                             )
                             ospf_interfacesnode.attrib.update(delete)
         ospf_interfaces_xml.append(protocol)
@@ -264,7 +271,9 @@ class Ospf_interfaces(ConfigBase):
             if "router_id" in ospf_interfaces.keys():
                 self.router_id = ospf_interfaces.get("router_id")
                 build_child_xml_node(
-                    self.routing_options, "router-id", self.router_id
+                    self.routing_options,
+                    "router-id",
+                    self.router_id,
                 )
             for af in ospf_interfaces["address_family"]:
                 area_node = build_child_xml_node(protocol, "area")
@@ -275,7 +284,9 @@ class Ospf_interfaces(ConfigBase):
 
                 intf_node = build_child_xml_node(area_node, "interface")
                 build_child_xml_node(
-                    intf_node, "name", ospf_interfaces.get("name")
+                    intf_node,
+                    "name",
+                    ospf_interfaces.get("name"),
                 )
                 if delete:
                     if have:
@@ -284,14 +295,18 @@ class Ospf_interfaces(ConfigBase):
                             intf_node.attrib.update(delete)
                 if processes.get("priority"):
                     build_child_xml_node(
-                        intf_node, "priority", processes.get("priority")
+                        intf_node,
+                        "priority",
+                        processes.get("priority"),
                     )
                 if processes.get("flood_reduction"):
                     build_child_xml_node(intf_node, "flood-reduction")
 
                 if processes.get("metric"):
                     build_child_xml_node(
-                        intf_node, "metric", processes.get("metric")
+                        intf_node,
+                        "metric",
+                        processes.get("metric"),
                     )
 
                 if processes.get("passive"):
@@ -299,18 +314,24 @@ class Ospf_interfaces(ConfigBase):
 
                 if processes.get("bandwidth_based_metrics"):
                     bw_metrics_node = build_child_xml_node(
-                        intf_node, "bandwidth-based-metrics"
+                        intf_node,
+                        "bandwidth-based-metrics",
                     )
                     bw_metrics = processes.get("bandwidth_based_metrics")
                     for bw_metric in bw_metrics:
                         bw_metric_node = build_child_xml_node(
-                            bw_metrics_node, "bandwidth"
+                            bw_metrics_node,
+                            "bandwidth",
                         )
                         build_child_xml_node(
-                            bw_metric_node, "name", bw_metric.get("bandwidth")
+                            bw_metric_node,
+                            "name",
+                            bw_metric.get("bandwidth"),
                         )
                         build_child_xml_node(
-                            bw_metric_node, "metric", bw_metric.get("metric")
+                            bw_metric_node,
+                            "metric",
+                            bw_metric.get("metric"),
                         )
                 if processes.get("dead_interval"):
                     build_child_xml_node(

@@ -28,6 +28,7 @@ The module file for junos_routing_options
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 DOCUMENTATION = """
@@ -365,6 +366,7 @@ commands:
 
 
 from ansible.module_utils.basic import AnsibleModule
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.routing_options.routing_options import (
     Routing_optionsArgs,
 )

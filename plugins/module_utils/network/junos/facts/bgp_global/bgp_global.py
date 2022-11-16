@@ -11,22 +11,26 @@ based on the configuration.
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 from copy import deepcopy
+
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
+from ansible.module_utils.six import string_types
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    remove_empties,
     generate_dict,
+    remove_empties,
+)
+
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.bgp_global.bgp_global import (
+    Bgp_globalArgs,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.utils.utils import (
     _validate_config,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.bgp_global.bgp_global import (
-    Bgp_globalArgs,
-)
-from ansible.module_utils.six import string_types
+
 
 try:
     from lxml import etree
@@ -96,16 +100,16 @@ class Bgp_globalFacts(object):
 
         if isinstance(data, string_types):
             data = etree.fromstring(
-                to_bytes(data, errors="surrogate_then_replace")
+                to_bytes(data, errors="surrogate_then_replace"),
             )
         objs = {}
         resources = data.xpath("configuration/protocols/bgp")
         autonomous_system_path = data.xpath(
-            "configuration/routing-options/autonomous-system"
+            "configuration/routing-options/autonomous-system",
         )
         if autonomous_system_path:
             self.autonomous_system = self._get_xml_dict(
-                autonomous_system_path.pop()
+                autonomous_system_path.pop(),
             )
         else:
             self.autonomous_system = ""
@@ -115,25 +119,21 @@ class Bgp_globalFacts(object):
                 objs = self.render_config(self.generated_spec, xml)
         if not objs:
             if self.autonomous_system and self.autonomous_system.get(
-                "autonomous-system"
+                "autonomous-system",
             ):
-                objs["as_number"] = self.autonomous_system[
-                    "autonomous-system"
-                ].get("as-number")
+                objs["as_number"] = self.autonomous_system["autonomous-system"].get("as-number")
                 if self.autonomous_system["autonomous-system"].get("loops"):
-                    objs["loops"] = self.autonomous_system[
-                        "autonomous-system"
-                    ].get("loops")
-                if (
-                    "asdot-notation"
-                    in self.autonomous_system["autonomous-system"]
-                ):
+                    objs["loops"] = self.autonomous_system["autonomous-system"].get("loops")
+                if "asdot-notation" in self.autonomous_system["autonomous-system"]:
                     objs["asdot_notation"] = True
         facts = {}
         if objs:
             facts["bgp_global"] = {}
             params = _validate_config(
-                self._module, self.argument_spec, {"config": objs}, redact=True
+                self._module,
+                self.argument_spec,
+                {"config": objs},
+                redact=True,
             )
             facts["bgp_global"] = remove_empties(params["config"])
         ansible_facts["ansible_network_resources"].update(facts)
@@ -143,7 +143,8 @@ class Bgp_globalFacts(object):
         if not HAS_XMLTODICT:
             self._module.fail_json(msg=missing_required_lib("xmltodict"))
         xml_dict = xmltodict.parse(
-            etree.tostring(xml_root), dict_constructor=dict
+            etree.tostring(xml_root),
+            dict_constructor=dict,
         )
         return xml_dict
 
@@ -161,15 +162,11 @@ class Bgp_globalFacts(object):
         bgp = conf.get("bgp")
         # Set ASN value into facts
         if self.autonomous_system and self.autonomous_system.get(
-            "autonomous-system"
+            "autonomous-system",
         ):
-            bgp_global["as_number"] = self.autonomous_system[
-                "autonomous-system"
-            ].get("as-number")
+            bgp_global["as_number"] = self.autonomous_system["autonomous-system"].get("as-number")
             if self.autonomous_system["autonomous-system"].get("loops"):
-                bgp_global["loops"] = self.autonomous_system[
-                    "autonomous-system"
-                ].get("loops")
+                bgp_global["loops"] = self.autonomous_system["autonomous-system"].get("loops")
             if "asdot-notation" in self.autonomous_system["autonomous-system"]:
                 bgp_global["asdot_notation"] = True
 
@@ -189,14 +186,18 @@ class Bgp_globalFacts(object):
                     neighbors = groups.get("neighbor")
                     if isinstance(neighbors, dict):
                         self.parse_attrib(
-                            neighbors_dict, neighbors, "neighbor"
+                            neighbors_dict,
+                            neighbors,
+                            "neighbor",
                         )
                         if neighbors_dict:
                             neighbors_lst.append(neighbors_dict)
                     else:
                         for neighbor in neighbors:
                             self.parse_attrib(
-                                neighbors_dict, neighbor, "neighbor"
+                                neighbors_dict,
+                                neighbor,
+                                "neighbor",
                             )
                             if neighbors_dict:
                                 neighbors_lst.append(neighbors_dict)
@@ -217,14 +218,18 @@ class Bgp_globalFacts(object):
                         neighbors = group.get("neighbor")
                         if isinstance(neighbors, dict):
                             self.parse_attrib(
-                                neighbors_dict, neighbors, "neighbor"
+                                neighbors_dict,
+                                neighbors,
+                                "neighbor",
                             )
                             if neighbors_dict:
                                 neighbors_lst.append(neighbors_dict)
                         else:
                             for neighbor in neighbors:
                                 self.parse_attrib(
-                                    neighbors_dict, neighbor, "neighbor"
+                                    neighbors_dict,
+                                    neighbor,
+                                    "neighbor",
                                 )
                                 if neighbors_dict:
                                     neighbors_lst.append(neighbors_dict)
@@ -251,10 +256,7 @@ class Bgp_globalFacts(object):
         # Parse advertise-bgp-static dictionary
         if "advertise-bgp-static" in conf.keys():
             cfg = {}
-            if (
-                conf.get("advertise-bgp-static")
-                and "advertise-bgp-static" in conf.keys()
-            ):
+            if conf.get("advertise-bgp-static") and "advertise-bgp-static" in conf.keys():
                 if "policy" in conf["advertise-bgp-static"]:
                     cfg["policy"] = conf["advertise-bgp-static"].get("policy")
             else:
@@ -287,9 +289,7 @@ class Bgp_globalFacts(object):
 
         # Read authentication-algorithm value
         if "authentication-algorithm" in conf.keys():
-            cfg_dict["authentication_algorithm"] = conf[
-                "authentication-algorithm"
-            ]
+            cfg_dict["authentication_algorithm"] = conf["authentication-algorithm"]
 
         # Read authentication-key value
         if "authentication-key" in conf.keys():
@@ -297,9 +297,7 @@ class Bgp_globalFacts(object):
 
         # Read authentication-key-chain value
         if "authentication-key-chain" in conf.keys():
-            cfg_dict["authentication_key_chain"] = conf[
-                "authentication-key-chain"
-            ]
+            cfg_dict["authentication_key_chain"] = conf["authentication-key-chain"]
 
         # Parse bfd-liveness-detection dictionary
         if "bfd-liveness-detection" in conf.keys():
@@ -338,9 +336,7 @@ class Bgp_globalFacts(object):
 
             # Read minimum-receive-interval value
             if "minimum-receive-interval" in bld.keys():
-                cfg["minimum_receive_interval"] = bld[
-                    "minimum-receive-interval"
-                ]
+                cfg["minimum_receive_interval"] = bld["minimum-receive-interval"]
 
             # Read minimum-interval value
             if "minimum-interval" in bld.keys():
@@ -373,9 +369,7 @@ class Bgp_globalFacts(object):
             if "malformed-route-limit" in bet.keys():
                 cfg["malformed_route_limit"] = bet["malformed-route-limit"]
             if "malformed-update-log-interval" in bet.keys():
-                cfg["malformed_update_log_interval"] = bet[
-                    "malformed-update-log-interval"
-                ]
+                cfg["malformed_update_log_interval"] = bet["malformed-update-log-interval"]
             if "no-malformed-route-limit" in bet.keys():
                 cfg["no_malformed_route_limit"] = True
             # write the  bfd_liveness_detection to bgp global config dictionary
@@ -437,10 +431,7 @@ class Bgp_globalFacts(object):
         # Read egress-te value
         if "egress-te" in conf.keys():
             cfg = {}
-            if (
-                conf.get("egress-te")
-                and "backup-path" in conf["egress-te"].keys()
-            ):
+            if conf.get("egress-te") and "backup-path" in conf["egress-te"].keys():
                 cfg["backup_path"] = conf["egress-te"].get("backup-path")
             else:
                 cfg["set"] = True
@@ -455,9 +446,9 @@ class Bgp_globalFacts(object):
             if isinstance(templates, dict):
                 template_dict["path_name"] = templates["name"]
                 if "remote-nexthop" in templates.keys():
-                    template_dict["remote_nexthop"] = templates[
-                        "remote-nexthop"
-                    ].get("remote-nh-addr")
+                    template_dict["remote_nexthop"] = templates["remote-nexthop"].get(
+                        "remote-nh-addr",
+                    )
                 if "peer" in templates.keys():
                     peer_lst = []
                     peers = templates.get("peer")
@@ -474,7 +465,7 @@ class Bgp_globalFacts(object):
                         ipf_dict["set"] = True
                     else:
                         ipf_dict["rti_name"] = templates["ip-forward"].get(
-                            "rti-name"
+                            "rti-name",
                         )
                     template_dict["ip_forward"] = ipf_dict
                 if template_dict:
@@ -485,9 +476,9 @@ class Bgp_globalFacts(object):
                     template_dict = {}
                     template_dict["path_name"] = template["name"]
                     if "remote-nexthop" in template.keys():
-                        template_dict["remote_nexthop"] = template[
-                            "remote-nexthop"
-                        ].get("remote-nh-addr")
+                        template_dict["remote_nexthop"] = template["remote-nexthop"].get(
+                            "remote-nh-addr",
+                        )
                     if "peer" in template.keys():
                         peer_lst = []
                         peers = template.get("peer")
@@ -503,7 +494,7 @@ class Bgp_globalFacts(object):
                             ipf_dict["set"] = True
                         else:
                             ipf_dict["rti_name"] = template["ip-forward"].get(
-                                "rti-name"
+                                "rti-name",
                             )
                         template_dict["ip_forward"] = ipf_dict
 
@@ -525,9 +516,7 @@ class Bgp_globalFacts(object):
                     etss_dict["label"] = etsss["label"].get("label-value")
                 if "egress-te-backup-segment" in etsss.keys():
                     etbs = etsss.get("egress-te-backup-segment")
-                    etss_dict["egress_te_backup_segment_label"] = etbs[
-                        "label"
-                    ].get("label-value")
+                    etss_dict["egress_te_backup_segment_label"] = etbs["label"].get("label-value")
 
                 if etss_dict:
                     etss_lst.append(etss_dict)
@@ -538,9 +527,9 @@ class Bgp_globalFacts(object):
                         etss_dict["label"] = etss["label"].get("label-value")
                     if "egress-te-backup-segment" in etss.keys():
                         etbs = etss.get("egress-te-backup-segment")
-                        etss_dict["egress_te_backup_segment_label"] = etbs[
-                            "label"
-                        ].get("label-value")
+                        etss_dict["egress_te_backup_segment_label"] = etbs["label"].get(
+                            "label-value",
+                        )
 
                     if etss_dict:
                         etss_lst.append(etss_dict)
@@ -708,7 +697,7 @@ class Bgp_globalFacts(object):
                 else:
                     if "metric-offset" in minigp.keys():
                         minigp_dict["metric_offset"] = minigp.get(
-                            "metric-offset"
+                            "metric-offset",
                         )
                 cfg["minimum_igp"] = minigp_dict
             cfg_dict["metric_out"] = cfg
@@ -834,7 +823,7 @@ class Bgp_globalFacts(object):
                 expedited = oqp.get("expedited")
                 if "update-tokens" in expedited:
                     oqp_dict["expedited_update_tokens"] = expedited.get(
-                        "update-tokens"
+                        "update-tokens",
                     )
 
             # read priority
@@ -845,14 +834,14 @@ class Bgp_globalFacts(object):
                 if isinstance(priority, dict):
                     priority_dict["priority"] = priority.get("name")
                     priority_dict["update_tokens"] = priority.get(
-                        "update-tokens"
+                        "update-tokens",
                     )
                     priority_lst.append(priority_dict)
                 else:
                     for element in priority:
                         priority_dict["priority"] = element.get("name")
                         priority_dict["update_tokens"] = element.get(
-                            "update-tokens"
+                            "update-tokens",
                         )
                         priority_lst.append(priority_dict)
                         priority_dict = {}
@@ -955,9 +944,7 @@ class Bgp_globalFacts(object):
 
         # Read stale-labels-holddown-period value
         if "stale-labels-holddown-period" in conf.keys():
-            cfg_dict["stale_labels_holddown_period"] = conf[
-                "stale-labels-holddown-period"
-            ]
+            cfg_dict["stale_labels_holddown_period"] = conf["stale-labels-holddown-period"]
 
         # Read tcp-aggressive-transmission value
         if "tcp-aggressive-transmission" in conf.keys():
@@ -1011,7 +998,7 @@ class Bgp_globalFacts(object):
                                     filter_dict["match_on_prefix"] = True
                                 if "policy" in filter.keys():
                                     filter_dict["policy"] = filter.get(
-                                        "policy"
+                                        "policy",
                                     )
                             flag_dict["filter"] = filter_dict
                         flag_dict["name"] = event.get("name")

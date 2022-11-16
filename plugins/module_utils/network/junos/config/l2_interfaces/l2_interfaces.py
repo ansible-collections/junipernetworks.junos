@@ -12,32 +12,31 @@ created
 """
 from __future__ import absolute_import, division, print_function
 
-__metaclass__ = type
 
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    to_list,
-)
+__metaclass__ = type
 
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
     ConfigBase,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    locked_config,
-    load_config,
-    commit_configuration,
-    discard_changes,
-    tostring,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
+    build_child_xml_node,
+    build_root_xml_node,
+    build_subtree,
 )
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import to_list
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
     Facts,
 )
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
+    commit_configuration,
+    discard_changes,
+    load_config,
+    locked_config,
+    tostring,
+)
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.utils.utils import (
     get_resource_config,
-)
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
-    build_root_xml_node,
-    build_child_xml_node,
-    build_subtree,
 )
 
 
@@ -60,10 +59,12 @@ class L2_interfaces(ConfigBase):
         :returns: The current configuration as a dictionary
         """
         facts, _warnings = Facts(self._module).get_facts(
-            self.gather_subset, self.gather_network_resources, data=data
+            self.gather_subset,
+            self.gather_network_resources,
+            data=data,
         )
         l2_interfaces_facts = facts["ansible_network_resources"].get(
-            "l2_interfaces"
+            "l2_interfaces",
         )
         if not l2_interfaces_facts:
             return []
@@ -89,10 +90,10 @@ class L2_interfaces(ConfigBase):
             running_config = self._module.params["running_config"]
             if not running_config:
                 self._module.fail_json(
-                    msg="value of running_config parameter must not be empty for state parsed"
+                    msg="value of running_config parameter must not be empty for state parsed",
                 )
             result["parsed"] = self.get_l2_interfaces_facts(
-                data=running_config
+                data=running_config,
             )
         elif self.state == "rendered":
             config_xmls = self.set_config(existing_l2_interfaces_facts)
@@ -152,14 +153,11 @@ class L2_interfaces(ConfigBase):
         """
         root = build_root_xml_node("interfaces")
         state = self._module.params["state"]
-        if (
-            state in ("merged", "replaced", "overridden", "rendered")
-            and not want
-        ):
+        if state in ("merged", "replaced", "overridden", "rendered") and not want:
             self._module.fail_json(
                 msg="value of config parameter must not be empty for state {0}".format(
-                    state
-                )
+                    state,
+                ),
             )
         if state == "overridden":
             config_xmls = self._state_overridden(want, have)
@@ -281,7 +279,8 @@ class L2_interfaces(ConfigBase):
             </configuration>
             """
         data = self.get_res_config(
-            self._connection, config_filter=config_filter
+            self._connection,
+            config_filter=config_filter,
         )
 
         if not l2_intf_obj:
@@ -293,13 +292,13 @@ class L2_interfaces(ConfigBase):
             enhanced_layer = True
             l2_mode = data.xpath(
                 "configuration/interfaces/interface[name='%s']/unit/family/ethernet-switching/interface-mode"
-                % name
+                % name,
             )
 
             if not len(l2_mode):
                 l2_mode = data.xpath(
                     "configuration/interfaces/interface[name='%s']/unit/family/ethernet-switching/port-mode"
-                    % name
+                    % name,
                 )
                 enhanced_layer = False
 
@@ -314,16 +313,26 @@ class L2_interfaces(ConfigBase):
                 build_child_xml_node(unit_node, "name", unit)
 
                 eth_node = build_subtree(
-                    unit_node, "family/ethernet-switching"
+                    unit_node,
+                    "family/ethernet-switching",
                 )
                 build_child_xml_node(
-                    eth_node, mode, None, {"delete": "delete"}
+                    eth_node,
+                    mode,
+                    None,
+                    {"delete": "delete"},
                 )
                 build_child_xml_node(
-                    eth_node, "vlan", None, {"delete": "delete"}
+                    eth_node,
+                    "vlan",
+                    None,
+                    {"delete": "delete"},
                 )
                 build_child_xml_node(
-                    intf, "native-vlan-id", None, {"delete": "delete"}
+                    intf,
+                    "native-vlan-id",
+                    None,
+                    {"delete": "delete"},
                 )
 
                 l2_intf_xml.append(intf)

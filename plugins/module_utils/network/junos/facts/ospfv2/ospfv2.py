@@ -23,19 +23,20 @@ based on the configuration.
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
-    utils,
-)
+from ansible.module_utils.six import string_types
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.ospfv2.ospfv2 import (
     Ospfv2Args,
 )
-from ansible.module_utils.six import string_types
+
 
 try:
     from lxml import etree
@@ -104,7 +105,7 @@ class Ospfv2Facts(object):
 
         if isinstance(data, string_types):
             data = etree.fromstring(
-                to_bytes(data, errors="surrogate_then_replace")
+                to_bytes(data, errors="surrogate_then_replace"),
             )
 
         resources = data.xpath("configuration/protocols/ospf")
@@ -125,7 +126,8 @@ class Ospfv2Facts(object):
         if objs:
             facts["ospfv2"] = []
             params = utils.validate_config(
-                self.argument_spec, {"config": objs}
+                self.argument_spec,
+                {"config": objs},
             )
 
             for cfg in params["config"]:
@@ -139,7 +141,8 @@ class Ospfv2Facts(object):
             self._module.fail_json(msg=missing_required_lib("xmltodict"))
 
         xml_dict = xmltodict.parse(
-            etree.tostring(xml_root), dict_constructor=dict
+            etree.tostring(xml_root),
+            dict_constructor=dict,
         )
         return xml_dict
 
@@ -179,28 +182,26 @@ class Ospfv2Facts(object):
                     interface_dict["metric"] = interface.get("metric")
                     interface_dict["timers"] = {}
                     interface_dict["timers"]["hello_interval"] = interface.get(
-                        "hello-interval"
+                        "hello-interval",
                     )
                     interface_dict["timers"]["dead_interval"] = interface.get(
-                        "dead-interval"
+                        "dead-interval",
                     )
-                    interface_dict["timers"][
-                        "retransmit_interval"
-                    ] = interface.get("retransmit-interval")
+                    interface_dict["timers"]["retransmit_interval"] = interface.get(
+                        "retransmit-interval",
+                    )
                     interface_dict["timers"]["transit_delay"] = interface.get(
-                        "transit-delay"
+                        "transit-delay",
                     )
                     interface_dict["timers"]["poll_interval"] = interface.get(
-                        "poll-interval"
+                        "poll-interval",
                     )
                     if "passive" in interface.keys():
                         interface_dict["passive"] = True
                     if "flood-reduction" in interface.keys():
                         interface_dict["flood_reduction"] = True
                     if "bandwidth-based-metrics" in interface.keys():
-                        bandwidth_metrics = interface[
-                            "bandwidth-based-metrics"
-                        ].get("bandwidth")
+                        bandwidth_metrics = interface["bandwidth-based-metrics"].get("bandwidth")
                         if not isinstance(bandwidth_metrics, list):
                             bandwidth_metrics = [bandwidth_metrics]
                         interface_dict["bandwidth_based_metrics"] = []
@@ -210,7 +211,7 @@ class Ospfv2Facts(object):
                                 {
                                     "metric": metric.get("metric"),
                                     "bandwidth": metric.get("name"),
-                                }
+                                },
                             )
 
                     if "authentication" in interface.keys():
@@ -231,7 +232,7 @@ class Ospfv2Facts(object):
                                     {
                                         "key_id": md5_auth.get("name"),
                                         "key": md5_auth.get("key"),
-                                    }
+                                    },
                                 )
                         interface_dict["authentication"] = auth_dict
 
@@ -250,9 +251,7 @@ class Ospfv2Facts(object):
                     if "no-summaries" in area.get("stub").keys():
                         rendered_area["stub"]["no_summary"] = True
                     if "default-metric" in area.get("stub").keys():
-                        rendered_area["stub"]["default_metric"] = area[
-                            "stub"
-                        ].get("default-metric")
+                        rendered_area["stub"]["default_metric"] = area["stub"].get("default-metric")
                 if area.get("nssa"):
                     rendered_area["nssa"] = {"set": True}
                     if "no-summaries" in area.get("nssa").keys():
@@ -268,13 +267,13 @@ class Ospfv2Facts(object):
             if ospf.get("spf-options"):
                 config["spf_options"] = {}
                 config["spf_options"]["delay"] = ospf["spf-options"].get(
-                    "delay"
+                    "delay",
                 )
                 config["spf_options"]["holddown"] = ospf["spf-options"].get(
-                    "holddown"
+                    "holddown",
                 )
                 config["spf_options"]["rapid_runs"] = ospf["spf-options"].get(
-                    "rapid-runs"
+                    "rapid-runs",
                 )
             config["overload"] = ospf.get("overload")
             config["preference"] = ospf.get("preference")

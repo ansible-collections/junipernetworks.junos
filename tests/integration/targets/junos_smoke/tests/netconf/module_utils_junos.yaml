@@ -1,16 +1,15 @@
 ---
-- debug: msg="START netconf/module_utils_junos.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="START netconf/module_utils_junos.yaml on connection={{ ansible_connection }}"
 
 # hit get_capabilities()
 
 - name: get output for single command
   junos_command:
-    commands: ['show version']
+    commands: ["show version"]
     format: json
-    provider: "{{ netconf }}"
   register: result
 
-- assert:
+- ansible.builtin.assert:
     that:
       - "result.changed == false"
       - "result.stdout is defined"
@@ -21,23 +20,20 @@
   junos_banner:
     banner: login
     state: absent
-    provider: "{{ netconf }}"
 
 - name: Create login banner
   junos_banner:
     banner: login
     text: this is my login banner
     state: present
-    provider: "{{ netconf }}"
   register: result
 
 - name: Get running configuration
   junos_rpc:
     rpc: get-configuration
-    provider: "{{ netconf }}"
   register: config
 
-- assert:
+- ansible.builtin.assert:
     that:
       - "result.changed == true"
       - "'<message>this is my login banner</message>' in config.xml"
@@ -48,52 +44,10 @@
     banner: login
     text: this is not the banner you're looking for
     state: present
-    provider: "{{ netconf }}"
   register: result
   check_mode: true
 
-- assert:
+- ansible.builtin.assert:
     that:
       - "result.changed == true"
       - "result.failed == false"
-
-
-# hit field_top in map_obj_to_ele
-- name: setup - remove interface address
-  net_l3_interface:
-    name: ge-0/0/1
-    ipv4: 192.0.2.1
-    ipv6: fd5d:12c9:2201:1::1
-    state: absent
-    provider: "{{ netconf }}"
-
-- name: Configure interface address using platform agnostic module
-  net_l3_interface:
-    name: ge-0/0/1
-    ipv4: 192.0.2.1
-    ipv6: fd5d:12c9:2201:1::1
-    state: present
-    provider: "{{ netconf }}"
-  register: result
-
-- name: Get running configuration
-  junos_rpc:
-    rpc: get-configuration
-    provider: "{{ netconf }}"
-  register: config
-
-- assert:
-    that:
-      - "result.changed == true"
-      - "'<name>192.0.2.1/32</name>' in config.xml"
-      - "'<name>fd5d:12c9:2201:1::1/128</name>' in config.xml"
-      - result.diff.prepared is search("\+ *address 192.0.2.1/32")
-      - result.diff.prepared is search("\+ *address fd5d:12c9:2201:1::1/128")
-
-- name: teardown - remove interface address
-  net_l3_interface:
-    name: ge-0/0/1
-    ipv4: 192.0.2.1
-    ipv6: fd5d:12c9:2201:1::1
-    state: absent
-    provider: "{{ netconf }}"

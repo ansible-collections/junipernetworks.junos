@@ -1,18 +1,17 @@
 ---
-- debug:
-    msg: START junos_lag_interfaces merged integration tests on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg:
+      START junos_lag_interfaces merged integration tests on connection={{ ansible_connection
       }}
 
-- include_tasks: _remove_config.yaml
+- ansible.builtin.include_tasks: _remove_config.yaml
 
-- include_tasks: _base_config.yaml
+- ansible.builtin.include_tasks: _base_config.yaml
 
-- set_fact:
+- ansible.builtin.set_fact:
     expected_merged_output:
-
       - name: ae1
         members:
-
           - member: ge-0/0/1
 
           - member: ge-0/0/2
@@ -21,7 +20,6 @@
       - name: ae2
         link_protection: true
         members:
-
           - member: ge-0/0/3
             link_type: primary
 
@@ -30,15 +28,12 @@
         mode: passive
 
 - block:
-
     - name: Merge the provided configuration with the exisiting running configuration
       register: result
       junipernetworks.junos.junos_lag_interfaces: &id001
         config:
-
           - name: ae1
             members:
-
               - member: ge-0/0/1
 
               - member: ge-0/0/2
@@ -47,7 +42,6 @@
           - name: ae2
             link_protection: true
             members:
-
               - member: ge-0/0/3
                 link_type: primary
 
@@ -57,24 +51,25 @@
         state: merged
 
     - name: Assert the configuration is reflected on host
-      assert:
+      ansible.builtin.assert:
         that:
           - "{{ expected_merged_output | symmetric_difference(result['after']) |length\
             \ == 0 }}"
 
-    - name: Merge the provided configuration with the existing running configuration
+    - name:
+        Merge the provided configuration with the existing running configuration
         (IDEMPOTENT)
       register: result
       junipernetworks.junos.junos_lag_interfaces: *id001
 
     - name: Assert that the previous task was idempotent
-      assert:
+      ansible.builtin.assert:
         that:
           - result['changed'] == false
   always:
+    - ansible.builtin.include_tasks: _remove_config.yaml
 
-    - include_tasks: _remove_config.yaml
-
-- debug:
-    msg: END junos_lag_interfaces merged integration tests on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg:
+      END junos_lag_interfaces merged integration tests on connection={{ ansible_connection
       }}

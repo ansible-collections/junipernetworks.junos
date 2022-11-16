@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_security_policies initial config on connection={{ ansible_connection }}"
 
 - name: Generate ssl certificates for ssl proxy profile-name
@@ -33,5 +33,5 @@
       - set access firewall-authentication web-authentication default-profile WEBAUTH
       - set services ssl termination profile test_ssl_term server-certificate SECURITY-cert
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_security_policies initial config on connection={{ ansible_connection }}"

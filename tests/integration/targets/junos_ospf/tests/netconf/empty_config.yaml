@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: START junos_ospfv2 empty_config integration tests on connection={{
       ansible_connection }}
 
@@ -10,7 +10,7 @@
     config:
     state: merged
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.msg == 'value of config parameter must not be empty for state merged'
 
@@ -21,7 +21,7 @@
     config:
     state: replaced
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.msg == 'value of config parameter must not be empty for state replaced'
 
@@ -32,7 +32,7 @@
     config:
     state: overridden
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.msg == 'value of config parameter must not be empty for state overridden'
 
@@ -43,9 +43,9 @@
     running_config:
     state: parsed
 
-- debug:
+- ansible.builtin.debug:
     msg: result
-- assert:
+- ansible.builtin.assert:
     that:
       - result.msg == 'value of running_config parameter must not be empty for state parsed'
 
@@ -56,6 +56,6 @@
     config:
     state: rendered
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.msg == 'value of config parameter must not be empty for state rendered'

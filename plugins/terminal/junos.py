@@ -19,17 +19,16 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 import re
 
-
-from ansible.module_utils.common.text.converters import to_bytes
 from ansible.errors import AnsibleConnectionFailure
+from ansible.module_utils.common.text.converters import to_bytes
 from ansible.utils.display import Display
-from ansible_collections.ansible.netcommon.plugins.plugin_utils.terminal_base import (
-    TerminalBase,
-)
+from ansible_collections.ansible.netcommon.plugins.plugin_utils.terminal_base import TerminalBase
+
 
 display = Display()
 
@@ -38,8 +37,8 @@ class TerminalModule(TerminalBase):
 
     terminal_stdout_re = [
         re.compile(
-            to_bytes(r"({primary:node\d+})?[\r\n]?[\w@+\-\.:\/\[\]]+[>#%] ?$")
-        )
+            to_bytes(r"({primary:node\d+})?[\r\n]?[\w@+\-\.:\/\[\]]+[>#%] ?$"),
+        ),
     ]
 
     terminal_stderr_re = [
@@ -55,7 +54,8 @@ class TerminalModule(TerminalBase):
             prompt = self._get_prompt()
             if prompt.strip().endswith(b"%"):
                 display.vvv(
-                    "starting cli", self._connection._play_context.remote_addr
+                    "starting cli",
+                    self._connection._play_context.remote_addr,
                 )
                 self._exec_cli_command(b"cli")
             for c in (

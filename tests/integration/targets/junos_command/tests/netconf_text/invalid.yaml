@@ -1,23 +1,26 @@
 ---
-- debug: msg="START netconf_text/invalid.yaml on connection={{ ansible_connection
+- name: Debug task
+  ansible.builtin.debug:
+    msg="START netconf_text/invalid.yaml on connection={{ ansible_connection
     }}"
 
-- name: run invalid command
+- name: Run invalid command
   register: result
   ignore_errors: true
   junipernetworks.junos.junos_command:
     commands: show foo
     display: text
-    provider: '{{ netconf }}'
 
-- debug: var=result
+- name: Debug task
+  ansible.builtin.debug: var=result
 
-- assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.failed == true
       - result.msg is defined
 
-- name: run commands that include invalid command
+- name: Run commands that ansible.builtin.include invalid command
   register: result
   ignore_errors: true
   junipernetworks.junos.junos_command:
@@ -25,12 +28,14 @@
       - show version
       - show foo
     display: text
-    provider: '{{ netconf }}'
 
-- assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.failed == true
       - result.msg is defined
 
-- debug: msg="END netconf_text/invalid.yaml on connection={{ ansible_connection
+- name: Debug task
+  ansible.builtin.debug:
+    msg="END netconf_text/invalid.yaml on connection={{ ansible_connection
     }}"

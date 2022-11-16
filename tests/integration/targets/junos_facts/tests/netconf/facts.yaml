@@ -1,12 +1,13 @@
 ---
-- debug: msg="START netconf/facts.yaml on connection={{ ansible_connection }}"
+- name: Debug task
+  ansible.builtin.debug: msg="START netconf/facts.yaml on connection={{ ansible_connection }}"
 
 - name: Collect default facts from device
   register: result
   junipernetworks.junos.junos_facts:
-    provider: '{{ netconf }}'
 
-- assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == false
       - "'ansible_net_hostname' in result['ansible_facts']"
@@ -17,9 +18,9 @@
   register: result
   junipernetworks.junos.junos_facts:
     gather_subset: config
-    provider: '{{ netconf }}'
 
-- assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == false
       - "'ansible_net_config' in result['ansible_facts']"
@@ -29,10 +30,10 @@
 - name: Collect all facts from device except hardware
   register: result
   junipernetworks.junos.junos_facts:
-    gather_subset: '!hardware'
-    provider: '{{ netconf }}'
+    gather_subset: "!hardware"
 
-- assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == false
       - "'ansible_net_config' in result['ansible_facts']"
@@ -44,9 +45,9 @@
   register: result
   junipernetworks.junos.junos_facts:
     gather_subset: test
-    provider: '{{ netconf }}'
 
-- assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.failed == true
       - "'Subset must be one of' in result.msg"
@@ -56,9 +57,9 @@
   junipernetworks.junos.junos_facts:
     gather_subset: config
     config_format: set
-    provider: '{{ netconf }}'
 
-- assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == false
       - "'set system services netconf ssh' in result['ansible_facts']['ansible_net_config']"
@@ -68,9 +69,9 @@
   junipernetworks.junos.junos_facts:
     gather_subset: config
     config_format: xml
-    provider: '{{ netconf }}'
 
-- assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == false
       - "'<netconf>' in result['ansible_facts']['ansible_net_config']"
@@ -80,16 +81,17 @@
   junipernetworks.junos.junos_facts:
     gather_subset: config
     config_format: json
-    provider: '{{ netconf }}'
 
-- assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == false
       - "'{{ result['ansible_facts']['ansible_net_config']['configuration'][0]['system'][0]['service'][0]['netconf']\
         \ }}' is defined"
   when: ansible_net_version == "15.1X49-D15.4"
 
-- assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == false
       - "'ssh' in result['ansible_facts']['ansible_net_config']['configuration']['system']['services']['netconf']"
@@ -100,26 +102,25 @@
   junipernetworks.junos.junos_facts:
     gather_subset: config
     config_format: text
-    provider: '{{ netconf }}'
 
-- assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == false
       - "'netconf {' in result['ansible_facts']['ansible_net_config']"
-
 
 - name: Collect list of available network resources for junos
   register: result
   junipernetworks.junos.junos_facts:
     available_network_resources: true
     gather_network_resources: all
-    provider: '{{ netconf }}'
 
 - name: Assert that correct available_network_resources returned
-  assert:
+  ansible.builtin.assert:
     that:
       - result.changed == false
       - "{{ result['ansible_facts']['available_network_resources'] | symmetric_difference(result['ansible_facts']['ansible_net_gather_network_resources']) |length\
-          \ == 0 }}"
+        \ == 0 }}"
 
-- debug: msg="END netconf/facts.yaml on connection={{ ansible_connection }}"
+- name: Debug task
+  ansible.builtin.debug: msg="END netconf/facts.yaml on connection={{ ansible_connection }}"

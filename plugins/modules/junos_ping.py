@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -19,6 +20,8 @@ description:
 - For Windows targets, use the M(ansible.windows.win_ping) module instead.
 - For targets running Python, use the M(ansible.builtin.ping) module instead.
 version_added: 1.0.0
+extends_documentation_fragment:
+- junipernetworks.junos.junos
 author:
 - Nilashish Chakraborty (@NilashishC)
 options:
@@ -75,8 +78,6 @@ notes:
 - For Windows targets, use the M(ansible.windows.win_ping) module instead.
 - For targets running Python, use the M(ansible.builtin.ping) module instead.
 - This module works only with connection C(network_cli).
-extends_documentation_fragment:
-- junipernetworks.junos.junos
 """
 
 EXAMPLES = """
@@ -139,9 +140,10 @@ rtt:
 """
 
 import re
+
 from ansible.module_utils.basic import AnsibleModule
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    junos_argument_spec,
     get_connection,
 )
 
@@ -159,11 +161,11 @@ def main():
         size=dict(type="int"),
         interval=dict(type="int"),
         state=dict(
-            type="str", choices=["absent", "present"], default="present"
+            type="str",
+            choices=["absent", "present"],
+            default="present",
         ),
     )
-
-    argument_spec.update(junos_argument_spec)
 
     module = AnsibleModule(argument_spec=argument_spec)
 
@@ -183,7 +185,15 @@ def main():
         results["warnings"] = warnings
 
     results["commands"] = build_ping(
-        dest, count, size, interval, source, ttl, interface, df_bit, rapid
+        dest,
+        count,
+        size,
+        interval,
+        source,
+        ttl,
+        interface,
+        df_bit,
+        rapid,
     )
     conn = get_connection(module)
 
@@ -252,7 +262,7 @@ def build_ping(
 
 def parse_rate(rate_info):
     rate_re = re.compile(
-        r"(?P<tx>\d*) packets transmitted,(?:\s*)(?P<rx>\d*) packets received,(?:\s*)(?P<pkt_loss>\d*)% packet loss"
+        r"(?P<tx>\d*) packets transmitted,(?:\s*)(?P<rx>\d*) packets received,(?:\s*)(?P<pkt_loss>\d*)% packet loss",
     )
     rate = rate_re.match(rate_info)
 
@@ -261,7 +271,7 @@ def parse_rate(rate_info):
 
 def parse_rtt(rtt_info):
     rtt_re = re.compile(
-        r"round-trip (?:.*)=(?:\s*)(?P<min>\d+\.\d+).(?:\d*)/(?P<avg>\d+\.\d+).(?:\d*)/(?P<max>\d*\.\d*).(?:\d*)/(?P<stddev>\d*\.\d*)"
+        r"round-trip (?:.*)=(?:\s*)(?P<min>\d+\.\d+).(?:\d*)/(?P<avg>\d+\.\d+).(?:\d*)/(?P<max>\d*\.\d*).(?:\d*)/(?P<stddev>\d*\.\d*)",
     )
     rtt = rtt_re.match(rtt_info)
 

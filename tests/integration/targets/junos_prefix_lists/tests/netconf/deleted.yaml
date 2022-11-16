@@ -1,11 +1,11 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_prefix_lists deleted integration tests on connection={{ ansible_connection }}"
 
 - block:
-    - include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
 
-    - set_fact:
+    - ansible.builtin.set_fact:
         expected_deleted_output:
           - dynamic_db: true
             name: Test1
@@ -35,7 +35,7 @@
       register: result
 
     - name: Assert configuration
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == True
           - "{{ expected_deleted_output | symmetric_difference(result['after']) |length\
@@ -46,11 +46,11 @@
       register: result
 
     - name: Assert that the previous task was idempotent
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == False
 
-    - set_fact:
+    - ansible.builtin.set_fact:
         expected_deleted_output: []
 
     - name: Merge the existing config with provided configuration
@@ -64,7 +64,7 @@
       register: result
 
     - name: Assert configuration
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == True
           - "{{ expected_deleted_output | symmetric_difference(result['after']) |length\
@@ -72,7 +72,7 @@
 
   tags: deleted
   always:
-    - include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_prefix_lists deleted integration tests on connection={{ ansible_connection }}"

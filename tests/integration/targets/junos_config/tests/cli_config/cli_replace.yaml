@@ -1,5 +1,6 @@
 ---
-- debug: msg="START cli_config/cli_replace.yaml on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg="START cli_config/cli_replace.yaml on connection={{ ansible_connection
     }}"
 
 - name: set interface config
@@ -7,7 +8,7 @@
     - delete interfaces ge-0/0/11
     - set interfaces ge-0/0/11 description "test cli_config"
   ansible.netcommon.cli_config:
-    config: '{{ item }}'
+    config: "{{ item }}"
 
 - name: get running configuration
   register: result
@@ -40,8 +41,8 @@
   ansible.netcommon.cli_command:
     command: show configuration interfaces ge-0/0/11
 
-- name: assert that interface config change is reflected on device
-  assert:
+- name: ansible.builtin.assert that interface config change is reflected on device
+  ansible.builtin.assert:
     that:
       - "'test cli_config replaced' in  result.stdout"
 
@@ -51,7 +52,7 @@
     replace: /var/home/{{ ansible_user }}/junos01.cfg
 
 - name: Assert that the previous task was idempotent
-  assert:
+  ansible.builtin.assert:
     that:
       - result['changed'] == false
 
@@ -59,5 +60,6 @@
   ansible.netcommon.cli_config:
     config: delete interfaces ge-0/0/11
 
-- debug: msg="END cli_config/cli_replace.yaml on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg="END cli_config/cli_replace.yaml on connection={{ ansible_connection
     }}"

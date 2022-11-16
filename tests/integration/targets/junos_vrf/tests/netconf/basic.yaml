@@ -1,12 +1,12 @@
 ---
-- debug: msg="START junos_vrf netconf/basic.yaml on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg="START junos_vrf netconf/basic.yaml on connection={{ ansible_connection
     }}"
 
 - name: setup - remove vrf
   junipernetworks.junos.junos_vrf:
     name: test-1
     state: absent
-    provider: '{{ netconf }}'
 
 - name: Configure vrf and its parameter
   register: result
@@ -19,9 +19,8 @@
     rd: 192.0.2.3:10
     target: target:65513:111
     state: present
-    provider: '{{ netconf }}'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - result.diff.prepared is search("\+ *test-1")
@@ -43,9 +42,8 @@
     rd: 192.0.2.3:10
     target: target:65513:111
     state: present
-    provider: '{{ netconf }}'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
@@ -60,9 +58,8 @@
     rd: 192.0.2.1:10
     target: target:65514:113
     state: present
-    provider: '{{ netconf }}'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'[edit routing-instances test-1]' in result.diff.prepared"
@@ -84,9 +81,8 @@
     target: target:65514:113
     state: present
     active: false
-    provider: '{{ netconf }}'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'[edit routing-instances]' in result.diff.prepared"
@@ -110,9 +106,8 @@
     target: target:65514:113
     state: present
     active: true
-    provider: '{{ netconf }}'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'[edit routing-instances]' in result.diff.prepared"
@@ -135,9 +130,8 @@
     rd: 192.0.2.1:10
     target: target:65514:113
     state: absent
-    provider: '{{ netconf }}'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - result.diff.prepared is search("\- *test-1")
@@ -159,9 +153,8 @@
     rd: 192.0.2.1:10
     target: target:65514:113
     state: absent
-    provider: '{{ netconf }}'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
@@ -169,18 +162,15 @@
   register: result
   junipernetworks.junos.junos_vrf:
     aggregate:
-
       - name: test-1
 
       - name: test-2
     state: absent
-    provider: '{{ netconf }}'
 
 - name: Create vrf using aggregate
   register: result
   junipernetworks.junos.junos_vrf:
     aggregate:
-
       - name: test-1
         description: test-vrf-1
         interfaces:
@@ -196,9 +186,8 @@
           - ge-0/0/5
         rd: 192.0.2.2:10
         target: target:65515:114
-    provider: '{{ netconf }}'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - result.diff.prepared is search("\+ *test-1")
@@ -220,7 +209,6 @@
   register: result
   junipernetworks.junos.junos_vrf:
     aggregate:
-
       - name: test-1
         description: test-vrf-1
         interfaces:
@@ -237,9 +225,8 @@
         rd: 192.0.2.2:10
         target: target:65515:114
     active: false
-    provider: '{{ netconf }}'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'edit routing-instances test-1' in result.diff.prepared"
@@ -257,7 +244,6 @@
   register: result
   junipernetworks.junos.junos_vrf:
     aggregate:
-
       - name: test-1
         description: test-vrf-1
         interfaces:
@@ -274,9 +260,8 @@
         rd: 192.0.2.2:10
         target: target:65515:114
     active: true
-    provider: '{{ netconf }}'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'edit routing-instances test-1' in result.diff.prepared"
@@ -294,14 +279,12 @@
   register: result
   junipernetworks.junos.junos_vrf:
     aggregate:
-
       - name: test-1
 
       - name: test-2
     state: absent
-    provider: '{{ netconf }}'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - result.diff.prepared is search("\- *test-1")
@@ -323,16 +306,15 @@
   register: result
   junipernetworks.junos.junos_vrf:
     aggregate:
-
       - name: test-1
 
       - name: test-2
     state: absent
-    provider: '{{ netconf }}'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
-- debug: msg="END junos_vrf netconf/basic.yaml on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg="END junos_vrf netconf/basic.yaml on connection={{ ansible_connection
     }}"

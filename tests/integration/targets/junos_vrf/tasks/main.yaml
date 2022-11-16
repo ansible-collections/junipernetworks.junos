@@ -1,2 +1,3 @@
 ---
-- include: netconf.yaml
+- name: Invoke netconf tasks
+  ansible.builtin.include_tasks: netconf.yaml

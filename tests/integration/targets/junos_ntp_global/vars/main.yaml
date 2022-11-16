@@ -3,17 +3,17 @@ merged:
   before: {}
 
   after:
-    boot_server: '78.46.194.186'
+    boot_server: "78.46.194.186"
     broadcast_client: true
     broadcasts:
-      - address: '172.16.255.255'
-        key: '50'
-        routing_instance_name: 'rt1'
+      - address: "172.16.255.255"
+        key: "50"
+        routing_instance_name: "rt1"
         ttl: 200
         version: 3
-      - address: '192.16.255.255'
-        key: '50'
-        routing_instance_name: 'rt2'
+      - address: "192.16.255.255"
+        key: "50"
+        routing_instance_name: "rt2"
         ttl: 200
         version: 3
     interval_range: 2
@@ -27,7 +27,7 @@ merged:
     servers:
       - key_id: 34
         prefer: true
-        routing_instance: 'rt1'
+        routing_instance: "rt1"
         server: "48.46.194.186"
         version: 2
       - key_id: 34
@@ -35,9 +35,9 @@ merged:
         server: "48.45.194.186"
         version: 2
     source_addresses:
-      - routing_instance: 'rt1'
+      - routing_instance: "rt1"
         source_address: "172.45.194.186"
-      - routing_instance: 'rt2'
+      - routing_instance: "rt2"
         source_address: "171.45.194.186"
     threshold:
       action: "accept"
@@ -47,18 +47,18 @@ merged:
       - key_id: 3000
 
   updated:
-    boot_server: '78.46.194.186'
+    boot_server: "78.46.194.186"
     broadcasts:
-      - address: '172.16.255.255'
-        key: '50'
+      - address: "172.16.255.255"
+        key: "50"
         ttl: 200
         version: 3
-        routing_instance_name: 'rt1'
-      - address: '192.16.255.255'
-        key: '50'
+        routing_instance_name: "rt1"
+      - address: "192.16.255.255"
+        key: "50"
         ttl: 200
         version: 3
-        routing_instance_name: 'rt2'
+        routing_instance_name: "rt2"
     broadcast_client: true
     interval_range: 3
     multicast_client: "224.0.0.1"
@@ -77,16 +77,16 @@ merged:
         key_id: 34
         prefer: true
         version: 2
-        routing_instance: 'rt1'
+        routing_instance: "rt1"
       - server: "48.45.194.186"
         key_id: 34
         prefer: true
         version: 2
     source_addresses:
       - source_address: "172.45.194.186"
-        routing_instance: 'rt1'
+        routing_instance: "rt1"
       - source_address: "171.45.194.186"
-        routing_instance: 'rt2'
+        routing_instance: "rt2"
     threshold:
       value: 300
       action: "accept"

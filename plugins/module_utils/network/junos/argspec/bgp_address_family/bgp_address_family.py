@@ -26,6 +26,7 @@ The arg spec for the junos_bgp_address_family module
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -61,7 +62,7 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                         "send": {
                                             "options": {
                                                 "include_backup_path": {
-                                                    "type": "int"
+                                                    "type": "int",
                                                 },
                                                 "multipath": {"type": "bool"},
                                                 "path_count": {
@@ -71,16 +72,16 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                                 "path_selection_mode": {
                                                     "options": {
                                                         "all_paths": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "equal_cost_paths": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
                                                 },
                                                 "prefix_policy": {
-                                                    "type": "str"
+                                                    "type": "str",
                                                 },
                                             },
                                             "type": "dict",
@@ -114,13 +115,13 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                     "options": {
                                         "max_delay_route_age": {"type": "int"},
                                         "max_delay_routing_uptime": {
-                                            "type": "int"
+                                            "type": "int",
                                         },
                                         "min_delay_inbound_convergence": {
-                                            "type": "int"
+                                            "type": "int",
                                         },
                                         "min_delay_routing_uptime": {
-                                            "type": "int"
+                                            "type": "int",
                                         },
                                         "set": {"type": "bool"},
                                     },
@@ -130,7 +131,7 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                     "options": {
                                         "import": {"type": "str"},
                                         "no_next_hop_validation": {
-                                            "type": "bool"
+                                            "type": "bool",
                                         },
                                         "set": {"type": "bool"},
                                     },
@@ -162,10 +163,10 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                 "no_install": {"type": "bool"},
                                 "no_validate": {"type": "str"},
                                 "output_queue_priority_expedited": {
-                                    "type": "bool"
+                                    "type": "bool",
                                 },
                                 "output_queue_priority_priority": {
-                                    "type": "int"
+                                    "type": "int",
                                 },
                                 "per_group_label": {"type": "bool"},
                                 "per_prefix_label": {"type": "bool"},
@@ -184,13 +185,13 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                 "rib": {"choices": ["inet.3"], "type": "str"},
                                 "ribgroup_name": {"type": "str"},
                                 "route_refresh_priority_expedited": {
-                                    "type": "bool"
+                                    "type": "bool",
                                 },
                                 "route_refresh_priority_priority": {
-                                    "type": "int"
+                                    "type": "int",
                                 },
                                 "secondary_independent_resolution": {
-                                    "type": "bool"
+                                    "type": "bool",
                                 },
                                 "set": {"type": "bool"},
                                 "strip_nexthop": {"type": "bool"},
@@ -212,11 +213,11 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                                 "filename": {"type": "str"},
                                                 "files": {"type": "int"},
                                                 "no_world_readable": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "size": {"type": "int"},
                                                 "world_readable": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                             },
                                             "type": "dict",
@@ -242,7 +243,7 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                     "type": "str",
                                 },
                                 "withdraw_priority_expedited": {
-                                    "type": "bool"
+                                    "type": "bool",
                                 },
                                 "withdraw_priority_priority": {"type": "int"},
                             },
@@ -281,13 +282,13 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                             "options": {
                                                 "forever": {"type": "bool"},
                                                 "idle_timeout": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "idle_timeout_value": {
-                                                    "type": "int"
+                                                    "type": "int",
                                                 },
                                                 "limit_threshold": {
-                                                    "type": "int"
+                                                    "type": "int",
                                                 },
                                                 "maximum": {"type": "int"},
                                                 "teardown": {"type": "bool"},
@@ -300,10 +301,10 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                                 "send": {
                                                     "options": {
                                                         "include_backup_path": {
-                                                            "type": "int"
+                                                            "type": "int",
                                                         },
                                                         "multipath": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "path_count": {
                                                             "required": True,
@@ -312,16 +313,16 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                                         "path_selection_mode": {
                                                             "options": {
                                                                 "all_paths": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                                 "equal_cost_paths": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                             },
                                                             "type": "dict",
                                                         },
                                                         "prefix_policy": {
-                                                            "type": "str"
+                                                            "type": "str",
                                                         },
                                                     },
                                                     "type": "dict",
@@ -347,7 +348,7 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                         "defer_initial_multipath_build": {
                                             "options": {
                                                 "maximum_delay": {
-                                                    "type": "int"
+                                                    "type": "int",
                                                 },
                                                 "set": {"type": "bool"},
                                             },
@@ -356,16 +357,16 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                         "delay_route_advertisements": {
                                             "options": {
                                                 "max_delay_route_age": {
-                                                    "type": "int"
+                                                    "type": "int",
                                                 },
                                                 "max_delay_routing_uptime": {
-                                                    "type": "int"
+                                                    "type": "int",
                                                 },
                                                 "min_delay_inbound_convergence": {
-                                                    "type": "int"
+                                                    "type": "int",
                                                 },
                                                 "min_delay_routing_uptime": {
-                                                    "type": "int"
+                                                    "type": "int",
                                                 },
                                                 "set": {"type": "bool"},
                                             },
@@ -375,7 +376,7 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                             "options": {
                                                 "import": {"type": "str"},
                                                 "no_next_hop_validation": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "set": {"type": "bool"},
                                             },
@@ -384,7 +385,7 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                         "explicit_null": {
                                             "options": {
                                                 "connected_only": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "set": {"type": "bool"},
                                             },
@@ -392,7 +393,7 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                         },
                                         "extended_nexthop": {"type": "bool"},
                                         "extended_nexthop_color": {
-                                            "type": "bool"
+                                            "type": "bool",
                                         },
                                         "graceful_restart_forwarding_state_bit": {
                                             "choices": ["from-fib", "set"],
@@ -411,10 +412,10 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                         "no_install": {"type": "bool"},
                                         "no_validate": {"type": "str"},
                                         "output_queue_priority_expedited": {
-                                            "type": "bool"
+                                            "type": "bool",
                                         },
                                         "output_queue_priority_priority": {
-                                            "type": "int"
+                                            "type": "int",
                                         },
                                         "per_group_label": {"type": "bool"},
                                         "per_prefix_label": {"type": "bool"},
@@ -422,13 +423,13 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                             "options": {
                                                 "forever": {"type": "bool"},
                                                 "idle_timeout": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "idle_timeout_value": {
-                                                    "type": "int"
+                                                    "type": "int",
                                                 },
                                                 "limit_threshold": {
-                                                    "type": "int"
+                                                    "type": "int",
                                                 },
                                                 "maximum": {"type": "int"},
                                                 "teardown": {"type": "bool"},
@@ -442,13 +443,13 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                         },
                                         "ribgroup_name": {"type": "str"},
                                         "route_refresh_priority_expedited": {
-                                            "type": "bool"
+                                            "type": "bool",
                                         },
                                         "route_refresh_priority_priority": {
-                                            "type": "int"
+                                            "type": "int",
                                         },
                                         "secondary_independent_resolution": {
-                                            "type": "bool"
+                                            "type": "bool",
                                         },
                                         "set": {"type": "bool"},
                                         "strip_nexthop": {"type": "bool"},
@@ -468,26 +469,26 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                                 "file": {
                                                     "options": {
                                                         "filename": {
-                                                            "type": "str"
+                                                            "type": "str",
                                                         },
                                                         "files": {
-                                                            "type": "int"
+                                                            "type": "int",
                                                         },
                                                         "no_world_readable": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "size": {
-                                                            "type": "int"
+                                                            "type": "int",
                                                         },
                                                         "world_readable": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
                                                 },
                                                 "interval": {"type": "int"},
                                                 "labeled_path": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "set": {"type": "bool"},
                                             },
@@ -508,10 +509,10 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                             "type": "str",
                                         },
                                         "withdraw_priority_expedited": {
-                                            "type": "bool"
+                                            "type": "bool",
                                         },
                                         "withdraw_priority_priority": {
-                                            "type": "int"
+                                            "type": "int",
                                         },
                                     },
                                     "type": "list",
@@ -549,22 +550,22 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                                 "accepted_prefix_limit": {
                                                     "options": {
                                                         "forever": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "idle_timeout": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "idle_timeout_value": {
-                                                            "type": "int"
+                                                            "type": "int",
                                                         },
                                                         "limit_threshold": {
-                                                            "type": "int"
+                                                            "type": "int",
                                                         },
                                                         "maximum": {
-                                                            "type": "int"
+                                                            "type": "int",
                                                         },
                                                         "teardown": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
@@ -572,15 +573,15 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                                 "add_path": {
                                                     "options": {
                                                         "receive": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "send": {
                                                             "options": {
                                                                 "include_backup_path": {
-                                                                    "type": "int"
+                                                                    "type": "int",
                                                                 },
                                                                 "multipath": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                                 "path_count": {
                                                                     "required": True,
@@ -589,16 +590,16 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                                                 "path_selection_mode": {
                                                                     "options": {
                                                                         "all_paths": {
-                                                                            "type": "bool"
+                                                                            "type": "bool",
                                                                         },
                                                                         "equal_cost_paths": {
-                                                                            "type": "bool"
+                                                                            "type": "bool",
                                                                         },
                                                                     },
                                                                     "type": "dict",
                                                                 },
                                                                 "prefix_policy": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                             },
                                                             "type": "dict",
@@ -609,10 +610,10 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                                 "aggregate_label": {
                                                     "options": {
                                                         "community": {
-                                                            "type": "str"
+                                                            "type": "str",
                                                         },
                                                         "set": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
@@ -620,10 +621,10 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                                 "aigp": {
                                                     "options": {
                                                         "disable": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "set": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
@@ -632,10 +633,10 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                                 "defer_initial_multipath_build": {
                                                     "options": {
                                                         "maximum_delay": {
-                                                            "type": "int"
+                                                            "type": "int",
                                                         },
                                                         "set": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
@@ -643,19 +644,19 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                                 "delay_route_advertisements": {
                                                     "options": {
                                                         "max_delay_route_age": {
-                                                            "type": "int"
+                                                            "type": "int",
                                                         },
                                                         "max_delay_routing_uptime": {
-                                                            "type": "int"
+                                                            "type": "int",
                                                         },
                                                         "min_delay_inbound_convergence": {
-                                                            "type": "int"
+                                                            "type": "int",
                                                         },
                                                         "min_delay_routing_uptime": {
-                                                            "type": "int"
+                                                            "type": "int",
                                                         },
                                                         "set": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
@@ -663,13 +664,13 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                                 "entropy_label": {
                                                     "options": {
                                                         "import": {
-                                                            "type": "str"
+                                                            "type": "str",
                                                         },
                                                         "no_next_hop_validation": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "set": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
@@ -677,19 +678,19 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                                 "explicit_null": {
                                                     "options": {
                                                         "connected_only": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "set": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
                                                 },
                                                 "extended_nexthop": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "extended_nexthop_color": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "graceful_restart_forwarding_state_bit": {
                                                     "choices": [
@@ -701,80 +702,80 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                                 "legacy_redirect_ip_action": {
                                                     "options": {
                                                         "receive": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "send": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "set": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
                                                 },
                                                 "local_ipv4_address": {
-                                                    "type": "str"
+                                                    "type": "str",
                                                 },
                                                 "loops": {"type": "int"},
                                                 "no_install": {"type": "bool"},
                                                 "no_validate": {"type": "str"},
                                                 "output_queue_priority_expedited": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "output_queue_priority_priority": {
-                                                    "type": "int"
+                                                    "type": "int",
                                                 },
                                                 "per_group_label": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "per_prefix_label": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "prefix_limit": {
                                                     "options": {
                                                         "forever": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "idle_timeout": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "idle_timeout_value": {
-                                                            "type": "int"
+                                                            "type": "int",
                                                         },
                                                         "limit_threshold": {
-                                                            "type": "int"
+                                                            "type": "int",
                                                         },
                                                         "maximum": {
-                                                            "type": "int"
+                                                            "type": "int",
                                                         },
                                                         "teardown": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
                                                 },
                                                 "resolve_vpn": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "rib": {
                                                     "choices": ["inet.3"],
                                                     "type": "str",
                                                 },
                                                 "ribgroup_name": {
-                                                    "type": "str"
+                                                    "type": "str",
                                                 },
                                                 "route_refresh_priority_expedited": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "route_refresh_priority_priority": {
-                                                    "type": "int"
+                                                    "type": "int",
                                                 },
                                                 "secondary_independent_resolution": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "set": {"type": "bool"},
                                                 "strip_nexthop": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "topology": {
                                                     "elements": "dict",
@@ -784,7 +785,7 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                                             "type": "list",
                                                         },
                                                         "name": {
-                                                            "type": "str"
+                                                            "type": "str",
                                                         },
                                                     },
                                                     "type": "list",
@@ -794,31 +795,31 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                                         "file": {
                                                             "options": {
                                                                 "filename": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                                 "files": {
-                                                                    "type": "int"
+                                                                    "type": "int",
                                                                 },
                                                                 "no_world_readable": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                                 "size": {
-                                                                    "type": "int"
+                                                                    "type": "int",
                                                                 },
                                                                 "world_readable": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                             },
                                                             "type": "dict",
                                                         },
                                                         "interval": {
-                                                            "type": "int"
+                                                            "type": "int",
                                                         },
                                                         "labeled_path": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "set": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
@@ -838,10 +839,10 @@ class Bgp_address_familyArgs(object):  # pylint: disable=R0903
                                                     "type": "str",
                                                 },
                                                 "withdraw_priority_expedited": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "withdraw_priority_priority": {
-                                                    "type": "int"
+                                                    "type": "int",
                                                 },
                                             },
                                             "type": "list",

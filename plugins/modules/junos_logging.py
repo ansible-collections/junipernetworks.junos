@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -16,6 +17,8 @@ short_description: Manage logging on network devices
 description:
 - This module provides declarative management of logging on Juniper JUNOS devices.
 version_added: 1.0.0
+extends_documentation_fragment:
+- junipernetworks.junos.junos
 deprecated:
   alternative: junos_logging_global
   why: Updated module released with more functionality.
@@ -141,8 +144,6 @@ notes:
 - Tested against vSRX JUNOS version 15.1X49-D15.4, vqfx-10000 JUNOS Version 15.1X53-D60.4.
 - Recommended connection is C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
 - This module also works with C(local) connections for legacy playbooks.
-extends_documentation_fragment:
-- junipernetworks.junos.junos
 """
 
 EXAMPLES = """
@@ -213,21 +214,18 @@ from ansible.module_utils.common.validation import check_required_if
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
     remove_default_spec,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    junos_argument_spec,
-    tostring,
-)
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    load_config,
-    map_params_to_obj,
-    map_obj_to_ele,
-    to_param_list,
-)
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     commit_configuration,
     discard_changes,
+    load_config,
     locked_config,
+    map_obj_to_ele,
+    map_params_to_obj,
+    to_param_list,
+    tostring,
 )
+
 
 USE_PERSISTENT_CONNECTION = True
 
@@ -277,11 +275,10 @@ def main():
     remove_default_spec(aggregate_spec)
 
     argument_spec = dict(
-        aggregate=dict(type="list", elements="dict", options=aggregate_spec)
+        aggregate=dict(type="list", elements="dict", options=aggregate_spec),
     )
 
     argument_spec.update(element_spec)
-    argument_spec.update(junos_argument_spec)
 
     required_if = [
         ("dest", "host", ["name", "facility", "level"]),
@@ -320,7 +317,7 @@ def main():
         dest = item.get("dest")
         if dest == "console" and item.get("name"):
             module.fail_json(
-                msg="%s and %s are mutually exclusive" % ("console", "name")
+                msg="%s and %s are mutually exclusive" % ("console", "name"),
             )
 
         top = "system/syslog"
@@ -368,7 +365,7 @@ def main():
                     "rotate_frequency",
                     {"xpath": "log-rotate-frequency", "leaf_only": True},
                 ),
-            ]
+            ],
         )
 
         if item.get("level"):

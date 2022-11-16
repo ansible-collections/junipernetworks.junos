@@ -18,6 +18,7 @@
 # Make coding more python3-ish
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 try:
@@ -25,13 +26,10 @@ try:
 except ImportError:
     from xml.etree.ElementTree import fromstring
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
-    patch,
-)
 from ansible_collections.junipernetworks.junos.plugins.modules import junos_rpc
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
-    set_module_args,
-)
+from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import patch
+from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
+
 from .junos_module import TestJunosModule, load_fixture
 
 
@@ -55,17 +53,17 @@ class TestJunosCommandModule(TestJunosModule):
         self.conn = self.mock_conn.start()
 
         self.mock_netconf = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.NetconfConnection"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.NetconfConnection",
         )
         self.netconf_conn = self.mock_netconf.start()
 
         self.mock_netconf_rpc = patch(
-            "ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf.NetconfConnection"
+            "ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf.NetconfConnection",
         )
         self.netconf_rpc = self.mock_netconf_rpc.start()
 
         self.mock_exec_rpc = patch(
-            "ansible_collections.junipernetworks.junos.plugins.modules.junos_rpc.exec_rpc"
+            "ansible_collections.junipernetworks.junos.plugins.modules.junos_rpc.exec_rpc",
         )
         self.exec_rpc = self.mock_exec_rpc.start()
 
@@ -103,7 +101,7 @@ class TestJunosCommandModule(TestJunosModule):
         set_module_args(dict(rpc="get-software-information", output="text"))
         result = self.execute_module(format="text")
         self.assertTrue(
-            result["output_lines"][0].startswith("Hostname: vsrx01")
+            result["output_lines"][0].startswith("Hostname: vsrx01"),
         )
 
     def test_junos_rpc_json(self):
@@ -116,15 +114,15 @@ class TestJunosCommandModule(TestJunosModule):
             dict(
                 rpc="get-software-information",
                 args={"interface": "em0", "media": True},
-            )
+            ),
         )
         self.execute_module(format="xml")
         args, kwargs = self.exec_rpc.call_args
         reply = args[1]
         self.assertTrue(
             reply.find(
-                "<interface>em0</interface><media /></get-software-information>"
-            )
+                "<interface>em0</interface><media /></get-software-information>",
+            ),
         )
 
     def test_junos_rpc_attrs(self):
@@ -133,7 +131,7 @@ class TestJunosCommandModule(TestJunosModule):
                 rpc="load-configuration",
                 output="xml",
                 attrs={"url": "/var/tmp/config.conf"},
-            )
+            ),
         )
         result = self.execute_module(format="xml")
         self.assertTrue(result["xml"].find("<load-success/>"))

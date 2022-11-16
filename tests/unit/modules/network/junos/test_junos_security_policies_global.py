@@ -23,17 +23,13 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
-    patch,
-)
-from ansible_collections.junipernetworks.junos.plugins.modules import (
-    junos_security_policies_global,
-)
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
-    set_module_args,
-)
+from ansible_collections.junipernetworks.junos.plugins.modules import junos_security_policies_global
+from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import patch
+from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
+
 from .junos_module import TestJunosModule, load_fixture
 
 
@@ -44,29 +40,29 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
         super(TestJunosSecurity_policies_globalModule, self).setUp()
 
         self.mock_lock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration",
         )
         self.lock_configuration = self.mock_lock_configuration.start()
 
         self.mock_unlock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration",
         )
         self.unlock_configuration = self.mock_unlock_configuration.start()
 
         self.mock_load_config = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.security_policies_global.security_policies_global.load_config"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.security_policies_global.security_policies_global.load_config",
         )
         self.load_config = self.mock_load_config.start()
 
         self.mock_commit_configuration = patch(
             "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.security_policies_global."
-            "security_policies_global.commit_configuration"
+            "security_policies_global.commit_configuration",
         )
         self.mock_commit_configuration = self.mock_commit_configuration.start()
 
         self.mock_execute_show_command = patch(
             "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.security_policies_global.security_policies_global."
-            "Security_policies_globalFacts._get_device_data"
+            "Security_policies_globalFacts._get_device_data",
         )
         self.execute_show_command = self.mock_execute_show_command.start()
         self.maxDiff = None
@@ -80,7 +76,11 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
         self.mock_execute_show_command.stop()
 
     def load_fixtures(
-        self, commands=None, format="text", changed=False, filename=None
+        self,
+        commands=None,
+        format="text",
+        changed=False,
+        filename=None,
     ):
         def load_from_file(*args, **kwargs):
             output = load_fixture("junos_security_policies_global_config.cfg")
@@ -130,7 +130,7 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
                     },
                 },
                 state="merged",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         commands = (
@@ -145,7 +145,8 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
             "</nc:security>"
         )
         self.assertEqual(
-            self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
+            self.sorted_xml(commands),
+            self.sorted_xml(str(result["commands"])),
         )
 
     def test_junos_security_policies_global_merged_02(self):
@@ -178,7 +179,7 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
                     },
                 },
                 state="merged",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         commands = (
@@ -193,7 +194,8 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
             "</nc:traceoptions></nc:policies></nc:security>"
         )
         self.assertEqual(
-            self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
+            self.sorted_xml(commands),
+            self.sorted_xml(str(result["commands"])),
         )
 
     def test_junos_security_policies_global_merged_03(self):
@@ -201,7 +203,7 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
             dict(
                 config={"traceoptions": {"flag": "compilation"}},
                 state="merged",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         commands = (
@@ -210,12 +212,13 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
             "</nc:traceoptions></nc:policies></nc:security>"
         )
         self.assertEqual(
-            self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
+            self.sorted_xml(commands),
+            self.sorted_xml(str(result["commands"])),
         )
 
     def test_junos_security_policies_global_merged_04(self):
         set_module_args(
-            dict(config={"traceoptions": {"flag": "lookup"}}, state="merged")
+            dict(config={"traceoptions": {"flag": "lookup"}}, state="merged"),
         )
         result = self.execute_module(changed=True)
         commands = (
@@ -224,7 +227,8 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
             "</nc:traceoptions></nc:policies></nc:security>"
         )
         self.assertEqual(
-            self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
+            self.sorted_xml(commands),
+            self.sorted_xml(str(result["commands"])),
         )
 
     def test_junos_security_policies_global_parsed_01(self):
@@ -499,7 +503,7 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
                     },
                 },
                 state="overridden",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         print(result["commands"])
@@ -515,7 +519,8 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
             '</nc:security><nc:policies delete="delete"/>'
         )
         self.assertEqual(
-            self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
+            self.sorted_xml(commands),
+            self.sorted_xml(str(result["commands"])),
         )
 
     def test_junos_security_policies_global_gathered(self):
@@ -568,7 +573,7 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
                     },
                 },
                 state="rendered",
-            )
+            ),
         )
         rendered = (
             '<nc:security xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:policies>'
@@ -585,7 +590,8 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
         print(self.sorted_xml(result["rendered"]))
         print(self.sorted_xml(rendered))
         self.assertEqual(
-            self.sorted_xml(result["rendered"]), self.sorted_xml(rendered)
+            self.sorted_xml(result["rendered"]),
+            self.sorted_xml(rendered),
         )
 
     def test_junos_security_policies_global_replaced_01(self):
@@ -611,7 +617,7 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
                     },
                 },
                 state="replaced",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         commands = (
@@ -626,5 +632,6 @@ class TestJunosSecurity_policies_globalModule(TestJunosModule):
             '</nc:security><nc:policies delete="delete"/>'
         )
         self.assertEqual(
-            self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
+            self.sorted_xml(commands),
+            self.sorted_xml(str(result["commands"])),
         )

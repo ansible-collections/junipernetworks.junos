@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_security_policies_global populate config on connection={{ ansible_connection }}"
 
 - name: Populate config
@@ -18,5 +18,5 @@
       - set security policies traceoptions file size 10240
       - set security policies traceoptions file no-world-readable
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_security_policies_global populate config on connection={{ ansible_connection }}"

@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -75,16 +76,15 @@ commands:
 import re
 
 from ansible.module_utils._text import to_text
-from ansible.module_utils.connection import ConnectionError
 from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.connection import ConnectionError
+from ansible.module_utils.six import iteritems
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import to_list
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    junos_argument_spec,
     get_connection,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    to_list,
-)
-from ansible.module_utils.six import iteritems
+
 
 USE_PERSISTENT_CONNECTION = True
 
@@ -98,11 +98,10 @@ def map_obj_to_commands(updates, module):
             commands.append("delete system services netconf")
     else:
         if have["state"] == "absent" or want["netconf_port"] != have.get(
-            "netconf_port"
+            "netconf_port",
         ):
             commands.append(
-                "set system services netconf ssh port %s"
-                % want["netconf_port"]
+                "set system services netconf ssh port %s" % want["netconf_port"],
             )
 
     return commands
@@ -165,10 +164,9 @@ def main():
         state=dict(default="present", choices=["present", "absent"]),
     )
 
-    argument_spec.update(junos_argument_spec)
-
     module = AnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True
+        argument_spec=argument_spec,
+        supports_check_mode=True,
     )
 
     warnings = list()

@@ -18,6 +18,7 @@
 # Make coding more python3-ish
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 try:
@@ -25,16 +26,12 @@ try:
 except ImportError:
     from xml.etree.ElementTree import fromstring
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
-    patch,
-)
-from ansible_collections.junipernetworks.junos.plugins.modules import (
-    junos_command,
-)
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
-    set_module_args,
-)
+from ansible_collections.junipernetworks.junos.plugins.modules import junos_command
+from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import patch
+from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
+
 from .junos_module import TestJunosModule, load_fixture
+
 
 RPC_CLI_MAP = {"get-software-information": "show version"}
 
@@ -47,32 +44,32 @@ class TestJunosCommandModule(TestJunosModule):
         super(TestJunosCommandModule, self).setUp()
 
         self.mock_conn = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.Connection"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.Connection",
         )
         self.conn = self.mock_conn.start()
 
         self.mock_netconf = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.NetconfConnection"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.NetconfConnection",
         )
         self.netconf_conn = self.mock_netconf.start()
 
         self.mock_exec_rpc = patch(
-            "ansible_collections.junipernetworks.junos.plugins.modules.junos_command.exec_rpc"
+            "ansible_collections.junipernetworks.junos.plugins.modules.junos_command.exec_rpc",
         )
         self.exec_rpc = self.mock_exec_rpc.start()
 
         self.mock_netconf_rpc = patch(
-            "ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf.NetconfConnection"
+            "ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf.NetconfConnection",
         )
         self.netconf_rpc = self.mock_netconf_rpc.start()
 
         self.mock_get_connection = patch(
-            "ansible_collections.junipernetworks.junos.plugins.modules.junos_command.get_connection"
+            "ansible_collections.junipernetworks.junos.plugins.modules.junos_command.get_connection",
         )
         self.get_connection = self.mock_get_connection.start()
 
         self.mock_get_capabilities = patch(
-            "ansible_collections.junipernetworks.junos.plugins.modules.junos_command.get_capabilities"
+            "ansible_collections.junipernetworks.junos.plugins.modules.junos_command.get_capabilities",
         )
         self.get_capabilities = self.mock_get_capabilities.start()
         self.get_capabilities.return_value = {"network_api": "netconf"}
@@ -126,7 +123,7 @@ class TestJunosCommandModule(TestJunosModule):
     def test_junos_command_retries(self):
         wait_for = 'result[0] contains "test string"'
         set_module_args(
-            dict(commands=["show version"], wait_for=wait_for, retries=2)
+            dict(commands=["show version"], wait_for=wait_for, retries=2),
         )
         self.execute_module(failed=True)
         self.assertEqual(self.exec_rpc.call_count, 2)
@@ -137,7 +134,7 @@ class TestJunosCommandModule(TestJunosModule):
             'result[0] contains "test string"',
         ]
         set_module_args(
-            dict(commands=["show version"], wait_for=wait_for, match="any")
+            dict(commands=["show version"], wait_for=wait_for, match="any"),
         )
         self.execute_module()
 
@@ -147,7 +144,7 @@ class TestJunosCommandModule(TestJunosModule):
             'result[0] contains "JUNOS Software Release"',
         ]
         set_module_args(
-            dict(commands=["show version"], wait_for=wait_for, match="all")
+            dict(commands=["show version"], wait_for=wait_for, match="all"),
         )
         self.execute_module()
 
@@ -158,7 +155,7 @@ class TestJunosCommandModule(TestJunosModule):
         ]
         commands = ["show version", "show version"]
         set_module_args(
-            dict(commands=commands, wait_for=wait_for, match="all")
+            dict(commands=commands, wait_for=wait_for, match="all"),
         )
         self.execute_module(failed=True)
 
@@ -170,7 +167,7 @@ class TestJunosCommandModule(TestJunosModule):
 
     def test_junos_command_simple_rpc_text(self):
         set_module_args(
-            dict(rpcs=["get-software-information"], display="text")
+            dict(rpcs=["get-software-information"], display="text"),
         )
         result = self.execute_module(format="text")
         self.assertEqual(len(result["stdout"]), 1)
@@ -178,7 +175,7 @@ class TestJunosCommandModule(TestJunosModule):
 
     def test_junos_command_simple_rpc_json(self):
         set_module_args(
-            dict(rpcs=["get-software-information"], display="json")
+            dict(rpcs=["get-software-information"], display="json"),
         )
         result = self.execute_module(format="json")
         self.assertEqual(len(result["stdout"]), 1)

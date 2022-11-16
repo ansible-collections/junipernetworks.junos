@@ -28,6 +28,7 @@ The module file for junos_prefix_lists
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
@@ -646,6 +647,7 @@ commands:
 
 
 from ansible.module_utils.basic import AnsibleModule
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.prefix_lists.prefix_lists import (
     Prefix_listsArgs,
 )

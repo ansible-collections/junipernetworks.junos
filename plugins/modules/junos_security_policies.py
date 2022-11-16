@@ -28,6 +28,7 @@ The module file for junos_security_policies
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
@@ -2668,6 +2669,7 @@ parsed:
 
 
 from ansible.module_utils.basic import AnsibleModule
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.security_policies.security_policies import (
     Security_policiesArgs,
 )

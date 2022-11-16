@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_ospfv2 initial config on connection={{ ansible_connection }}"
 
 - name: Set initial configuration for ospf
@@ -14,5 +14,5 @@
             interfaces:
               - name: ge-2/2/0.0
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_ospfv2 initial config on connection={{ ansible_connection }}"

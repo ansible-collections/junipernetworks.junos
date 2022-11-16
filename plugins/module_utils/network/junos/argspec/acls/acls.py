@@ -27,6 +27,7 @@ The arg spec for the junos_acls module
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -64,7 +65,7 @@ class AclsArgs(object):  # pylint: disable=R0903
                                             "elements": "dict",
                                             "type": "list",
                                             "options": {
-                                                "name": {"type": "str"}
+                                                "name": {"type": "str"},
                                             },
                                         },
                                         "port_protocol": {
@@ -75,7 +76,7 @@ class AclsArgs(object):  # pylint: disable=R0903
                                                     "type": "dict",
                                                     "options": {
                                                         "start": {
-                                                            "type": "int"
+                                                            "type": "int",
                                                         },
                                                         "end": {"type": "int"},
                                                     },
@@ -92,7 +93,7 @@ class AclsArgs(object):  # pylint: disable=R0903
                                             "elements": "dict",
                                             "type": "list",
                                             "options": {
-                                                "name": {"type": "str"}
+                                                "name": {"type": "str"},
                                             },
                                         },
                                         "port_protocol": {
@@ -103,7 +104,7 @@ class AclsArgs(object):  # pylint: disable=R0903
                                                     "type": "dict",
                                                     "options": {
                                                         "start": {
-                                                            "type": "int"
+                                                            "type": "int",
                                                         },
                                                         "end": {"type": "int"},
                                                     },
@@ -120,64 +121,64 @@ class AclsArgs(object):  # pylint: disable=R0903
                                             "type": "dict",
                                             "options": {
                                                 "dod_host_prohibited": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "dod_net_prohibited": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "echo": {"type": "bool"},
                                                 "echo_reply": {"type": "bool"},
                                                 "host_tos_unreachable": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "host_redirect": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "host_tos_redirect": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "host_unknown": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "host_unreachable": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "net_redirect": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "net_tos_redirect": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "network_unknown": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "port_unreachable": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "protocol_unreachable": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "reassembly_timeout": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "redirect": {"type": "bool"},
                                                 "router_advertisement": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "router_solicitation": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "source_route_failed": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "time_exceeded": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "ttl_exceeded": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                             },
-                                        }
+                                        },
                                     },
                                 },
                                 "grant": {

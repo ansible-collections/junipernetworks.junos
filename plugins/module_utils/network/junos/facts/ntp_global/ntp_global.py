@@ -11,18 +11,20 @@ based on the configuration.
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
+
+from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
-from copy import deepcopy
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
-    utils,
-)
+from ansible.module_utils.six import string_types
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.ntp_global.ntp_global import (
     Ntp_globalArgs,
 )
-from ansible.module_utils.six import string_types
+
 
 try:
     from lxml import etree
@@ -88,7 +90,7 @@ class Ntp_globalFacts(object):
 
         if isinstance(data, string_types):
             data = etree.fromstring(
-                to_bytes(data, errors="surrogate_then_replace")
+                to_bytes(data, errors="surrogate_then_replace"),
             )
         objs = {}
         resources = data.xpath("configuration/system/ntp")
@@ -101,7 +103,8 @@ class Ntp_globalFacts(object):
         if objs:
             facts["ntp_global"] = {}
             params = utils.validate_config(
-                self.argument_spec, {"config": objs}
+                self.argument_spec,
+                {"config": objs},
             )
 
             facts["ntp_global"] = utils.remove_empties(params["config"])
@@ -112,7 +115,8 @@ class Ntp_globalFacts(object):
         if not HAS_XMLTODICT:
             self._module.fail_json(msg=missing_required_lib("xmltodict"))
         xml_dict = xmltodict.parse(
-            etree.tostring(xml_root), dict_constructor=dict
+            etree.tostring(xml_root),
+            dict_constructor=dict,
         )
         return xml_dict
 
@@ -170,9 +174,7 @@ class Ntp_globalFacts(object):
                 if "version" in broadcasts.keys():
                     broadcast_dict["version"] = broadcasts["version"]
                 if "routing-instance-name" in broadcasts.keys():
-                    broadcast_dict["routing_instance_name"] = broadcasts[
-                        "routing-instance-name"
-                    ]
+                    broadcast_dict["routing_instance_name"] = broadcasts["routing-instance-name"]
                 broadcast_lst.append(broadcast_dict)
 
             else:
@@ -185,9 +187,7 @@ class Ntp_globalFacts(object):
                     if "version" in broadcast.keys():
                         broadcast_dict["version"] = broadcast["version"]
                     if "routing-instance-name" in broadcast.keys():
-                        broadcast_dict["routing_instance_name"] = broadcast[
-                            "routing-instance-name"
-                        ]
+                        broadcast_dict["routing_instance_name"] = broadcast["routing-instance-name"]
                     broadcast_lst.append(broadcast_dict)
                     broadcast_dict = {}
             if broadcast_lst:
@@ -200,14 +200,12 @@ class Ntp_globalFacts(object):
         # Read interval-range node
         if "interval-range" in conf.keys():
             ntp_global_config["interval_range"] = conf["interval-range"].get(
-                "value"
+                "value",
             )
 
         # Read multicast-client node
         if "multicast-client" in conf.keys():
-            ntp_global_config["multicast_client"] = conf[
-                "multicast-client"
-            ].get("address")
+            ntp_global_config["multicast_client"] = conf["multicast-client"].get("address")
 
         # Read peer node
         if "peer" in conf.keys():
@@ -252,9 +250,7 @@ class Ntp_globalFacts(object):
                 if "version" in servers.keys():
                     server_dict["version"] = servers["version"]
                 if "routing-instance" in servers.keys():
-                    server_dict["routing-instance"] = servers[
-                        "routing-instance"
-                    ]
+                    server_dict["routing-instance"] = servers["routing-instance"]
                 server_lst.append(server_dict)
 
             else:
@@ -267,9 +263,7 @@ class Ntp_globalFacts(object):
                     if "version" in server.keys():
                         server_dict["version"] = server["version"]
                     if "routing-instance" in server.keys():
-                        server_dict["routing_instance"] = server[
-                            "routing-instance"
-                        ]
+                        server_dict["routing_instance"] = server["routing-instance"]
                     server_lst.append(server_dict)
                     server_dict = {}
             if server_lst:
@@ -281,24 +275,16 @@ class Ntp_globalFacts(object):
             source_addresses = conf.get("source-address")
             source_address_dict = {}
             if isinstance(source_addresses, dict):
-                source_address_dict["source_address"] = source_addresses[
-                    "name"
-                ]
+                source_address_dict["source_address"] = source_addresses["name"]
                 if "routing-instance" in source_addresses.keys():
-                    source_address_dict["routing_instance"] = source_addresses[
-                        "routing-instance"
-                    ]
+                    source_address_dict["routing_instance"] = source_addresses["routing-instance"]
                 source_address_lst.append(source_address_dict)
 
             else:
                 for source_address in source_addresses:
-                    source_address_dict["source_address"] = source_address[
-                        "name"
-                    ]
+                    source_address_dict["source_address"] = source_address["name"]
                     if "routing-instance" in source_address.keys():
-                        source_address_dict[
-                            "routing_instance"
-                        ] = source_address["routing-instance"]
+                        source_address_dict["routing_instance"] = source_address["routing-instance"]
                     source_address_lst.append(source_address_dict)
                     source_address_dict = {}
             if source_address_lst:

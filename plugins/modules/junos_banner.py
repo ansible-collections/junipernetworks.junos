@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -17,6 +18,8 @@ description:
 - This will configure both login and motd banners on network devices. It allows playbooks
   to add or remote banner text from the active running configuration.
 version_added: 1.0.0
+extends_documentation_fragment:
+- junipernetworks.junos.junos
 options:
   banner:
     description:
@@ -55,8 +58,6 @@ notes:
 - Tested against vSRX JUNOS version 15.1X49-D15.4, vqfx-10000 JUNOS Version 15.1X53-D60.4.
 - Recommended connection is C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
 - This module also works with C(local) connections for legacy playbooks.
-extends_documentation_fragment:
-- junipernetworks.junos.junos
 """
 
 EXAMPLES = """
@@ -105,20 +106,17 @@ diff.prepared:
 import collections
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    junos_argument_spec,
-    tostring,
-)
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    load_config,
-    map_params_to_obj,
-    map_obj_to_ele,
-)
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     commit_configuration,
     discard_changes,
+    load_config,
     locked_config,
+    map_obj_to_ele,
+    map_params_to_obj,
+    tostring,
 )
+
 
 USE_PERSISTENT_CONNECTION = True
 
@@ -139,8 +137,6 @@ def main():
         state=dict(default="present", choices=["present", "absent"]),
         active=dict(default=True, type="bool"),
     )
-
-    argument_spec.update(junos_argument_spec)
 
     required_if = [("state", "present", ("text",))]
 
@@ -165,13 +161,11 @@ def main():
             (
                 "text",
                 {
-                    "xpath": "message"
-                    if module.params["banner"] == "login"
-                    else "announcement",
+                    "xpath": "message" if module.params["banner"] == "login" else "announcement",
                     "leaf_only": True,
                 },
-            )
-        ]
+            ),
+        ],
     )
 
     validate_param_values(module, param_to_xpath_map)

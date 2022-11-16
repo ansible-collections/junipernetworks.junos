@@ -11,22 +11,23 @@ based on the configuration.
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
-    utils,
-)
+from ansible.module_utils.six import string_types
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.interfaces.interfaces import (
     InterfacesArgs,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.utils.utils import (
     get_resource_config,
 )
-from ansible.module_utils.six import string_types
+
 
 try:
     from lxml import etree
@@ -91,7 +92,7 @@ class InterfacesFacts(object):
 
         if isinstance(data, string_types):
             data = etree.fromstring(
-                to_bytes(data, errors="surrogate_then_replace")
+                to_bytes(data, errors="surrogate_then_replace"),
             )
 
         resources = data.xpath("configuration/interfaces/interface")
@@ -106,7 +107,8 @@ class InterfacesFacts(object):
         if objs:
             facts["interfaces"] = []
             params = utils.validate_config(
-                self.argument_spec, {"config": objs}
+                self.argument_spec,
+                {"config": objs},
             )
             for cfg in params["config"]:
                 facts["interfaces"].append(utils.remove_empties(cfg))
@@ -119,7 +121,8 @@ class InterfacesFacts(object):
             self._module.fail_json(msg=missing_required_lib("xmltodict"))
 
         xml_dict = xmltodict.parse(
-            etree.tostring(xml_root), dict_constructor=dict
+            etree.tostring(xml_root),
+            dict_constructor=dict,
         )
         return xml_dict
 
@@ -141,10 +144,12 @@ class InterfacesFacts(object):
         config["speed"] = utils.get_xml_conf_arg(conf, "speed")
         config["duplex"] = utils.get_xml_conf_arg(conf, "link-mode")
         config["hold_time"]["down"] = utils.get_xml_conf_arg(
-            conf, "hold-time/down"
+            conf,
+            "hold-time/down",
         )
         config["hold_time"]["up"] = utils.get_xml_conf_arg(
-            conf, "hold-time/up"
+            conf,
+            "hold-time/up",
         )
         disable = utils.get_xml_conf_arg(conf, "disable", data="tag")
         if disable:

@@ -1,28 +1,25 @@
-
 {
-    "interfaces" : [
+  "interfaces": [
     {
-        "interface" : [
+      "interface": [
         {
-            "name" :
+          "name": {
+            "data": "ae11"
+          },
+          "unit": [
             {
-                "data" : "ae11"
-            },
-            "unit" : [
-            {
-                "name" :
+              "name": {
+                "data": "0"
+              },
+              "description": [
                 {
-                    "data" : "0"
-                },
-                "description" : [
-                {
-                    "data" : "Test"
+                  "data": "Test"
                 }
-                ]
+              ]
             }
-            ]
+          ]
         }
-        ]
+      ]
     }
-    ]
+  ]
 }

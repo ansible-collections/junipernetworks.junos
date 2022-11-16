@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -268,30 +269,27 @@ time:
   type: str
   sample: "22:28:34"
 """
-import re
 import json
+import re
 
+from ansible.module_utils._text import to_native, to_text
 from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.six import string_types
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
     exec_rpc,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    get_diff,
-    load_config,
-    get_configuration,
-)
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     commit_configuration,
     discard_changes,
-    locked_config,
-)
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    junos_argument_spec,
+    get_configuration,
+    get_diff,
+    load_config,
     load_configuration,
+    locked_config,
     tostring,
 )
-from ansible.module_utils.six import string_types
-from ansible.module_utils._text import to_native, to_text
+
 
 try:
     from lxml.etree import Element, fromstring
@@ -374,13 +372,13 @@ def configure_device(module, warnings, candidate):
 
     if module.params["src"]:
         config_format = module.params["src_format"] or guess_format(
-            str(candidate)
+            str(candidate),
         )
         if config_format == "set":
             kwargs.update({"format": "text", "action": "set"})
         else:
             kwargs.update(
-                {"format": config_format, "action": module.params["update"]}
+                {"format": config_format, "action": module.params["update"]},
             )
 
     if isinstance(candidate, string_types):
@@ -402,7 +400,8 @@ def main():
         filename=dict(),
         dir_path=dict(type="path"),
         backup_format=dict(
-            default="set", choices=["xml", "text", "set", "json"]
+            default="set",
+            choices=["xml", "text", "set", "json"],
         ),
     )
     argument_spec = dict(
@@ -411,7 +410,8 @@ def main():
         src_format=dict(choices=["xml", "text", "set", "json"]),
         # update operations
         update=dict(
-            default="merge", choices=["merge", "override", "replace", "update"]
+            default="merge",
+            choices=["merge", "override", "replace", "update"],
         ),
         # deprecated replace in Ansible 2.3
         replace=dict(type="bool"),
@@ -425,8 +425,6 @@ def main():
         rollback=dict(type="int"),
         zeroize=dict(default=False, type="bool"),
     )
-
-    argument_spec.update(junos_argument_spec)
 
     mutually_exclusive = [("lines", "src", "rollback", "zeroize")]
 
@@ -455,17 +453,17 @@ def main():
         else:
             if conf_format in ["set", "text"]:
                 reply = reply.find(
-                    ".//configuration-%s" % conf_format
+                    ".//configuration-%s" % conf_format,
                 ).text.strip()
             elif conf_format in "xml":
                 reply = str(
-                    tostring(reply.find(".//configuration"), pretty_print=True)
+                    tostring(reply.find(".//configuration"), pretty_print=True),
                 ).strip()
             elif conf_format in "json":
                 reply = str(reply.xpath("//rpc-reply/text()")[0]).strip()
             if not isinstance(reply, str):
                 module.fail_json(
-                    msg="unable to format retrieved device configuration"
+                    msg="unable to format retrieved device configuration",
                 )
             result["__backup__"] = reply
 
@@ -506,7 +504,7 @@ def main():
                                         confirm,
                                         errors="surrogate_then_replace",
                                     ),
-                                }
+                                },
                             )
                         commit_configuration(module, **kwargs)
                     else:

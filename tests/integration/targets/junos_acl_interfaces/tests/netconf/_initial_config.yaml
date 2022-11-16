@@ -1,9 +1,10 @@
 ---
-- debug:
-    msg: "START junos_acl_interfaces ACL interfaces initial config on connection={{ ansible_connection }}"
+- name: Debug
+  ansible.builtin.debug:
+    msg: "START junipernetworks.junos.junos_acl_interfaces ACL interfaces initial config on connection={{ ansible_connection }}"
 
 - name: Set initial state for firewalls and interfaces
-  junos_acl_interfaces:
+  junipernetworks.junos.junos_acl_interfaces:
     config:
       - name: ge-1/0/0
         access_groups:
@@ -14,5 +15,6 @@
               - name: second_acl
                 direction: out
 
-- debug:
-    msg: "END junos_acl_interfaces ACL interfaces initial config on connection={{ ansible_connection }}"
+- name: Debug
+  ansible.builtin.debug:
+    msg: "END junipernetworks.junos.junos_acl_interfaces ACL interfaces initial config on connection={{ ansible_connection }}"

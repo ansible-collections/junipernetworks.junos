@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_security_policies reset config on connection={{ ansible_connection }}"
 
 - name: Reset the config releavent to security policies resources
@@ -18,5 +18,5 @@
     commands:
       - clear security pki local-certificate all
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_security_policies reset config on connection={{ ansible_connection }}"

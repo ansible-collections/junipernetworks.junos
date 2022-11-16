@@ -12,28 +12,30 @@ created
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    locked_config,
-    load_config,
-    commit_configuration,
-    discard_changes,
-    tostring,
-)
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
     ConfigBase,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    to_list,
-    remove_empties,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
+    build_child_xml_node,
+    build_root_xml_node,
 )
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
+    remove_empties,
+    to_list,
+)
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
     Facts,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
-    build_root_xml_node,
-    build_child_xml_node,
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
+    commit_configuration,
+    discard_changes,
+    load_config,
+    locked_config,
+    tostring,
 )
 
 
@@ -56,7 +58,9 @@ class Ntp_global(ConfigBase):
         :returns: The current configuration as a dictionary
         """
         facts, _warnings = Facts(self._module).get_facts(
-            self.gather_subset, self.gather_network_resources, data=data
+            self.gather_subset,
+            self.gather_network_resources,
+            data=data,
         )
         ntp_global_facts = facts["ansible_network_resources"].get("ntp_global")
         if not ntp_global_facts:
@@ -85,7 +89,7 @@ class Ntp_global(ConfigBase):
             running_config = self._module.params["running_config"]
             if not running_config:
                 self._module.fail_json(
-                    msg="value of running_config parameter must not be empty for state parsed"
+                    msg="value of running_config parameter must not be empty for state parsed",
                 )
             result["parsed"] = self.get_ntp_global_facts(data=running_config)
         elif self.state == "rendered":
@@ -147,14 +151,11 @@ class Ntp_global(ConfigBase):
         """
         self.root = build_root_xml_node("system")
         state = self._module.params["state"]
-        if (
-            state in ("merged", "replaced", "rendered", "overridden")
-            and not want
-        ):
+        if state in ("merged", "replaced", "rendered", "overridden") and not want:
             self._module.fail_json(
                 msg="value of config parameter must not be empty for state {0}".format(
-                    state
-                )
+                    state,
+                ),
             )
         config_xmls = []
         if state == "deleted":
@@ -207,7 +208,9 @@ class Ntp_global(ConfigBase):
         # add boot_server node
         if "boot_server" in want.keys():
             build_child_xml_node(
-                ntp_node, "boot-server", want.get("boot_server")
+                ntp_node,
+                "boot-server",
+                want.get("boot_server"),
             )
 
         # add broadcast node
@@ -217,12 +220,16 @@ class Ntp_global(ConfigBase):
                 broadcast_node = build_child_xml_node(ntp_node, "broadcast")
                 # add name node
                 build_child_xml_node(
-                    broadcast_node, "name", item.get("address")
+                    broadcast_node,
+                    "name",
+                    item.get("address"),
                 )
                 # add key node
                 if "key" in item.keys():
                     build_child_xml_node(
-                        broadcast_node, "key", item.get("key")
+                        broadcast_node,
+                        "key",
+                        item.get("key"),
                     )
                 # add routing-instance-name node
                 if "routing_instance_name" in item.keys():
@@ -234,12 +241,16 @@ class Ntp_global(ConfigBase):
                 # add ttl node
                 if "ttl" in item.keys():
                     build_child_xml_node(
-                        broadcast_node, "ttl", item.get("ttl")
+                        broadcast_node,
+                        "ttl",
+                        item.get("ttl"),
                     )
                 # add version node
                 if "version" in item.keys():
                     build_child_xml_node(
-                        broadcast_node, "version", item.get("version")
+                        broadcast_node,
+                        "version",
+                        item.get("version"),
                     )
 
         # add broadcast_client node
@@ -249,13 +260,17 @@ class Ntp_global(ConfigBase):
         # add interval_range node
         if "interval_range" in want.keys():
             build_child_xml_node(
-                ntp_node, "interval-range", want.get("interval_range")
+                ntp_node,
+                "interval-range",
+                want.get("interval_range"),
             )
 
         # add multicast_client node
         if "multicast_client" in want.keys():
             build_child_xml_node(
-                ntp_node, "multicast-client", want.get("multicast_client")
+                ntp_node,
+                "multicast-client",
+                want.get("multicast_client"),
             )
 
         # add peers node
@@ -274,7 +289,9 @@ class Ntp_global(ConfigBase):
                 # add version node
                 if "version" in item.keys():
                     build_child_xml_node(
-                        peer_node, "version", item.get("version")
+                        peer_node,
+                        "version",
+                        item.get("version"),
                     )
 
         # add server node
@@ -287,7 +304,9 @@ class Ntp_global(ConfigBase):
                 # add key node
                 if "key_id" in item.keys():
                     build_child_xml_node(
-                        server_node, "key", item.get("key_id")
+                        server_node,
+                        "key",
+                        item.get("key_id"),
                     )
                 # add routing-instance node
                 if "routing_instance" in item.keys():
@@ -302,7 +321,9 @@ class Ntp_global(ConfigBase):
                 # add version node
                 if "version" in item.keys():
                     build_child_xml_node(
-                        server_node, "version", item.get("version")
+                        server_node,
+                        "version",
+                        item.get("version"),
                     )
         # add source_address node
         if "source_addresses" in want.keys():
@@ -311,7 +332,9 @@ class Ntp_global(ConfigBase):
                 source_node = build_child_xml_node(ntp_node, "source-address")
                 # add name node
                 build_child_xml_node(
-                    source_node, "name", item.get("source_address")
+                    source_node,
+                    "name",
+                    item.get("source_address"),
                 )
                 # add routing-instance node
                 if "routing_instance" in item.keys():
@@ -326,11 +349,15 @@ class Ntp_global(ConfigBase):
             threshold_node = build_child_xml_node(ntp_node, "threshold")
             if "value" in threshold.keys():
                 build_child_xml_node(
-                    threshold_node, "value", threshold.get("value")
+                    threshold_node,
+                    "value",
+                    threshold.get("value"),
                 )
             if "action" in threshold.keys():
                 build_child_xml_node(
-                    threshold_node, "action", threshold.get("action")
+                    threshold_node,
+                    "action",
+                    threshold.get("action"),
                 )
 
         # add trusted key

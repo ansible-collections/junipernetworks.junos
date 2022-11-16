@@ -26,6 +26,7 @@ The arg spec for the junos_ospf_interfaces module
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -97,13 +98,13 @@ class Ospf_interfacesArgs(object):  # pylint: disable=R0903
                                 "metric": {"type": "int"},
                                 "mtu": {"type": "int"},
                                 "no_advertise_adjacency_segment": {
-                                    "type": "bool"
+                                    "type": "bool",
                                 },
                                 "no_eligible_backup": {"type": "bool"},
                                 "no_eligible_remote_backup": {"type": "bool"},
                                 "no_interface_state_traps": {"type": "bool"},
                                 "no_neighbor_down_notification": {
-                                    "type": "bool"
+                                    "type": "bool",
                                 },
                                 "node_link_protection": {"type": "str"},
                                 "poll_interval": {"type": "int"},

@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -92,14 +93,15 @@ output_lines:
   type: list
 """
 from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.six import iteritems
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
     exec_rpc,
 )
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    junos_argument_spec,
     tostring,
 )
-from ansible.module_utils.six import iteritems
+
 
 USE_PERSISTENT_CONNECTION = True
 
@@ -118,10 +120,9 @@ def main():
         output=dict(default="xml", choices=["xml", "json", "text"]),
     )
 
-    argument_spec.update(junos_argument_spec)
-
     module = AnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=False
+        argument_spec=argument_spec,
+        supports_check_mode=False,
     )
 
     warnings = list()

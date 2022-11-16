@@ -23,17 +23,13 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
-    patch,
-)
-from ansible_collections.junipernetworks.junos.plugins.modules import (
-    junos_interfaces,
-)
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
-    set_module_args,
-)
+from ansible_collections.junipernetworks.junos.plugins.modules import junos_interfaces
+from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import patch
+from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
+
 from .junos_module import TestJunosModule, load_fixture
 
 
@@ -43,31 +39,31 @@ class TestJunosInterfacesModule(TestJunosModule):
     def setUp(self):
         super(TestJunosInterfacesModule, self).setUp()
         self.mock_lock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration",
         )
         self.lock_configuration = self.mock_lock_configuration.start()
         self.mock_unlock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration",
         )
         self.unlock_configuration = self.mock_unlock_configuration.start()
         self.mock_load_config = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.interfaces.interfaces.load_config"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.interfaces.interfaces.load_config",
         )
         self.load_config = self.mock_load_config.start()
 
         self.mock_validate_config = patch(
-            "ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils.validate_config"
+            "ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils.validate_config",
         )
         self.validate_config = self.mock_validate_config.start()
 
         self.mock_commit_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.interfaces.interfaces.commit_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.interfaces.interfaces.commit_configuration",
         )
         self.mock_commit_configuration = self.mock_commit_configuration.start()
 
         self.mock_get_config = patch(
             "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.interfaces.interfaces."
-            "InterfacesFacts.get_config"
+            "InterfacesFacts.get_config",
         )
         self.get_config = self.mock_get_config.start()
 
@@ -82,11 +78,11 @@ class TestJunosInterfacesModule(TestJunosModule):
 
     def load_fixtures(self, commands=None, format="text", changed=False):
         self.get_config.return_value = load_fixture(
-            "junos_interfaces_config.xml"
+            "junos_interfaces_config.xml",
         )
         if changed:
             self.load_config.return_value = load_fixture(
-                "get_configuration_rpc_reply_diff.txt"
+                "get_configuration_rpc_reply_diff.txt",
             )
         else:
             self.load_config.return_value = None
@@ -100,10 +96,10 @@ class TestJunosInterfacesModule(TestJunosModule):
                         description="This is configured with ansible resource module",
                         mtu=1024,
                         speed="100m",
-                    )
+                    ),
                 ],
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -111,14 +107,14 @@ class TestJunosInterfacesModule(TestJunosModule):
             "<nc:description>This is configured with ansible resource module</nc:description>"
             "<nc:speed>100m</nc:speed>"
             "<nc:mtu>1024</nc:mtu>"
-            "</nc:interface></nc:interfaces>"
+            "</nc:interface></nc:interfaces>",
         ]
         result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_interfaces_merged_idempotent(self):
         self.get_config.return_value = load_fixture(
-            "junos_interfaces_config.xml"
+            "junos_interfaces_config.xml",
         )
         src = load_fixture("junos_interfaces.cfg", content="str")
         set_module_args(dict(src=src))
@@ -126,11 +122,12 @@ class TestJunosInterfacesModule(TestJunosModule):
             dict(
                 config=[
                     dict(
-                        name="ge-0/0/0", description="Configured by Ansi-Team"
-                    )
+                        name="ge-0/0/0",
+                        description="Configured by Ansi-Team",
+                    ),
                 ],
                 state="merged",
-            )
+            ),
         )
         self.execute_module(changed=False, commands=[])
 
@@ -143,10 +140,10 @@ class TestJunosInterfacesModule(TestJunosModule):
                         description="This is configured with ansible",
                         mtu=1024,
                         speed="100m",
-                    )
+                    ),
                 ],
                 state="replaced",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
 
@@ -154,14 +151,14 @@ class TestJunosInterfacesModule(TestJunosModule):
             '<nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:interface><nc:name>ge-0/0/2</nc:name>"
             "<nc:description>This is configured with ansible</nc:description>"
-            "<nc:speed>100m</nc:speed><nc:mtu>1024</nc:mtu></nc:interface></nc:interfaces>"
+            "<nc:speed>100m</nc:speed><nc:mtu>1024</nc:mtu></nc:interface></nc:interfaces>",
         ]
 
         self.assertEqual(sorted(result["commands"]), commands)
 
     def test_junos_interfaces_replaced_idempotent(self):
         self.get_config.return_value = load_fixture(
-            "junos_interfaces_config.xml"
+            "junos_interfaces_config.xml",
         )
         src = load_fixture("junos_interfaces.cfg", content="str")
         set_module_args(dict(src=src))
@@ -169,11 +166,12 @@ class TestJunosInterfacesModule(TestJunosModule):
             dict(
                 config=[
                     dict(
-                        name="ge-0/0/0", description="Configured by Ansi-Team"
-                    )
+                        name="ge-0/0/0",
+                        description="Configured by Ansi-Team",
+                    ),
                 ],
                 state="replaced",
-            )
+            ),
         )
 
         self.execute_module(changed=False, commands=[])
@@ -187,23 +185,23 @@ class TestJunosInterfacesModule(TestJunosModule):
                         description="This is configured with ansible",
                         mtu=1024,
                         speed="100m",
-                    )
+                    ),
                 ],
                 state="overridden",
-            )
+            ),
         )
         commands = [
             '<nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:interface><nc:name>ge-0/0/2</nc:name>"
             "<nc:description>This is configured with ansible</nc:description>"
-            "<nc:speed>100m</nc:speed><nc:mtu>1024</nc:mtu></nc:interface></nc:interfaces>"
+            "<nc:speed>100m</nc:speed><nc:mtu>1024</nc:mtu></nc:interface></nc:interfaces>",
         ]
         result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), commands)
 
     def test_junos_interfaces_overridden_idempotent(self):
         self.get_config.return_value = load_fixture(
-            "junos_interfaces_config.xml"
+            "junos_interfaces_config.xml",
         )
         src = load_fixture("junos_interfaces.cfg", content="str")
         set_module_args(dict(src=src))
@@ -211,11 +209,12 @@ class TestJunosInterfacesModule(TestJunosModule):
             dict(
                 config=[
                     dict(
-                        name="ge-0/0/0", description="Configured by Ansi-Team"
-                    )
+                        name="ge-0/0/0",
+                        description="Configured by Ansi-Team",
+                    ),
                 ],
                 state="overridden",
-            )
+            ),
         )
 
         self.execute_module(changed=False, commands=[])
@@ -224,7 +223,7 @@ class TestJunosInterfacesModule(TestJunosModule):
         set_module_args(dict(config=[dict(name="ge-0/0/2")], state="deleted"))
 
         commands = [
-            '<nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>'
+            '<nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>',
         ]
         result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), commands)
@@ -242,10 +241,10 @@ class TestJunosInterfacesModule(TestJunosModule):
                         description="This is configured with ansible resource module",
                         mtu=1024,
                         speed="100m",
-                    )
+                    ),
                 ],
                 state="rendered",
-            )
+            ),
         )
         commands = [
             '<nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -253,6 +252,6 @@ class TestJunosInterfacesModule(TestJunosModule):
             "<nc:description>This is configured with ansible resource module</nc:description>"
             "<nc:speed>100m</nc:speed>"
             "<nc:mtu>1024</nc:mtu>"
-            "</nc:interface></nc:interfaces>"
+            "</nc:interface></nc:interfaces>",
         ]
         self.execute_module(changed=False, commands=commands)

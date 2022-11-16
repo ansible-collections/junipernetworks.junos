@@ -1,5 +1,6 @@
 ---
-- debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: START junos_bgp_global empty_config integration tests on connection={{
       ansible_connection }}
 
@@ -10,7 +11,8 @@
     config:
     state: merged
 
-- assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.msg == 'value of config parameter must not be empty for state merged'
 
@@ -21,7 +23,8 @@
     config:
     state: replaced
 
-- assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.msg == 'value of config parameter must not be empty for state replaced'
 
@@ -32,7 +35,8 @@
     running_config:
     state: parsed
 
-- assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.msg == 'value of running_config parameter must not be empty for state
         parsed'
@@ -44,6 +48,7 @@
     config:
     state: rendered
 
-- assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.msg == 'value of config parameter must not be empty for state rendered'

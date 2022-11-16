@@ -18,18 +18,13 @@
 # Make coding more python3-ish
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
-    patch,
-    MagicMock,
-)
-from ansible_collections.junipernetworks.junos.plugins.modules import (
-    junos_ping,
-)
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
-    set_module_args,
-)
+from ansible_collections.junipernetworks.junos.plugins.modules import junos_ping
+from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import MagicMock, patch
+from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
+
 from .junos_module import TestJunosModule, load_fixture
 
 
@@ -40,7 +35,7 @@ class TestJunosPingModule(TestJunosModule):
         super(TestJunosPingModule, self).setUp()
 
         self.mock_get_connection = patch(
-            "ansible_collections.junipernetworks.junos.plugins.modules.junos_ping.get_connection"
+            "ansible_collections.junipernetworks.junos.plugins.modules.junos_ping.get_connection",
         )
         self.get_connection = self.mock_get_connection.start()
 
@@ -55,8 +50,9 @@ class TestJunosPingModule(TestJunosModule):
         set_module_args(dict(count=2, dest="10.10.10.10"))
         self.conn.get = MagicMock(
             return_value=load_fixture(
-                "junos_ping_ping_10.10.10.10_count_2", content="str"
-            )
+                "junos_ping_ping_10.10.10.10_count_2",
+                content="str",
+            ),
         )
         result = self.execute_module()
         self.assertEqual(result["commands"], "ping 10.10.10.10 count 2")
@@ -65,8 +61,9 @@ class TestJunosPingModule(TestJunosModule):
         set_module_args(dict(count=4, dest="10.10.10.20", state="absent"))
         self.conn.get = MagicMock(
             return_value=load_fixture(
-                "junos_ping_ping_10.10.10.20_count_4", content="str"
-            )
+                "junos_ping_ping_10.10.10.20_count_4",
+                content="str",
+            ),
         )
         result = self.execute_module()
         self.assertEqual(result["commands"], "ping 10.10.10.20 count 4")
@@ -76,8 +73,9 @@ class TestJunosPingModule(TestJunosModule):
         set_module_args(dict(count=2, dest="10.10.10.10", state="absent"))
         self.conn.get = MagicMock(
             return_value=load_fixture(
-                "junos_ping_ping_10.10.10.10_count_2", content="str"
-            )
+                "junos_ping_ping_10.10.10.10_count_2",
+                content="str",
+            ),
         )
         self.execute_module(failed=True)
 
@@ -86,8 +84,9 @@ class TestJunosPingModule(TestJunosModule):
         set_module_args(dict(count=4, dest="10.10.10.20"))
         self.conn.get = MagicMock(
             return_value=load_fixture(
-                "junos_ping_ping_10.10.10.20_count_4", content="str"
-            )
+                "junos_ping_ping_10.10.10.20_count_4",
+                content="str",
+            ),
         )
         self.execute_module(failed=True)
 
@@ -96,8 +95,9 @@ class TestJunosPingModule(TestJunosModule):
         set_module_args(dict(count=4, dest="10.10.10.20"))
         self.conn.get = MagicMock(
             return_value=load_fixture(
-                "junos_ping_ping_10.10.10.20_count_4", content="str"
-            )
+                "junos_ping_ping_10.10.10.20_count_4",
+                content="str",
+            ),
         )
         result = self.execute_module(failed=True)
         self.assertEqual(result["packet_loss"], "100%")
@@ -108,8 +108,9 @@ class TestJunosPingModule(TestJunosModule):
         set_module_args(dict(count=2, dest="10.10.10.10"))
         self.conn.get = MagicMock(
             return_value=load_fixture(
-                "junos_ping_ping_10.10.10.10_count_2", content="str"
-            )
+                "junos_ping_ping_10.10.10.10_count_2",
+                content="str",
+            ),
         )
         result = self.execute_module()
         self.assertEqual(result["commands"], "ping 10.10.10.10 count 2")
@@ -123,17 +124,18 @@ class TestJunosPingModule(TestJunosModule):
 
     def test_junos_ping_success_stats_with_options(self):
         set_module_args(
-            dict(count=5, size=512, interval=2, dest="10.10.10.11")
+            dict(count=5, size=512, interval=2, dest="10.10.10.11"),
         )
         self.conn.get = MagicMock(
             return_value=load_fixture(
                 "junos_ping_ping_10.10.10.11_count_5_size_512_interval_2",
                 content="str",
-            )
+            ),
         )
         result = self.execute_module()
         self.assertEqual(
-            result["commands"], "ping 10.10.10.11 count 5 size 512 interval 2"
+            result["commands"],
+            "ping 10.10.10.11 count 5 size 512 interval 2",
         )
         self.assertEqual(result["packet_loss"], "0%")
         self.assertEqual(result["packets_rx"], 5)
@@ -149,7 +151,7 @@ class TestJunosPingModule(TestJunosModule):
             return_value=load_fixture(
                 "junos_ping_ping_10.10.10.12_count_5_do-not-fragment_rapid",
                 content="str",
-            )
+            ),
         )
         result = self.execute_module()
         self.assertEqual(

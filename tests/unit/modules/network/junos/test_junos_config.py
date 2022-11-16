@@ -19,18 +19,15 @@
 # Make coding more python3-ish
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
-    patch,
-)
-from ansible_collections.junipernetworks.junos.plugins.modules import (
-    junos_config,
-)
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
-    set_module_args,
-)
 from ansible.module_utils._text import to_text
+
+from ansible_collections.junipernetworks.junos.plugins.modules import junos_config
+from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import patch
+from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
+
 from .junos_module import TestJunosModule, load_fixture
 
 
@@ -42,37 +39,37 @@ class TestJunosConfigModule(TestJunosModule):
         super(TestJunosConfigModule, self).setUp()
 
         self.mock_get_config = patch(
-            "ansible_collections.junipernetworks.junos.plugins.modules.junos_config.get_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.modules.junos_config.get_configuration",
         )
         self.get_config = self.mock_get_config.start()
 
         self.mock_load_config = patch(
-            "ansible_collections.junipernetworks.junos.plugins.modules.junos_config.load_config"
+            "ansible_collections.junipernetworks.junos.plugins.modules.junos_config.load_config",
         )
         self.load_config = self.mock_load_config.start()
 
         self.mock_load_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.modules.junos_config.load_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.modules.junos_config.load_configuration",
         )
         self.load_configuration = self.mock_load_configuration.start()
 
         self.mock_lock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration",
         )
         self.lock_configuration = self.mock_lock_configuration.start()
 
         self.mock_unlock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration",
         )
         self.unlock_configuration = self.mock_unlock_configuration.start()
 
         self.mock_commit_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.modules.junos_config.commit_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.modules.junos_config.commit_configuration",
         )
         self.commit_configuration = self.mock_commit_configuration.start()
 
         self.mock_get_diff = patch(
-            "ansible_collections.junipernetworks.junos.plugins.modules.junos_config.get_diff"
+            "ansible_collections.junipernetworks.junos.plugins.modules.junos_config.get_diff",
         )
         self.get_diff = self.mock_get_diff.start()
 
@@ -80,17 +77,17 @@ class TestJunosConfigModule(TestJunosModule):
         self.conn = self.mock_conn.start()
 
         self.mock_netconf = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.NetconfConnection"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.NetconfConnection",
         )
         self.netconf_conn = self.mock_netconf.start()
 
         self.mock_exec_rpc = patch(
-            "ansible_collections.junipernetworks.junos.plugins.modules.junos_config.exec_rpc"
+            "ansible_collections.junipernetworks.junos.plugins.modules.junos_config.exec_rpc",
         )
         self.exec_rpc = self.mock_exec_rpc.start()
 
         self.mock_netconf_rpc = patch(
-            "ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf.NetconfConnection"
+            "ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf.NetconfConnection",
         )
         self.netconf_rpc = self.mock_netconf_rpc.start()
 
@@ -110,11 +107,11 @@ class TestJunosConfigModule(TestJunosModule):
 
     def load_fixtures(self, commands=None, format="text", changed=False):
         self.get_config.return_value = load_fixture(
-            "get_configuration_rpc_reply.txt"
+            "get_configuration_rpc_reply.txt",
         )
         if changed:
             self.load_config.return_value = load_fixture(
-                "get_configuration_rpc_reply_diff.txt"
+                "get_configuration_rpc_reply_diff.txt",
             )
         else:
             self.load_config.return_value = None
@@ -143,13 +140,14 @@ class TestJunosConfigModule(TestJunosModule):
                 lines=[
                     "delete interfaces ae11",
                     "set interfaces ae11 unit 0 description Test",
-                ]
-            )
+                ],
+            ),
         )
         self.execute_module(changed=True)
         args, kwargs = self.load_config.call_args
         self.assertEqual(
-            args[1][0], "set interfaces ae11 unit 0 description Test"
+            args[1][0],
+            "set interfaces ae11 unit 0 description Test",
         )
         self.assertEqual(kwargs["action"], "set")
         self.assertEqual(kwargs["format"], "text")

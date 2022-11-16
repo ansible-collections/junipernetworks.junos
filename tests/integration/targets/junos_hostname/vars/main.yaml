@@ -3,10 +3,10 @@ merged:
   before: {}
 
   after:
-    hostname: 'vsrx'
+    hostname: "vsrx"
 
   updated:
-    hostname: 'vsrx14'
+    hostname: "vsrx14"
 
   gathered:
-    hostname: 'vsrx12'
+    hostname: "vsrx12"
