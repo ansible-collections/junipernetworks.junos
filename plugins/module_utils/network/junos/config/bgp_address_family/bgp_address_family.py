@@ -610,7 +610,7 @@ class Bgp_address_family(ConfigBase):
                         )
                         # add node expedited
                         if "output_queue_priority_expedited" in type.keys() and type.get(
-                            "output_queue_priority_expedited"
+                            "output_queue_priority_expedited",
                         ):
                             build_child_xml_node(oqp_node, "expedited")
                         # add node priority
@@ -709,7 +709,7 @@ class Bgp_address_family(ConfigBase):
                         )
                         # add node expedited
                         if "route_refresh_priority_expedited" in type.keys() and type.get(
-                            "route_refresh_priority_expedited"
+                            "route_refresh_priority_expedited",
                         ):
                             build_child_xml_node(rrp_node, "expedited")
                         # add node priority
@@ -740,7 +740,7 @@ class Bgp_address_family(ConfigBase):
                         )
                         # add node expedited
                         if "withdraw_priority_expedited" in type.keys() and type.get(
-                            "withdraw_priority_expedited"
+                            "withdraw_priority_expedited",
                         ):
                             build_child_xml_node(wp_node, "expedited")
                         # add node priority

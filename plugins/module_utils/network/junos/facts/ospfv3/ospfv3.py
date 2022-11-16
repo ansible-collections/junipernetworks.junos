@@ -189,7 +189,7 @@ class Ospfv3Facts(object):
                         "dead-interval",
                     )
                     interface_dict["timers"]["retransmit_interval"] = interface.get(
-                        "retransmit-interval"
+                        "retransmit-interval",
                     )
                     interface_dict["timers"]["transit_delay"] = interface.get(
                         "transit-delay",

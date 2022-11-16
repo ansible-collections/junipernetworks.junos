@@ -173,7 +173,7 @@ class Static_routesFacts(object):
                     routes.append(self._create_route_dict("ipv6", route_path))
             if conf["routing-instances"].get("instance").get("routing-options").get("static"):
                 route_path = conf["routing-instances"]["instance"]["routing-options"]["static"].get(
-                    "route"
+                    "route",
                 )
                 routes.append(self._create_route_dict("ipv4", route_path))
         config["address_families"].extend(routes)

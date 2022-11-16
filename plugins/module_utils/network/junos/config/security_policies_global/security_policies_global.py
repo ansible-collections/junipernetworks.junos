@@ -62,7 +62,7 @@ class Security_policies_global(ConfigBase):
             data=data,
         )
         security_policies_global_facts = facts["ansible_network_resources"].get(
-            "security_policies_global"
+            "security_policies_global",
         )
         if not security_policies_global_facts:
             return {}

@@ -447,7 +447,7 @@ class Bgp_globalFacts(object):
                 template_dict["path_name"] = templates["name"]
                 if "remote-nexthop" in templates.keys():
                     template_dict["remote_nexthop"] = templates["remote-nexthop"].get(
-                        "remote-nh-addr"
+                        "remote-nh-addr",
                     )
                 if "peer" in templates.keys():
                     peer_lst = []
@@ -477,7 +477,7 @@ class Bgp_globalFacts(object):
                     template_dict["path_name"] = template["name"]
                     if "remote-nexthop" in template.keys():
                         template_dict["remote_nexthop"] = template["remote-nexthop"].get(
-                            "remote-nh-addr"
+                            "remote-nh-addr",
                         )
                     if "peer" in template.keys():
                         peer_lst = []
@@ -528,7 +528,7 @@ class Bgp_globalFacts(object):
                     if "egress-te-backup-segment" in etss.keys():
                         etbs = etss.get("egress-te-backup-segment")
                         etss_dict["egress_te_backup_segment_label"] = etbs["label"].get(
-                            "label-value"
+                            "label-value",
                         )
 
                     if etss_dict:
