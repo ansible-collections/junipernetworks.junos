@@ -1,5 +1,6 @@
 ---
-- debug: msg="START cli_config/cli_basic.yaml on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg="START cli_config/cli_basic.yaml on connection={{ ansible_connection
     }}"
 
 - name: setup
@@ -15,7 +16,7 @@
   ansible.netcommon.cli_config: &id001
     config: set interfaces ge-0/0/1 description 'test-interface'
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
 
@@ -23,7 +24,7 @@
   register: result
   ansible.netcommon.cli_config: *id001
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
@@ -37,7 +38,7 @@
   ansible.netcommon.cli_config:
     rollback: 1
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'ge-0/0/2' in result.diff.prepared"
@@ -48,7 +49,7 @@
   ansible.netcommon.cli_config:
     config: delete system root-authentication
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.failed == true
       - "'Missing mandatory statement' in result.msg"
@@ -59,5 +60,6 @@
 - name: teardown
   ansible.netcommon.cli_config: *id003
 
-- debug: msg="END cli_config/cli_basic.yaml on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg="END cli_config/cli_basic.yaml on connection={{ ansible_connection
     }}"

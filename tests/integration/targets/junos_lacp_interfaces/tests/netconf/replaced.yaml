@@ -1,15 +1,14 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: START junos_lacp_interfaces replaced integration tests on connection={{
       ansible_connection }}
 
-- include_tasks: _remove_config.yaml
+- ansible.builtin.include_tasks: _remove_config.yaml
 
-- include_tasks: _base_config.yaml
+- ansible.builtin.include_tasks: _base_config.yaml
 
-- set_fact:
+- ansible.builtin.set_fact:
     expected_replaced_output:
-
       - name: ae1
         period: slow
         sync_reset: disable
@@ -38,12 +37,10 @@
         force_up: true
 
 - block:
-
     - name: Configure initial state for lacp interface
       register: result
       junipernetworks.junos.junos_lacp_interfaces:
         config:
-
           - name: ae1
             period: fast
             sync_reset: enable
@@ -73,7 +70,6 @@
       register: result
       junipernetworks.junos.junos_lacp_interfaces: &id001
         config:
-
           - name: ae1
             period: slow
             sync_reset: disable
@@ -97,24 +93,25 @@
         state: replaced
 
     - name: Assert the configuration is reflected on host
-      assert:
+      ansible.builtin.assert:
         that:
           - "{{ expected_replaced_output | symmetric_difference(result['after'])\
             \ |length == 0 }}"
 
-    - name: Replace the provided configuration with the existing running configuration
+    - name:
+        Replace the provided configuration with the existing running configuration
         (IDEMPOTENT)
       register: result
       junipernetworks.junos.junos_lacp_interfaces: *id001
 
     - name: Assert that the previous task was idempotent
-      assert:
+      ansible.builtin.assert:
         that:
           - result['changed'] == false
   always:
+    - ansible.builtin.include_tasks: _remove_config.yaml
 
-    - include_tasks: _remove_config.yaml
-
-- debug:
-    msg: END junos_lacp_interfaces replaced integration tests on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg:
+      END junos_lacp_interfaces replaced integration tests on connection={{ ansible_connection
       }}

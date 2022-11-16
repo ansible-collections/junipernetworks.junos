@@ -1,5 +1,6 @@
 ---
-- debug: msg="START junos_user netconf/basic.yaml on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg="START junos_user netconf/basic.yaml on connection={{ ansible_connection
     }}"
 
 - name: setup - remove user
@@ -20,7 +21,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<name>test_user</name>' in config.xml"
@@ -35,7 +36,7 @@
     full_name: test_user
     role: operator
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
@@ -53,10 +54,10 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
-      - "'<user inactive=\"inactive\">' in config.xml"
+      - '''<user inactive="inactive">'' in config.xml'
       - "'<name>test_user</name>' in config.xml"
 
 - name: Activate user
@@ -73,7 +74,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<name>test_user</name>' in config.xml"
@@ -93,7 +94,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<name>test_user</name>' not in config.xml"
@@ -107,7 +108,7 @@
     full_name: test_user
     role: operator
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
@@ -115,7 +116,6 @@
   register: result
   junipernetworks.junos.junos_user:
     aggregate:
-
       - name: test_user1
         state: absent
 
@@ -126,7 +126,6 @@
   register: result
   junipernetworks.junos.junos_user:
     aggregate:
-
       - name: test_user1
         full_name: test_user2
         role: operator
@@ -142,7 +141,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<name>test_user1</name>' in config.xml"
@@ -152,7 +151,6 @@
   register: result
   junipernetworks.junos.junos_user:
     aggregate:
-
       - name: test_user1
         full_name: test_user2
         role: operator
@@ -168,7 +166,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<name>test_user1</name>' not in config.xml"
@@ -178,7 +176,6 @@
   register: result
   junipernetworks.junos.junos_user:
     aggregate:
-
       - name: "{{ ansible_user|default('ansible') }}"
 
       - name: test_user1
@@ -193,15 +190,15 @@
   register: result
   junipernetworks.junos.junos_user:
     aggregate:
-
       - name: "{{ ansible_user|default('ansible') }}"
     purge: true
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - result.diff.prepared is search("\- *user test_user1")
       - result.diff.prepared is search("\- *user test_user2")
 
-- debug: msg="END junos_user netconf/basic.yaml on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg="END junos_user netconf/basic.yaml on connection={{ ansible_connection
     }}"

@@ -1,9 +1,9 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: >-
       START junos_security_zones rendered integration tests on connection={{
       ansible_connection }}
-- set_fact:
+- ansible.builtin.set_fact:
     expected_rendered_output: '<nc:security xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:zones><nc:functional-zone><nc:management><nc:description>test description</nc:description><nc:host-inbound-traffic><nc:protocols><nc:name>all</nc:name></nc:protocols><nc:protocols><nc:name>bgp</nc:name><nc:except/></nc:protocols><nc:system-services><nc:name>all</nc:name></nc:system-services><nc:system-services><nc:name>dhcp</nc:name><nc:except/></nc:system-services></nc:host-inbound-traffic><nc:interfaces><nc:name>ge-0/0/1.0</nc:name></nc:interfaces><nc:interfaces><nc:name>ge-0/0/2.0</nc:name></nc:interfaces><nc:screen>test_screen</nc:screen></nc:management></nc:functional-zone><nc:security-zone><nc:name>test_sec_zone1</nc:name><nc:address-book><nc:address><nc:name>test_adr1</nc:name><nc:ip-prefix>10.0.0.0/24</nc:ip-prefix><nc:description>test desc</nc:description></nc:address><nc:address><nc:name>test_adr2</nc:name><nc:dns-name><nc:name>1.1.1.1</nc:name><nc:ipv6-only/></nc:dns-name></nc:address><nc:address><nc:name>test_adr3</nc:name><nc:range-address><nc:name>10.2.0.1</nc:name><nc:to><nc:range-high>10.2.0.2</nc:range-high></nc:to></nc:range-address></nc:address><nc:address><nc:name>test_adr4</nc:name><nc:wildcard-address><nc:name>10.3.0.1/24</nc:name></nc:wildcard-address></nc:address><nc:address><nc:name>test_adr5</nc:name><nc:ip-prefix>10.1.0.0/24</nc:ip-prefix><nc:description>test desc</nc:description></nc:address><nc:address-set><nc:name>test_adrset1</nc:name><nc:address><nc:name>test_adr1</nc:name></nc:address><nc:address><nc:name>test_adr2</nc:name></nc:address></nc:address-set><nc:address-set><nc:name>test_adrset2</nc:name><nc:address><nc:name>test_adr3</nc:name></nc:address><nc:address><nc:name>test_adr4</nc:name></nc:address></nc:address-set><nc:address-set><nc:name>test_adrset3</nc:name><nc:address><nc:name>test_adr5</nc:name></nc:address><nc:address-set><nc:name>test_adrset1</nc:name></nc:address-set><nc:address-set><nc:name>test_adrset2</nc:name></nc:address-set><nc:description>test description</nc:description></nc:address-set></nc:address-book><nc:advance-policy-based-routing-profile><nc:profile>test_profile</nc:profile></nc:advance-policy-based-routing-profile><nc:application-tracking/><nc:description>test description</nc:description><nc:enable-reverse-reroute/><nc:host-inbound-traffic><nc:protocols><nc:name>all</nc:name></nc:protocols><nc:protocols><nc:name>bgp</nc:name><nc:except/></nc:protocols><nc:system-services><nc:name>all</nc:name></nc:system-services><nc:system-services><nc:name>dhcp</nc:name><nc:except/></nc:system-services></nc:host-inbound-traffic><nc:interfaces><nc:name>ge-0/0/3.0</nc:name></nc:interfaces><nc:interfaces><nc:name>ge-0/0/4.0</nc:name></nc:interfaces><nc:screen>test_screen</nc:screen><nc:source-identity-log/><nc:tcp-rst/></nc:security-zone></nc:zones></nc:security>'
 - name: Render platform specific commands from task input using rendered state
   register: result
@@ -81,10 +81,10 @@
           tcp_rst: true
     state: rendered
 - name: Assert that correct set of commands were rendered
-  assert:
+  ansible.builtin.assert:
     that:
-      - '{{ expected_rendered_output == result[''rendered''] }}'
-- debug:
+      - "{{ expected_rendered_output == result['rendered'] }}"
+- ansible.builtin.debug:
     msg: >-
       END junos_security_zones rendered integration tests on connection={{
       ansible_connection }}

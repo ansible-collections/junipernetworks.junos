@@ -1,16 +1,19 @@
 ---
-- name: collect netconf test cases
-  find:
+- name: Collect netconf test cases
+  ansible.builtin.find:
     paths: "{{ role_path }}/tests/netconf"
     patterns: "{{ testcase }}.yaml"
   connection: local
   register: test_cases
 
-- name: set test_items
-  set_fact: test_items="{{ test_cases.files | map(attribute='path') | list }}"
+- name: Set test_items
+  ansible.builtin.set_fact:
+    test_items: "{{ test_cases.files | map(attribute='path') | list }}"
 
-- name: run test case (connection=netconf)
-  include: "{{ test_case_to_run }} ansible_connection=netconf"
+- name: Run test case (connection=netconf)
+  ansible.builtin.include_tasks: "{{ test_case_to_run }}"
   with_items: "{{ test_items }}"
   loop_control:
     loop_var: test_case_to_run
+  vars:
+    ansible_connection: ansible.netcommon.netconf

@@ -8,6 +8,7 @@ The arg spec for the junos facts module.
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -20,7 +21,8 @@ class FactsArgs(object):
     argument_spec = {
         "gather_subset": dict(default=["min"], type="list", elements="str"),
         "config_format": dict(
-            default="text", choices=["xml", "text", "set", "json"]
+            default="text",
+            choices=["xml", "text", "set", "json"],
         ),
         "gather_network_resources": dict(type="list", elements="str"),
         "available_network_resources": {"type": "bool", "default": False},

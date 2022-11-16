@@ -23,17 +23,13 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
-    patch,
-)
-from ansible_collections.junipernetworks.junos.plugins.modules import (
-    junos_snmp_server,
-)
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
-    set_module_args,
-)
+from ansible_collections.junipernetworks.junos.plugins.modules import junos_snmp_server
+from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import patch
+from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
+
 from .junos_module import TestJunosModule, load_fixture
 
 
@@ -44,28 +40,28 @@ class TestJunosSnmp_serverModule(TestJunosModule):
         super(TestJunosSnmp_serverModule, self).setUp()
 
         self.mock_lock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration",
         )
         self.lock_configuration = self.mock_lock_configuration.start()
 
         self.mock_unlock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration",
         )
         self.unlock_configuration = self.mock_unlock_configuration.start()
 
         self.mock_load_config = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.snmp_server.snmp_server.load_config"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.snmp_server.snmp_server.load_config",
         )
         self.load_config = self.mock_load_config.start()
 
         self.mock_commit_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.snmp_server.snmp_server.commit_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.snmp_server.snmp_server.commit_configuration",
         )
         self.mock_commit_configuration = self.mock_commit_configuration.start()
 
         self.mock_execute_show_command = patch(
             "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.snmp_server.snmp_server."
-            "Snmp_serverFacts.get_device_data"
+            "Snmp_serverFacts.get_device_data",
         )
         self.execute_show_command = self.mock_execute_show_command.start()
 
@@ -78,7 +74,11 @@ class TestJunosSnmp_serverModule(TestJunosModule):
         self.mock_execute_show_command.stop()
 
     def load_fixtures(
-        self, commands=None, format="text", changed=False, filename=None
+        self,
+        commands=None,
+        format="text",
+        changed=False,
+        filename=None,
     ):
         def load_from_file(*args, **kwargs):
             output = load_fixture("junos_snmp_server_config.cfg")
@@ -91,7 +91,7 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             dict(
                 config=dict(arp=dict(set=True, host_name_resolution=True)),
                 state="merged",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         self.assertIn(
@@ -111,11 +111,11 @@ class TestJunosSnmp_serverModule(TestJunosModule):
                         dict(
                             name="cl2",
                             addresses=[dict(address="192.16.4.0/24")],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         self.assertIn(
@@ -127,7 +127,8 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             str(result["commands"]),
         )
         self.assertIn(
-            "<nc:name>192.16.4.0/24</nc:name>", str(result["commands"])
+            "<nc:name>192.16.4.0/24</nc:name>",
+            str(result["commands"]),
         )
         self.assertIn(
             "</nc:client-address-list></nc:client-list></nc:snmp>",
@@ -150,10 +151,10 @@ class TestJunosSnmp_serverModule(TestJunosModule):
                             name="cl4",
                             addresses=[dict(address="172.16.4.0/24")],
                         ),
-                    ]
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         commands = [
@@ -174,11 +175,12 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             dict(
                 config=dict(
                     routing_instance_access=dict(
-                        set=True, access_lists=["clv1"]
-                    )
+                        set=True,
+                        access_lists=["clv1"],
+                    ),
                 ),
                 state="merged",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         commands = [
@@ -197,7 +199,7 @@ class TestJunosSnmp_serverModule(TestJunosModule):
                         dict(
                             name="comm1",
                             clients=[
-                                dict(address="24.0.0.0/32", restrict=True)
+                                dict(address="24.0.0.0/32", restrict=True),
                             ],
                             routing_instances=[
                                 dict(
@@ -206,15 +208,15 @@ class TestJunosSnmp_serverModule(TestJunosModule):
                                         dict(
                                             address="13.13.13.13/24",
                                             restrict=True,
-                                        )
+                                        ),
                                     ],
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         commands = [
@@ -305,7 +307,7 @@ class TestJunosSnmp_serverModule(TestJunosModule):
                         ],
                     ),
                     routing_instance_access=dict(
-                        access_lists=["clv1", "clv2"]
+                        access_lists=["clv1", "clv2"],
                     ),
                     subagent=dict(tcp=dict(routing_instances_default=True)),
                     snmp_v3=dict(
@@ -373,7 +375,7 @@ class TestJunosSnmp_serverModule(TestJunosModule):
                                     security_level="none",
                                     security_name="secure111",
                                 ),
-                            )
+                            ),
                         ],
                     ),
                     traceoptions=dict(
@@ -405,16 +407,17 @@ class TestJunosSnmp_serverModule(TestJunosModule):
                                 authentication=True,
                                 chassis=True,
                                 otn_alarms=dict(
-                                    oc_lof=True, otu_uas_threshold=True
+                                    oc_lof=True,
+                                    otu_uas_threshold=True,
                                 ),
                             ),
                             targets=["11.11.11.11", "12.12.12.12"],
                             routing_instance="clv1",
-                        )
+                        ),
                     ],
                 ),
                 state="merged",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         commands = [
@@ -819,7 +822,7 @@ class TestJunosSnmp_serverModule(TestJunosModule):
                             "security_model": "v1",
                             "security_name": "secure111",
                         },
-                    }
+                    },
                 ],
             },
             "subagent": {"tcp": {"routing_instances_default": True}},
@@ -858,7 +861,7 @@ class TestJunosSnmp_serverModule(TestJunosModule):
                     "name": "trgrp_01",
                     "routing_instance": "clv1",
                     "targets": ["11.11.11.11", "12.12.12.12"],
-                }
+                },
             ],
         }
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
@@ -871,11 +874,11 @@ class TestJunosSnmp_serverModule(TestJunosModule):
                         dict(
                             name="cl2",
                             addresses=[dict(address="192.16.4.0/24")],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="rendered",
-            )
+            ),
         )
         rendered = (
             '<nc:snmp xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:client-list><nc:name>cl2</nc:name>'

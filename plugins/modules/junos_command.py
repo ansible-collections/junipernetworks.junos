@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -169,23 +170,23 @@ import time
 from ansible.module_utils._text import to_text
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import ConnectionError
+from ansible.module_utils.six import iteritems
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
     exec_rpc,
-)
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    get_configuration,
-    get_connection,
-    get_capabilities,
-    tostring,
 )
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.parsing import (
     Conditional,
     FailedConditionalError,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    to_lines,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import to_lines
+
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
+    get_capabilities,
+    get_configuration,
+    get_connection,
+    tostring,
 )
-from ansible.module_utils.six import iteritems
+
 
 try:
     from lxml.etree import Element, SubElement
@@ -218,11 +219,7 @@ def rpc(module, items):
         if all((module.check_mode, not name.startswith("get"))):
             module.fail_json(msg="invalid rpc for running in check_mode")
 
-        if (
-            name == "command"
-            and text == "show configuration"
-            or name == "get-configuration"
-        ):
+        if name == "command" and text == "show configuration" or name == "get-configuration":
             fetch_config = True
 
         element = Element(name, xattrs)
@@ -271,7 +268,7 @@ def rpc(module, items):
             data = reply.find(".//configuration-set")
             if data is None:
                 module.fail_json(
-                    msg="Display format 'set' is not supported by remote device."
+                    msg="Display format 'set' is not supported by remote device.",
                 )
             responses.append(data.text.strip())
 
@@ -311,8 +308,7 @@ def parse_rpcs(module):
 
         if display == "set" and rpc != "get-configuration":
             module.fail_json(
-                msg="Invalid display option '%s' given for rpc '%s'"
-                % ("set", name)
+                msg="Invalid display option '%s' given for rpc '%s'" % ("set", name),
             )
 
         xattrs = {"format": display}
@@ -328,7 +324,7 @@ def parse_commands(module, warnings):
         if module.check_mode and not command.startswith("show"):
             warnings.append(
                 "Only show commands are supported when using check_mode, not "
-                "executing %s" % command
+                "executing %s" % command,
             )
             continue
 
@@ -348,8 +344,7 @@ def parse_commands(module, warnings):
                 display = "set"
             else:
                 module.fail_json(
-                    msg="Invalid display option '%s' given for command '%s'"
-                    % ("set", command)
+                    msg="Invalid display option '%s' given for command '%s'" % ("set", command),
                 )
 
         xattrs = {"format": display}
@@ -391,10 +386,10 @@ def main():
                 module.params["wait_for"],
                 module.params["match"],
                 module.params["rpcs"],
-            )
+            ),
         ):
             module.warn(
-                "arguments wait_for, match, rpcs are not supported when using transport=cli"
+                "arguments wait_for, match, rpcs are not supported when using transport=cli",
             )
         commands = module.params["commands"]
 
@@ -410,7 +405,7 @@ def main():
                 output.append(conn.get(command=cmd))
             except ConnectionError as exc:
                 module.fail_json(
-                    msg=to_text(exc, errors="surrogate_then_replace")
+                    msg=to_text(exc, errors="surrogate_then_replace"),
                 )
 
         lines = [out.split("\n") for out in output]
@@ -436,7 +431,7 @@ def main():
                 if not HAS_JXMLEASE:
                     module.fail_json(
                         msg="jxmlease is required but does not appear to be installed. "
-                        "It can be installed using `pip install jxmlease`"
+                        "It can be installed using `pip install jxmlease`",
                     )
 
                 try:

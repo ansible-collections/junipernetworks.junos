@@ -24,6 +24,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 """
@@ -57,7 +58,7 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 "application": {
                                                     "options": {
                                                         "any": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "names": {
                                                             "elements": "str",
@@ -73,31 +74,31 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                             "type": "list",
                                                         },
                                                         "any": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "any_ipv4": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "any_ipv6": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
                                                 },
                                                 "destination_address_excluded": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "dynamic_application": {
                                                     "options": {
                                                         "any": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "names": {
                                                             "elements": "str",
                                                             "type": "list",
                                                         },
                                                         "none": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
@@ -105,10 +106,10 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 "from_zone": {
                                                     "options": {
                                                         "any": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "junos_host": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "names": {
                                                             "elements": "str",
@@ -124,40 +125,40 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                             "type": "list",
                                                         },
                                                         "any": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "any_ipv4": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "any_ipv6": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
                                                 },
                                                 "source_address_excluded": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "source_end_user_profile": {
-                                                    "type": "str"
+                                                    "type": "str",
                                                 },
                                                 "source_identity": {
                                                     "options": {
                                                         "any": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "authenticated_user": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "names": {
                                                             "elements": "str",
                                                             "type": "list",
                                                         },
                                                         "unauthenticated_user": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "unknown_user": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
@@ -165,10 +166,10 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 "to_zone": {
                                                     "options": {
                                                         "any": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "junos_host": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "names": {
                                                             "elements": "str",
@@ -180,14 +181,14 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 "url_category": {
                                                     "options": {
                                                         "any": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "names": {
                                                             "elements": "str",
                                                             "type": "list",
                                                         },
                                                         "none": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
@@ -204,10 +205,10 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 "log": {
                                                     "options": {
                                                         "session_close": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "session_init": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
@@ -217,71 +218,71 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                         "application_services": {
                                                             "options": {
                                                                 "advanced_anti_malware_policy": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                                 "application_firewalls": {
                                                                     "elements": "dict",
                                                                     "options": {
                                                                         "rule_set": {
-                                                                            "type": "str"
-                                                                        }
+                                                                            "type": "str",
+                                                                        },
                                                                     },
                                                                     "type": "list",
                                                                 },
                                                                 "application_traffic_control_rule_set": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                                 "gprs_gtp_profile": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                                 "gprs_sctp_profile": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                                 "icap_redirect": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                                 "idp": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                                 "idp_policy": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                                 "packet_capture": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                                 "redirect_wx": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                                 "reverse_redirect_wx": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                                 "security_intelligence": {
                                                                     "options": {
                                                                         "add_destination_identity_to_feed": {
-                                                                            "type": "str"
+                                                                            "type": "str",
                                                                         },
                                                                         "add_destination_ip_to_feed": {
-                                                                            "type": "str"
+                                                                            "type": "str",
                                                                         },
                                                                         "add_source_identity_to_feed": {
-                                                                            "type": "str"
+                                                                            "type": "str",
                                                                         },
                                                                         "add_source_ip_to_feed": {
-                                                                            "type": "str"
+                                                                            "type": "str",
                                                                         },
                                                                     },
                                                                     "type": "dict",
                                                                 },
                                                                 "security_intelligence_policy": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                                 "ssl_proxy": {
                                                                     "options": {
                                                                         "enable": {
-                                                                            "type": "bool"
+                                                                            "type": "bool",
                                                                         },
                                                                         "profile_name": {
-                                                                            "type": "str"
+                                                                            "type": "str",
                                                                         },
                                                                     },
                                                                     "type": "dict",
@@ -289,16 +290,16 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                                 "uac_policy": {
                                                                     "options": {
                                                                         "captive_portal": {
-                                                                            "type": "str"
+                                                                            "type": "str",
                                                                         },
                                                                         "enable": {
-                                                                            "type": "bool"
+                                                                            "type": "bool",
                                                                         },
                                                                     },
                                                                     "type": "dict",
                                                                 },
                                                                 "utm_policy": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                             },
                                                             "type": "dict",
@@ -316,54 +317,54 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                                     "no_log": True,
                                                                     "options": {
                                                                         "access_profile": {
-                                                                            "type": "str"
+                                                                            "type": "str",
                                                                         },
                                                                         "auth_only_browser": {
-                                                                            "type": "bool"
+                                                                            "type": "bool",
                                                                         },
                                                                         "auth_user_agent": {
-                                                                            "type": "str"
+                                                                            "type": "str",
                                                                         },
                                                                         "client_match": {
-                                                                            "type": "str"
+                                                                            "type": "str",
                                                                         },
                                                                         "ssl_termination_profile": {
-                                                                            "type": "str"
+                                                                            "type": "str",
                                                                         },
                                                                         "web_redirect": {
-                                                                            "type": "bool"
+                                                                            "type": "bool",
                                                                         },
                                                                         "web_redirect_to_https": {
-                                                                            "type": "bool"
+                                                                            "type": "bool",
                                                                         },
                                                                     },
                                                                     "type": "dict",
                                                                 },
                                                                 "push_to_identity_management": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                                 "user_firewall": {
                                                                     "options": {
                                                                         "access_profile": {
-                                                                            "type": "str"
+                                                                            "type": "str",
                                                                         },
                                                                         "auth_only_browser": {
-                                                                            "type": "bool"
+                                                                            "type": "bool",
                                                                         },
                                                                         "auth_user_agent": {
-                                                                            "type": "str"
+                                                                            "type": "str",
                                                                         },
                                                                         "domain": {
-                                                                            "type": "str"
+                                                                            "type": "str",
                                                                         },
                                                                         "ssl_termination_profile": {
-                                                                            "type": "str"
+                                                                            "type": "str",
                                                                         },
                                                                         "web_redirect": {
-                                                                            "type": "bool"
+                                                                            "type": "bool",
                                                                         },
                                                                         "web_redirect_to_https": {
-                                                                            "type": "bool"
+                                                                            "type": "bool",
                                                                         },
                                                                     },
                                                                     "type": "dict",
@@ -378,19 +379,19 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                         "tcp_options": {
                                                             "options": {
                                                                 "initial_tcp_mss": {
-                                                                    "type": "int"
+                                                                    "type": "int",
                                                                 },
                                                                 "reverse_tcp_mss": {
-                                                                    "type": "int"
+                                                                    "type": "int",
                                                                 },
                                                                 "sequence_check_required": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                                 "syn_check_required": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                                 "window_scale": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                             },
                                                             "type": "dict",
@@ -398,10 +399,10 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                         "tunnel": {
                                                             "options": {
                                                                 "ipsec_vpn": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                                 "pair_policy": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                             },
                                                             "type": "dict",
@@ -412,18 +413,18 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 "reject": {
                                                     "options": {
                                                         "enable": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "profile": {
-                                                            "type": "str"
+                                                            "type": "str",
                                                         },
                                                         "ssl_proxy": {
                                                             "options": {
                                                                 "enable": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                                 "profile_name": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                             },
                                                             "type": "dict",
@@ -474,7 +475,7 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                             "type": "dict",
                                         },
                                         "destination_address_excluded": {
-                                            "type": "bool"
+                                            "type": "bool",
                                         },
                                         "dynamic_application": {
                                             "options": {
@@ -511,26 +512,26 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                             "type": "dict",
                                         },
                                         "source_address_excluded": {
-                                            "type": "bool"
+                                            "type": "bool",
                                         },
                                         "source_end_user_profile": {
-                                            "type": "str"
+                                            "type": "str",
                                         },
                                         "source_identity": {
                                             "options": {
                                                 "any": {"type": "bool"},
                                                 "authenticated_user": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "names": {
                                                     "elements": "str",
                                                     "type": "list",
                                                 },
                                                 "unauthenticated_user": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "unknown_user": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                             },
                                             "type": "dict",
@@ -569,10 +570,10 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                         "log": {
                                             "options": {
                                                 "session_close": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "session_init": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                             },
                                             "type": "dict",
@@ -582,71 +583,71 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 "application_services": {
                                                     "options": {
                                                         "advanced_anti_malware_policy": {
-                                                            "type": "str"
+                                                            "type": "str",
                                                         },
                                                         "application_firewalls": {
                                                             "elements": "dict",
                                                             "options": {
                                                                 "rule_set": {
-                                                                    "type": "str"
-                                                                }
+                                                                    "type": "str",
+                                                                },
                                                             },
                                                             "type": "list",
                                                         },
                                                         "application_traffic_control_rule_set": {
-                                                            "type": "str"
+                                                            "type": "str",
                                                         },
                                                         "gprs_gtp_profile": {
-                                                            "type": "str"
+                                                            "type": "str",
                                                         },
                                                         "gprs_sctp_profile": {
-                                                            "type": "str"
+                                                            "type": "str",
                                                         },
                                                         "icap_redirect": {
-                                                            "type": "str"
+                                                            "type": "str",
                                                         },
                                                         "idp": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "idp_policy": {
-                                                            "type": "str"
+                                                            "type": "str",
                                                         },
                                                         "packet_capture": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "redirect_wx": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "reverse_redirect_wx": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "security_intelligence": {
                                                             "options": {
                                                                 "add_destination_identity_to_feed": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                                 "add_destination_ip_to_feed": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                                 "add_source_identity_to_feed": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                                 "add_source_ip_to_feed": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                             },
                                                             "type": "dict",
                                                         },
                                                         "security_intelligence_policy": {
-                                                            "type": "str"
+                                                            "type": "str",
                                                         },
                                                         "ssl_proxy": {
                                                             "options": {
                                                                 "enable": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                                 "profile_name": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                             },
                                                             "type": "dict",
@@ -654,16 +655,16 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                         "uac_policy": {
                                                             "options": {
                                                                 "captive_portal": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                                 "enable": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                             },
                                                             "type": "dict",
                                                         },
                                                         "utm_policy": {
-                                                            "type": "str"
+                                                            "type": "str",
                                                         },
                                                     },
                                                     "type": "dict",
@@ -681,54 +682,54 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                             "no_log": True,
                                                             "options": {
                                                                 "access_profile": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                                 "auth_only_browser": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                                 "auth_user_agent": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                                 "client_match": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                                 "ssl_termination_profile": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                                 "web_redirect": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                                 "web_redirect_to_https": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                             },
                                                             "type": "dict",
                                                         },
                                                         "push_to_identity_management": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "user_firewall": {
                                                             "options": {
                                                                 "access_profile": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                                 "auth_only_browser": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                                 "auth_user_agent": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                                 "domain": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                                 "ssl_termination_profile": {
-                                                                    "type": "str"
+                                                                    "type": "str",
                                                                 },
                                                                 "web_redirect": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                                 "web_redirect_to_https": {
-                                                                    "type": "bool"
+                                                                    "type": "bool",
                                                                 },
                                                             },
                                                             "type": "dict",
@@ -743,19 +744,19 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 "tcp_options": {
                                                     "options": {
                                                         "initial_tcp_mss": {
-                                                            "type": "int"
+                                                            "type": "int",
                                                         },
                                                         "reverse_tcp_mss": {
-                                                            "type": "int"
+                                                            "type": "int",
                                                         },
                                                         "sequence_check_required": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "syn_check_required": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "window_scale": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
@@ -763,10 +764,10 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 "tunnel": {
                                                     "options": {
                                                         "ipsec_vpn": {
-                                                            "type": "str"
+                                                            "type": "str",
                                                         },
                                                         "pair_policy": {
-                                                            "type": "str"
+                                                            "type": "str",
                                                         },
                                                     },
                                                     "type": "dict",
@@ -781,10 +782,10 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                                 "ssl_proxy": {
                                                     "options": {
                                                         "enable": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "profile_name": {
-                                                            "type": "str"
+                                                            "type": "str",
                                                         },
                                                     },
                                                     "type": "dict",
@@ -797,7 +798,7 @@ class Security_policiesArgs(object):  # pylint: disable=R0903
                                 },
                             },
                             "type": "list",
-                        }
+                        },
                     },
                     "type": "dict",
                 },

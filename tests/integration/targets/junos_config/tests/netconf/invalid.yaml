@@ -1,5 +1,5 @@
 ---
-- debug: msg="START netconf/invalid.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="START netconf/invalid.yaml on connection={{ ansible_connection }}"
 
 - name: configure single invalid command
   register: result
@@ -8,7 +8,7 @@
     lines:
       - set system foo
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.failed == true
 
@@ -20,8 +20,8 @@
       - set system host-name {{ inventory_hostname_short }}
       - set system foo
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.failed == true
 
-- debug: msg="END netconf/invalid.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="END netconf/invalid.yaml on connection={{ ansible_connection }}"

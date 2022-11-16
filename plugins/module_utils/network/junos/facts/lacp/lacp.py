@@ -11,21 +11,22 @@ based on the configuration.
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
-    utils,
-)
+from ansible.module_utils.six import string_types
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.lacp.lacp import (
     LacpArgs,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.utils.utils import (
     get_resource_config,
 )
-from ansible.module_utils.six import string_types
+
 
 try:
     from lxml import etree
@@ -80,23 +81,26 @@ class LacpFacts(object):
 
         if isinstance(data, string_types):
             data = etree.fromstring(
-                to_bytes(data, errors="surrogate_then_replace")
+                to_bytes(data, errors="surrogate_then_replace"),
             )
 
         facts = {}
         config = deepcopy(self.generated_spec)
         resources = data.xpath(
-            "configuration/chassis/aggregated-devices/ethernet/lacp"
+            "configuration/chassis/aggregated-devices/ethernet/lacp",
         )
         if resources:
 
             lacp_root = resources[0]
             config["system_priority"] = utils.get_xml_conf_arg(
-                lacp_root, "system-priority"
+                lacp_root,
+                "system-priority",
             )
 
             if utils.get_xml_conf_arg(
-                lacp_root, "link-protection/non-revertive", data="tag"
+                lacp_root,
+                "link-protection/non-revertive",
+                data="tag",
             ):
                 config["link_protection"] = "non-revertive"
 
@@ -104,7 +108,8 @@ class LacpFacts(object):
                 config["link_protection"] = "revertive"
 
         params = utils.validate_config(
-            self.argument_spec, {"config": utils.remove_empties(config)}
+            self.argument_spec,
+            {"config": utils.remove_empties(config)},
         )
         facts["lacp"] = {}
         facts["lacp"].update(utils.remove_empties(params["config"]))

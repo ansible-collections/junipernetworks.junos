@@ -1,5 +1,5 @@
 ---
-- debug: msg="START netconf/src_basic.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="START netconf/src_basic.yaml on connection={{ ansible_connection }}"
 
 - name: setup
   junipernetworks.junos.junos_config:
@@ -12,7 +12,7 @@
   junipernetworks.junos.junos_config:
     src: basic/config.j2
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
 
@@ -21,7 +21,7 @@
   junipernetworks.junos.junos_config:
     src: basic/config.j2
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
@@ -31,7 +31,7 @@
     lines:
       - delete interfaces lo0
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
 
@@ -40,7 +40,7 @@
   junipernetworks.junos.junos_config:
     src: basic/config.set
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'address 192.0.2.1/32' in result.diff.prepared"
@@ -50,7 +50,7 @@
   junipernetworks.junos.junos_config:
     src: basic/config.set
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
@@ -60,7 +60,7 @@
     lines:
       - delete interfaces lo0
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
 
@@ -69,7 +69,7 @@
   junipernetworks.junos.junos_config:
     src: basic/config.xml
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'address 192.0.2.1/32' in result.diff.prepared"
@@ -79,7 +79,7 @@
   junipernetworks.junos.junos_config:
     src: basic/config.xml
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
@@ -89,8 +89,8 @@
     lines:
       - delete interfaces lo0
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
 
-- debug: msg="END netconf/src_basic.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="END netconf/src_basic.yaml on connection={{ ansible_connection }}"

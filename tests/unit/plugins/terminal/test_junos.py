@@ -4,12 +4,14 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from mock import call, MagicMock
 import pytest
 
 from ansible.errors import AnsibleConnectionFailure
+from mock import MagicMock, call
+
 from ansible_collections.junipernetworks.junos.plugins.terminal import junos
 
 
@@ -49,9 +51,7 @@ def test_on_open_shell_enters_cli_if_root_prompt(junos_terminal):
 
 
 def test_on_open_shell_raises_problem_setting_terminal_config(junos_terminal):
-    junos_terminal._connection.exec_command.side_effect = (
-        AnsibleConnectionFailure
-    )
+    junos_terminal._connection.exec_command.side_effect = AnsibleConnectionFailure
     with pytest.raises(AnsibleConnectionFailure) as exc:
         junos_terminal.on_open_shell()
 

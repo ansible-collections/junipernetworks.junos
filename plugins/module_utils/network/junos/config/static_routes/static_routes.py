@@ -12,27 +12,27 @@ created
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
     ConfigBase,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    to_list,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
+    build_child_xml_node,
+    build_root_xml_node,
 )
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import to_list
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
     Facts,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    locked_config,
-    load_config,
     commit_configuration,
     discard_changes,
+    load_config,
+    locked_config,
     tostring,
-)
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
-    build_root_xml_node,
-    build_child_xml_node,
 )
 
 
@@ -55,10 +55,12 @@ class Static_routes(ConfigBase):
         :returns: The current configuration as a dictionary
         """
         facts, _warnings = Facts(self._module).get_facts(
-            self.gather_subset, self.gather_network_resources, data=data
+            self.gather_subset,
+            self.gather_network_resources,
+            data=data,
         )
         static_routes_facts = facts["ansible_network_resources"].get(
-            "static_routes"
+            "static_routes",
         )
         if not static_routes_facts:
             return []
@@ -85,10 +87,10 @@ class Static_routes(ConfigBase):
             running_config = self._module.params["running_config"]
             if not running_config:
                 self._module.fail_json(
-                    msg="value of running_config parameter must not be empty for state parsed"
+                    msg="value of running_config parameter must not be empty for state parsed",
                 )
             result["parsed"] = self.get_static_routes_facts(
-                data=running_config
+                data=running_config,
             )
         elif self.state == "rendered":
             config_xmls = self.set_config(existing_static_routes_facts)
@@ -148,14 +150,11 @@ class Static_routes(ConfigBase):
                   to the desired configuration
         """
         state = self._module.params["state"]
-        if (
-            state in ("merged", "replaced", "overridden", "rendered")
-            and not want
-        ):
+        if state in ("merged", "replaced", "overridden", "rendered") and not want:
             self._module.fail_json(
                 msg="value of config parameter must not be empty for state {0}".format(
-                    state
-                )
+                    state,
+                ),
             )
         root = build_root_xml_node("configuration")
         routing_options = build_child_xml_node(root, "routing-options")
@@ -211,7 +210,9 @@ class Static_routes(ConfigBase):
         if not want:
             want = have
         static_route_xml = self._state_merged(
-            want, have, delete={"delete": "delete"}
+            want,
+            have,
+            delete={"delete": "delete"},
         )
         return static_route_xml
 
@@ -233,7 +234,8 @@ class Static_routes(ConfigBase):
                 instance = build_root_xml_node("instance")
                 build_child_xml_node(instance, "name", vrf_name)
                 routing_options = build_child_xml_node(
-                    instance, "routing-options"
+                    instance,
+                    "routing-options",
                 )
             else:
                 root_type = "routing-options"
@@ -243,21 +245,26 @@ class Static_routes(ConfigBase):
                 if protocol == "ipv6":
                     if vrf_name:
                         rib_route_root = build_child_xml_node(
-                            routing_options, "rib"
+                            routing_options,
+                            "rib",
                         )
                         build_child_xml_node(
-                            rib_route_root, "name", vrf_name + ".inet6.0"
+                            rib_route_root,
+                            "name",
+                            vrf_name + ".inet6.0",
                         )
                     else:
                         rib_route_root = build_root_xml_node("rib")
                         build_child_xml_node(rib_route_root, "name", "inet6.0")
                     static_route_root = build_child_xml_node(
-                        rib_route_root, "static"
+                        rib_route_root,
+                        "static",
                     )
                 elif protocol == "ipv4":
                     if vrf_name:
                         static_route_root = build_child_xml_node(
-                            routing_options, "static"
+                            routing_options,
+                            "static",
                         )
                     else:
                         static_route_root = build_root_xml_node("static")
@@ -265,18 +272,23 @@ class Static_routes(ConfigBase):
                 if afi.get("routes"):
                     for route in afi["routes"]:
                         route_node = build_child_xml_node(
-                            static_route_root, "route"
+                            static_route_root,
+                            "route",
                         )
                         if delete:
                             route_node.attrib.update(delete)
                         if route.get("dest"):
                             build_child_xml_node(
-                                route_node, "name", route["dest"]
+                                route_node,
+                                "name",
+                                route["dest"],
                             )
                         if not delete:
                             if route.get("metric"):
                                 build_child_xml_node(
-                                    route_node, "metric", route["metric"]
+                                    route_node,
+                                    "metric",
+                                    route["metric"],
                                 )
                             if route.get("next_hop"):
                                 for hop in route["next_hop"]:
@@ -292,7 +304,7 @@ class Static_routes(ConfigBase):
 
                 if vrf_name:
                     static_route_xml.append(
-                        {"root_type": root_type, "static_route_xml": instance}
+                        {"root_type": root_type, "static_route_xml": instance},
                     )
                 else:
                     if protocol == "ipv6":
@@ -300,13 +312,13 @@ class Static_routes(ConfigBase):
                             {
                                 "root_type": root_type,
                                 "static_route_xml": rib_route_root,
-                            }
+                            },
                         )
                     else:
                         static_route_xml.append(
                             {
                                 "root_type": root_type,
                                 "static_route_xml": static_route_root,
-                            }
+                            },
                         )
         return static_route_xml

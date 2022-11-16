@@ -7,14 +7,17 @@
 # utils
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
+
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
+    validate_config,
+)
 
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     tostring,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    validate_config,
-)
+
 
 try:
     from ncclient.xml_ import new_ele, to_ele
@@ -24,9 +27,7 @@ except ImportError:
     HAS_NCCLIENT = False
 
 try:
-    from ansible.module_utils.common.parameters import (
-        _list_no_log_values as list_no_log_values,
-    )
+    from ansible.module_utils.common.parameters import _list_no_log_values as list_no_log_values
 except ImportError:
     # TODO: Remove this import when we no longer support ansible < 2.11
     from ansible.module_utils.common.parameters import list_no_log_values

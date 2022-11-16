@@ -23,17 +23,13 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
-    patch,
-)
-from ansible_collections.junipernetworks.junos.plugins.modules import (
-    junos_vlans,
-)
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
-    set_module_args,
-)
+from ansible_collections.junipernetworks.junos.plugins.modules import junos_vlans
+from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import patch
+from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
+
 from .junos_module import TestJunosModule, load_fixture
 
 
@@ -44,28 +40,28 @@ class TestJunosVlansModule(TestJunosModule):
         super(TestJunosVlansModule, self).setUp()
 
         self.mock_lock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration",
         )
         self.lock_configuration = self.mock_lock_configuration.start()
 
         self.mock_unlock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration",
         )
         self.unlock_configuration = self.mock_unlock_configuration.start()
 
         self.mock_load_config = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.vlans.vlans.load_config"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.vlans.vlans.load_config",
         )
         self.load_config = self.mock_load_config.start()
 
         self.mock_commit_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.vlans.vlans.commit_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.vlans.vlans.commit_configuration",
         )
         self.mock_commit_configuration = self.mock_commit_configuration.start()
 
         self.mock_execute_show_command = patch(
             "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.vlans.vlans."
-            "VlansFacts.get_device_data"
+            "VlansFacts.get_device_data",
         )
         self.execute_show_command = self.mock_execute_show_command.start()
 
@@ -78,7 +74,11 @@ class TestJunosVlansModule(TestJunosModule):
         self.mock_execute_show_command.stop()
 
     def load_fixtures(
-        self, commands=None, format="text", changed=False, filename=None
+        self,
+        commands=None,
+        format="text",
+        changed=False,
+        filename=None,
     ):
         def load_from_file(*args, **kwargs):
             output = load_fixture("junos_vlans_config.cfg")
@@ -94,19 +94,19 @@ class TestJunosVlansModule(TestJunosModule):
             dict(
                 config=[dict(name="vlan2", vlan_id=2, l3_interface="irb.12")],
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:vlans xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:vlan><nc:name>vlan2</nc:name><nc:vlan-id>2</nc:vlan-id>"
-            "<nc:l3-interface>irb.12</nc:l3-interface></nc:vlan></nc:vlans>"
+            "<nc:l3-interface>irb.12</nc:l3-interface></nc:vlan></nc:vlans>",
         ]
         result = self.execute_module(changed=True, commands=commands)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_vlans_merged_idempotent(self):
         set_module_args(
-            dict(config=[dict(name="vlan1", vlan_id=1)], state="merged")
+            dict(config=[dict(name="vlan1", vlan_id=1)], state="merged"),
         )
         result = self.execute_module(changed=True)
         self.assertEqual(result["before"], result["after"])
@@ -122,7 +122,7 @@ class TestJunosVlansModule(TestJunosModule):
                     dict(name="vlan2", vlan_id=2),
                 ],
                 state="replaced",
-            )
+            ),
         )
 
         commands = [
@@ -131,14 +131,14 @@ class TestJunosVlansModule(TestJunosModule):
             '<nc:vlan delete="delete"><nc:name>vlan2</nc:name></nc:vlan>'
             "<nc:vlan><nc:name>vlan1</nc:name><nc:vlan-id>1</nc:vlan-id>"
             "<nc:l3-interface>irb.10</nc:l3-interface></nc:vlan><nc:vlan>"
-            "<nc:name>vlan2</nc:name><nc:vlan-id>2</nc:vlan-id></nc:vlan></nc:vlans>"
+            "<nc:name>vlan2</nc:name><nc:vlan-id>2</nc:vlan-id></nc:vlan></nc:vlans>",
         ]
         result = self.execute_module(changed=True, commands=commands)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_vlans_replaced_idempotent(self):
         set_module_args(
-            dict(config=[dict(name="vlan1", vlan_id=1)], state="replaced")
+            dict(config=[dict(name="vlan1", vlan_id=1)], state="replaced"),
         )
         result = self.execute_module(changed=True)
         self.assertEqual(result["before"], result["after"])
@@ -151,21 +151,21 @@ class TestJunosVlansModule(TestJunosModule):
             dict(
                 config=[dict(name="vlan3", vlan_id=3, l3_interface="irb.13")],
                 state="overridden",
-            )
+            ),
         )
 
         commands = [
             '<nc:vlans xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             '<nc:vlan delete="delete"><nc:name>vlan1</nc:name></nc:vlan>'
             "<nc:vlan><nc:name>vlan3</nc:name><nc:vlan-id>3</nc:vlan-id>"
-            "<nc:l3-interface>irb.13</nc:l3-interface></nc:vlan></nc:vlans>"
+            "<nc:l3-interface>irb.13</nc:l3-interface></nc:vlan></nc:vlans>",
         ]
         result = self.execute_module(changed=True, commands=commands)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_vlans_overridden_idempotent(self):
         set_module_args(
-            dict(config=[dict(name="vlan1", vlan_id=1)], state="overridden")
+            dict(config=[dict(name="vlan1", vlan_id=1)], state="overridden"),
         )
         result = self.execute_module(changed=True)
         self.assertEqual(result["before"], result["after"])
@@ -187,7 +187,7 @@ class TestJunosVlansModule(TestJunosModule):
 
         commands = [
             '<nc:vlans xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
-            '<nc:vlan delete="delete"><nc:name>vlan1</nc:name></nc:vlan></nc:vlans>'
+            '<nc:vlan delete="delete"><nc:name>vlan1</nc:name></nc:vlan></nc:vlans>',
         ]
         result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
@@ -200,7 +200,7 @@ class TestJunosVlansModule(TestJunosModule):
 
         commands = [
             '<nc:vlans xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
-            '<nc:vlan delete="delete"><nc:name>vlan1</nc:name></nc:vlan></nc:vlans>'
+            '<nc:vlan delete="delete"><nc:name>vlan1</nc:name></nc:vlan></nc:vlans>',
         ]
         result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
@@ -216,7 +216,7 @@ class TestJunosVlansModule(TestJunosModule):
                     dict(name="vlan2", vlan_id=2, l3_interface="irb.12"),
                 ],
                 state="rendered",
-            )
+            ),
         )
         rendered = (
             '<nc:vlans xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'

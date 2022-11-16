@@ -23,17 +23,13 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
-    patch,
-)
-from ansible_collections.junipernetworks.junos.plugins.modules import (
-    junos_routing_instances,
-)
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
-    set_module_args,
-)
+from ansible_collections.junipernetworks.junos.plugins.modules import junos_routing_instances
+from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import patch
+from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
+
 from .junos_module import TestJunosModule, load_fixture
 
 
@@ -44,28 +40,28 @@ class TestJunosRouting_instancesModule(TestJunosModule):
         super(TestJunosRouting_instancesModule, self).setUp()
 
         self.mock_lock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration",
         )
         self.lock_configuration = self.mock_lock_configuration.start()
 
         self.mock_unlock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration",
         )
         self.unlock_configuration = self.mock_unlock_configuration.start()
 
         self.mock_load_config = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.routing_instances.routing_instances.load_config"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.routing_instances.routing_instances.load_config",
         )
         self.load_config = self.mock_load_config.start()
 
         self.mock_commit_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.routing_instances.routing_instances.commit_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.routing_instances.routing_instances.commit_configuration",
         )
         self.mock_commit_configuration = self.mock_commit_configuration.start()
 
         self.mock_execute_show_command = patch(
             "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.routing_instances.routing_instances."
-            "Routing_instancesFacts.get_device_data"
+            "Routing_instancesFacts.get_device_data",
         )
         self.execute_show_command = self.mock_execute_show_command.start()
 
@@ -78,7 +74,11 @@ class TestJunosRouting_instancesModule(TestJunosModule):
         self.mock_execute_show_command.stop()
 
     def load_fixtures(
-        self, commands=None, format="text", changed=False, filename=None
+        self,
+        commands=None,
+        format="text",
+        changed=False,
+        filename=None,
     ):
         def load_from_file(*args, **kwargs):
             if filename:
@@ -109,10 +109,10 @@ class TestJunosRouting_instancesModule(TestJunosModule):
                             dict(name="gr-0/0/0.0"),
                         ],
                         connector_id_advertise=True,
-                    )
+                    ),
                 ],
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:routing-instances xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -122,7 +122,7 @@ class TestJunosRouting_instancesModule(TestJunosModule):
             "</nc:interface><nc:route-distinguisher><nc:rd-type>10.58.255.1:37</nc:rd-type>"
             "</nc:route-distinguisher><nc:vrf-import>test-policy</nc:vrf-import>"
             "<nc:vrf-export>test-policy</nc:vrf-export><nc:vrf-export>test-policy-1</nc:vrf-export>"
-            "</nc:instance></nc:routing-instances>"
+            "</nc:instance></nc:routing-instances>",
         ]
         result = self.execute_module(changed=True, commands=commands)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
@@ -135,10 +135,10 @@ class TestJunosRouting_instancesModule(TestJunosModule):
                         name="forwardinst",
                         type="forwarding",
                         description="Configured by Ansible Content Team",
-                    )
+                    ),
                 ],
                 state="merged",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         self.assertEqual(result["before"], result["after"])
@@ -169,7 +169,7 @@ class TestJunosRouting_instancesModule(TestJunosModule):
                     ),
                 ],
                 state="replaced",
-            )
+            ),
         )
 
         commands = [
@@ -184,7 +184,7 @@ class TestJunosRouting_instancesModule(TestJunosModule):
             "</nc:instance><nc:instance><nc:name>forwardinst</nc:name>"
             "<nc:description>Replaced and Configured by Ansible Content Team</nc:description>"
             "<nc:instance-type>forwarding</nc:instance-type>"
-            "</nc:instance></nc:routing-instances>"
+            "</nc:instance></nc:routing-instances>",
         ]
         result = self.execute_module(changed=True, commands=commands)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
@@ -197,10 +197,10 @@ class TestJunosRouting_instancesModule(TestJunosModule):
                         name="forwardinst",
                         type="forwarding",
                         description="Configured by Ansible Content Team",
-                    )
+                    ),
                 ],
                 state="replaced",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         self.assertEqual(result["before"], result["after"])
@@ -223,10 +223,10 @@ class TestJunosRouting_instancesModule(TestJunosModule):
                             dict(name="gr-0/0/0.0"),
                         ],
                         connector_id_advertise=True,
-                    )
+                    ),
                 ],
                 state="overridden",
-            )
+            ),
         )
 
         commands = [
@@ -237,7 +237,7 @@ class TestJunosRouting_instancesModule(TestJunosModule):
             "</nc:interface><nc:interface><nc:name>gr-0/0/0.0</nc:name></nc:interface>"
             "<nc:route-distinguisher><nc:rd-type>10.58.255.1:37</nc:rd-type></nc:route-distinguisher>"
             "<nc:vrf-import>test-policy</nc:vrf-import><nc:vrf-export>test-policy</nc:vrf-export>"
-            "<nc:vrf-export>test-policy-1</nc:vrf-export></nc:instance></nc:routing-instances>"
+            "<nc:vrf-export>test-policy-1</nc:vrf-export></nc:instance></nc:routing-instances>",
         ]
         result = self.execute_module(changed=True, commands=commands)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
@@ -250,10 +250,10 @@ class TestJunosRouting_instancesModule(TestJunosModule):
                         name="forwardinst",
                         type="forwarding",
                         description="Configured by Ansible Content Team",
-                    )
+                    ),
                 ],
                 state="overridden",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         self.assertEqual(result["before"], result["after"])
@@ -276,10 +276,10 @@ class TestJunosRouting_instancesModule(TestJunosModule):
                             dict(name="gr-0/0/0.0"),
                         ],
                         connector_id_advertise=True,
-                    )
+                    ),
                 ],
                 state="rendered",
-            )
+            ),
         )
 
         rendered = (
@@ -313,10 +313,10 @@ class TestJunosRouting_instancesModule(TestJunosModule):
                             dict(name="gr-0/0/0.0"),
                         ],
                         connector_id_advertise=True,
-                    )
+                    ),
                 ],
                 state="rendered",
-            )
+            ),
         )
 
         rendered = (
@@ -343,7 +343,7 @@ class TestJunosRouting_instancesModule(TestJunosModule):
                 "name": "forwardinst",
                 "type": "forwarding",
                 "description": "Configured by Ansible Content Team",
-            }
+            },
         ]
         self.assertEqual(sorted(gather_list), sorted(result["gathered"]))
 
@@ -355,7 +355,7 @@ class TestJunosRouting_instancesModule(TestJunosModule):
 
         commands = [
             '<nc:routing-instances xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
-            '<nc:instance delete="delete"/></nc:routing-instances>'
+            '<nc:instance delete="delete"/></nc:routing-instances>',
         ]
         result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
@@ -365,12 +365,12 @@ class TestJunosRouting_instancesModule(TestJunosModule):
         :return:
         """
         set_module_args(
-            dict(config=[dict(name="forwardinst")], state="deleted")
+            dict(config=[dict(name="forwardinst")], state="deleted"),
         )
 
         commands = [
             '<nc:routing-instances xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
-            '<nc:instance delete="delete"><nc:name>forwardinst</nc:name></nc:instance></nc:routing-instances>'
+            '<nc:instance delete="delete"><nc:name>forwardinst</nc:name></nc:instance></nc:routing-instances>',
         ]
         result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), sorted(commands))

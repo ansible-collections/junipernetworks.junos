@@ -12,27 +12,27 @@ created
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    locked_config,
-    load_config,
-    commit_configuration,
-    discard_changes,
-    tostring,
-)
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
     ConfigBase,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    to_list,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
+    build_child_xml_node,
+    build_root_xml_node,
 )
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import to_list
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
     Facts,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
-    build_root_xml_node,
-    build_child_xml_node,
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
+    commit_configuration,
+    discard_changes,
+    load_config,
+    locked_config,
+    tostring,
 )
 
 
@@ -55,10 +55,12 @@ class Routing_instances(ConfigBase):
         :returns: The current configuration as a dictionary
         """
         facts, _warnings = Facts(self._module).get_facts(
-            self.gather_subset, self.gather_network_resources, data=data
+            self.gather_subset,
+            self.gather_network_resources,
+            data=data,
         )
         routing_instances_facts = facts["ansible_network_resources"].get(
-            "routing_instances"
+            "routing_instances",
         )
         if not routing_instances_facts:
             return []
@@ -76,24 +78,20 @@ class Routing_instances(ConfigBase):
         warnings = list()
 
         if self.state in self.ACTION_STATES or self.state == "purged":
-            existing_routing_instances_facts = (
-                self.get_routing_instances_facts()
-            )
+            existing_routing_instances_facts = self.get_routing_instances_facts()
         else:
             existing_routing_instances_facts = {}
         if state == "gathered":
-            existing_routing_instances_facts = (
-                self.get_routing_instances_facts()
-            )
+            existing_routing_instances_facts = self.get_routing_instances_facts()
             result["gathered"] = existing_routing_instances_facts
         elif self.state == "parsed":
             running_config = self._module.params["running_config"]
             if not running_config:
                 self._module.fail_json(
-                    msg="value of running_config parameter must not be empty for state parsed"
+                    msg="value of running_config parameter must not be empty for state parsed",
                 )
             result["parsed"] = self.get_routing_instances_facts(
-                data=running_config
+                data=running_config,
             )
         elif self.state == "rendered":
             config_xmls = self.set_config(existing_routing_instances_facts)
@@ -122,9 +120,7 @@ class Routing_instances(ConfigBase):
 
             result["commands"] = config_xmls
 
-            changed_routing_instances_facts = (
-                self.get_routing_instances_facts()
-            )
+            changed_routing_instances_facts = self.get_routing_instances_facts()
 
             result["before"] = existing_routing_instances_facts
             if result["changed"]:
@@ -158,14 +154,11 @@ class Routing_instances(ConfigBase):
         """
         self.root = build_root_xml_node("routing-instances")
         state = self._module.params["state"]
-        if (
-            state in ("merged", "replaced", "rendered", "overridden")
-            and not want
-        ):
+        if state in ("merged", "replaced", "rendered", "overridden") and not want:
             self._module.fail_json(
                 msg="value of config parameter must not be empty for state {0}".format(
-                    state
-                )
+                    state,
+                ),
             )
         config_xmls = []
         if state == "deleted":
@@ -239,19 +232,25 @@ class Routing_instances(ConfigBase):
             # add node description
             if instance.get("description"):
                 build_child_xml_node(
-                    rinst_node, "description", instance["description"]
+                    rinst_node,
+                    "description",
+                    instance["description"],
                 )
 
             # add node instance-role
             if instance.get("instance_role"):
                 build_child_xml_node(
-                    rinst_node, "instance-role", instance["insatnce_role"]
+                    rinst_node,
+                    "instance-role",
+                    instance["insatnce_role"],
                 )
 
             # add node instance-type
             if instance.get("type"):
                 build_child_xml_node(
-                    rinst_node, "instance-type", instance["type"]
+                    rinst_node,
+                    "instance-type",
+                    instance["type"],
                 )
 
             # add child node interface
@@ -270,7 +269,9 @@ class Routing_instances(ConfigBase):
             # add node l2vpn-id TODO
             if instance.get("l2vpn_id"):
                 build_child_xml_node(
-                    rinst_node, "l2vpn-id", instance["l2vpn_id"]
+                    rinst_node,
+                    "l2vpn-id",
+                    instance["l2vpn_id"],
                 )
 
             # add node no-irb-layer2-copy
@@ -296,10 +297,13 @@ class Routing_instances(ConfigBase):
             # add node route-distinguisher
             if instance.get("route_distinguisher"):
                 rd_instance = build_child_xml_node(
-                    rinst_node, "route-distinguisher"
+                    rinst_node,
+                    "route-distinguisher",
                 )
                 build_child_xml_node(
-                    rd_instance, "rd-type", instance.get("route_distinguisher")
+                    rd_instance,
+                    "rd-type",
+                    instance.get("route_distinguisher"),
                 )
 
             # add node vrf-import
@@ -343,7 +347,9 @@ class Routing_instances(ConfigBase):
                         continue
                     rinstance_node = build_root_xml_node("instance")
                     build_child_xml_node(
-                        rinstance_node, "name", instance["name"]
+                        rinstance_node,
+                        "name",
+                        instance["name"],
                     )
                     rinstance_node.attrib.update(delete)
                     rinst_xml.append(rinstance_node)

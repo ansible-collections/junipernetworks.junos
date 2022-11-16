@@ -1,17 +1,16 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: START junos_lacp gathered integration tests on connection={{
       ansible_connection }}
 
-- include_tasks: _remove_config.yaml
+- ansible.builtin.include_tasks: _remove_config.yaml
 
-- set_fact:
+- ansible.builtin.set_fact:
     expected_merged_output:
       system_priority: 63
       link_protection: revertive
 
 - block:
-
     - name: Merge the provided configuration with the exisiting running configuration
       register: result
       junipernetworks.junos.junos_lacp: &id001
@@ -26,13 +25,13 @@
         state: gathered
 
     - name: Assert that facts were correctly generated
-      assert:
+      ansible.builtin.assert:
         that: "{{ expected_merged_output == result['gathered'] }}"
 
   always:
+    - ansible.builtin.include_tasks: _remove_config.yaml
 
-    - include_tasks: _remove_config.yaml
-
-- debug:
-    msg: END junos_lacp gathered integration tests on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg:
+      END junos_lacp gathered integration tests on connection={{ ansible_connection
       }}

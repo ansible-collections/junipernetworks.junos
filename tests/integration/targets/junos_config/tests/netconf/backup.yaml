@@ -1,5 +1,5 @@
 ---
-- debug: msg="START netconf/backup.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="START netconf/backup.yaml on connection={{ ansible_connection }}"
 
 - name: setup
   junipernetworks.junos.junos_config:
@@ -13,7 +13,7 @@
     src: basic/config.j2
     backup: true
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - result.updates is not defined
@@ -25,8 +25,8 @@
     backup_options:
       filename: backup.cfg
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
 
-- debug: msg="END netconf/backup.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="END netconf/backup.yaml on connection={{ ansible_connection }}"

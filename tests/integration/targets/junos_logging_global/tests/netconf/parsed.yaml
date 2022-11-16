@@ -1,6 +1,7 @@
 ---
-- debug:
-    msg: START junos_logging_global parsed integration tests on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg:
+      START junos_logging_global parsed integration tests on connection={{ ansible_connection
       }}
 
 - name: Parse externally provided logging_global config to agnostic model
@@ -10,9 +11,10 @@
     state: parsed
 
 - name: Assert that config was correctly parsed
-  assert:
+  ansible.builtin.assert:
     that:
       - "{{ merged['after']  == result['parsed'] }}"
-- debug:
-    msg: END junos_logging_global parsed integration tests on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg:
+      END junos_logging_global parsed integration tests on connection={{ ansible_connection
       }}

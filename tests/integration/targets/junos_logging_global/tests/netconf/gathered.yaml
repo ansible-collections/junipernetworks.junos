@@ -1,10 +1,10 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: START junos_logging_global gathered integration tests on connection={{ ansible_connection }}
 
 - block:
-    - include_tasks: _reset_config.yaml
-    - include_tasks: _initial_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _initial_config.yaml
 
     - name: Pre gathered operation configuration
       junipernetworks.junos.junos_logging_global:
@@ -87,13 +87,13 @@
         state: gathered
 
     - name: Assert that facts were correctly generated
-      assert:
+      ansible.builtin.assert:
         that: "{{ merged['after'] == result['gathered'] }}"
 
   always:
+    - ansible.builtin.include_tasks: _reset_config.yaml
 
-    - include_tasks: _reset_config.yaml
-
-- debug:
-    msg: END junos_logging_global gathered integration tests on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg:
+      END junos_logging_global gathered integration tests on connection={{ ansible_connection
       }}

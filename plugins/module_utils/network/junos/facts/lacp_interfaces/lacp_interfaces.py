@@ -11,21 +11,22 @@ based on the configuration.
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
-    utils,
-)
+from ansible.module_utils.six import string_types
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.lacp_interfaces.lacp_interfaces import (
     Lacp_interfacesArgs,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.utils.utils import (
     get_resource_config,
 )
-from ansible.module_utils.six import string_types
+
 
 try:
     from lxml import etree
@@ -73,7 +74,7 @@ class Lacp_interfacesFacts(object):
 
         if isinstance(data, string_types):
             data = etree.fromstring(
-                to_bytes(data, errors="surrogate_then_replace")
+                to_bytes(data, errors="surrogate_then_replace"),
             )
 
         self._resources = data.xpath("configuration/interfaces/interface")
@@ -88,7 +89,8 @@ class Lacp_interfacesFacts(object):
         if objs:
             facts["lacp_interfaces"] = []
             params = utils.validate_config(
-                self.argument_spec, {"config": objs}
+                self.argument_spec,
+                {"config": objs},
             )
             for cfg in params["config"]:
                 facts["lacp_interfaces"].append(utils.remove_empties(cfg))
@@ -107,24 +109,31 @@ class Lacp_interfacesFacts(object):
         config = deepcopy(spec)
         config["name"] = utils.get_xml_conf_arg(conf, "name")
         config["period"] = utils.get_xml_conf_arg(
-            conf, "aggregated-ether-options/lacp/periodic"
+            conf,
+            "aggregated-ether-options/lacp/periodic",
         )
         config["sync_reset"] = utils.get_xml_conf_arg(
-            conf, "aggregated-ether-options/lacp/sync-reset"
+            conf,
+            "aggregated-ether-options/lacp/sync-reset",
         )
         force_up = utils.get_xml_conf_arg(
-            conf, "ether-options/ieee-802.3ad/lacp/force-up", data="tag"
+            conf,
+            "ether-options/ieee-802.3ad/lacp/force-up",
+            data="tag",
         )
         if force_up:
             config["force_up"] = True
         config["port_priority"] = utils.get_xml_conf_arg(
-            conf, "ether-options/ieee-802.3ad/lacp/port-priority"
+            conf,
+            "ether-options/ieee-802.3ad/lacp/port-priority",
         )
         config["system"]["priority"] = utils.get_xml_conf_arg(
-            conf, "aggregated-ether-options/lacp/system-priority"
+            conf,
+            "aggregated-ether-options/lacp/system-priority",
         )
         address = utils.get_xml_conf_arg(
-            conf, "aggregated-ether-options/lacp/system-id"
+            conf,
+            "aggregated-ether-options/lacp/system-id",
         )
         if address:
             config["system"].update({"mac": {"address": address}})

@@ -1,13 +1,13 @@
 ---
-- debug:
-    msg: START junos_vlans merged integration tests on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg:
+      START junos_vlans merged integration tests on connection={{ ansible_connection
       }}
 
-- include_tasks: _remove_config.yaml
+- ansible.builtin.include_tasks: _remove_config.yaml
 
-- set_fact:
+- ansible.builtin.set_fact:
     expected_merged_output:
-
       - name: vlan1
         vlan_id: 1
 
@@ -16,12 +16,10 @@
         l3_interface: "irb.12"
 
 - block:
-
     - name: Merge the provided configuration with the exisiting running configuration
       register: result
       junipernetworks.junos.junos_vlans: &id001
         config:
-
           - name: vlan1
             vlan_id: 1
 
@@ -31,24 +29,25 @@
         state: merged
 
     - name: Assert the configuration is reflected on host
-      assert:
+      ansible.builtin.assert:
         that:
           - "{{ expected_merged_output | symmetric_difference(result['after']) |length\
             \ == 0 }}"
 
-    - name: Merge the provided configuration with the existing running configuration
+    - name:
+        Merge the provided configuration with the existing running configuration
         (IDEMPOTENT)
       register: result
       junipernetworks.junos.junos_vlans: *id001
 
     - name: Assert that the previous task was idempotent
-      assert:
+      ansible.builtin.assert:
         that:
           - result['changed'] == false
   always:
+    - ansible.builtin.include_tasks: _remove_config.yaml
 
-    - include_tasks: _remove_config.yaml
-
-- debug:
-    msg: END junos_vlans merged integration tests on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg:
+      END junos_vlans merged integration tests on connection={{ ansible_connection
       }}

@@ -11,18 +11,20 @@ based on the configuration.
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
+
+from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
-from copy import deepcopy
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
-    utils,
-)
+from ansible.module_utils.six import string_types
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.snmp_server.snmp_server import (
     Snmp_serverArgs,
 )
-from ansible.module_utils.six import string_types
+
 
 try:
     from lxml import etree
@@ -86,7 +88,7 @@ class Snmp_serverFacts(object):
 
         if isinstance(data, string_types):
             data = etree.fromstring(
-                to_bytes(data, errors="surrogate_then_replace")
+                to_bytes(data, errors="surrogate_then_replace"),
             )
         objs = {}
         resources = data.xpath("configuration/snmp")
@@ -99,7 +101,8 @@ class Snmp_serverFacts(object):
         if objs:
             facts["snmp_server"] = {}
             params = utils.validate_config(
-                self.argument_spec, {"config": objs}
+                self.argument_spec,
+                {"config": objs},
             )
 
             facts["snmp_server"] = utils.remove_empties(params["config"])
@@ -110,7 +113,8 @@ class Snmp_serverFacts(object):
         if not HAS_XMLTODICT:
             self._module.fail_json(msg=missing_required_lib("xmltodict"))
         xml_dict = xmltodict.parse(
-            etree.tostring(xml_root), dict_constructor=dict
+            etree.tostring(xml_root),
+            dict_constructor=dict,
         )
         return xml_dict
 
@@ -142,7 +146,7 @@ class Snmp_serverFacts(object):
         # Read client_lists node
         if "client-list" in conf.keys():
             snmp_server_config["client_lists"] = self.get_client_list(
-                conf.get("client-list")
+                conf.get("client-list"),
             )
 
         # Read communities node
@@ -240,13 +244,9 @@ class Snmp_serverFacts(object):
                 if "idp" in health_monitor.keys():
                     health_dict["idp"] = True
                 if "falling-threshold" in health_monitor.keys():
-                    health_dict["falling_threshold"] = health_monitor[
-                        "falling-threshold"
-                    ]
+                    health_dict["falling_threshold"] = health_monitor["falling-threshold"]
                 if "rising-threshold" in health_monitor.keys():
-                    health_dict["rising_threshold"] = health_monitor[
-                        "rising-threshold"
-                    ]
+                    health_dict["rising_threshold"] = health_monitor["rising-threshold"]
                 if "interval" in health_monitor.keys():
                     health_dict["interval"] = health_monitor["interval"]
             snmp_server_config["health_monitor"] = health_dict
@@ -336,11 +336,11 @@ class Snmp_serverFacts(object):
 
             if "file" in trace_options.keys():
                 cfg_dict["file"] = self.get_trace_file(
-                    trace_options.get("file")
+                    trace_options.get("file"),
                 )
             if "flag" in trace_options.keys():
                 cfg_dict["flag"] = self.get_trace_flag(
-                    trace_options.get("flag")
+                    trace_options.get("flag"),
                 )
             if "memory-trace" in trace_options.keys():
                 mtrace = trace_options.get("memory-trace")
@@ -393,7 +393,7 @@ class Snmp_serverFacts(object):
                     cfg_dict["source_address"] = source_dict
                 if "routing-instance" in trap_options.keys():
                     cfg_dict["routing_instance"] = trap_options.get(
-                        "routing-instance"
+                        "routing-instance",
                     )
 
             snmp_server_config["trap_options"] = cfg_dict
@@ -731,7 +731,7 @@ class Snmp_serverFacts(object):
             cfg_dict["falling_threshold"] = cfg.get("falling-threshold")
         if "falling-threshold-interval" in cfg.keys():
             cfg_dict["falling_threshold_interval"] = cfg.get(
-                "falling-threshold-interval"
+                "falling-threshold-interval",
             )
         if "interval" in cfg.keys():
             cfg_dict["interval"] = cfg.get("interval")
@@ -818,12 +818,12 @@ class Snmp_serverFacts(object):
                 client_address_lst = []
                 if isinstance(client_addresses, dict):
                     client_address_lst.append(
-                        self.get_client_address(client_addresses)
+                        self.get_client_address(client_addresses),
                     )
                 else:
                     for address in client_addresses:
                         client_address_lst.append(
-                            self.get_client_address(address)
+                            self.get_client_address(address),
                         )
                 if client_address_lst:
                     client_dict["addresses"] = client_address_lst
@@ -837,12 +837,12 @@ class Snmp_serverFacts(object):
                     client_address_lst = []
                     if isinstance(client_addresses, dict):
                         client_address_lst.append(
-                            self.get_client_address(client_addresses)
+                            self.get_client_address(client_addresses),
                         )
                     else:
                         for address in client_addresses:
                             client_address_lst.append(
-                                self.get_client_address(address)
+                                self.get_client_address(address),
                             )
                     if client_address_lst:
                         client_dict["addresses"] = client_address_lst

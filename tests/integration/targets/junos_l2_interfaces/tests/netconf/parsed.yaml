@@ -1,11 +1,11 @@
 ---
-- debug:
-    msg: START junos_l2_interfaces parsed integration tests on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg:
+      START junos_l2_interfaces parsed integration tests on connection={{ ansible_connection
       }}
 
-- set_fact:
+- ansible.builtin.set_fact:
     expected_parsed_output:
-
       - name: ge-0/0/1
         access:
           vlan: vlan100
@@ -17,7 +17,7 @@
           allowed_vlans:
             - vlan200
             - vlan300
-          native_vlan: '400'
+          native_vlan: "400"
         enhanced_layer: true
         unit: 0
 
@@ -28,10 +28,11 @@
     state: parsed
 
 - name: Assert that config was correctly parsed
-  assert:
+  ansible.builtin.assert:
     that:
       - "{{ expected_parsed_output | symmetric_difference(result['parsed']) |length ==\
         \ 0 }}"
-- debug:
-    msg: END junos_l2_interfaces parsed integration tests on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg:
+      END junos_l2_interfaces parsed integration tests on connection={{ ansible_connection
       }}

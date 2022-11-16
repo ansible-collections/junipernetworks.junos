@@ -1,5 +1,5 @@
 ---
-requires_ansible: '>=2.9.10'
+requires_ansible: ">=2.9.10"
 plugin_routing:
   action:
     junos_acl_interfaces:
@@ -220,11 +220,11 @@ plugin_routing:
     logging:
       redirect: junipernetworks.junos.junos_logging
       deprecation:
-        removal_date: '2023-08-01'
+        removal_date: "2023-08-01"
         warning_text: See the plugin documentation for more details
     junos_logging:
       deprecation:
-        removal_date: '2023-08-01'
+        removal_date: "2023-08-01"
         warning_text: See the plugin documentation for more details
     netconf:
       redirect: junipernetworks.junos.junos_netconf

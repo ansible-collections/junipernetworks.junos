@@ -1,8 +1,10 @@
 ---
-- debug: msg="START netconf_json/lessthan.yaml on connection={{ ansible_connection
+- name: Debug task
+  ansible.builtin.debug:
+    msg="START netconf_json/lessthan.yaml on connection={{ ansible_connection
     }}"
 
-- name: test lt operator
+- name: Run test lt operator
   register: result
   junipernetworks.junos.junos_command:
     commands:
@@ -13,13 +15,14 @@
       - result[1]['interface-information'][0]['physical-interface'][0]['local-index'][0]['data']
         lt 7
 
-- assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
       - result.stdout_lines is defined
 
-- name: test < operator
+- name: Run test < operator
   register: result
   junipernetworks.junos.junos_command:
     commands:
@@ -30,11 +33,14 @@
       - result[1]['interface-information'][0]['physical-interface'][0]['local-index'][0]['data']
         lt 7
 
-- assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
       - result.stdout_lines is defined
 
-- debug: msg="END netconf_json/lessthan.yaml on connection={{ ansible_connection
+- name: Debug task
+  ansible.builtin.debug:
+    msg="END netconf_json/lessthan.yaml on connection={{ ansible_connection
     }}"

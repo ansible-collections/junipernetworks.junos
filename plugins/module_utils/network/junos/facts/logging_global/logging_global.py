@@ -11,18 +11,20 @@ based on the configuration.
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
+
+from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
-from copy import deepcopy
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
-    utils,
-)
+from ansible.module_utils.six import string_types
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.logging_global.logging_global import (
     Logging_globalArgs,
 )
-from ansible.module_utils.six import string_types
+
 
 try:
     from lxml import etree
@@ -88,7 +90,7 @@ class Logging_globalFacts(object):
 
         if isinstance(data, string_types):
             data = etree.fromstring(
-                to_bytes(data, errors="surrogate_then_replace")
+                to_bytes(data, errors="surrogate_then_replace"),
             )
         objs = {}
         resources = data.xpath("configuration/system/syslog")
@@ -101,7 +103,8 @@ class Logging_globalFacts(object):
         if objs:
             facts["logging_global"] = {}
             params = utils.validate_config(
-                self.argument_spec, {"config": objs}
+                self.argument_spec,
+                {"config": objs},
             )
 
             facts["logging_global"] = utils.remove_empties(params["config"])
@@ -112,7 +115,8 @@ class Logging_globalFacts(object):
         if not HAS_XMLTODICT:
             self._module.fail_json(msg=missing_required_lib("xmltodict"))
         xml_dict = xmltodict.parse(
-            etree.tostring(xml_root), dict_constructor=dict
+            etree.tostring(xml_root),
+            dict_constructor=dict,
         )
         return xml_dict
 
@@ -158,19 +162,19 @@ class Logging_globalFacts(object):
         # Read log-rotate-frequency node
         if "log-rotate-frequency" in conf.keys():
             logging_gloabl_config["log_rotate_frequency"] = conf.get(
-                "log-rotate-frequency"
+                "log-rotate-frequency",
             )
 
         # Read routing-instance node
         if "routing-instance" in conf.keys():
             logging_gloabl_config["routing_instance"] = conf.get(
-                "routing-instance"
+                "routing-instance",
             )
 
         # Read source-address node
         if "source-address" in conf.keys():
             logging_gloabl_config["source_address"] = conf.get(
-                "source-address"
+                "source-address",
             )
 
         # Read user node

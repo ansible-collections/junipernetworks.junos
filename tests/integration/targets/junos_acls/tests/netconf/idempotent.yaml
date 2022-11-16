@@ -1,11 +1,11 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_acls idempotence integration tests on connection={{ ansible_connection }}"
 
 - block:
-    - include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
 
-    - set_fact:
+    - ansible.builtin.set_fact:
         config:
           - acls:
               - aces:
@@ -52,28 +52,28 @@
             afi: ipv6
 
     - name: Test equivalence
-      junos_acls:
+      junipernetworks.junos.junos_acls:
         config: "{{ config }}"
         state: merged
       register: result
 
-    - assert:
+    - ansible.builtin.assert:
         that:
           - result.changed == False
 
     - name: Test idempotence
-      junos_acls:
+      junipernetworks.junos.junos_acls:
         config: "{{ config }}"
         state: overridden
       register: result
 
-    - assert:
+    - ansible.builtin.assert:
         that:
           - result.changed == False
 
   tags: idempotence
   always:
-    - include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_acls idempotence integration tests on connection={{ ansible_connection }}"
