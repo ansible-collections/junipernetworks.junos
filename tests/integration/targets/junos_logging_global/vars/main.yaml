@@ -5,7 +5,7 @@ merged:
   after:
     allow_duplicates: true
     archive:
-      file_size: '5m'
+      file_size: "5m"
       files: 10
       no_binary_data: true
       no_world_readable: true
@@ -75,7 +75,7 @@ merged:
     archive:
       no_binary_data: true
       files: 10
-      file_size: '5m'
+      file_size: "5m"
       no_world_readable: true
     console:
       any:
@@ -148,7 +148,7 @@ replaced:
   after:
     allow_duplicates: true
     archive:
-      file_size: '5m'
+      file_size: "5m"
       files: 10
       no_binary_data: true
       no_world_readable: true

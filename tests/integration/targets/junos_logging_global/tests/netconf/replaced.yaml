@@ -14,7 +14,7 @@
             set: true
             no_binary_data: true
             files: 10
-            file_size: '5m'
+            file_size: "5m"
             no_world_readable: true
           console:
             any:
@@ -89,7 +89,7 @@
             set: true
             no_binary_data: true
             files: 10
-            file_size: '5m'
+            file_size: "5m"
             no_world_readable: true
           files:
             - name: "file101"
