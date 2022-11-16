@@ -31,7 +31,7 @@ merged:
         archive:
           no_binary_data: true
           files: 10
-          file_size: 65578
+          file_size: "65578"
           no_world_readable: true
         explicit_priority: true
         match: "^set*"
@@ -99,7 +99,7 @@ merged:
         archive:
           no_binary_data: true
           files: 10
-          file_size: 65578
+          file_size: "65578"
           no_world_readable: true
         explicit_priority: true
         match: "^set*"
@@ -165,7 +165,7 @@ replaced:
         archive:
           no_binary_data: true
           files: 10
-          file_size: 65578
+          file_size: "65578"
           no_world_readable: true
         explicit_priority: true
         match: "^set*"
