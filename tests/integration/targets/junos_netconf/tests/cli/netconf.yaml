@@ -24,8 +24,11 @@
   meta: reset_connection
 
 - name: Ensure we can communicate over netconf
-  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
-    ansible_port=830 is_ignore_errors=false'
+  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml'
+  vars:
+    ansible_connection: ansible.netcommon.netconf
+    ansible_port: 830
+    is_ignore_errors: false
 
 - name: Disable netconf (check mode)
   register: result
@@ -47,8 +50,11 @@
   meta: reset_connection
 
 - name: Ensure we can communicate over netconf
-  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
-    ansible_port=830 is_ignore_errors=false'
+  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml'
+  vars:
+    ansible_connection: ansible.netcommon.netconf
+    ansible_port: 830
+    is_ignore_errors: false
 
 - name: Disable netconf
   register: result
@@ -79,8 +85,11 @@
   meta: reset_connection
 
 - name: Ensure we can NOT talk via netconf
-  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
-    ansible_port=830 is_ignore_errors=true'
+  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml'
+  vars:
+    ansible_connection: ansible.netcommon.netconf
+    ansible_port: 830
+    is_ignore_errors: true
 
 - ansible.builtin.assert:
     that:
@@ -107,8 +116,11 @@
   meta: reset_connection
 
 - name: Ensure we can NOT talk via netconf
-  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
-    ansible_port=830 is_ignore_errors=true'
+  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml'
+  vars:
+    ansible_connection: ansible.netcommon.netconf
+    ansible_port: 830
+    is_ignore_errors: true
 
 - ansible.builtin.assert:
     that:
