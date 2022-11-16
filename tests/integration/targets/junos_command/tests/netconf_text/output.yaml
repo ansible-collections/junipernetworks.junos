@@ -1,6 +1,7 @@
 ---
 - name: Debug task
-  ansible.builtin.debug: msg="START netconf_text/output.yaml on connection={{ ansible_connection
+  ansible.builtin.debug:
+    msg="START netconf_text/output.yaml on connection={{ ansible_connection
     }}"
 
 - name: Get output for single command

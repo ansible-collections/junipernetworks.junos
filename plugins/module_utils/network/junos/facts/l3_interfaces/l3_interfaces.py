@@ -11,19 +11,20 @@ based on the configuration.
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 from copy import deepcopy
-from ansible.module_utils.basic import missing_required_lib
+
 from ansible.module_utils._text import to_bytes
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
-    utils,
-)
+from ansible.module_utils.basic import missing_required_lib
+from ansible.module_utils.six import iteritems, string_types
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.l3_interfaces.l3_interfaces import (
     L3_interfacesArgs,
 )
-from ansible.module_utils.six import iteritems
-from ansible.module_utils.six import string_types
+
 
 try:
     from lxml import etree
@@ -70,7 +71,8 @@ class L3_interfacesFacts(object):
         if not HAS_XMLTODICT:
             self._module.fail_json(msg=missing_required_lib("xmltodict"))
         xml_dict = xmltodict.parse(
-            etree.tostring(xml_root), dict_constructor=dict
+            etree.tostring(xml_root),
+            dict_constructor=dict,
         )
         return xml_dict
 
@@ -95,7 +97,7 @@ class L3_interfacesFacts(object):
 
         if isinstance(data, string_types):
             data = etree.fromstring(
-                to_bytes(data, errors="surrogate_then_replace")
+                to_bytes(data, errors="surrogate_then_replace"),
             )
         resources = data.xpath("configuration/interfaces/interface")
         config = []

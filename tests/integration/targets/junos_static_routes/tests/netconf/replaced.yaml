@@ -41,7 +41,8 @@
             \ |length == 0 }}"
       debugger: on_failed
 
-    - name: Override the provided configuration with the existing running configuration
+    - name:
+        Override the provided configuration with the existing running configuration
         (IDEMPOTENT)
       register: result
       junipernetworks.junos.junos_static_routes: *id001
@@ -51,9 +52,9 @@
         that:
           - result['changed'] == false
   always:
-
     - ansible.builtin.include_tasks: _remove_config.yaml
 
 - ansible.builtin.debug:
-    msg: END junos_static_routes overridden integration tests on connection={{ ansible_connection
+    msg:
+      END junos_static_routes overridden integration tests on connection={{ ansible_connection
       }}

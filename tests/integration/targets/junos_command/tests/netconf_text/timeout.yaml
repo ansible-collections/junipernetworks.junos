@@ -1,6 +1,7 @@
 ---
 - name: Debug task
-  ansible.builtin.debug: msg="START netconf_text/timeout.yaml on connection={{ ansible_connection
+  ansible.builtin.debug:
+    msg="START netconf_text/timeout.yaml on connection={{ ansible_connection
     }}"
 
 - name: Test bad condition
@@ -20,5 +21,6 @@
       - result.msg is defined
 
 - name: Assertion
-  ansible.builtin.debug: msg="END netconf_text/timeout.yaml on connection={{ ansible_connection
+  ansible.builtin.debug:
+    msg="END netconf_text/timeout.yaml on connection={{ ansible_connection
     }}"

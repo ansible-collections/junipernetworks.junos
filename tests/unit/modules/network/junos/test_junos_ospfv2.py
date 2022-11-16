@@ -23,17 +23,13 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
-    patch,
-)
-from ansible_collections.junipernetworks.junos.plugins.modules import (
-    junos_ospfv2,
-)
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
-    set_module_args,
-)
+from ansible_collections.junipernetworks.junos.plugins.modules import junos_ospfv2
+from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import patch
+from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
+
 from .junos_module import TestJunosModule, load_fixture
 
 
@@ -44,28 +40,28 @@ class TestJunosOspfv2Module(TestJunosModule):
         super(TestJunosOspfv2Module, self).setUp()
 
         self.mock_lock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration",
         )
         self.lock_configuration = self.mock_lock_configuration.start()
 
         self.mock_unlock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration",
         )
         self.unlock_configuration = self.mock_unlock_configuration.start()
 
         self.mock_load_config = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospfv2.ospfv2.load_config"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospfv2.ospfv2.load_config",
         )
         self.load_config = self.mock_load_config.start()
 
         self.mock_commit_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospfv2.ospfv2.commit_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospfv2.ospfv2.commit_configuration",
         )
         self.mock_commit_configuration = self.mock_commit_configuration.start()
 
         self.mock_execute_show_command = patch(
             "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.ospfv2.ospfv2."
-            "Ospfv2Facts.get_connection"
+            "Ospfv2Facts.get_connection",
         )
         self.execute_show_command = self.mock_execute_show_command.start()
 
@@ -78,7 +74,11 @@ class TestJunosOspfv2Module(TestJunosModule):
         self.mock_execute_show_command.stop()
 
     def load_fixtures(
-        self, commands=None, format="text", changed=False, filename=None
+        self,
+        commands=None,
+        format="text",
+        changed=False,
+        filename=None,
     ):
         def load_from_file(*args, **kwargs):
             output = load_fixture("junos_ospfv2_config.cfg")
@@ -101,15 +101,17 @@ class TestJunosOspfv2Module(TestJunosModule):
                                 stub=dict(default_metric=200, set=True),
                                 interfaces=[
                                     dict(
-                                        name="so-0/0/0.0", priority=3, metric=5
-                                    )
+                                        name="so-0/0/0.0",
+                                        priority=3,
+                                        metric=5,
+                                    ),
                                 ],
-                            )
+                            ),
                         ],
-                    )
+                    ),
                 ],
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:ospf>'
@@ -136,16 +138,16 @@ class TestJunosOspfv2Module(TestJunosModule):
                                         name="so-0/0/0.0",
                                         metric=5,
                                         bandwidth_based_metrics=[
-                                            dict(bandwidth="10g", metric=5)
+                                            dict(bandwidth="10g", metric=5),
                                         ],
-                                    )
+                                    ),
                                 ],
-                            )
+                            ),
                         ],
-                    )
+                    ),
                 ],
                 state="merged",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         self.assertIn(
@@ -191,14 +193,14 @@ class TestJunosOspfv2Module(TestJunosModule):
                                             retransmit_interval=90,
                                             transit_delay=True,
                                         ),
-                                    )
+                                    ),
                                 ],
-                            )
+                            ),
                         ],
-                    )
+                    ),
                 ],
                 state="merged",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         self.assertIn(
@@ -218,7 +220,8 @@ class TestJunosOspfv2Module(TestJunosModule):
         self.assertIn("<nc:metric>5</nc:metric>", str(result["commands"]))
         self.assertIn("<nc:passive/>", str(result["commands"]))
         self.assertIn(
-            "<nc:dead-interval>100</nc:dead-interval>", str(result["commands"])
+            "<nc:dead-interval>100</nc:dead-interval>",
+            str(result["commands"]),
         )
         self.assertIn(
             "<nc:hello-interval>80</nc:hello-interval>",
@@ -256,12 +259,14 @@ class TestJunosOspfv2Module(TestJunosModule):
                         reference_bandwidth="10g",
                         rfc1583compatibility=False,
                         spf_options=dict(
-                            delay=1000, holddown=15000, rapid_runs=9
+                            delay=1000,
+                            holddown=15000,
+                            rapid_runs=9,
                         ),
-                    )
+                    ),
                 ],
                 state="merged",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         self.assertIn(
@@ -281,7 +286,8 @@ class TestJunosOspfv2Module(TestJunosModule):
             str(result["commands"]),
         )
         self.assertIn(
-            "<nc:preference>1</nc:preference>", str(result["commands"])
+            "<nc:preference>1</nc:preference>",
+            str(result["commands"]),
         )
         self.assertIn(
             "<nc:prefix-export-limit>20000</nc:prefix-export-limit>",
@@ -315,7 +321,9 @@ class TestJunosOspfv2Module(TestJunosModule):
                                         passive=True,
                                     ),
                                     dict(
-                                        name="so-0/0/0.1", priority=4, metric=4
+                                        name="so-0/0/0.1",
+                                        priority=4,
+                                        metric=4,
                                     ),
                                 ],
                             ),
@@ -327,10 +335,10 @@ class TestJunosOspfv2Module(TestJunosModule):
                                 ],
                             ),
                         ],
-                    )
+                    ),
                 ],
                 state="replaced",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         self.assertIn(
@@ -382,7 +390,9 @@ class TestJunosOspfv2Module(TestJunosModule):
                                         passive=True,
                                     ),
                                     dict(
-                                        name="so-0/0/0.1", priority=4, metric=4
+                                        name="so-0/0/0.1",
+                                        priority=4,
+                                        metric=4,
                                     ),
                                 ],
                             ),
@@ -394,10 +404,10 @@ class TestJunosOspfv2Module(TestJunosModule):
                                 ],
                             ),
                         ],
-                    )
+                    ),
                 ],
                 state="overridden",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         self.assertIn(
@@ -441,7 +451,7 @@ class TestJunosOspfv2Module(TestJunosModule):
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             '<nc:ospf><nc:area delete="delete">0.0.0.10</nc:area></nc:ospf>'
             '<nc:ospf><nc:area delete="delete">0.0.0.20</nc:area></nc:ospf>'
-            "</nc:protocols>"
+            "</nc:protocols>",
         ]
         result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
@@ -458,15 +468,17 @@ class TestJunosOspfv2Module(TestJunosModule):
                                 stub=dict(default_metric=200, set=True),
                                 interfaces=[
                                     dict(
-                                        name="so-0/0/0.0", priority=3, metric=5
-                                    )
+                                        name="so-0/0/0.0",
+                                        priority=3,
+                                        metric=5,
+                                    ),
                                 ],
-                            )
+                            ),
                         ],
-                    )
+                    ),
                 ],
                 state="rendered",
-            )
+            ),
         )
         rendered = (
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -498,7 +510,7 @@ class TestJunosOspfv2Module(TestJunosModule):
                                 metric=5,
                                 passive=True,
                                 flood_reduction=True,
-                            )
+                            ),
                         ],
                     ),
                     dict(
@@ -509,7 +521,7 @@ class TestJunosOspfv2Module(TestJunosModule):
                         ],
                     ),
                 ],
-            )
+            ),
         ]
         self.assertEqual(sorted(gather_list), sorted(result["gathered"]))
 
@@ -561,7 +573,7 @@ class TestJunosOspfv2Module(TestJunosModule):
                     {
                         "area_id": "0.0.0.200",
                         "interfaces": [
-                            {"metric": 3, "name": "so-0/0/0.1", "priority": 5}
+                            {"metric": 3, "name": "so-0/0/0.1", "priority": 5},
                         ],
                     },
                     {
@@ -569,18 +581,18 @@ class TestJunosOspfv2Module(TestJunosModule):
                         "interfaces": [
                             {
                                 "bandwidth_based_metrics": [
-                                    {"metric": 5, "bandwidth": "10g"}
+                                    {"metric": 5, "bandwidth": "10g"},
                                 ],
                                 "metric": 5,
                                 "name": "so-0/0/0.0",
                                 "priority": 3,
-                            }
+                            },
                         ],
                         "stub": {"default_metric": 200, "set": True},
                     },
                 ],
                 "router_id": "10.200.16.7",
-            }
+            },
         ]
         self.assertEqual(result["parsed"], parsed_list)
 
@@ -636,7 +648,7 @@ class TestJunosOspfv2Module(TestJunosModule):
                     {
                         "area_id": "0.0.0.200",
                         "interfaces": [
-                            {"metric": 3, "name": "so-0/0/0.1", "priority": 5}
+                            {"metric": 3, "name": "so-0/0/0.1", "priority": 5},
                         ],
                     },
                     {
@@ -650,12 +662,12 @@ class TestJunosOspfv2Module(TestJunosModule):
                                 "metric": 5,
                                 "name": "so-0/0/0.0",
                                 "priority": 3,
-                            }
+                            },
                         ],
                         "stub": {"default_metric": 200, "set": True},
                     },
                 ],
                 "router_id": "10.200.16.7",
-            }
+            },
         ]
         self.assertEqual(result["parsed"], parsed_list)

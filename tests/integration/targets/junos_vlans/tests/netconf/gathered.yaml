@@ -27,9 +27,9 @@
             \ == 0 }}"
           - result['changed'] == false
   always:
-
     - ansible.builtin.include_tasks: _remove_config.yaml
 
 - ansible.builtin.debug:
-    msg: END junos_vlans gathered integration tests on connection={{ ansible_connection
+    msg:
+      END junos_vlans gathered integration tests on connection={{ ansible_connection
       }}

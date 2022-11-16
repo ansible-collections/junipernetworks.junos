@@ -21,19 +21,16 @@
 
 - ansible.builtin.set_fact:
     expected_merged_output:
-
       - name: ge-0/0/1
 
       - name: ge-0/0/2
         enabled: false
 
 - block:
-
     - name: Merge the provided configuration with the exisiting running configuration
       register: result
       junipernetworks.junos.junos_lldp_interfaces: &id001
         config:
-
           - name: ge-0/0/1
 
           - name: ge-0/0/2
@@ -47,14 +44,15 @@
 
     - name: Assert that facts were correctly generated
       ansible.builtin.assert:
-        that: "{{ expected_merged_output | symmetric_difference(result['gathered']) |length\
+        that:
+          "{{ expected_merged_output | symmetric_difference(result['gathered']) |length\
           \ == 0 }}"
 
   always:
-
     - ansible.builtin.include_tasks: _remove_config.yaml
   when: lldp_supported
 
 - ansible.builtin.debug:
-    msg: END junos_lldp_interfaces gathered integration tests on connection={{ ansible_connection
+    msg:
+      END junos_lldp_interfaces gathered integration tests on connection={{ ansible_connection
       }}

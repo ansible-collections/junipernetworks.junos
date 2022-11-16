@@ -56,18 +56,18 @@
         that:
           - result.changed == True
           - "{{ result['after'] | symmetric_difference( revert['before'])\
-                        \ |length == 0 }}"
+            \ |length == 0 }}"
 
     - name: Assert that config was reverted
       ansible.builtin.assert:
         that:
           - result.changed == True
           - "{{ base_config['after'] | symmetric_difference( revert['after'])\
-                        \ |length == 0 }}"
+            \ |length == 0 }}"
   always:
-
     - ansible.builtin.include_tasks: _reset_config.yaml
 
 - ansible.builtin.debug:
-    msg: END junos_ospfv2 round trip integration tests on connection={{ ansible_connection
+    msg:
+      END junos_ospfv2 round trip integration tests on connection={{ ansible_connection
       }}

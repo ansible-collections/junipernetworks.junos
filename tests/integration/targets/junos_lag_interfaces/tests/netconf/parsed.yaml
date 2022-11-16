@@ -1,11 +1,11 @@
 ---
 - ansible.builtin.debug:
-    msg: START junos_lag_interfaces parsed integration tests on connection={{ ansible_connection
+    msg:
+      START junos_lag_interfaces parsed integration tests on connection={{ ansible_connection
       }}
 
 - ansible.builtin.set_fact:
     expected_parsed_output:
-
       - name: ae1
         members:
           - member: ge-0/0/1
@@ -33,5 +33,6 @@
       - "{{ expected_parsed_output | symmetric_difference(result['parsed']) |length ==\
         \ 0 }}"
 - ansible.builtin.debug:
-    msg: END junos_lag_interfaces parsed integration tests on connection={{ ansible_connection
+    msg:
+      END junos_lag_interfaces parsed integration tests on connection={{ ansible_connection
       }}

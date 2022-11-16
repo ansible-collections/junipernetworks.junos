@@ -1,18 +1,19 @@
 ---
 - ansible.builtin.debug:
-    msg: START junos_ospf_interfaces parsed integration tests on connection={{ ansible_connection
+    msg:
+      START junos_ospf_interfaces parsed integration tests on connection={{ ansible_connection
       }}
 
 - ansible.builtin.set_fact:
     expected_parsed_output:
       - address_family:
-          - afi: 'ipv4'
+          - afi: "ipv4"
             processes:
               area:
-                area_id: '0.0.0.2'
+                area_id: "0.0.0.2"
               metric: 5
               priority: 3
-        name: 'ge-0/0/2.0'
+        name: "ge-0/0/2.0"
 
 - name: Parse externally provided interfaces config to agnostic model
   register: result
@@ -29,14 +30,14 @@
 - ansible.builtin.set_fact:
     expected_parsed_output:
       - address_family:
-          - afi: 'ipv4'
+          - afi: "ipv4"
             processes:
               area:
-                area_id: '0.0.0.2'
+                area_id: "0.0.0.2"
               metric: 5
               priority: 3
-        name: 'ge-0/0/2.0'
-        router_id: '10.200.16.75'
+        name: "ge-0/0/2.0"
+        router_id: "10.200.16.75"
 
 - name: Parse externally provided interfaces config to agnostic model
   register: result
@@ -51,5 +52,6 @@
         \ 0 }}"
 
 - ansible.builtin.debug:
-    msg: END junos_ospf_interfaces parsed integration tests on connection={{ ansible_connection
+    msg:
+      END junos_ospf_interfaces parsed integration tests on connection={{ ansible_connection
       }}

@@ -92,7 +92,7 @@
         that:
           - result.changed == True
           - "{{ expected_overridden_output | symmetric_difference(result['after']) |length\
-                    \ == 0 }}"
+            \ == 0 }}"
 
     - name: Override the existing running configuration with the provided configuration (IDEMPOTENT)
       junos_routing_instances: *overridden

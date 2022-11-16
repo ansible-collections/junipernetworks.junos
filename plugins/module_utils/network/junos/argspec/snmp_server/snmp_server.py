@@ -27,6 +27,7 @@ The arg spec for the junos_snmp_server module
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -166,7 +167,7 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                         "version_v1": {
                             "options": {
                                 "no_default_comm_to_v3_config": {
-                                    "type": "bool"
+                                    "type": "bool",
                                 },
                                 "snmp_community": {"type": "str"},
                             },
@@ -175,7 +176,7 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                         "version_v2c": {
                             "options": {
                                 "no_default_comm_to_v3_config": {
-                                    "type": "bool"
+                                    "type": "bool",
                                 },
                                 "snmp_community": {"type": "str"},
                             },
@@ -366,7 +367,7 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                                     "type": "dict",
                                                 },
                                                 "authentication_none": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "authentication_sha": {
                                                     "options": {
@@ -422,11 +423,11 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                                     "type": "dict",
                                                 },
                                                 "privacy_none": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                             },
                                             "type": "list",
-                                        }
+                                        },
                                     },
                                     "type": "dict",
                                 },
@@ -451,7 +452,7 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                                     "type": "dict",
                                                 },
                                                 "authentication_none": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "authentication_sha": {
                                                     "options": {
@@ -507,7 +508,7 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                                     "type": "dict",
                                                 },
                                                 "privacy_none": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                             },
                                             "type": "list",
@@ -529,7 +530,7 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                 "set": {"type": "bool"},
                             },
                             "type": "dict",
-                        }
+                        },
                     },
                     "type": "dict",
                 },
@@ -591,7 +592,7 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                                         "odu_bbe_threshold": {"type": "bool"},
                                         "odu_bdi": {"type": "bool"},
                                         "odu_bdodu_es_threshold": {
-                                            "type": "bool"
+                                            "type": "bool",
                                         },
                                         "odu_lck": {"type": "bool"},
                                         "odu_oci": {"type": "bool"},
@@ -644,7 +645,7 @@ class Snmp_serverArgs(object):  # pylint: disable=R0903
                     "options": {
                         "agent_address": {
                             "options": {
-                                "outgoing_interface": {"type": "bool"}
+                                "outgoing_interface": {"type": "bool"},
                             },
                             "type": "dict",
                         },

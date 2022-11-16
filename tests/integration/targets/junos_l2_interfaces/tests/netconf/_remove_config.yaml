@@ -1,6 +1,7 @@
 ---
 - ansible.builtin.debug:
-    msg: Start junos_l2_interfaces deleted remove l2 interface config ansible_connection={{
+    msg:
+      Start junos_l2_interfaces deleted remove l2 interface config ansible_connection={{
       ansible_connection }}
 
 - name: Setup - remove interface config
@@ -16,5 +17,6 @@
       - delete vlans vlan400
 
 - ansible.builtin.debug:
-    msg: End junos_l2_interfaces deleted remove l2 interface config ansible_connection={{
+    msg:
+      End junos_l2_interfaces deleted remove l2 interface config ansible_connection={{
       ansible_connection }}

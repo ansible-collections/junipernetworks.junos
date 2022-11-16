@@ -11,21 +11,22 @@ based on the configuration.
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
-    utils,
-)
+from ansible.module_utils.six import string_types
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.lag_interfaces.lag_interfaces import (
     Lag_interfacesArgs,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.utils.utils import (
     get_resource_config,
 )
-from ansible.module_utils.six import string_types
+
 
 try:
     from lxml import etree
@@ -73,7 +74,7 @@ class Lag_interfacesFacts(object):
 
         if isinstance(data, string_types):
             data = etree.fromstring(
-                to_bytes(data, errors="surrogate_then_replace")
+                to_bytes(data, errors="surrogate_then_replace"),
             )
 
         self._resources = data.xpath("configuration/interfaces/interface")
@@ -88,7 +89,8 @@ class Lag_interfacesFacts(object):
         if objs:
             facts["lag_interfaces"] = []
             params = utils.validate_config(
-                self.argument_spec, {"config": objs}
+                self.argument_spec,
+                {"config": objs},
             )
             for cfg in params["config"]:
                 facts["lag_interfaces"].append(utils.remove_empties(cfg))
@@ -112,8 +114,7 @@ class Lag_interfacesFacts(object):
             for interface_obj in self._resources:
                 lag_interface_member = utils.get_xml_conf_arg(
                     interface_obj,
-                    "ether-options/ieee-802.3ad[bundle='%s']/../../name"
-                    % intf_name,
+                    "ether-options/ieee-802.3ad[bundle='%s']/../../name" % intf_name,
                 )
                 if lag_interface_member:
                     member_config = {}

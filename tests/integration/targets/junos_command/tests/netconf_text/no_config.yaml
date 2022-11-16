@@ -1,6 +1,7 @@
 ---
 - name: Debug task
-  ansible.builtin.debug: msg="START netconf_text/no_config.yaml on connection={{ ansible_connection
+  ansible.builtin.debug:
+    msg="START netconf_text/no_config.yaml on connection={{ ansible_connection
     }}"
 
 - name: Test handling of show command's empty response received from network device
@@ -20,5 +21,6 @@
       - result.stdout_lines|symmetric_difference([[""]]) == []
 
 - name: Debug task
-  ansible.builtin.debug: msg="END netconf_text/no_config.yaml on connection={{ ansible_connection
+  ansible.builtin.debug:
+    msg="END netconf_text/no_config.yaml on connection={{ ansible_connection
     }}"

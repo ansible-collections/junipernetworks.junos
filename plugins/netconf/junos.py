@@ -18,6 +18,7 @@
 #
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 DOCUMENTATION = """
@@ -41,19 +42,20 @@ options:
 import json
 import re
 
-from ansible.module_utils._text import to_text, to_native
-from ansible.module_utils.six import string_types
 from ansible.errors import AnsibleConnectionFailure
+from ansible.module_utils._text import to_native, to_text
+from ansible.module_utils.six import string_types
 from ansible_collections.ansible.netcommon.plugins.plugin_utils.netconf_base import (
     NetconfBase,
     ensure_ncclient,
 )
 
+
 try:
     from ncclient import manager
     from ncclient.operations import RPCError
     from ncclient.transport.errors import SSHUnknownHostError
-    from ncclient.xml_ import to_ele, to_xml, new_ele, sub_ele
+    from ncclient.xml_ import new_ele, sub_ele, to_ele, to_xml
 
     HAS_NCCLIENT = True
 except (
@@ -67,7 +69,8 @@ class Netconf(NetconfBase):
     def get_text(self, ele, tag):
         try:
             return to_text(
-                ele.find(tag).text, errors="surrogate_then_replace"
+                ele.find(tag).text,
+                errors="surrogate_then_replace",
             ).strip()
         except AttributeError:
             pass
@@ -82,13 +85,16 @@ class Netconf(NetconfBase):
         sw_info = reply.find(".//software-information")
 
         device_info["network_os_version"] = self.get_text(
-            sw_info, "junos-version"
+            sw_info,
+            "junos-version",
         )
         device_info["network_os_hostname"] = self.get_text(
-            sw_info, "host-name"
+            sw_info,
+            "host-name",
         )
         device_info["network_os_model"] = self.get_text(
-            sw_info, "product-model"
+            sw_info,
+            "product-model",
         )
 
         return device_info
@@ -103,7 +109,11 @@ class Netconf(NetconfBase):
 
     @ensure_ncclient
     def load_configuration(
-        self, format="xml", action="merge", target="candidate", config=None
+        self,
+        format="xml",
+        action="merge",
+        target="candidate",
+        config=None,
     ):
         """
         Load given configuration on device
@@ -119,7 +129,10 @@ class Netconf(NetconfBase):
 
         try:
             return self.m.load_configuration(
-                format=format, action=action, target=target, config=config
+                format=format,
+                action=action,
+                target=target,
+                config=config,
             ).data_xml
         except RPCError as exc:
             raise Exception(to_xml(exc.xml))
@@ -146,7 +159,7 @@ class Netconf(NetconfBase):
         result["client_capabilities"] = list(self.m.client_capabilities)
         result["session_id"] = self.m.session_id
         result["device_operations"] = self.get_device_operations(
-            result["server_capabilities"]
+            result["server_capabilities"],
         )
         return json.dumps(result)
 
@@ -196,8 +209,7 @@ class Netconf(NetconfBase):
             if not isinstance(filter, string_types):
                 raise AnsibleConnectionFailure(
                     "get configuration filter should be of type string,"
-                    " received value '%s' is of type '%s'"
-                    % (filter, type(filter))
+                    " received value '%s' is of type '%s'" % (filter, type(filter)),
                 )
             filter = to_ele(filter)
 

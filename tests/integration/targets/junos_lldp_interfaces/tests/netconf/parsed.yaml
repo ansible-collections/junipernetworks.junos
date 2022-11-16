@@ -1,11 +1,11 @@
 ---
 - ansible.builtin.debug:
-    msg: START junos_lldp_interfaces parsed integration tests on connection={{ ansible_connection
+    msg:
+      START junos_lldp_interfaces parsed integration tests on connection={{ ansible_connection
       }}
 
 - ansible.builtin.set_fact:
     expected_parsed_output:
-
       - name: ge-0/0/1
 
       - name: ge-0/0/2
@@ -23,5 +23,6 @@
       - "{{ expected_parsed_output | symmetric_difference(result['parsed']) |length ==\
         \ 0 }}"
 - ansible.builtin.debug:
-    msg: END junos_lldp_interfaces parsed integration tests on connection={{ ansible_connection
+    msg:
+      END junos_lldp_interfaces parsed integration tests on connection={{ ansible_connection
       }}

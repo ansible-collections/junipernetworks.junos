@@ -160,22 +160,22 @@
         state: replaced
     - name: Assert that changes were applied
       ansible.builtin.assert:
-        that: 'result[''changed''] == true'
+        that: "result['changed'] == true"
     - name: Revert back to base config using facts round trip
       register: revert
       junipernetworks.junos.junos_security_zones:
-        config: '{{ ansible_facts[''network_resources''][''security_zones''] }}'
+        config: "{{ ansible_facts['network_resources']['security_zones'] }}"
         state: replaced
     - name: Assert that before dicts are correct
       ansible.builtin.assert:
         that:
           - result.changed == True
-          - '{{ result[''after''] == revert[''before''] }}'
+          - "{{ result['after'] == revert['before'] }}"
     - name: Assert that config was reverted
       ansible.builtin.assert:
         that:
           - result.changed == True
-          - '{{ base_config[''after''] == revert[''after''] }}'
+          - "{{ base_config['after'] == revert['after'] }}"
   always:
     - ansible.builtin.include_tasks: _reset_config.yaml
 - ansible.builtin.debug:

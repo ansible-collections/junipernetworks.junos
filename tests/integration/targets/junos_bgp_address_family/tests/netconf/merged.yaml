@@ -19,8 +19,8 @@
                   damping: true
                   defer_initial_multipath_build:
                     maximum_delay: 2
-                  type: 'signaling'
-              afi: 'evpn'
+                  type: "signaling"
+              afi: "evpn"
 
             - af_type:
                 - accepted_prefix_limit:
@@ -35,8 +35,8 @@
                     max_delay_routing_uptime: 32000
                     min_delay_inbound_convergence: 32000
                     min_delay_routing_uptime: 23000
-                  graceful_restart_forwarding_state_bit: 'from-fib'
-                  type: 'any'
+                  graceful_restart_forwarding_state_bit: "from-fib"
+                  type: "any"
 
                 - legacy_redirect_ip_action:
                     send: true
@@ -45,7 +45,7 @@
                   no_install: true
                   output_queue_priority_expedited: true
                   secondary_independent_resolution: true
-                  type: 'flow'
+                  type: "flow"
 
                 - entropy_label:
                     no_next_hop_validation: true
@@ -58,23 +58,23 @@
                     limit_threshold: 99
                     maximum: 20
                   resolve_vpn: true
-                  rib: 'inet.3'
+                  rib: "inet.3"
                   route_refresh_priority_priority: 3
-                  type: 'labeled-unicast'
+                  type: "labeled-unicast"
 
                 - extended_nexthop: true
                   extended_nexthop_color: true
-                  local_ipv4_address: '9.9.9.9'
-                  type: 'unicast'
-              afi: 'inet'
+                  local_ipv4_address: "9.9.9.9"
+                  type: "unicast"
+              afi: "inet"
 
     - name: Merge the provided configuration with the exisiting running configuration
       junipernetworks.junos.junos_bgp_address_family: &merged
         config:
           address_family:
-            - afi: 'evpn'
+            - afi: "evpn"
               af_type:
-                - type: 'signaling'
+                - type: "signaling"
                   accepted_prefix_limit:
                     maximum: 20
                     limit_threshold: 98
@@ -82,9 +82,9 @@
                   damping: true
                   defer_initial_multipath_build:
                     maximum_delay: 2
-            - afi: 'inet'
+            - afi: "inet"
               af_type:
-                - type: 'flow'
+                - type: "flow"
                   legacy_redirect_ip_action:
                     send: true
                     receive: true
@@ -93,12 +93,12 @@
                   output_queue_priority_expedited: true
                   secondary_independent_resolution: true
 
-                - type: 'unicast'
+                - type: "unicast"
                   extended_nexthop: true
                   extended_nexthop_color: true
-                  local_ipv4_address: '9.9.9.9'
+                  local_ipv4_address: "9.9.9.9"
 
-                - type: 'labeled-unicast'
+                - type: "labeled-unicast"
                   entropy_label:
                     no_next_hop_validation: true
                   explicit_null:
@@ -110,10 +110,10 @@
                     limit_threshold: 99
                     forever: true
                   resolve_vpn: true
-                  rib: 'inet.3'
+                  rib: "inet.3"
                   route_refresh_priority_priority: 3
 
-                - type: 'any'
+                - type: "any"
                   accepted_prefix_limit:
                     maximum: 20
                     limit_threshold: 99
@@ -126,7 +126,7 @@
                     max_delay_routing_uptime: 32000
                     min_delay_inbound_convergence: 32000
                     min_delay_routing_uptime: 23000
-                  graceful_restart_forwarding_state_bit: 'from-fib'
+                  graceful_restart_forwarding_state_bit: "from-fib"
         state: merged
       register: result
 

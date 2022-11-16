@@ -68,7 +68,7 @@
         that:
           - result.changed == True
           - "{{ expected_replaced_output | symmetric_difference(result['after']) |length\
-                     \ == 0 }}"
+            \ == 0 }}"
 
     - name: Merge the provided configuration with the existing running configuration (IDEMPOTENT)
       junos_routing_instances: *replaced

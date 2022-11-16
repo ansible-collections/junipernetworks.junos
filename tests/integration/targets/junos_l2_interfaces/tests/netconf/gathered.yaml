@@ -9,7 +9,6 @@
 
 - ansible.builtin.set_fact:
     expected_merged_output:
-
       - name: ge-0/0/1
         access:
           vlan: vlan100
@@ -21,17 +20,15 @@
           allowed_vlans:
             - vlan200
             - vlan300
-          native_vlan: '400'
+          native_vlan: "400"
         enhanced_layer: true
         unit: 0
 
 - block:
-
     - name: Merge the provided configuration with the exisiting running configuration
       register: result
       junipernetworks.junos.junos_l2_interfaces:
         config:
-
           - name: ge-0/0/1
             access:
               vlan: vlan100
@@ -41,7 +38,7 @@
               allowed_vlans:
                 - vlan200
                 - vlan300
-              native_vlan: '400'
+              native_vlan: "400"
         state: merged
 
     - name: Gather l2_interfaces facts using gathered state
@@ -51,13 +48,14 @@
 
     - name: Assert that facts were correctly generated
       ansible.builtin.assert:
-        that: "{{ expected_merged_output | symmetric_difference(result['gathered']) |length\
+        that:
+          "{{ expected_merged_output | symmetric_difference(result['gathered']) |length\
           \ == 0 }}"
 
   always:
-
     - ansible.builtin.include_tasks: _remove_config.yaml
 
 - ansible.builtin.debug:
-    msg: END junos_l2_interfaces gathered integration tests on connection={{ ansible_connection
+    msg:
+      END junos_l2_interfaces gathered integration tests on connection={{ ansible_connection
       }}

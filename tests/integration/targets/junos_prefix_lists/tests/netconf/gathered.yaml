@@ -45,12 +45,12 @@
       ansible.builtin.assert:
         that:
           - "{{ expected_gathered_output | symmetric_difference(result['gathered']) |length\
-                        \ == 0 }}"
+            \ == 0 }}"
 
   always:
-
     - ansible.builtin.include_tasks: _reset_config.yaml
 
 - ansible.builtin.debug:
-    msg: END junos_prefix_lists gathered integration tests on connection={{ ansible_connection
+    msg:
+      END junos_prefix_lists gathered integration tests on connection={{ ansible_connection
       }}

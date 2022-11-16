@@ -18,16 +18,14 @@
 # Make coding more python3-ish
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
-    patch,
-    MagicMock,
-)
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
-    set_module_args,
-)
+from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import MagicMock, patch
+from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
+
 from .junos_module import TestJunosModule
+
 
 jnpr_mock = MagicMock()
 modules = {
@@ -39,9 +37,7 @@ modules = {
 module_patcher = patch.dict("sys.modules", modules)
 module_patcher.start()
 
-from ansible_collections.junipernetworks.junos.plugins.modules import (
-    junos_package,
-)
+from ansible_collections.junipernetworks.junos.plugins.modules import junos_package
 
 
 class TestJunosPackageModule(TestJunosModule):
@@ -51,7 +47,7 @@ class TestJunosPackageModule(TestJunosModule):
     def setUp(self):
         super(TestJunosPackageModule, self).setUp()
         self.mock_get_device = patch(
-            "ansible_collections.junipernetworks.junos.plugins.modules.junos_package.get_device"
+            "ansible_collections.junipernetworks.junos.plugins.modules.junos_package.get_device",
         )
         self.get_device = self.mock_get_device.start()
 
@@ -76,7 +72,7 @@ class TestJunosPackageModule(TestJunosModule):
     def test_junos_package_src_no_copy(self):
         jnpr_mock.junos.utils.sw.SW().install.return_value = 1
         set_module_args(
-            dict(src="junos-vsrx-12.1X46-D10.2-domestic.tgz", no_copy=True)
+            dict(src="junos-vsrx-12.1X46-D10.2-domestic.tgz", no_copy=True),
         )
         self.execute_module(changed=True)
 

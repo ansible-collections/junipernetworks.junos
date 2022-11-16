@@ -26,5 +26,6 @@
     - ansible.builtin.include_tasks: _reset_config.yaml
 
 - ansible.builtin.debug:
-    msg: END junos_security_policies gathered integration tests on connection={{ ansible_connection
+    msg:
+      END junos_security_policies gathered integration tests on connection={{ ansible_connection
       }}

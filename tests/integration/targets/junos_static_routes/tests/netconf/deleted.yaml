@@ -1,6 +1,7 @@
 ---
 - ansible.builtin.debug:
-    msg: START junos_static_routes deleted integration tests on connection={{ ansible_connection
+    msg:
+      START junos_static_routes deleted integration tests on connection={{ ansible_connection
       }}
 
 - ansible.builtin.include_tasks: _remove_config.yaml
@@ -8,7 +9,6 @@
 - ansible.builtin.include_tasks: _base_config.yaml
 
 - block:
-
     - name: Delete the provided configuration with the exisiting running configuration
       register: result
       junipernetworks.junos.junos_static_routes: &id001
@@ -24,7 +24,8 @@
           - not result.after
       debugger: on_failed
 
-    - name: Delete the provided configuration with the existing running configuration
+    - name:
+        Delete the provided configuration with the existing running configuration
         (IDEMPOTENT)
       register: result
       junipernetworks.junos.junos_static_routes: *id001
@@ -34,9 +35,9 @@
         that:
           - result['changed'] == false
   always:
-
     - ansible.builtin.include_tasks: _remove_config.yaml
 
 - ansible.builtin.debug:
-    msg: END junos_static_routes deleted integration tests on connection={{ ansible_connection
+    msg:
+      END junos_static_routes deleted integration tests on connection={{ ansible_connection
       }}

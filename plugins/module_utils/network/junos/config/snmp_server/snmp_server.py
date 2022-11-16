@@ -12,28 +12,30 @@ created
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    locked_config,
-    load_config,
-    commit_configuration,
-    discard_changes,
-    tostring,
-)
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
     ConfigBase,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    to_list,
-    remove_empties,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
+    build_child_xml_node,
+    build_root_xml_node,
 )
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
+    remove_empties,
+    to_list,
+)
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
     Facts,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
-    build_root_xml_node,
-    build_child_xml_node,
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
+    commit_configuration,
+    discard_changes,
+    load_config,
+    locked_config,
+    tostring,
 )
 
 
@@ -56,10 +58,12 @@ class Snmp_server(ConfigBase):
         :returns: The current configuration as a dictionary
         """
         facts, _warnings = Facts(self._module).get_facts(
-            self.gather_subset, self.gather_network_resources, data=data
+            self.gather_subset,
+            self.gather_network_resources,
+            data=data,
         )
         snmp_server_facts = facts["ansible_network_resources"].get(
-            "snmp_server"
+            "snmp_server",
         )
         if not snmp_server_facts:
             return {}
@@ -87,7 +91,7 @@ class Snmp_server(ConfigBase):
             running_config = self._module.params["running_config"]
             if not running_config:
                 self._module.fail_json(
-                    msg="value of running_config parameter must not be empty for state parsed"
+                    msg="value of running_config parameter must not be empty for state parsed",
                 )
             result["parsed"] = self.get_snmp_server_facts(data=running_config)
         elif self.state == "rendered":
@@ -151,14 +155,11 @@ class Snmp_server(ConfigBase):
         self.snmp = build_child_xml_node(self.root, "snmp")
         cmd_lst = []
         state = self._module.params["state"]
-        if (
-            state in ("merged", "replaced", "rendered", "overridden")
-            and not want
-        ):
+        if state in ("merged", "replaced", "rendered", "overridden") and not want:
             self._module.fail_json(
                 msg="value of config parameter must not be empty for state {0}".format(
-                    state
-                )
+                    state,
+                ),
             )
         if state == "deleted":
             self._state_deleted(want, have)
@@ -215,10 +216,13 @@ class Snmp_server(ConfigBase):
                     addresses = client.get("addresses")
                     for address in addresses:
                         add_lst_node = build_child_xml_node(
-                            client_node, "client-address-list"
+                            client_node,
+                            "client-address-list",
                         )
                         build_child_xml_node(
-                            add_lst_node, "name", address["address"]
+                            add_lst_node,
+                            "name",
+                            address["address"],
                         )
                         if address.get("restrict"):
                             build_child_xml_node(add_lst_node, "restrict")
@@ -231,7 +235,8 @@ class Snmp_server(ConfigBase):
                 build_child_xml_node(snmp_node, "routing-instance-access")
             elif "access_lists" in ria.keys():
                 ria_node = build_child_xml_node(
-                    snmp_node, "routing-instance-access"
+                    snmp_node,
+                    "routing-instance-access",
                 )
                 access_lists = ria.get("access_lists")
                 for item in access_lists:
@@ -245,16 +250,21 @@ class Snmp_server(ConfigBase):
                 build_child_xml_node(comm_node, "name", community["name"])
                 if "authorization" in community.keys():
                     build_child_xml_node(
-                        comm_node, "authorization", community["authorization"]
+                        comm_node,
+                        "authorization",
+                        community["authorization"],
                     )
                 if "clients" in community.keys():
                     clients = community.get("clients")
                     for client in clients:
                         client_node = build_child_xml_node(
-                            comm_node, "clients"
+                            comm_node,
+                            "clients",
                         )
                         build_child_xml_node(
-                            client_node, "name", client["address"]
+                            client_node,
+                            "name",
+                            client["address"],
                         )
                         if client.get("restrict"):
                             build_child_xml_node(client_node, "restrict")
@@ -268,21 +278,26 @@ class Snmp_server(ConfigBase):
                     routing_instances = community.get("routing_instances")
                     for inst in routing_instances:
                         inst_node = build_child_xml_node(
-                            comm_node, "routing-instance"
+                            comm_node,
+                            "routing-instance",
                         )
                         build_child_xml_node(inst_node, "name", inst["name"])
                         if "clients" in inst.keys():
                             clients = inst.get("clients")
                             for client in clients:
                                 client_node = build_child_xml_node(
-                                    inst_node, "clients"
+                                    inst_node,
+                                    "clients",
                                 )
                                 build_child_xml_node(
-                                    client_node, "name", client["address"]
+                                    client_node,
+                                    "name",
+                                    client["address"],
                                 )
                                 if client.get("restrict"):
                                     build_child_xml_node(
-                                        client_node, "restrict"
+                                        client_node,
+                                        "restrict",
                                     )
                         if "client_list_name" in inst.keys():
                             build_child_xml_node(
@@ -292,7 +307,9 @@ class Snmp_server(ConfigBase):
                             )
                 if "view" in community.keys():
                     build_child_xml_node(
-                        comm_node, "view", community.get("view")
+                        comm_node,
+                        "view",
+                        community.get("view"),
                     )
 
         # add contact node
@@ -309,7 +326,9 @@ class Snmp_server(ConfigBase):
         # add description node
         if "description" in want.keys():
             build_child_xml_node(
-                snmp_node, "description", want.get("description")
+                snmp_node,
+                "description",
+                want.get("description"),
             )
 
         # add engine_id
@@ -331,14 +350,12 @@ class Snmp_server(ConfigBase):
         if "filter_interfaces" in want.keys():
             fints = want.get("filter_interfaces")
 
-            if (
-                "all_internal_interfaces" not in fints.keys()
-                and "interfaces" not in fints.keys()
-            ):
+            if "all_internal_interfaces" not in fints.keys() and "interfaces" not in fints.keys():
                 build_child_xml_node(snmp_node, "filter-interfaces")
             else:
                 fints_node = build_child_xml_node(
-                    snmp_node, "filter-interfaces"
+                    snmp_node,
+                    "filter-interfaces",
                 )
                 if "all_internal_interfaces" in fints.keys():
                     build_child_xml_node(fints_node, "all-internal-interfaces")
@@ -346,7 +363,8 @@ class Snmp_server(ConfigBase):
                     interfaces = fints.get("interfaces")
                     for item in interfaces:
                         int_node = build_child_xml_node(
-                            fints_node, "interfaces"
+                            fints_node,
+                            "interfaces",
                         )
                         build_child_xml_node(int_node, "name", item)
 
@@ -354,14 +372,8 @@ class Snmp_server(ConfigBase):
         if "health_monitor" in want.keys():
             health = want.get("health_monitor")
 
-            if (
-                "falling_threshold" not in health.keys()
-                and "rising_threshold" not in health.keys()
-            ):
-                if (
-                    "idp" not in health.keys()
-                    and "interval" not in health.keys()
-                ):
+            if "falling_threshold" not in health.keys() and "rising_threshold" not in health.keys():
+                if "idp" not in health.keys() and "interval" not in health.keys():
                     build_child_xml_node(snmp_node, "health-monitor")
             else:
                 health_node = build_child_xml_node(snmp_node, "health-monitor")
@@ -379,7 +391,9 @@ class Snmp_server(ConfigBase):
                     )
                 if "interval" in health.keys():
                     build_child_xml_node(
-                        health_node, "interval", health.get("interval")
+                        health_node,
+                        "interval",
+                        health.get("interval"),
                     )
                 if health.get("idp"):
                     build_child_xml_node(health_node, "idp")
@@ -412,18 +426,16 @@ class Snmp_server(ConfigBase):
             non_node = build_child_xml_node(snmp_node, "nonvolatile")
             if "commit_delay" in nonvolatile.keys():
                 build_child_xml_node(
-                    non_node, "commit-delay", nonvolatile.get("commit_delay")
+                    non_node,
+                    "commit-delay",
+                    nonvolatile.get("commit_delay"),
                 )
 
         # add rmon
         if "rmon" in want.keys():
             rmon = want.get("rmon")
 
-            if (
-                "alarms" not in rmon.keys()
-                and "events" not in rmon.keys()
-                and want.get("set")
-            ):
+            if "alarms" not in rmon.keys() and "events" not in rmon.keys() and want.get("set"):
                 build_child_xml_node(snmp_node, "rmon")
             else:
                 rmon_node = build_child_xml_node(snmp_node, "rmon")
@@ -434,7 +446,9 @@ class Snmp_server(ConfigBase):
                         for key in alarm.keys():
                             if key == "id":
                                 build_child_xml_node(
-                                    alarm_node, "name", alarm.get("id")
+                                    alarm_node,
+                                    "name",
+                                    alarm.get("id"),
                                 )
                             else:
                                 build_child_xml_node(
@@ -449,7 +463,9 @@ class Snmp_server(ConfigBase):
                         for key in event.keys():
                             if key == "id":
                                 build_child_xml_node(
-                                    event_node, "name", event.get("id")
+                                    event_node,
+                                    "name",
+                                    event.get("id"),
                                 )
                             else:
                                 build_child_xml_node(
@@ -463,15 +479,13 @@ class Snmp_server(ConfigBase):
             sub_node = build_child_xml_node(snmp_node, "subagent")
             if "tcp" in subagent.keys():
                 tcp = subagent.get("tcp")
-                if (
-                    tcp.get("set")
-                    and "routing_instances_default" not in tcp.keys()
-                ):
+                if tcp.get("set") and "routing_instances_default" not in tcp.keys():
                     build_child_xml_node(sub_node, "tcp")
                 elif tcp.get("routing_instances_default"):
                     tcp_node = build_child_xml_node(sub_node, "tcp")
                     routing_node = build_child_xml_node(
-                        tcp_node, "routing-instance"
+                        tcp_node,
+                        "routing-instance",
                     )
                     build_child_xml_node(routing_node, "default")
 
@@ -499,7 +513,9 @@ class Snmp_server(ConfigBase):
                 for key in flags.keys():
                     flag_node = build_child_xml_node(trace_node, "flag")
                     build_child_xml_node(
-                        flag_node, "name", key.replace("_", "-")
+                        flag_node,
+                        "name",
+                        key.replace("_", "-"),
                     )
 
             if "memory_trace" in options.keys():
@@ -519,7 +535,9 @@ class Snmp_server(ConfigBase):
                     for key in trap.keys():
                         if key == "name":
                             build_child_xml_node(
-                                trap_node, "name", trap["name"]
+                                trap_node,
+                                "name",
+                                trap["name"],
                             )
                         if key == "destination_port":
                             build_child_xml_node(
@@ -529,36 +547,45 @@ class Snmp_server(ConfigBase):
                             )
                         if key == "categories":
                             cat_node = build_child_xml_node(
-                                trap_node, "categories"
+                                trap_node,
+                                "categories",
                             )
                             categories = trap.get("categories")
                             for key in categories:
                                 if key == "otn_alarms":
                                     alarms = categories.get("otn_alarms")
                                     alarm_node = build_child_xml_node(
-                                        cat_node, "otn-alarms"
+                                        cat_node,
+                                        "otn-alarms",
                                     )
                                     for key in alarms:
                                         build_child_xml_node(
-                                            alarm_node, key.replace("_", "-")
+                                            alarm_node,
+                                            key.replace("_", "-"),
                                         )
                                 else:
                                     build_child_xml_node(
-                                        cat_node, key.replace("_", "-")
+                                        cat_node,
+                                        key.replace("_", "-"),
                                     )
                         if key == "routing_instance":
                             build_child_xml_node(
-                                trap_node, "routing-instance", trap.get(key)
+                                trap_node,
+                                "routing-instance",
+                                trap.get(key),
                             )
                         if key == "version":
                             build_child_xml_node(
-                                trap_node, "version", trap.get(key)
+                                trap_node,
+                                "version",
+                                trap.get(key),
                             )
                         if key == "targets":
                             targets = trap.get("targets")
                             for target in targets:
                                 tar_node = build_child_xml_node(
-                                    trap_node, "targets"
+                                    trap_node,
+                                    "targets",
                                 )
                                 build_child_xml_node(tar_node, "name", target)
 
@@ -584,21 +611,26 @@ class Snmp_server(ConfigBase):
                     if "routing_instance" in options.keys():
                         inst = options.get("routing_instances")
                         inst_node = build_child_xml_node(
-                            trap_node, "routing-instance"
+                            trap_node,
+                            "routing-instance",
                         )
                         build_child_xml_node(inst_node, "name", inst)
                     if "source_address" in options.keys():
                         address = options.get("source_address")
                         source_node = build_child_xml_node(
-                            trap_node, "source-address"
+                            trap_node,
+                            "source-address",
                         )
                         if "address" in address.keys():
                             build_child_xml_node(
-                                source_node, "address", address.get("address")
+                                source_node,
+                                "address",
+                                address.get("address"),
                             )
                         if "lowest_loopback" in address.keys():
                             build_child_xml_node(
-                                source_node, "lowest-loopback"
+                                source_node,
+                                "lowest-loopback",
                             )
         # snmp_v3
         if "snmp_v3" in want.keys():
@@ -617,7 +649,9 @@ class Snmp_server(ConfigBase):
                     fil_node = build_child_xml_node(v3_node, "notify-filter")
                     if "name" in filter.keys():
                         build_child_xml_node(
-                            fil_node, "name", filter.get("name")
+                            fil_node,
+                            "name",
+                            filter.get("name"),
                         )
                     if "oids" in filter.keys():
                         oids = filter.get("oids")
@@ -625,7 +659,9 @@ class Snmp_server(ConfigBase):
                             oids_node = build_child_xml_node(fil_node, "oid")
                             if "oid" in oid.keys():
                                 build_child_xml_node(
-                                    oids_node, "name", oid["oid"]
+                                    oids_node,
+                                    "name",
+                                    oid["oid"],
                                 )
                             if "exclude" in oid.keys():
                                 build_child_xml_node(oids_node, "exclude")
@@ -638,7 +674,9 @@ class Snmp_server(ConfigBase):
                     for key in snmp.keys():
                         if key == "community_index":
                             build_child_xml_node(
-                                snmp_node, "name", snmp.get(key)
+                                snmp_node,
+                                "name",
+                                snmp.get(key),
                             )
                         else:
                             build_child_xml_node(
@@ -664,12 +702,15 @@ class Snmp_server(ConfigBase):
 
                 for param in parameters:
                     param_node = build_child_xml_node(
-                        v3_node, "target-parameters"
+                        v3_node,
+                        "target-parameters",
                     )
 
                     if "name" in param:
                         build_child_xml_node(
-                            param_node, "name", param.get("name")
+                            param_node,
+                            "name",
+                            param.get("name"),
                         )
                     if "notify_filter" in param:
                         build_child_xml_node(
@@ -679,7 +720,8 @@ class Snmp_server(ConfigBase):
                         )
                     if "parameters" in param:
                         subnode = build_child_xml_node(
-                            param_node, "parameters"
+                            param_node,
+                            "parameters",
                         )
                         parameter = param.get("parameters")
                         for key in parameter.keys():
@@ -701,25 +743,31 @@ class Snmp_server(ConfigBase):
                         users = local.get("users")
                         for user in users:
                             user_node = build_child_xml_node(
-                                local_node, "user"
+                                local_node,
+                                "user",
                             )
                             for key in user.keys():
                                 if key == "name":
                                     build_child_xml_node(
-                                        user_node, "name", user["name"]
+                                        user_node,
+                                        "name",
+                                        user["name"],
                                     )
                                 elif key == "authentication_none":
                                     build_child_xml_node(
-                                        user_node, "authentication-none"
+                                        user_node,
+                                        "authentication-none",
                                     )
                                 elif key == "privacy_none":
                                     build_child_xml_node(
-                                        user_node, "privacy-none"
+                                        user_node,
+                                        "privacy-none",
                                     )
                                 else:
                                     sub_dict = user.get(key)
                                     sub_node = build_child_xml_node(
-                                        user_node, key.replace("_", "-")
+                                        user_node,
+                                        key.replace("_", "-"),
                                     )
 
                                     if "authentication" in key:
@@ -749,22 +797,28 @@ class Snmp_server(ConfigBase):
 
                     for remote in remotes:
                         remote_node = build_child_xml_node(
-                            usm_node, "remote-engine"
+                            usm_node,
+                            "remote-engine",
                         )
                         if "id" in remote:
                             build_child_xml_node(
-                                remote_node, "name", remote.get("id")
+                                remote_node,
+                                "name",
+                                remote.get("id"),
                             )
                         if "users" in remote.keys():
                             users = remote.get("users")
                             for user in users:
                                 user_node = build_child_xml_node(
-                                    remote_node, "user"
+                                    remote_node,
+                                    "user",
                                 )
                                 for key in user.keys():
                                     if key == "name":
                                         build_child_xml_node(
-                                            user_node, "name", user["name"]
+                                            user_node,
+                                            "name",
+                                            user["name"],
                                         )
                                     elif key == "authentication_none":
                                         build_child_xml_node(
@@ -773,7 +827,8 @@ class Snmp_server(ConfigBase):
                                         )
                                     elif key == "privacy_none":
                                         build_child_xml_node(
-                                            user_node, "privacy-none"
+                                            user_node,
+                                            "privacy-none",
                                         )
                                     else:
                                         sub_dict = user.get(key)
@@ -811,7 +866,9 @@ class Snmp_server(ConfigBase):
 
                     if "name" in view.keys():
                         build_child_xml_node(
-                            view_node, "name", view.get("name")
+                            view_node,
+                            "name",
+                            view.get("name"),
                         )
                     if "oids" in view.keys():
                         oids = view.get("oids")
@@ -819,7 +876,9 @@ class Snmp_server(ConfigBase):
                             oids_node = build_child_xml_node(view_node, "oid")
                             if "oid" in oid.keys():
                                 build_child_xml_node(
-                                    oids_node, "name", oid["oid"]
+                                    oids_node,
+                                    "name",
+                                    oid["oid"],
                                 )
                             if "exclude" in oid.keys():
                                 build_child_xml_node(oids_node, "exclude")

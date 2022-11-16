@@ -1,8 +1,8 @@
 ---
 - name: Collect all netconf test cases
   ansible.builtin.find:
-    paths: '{{ role_path }}/tests/netconf'
-    patterns: '{{ testcase }}.yaml'
+    paths: "{{ role_path }}/tests/netconf"
+    patterns: "{{ testcase }}.yaml"
     use_regex: true
   connection: local
   register: test_cases

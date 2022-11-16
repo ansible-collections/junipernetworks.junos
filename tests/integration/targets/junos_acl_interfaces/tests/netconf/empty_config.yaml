@@ -1,7 +1,8 @@
 ---
 - name: Debug
   ansible.builtin.debug:
-    msg: START junipernetworks.junos.junos_acl_interfaces empty_config integration tests on connection={{
+    msg:
+      START junipernetworks.junos.junos_acl_interfaces empty_config integration tests on connection={{
       ansible_connection }}
 
 - name: Merged with empty config should give appropriate error message

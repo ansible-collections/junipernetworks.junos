@@ -23,17 +23,13 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
-    patch,
-)
-from ansible_collections.junipernetworks.junos.plugins.modules import (
-    junos_security_policies,
-)
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
-    set_module_args,
-)
+from ansible_collections.junipernetworks.junos.plugins.modules import junos_security_policies
+from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import patch
+from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
+
 from .junos_module import TestJunosModule, load_fixture
 
 
@@ -44,28 +40,28 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
         super(TestJunosSecurity_policiesModule, self).setUp()
 
         self.mock_lock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration",
         )
         self.lock_configuration = self.mock_lock_configuration.start()
 
         self.mock_unlock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration",
         )
         self.unlock_configuration = self.mock_unlock_configuration.start()
 
         self.mock_load_config = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.security_policies.security_policies.load_config"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.security_policies.security_policies.load_config",
         )
         self.load_config = self.mock_load_config.start()
 
         self.mock_commit_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.security_policies.security_policies.commit_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.security_policies.security_policies.commit_configuration",
         )
         self.mock_commit_configuration = self.mock_commit_configuration.start()
 
         self.mock_execute_show_command = patch(
             "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.security_policies.security_policies"
-            ".Security_policiesFacts._get_device_data"
+            ".Security_policiesFacts._get_device_data",
         )
         self.execute_show_command = self.mock_execute_show_command.start()
 
@@ -78,7 +74,11 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
         self.mock_execute_show_command.stop()
 
     def load_fixtures(
-        self, commands=None, format="text", changed=False, filename=None
+        self,
+        commands=None,
+        format="text",
+        changed=False,
+        filename=None,
     ):
         def load_from_file(*args, **kwargs):
             output = load_fixture("junos_security_policies_config.cfg")
@@ -122,28 +122,28 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                                     "names": [
                                                         "junos-dhcp-relay",
                                                         "junos-finger",
-                                                    ]
+                                                    ],
                                                 },
                                                 "destination_address": {
-                                                    "addresses": ["a2", "a4"]
+                                                    "addresses": ["a2", "a4"],
                                                 },
                                                 "destination_address_excluded": True,
                                                 "dynamic_application": {
-                                                    "any": True
+                                                    "any": True,
                                                 },
                                                 "source_address": {
-                                                    "addresses": ["a1", "a3"]
+                                                    "addresses": ["a1", "a3"],
                                                 },
                                                 "source_address_excluded": True,
                                                 "source_end_user_profile": "test_end_user_profile",
                                                 "source_identity": {
-                                                    "unknown_user": True
+                                                    "unknown_user": True,
                                                 },
                                                 "url_category": {
                                                     "names": [
                                                         "Enhanced_Web_Chat",
                                                         "Enhanced_Web_Collaboration",
-                                                    ]
+                                                    ],
                                                 },
                                             },
                                             "name": "test_policy_1",
@@ -157,14 +157,14 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                             "match": {
                                                 "application": {
                                                     "names": [
-                                                        "junos-dhcp-relay"
-                                                    ]
+                                                        "junos-dhcp-relay",
+                                                    ],
                                                 },
                                                 "destination_address": {
-                                                    "addresses": ["a2"]
+                                                    "addresses": ["a2"],
                                                 },
                                                 "source_address": {
-                                                    "addresses": ["a1"]
+                                                    "addresses": ["a1"],
                                                 },
                                             },
                                             "name": "test_policy_2",
@@ -176,7 +176,7 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                                         "enable": True,
                                                         "profile_name": "SECURITY-SSL-PROXY",
                                                     },
-                                                }
+                                                },
                                             },
                                         },
                                     ],
@@ -188,14 +188,14 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                             "match": {
                                                 "application": {
                                                     "names": [
-                                                        "junos-dhcp-relay"
-                                                    ]
+                                                        "junos-dhcp-relay",
+                                                    ],
                                                 },
                                                 "destination_address": {
-                                                    "addresses": ["a2"]
+                                                    "addresses": ["a2"],
                                                 },
                                                 "source_address": {
-                                                    "addresses": ["a1"]
+                                                    "addresses": ["a1"],
                                                 },
                                             },
                                             "name": "test_policy_3",
@@ -215,7 +215,7 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                                             "profile_name": "SECURITY-SSL-PROXY",
                                                         },
                                                         "uac_policy": {
-                                                            "enable": True
+                                                            "enable": True,
                                                         },
                                                         "utm_policy": "test_utm",
                                                     },
@@ -248,23 +248,23 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                                         "reverse_tcp_mss": 64,
                                                         "window_scale": True,
                                                     },
-                                                }
+                                                },
                                             },
-                                        }
+                                        },
                                     ],
                                 },
                             ],
-                        }
+                        },
                     ],
                     "global": {
                         "policies": [
                             {
                                 "match": {
                                     "application": {
-                                        "names": ["junos-dhcp-relay"]
+                                        "names": ["junos-dhcp-relay"],
                                     },
                                     "destination_address": {
-                                        "addresses": ["a2"]
+                                        "addresses": ["a2"],
                                     },
                                     "source_address": {"addresses": ["a1"]},
                                 },
@@ -274,21 +274,21 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                             {
                                 "match": {
                                     "application": {
-                                        "names": ["junos-dhcp-relay"]
+                                        "names": ["junos-dhcp-relay"],
                                     },
                                     "destination_address": {
-                                        "addresses": ["a2"]
+                                        "addresses": ["a2"],
                                     },
                                     "source_address": {"addresses": ["a1"]},
                                 },
                                 "name": "test_glob_2",
                                 "then": {"deny": True},
                             },
-                        ]
+                        ],
                     },
                 },
                 state="merged",
-            )
+            ),
         )
 
         result = self.execute_module(changed=True)
@@ -341,7 +341,8 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
             "<nc:deny/></nc:then></nc:policy></nc:global></nc:policies></nc:security>"
         )
         self.assertEqual(
-            self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
+            self.sorted_xml(commands),
+            self.sorted_xml(str(result["commands"])),
         )
 
     def test_junos_security_policies_merged_02(self):
@@ -393,7 +394,7 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                                 "deny": True,
                                                 "log": {"session_init": True},
                                             },
-                                        }
+                                        },
                                     ],
                                 },
                                 {
@@ -403,14 +404,14 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                             "match": {
                                                 "application": {
                                                     "names": [
-                                                        "junos-dhcp-relay"
-                                                    ]
+                                                        "junos-dhcp-relay",
+                                                    ],
                                                 },
                                                 "destination_address": {
-                                                    "any": True
+                                                    "any": True,
                                                 },
                                                 "source_address": {
-                                                    "any": True
+                                                    "any": True,
                                                 },
                                             },
                                             "name": "test_policy_3",
@@ -420,30 +421,30 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                                         "idp": True,
                                                         "redirect_wx": True,
                                                         "uac_policy": {
-                                                            "captive_portal": "test"
+                                                            "captive_portal": "test",
                                                         },
                                                     },
                                                     "firewall_authentication": {
                                                         "user_firewall": {
-                                                            "domain": "test"
-                                                        }
+                                                            "domain": "test",
+                                                        },
                                                     },
                                                     "destination_address": "drop-untranslated",
                                                     "tunnel": {
                                                         "ipsec_vpn": "test_vpn",
                                                         "pair_policy": "test_policy",
                                                     },
-                                                }
+                                                },
                                             },
-                                        }
+                                        },
                                     ],
                                 },
                             ],
-                        }
-                    ]
+                        },
+                    ],
                 },
                 state="merged",
-            )
+            ),
         )
 
         result = self.execute_module(changed=True)
@@ -474,7 +475,8 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
             "</nc:security>"
         )
         self.assertEqual(
-            self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
+            self.sorted_xml(commands),
+            self.sorted_xml(str(result["commands"])),
         )
 
     def test_junos_security_policies_parsed_01(self):
@@ -642,26 +644,26 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                             "names": [
                                                 "junos-dhcp-relay",
                                                 "junos-finger",
-                                            ]
+                                            ],
                                         },
                                         "destination_address": {
-                                            "addresses": ["a2", "a4"]
+                                            "addresses": ["a2", "a4"],
                                         },
                                         "destination_address_excluded": True,
                                         "dynamic_application": {"any": True},
                                         "source_address": {
-                                            "addresses": ["a1", "a3"]
+                                            "addresses": ["a1", "a3"],
                                         },
                                         "source_address_excluded": True,
                                         "source_end_user_profile": "test_end_user_profile",
                                         "source_identity": {
-                                            "unknown_user": True
+                                            "unknown_user": True,
                                         },
                                         "url_category": {
                                             "names": [
                                                 "Enhanced_Web_Chat",
                                                 "Enhanced_Web_Collaboration",
-                                            ]
+                                            ],
                                         },
                                     },
                                     "name": "test_policy_1",
@@ -674,13 +676,13 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                 {
                                     "match": {
                                         "application": {
-                                            "names": ["junos-dhcp-relay"]
+                                            "names": ["junos-dhcp-relay"],
                                         },
                                         "destination_address": {
-                                            "addresses": ["a2"]
+                                            "addresses": ["a2"],
                                         },
                                         "source_address": {
-                                            "addresses": ["a1"]
+                                            "addresses": ["a1"],
                                         },
                                     },
                                     "name": "test_policy_2",
@@ -692,7 +694,7 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                                 "enable": True,
                                                 "profile_name": "SECURITY-SSL-PROXY",
                                             },
-                                        }
+                                        },
                                     },
                                 },
                             ],
@@ -703,13 +705,13 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                 {
                                     "match": {
                                         "application": {
-                                            "names": ["junos-dhcp-relay"]
+                                            "names": ["junos-dhcp-relay"],
                                         },
                                         "destination_address": {
-                                            "addresses": ["a2"]
+                                            "addresses": ["a2"],
                                         },
                                         "source_address": {
-                                            "addresses": ["a1"]
+                                            "addresses": ["a1"],
                                         },
                                     },
                                     "name": "test_policy_3",
@@ -759,13 +761,13 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                                 "reverse_tcp_mss": 64,
                                                 "window_scale": True,
                                             },
-                                        }
+                                        },
                                     },
-                                }
+                                },
                             ],
                         },
                     ],
-                }
+                },
             ],
             "global": {
                 "policies": [
@@ -787,7 +789,7 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                         "name": "test_glob_2",
                         "then": {"deny": True},
                     },
-                ]
+                ],
             },
         }
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
@@ -807,12 +809,12 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                 },
                                 "name": "test_glob_3",
                                 "then": {"deny": True},
-                            }
-                        ]
-                    }
+                            },
+                        ],
+                    },
                 },
                 state="overridden",
-            )
+            ),
         )
         commands = (
             '<nc:security xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:policies delete="delete"/><nc:policies><nc:global><nc:policy>'
@@ -822,7 +824,8 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
         )
         result = self.execute_module(changed=True)
         self.assertEqual(
-            self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
+            self.sorted_xml(commands),
+            self.sorted_xml(str(result["commands"])),
         )
 
     def test_junos_security_policies_gathered(self):
@@ -845,10 +848,10 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                             "names": [
                                                 "junos-dhcp-relay",
                                                 "junos-finger",
-                                            ]
+                                            ],
                                         },
                                         "destination_address": {
-                                            "addresses": ["a2", "a4"]
+                                            "addresses": ["a2", "a4"],
                                         },
                                         "destination_address_excluded": True,
                                         "dynamic_application": {
@@ -857,7 +860,7 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                             "names": ["test"],
                                         },
                                         "source_address": {
-                                            "addresses": ["a1", "a3"]
+                                            "addresses": ["a1", "a3"],
                                         },
                                         "source_address_excluded": True,
                                         "source_end_user_profile": "test_end_user_profile",
@@ -887,13 +890,13 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                 {
                                     "match": {
                                         "application": {
-                                            "names": ["junos-dhcp-relay"]
+                                            "names": ["junos-dhcp-relay"],
                                         },
                                         "destination_address": {
-                                            "addresses": ["a2"]
+                                            "addresses": ["a2"],
                                         },
                                         "source_address": {
-                                            "addresses": ["a1"]
+                                            "addresses": ["a1"],
                                         },
                                     },
                                     "name": "test_policy_2",
@@ -905,7 +908,7 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                                 "enable": True,
                                                 "profile_name": "SECURITY-SSL-PROXY",
                                             },
-                                        }
+                                        },
                                     },
                                 },
                             ],
@@ -987,13 +990,13 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                                 "ipsec_vpn": "test",
                                                 "pair_policy": "test",
                                             },
-                                        }
+                                        },
                                     },
-                                }
+                                },
                             ],
                         },
                     ],
-                }
+                },
             ],
             "global": {
                 "policies": [
@@ -1015,7 +1018,7 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                         "name": "test_glob_2",
                         "then": {"deny": True},
                     },
-                ]
+                ],
             },
         }
         self.assertEqual(gather_list, result["gathered"])
@@ -1035,12 +1038,12 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                 },
                                 "name": "test_glob_3",
                                 "then": {"deny": True},
-                            }
-                        ]
-                    }
+                            },
+                        ],
+                    },
                 },
                 state="rendered",
-            )
+            ),
         )
         rendered = (
             '<nc:security xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:policies><nc:global>'
@@ -1067,12 +1070,12 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
                                 },
                                 "name": "test_glob_3",
                                 "then": {"deny": True},
-                            }
-                        ]
-                    }
+                            },
+                        ],
+                    },
                 },
                 state="replaced",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         commands = (
@@ -1082,5 +1085,6 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
             "</nc:then></nc:policy></nc:global></nc:policies></nc:security>"
         )
         self.assertEqual(
-            self.sorted_xml(commands), self.sorted_xml(str(result["commands"]))
+            self.sorted_xml(commands),
+            self.sorted_xml(str(result["commands"])),
         )

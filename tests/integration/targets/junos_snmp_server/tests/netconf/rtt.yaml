@@ -78,9 +78,9 @@
           - result.changed == True
           - "{{ base_config['after'] == revert['after'] }}"
   always:
-
     - ansible.builtin.include_tasks: _reset_config.yaml
 
 - ansible.builtin.debug:
-    msg: END junos_snmp_server round trip integration tests on connection={{ ansible_connection
+    msg:
+      END junos_snmp_server round trip integration tests on connection={{ ansible_connection
       }}

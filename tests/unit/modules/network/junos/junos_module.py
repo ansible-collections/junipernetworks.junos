@@ -18,10 +18,12 @@
 # Make coding more python3-ish
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-import os
 import json
+import os
+
 
 try:
     from lxml.etree import parse

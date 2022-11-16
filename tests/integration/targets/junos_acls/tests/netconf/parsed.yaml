@@ -1,7 +1,8 @@
 ---
 - name: Debug task
   ansible.builtin.debug:
-    msg: START junos_acls parsed integration tests on connection={{ ansible_connection
+    msg:
+      START junos_acls parsed integration tests on connection={{ ansible_connection
       }}
 
 - name: Set facts
@@ -34,9 +35,10 @@
   ansible.builtin.assert:
     that:
       - "{{ expected_parsed_output | symmetric_difference(result['parsed']) |length ==\
-              \ 0 }}"
+        \ 0 }}"
 
 - name: Debug task
   ansible.builtin.debug:
-    msg: END junos_acls parsed integration tests on connection={{ ansible_connection
+    msg:
+      END junos_acls parsed integration tests on connection={{ ansible_connection
       }}

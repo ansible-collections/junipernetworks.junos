@@ -1,6 +1,7 @@
 ---
 - ansible.builtin.debug:
-    msg: START junos_prefix_lists parsed integration tests on connection={{ ansible_connection
+    msg:
+      START junos_prefix_lists parsed integration tests on connection={{ ansible_connection
       }}
 
 - ansible.builtin.set_fact:
@@ -22,7 +23,8 @@
   ansible.builtin.assert:
     that:
       - "{{ expected_parsed_output | symmetric_difference(result['parsed']) |length\
-                                \ == 0 }}"
+        \ == 0 }}"
 - ansible.builtin.debug:
-    msg: END junos_prefix_lists parsed integration tests on connection={{ ansible_connection
+    msg:
+      END junos_prefix_lists parsed integration tests on connection={{ ansible_connection
       }}

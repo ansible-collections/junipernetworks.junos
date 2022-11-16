@@ -1,5 +1,6 @@
 ---
-- ansible.builtin.debug: msg="START netconf/changeport.yaml on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg="START netconf/changeport.yaml on connection={{ ansible_connection
     }}"
 
 - name: Setup
@@ -28,7 +29,7 @@
 
 - name: wait for netconf port tcp/8022 to be open
   wait_for:
-    host: '{{ hostvars[item].ansible_host }}'
+    host: "{{ hostvars[item].ansible_host }}"
     port: 8022
   with_inventory_hostnames: junos
 
@@ -36,19 +37,27 @@
   meta: reset_connection
 
 - name: Ensure we can communicate over 8022
-  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
-    ansible_port=8022 is_ignore_errors=false'
+  ansible.builtin.include_tasks:
+    "{{ role_path }}/tests/utils/junos_command.yaml"
+  vars:
+    ansible_connection: ansible.netcommon.netconf
+    ansible_port: 8022
+    is_ignore_errors: false
 
 - name: wait for netconf port tcp/830 to be closed
   wait_for:
-    host: '{{ hostvars[item].ansible_host }}'
+    host: "{{ hostvars[item].ansible_host }}"
     port: 830
     state: stopped
   with_inventory_hostnames: junos
 
 - name: Ensure we can NOT communicate over default port
-  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
-    ansible_port=830 is_ignore_errors=true'
+  ansible.builtin.include_tasks:
+    "{{ role_path }}/tests/utils/junos_command.yaml"
+  vars:
+    ansible_connection: ansible.netcommon.netconf
+    ansible_port: 830
+    is_ignore_errors: true
 
 - ansible.builtin.assert:
     that:
@@ -60,7 +69,7 @@
 
 - name: wait for netconf port tcp/830 to be open
   wait_for:
-    host: '{{ hostvars[item].ansible_host }}'
+    host: "{{ hostvars[item].ansible_host }}"
     port: 830
   with_inventory_hostnames: junos
 
@@ -68,8 +77,12 @@
   meta: reset_connection
 
 - name: Ensure we can communicate over netconf
-  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
-    ansible_port=830 is_ignore_errors=false'
+  ansible.builtin.include_tasks:
+    "{{ role_path }}/tests/utils/junos_command.yaml"
+  vars:
+    ansible_connection: ansible.netcommon.netconf
+    ansible_port: 830
+    is_ignore_errors: false
 
 - name: Change port (check mode)
   register: result
@@ -84,7 +97,7 @@
 
 - name: wait for netconf port tcp/12345 to be closed
   wait_for:
-    host: '{{ hostvars[item].ansible_host }}'
+    host: "{{ hostvars[item].ansible_host }}"
     port: 12345
     state: stopped
   with_inventory_hostnames: junos
@@ -93,15 +106,23 @@
   meta: reset_connection
 
 - name: Ensure we can NOT communicate over non-default port
-  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
-    ansible_port=12345 is_ignore_errors=true'
+  ansible.builtin.include_tasks:
+    "{{ role_path }}/tests/utils/junos_command.yaml"
+  vars:
+    ansible_connection: ansible.netcommon.netconf
+    ansible_port: 12345
+    is_ignore_errors: true
 
 - ansible.builtin.assert:
     that:
       - result.failed == true
 
 - name: Ensure we can communicate over default port
-  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
-    ansible_port=830 is_ignore_errors=false'
+  ansible.builtin.include_tasks:
+    "{{ role_path }}/tests/utils/junos_command.yaml"
+  vars:
+    ansible_connection: ansible.netcommon.netconf
+    ansible_port: 830
+    is_ignore_errors: false
 
 - ansible.builtin.debug: msg="END netconf/changeport.yaml on connection={{ ansible_connection }}"

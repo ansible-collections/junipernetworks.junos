@@ -1,5 +1,6 @@
 ---
-- ansible.builtin.debug: msg="START netconf/src_invalid.yaml on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg="START netconf/src_invalid.yaml on connection={{ ansible_connection
     }}"
 
 - name: configure with invalid src

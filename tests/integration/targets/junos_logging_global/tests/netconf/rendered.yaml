@@ -4,7 +4,7 @@
       ansible_connection }}
 
 - ansible.builtin.set_fact:
-    expected_rendered_output: "<nc:system xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"><nc:syslog><nc:allow-duplicates/><nc:archive><nc:files>10</nc:files><nc:no-binary-data/><nc:size>65578</nc:size><nc:no-world-readable/></nc:archive></nc:syslog></nc:system>"
+    expected_rendered_output: '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:syslog><nc:allow-duplicates/><nc:archive><nc:files>10</nc:files><nc:no-binary-data/><nc:size>65578</nc:size><nc:no-world-readable/></nc:archive></nc:syslog></nc:system>'
 
 - name: Render platform specific commands from task input using rendered state
   register: result

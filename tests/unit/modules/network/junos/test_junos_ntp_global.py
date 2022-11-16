@@ -23,17 +23,13 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
-    patch,
-)
-from ansible_collections.junipernetworks.junos.plugins.modules import (
-    junos_ntp_global,
-)
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
-    set_module_args,
-)
+from ansible_collections.junipernetworks.junos.plugins.modules import junos_ntp_global
+from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import patch
+from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
+
 from .junos_module import TestJunosModule, load_fixture
 
 
@@ -44,28 +40,28 @@ class TestJunosNtp_globalModule(TestJunosModule):
         super(TestJunosNtp_globalModule, self).setUp()
 
         self.mock_lock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration",
         )
         self.lock_configuration = self.mock_lock_configuration.start()
 
         self.mock_unlock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration",
         )
         self.unlock_configuration = self.mock_unlock_configuration.start()
 
         self.mock_load_config = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ntp_global.ntp_global.load_config"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ntp_global.ntp_global.load_config",
         )
         self.load_config = self.mock_load_config.start()
 
         self.mock_commit_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ntp_global.ntp_global.commit_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ntp_global.ntp_global.commit_configuration",
         )
         self.mock_commit_configuration = self.mock_commit_configuration.start()
 
         self.mock_execute_show_command = patch(
             "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.ntp_global.ntp_global."
-            "Ntp_globalFacts.get_device_data"
+            "Ntp_globalFacts.get_device_data",
         )
         self.execute_show_command = self.mock_execute_show_command.start()
 
@@ -78,7 +74,11 @@ class TestJunosNtp_globalModule(TestJunosModule):
         self.mock_execute_show_command.stop()
 
     def load_fixtures(
-        self, commands=None, format="text", changed=False, filename=None
+        self,
+        commands=None,
+        format="text",
+        changed=False,
+        filename=None,
     ):
         def load_from_file(*args, **kwargs):
             output = load_fixture("junos_ntp_global_config.cfg")
@@ -148,7 +148,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
                     trusted_keys=[dict(key_id=3000), dict(key_id=2000)],
                 ),
                 state="merged",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         self.assertIn(
@@ -183,7 +183,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
                     ],
                 ),
                 state="merged",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         self.assertIn(
@@ -421,7 +421,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
                     "routing_instance_name": "rt2",
                     "ttl": 200,
                     "version": 3,
-                }
+                },
             ],
             "interval_range": 2,
             "multicast_client": "224.0.0.1",
@@ -431,7 +431,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
                     "peer": "172.44.194.186",
                     "prefer": True,
                     "version": 3,
-                }
+                },
             ],
             "servers": [
                 {
@@ -439,10 +439,10 @@ class TestJunosNtp_globalModule(TestJunosModule):
                     "prefer": True,
                     "server": "48.45.194.186",
                     "version": 2,
-                }
+                },
             ],
             "source_addresses": [
-                {"routing_instance": "rt2", "source_address": "171.45.194.186"}
+                {"routing_instance": "rt2", "source_address": "171.45.194.186"},
             ],
             "threshold": {"action": "accept", "value": 300},
             "trusted_keys": [{"key_id": 2000}],
@@ -495,7 +495,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
                     "id": 5,
                     "key": "$9$ZsUDk.mT3/toJGiHqQz",
                 },
-            ]
+            ],
         }
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
@@ -561,7 +561,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
                     trusted_keys=[dict(key_id=3000), dict(key_id=2000)],
                 ),
                 state="overridden",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         self.assertIn(
@@ -603,7 +603,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
                     "id": 4,
                     "key": "$9$ZsUDk.mT3/toJGiHqQz",
                 },
-            ]
+            ],
         }
         self.assertEqual(sorted(gather_list), sorted(result["gathered"]))
 
@@ -618,7 +618,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
                     ],
                 ),
                 state="rendered",
-            )
+            ),
         )
         rendered = (
             '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -692,7 +692,7 @@ class TestJunosNtp_globalModule(TestJunosModule):
                     trusted_keys=[dict(key_id=3000), dict(key_id=2000)],
                 ),
                 state="replaced",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         self.assertIn(

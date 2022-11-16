@@ -1,13 +1,13 @@
 ---
 - ansible.builtin.debug:
-    msg: START junos_interfaces round trip integration tests on connection={{ ansible_connection
+    msg:
+      START junos_interfaces round trip integration tests on connection={{ ansible_connection
       }}
 
 - ansible.builtin.include_tasks: _remove_config.yaml
 
 - ansible.builtin.set_fact:
     expected_revert_output:
-
       - name: ge-0/0/1
         description: Configured by Ansible - Interface 1
         mtu: 1024
@@ -31,12 +31,10 @@
         enabled: true
 
 - block:
-
     - name: Apply the provided configuration (base config)
       register: base_config
       junipernetworks.junos.junos_interfaces:
         config:
-
           - name: ge-0/0/1
             description: Configured by Ansible - Interface 1
             mtu: 1024
@@ -68,7 +66,6 @@
       register: result
       junipernetworks.junos.junos_interfaces:
         config:
-
           - name: ge-0/0/1
             description: Configured by Ansible - Interface 1 modified
             mtu: 3048
@@ -101,8 +98,8 @@
 
     - name: Assert that config was reverted
       ansible.builtin.assert:
-        that: "{{ expected_revert_output | symmetric_difference(revert['after'])\
+        that:
+          "{{ expected_revert_output | symmetric_difference(revert['after'])\
           \ |length == 0 }}"
   always:
-
     - ansible.builtin.include_tasks: _remove_config.yaml

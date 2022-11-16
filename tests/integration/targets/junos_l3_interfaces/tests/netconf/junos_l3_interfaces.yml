@@ -3,24 +3,20 @@
   register: result
   junipernetworks.junos.junos_l3_interfaces:
     config:
-
       - name: ge-1/0/0
         ipv4:
-
           - address: 192.168.100.1/24
 
           - address: 10.200.16.20/24
 
       - name: ge-2/0/0
         ipv4:
-
           - address: 192.168.100.2/24
 
           - address: 10.200.16.21/24
 
       - name: ge-3/0/0
         ipv4:
-
           - address: 192.168.100.3/24
 
           - address: 10.200.16.22/24
@@ -39,24 +35,20 @@
   register: result
   junipernetworks.junos.junos_l3_interfaces:
     config:
-
       - name: ge-1/0/0
         ipv4:
-
           - address: 192.168.100.1/24
 
           - address: 10.200.16.20/24
 
       - name: ge-2/0/0
         ipv4:
-
           - address: 192.168.100.2/24
 
           - address: 10.200.16.21/24
 
       - name: ge-3/0/0
         ipv4:
-
           - address: 192.168.100.3/24
 
           - address: 10.200.16.22/24
@@ -88,10 +80,8 @@
   register: result
   junipernetworks.junos.junos_l3_interfaces:
     config:
-
       - name: ge-1/0/0
         ipv4:
-
           - address: 100.64.0.1/10
 
           - address: 100.64.0.2/10
@@ -112,7 +102,6 @@
   register: result
   junipernetworks.junos.junos_l3_interfaces:
     config:
-
       - name: ge-2/0/0
     state: deleted
 
@@ -126,15 +115,12 @@
   register: result
   junipernetworks.junos.junos_l3_interfaces:
     config:
-
       - name: ge-1/0/0
         ipv4:
-
           - address: dhcp
 
       - name: fxp0
         ipv4:
-
           - address: dhcp
     state: overridden
 

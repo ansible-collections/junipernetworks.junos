@@ -1,6 +1,7 @@
 ---
 - name: Debug task
-  ansible.builtin.debug: msg="START netconf_xml/contains.yaml on connection={{ ansible_connection
+  ansible.builtin.debug:
+    msg="START netconf_xml/contains.yaml on connection={{ ansible_connection
     }}"
 
 - name: Test contains operator with xml encoding
@@ -22,5 +23,6 @@
       - result.stdout_lines is defined
 
 - name: Debug task
-  ansible.builtin.debug: msg="END netconf_xml/contains.yaml on connection={{ ansible_connection
+  ansible.builtin.debug:
+    msg="END netconf_xml/contains.yaml on connection={{ ansible_connection
     }}"

@@ -1,6 +1,7 @@
 ---
 - ansible.builtin.debug:
-    msg: START junos_lldp_global deleted integration tests on connection={{ ansible_connection
+    msg:
+      START junos_lldp_global deleted integration tests on connection={{ ansible_connection
       }}
 
 - name: get supported protocols
@@ -20,7 +21,6 @@
   when: result.failed
 
 - block:
-
     - ansible.builtin.include_tasks: _remove_config.yaml
 
     - ansible.builtin.set_fact:
@@ -56,10 +56,10 @@
         that:
           - result['changed'] == false
   always:
-
     - ansible.builtin.include_tasks: _remove_config.yaml
   when: lldp_supported
 
 - ansible.builtin.debug:
-    msg: END junos_lldp_global deleted integration tests on connection={{ ansible_connection
+    msg:
+      END junos_lldp_global deleted integration tests on connection={{ ansible_connection
       }}

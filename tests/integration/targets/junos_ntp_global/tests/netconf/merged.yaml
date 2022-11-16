@@ -9,18 +9,18 @@
     - name: Merge the provided configuration with the exisiting running configuration
       junipernetworks.junos.junos_ntp_global: &merged
         config:
-          boot_server: '78.46.194.186'
+          boot_server: "78.46.194.186"
           broadcasts:
-            - address: '172.16.255.255'
-              key: '50'
+            - address: "172.16.255.255"
+              key: "50"
               ttl: 200
               version: 3
-              routing_instance_name: 'rt1'
-            - address: '192.16.255.255'
-              key: '50'
+              routing_instance_name: "rt1"
+            - address: "192.16.255.255"
+              key: "50"
               ttl: 200
               version: 3
-              routing_instance_name: 'rt2'
+              routing_instance_name: "rt2"
           broadcast_client: true
           interval_range: 2
           multicast_client: "224.0.0.1"
@@ -35,16 +35,16 @@
               key_id: 34
               prefer: true
               version: 2
-              routing_instance: 'rt1'
+              routing_instance: "rt1"
             - server: "48.45.194.186"
               key_id: 34
               prefer: true
               version: 2
           source_addresses:
             - source_address: "172.45.194.186"
-              routing_instance: 'rt1'
+              routing_instance: "rt1"
             - source_address: "171.45.194.186"
-              routing_instance: 'rt2'
+              routing_instance: "rt2"
           threshold:
             value: 300
             action: "accept"

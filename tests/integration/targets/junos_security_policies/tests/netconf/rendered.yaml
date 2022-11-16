@@ -1,6 +1,7 @@
 ---
 - ansible.builtin.debug:
-    msg: START junos_security_policies rendered integration tests on connection={{
+    msg:
+      START junos_security_policies rendered integration tests on connection={{
       ansible_connection }}
 
 - ansible.builtin.set_fact:
@@ -79,7 +80,7 @@
                         application_traffic_control_rule_set: test_traffic_control
                         gprs_gtp_profile: gtp1
                         icap_redirect: test_icap
-                        reverse_redirect_wx: 'True'
+                        reverse_redirect_wx: "True"
                         uac_policy:
                           enable: true
                       firewall_authentication:

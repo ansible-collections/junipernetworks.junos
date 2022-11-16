@@ -23,17 +23,13 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
-    patch,
-)
-from ansible_collections.junipernetworks.junos.plugins.modules import (
-    junos_logging_global,
-)
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
-    set_module_args,
-)
+from ansible_collections.junipernetworks.junos.plugins.modules import junos_logging_global
+from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import patch
+from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
+
 from .junos_module import TestJunosModule, load_fixture
 
 
@@ -44,28 +40,28 @@ class TestJunosLogging_globalModule(TestJunosModule):
         super(TestJunosLogging_globalModule, self).setUp()
 
         self.mock_lock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration",
         )
         self.lock_configuration = self.mock_lock_configuration.start()
 
         self.mock_unlock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration",
         )
         self.unlock_configuration = self.mock_unlock_configuration.start()
 
         self.mock_load_config = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.logging_global.logging_global.load_config"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.logging_global.logging_global.load_config",
         )
         self.load_config = self.mock_load_config.start()
 
         self.mock_commit_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.logging_global.logging_global.commit_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.logging_global.logging_global.commit_configuration",
         )
         self.mock_commit_configuration = self.mock_commit_configuration.start()
 
         self.mock_execute_show_command = patch(
             "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.logging_global.logging_global."
-            "Logging_globalFacts.get_device_data"
+            "Logging_globalFacts.get_device_data",
         )
         self.execute_show_command = self.mock_execute_show_command.start()
 
@@ -78,7 +74,11 @@ class TestJunosLogging_globalModule(TestJunosModule):
         self.mock_execute_show_command.stop()
 
     def load_fixtures(
-        self, commands=None, format="text", changed=False, filename=None
+        self,
+        commands=None,
+        format="text",
+        changed=False,
+        filename=None,
     ):
         def load_from_file(*args, **kwargs):
             output = load_fixture("junos_logging_global_config.cfg")
@@ -96,16 +96,16 @@ class TestJunosLogging_globalModule(TestJunosModule):
                         file_size=65578,
                         no_binary_data=True,
                         no_world_readable=True,
-                    )
+                    ),
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:syslog><nc:archive><nc:files>10</nc:files>"
             "<nc:no-binary-data/><nc:size>65578</nc:size><nc:no-world-readable/>"
-            "</nc:archive></nc:syslog></nc:system>"
+            "</nc:archive></nc:syslog></nc:system>",
         ]
         result = self.execute_module(changed=True, commands=commands)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
@@ -119,10 +119,10 @@ class TestJunosLogging_globalModule(TestJunosModule):
                         authorization=dict(level="any"),
                         change_log=dict(level="critical"),
                         ftp=dict(level="none"),
-                    )
+                    ),
                 ),
                 state="merged",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         self.assertIn(
@@ -146,15 +146,15 @@ class TestJunosLogging_globalModule(TestJunosModule):
         set_module_args(
             dict(
                 config=dict(
-                    files=[dict(name="file101", allow_duplicates=True)]
+                    files=[dict(name="file101", allow_duplicates=True)],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:syslog><nc:file><nc:name>file101</nc:name>"
-            "<nc:allow-duplicates/></nc:file></nc:syslog></nc:system>"
+            "<nc:allow-duplicates/></nc:file></nc:syslog></nc:system>",
         ]
         result = self.execute_module(changed=True, commands=commands)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
@@ -183,10 +183,10 @@ class TestJunosLogging_globalModule(TestJunosModule):
                             match="^set*",
                             match_strings=["^delete", "^prompt"],
                         ),
-                    ]
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -197,7 +197,7 @@ class TestJunosLogging_globalModule(TestJunosModule):
             "<nc:size>65578</nc:size><nc:no-world-readable/>"
             "</nc:archive><nc:explicit-priority/><nc:match>^set*</nc:match>"
             "<nc:match-strings>^delete</nc:match-strings>"
-            "<nc:match-strings>^prompt</nc:match-strings></nc:file></nc:syslog></nc:system>"
+            "<nc:match-strings>^prompt</nc:match-strings></nc:file></nc:syslog></nc:system>",
         ]
         result = self.execute_module(changed=True, commands=commands)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
@@ -211,16 +211,16 @@ class TestJunosLogging_globalModule(TestJunosModule):
                             name="host222",
                             exclude_hostname=True,
                             allow_duplicates=True,
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:syslog><nc:host><nc:name>host222</nc:name><nc:allow-duplicates/>"
-            "<nc:exclude-hostname/></nc:host></nc:syslog></nc:system>"
+            "<nc:exclude-hostname/></nc:host></nc:syslog></nc:system>",
         ]
         result = self.execute_module(changed=True, commands=commands)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
@@ -243,11 +243,11 @@ class TestJunosLogging_globalModule(TestJunosModule):
                             port=1231,
                             routing_instance="inst11",
                             source_address="11.11.11.11",
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         self.assertEqual(result["before"], result["after"])
@@ -263,13 +263,13 @@ class TestJunosLogging_globalModule(TestJunosModule):
                     time_format=dict(millisecond=True, year=True),
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:syslog><nc:allow-duplicates/><nc:log-rotate-frequency>45</nc:log-rotate-frequency>"
             "<nc:routing-instance>inst11</nc:routing-instance><nc:source-address>33.33.33.33</nc:source-address>"
-            "<nc:time-format><nc:millisecond/><nc:year/></nc:time-format></nc:syslog></nc:system>"
+            "<nc:time-format><nc:millisecond/><nc:year/></nc:time-format></nc:syslog></nc:system>",
         ]
         result = self.execute_module(changed=True, commands=commands)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
@@ -286,10 +286,10 @@ class TestJunosLogging_globalModule(TestJunosModule):
                             any=dict(level="any"),
                             user=dict(level="info"),
                         ),
-                    ]
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         self.assertIn(
@@ -317,10 +317,10 @@ class TestJunosLogging_globalModule(TestJunosModule):
                             any=dict(level="any"),
                             user=dict(level="info"),
                         ),
-                    ]
+                    ],
                 ),
                 state="replaced",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         self.assertIn(
@@ -352,10 +352,10 @@ class TestJunosLogging_globalModule(TestJunosModule):
                             any=dict(level="any"),
                             user=dict(level="info"),
                         ),
-                    ]
+                    ],
                 ),
                 state="overridden",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         self.assertIn(
@@ -375,7 +375,7 @@ class TestJunosLogging_globalModule(TestJunosModule):
         set_module_args(dict(config=dict(), state="deleted"))
         commands = [
             '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
-            '<nc:syslog delete="delete"/></nc:system>'
+            '<nc:syslog delete="delete"/></nc:system>',
         ]
         result = self.execute_module(changed=True, commands=commands)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
@@ -390,10 +390,10 @@ class TestJunosLogging_globalModule(TestJunosModule):
                         file_size=65578,
                         no_binary_data=True,
                         no_world_readable=True,
-                    )
+                    ),
                 ),
                 state="rendered",
-            )
+            ),
         )
         rendered = (
             '<nc:system xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -560,7 +560,7 @@ class TestJunosLogging_globalModule(TestJunosModule):
                     "routing_instance": "inst11",
                     "source_address": "11.1.1.11",
                     "structured_data": {"brief": True},
-                }
+                },
             ],
             "log_rotate_frequency": 45,
             "routing_instance": "inst11",
@@ -599,8 +599,8 @@ class TestJunosLogging_globalModule(TestJunosModule):
                     "routing_instance": "inst11",
                     "source_address": "11.1.1.11",
                     "structured_data": {"brief": True},
-                }
-            ]
+                },
+            ],
         }
         self.assertEqual(sorted(gather_list), sorted(result["gathered"]))
 
@@ -765,7 +765,7 @@ class TestJunosLogging_globalModule(TestJunosModule):
                     "routing_instance": "inst11",
                     "source_address": "11.1.1.11",
                     "structured_data": {"brief": True},
-                }
+                },
             ],
             "log_rotate_frequency": 45,
             "routing_instance": "inst11",
@@ -904,7 +904,7 @@ class TestJunosLogging_globalModule(TestJunosModule):
                     "any": {"level": "any"},
                     "authorization": {"level": "any"},
                     "structured_data": {"brief": True},
-                }
+                },
             ],
             "hosts": [
                 {
@@ -920,7 +920,7 @@ class TestJunosLogging_globalModule(TestJunosModule):
                     "routing_instance": "inst11",
                     "source_address": "11.1.1.11",
                     "structured_data": {"brief": True},
-                }
+                },
             ],
             "log_rotate_frequency": 45,
             "routing_instance": "inst11",
@@ -1000,12 +1000,12 @@ class TestJunosLogging_globalModule(TestJunosModule):
                         "archive_sites": [
                             "www.antsiblr.com",
                             "www.antsiblr2.com",
-                        ]
+                        ],
                     },
                     "any": {"level": "any"},
                     "authorization": {"level": "any"},
                     "structured_data": {"brief": True},
-                }
+                },
             ],
             "hosts": [
                 {
@@ -1014,7 +1014,7 @@ class TestJunosLogging_globalModule(TestJunosModule):
                     "match_strings": ["^delete"],
                     "name": "host111",
                     "structured_data": {"set": True},
-                }
+                },
             ],
             "users": [
                 {
@@ -1022,7 +1022,7 @@ class TestJunosLogging_globalModule(TestJunosModule):
                     "user": {"level": "info"},
                     "match": "^set*",
                     "match_strings": ["^delete"],
-                }
+                },
             ],
         }
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))

@@ -83,7 +83,7 @@
 - name: Assert that correct set of commands were rendered
   ansible.builtin.assert:
     that:
-      - '{{ expected_rendered_output == result[''rendered''] }}'
+      - "{{ expected_rendered_output == result['rendered'] }}"
 - ansible.builtin.debug:
     msg: >-
       END junos_security_zones rendered integration tests on connection={{

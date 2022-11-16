@@ -1,6 +1,7 @@
 ---
 - ansible.builtin.debug:
-    msg: Start junos_lag_interfaces teardown ansible_connection={{ ansible_connection
+    msg:
+      Start junos_lag_interfaces teardown ansible_connection={{ ansible_connection
       }}
 
 - name: Remove interface config
@@ -14,5 +15,6 @@
       - delete interfaces ae2
 
 - ansible.builtin.debug:
-    msg: End junos_lag_interfaces teardown ansible_connection={{ ansible_connection
+    msg:
+      End junos_lag_interfaces teardown ansible_connection={{ ansible_connection
       }}

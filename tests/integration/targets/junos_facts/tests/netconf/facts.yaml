@@ -30,7 +30,7 @@
 - name: Collect all facts from device except hardware
   register: result
   junipernetworks.junos.junos_facts:
-    gather_subset: '!hardware'
+    gather_subset: "!hardware"
 
 - name: Assertion
   ansible.builtin.assert:
@@ -109,7 +109,6 @@
       - result.changed == false
       - "'netconf {' in result['ansible_facts']['ansible_net_config']"
 
-
 - name: Collect list of available network resources for junos
   register: result
   junipernetworks.junos.junos_facts:
@@ -121,7 +120,7 @@
     that:
       - result.changed == false
       - "{{ result['ansible_facts']['available_network_resources'] | symmetric_difference(result['ansible_facts']['ansible_net_gather_network_resources']) |length\
-          \ == 0 }}"
+        \ == 0 }}"
 
 - name: Debug task
   ansible.builtin.debug: msg="END netconf/facts.yaml on connection={{ ansible_connection }}"

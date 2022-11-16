@@ -1,6 +1,7 @@
 ---
 - ansible.builtin.debug:
-    msg: START junos_lldp_interfaces merged integration tests on connection={{ ansible_connection
+    msg:
+      START junos_lldp_interfaces merged integration tests on connection={{ ansible_connection
       }}
 
 - name: get supported protocols
@@ -20,12 +21,10 @@
   when: result.failed
 
 - block:
-
     - ansible.builtin.include_tasks: _remove_config.yaml
 
     - ansible.builtin.set_fact:
         expected_merged_output:
-
           - name: ge-0/0/1
 
           - name: ge-0/0/2
@@ -35,7 +34,6 @@
       register: result
       junipernetworks.junos.junos_lldp_interfaces: &id001
         config:
-
           - name: ge-0/0/1
 
           - name: ge-0/0/2
@@ -48,7 +46,8 @@
           - "{{ expected_merged_output | symmetric_difference(result['after']) |length\
             \ == 0 }}"
 
-    - name: Merge the provided configuration with the existing running configuration
+    - name:
+        Merge the provided configuration with the existing running configuration
         (IDEMPOTENT)
       register: result
       junipernetworks.junos.junos_lldp_interfaces: *id001
@@ -58,10 +57,10 @@
         that:
           - result['changed'] == false
   always:
-
     - ansible.builtin.include_tasks: _remove_config.yaml
   when: lldp_supported
 
 - ansible.builtin.debug:
-    msg: END junos_lldp_interfaces merged integration tests on connection={{ ansible_connection
+    msg:
+      END junos_lldp_interfaces merged integration tests on connection={{ ansible_connection
       }}

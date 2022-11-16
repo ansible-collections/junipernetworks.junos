@@ -1,7 +1,8 @@
 ---
 - name: Debug task
   ansible.builtin.debug:
-    msg: START junos_interfaces groups integration tests on connection={{ ansible_connection
+    msg:
+      START junos_interfaces groups integration tests on connection={{ ansible_connection
       }}
 
 - name: Reset configuration
@@ -10,7 +11,6 @@
 - name: Set facts
   ansible.builtin.set_fact:
     expected_group_output:
-
       - name: ge-0/0/11
         description: within test group
         enabled: true
@@ -30,7 +30,6 @@
       - delete interfaces ge-0/0/12
 
 - block:
-
     - name: Setup interface configuration
       junipernetworks.junos.junos_config:
         lines:
@@ -50,11 +49,11 @@
           - "{{ expected_group_output | symmetric_difference(result['ansible_facts']['ansible_network_resources']['interfaces'])|length\
             \ == 0 }}"
   always:
-
     - name: Teardown delete interface configuration
       junipernetworks.junos.junos_config: *id001
 
 - name: Debug task
   ansible.builtin.debug:
-    msg: END junos_interfaces merged integration tests on connection={{ ansible_connection
+    msg:
+      END junos_interfaces merged integration tests on connection={{ ansible_connection
       }}

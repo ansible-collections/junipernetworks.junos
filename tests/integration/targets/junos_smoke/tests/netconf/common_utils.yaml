@@ -6,7 +6,6 @@
   junos_facts:
   register: result
 
-
 - name: Define interface name for vSRX
   ansible.builtin.set_fact:
     intf_name: pp0

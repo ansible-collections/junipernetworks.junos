@@ -1,6 +1,7 @@
 ---
 - name: Debug task
-  ansible.builtin.debug: msg="START netconf_xml/invalid.yaml on connection={{ ansible_connection
+  ansible.builtin.debug:
+    msg="START netconf_xml/invalid.yaml on connection={{ ansible_connection
     }}"
 
 - name: Run invalid command

@@ -1,6 +1,7 @@
 ---
 - name: Debug task
-  ansible.builtin.debug: msg="START netconf_json/notequal.yaml on connection={{ ansible_connection
+  ansible.builtin.debug:
+    msg="START netconf_json/notequal.yaml on connection={{ ansible_connection
     }}"
 
 - name: Run test neq operator
@@ -40,5 +41,6 @@
       - result.stdout_lines is defined
 
 - name: Debug task
-  ansible.builtin.debug: msg="END netconf_json/notequal.yaml on connection={{ ansible_connection
+  ansible.builtin.debug:
+    msg="END netconf_json/notequal.yaml on connection={{ ansible_connection
     }}"

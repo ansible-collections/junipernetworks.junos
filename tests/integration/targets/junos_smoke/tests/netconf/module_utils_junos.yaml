@@ -5,7 +5,7 @@
 
 - name: get output for single command
   junos_command:
-    commands: ['show version']
+    commands: ["show version"]
     format: json
   register: result
 

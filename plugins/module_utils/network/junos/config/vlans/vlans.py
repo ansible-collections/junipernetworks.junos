@@ -21,28 +21,28 @@ created
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
     ConfigBase,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    to_list,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
+    build_child_xml_node,
+    build_root_xml_node,
 )
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import to_list
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
     Facts,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    locked_config,
-    load_config,
     commit_configuration,
     discard_changes,
+    load_config,
+    locked_config,
     tostring,
-)
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
-    build_root_xml_node,
-    build_child_xml_node,
 )
 
 
@@ -65,7 +65,9 @@ class Vlans(ConfigBase):
         :returns: The current configuration as a dictionary
         """
         facts, _warnings = Facts(self._module).get_facts(
-            self.gather_subset, self.gather_network_resources, data=data
+            self.gather_subset,
+            self.gather_network_resources,
+            data=data,
         )
         vlans_facts = facts["ansible_network_resources"].get("vlans")
         if not vlans_facts:
@@ -93,7 +95,7 @@ class Vlans(ConfigBase):
             running_config = self._module.params["running_config"]
             if not running_config:
                 self._module.fail_json(
-                    msg="value of running_config parameter must not be empty for state parsed"
+                    msg="value of running_config parameter must not be empty for state parsed",
                 )
             result["parsed"] = self.get_vlans_facts(data=running_config)
         elif self.state == "rendered":
@@ -155,14 +157,11 @@ class Vlans(ConfigBase):
         """
         root = build_root_xml_node("vlans")
         state = self._module.params["state"]
-        if (
-            state in ("merged", "replaced", "overridden", "rendered")
-            and not want
-        ):
+        if state in ("merged", "replaced", "overridden", "rendered") and not want:
             self._module.fail_json(
                 msg="value of config parameter must not be empty for state {0}".format(
-                    state
-                )
+                    state,
+                ),
             )
         if state == "overridden":
             config_xmls = self._state_overridden(want, have)
@@ -220,11 +219,15 @@ class Vlans(ConfigBase):
             build_child_xml_node(vlan_root, "vlan-id", vlan_id)
             if vlan_description:
                 build_child_xml_node(
-                    vlan_root, "description", vlan_description
+                    vlan_root,
+                    "description",
+                    vlan_description,
                 )
             if config.get("l3_interface"):
                 build_child_xml_node(
-                    vlan_root, "l3-interface", config.get("l3_interface")
+                    vlan_root,
+                    "l3-interface",
+                    config.get("l3_interface"),
                 )
 
             intf_xml.append(vlan_root)

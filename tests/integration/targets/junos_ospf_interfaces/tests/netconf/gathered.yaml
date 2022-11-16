@@ -10,14 +10,14 @@
     - ansible.builtin.set_fact:
         expected_gathered_output:
           - address_family:
-              - afi: 'ipv4'
+              - afi: "ipv4"
                 processes:
                   area:
-                    area_id: '0.0.0.2'
+                    area_id: "0.0.0.2"
                   priority: 3
                   metric: 5
-            name: 'ge-0/0/2.0'
-            router_id: '10.200.16.75'
+            name: "ge-0/0/2.0"
+            router_id: "10.200.16.75"
 
     - name: Gather interfaces facts using gathered state
       register: result
@@ -26,13 +26,14 @@
 
     - name: Assert that facts were correctly generated
       ansible.builtin.assert:
-        that: "{{ expected_gathered_output | symmetric_difference(result['gathered']) |length\
+        that:
+          "{{ expected_gathered_output | symmetric_difference(result['gathered']) |length\
           \ == 0 }}"
 
   always:
-
     - ansible.builtin.include_tasks: _reset_config.yaml
 
 - ansible.builtin.debug:
-    msg: END junos_ospf_interfaces gathered integration tests on connection={{ ansible_connection
+    msg:
+      END junos_ospf_interfaces gathered integration tests on connection={{ ansible_connection
       }}

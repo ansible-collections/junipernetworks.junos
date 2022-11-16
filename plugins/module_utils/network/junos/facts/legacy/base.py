@@ -10,22 +10,22 @@ based on the configuration.
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 import platform
 
+from ansible.module_utils._text import to_text
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
     exec_rpc,
 )
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
+    get_capabilities,
+    get_configuration,
+    get_device,
     tostring,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    get_configuration,
-    get_capabilities,
-    get_device,
-)
-from ansible.module_utils._text import to_text
 
 
 try:
@@ -48,7 +48,7 @@ class FactsBase(object):
         output = reply.find(".//output")
         if not output:
             self.module.fail_json(
-                msg="failed to retrieve facts for command %s" % command
+                msg="failed to retrieve facts for command %s" % command,
             )
         return to_text(output.text).strip()
 
@@ -114,14 +114,14 @@ class Hardware(FactsBase):
 
         reply = self.rpc("get-system-memory-information")
         data = reply.find(
-            ".//system-memory-information/system-memory-summary-information"
+            ".//system-memory-information/system-memory-summary-information",
         )
 
         self.facts.update(
             {
                 "memfree_mb": int(self.get_text(data, "system-memory-free")),
                 "memtotal_mb": int(self.get_text(data, "system-memory-total")),
-            }
+            },
         )
 
         reply = self.rpc("get-system-storage")
@@ -143,7 +143,7 @@ class Hardware(FactsBase):
             for child in obj:
                 if child.text != "\n":
                     routing_engines[slot].update(
-                        {child.tag.replace("-", "_"): child.text}
+                        {child.tag.replace("-", "_"): child.text},
                     )
 
         self.facts["routing_engines"] = routing_engines

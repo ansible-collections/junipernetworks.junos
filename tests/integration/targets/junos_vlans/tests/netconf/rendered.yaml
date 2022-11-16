@@ -4,7 +4,7 @@
       ansible_connection }}
 
 - ansible.builtin.set_fact:
-    expected_rendered_output: "<nc:vlans xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"><nc:vlan><nc:name>vlan1</nc:name><nc:vlan-id>1</nc:vlan-id></nc:vlan><nc:vlan><nc:name>vlan2</nc:name><nc:vlan-id>2</nc:vlan-id><nc:l3-interface>irb.12</nc:l3-interface></nc:vlan></nc:vlans>"
+    expected_rendered_output: '<nc:vlans xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:vlan><nc:name>vlan1</nc:name><nc:vlan-id>1</nc:vlan-id></nc:vlan><nc:vlan><nc:name>vlan2</nc:name><nc:vlan-id>2</nc:vlan-id><nc:l3-interface>irb.12</nc:l3-interface></nc:vlan></nc:vlans>'
 - name: Render platform specific commands from task input using rendered state
   register: result
   junipernetworks.junos.junos_vlans:

@@ -1,5 +1,6 @@
 ---
-- ansible.builtin.debug: msg="START cli_config/cli_replace.yaml on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg="START cli_config/cli_replace.yaml on connection={{ ansible_connection
     }}"
 
 - name: set interface config
@@ -7,7 +8,7 @@
     - delete interfaces ge-0/0/11
     - set interfaces ge-0/0/11 description "test cli_config"
   ansible.netcommon.cli_config:
-    config: '{{ item }}'
+    config: "{{ item }}"
 
 - name: get running configuration
   register: result
@@ -59,5 +60,6 @@
   ansible.netcommon.cli_config:
     config: delete interfaces ge-0/0/11
 
-- ansible.builtin.debug: msg="END cli_config/cli_replace.yaml on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg="END cli_config/cli_replace.yaml on connection={{ ansible_connection
     }}"

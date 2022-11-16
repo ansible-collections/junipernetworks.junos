@@ -1,6 +1,7 @@
 ---
 - name: Debug task
-  ansible.builtin.debug: msg="START netconf_json/bad_operator.yaml on connection={{ ansible_connection
+  ansible.builtin.debug:
+    msg="START netconf_json/bad_operator.yaml on connection={{ ansible_connection
     }}"
 
 - name: Run test bad operator with json encoding
@@ -21,5 +22,6 @@
       - result.msg is defined
 
 - name: Debug task
-  ansible.builtin.debug: msg="END netconf_json/bad_operator.yaml on connection={{ ansible_connection
+  ansible.builtin.debug:
+    msg="END netconf_json/bad_operator.yaml on connection={{ ansible_connection
     }}"

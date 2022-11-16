@@ -23,17 +23,13 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
-    patch,
-)
-from ansible_collections.junipernetworks.junos.plugins.modules import (
-    junos_bgp_global,
-)
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
-    set_module_args,
-)
+from ansible_collections.junipernetworks.junos.plugins.modules import junos_bgp_global
+from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import patch
+from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
+
 from .junos_module import TestJunosModule, load_fixture
 
 
@@ -44,28 +40,28 @@ class TestJunosBgp_globalModule(TestJunosModule):
         super(TestJunosBgp_globalModule, self).setUp()
 
         self.mock_lock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration",
         )
         self.lock_configuration = self.mock_lock_configuration.start()
 
         self.mock_unlock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration",
         )
         self.unlock_configuration = self.mock_unlock_configuration.start()
 
         self.mock_load_config = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.bgp_global.bgp_global.load_config"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.bgp_global.bgp_global.load_config",
         )
         self.load_config = self.mock_load_config.start()
 
         self.mock_commit_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.bgp_global.bgp_global.commit_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.bgp_global.bgp_global.commit_configuration",
         )
         self.mock_commit_configuration = self.mock_commit_configuration.start()
 
         self.mock_execute_show_command = patch(
             "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.bgp_global.bgp_global."
-            "Bgp_globalFacts.get_device_data"
+            "Bgp_globalFacts.get_device_data",
         )
         self.execute_show_command = self.mock_execute_show_command.start()
 
@@ -78,7 +74,11 @@ class TestJunosBgp_globalModule(TestJunosModule):
         self.mock_execute_show_command.stop()
 
     def load_fixtures(
-        self, commands=None, format="text", changed=False, filename=None
+        self,
+        commands=None,
+        format="text",
+        changed=False,
+        filename=None,
     ):
         def load_from_file(*args, **kwargs):
             if filename:
@@ -104,7 +104,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
                     ),
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -139,7 +139,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
                     preference="2",
                 ),
                 state="merged",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         self.assertEqual(result["before"], result["after"])
@@ -175,7 +175,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
                     preference="2",
                 ),
                 state="replaced",
-            )
+            ),
         )
 
         commands = [
@@ -253,7 +253,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
                     preference="2",
                 ),
                 state="replaced",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         self.assertEqual(result["before"], result["after"])
@@ -278,7 +278,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
                     preference="2",
                 ),
                 state="rendered",
-            )
+            ),
         )
 
         rendered = (
@@ -456,7 +456,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             dict(
                 config=dict(as_number="65432", loops=5, asdot_notation=True),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -492,11 +492,11 @@ class TestJunosBgp_globalModule(TestJunosModule):
                                     accept_remote_nexthop=True,
                                 ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -520,7 +520,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             dict(
                 config=dict(advertise_bgp_static=dict(policy="static-to-bgp")),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -539,10 +539,10 @@ class TestJunosBgp_globalModule(TestJunosModule):
         set_module_args(
             dict(
                 config=dict(
-                    advertise_external=dict(set=True, conditional=True)
+                    advertise_external=dict(set=True, conditional=True),
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -570,16 +570,17 @@ class TestJunosBgp_globalModule(TestJunosModule):
                         ),
                         detection_time=dict(threshold=1000000),
                         transmit_interval=dict(
-                            minimum_interval=20, threshold=100000
+                            minimum_interval=20,
+                            threshold=100000,
                         ),
                         holddown_interval=20,
                         multiplier=20,
                         session_mode="multihop",
                         version="1",
-                    )
+                    ),
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -610,10 +611,10 @@ class TestJunosBgp_globalModule(TestJunosModule):
                         malformed_route_limit=10,
                         malformed_update_log_interval=15,
                         no_malformed_route_limit=True,
-                    )
+                    ),
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -642,10 +643,10 @@ class TestJunosBgp_globalModule(TestJunosModule):
                             pre_policy=True,
                             post_policy_exclude_non_feasible=True,
                         ),
-                    )
+                    ),
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -673,10 +674,10 @@ class TestJunosBgp_globalModule(TestJunosModule):
                             pre_policy=False,
                             post_policy_exclude_non_feasible=False,
                         ),
-                    )
+                    ),
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -695,7 +696,7 @@ class TestJunosBgp_globalModule(TestJunosModule):
             dict(
                 config=dict(egress_te=dict(set=True, backup_path="sample")),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -720,12 +721,12 @@ class TestJunosBgp_globalModule(TestJunosModule):
                                 ip_forward=dict(set=True, rti_name="sample"),
                                 peers=["10.10.10.10", "11.11.11.11"],
                                 remote_nexthop="11.1.1.1",
-                            )
-                        ]
-                    )
+                            ),
+                        ],
+                    ),
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -746,10 +747,10 @@ class TestJunosBgp_globalModule(TestJunosModule):
         set_module_args(
             dict(
                 config=dict(
-                    groups=[dict(name="internal", allow=["all", "1.1.1.0/24"])]
+                    groups=[dict(name="internal", allow=["all", "1.1.1.0/24"])],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -775,11 +776,11 @@ class TestJunosBgp_globalModule(TestJunosModule):
                                 igp_backup="test_igp",
                                 igp_primary="test_primary",
                             ),
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'

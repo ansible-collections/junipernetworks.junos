@@ -66,44 +66,44 @@
           description: "This is updated with Junos_bgp resource module"
           egress_te_backup_paths:
             templates:
-              - path_name: 'customer1'
+              - path_name: "customer1"
                 peers:
-                  - '11.11.11.11'
-                  - '11.11.11.12'
-                  - '11.11.11.13'
-                remote_nexthop: '2.2.2.2'
+                  - "11.11.11.11"
+                  - "11.11.11.12"
+                  - "11.11.11.13"
+                remote_nexthop: "2.2.2.2"
           groups:
-            - name: 'internal'
-              type: 'internal'
+            - name: "internal"
+              type: "internal"
               vpn_apply_export: true
               out_delay: 30
               accept_remote_nexthop: true
               add_path_display_ipv4_address: true
-              peer_as: '65534'
+              peer_as: "65534"
               allow:
-                - 'all'
-                - '1.1.1.0/24'
+                - "all"
+                - "1.1.1.0/24"
               neighbors:
-                - neighbor_address: '11.11.11.11'
-                  peer_as: '65534'
+                - neighbor_address: "11.11.11.11"
+                  peer_as: "65534"
                   out_delay: 11
-                - neighbor_address: '11.11.11.12'
-                  peer_as: '65534'
+                - neighbor_address: "11.11.11.12"
+                  peer_as: "65534"
                   out_delay: 12
 
-            - name: 'external'
+            - name: "external"
               out_delay: 20
-              peer_as: '65534'
+              peer_as: "65534"
               accept_remote_nexthop: true
               add_path_display_ipv4_address: true
               neighbors:
-                - neighbor_address: '12.12.12.12'
-                  peer_as: '65534'
+                - neighbor_address: "12.12.12.12"
+                  peer_as: "65534"
                   out_delay: 21
                   accept_remote_nexthop: true
                   add_path_display_ipv4_address: true
-                - neighbor_address: '11.11.11.13'
-                  peer_as: '65534'
+                - neighbor_address: "11.11.11.13"
+                  peer_as: "65534"
                   out_delay: 31
                   accept_remote_nexthop: true
                   add_path_display_ipv4_address: true

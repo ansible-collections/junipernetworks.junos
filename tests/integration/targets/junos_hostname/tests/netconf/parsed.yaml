@@ -1,7 +1,8 @@
 ---
 - name: Debug task
   ansible.builtin.debug:
-    msg: START junos_hostname parsed integration tests on connection={{ ansible_connection
+    msg:
+      START junos_hostname parsed integration tests on connection={{ ansible_connection
       }}
 
 - name: Parse externally provided hostname config to agnostic model
@@ -17,5 +18,6 @@
 
 - name: Debug task
   ansible.builtin.debug:
-    msg: END junos_hostname parsed integration tests on connection={{ ansible_connection
+    msg:
+      END junos_hostname parsed integration tests on connection={{ ansible_connection
       }}

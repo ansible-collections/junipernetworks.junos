@@ -1,11 +1,11 @@
 ---
 - ansible.builtin.debug:
-    msg: START junos_ospfv3 parsed integration tests on connection={{ ansible_connection
+    msg:
+      START junos_ospfv3 parsed integration tests on connection={{ ansible_connection
       }}
 
 - ansible.builtin.set_fact:
     expected_parsed_output:
-
       - router_id: 10.200.16.75
         areas:
           - area_id: 0.0.0.100
@@ -35,5 +35,6 @@
       - "{{ expected_parsed_output | symmetric_difference(result['parsed']) |length ==\
         \ 0 }}"
 - ansible.builtin.debug:
-    msg: END junos_ospfv3 parsed integration tests on connection={{ ansible_connection
+    msg:
+      END junos_ospfv3 parsed integration tests on connection={{ ansible_connection
       }}

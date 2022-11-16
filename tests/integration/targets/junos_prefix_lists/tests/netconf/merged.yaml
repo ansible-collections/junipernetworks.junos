@@ -41,7 +41,7 @@
         that:
           - result.changed == True
           - "{{ expected_merged_output | symmetric_difference(result['after']) |length\
-                        \ == 0 }}"
+            \ == 0 }}"
 
     - name: Merge the provided configuration with the existing running configuration (IDEMPOTENT)
       junos_prefix_lists: *merged
@@ -83,7 +83,7 @@
         that:
           - result.changed == True
           - "{{ expected_merged_output | symmetric_difference(result['after']) |length\
-          \ == 0 }}"
+            \ == 0 }}"
 
   tags: merged
   always:

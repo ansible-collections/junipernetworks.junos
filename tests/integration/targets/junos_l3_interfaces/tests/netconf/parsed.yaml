@@ -1,14 +1,13 @@
 ---
 - ansible.builtin.debug:
-    msg: START junos_l3_interfaces parsed integration tests on connection={{ ansible_connection
+    msg:
+      START junos_l3_interfaces parsed integration tests on connection={{ ansible_connection
       }}
 
 - ansible.builtin.set_fact:
     expected_parsed_output:
-
       - name: ge-1/0/0
         ipv4:
-
           - address: 192.168.100.1/24
 
           - address: 10.200.16.20/24
@@ -16,7 +15,6 @@
 
       - name: ge-2/0/0
         ipv4:
-
           - address: 192.168.100.2/24
 
           - address: 10.200.16.21/24
@@ -24,7 +22,6 @@
 
       - name: ge-2/0/0
         ipv4:
-
           - address: 192.178.100.2/24
 
           - address: 10.210.16.21/24
@@ -42,5 +39,6 @@
       - "{{ expected_parsed_output | symmetric_difference(result['parsed']) |length ==\
         \ 0 }}"
 - ansible.builtin.debug:
-    msg: END junos_l3_interfaces parsed integration tests on connection={{ ansible_connection
+    msg:
+      END junos_l3_interfaces parsed integration tests on connection={{ ansible_connection
       }}

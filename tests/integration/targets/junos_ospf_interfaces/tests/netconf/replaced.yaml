@@ -9,25 +9,25 @@
     - ansible.builtin.set_fact:
         expected_config:
           - address_family:
-              - afi: 'ipv4'
+              - afi: "ipv4"
                 processes:
                   area:
-                    area_id: '0.0.0.1'
+                    area_id: "0.0.0.1"
                   priority: 6
                   metric: 7
-            name: 'ge-0/0/2.0'
-            router_id: '10.200.16.75'
+            name: "ge-0/0/2.0"
+            router_id: "10.200.16.75"
 
     - name: Replace configuration
       junipernetworks.junos.junos_ospf_interfaces:
         config:
-          - router_id: '10.200.16.75'
-            name: 'ge-0/0/2.0'
+          - router_id: "10.200.16.75"
+            name: "ge-0/0/2.0"
             address_family:
-              - afi: 'ipv4'
+              - afi: "ipv4"
                 processes:
                   area:
-                    area_id: '0.0.0.1'
+                    area_id: "0.0.0.1"
                   priority: 6
                   metric: 7
         state: replaced

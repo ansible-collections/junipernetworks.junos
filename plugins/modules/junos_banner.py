@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -105,19 +106,17 @@ diff.prepared:
 import collections
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    tostring,
-)
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    load_config,
-    map_params_to_obj,
-    map_obj_to_ele,
-)
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     commit_configuration,
     discard_changes,
+    load_config,
     locked_config,
+    map_obj_to_ele,
+    map_params_to_obj,
+    tostring,
 )
+
 
 USE_PERSISTENT_CONNECTION = True
 
@@ -162,13 +161,11 @@ def main():
             (
                 "text",
                 {
-                    "xpath": "message"
-                    if module.params["banner"] == "login"
-                    else "announcement",
+                    "xpath": "message" if module.params["banner"] == "login" else "announcement",
                     "leaf_only": True,
                 },
-            )
-        ]
+            ),
+        ],
     )
 
     validate_param_values(module, param_to_xpath_map)

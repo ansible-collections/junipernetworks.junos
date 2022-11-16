@@ -11,21 +11,22 @@ based on the configuration.
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
-    utils,
-)
+from ansible.module_utils.six import string_types
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.lldp_global.lldp_global import (
     Lldp_globalArgs,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.utils.utils import (
     get_resource_config,
 )
-from ansible.module_utils.six import string_types
+
 
 try:
     from lxml import etree
@@ -76,7 +77,7 @@ class Lldp_globalFacts(object):
 
         if isinstance(data, string_types):
             data = etree.fromstring(
-                to_bytes(data, errors="surrogate_then_replace")
+                to_bytes(data, errors="surrogate_then_replace"),
             )
 
         facts = {}
@@ -85,22 +86,27 @@ class Lldp_globalFacts(object):
         if resources:
             lldp_root = resources[0]
             config["address"] = utils.get_xml_conf_arg(
-                lldp_root, "management-address"
+                lldp_root,
+                "management-address",
             )
             config["interval"] = utils.get_xml_conf_arg(
-                lldp_root, "advertisement-interval"
+                lldp_root,
+                "advertisement-interval",
             )
             config["transmit_delay"] = utils.get_xml_conf_arg(
-                lldp_root, "transmit-delay"
+                lldp_root,
+                "transmit-delay",
             )
             config["hold_multiplier"] = utils.get_xml_conf_arg(
-                lldp_root, "hold-multiplier"
+                lldp_root,
+                "hold-multiplier",
             )
             if utils.get_xml_conf_arg(lldp_root, "disable", data="tag"):
                 config["enable"] = False
 
         params = utils.validate_config(
-            self.argument_spec, {"config": utils.remove_empties(config)}
+            self.argument_spec,
+            {"config": utils.remove_empties(config)},
         )
 
         facts["lldp_global"] = utils.remove_empties(params["config"])

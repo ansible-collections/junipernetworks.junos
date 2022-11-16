@@ -4,7 +4,7 @@
       ansible_connection }}
 
 - ansible.builtin.set_fact:
-    expected_rendered_output: "<nc:policy-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"><nc:prefix-list><nc:name>Internal</nc:name><nc:prefix-list-item><nc:name>172.16.1.16/28</nc:name></nc:prefix-list-item><nc:prefix-list-item><nc:name>172.16.1.32/28</nc:name></nc:prefix-list-item></nc:prefix-list><nc:prefix-list><nc:name>Test1</nc:name><nc:dynamic-db/></nc:prefix-list><nc:prefix-list><nc:name>Test2</nc:name><nc:prefix-list-item><nc:name>172.16.2.16/28</nc:name></nc:prefix-list-item><nc:prefix-list-item><nc:name>172.16.2.32/28</nc:name></nc:prefix-list-item><nc:prefix-list-item><nc:name>172.16.2.48/28</nc:name></nc:prefix-list-item></nc:prefix-list></nc:policy-options>"
+    expected_rendered_output: '<nc:policy-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:prefix-list><nc:name>Internal</nc:name><nc:prefix-list-item><nc:name>172.16.1.16/28</nc:name></nc:prefix-list-item><nc:prefix-list-item><nc:name>172.16.1.32/28</nc:name></nc:prefix-list-item></nc:prefix-list><nc:prefix-list><nc:name>Test1</nc:name><nc:dynamic-db/></nc:prefix-list><nc:prefix-list><nc:name>Test2</nc:name><nc:prefix-list-item><nc:name>172.16.2.16/28</nc:name></nc:prefix-list-item><nc:prefix-list-item><nc:name>172.16.2.32/28</nc:name></nc:prefix-list-item><nc:prefix-list-item><nc:name>172.16.2.48/28</nc:name></nc:prefix-list-item></nc:prefix-list></nc:policy-options>'
 - name: Render platform specific commands from task input using rendered state
   register: result
   junipernetworks.junos.junos_prefix_lists:
@@ -27,7 +27,7 @@
     that:
       - result.changed == False
       - "{{ expected_rendered_output | symmetric_difference(result['rendered']) |length\
-          \ == 0 }}"
+        \ == 0 }}"
 
 - ansible.builtin.debug:
     msg: END junos_prefix_lists rendered integration tests on connection={{

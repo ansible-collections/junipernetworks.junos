@@ -12,31 +12,31 @@ created
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
     ConfigBase,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    to_list,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
+    build_child_xml_node,
+    build_root_xml_node,
+    build_subtree,
 )
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import to_list
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
     Facts,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    locked_config,
-    load_config,
     commit_configuration,
     discard_changes,
+    load_config,
+    locked_config,
     tostring,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.utils.utils import (
     get_resource_config,
-)
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
-    build_root_xml_node,
-    build_child_xml_node,
-    build_subtree,
 )
 
 
@@ -58,10 +58,12 @@ class Lag_interfaces(ConfigBase):
         :returns: The current configuration as a dictionary
         """
         facts, _warnings = Facts(self._module).get_facts(
-            self.gather_subset, self.gather_network_resources, data=data
+            self.gather_subset,
+            self.gather_network_resources,
+            data=data,
         )
         lag_interfaces_facts = facts["ansible_network_resources"].get(
-            "lag_interfaces"
+            "lag_interfaces",
         )
         if not lag_interfaces_facts:
             return []
@@ -87,10 +89,10 @@ class Lag_interfaces(ConfigBase):
             running_config = self._module.params["running_config"]
             if not running_config:
                 self._module.fail_json(
-                    msg="value of running_config parameter must not be empty for state parsed"
+                    msg="value of running_config parameter must not be empty for state parsed",
                 )
             result["parsed"] = self.get_lag_interfaces_facts(
-                data=running_config
+                data=running_config,
             )
         elif self.state == "rendered":
             config_xmls = self.set_config(existing_lag_interfaces_facts)
@@ -150,14 +152,11 @@ class Lag_interfaces(ConfigBase):
         """
         root = build_root_xml_node("interfaces")
         state = self._module.params["state"]
-        if (
-            state in ("merged", "replaced", "overridden", "rendered")
-            and not want
-        ):
+        if state in ("merged", "replaced", "overridden", "rendered") and not want:
             self._module.fail_json(
                 msg="value of config parameter must not be empty for state {0}".format(
-                    state
-                )
+                    state,
+                ),
             )
         if state == "overridden":
             config_xmls = self._state_overridden(want, have)
@@ -222,7 +221,8 @@ class Lag_interfaces(ConfigBase):
             """
         if self._module.params["state"] != "rendered":
             data = get_resource_config(
-                self._connection, config_filter=config_filter
+                self._connection,
+                config_filter=config_filter,
             )
 
         for config in want:
@@ -231,18 +231,18 @@ class Lag_interfaces(ConfigBase):
             # if lag interface not already configured fail module.
             if self._module.params["state"] != "rendered":
                 if not data.xpath(
-                    "configuration/interfaces/interface[name='%s']" % lag_name
+                    "configuration/interfaces/interface[name='%s']" % lag_name,
                 ):
                     self._module.fail_json(
                         msg="lag interface %s not configured, configure interface"
-                        " %s before assigning members to lag"
-                        % (lag_name, lag_name)
+                        " %s before assigning members to lag" % (lag_name, lag_name),
                     )
 
             lag_intf_root = build_root_xml_node("interface")
             build_child_xml_node(lag_intf_root, "name", lag_name)
             ether_options_node = build_subtree(
-                lag_intf_root, "aggregated-ether-options"
+                lag_intf_root,
+                "aggregated-ether-options",
             )
             if config["mode"]:
 
@@ -266,10 +266,13 @@ class Lag_interfaces(ConfigBase):
             for member in members:
                 lag_member_intf_root = build_root_xml_node("interface")
                 build_child_xml_node(
-                    lag_member_intf_root, "name", member["member"]
+                    lag_member_intf_root,
+                    "name",
+                    member["member"],
                 )
                 lag_node = build_subtree(
-                    lag_member_intf_root, "ether-options/ieee-802.3ad"
+                    lag_member_intf_root,
+                    "ether-options/ieee-802.3ad",
                 )
                 build_child_xml_node(lag_node, "bundle", config["name"])
 
@@ -303,15 +306,24 @@ class Lag_interfaces(ConfigBase):
 
             lag_node = build_subtree(lag_intf_root, "aggregated-ether-options")
             build_child_xml_node(
-                lag_node, "link-protection", None, {"delete": "delete"}
+                lag_node,
+                "link-protection",
+                None,
+                {"delete": "delete"},
             )
 
             lacp_node = build_child_xml_node(lag_node, "lacp")
             build_child_xml_node(
-                lacp_node, "active", None, {"delete": "delete"}
+                lacp_node,
+                "active",
+                None,
+                {"delete": "delete"},
             )
             build_child_xml_node(
-                lacp_node, "passive", None, {"delete": "delete"}
+                lacp_node,
+                "passive",
+                None,
+                {"delete": "delete"},
             )
 
             intf_xml.append(lag_intf_root)
@@ -322,19 +334,31 @@ class Lag_interfaces(ConfigBase):
                     for member in interface_obj.get("members", []):
                         lag_member_intf_root = build_root_xml_node("interface")
                         build_child_xml_node(
-                            lag_member_intf_root, "name", member["member"]
+                            lag_member_intf_root,
+                            "name",
+                            member["member"],
                         )
                         lag_node = build_subtree(
-                            lag_member_intf_root, "ether-options/ieee-802.3ad"
+                            lag_member_intf_root,
+                            "ether-options/ieee-802.3ad",
                         )
                         build_child_xml_node(
-                            lag_node, "bundle", None, {"delete": "delete"}
+                            lag_node,
+                            "bundle",
+                            None,
+                            {"delete": "delete"},
                         )
                         build_child_xml_node(
-                            lag_node, "primary", None, {"delete": "delete"}
+                            lag_node,
+                            "primary",
+                            None,
+                            {"delete": "delete"},
                         )
                         build_child_xml_node(
-                            lag_node, "backup", None, {"delete": "delete"}
+                            lag_node,
+                            "backup",
+                            None,
+                            {"delete": "delete"},
                         )
                         intf_xml.append(lag_member_intf_root)
 

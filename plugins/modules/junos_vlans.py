@@ -28,6 +28,7 @@ The module file for junos_vlans
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -429,6 +430,7 @@ commands:
 
 
 from ansible.module_utils.basic import AnsibleModule
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.vlans.vlans import (
     VlansArgs,
 )

@@ -4,7 +4,7 @@
       ansible_connection }}
 
 - ansible.builtin.set_fact:
-    expected_rendered_output: "<nc:protocols xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"><nc:ospf3><nc:area><nc:name>0.0.0.100</nc:name><nc:interface><nc:name>so-0/0/0.0</nc:name><nc:priority>3</nc:priority><nc:flood-reduction/><nc:metric>5</nc:metric><nc:passive/></nc:interface><nc:stub><nc:default-metric>200</nc:default-metric></nc:stub></nc:area><nc:area><nc:name>0.0.0.200</nc:name><nc:interface><nc:name>ge-1/1/0.0</nc:name></nc:interface><nc:interface><nc:name>ge-2/2/0.0</nc:name></nc:interface></nc:area></nc:ospf3></nc:protocols>"
+    expected_rendered_output: '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:ospf3><nc:area><nc:name>0.0.0.100</nc:name><nc:interface><nc:name>so-0/0/0.0</nc:name><nc:priority>3</nc:priority><nc:flood-reduction/><nc:metric>5</nc:metric><nc:passive/></nc:interface><nc:stub><nc:default-metric>200</nc:default-metric></nc:stub></nc:area><nc:area><nc:name>0.0.0.200</nc:name><nc:interface><nc:name>ge-1/1/0.0</nc:name></nc:interface><nc:interface><nc:name>ge-2/2/0.0</nc:name></nc:interface></nc:area></nc:ospf3></nc:protocols>'
 
 - name: Render platform specific commands from task input using rendered state
   register: result

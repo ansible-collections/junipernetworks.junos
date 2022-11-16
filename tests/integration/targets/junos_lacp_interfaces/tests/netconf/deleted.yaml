@@ -9,7 +9,6 @@
 
 - ansible.builtin.set_fact:
     expected_deleted_output:
-
       - name: ae2
         period: slow
         sync_reset: disable
@@ -22,12 +21,10 @@
         port_priority: 300
 
 - block:
-
     - name: Configure initial state for interface
       register: result
       junipernetworks.junos.junos_lacp_interfaces: &id002
         config:
-
           - name: ae1
             period: fast
             sync_reset: enable
@@ -57,7 +54,6 @@
       register: result
       junipernetworks.junos.junos_lacp_interfaces: &id001
         config:
-
           - name: ae1
 
           - name: ge-0/0/1
@@ -69,7 +65,8 @@
           - "{{ expected_deleted_output | symmetric_difference(result['after'])\
             \ |length == 0 }}"
 
-    - name: Delete the provided lacp interface configuration from running configuration
+    - name:
+        Delete the provided lacp interface configuration from running configuration
         (IDEMPOTENT)
       register: result
       junipernetworks.junos.junos_lacp_interfaces: *id001
@@ -93,7 +90,8 @@
         that:
           - "{{ result['after'] == [] }}"
 
-    - name: Delete the all lacp interfaces configuration from running configuration
+    - name:
+        Delete the all lacp interfaces configuration from running configuration
         (IDEMPOTENT)
       register: result
       junipernetworks.junos.junos_lacp_interfaces:
@@ -104,9 +102,9 @@
         that:
           - result['changed'] == false
   always:
-
     - ansible.builtin.include_tasks: _remove_config.yaml
 
 - ansible.builtin.debug:
-    msg: END junos_lacp_interfaces deleted integration tests on connection={{ ansible_connection
+    msg:
+      END junos_lacp_interfaces deleted integration tests on connection={{ ansible_connection
       }}

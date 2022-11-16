@@ -12,28 +12,30 @@ created
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    locked_config,
-    load_config,
-    commit_configuration,
-    discard_changes,
-    tostring,
-)
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
     ConfigBase,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    to_list,
-    remove_empties,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
+    build_child_xml_node,
+    build_root_xml_node,
 )
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
+    remove_empties,
+    to_list,
+)
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
     Facts,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
-    build_root_xml_node,
-    build_child_xml_node,
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
+    commit_configuration,
+    discard_changes,
+    load_config,
+    locked_config,
+    tostring,
 )
 
 
@@ -55,10 +57,12 @@ class Bgp_address_family(ConfigBase):
         :returns: The current configuration as a dictionary
         """
         facts, _warnings = Facts(self._module).get_facts(
-            self.gather_subset, self.gather_network_resources, data=data
+            self.gather_subset,
+            self.gather_network_resources,
+            data=data,
         )
         bgp_facts = facts["ansible_network_resources"].get(
-            "bgp_address_family"
+            "bgp_address_family",
         )
         if not bgp_facts:
             return {}
@@ -76,24 +80,20 @@ class Bgp_address_family(ConfigBase):
         warnings = list()
 
         if self.state in self.ACTION_STATES or self.state == "purged":
-            existing_bgp_address_family_facts = (
-                self.get_bgp_address_family_facts()
-            )
+            existing_bgp_address_family_facts = self.get_bgp_address_family_facts()
         else:
             existing_bgp_address_family_facts = {}
         if state == "gathered":
-            existing_bgp_address_family_facts = (
-                self.get_bgp_address_family_facts()
-            )
+            existing_bgp_address_family_facts = self.get_bgp_address_family_facts()
             result["gathered"] = existing_bgp_address_family_facts
         elif self.state == "parsed":
             running_config = self._module.params["running_config"]
             if not running_config:
                 self._module.fail_json(
-                    msg="value of running_config parameter must not be empty for state parsed"
+                    msg="value of running_config parameter must not be empty for state parsed",
                 )
             result["parsed"] = self.get_bgp_address_family_facts(
-                data=running_config
+                data=running_config,
             )
         elif self.state == "rendered":
             config_xmls = self.set_config(existing_bgp_address_family_facts)
@@ -122,9 +122,7 @@ class Bgp_address_family(ConfigBase):
 
             result["commands"] = config_xmls
 
-            changed_bgp_address_family_facts = (
-                self.get_bgp_address_family_facts()
-            )
+            changed_bgp_address_family_facts = self.get_bgp_address_family_facts()
 
             result["before"] = existing_bgp_address_family_facts
             if result["changed"]:
@@ -159,17 +157,15 @@ class Bgp_address_family(ConfigBase):
         self.protocols = build_child_xml_node(self.root, "protocols")
         self.bgp = build_child_xml_node(self.protocols, "bgp")
         self.routing_options = build_child_xml_node(
-            self.root, "routing-options"
+            self.root,
+            "routing-options",
         )
         state = self._module.params["state"]
-        if (
-            state in ("merged", "replaced", "rendered", "overridden")
-            and not want
-        ):
+        if state in ("merged", "replaced", "rendered", "overridden") and not want:
             self._module.fail_json(
                 msg="value of config parameter must not be empty for state {0}".format(
-                    state
-                )
+                    state,
+                ),
             )
         config_xmls = []
         if state == "deleted":
@@ -245,7 +241,8 @@ class Bgp_address_family(ConfigBase):
                     neighbors = group.get("neighbors")
                     for neighbor in neighbors:
                         neighbors_node = build_child_xml_node(
-                            groups_node, "neighbor"
+                            groups_node,
+                            "neighbor",
                         )
                         build_child_xml_node(
                             neighbors_node,
@@ -253,7 +250,8 @@ class Bgp_address_family(ConfigBase):
                             neighbor["neighbor_address"],
                         )
                         n_family_root = build_child_xml_node(
-                            neighbors_node, "family"
+                            neighbors_node,
+                            "family",
                         )
                         w_naf_list = neighbor.get("address_family")
                         self.render_af(w_naf_list, n_family_root)
@@ -279,18 +277,22 @@ class Bgp_address_family(ConfigBase):
                         apl = type.get("accepted_prefix_limit")
                         # build node for accepted-prefix-limit
                         apl_node = build_child_xml_node(
-                            type_node, "accepted-prefix-limit"
+                            type_node,
+                            "accepted-prefix-limit",
                         )
                         # Add node for maximum
                         if "maximum" in apl.keys():
                             build_child_xml_node(
-                                apl_node, "maximum", apl["maximum"]
+                                apl_node,
+                                "maximum",
+                                apl["maximum"],
                             )
                         # Add node for teardown
                         td_node = None
                         if "limit_threshold" in apl.keys():
                             td_node = build_child_xml_node(
-                                apl_node, "teardown"
+                                apl_node,
+                                "teardown",
                             )
                             # add node for limit-threshold
                             build_child_xml_node(
@@ -300,13 +302,15 @@ class Bgp_address_family(ConfigBase):
                             )
                         elif "teardown" in apl.keys():
                             td_node = build_child_xml_node(
-                                apl_node, "teardown"
+                                apl_node,
+                                "teardown",
                             )
                         it_node = None
                         # Add node for teardown idle_timeout
                         if "idle_timeout_value" in apl.keys():
                             it_node = build_child_xml_node(
-                                td_node, "idle-timeout"
+                                td_node,
+                                "idle-timeout",
                             )
                             # add node for timeout
                             build_child_xml_node(
@@ -318,11 +322,13 @@ class Bgp_address_family(ConfigBase):
                         elif "forever" in apl.keys():
                             if it_node is None:
                                 it_node = build_child_xml_node(
-                                    td_node, "idle-timeout"
+                                    td_node,
+                                    "idle-timeout",
                                 )
                             if it_node is not None:
                                 it_node = build_child_xml_node(
-                                    td_node, "idle-timeout"
+                                    td_node,
+                                    "idle-timeout",
                                 )
                             # add forever node
                             build_child_xml_node(it_node, "forever")
@@ -357,7 +363,8 @@ class Bgp_address_family(ConfigBase):
                             if "path_selection_mode" in send.keys():
                                 psm = send.get("path_selection_mode")
                                 psm_node = build_child_xml_node(
-                                    send_node, "path-selection-mode"
+                                    send_node,
+                                    "path-selection-mode",
                                 )
                                 # add node for all_paths
                                 if "all_paths" in psm.keys():
@@ -365,7 +372,8 @@ class Bgp_address_family(ConfigBase):
                                 # add node for equal_cost_paths
                                 if "equal_cost_paths" in psm.keys():
                                     build_child_xml_node(
-                                        psm_node, "equal-cost-paths"
+                                        psm_node,
+                                        "equal-cost-paths",
                                     )
                             # add node for prefix_policy
                             if "prefix_policy" in send.keys():
@@ -379,12 +387,15 @@ class Bgp_address_family(ConfigBase):
                         al = type.get("aggregate_label")
                         # build node for aggregate_label
                         al_node = build_child_xml_node(
-                            type_node, "aggregate_label"
+                            type_node,
+                            "aggregate_label",
                         )
                         # add node community
                         if "community" in al.keys():
                             build_child_xml_node(
-                                al_node, "community", al.get("community")
+                                al_node,
+                                "community",
+                                al.get("community"),
                             )
 
                     #  Add node for aigp
@@ -406,7 +417,8 @@ class Bgp_address_family(ConfigBase):
                         dimb = type.get("defer_initial_multipath_build")
                         # build node for defer_initial_multipath_build
                         dimb_node = build_child_xml_node(
-                            type_node, "defer-initial-multipath-build"
+                            type_node,
+                            "defer-initial-multipath-build",
                         )
                         # add node maximum_delay
                         if dimb and "maximum_delay" in dimb.keys():
@@ -421,7 +433,8 @@ class Bgp_address_family(ConfigBase):
                         dra = type.get("delay_route_advertisements")
                         # build node for delay_route_advertisements
                         dra_node = build_child_xml_node(
-                            type_node, "delay-route-advertisements"
+                            type_node,
+                            "delay-route-advertisements",
                         )
                         # add maximum delay node
                         if (
@@ -429,7 +442,8 @@ class Bgp_address_family(ConfigBase):
                             or "max_delay_routing_uptime" in dra.keys()
                         ):
                             maxd_node = build_child_xml_node(
-                                dra_node, "maximum-delay"
+                                dra_node,
+                                "maximum-delay",
                             )
                             # add node route-age
                             if "max_delay_route_age" in dra.keys():
@@ -452,7 +466,8 @@ class Bgp_address_family(ConfigBase):
                             or "min_delay_routing_uptime" in dra.keys()
                         ):
                             mind_node = build_child_xml_node(
-                                dra_node, "minimum-delay"
+                                dra_node,
+                                "minimum-delay",
                             )
                             # add node inbound-convergence
                             if "min_delay_inbound_convergence" in dra.keys():
@@ -475,17 +490,21 @@ class Bgp_address_family(ConfigBase):
                         el = type.get("entropy_label")
                         # build node for entropy_label
                         el_node = build_child_xml_node(
-                            type_node, "entropy-label"
+                            type_node,
+                            "entropy-label",
                         )
                         # add node import
                         if "import" in el.keys():
                             build_child_xml_node(
-                                el_node, "import", el.get("import")
+                                el_node,
+                                "import",
+                                el.get("import"),
                             )
                         # add node no_next_hop_validation
                         if "no_next_hop_validation" in el.keys():
                             build_child_xml_node(
-                                el_node, "no-next-hop-validation"
+                                el_node,
+                                "no-next-hop-validation",
                             )
 
                     #  add node explicit-null
@@ -494,7 +513,8 @@ class Bgp_address_family(ConfigBase):
                         # add node connected-only
                         if "connected_only" in en.keys():
                             en_node = build_child_xml_node(
-                                type_node, "explicit-null"
+                                type_node,
+                                "explicit-null",
                             )
                             build_child_xml_node(en_node, "connected-only")
                         else:
@@ -514,21 +534,25 @@ class Bgp_address_family(ConfigBase):
                         # add node extended-nexthop-color
                         if enhc:
                             build_child_xml_node(
-                                type_node, "extended-nexthop-color"
+                                type_node,
+                                "extended-nexthop-color",
                             )
 
                     #  add node forwarding-state-bit
                     if "graceful_restart_forwarding_state_bit" in type.keys():
                         grfs = type.get(
-                            "graceful_restart_forwarding_state_bit"
+                            "graceful_restart_forwarding_state_bit",
                         )
 
                         # add node forwarding-state-bit
                         gr_node = build_child_xml_node(
-                            type_node, "graceful-restart"
+                            type_node,
+                            "graceful-restart",
                         )
                         build_child_xml_node(
-                            gr_node, "forwarding-state-bit", grfs
+                            gr_node,
+                            "forwarding-state-bit",
+                            grfs,
                         )
 
                     #  add node local-ipv4-address
@@ -545,7 +569,8 @@ class Bgp_address_family(ConfigBase):
                         lria = type.get("legacy_redirect_ip_action")
                         # add node legacy_redirect_ip_action
                         lria_node = build_child_xml_node(
-                            type_node, "legacy-redirect-ip-action"
+                            type_node,
+                            "legacy-redirect-ip-action",
                         )
                         if "send" in lria.keys():
                             build_child_xml_node(lria_node, "send")
@@ -555,7 +580,9 @@ class Bgp_address_family(ConfigBase):
                     # add node loops
                     if "loops" in type.keys():
                         build_child_xml_node(
-                            type_node, "loops", type.get("loops")
+                            type_node,
+                            "loops",
+                            type.get("loops"),
                         )
 
                     #  add no-install
@@ -566,7 +593,9 @@ class Bgp_address_family(ConfigBase):
                     # add node no-validate
                     if "no_validate" in type.keys():
                         build_child_xml_node(
-                            type_node, "no-validate", type.get("no_validate")
+                            type_node,
+                            "no-validate",
+                            type.get("no_validate"),
                         )
 
                     # add node output-queue-priority
@@ -576,12 +605,12 @@ class Bgp_address_family(ConfigBase):
                     ):
                         # node for output-queue-priority
                         oqp_node = build_child_xml_node(
-                            type_node, "output-queue-priority"
+                            type_node,
+                            "output-queue-priority",
                         )
                         # add node expedited
-                        if (
-                            "output_queue_priority_expedited" in type.keys()
-                            and type.get("output_queue_priority_expedited")
+                        if "output_queue_priority_expedited" in type.keys() and type.get(
+                            "output_queue_priority_expedited"
                         ):
                             build_child_xml_node(oqp_node, "expedited")
                         # add node priority
@@ -607,18 +636,23 @@ class Bgp_address_family(ConfigBase):
                         pl = type.get("prefix_limit")
                         # build node for prefix-limit
                         pl_node = build_child_xml_node(
-                            type_node, "prefix-limit"
+                            type_node,
+                            "prefix-limit",
                         )
                         # Add node for maximum
                         if "maximum" in pl.keys():
                             build_child_xml_node(
-                                pl_node, "maximum", pl["maximum"]
+                                pl_node,
+                                "maximum",
+                                pl["maximum"],
                             )
                         # Add node for teardown
                         td_node = None
                         if "limit_threshold" in pl.keys():
                             td_node = build_child_xml_node(
-                                pl_node, "teardown", pl.get("limit_threshold")
+                                pl_node,
+                                "teardown",
+                                pl.get("limit_threshold"),
                             )
                         elif "teardown" in pl.keys():
                             td_node = build_child_xml_node(pl_node, "teardown")
@@ -632,12 +666,14 @@ class Bgp_address_family(ConfigBase):
                             )
                         elif "idle_timeout" in pl.keys():
                             it_node = build_child_xml_node(
-                                td_node, "idle-timeout"
+                                td_node,
+                                "idle-timeout",
                             )
                         if "forever" in pl.keys():
                             if it_node is None:
                                 it_node = build_child_xml_node(
-                                    td_node, "idle-timeout"
+                                    td_node,
+                                    "idle-timeout",
                                 )
                             # add forever node
                             build_child_xml_node(it_node, "forever")
@@ -656,7 +692,9 @@ class Bgp_address_family(ConfigBase):
                     # add rib-group
                     if "ribgroup_name" in type.keys():
                         build_child_xml_node(
-                            type_node, "rib-group", type.get("ribgroup_name")
+                            type_node,
+                            "rib-group",
+                            type.get("ribgroup_name"),
                         )
 
                     # add node route-refresh-priority
@@ -666,12 +704,12 @@ class Bgp_address_family(ConfigBase):
                     ):
                         # node for route-refresh-priority
                         rrp_node = build_child_xml_node(
-                            type_node, "route-refresh-priority"
+                            type_node,
+                            "route-refresh-priority",
                         )
                         # add node expedited
-                        if (
-                            "route_refresh_priority_expedited" in type.keys()
-                            and type.get("route_refresh_priority_expedited")
+                        if "route_refresh_priority_expedited" in type.keys() and type.get(
+                            "route_refresh_priority_expedited"
                         ):
                             build_child_xml_node(rrp_node, "expedited")
                         # add node priority
@@ -686,7 +724,8 @@ class Bgp_address_family(ConfigBase):
                     if "secondary_independent_resolution" in type.keys():
                         if type.get("secondary_independent_resolution"):
                             build_child_xml_node(
-                                type_node, "secondary-independent-resolution"
+                                type_node,
+                                "secondary-independent-resolution",
                             )
 
                     # add node withdraw-priority
@@ -696,12 +735,12 @@ class Bgp_address_family(ConfigBase):
                     ):
                         # node for withdraw-priority
                         wp_node = build_child_xml_node(
-                            type_node, "withdraw-priority"
+                            type_node,
+                            "withdraw-priority",
                         )
                         # add node expedited
-                        if (
-                            "withdraw_priority_expedited" in type.keys()
-                            and type.get("withdraw_priority_expedited")
+                        if "withdraw_priority_expedited" in type.keys() and type.get(
+                            "withdraw_priority_expedited"
                         ):
                             build_child_xml_node(wp_node, "expedited")
                         # add node priority
@@ -724,29 +763,36 @@ class Bgp_address_family(ConfigBase):
                         for topology in topologies:
                             if "name" in topology.keys():
                                 build_child_xml_node(
-                                    top_node, "name", topology.get("name")
+                                    top_node,
+                                    "name",
+                                    topology.get("name"),
                                 )
                             if "community" in topology.keys():
                                 communities = topology.get("community")
                                 for community in communities:
                                     build_child_xml_node(
-                                        top_node, "community", community
+                                        top_node,
+                                        "community",
+                                        community,
                                     )
 
                     # add traffic-statistics
                     if "traffic_statistics" in type.keys():
                         ts = type.get("traffic_statistics")
                         ts_node = build_child_xml_node(
-                            type_node, "traffic-statistics"
+                            type_node,
+                            "traffic-statistics",
                         )
                         # add node interval
                         if "interval" in ts.keys():
                             build_child_xml_node(
-                                ts_node, "interval", ts.get("interval")
+                                ts_node,
+                                "interval",
+                                ts.get("interval"),
                             )
                         # add node labeled-path
                         if "labeled_path" in ts.keys and ts.get(
-                            "labeled_path"
+                            "labeled_path",
                         ):
                             build_child_xml_node(ts_node, "labeled-path")
 
@@ -779,7 +825,10 @@ class Bgp_address_family(ConfigBase):
                 if family_root is None:
                     family_root = build_child_xml_node(self.bgp, "family")
                 build_child_xml_node(
-                    family_root, af["afi"], None, {"delete": "delete"}
+                    family_root,
+                    af["afi"],
+                    None,
+                    {"delete": "delete"},
                 )
 
             # Delete group address-family
@@ -798,7 +847,8 @@ class Bgp_address_family(ConfigBase):
                             if address_family:
                                 for af in address_family:
                                     family_node = build_child_xml_node(
-                                        groups_node, "family"
+                                        groups_node,
+                                        "family",
                                     )
                                     build_child_xml_node(
                                         family_node,
@@ -811,7 +861,8 @@ class Bgp_address_family(ConfigBase):
                                 for neighbor in h_neighbors:
                                     if "address_family" in neighbor.keys():
                                         neighbors_node = build_child_xml_node(
-                                            groups_node, "neighbor"
+                                            groups_node,
+                                            "neighbor",
                                         )
                                         build_child_xml_node(
                                             neighbors_node,
@@ -819,11 +870,12 @@ class Bgp_address_family(ConfigBase):
                                             neighbor["neighbor_address"],
                                         )
                                         address_family = neighbor.get(
-                                            "address_family"
+                                            "address_family",
                                         )
                                         for af in address_family:
                                             family_node = build_child_xml_node(
-                                                neighbors_node, "family"
+                                                neighbors_node,
+                                                "family",
                                             )
                                             build_child_xml_node(
                                                 family_node,
@@ -853,7 +905,10 @@ class Bgp_address_family(ConfigBase):
                 if family_root is None:
                     family_root = build_child_xml_node(self.bgp, "family")
                 build_child_xml_node(
-                    family_root, af, None, {"delete": "delete"}
+                    family_root,
+                    af,
+                    None,
+                    {"delete": "delete"},
                 )
             if family_root is not None:
                 bgp_xml.append(family_root)

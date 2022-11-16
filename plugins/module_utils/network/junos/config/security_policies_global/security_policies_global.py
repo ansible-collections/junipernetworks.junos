@@ -12,27 +12,29 @@ created
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    locked_config,
-    load_config,
-    commit_configuration,
-    discard_changes,
-    tostring,
-)
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
     ConfigBase,
+)
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
+    build_child_xml_node,
+    build_root_xml_node,
 )
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
     remove_empties,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
-    build_root_xml_node,
-    build_child_xml_node,
-)
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
     Facts,
+)
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
+    commit_configuration,
+    discard_changes,
+    load_config,
+    locked_config,
+    tostring,
 )
 
 
@@ -55,11 +57,13 @@ class Security_policies_global(ConfigBase):
         :returns: The current configuration as a dictionary
         """
         facts, _warnings = Facts(self._module).get_facts(
-            self.gather_subset, self.gather_network_resources, data=data
+            self.gather_subset,
+            self.gather_network_resources,
+            data=data,
         )
-        security_policies_global_facts = facts[
-            "ansible_network_resources"
-        ].get("security_policies_global")
+        security_policies_global_facts = facts["ansible_network_resources"].get(
+            "security_policies_global"
+        )
         if not security_policies_global_facts:
             return {}
         return security_policies_global_facts
@@ -75,30 +79,26 @@ class Security_policies_global(ConfigBase):
         warnings = list()
 
         if self.state in self.ACTION_STATES or self.state == "purged":
-            existing_security_policies_global_facts = (
-                self.get_security_policies_global_facts()
-            )
+            existing_security_policies_global_facts = self.get_security_policies_global_facts()
         else:
             existing_security_policies_global_facts = {}
         if self.state == "gathered":
-            existing_security_policies_global_facts = (
-                self.get_security_policies_global_facts()
-            )
+            existing_security_policies_global_facts = self.get_security_policies_global_facts()
             result["gathered"] = existing_security_policies_global_facts
 
         elif self.state == "parsed":
             running_config = self._module.params["running_config"]
             if not running_config:
                 self._module.fail_json(
-                    msg="value of running_config parameter must not be empty for state parsed"
+                    msg="value of running_config parameter must not be empty for state parsed",
                 )
             result["parsed"] = self.get_security_policies_global_facts(
-                data=running_config
+                data=running_config,
             )
 
         elif self.state == "rendered":
             config_xmls = self.set_config(
-                existing_security_policies_global_facts
+                existing_security_policies_global_facts,
             )
             if config_xmls:
                 result["rendered"] = config_xmls
@@ -106,7 +106,7 @@ class Security_policies_global(ConfigBase):
         else:
             diff = None
             config_xmls = self.set_config(
-                existing_security_policies_global_facts
+                existing_security_policies_global_facts,
             )
             with locked_config(self._module):
                 diff = load_config(self._module, config_xmls, [])
@@ -124,9 +124,7 @@ class Security_policies_global(ConfigBase):
 
             result["commands"] = config_xmls
 
-            changed_security_policies_global_facts = (
-                self.get_security_policies_global_facts()
-            )
+            changed_security_policies_global_facts = self.get_security_policies_global_facts()
 
             result["before"] = existing_security_policies_global_facts
             if result["changed"]:
@@ -159,14 +157,11 @@ class Security_policies_global(ConfigBase):
         """
         self.root = build_root_xml_node("security")
         state = self._module.params["state"]
-        if (
-            state in ("merged", "replaced", "rendered", "overridden")
-            and not want
-        ):
+        if state in ("merged", "replaced", "rendered", "overridden") and not want:
             self._module.fail_json(
                 msg="value of config parameter must not be empty for state {0}".format(
-                    state
-                )
+                    state,
+                ),
             )
         config_xmls = []
         if state == "overridden":
@@ -217,7 +212,8 @@ class Security_policies_global(ConfigBase):
         security_policies_global_node = build_root_xml_node("policies")
         if "default_policy" in want.keys():
             default_policy_node = build_child_xml_node(
-                security_policies_global_node, "default-policy"
+                security_policies_global_node,
+                "default-policy",
             )
             default_policy = want.get("default_policy")
             if default_policy == "deny-all":
@@ -227,33 +223,39 @@ class Security_policies_global(ConfigBase):
 
         if "policy_rematch" in want.keys():
             policy_rematch_node = build_child_xml_node(
-                security_policies_global_node, "policy-rematch", " "
+                security_policies_global_node,
+                "policy-rematch",
+                " ",
             )
             policy_rematch = want.get("policy_rematch") or {}
-            if (
-                "extensive" in policy_rematch
-                and policy_rematch["extensive"] is True
-            ):
+            if "extensive" in policy_rematch and policy_rematch["extensive"] is True:
                 build_child_xml_node(policy_rematch_node, "extensive")
 
         if "policy_stats" in want.keys():
             policy_stats_node = build_child_xml_node(
-                security_policies_global_node, "policy-stats", " "
+                security_policies_global_node,
+                "policy-stats",
+                " ",
             )
             policy_stats = want.get("policy_stats") or {}
             if "system_wide" in policy_stats:
                 if policy_stats["system_wide"] is True:
                     build_child_xml_node(
-                        policy_stats_node, "system-wide", "enable"
+                        policy_stats_node,
+                        "system-wide",
+                        "enable",
                     )
                 else:
                     build_child_xml_node(
-                        policy_stats_node, "system-wide", "disable"
+                        policy_stats_node,
+                        "system-wide",
+                        "disable",
                     )
 
         if "pre_id_default_policy_action" in want.keys():
             pre_id_node = build_child_xml_node(
-                security_policies_global_node, "pre-id-default-policy"
+                security_policies_global_node,
+                "pre-id-default-policy",
             )
             pre_id_node = build_child_xml_node(pre_id_node, "then")
             pre_id = want.get("pre_id_default_policy_action")
@@ -267,7 +269,8 @@ class Security_policies_global(ConfigBase):
 
             if "session_timeout" in pre_id:
                 session_timeout_node = build_child_xml_node(
-                    pre_id_node, "session-timeout"
+                    pre_id_node,
+                    "session-timeout",
                 )
                 if "icmp" in pre_id["session_timeout"]:
                     build_child_xml_node(
@@ -308,7 +311,8 @@ class Security_policies_global(ConfigBase):
 
         if "traceoptions" in want.keys():
             traceoptions_node = build_child_xml_node(
-                security_policies_global_node, "traceoptions"
+                security_policies_global_node,
+                "traceoptions",
             )
             traceoptions = want.get("traceoptions")
 
@@ -316,15 +320,21 @@ class Security_policies_global(ConfigBase):
                 file_node = build_child_xml_node(traceoptions_node, "file")
                 if "files" in traceoptions["file"]:
                     build_child_xml_node(
-                        file_node, "files", traceoptions["file"]["files"]
+                        file_node,
+                        "files",
+                        traceoptions["file"]["files"],
                     )
                 if "match" in traceoptions["file"]:
                     build_child_xml_node(
-                        file_node, "match", traceoptions["file"]["match"]
+                        file_node,
+                        "match",
+                        traceoptions["file"]["match"],
                     )
                 if "size" in traceoptions["file"]:
                     build_child_xml_node(
-                        file_node, "size", traceoptions["file"]["size"]
+                        file_node,
+                        "size",
+                        traceoptions["file"]["size"],
                     )
                 if "world_readable" in traceoptions["file"]:
                     build_child_xml_node(file_node, "world-readable")
@@ -373,7 +383,10 @@ class Security_policies_global(ConfigBase):
         delete = {"delete": "delete"}
         if have is not None:
             security_policies_global_root = build_child_xml_node(
-                self.root, "policies", None, delete
+                self.root,
+                "policies",
+                None,
+                delete,
             )
 
         if security_policies_global_root is not None:

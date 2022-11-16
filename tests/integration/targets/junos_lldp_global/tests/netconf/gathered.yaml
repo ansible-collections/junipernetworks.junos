@@ -27,7 +27,6 @@
         hold_multiplier: 1
 
 - block:
-
     - name: Merge the provided configuration with the exisiting running configuration
       register: result
       junipernetworks.junos.junos_lldp_global: &id001
@@ -48,10 +47,10 @@
         that: "{{ expected_merged_output == result['gathered'] }}"
 
   always:
-
     - ansible.builtin.include_tasks: _remove_config.yaml
   when: lldp_supported
 
 - ansible.builtin.debug:
-    msg: END junos_lldp_global gathered integration tests on connection={{ ansible_connection
+    msg:
+      END junos_lldp_global gathered integration tests on connection={{ ansible_connection
       }}

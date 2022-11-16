@@ -9,7 +9,6 @@
 
 - ansible.builtin.set_fact:
     expected_merged_output:
-
       - name: ae1
         period: fast
         sync_reset: enable
@@ -23,7 +22,6 @@
         force_up: true
 
 - block:
-
     - name: Merge the provided configuration with the exisiting running configuration
       register: result
       junipernetworks.junos.junos_lacp_interfaces: &id001
@@ -48,13 +46,14 @@
 
     - name: Assert that facts were correctly generated
       ansible.builtin.assert:
-        that: "{{ expected_merged_output | symmetric_difference(result['gathered']) |length\
+        that:
+          "{{ expected_merged_output | symmetric_difference(result['gathered']) |length\
           \ == 0 }}"
 
   always:
-
     - ansible.builtin.include_tasks: _remove_config.yaml
 
 - ansible.builtin.debug:
-    msg: END junos_lacp_interfaces gathered integration tests on connection={{ ansible_connection
+    msg:
+      END junos_lacp_interfaces gathered integration tests on connection={{ ansible_connection
       }}

@@ -12,28 +12,28 @@ created
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
     ConfigBase,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    to_list,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
+    build_child_xml_node,
+    build_root_xml_node,
+    build_subtree,
 )
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import to_list
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
     Facts,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    locked_config,
-    load_config,
     commit_configuration,
     discard_changes,
+    load_config,
+    locked_config,
     tostring,
-)
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
-    build_root_xml_node,
-    build_child_xml_node,
-    build_subtree,
 )
 
 
@@ -55,10 +55,12 @@ class Lacp_interfaces(ConfigBase):
         :returns: The current configuration as a dictionary
         """
         facts, _warnings = Facts(self._module).get_facts(
-            self.gather_subset, self.gather_network_resources, data=data
+            self.gather_subset,
+            self.gather_network_resources,
+            data=data,
         )
         lacp_interfaces_facts = facts["ansible_network_resources"].get(
-            "lacp_interfaces"
+            "lacp_interfaces",
         )
         if not lacp_interfaces_facts:
             return []
@@ -84,10 +86,10 @@ class Lacp_interfaces(ConfigBase):
             running_config = self._module.params["running_config"]
             if not running_config:
                 self._module.fail_json(
-                    msg="value of running_config parameter must not be empty for state parsed"
+                    msg="value of running_config parameter must not be empty for state parsed",
                 )
             result["parsed"] = self.get_lacp_interfaces_facts(
-                data=running_config
+                data=running_config,
             )
         elif self.state == "rendered":
             config_xmls = self.set_config(existing_lacp_interfaces_facts)
@@ -144,14 +146,11 @@ class Lacp_interfaces(ConfigBase):
         """
         root = build_root_xml_node("interfaces")
         state = self._module.params["state"]
-        if (
-            state in ("merged", "replaced", "overridden", "rendered")
-            and not want
-        ):
+        if state in ("merged", "replaced", "overridden", "rendered") and not want:
             self._module.fail_json(
                 msg="value of config parameter must not be empty for state {0}".format(
-                    state
-                )
+                    state,
+                ),
             )
         if state == "overridden":
             config_xmls = self._state_overridden(want, have)
@@ -217,13 +216,16 @@ class Lacp_interfaces(ConfigBase):
             build_child_xml_node(lacp_intf_root, "name", lacp_intf_name)
             if lacp_intf_name.startswith("ae"):
                 element = build_subtree(
-                    lacp_intf_root, "aggregated-ether-options/lacp"
+                    lacp_intf_root,
+                    "aggregated-ether-options/lacp",
                 )
                 if config["period"]:
                     build_child_xml_node(element, "periodic", config["period"])
                 if config["sync_reset"]:
                     build_child_xml_node(
-                        element, "sync-reset", config["sync_reset"]
+                        element,
+                        "sync-reset",
+                        config["sync_reset"],
                     )
 
                 system = config["system"]
@@ -232,30 +234,43 @@ class Lacp_interfaces(ConfigBase):
                     if mac:
                         if mac.get("address"):
                             build_child_xml_node(
-                                element, "system-id", mac["address"]
+                                element,
+                                "system-id",
+                                mac["address"],
                             )
                     if system.get("priority"):
                         build_child_xml_node(
-                            element, "system-priority", system["priority"]
+                            element,
+                            "system-priority",
+                            system["priority"],
                         )
                 intf_xml.append(lacp_intf_root)
             elif config["port_priority"] or config["force_up"] is not None:
                 element = build_subtree(
-                    lacp_intf_root, "ether-options/ieee-802.3ad/lacp"
+                    lacp_intf_root,
+                    "ether-options/ieee-802.3ad/lacp",
                 )
                 if config["port_priority"] is not None:
                     build_child_xml_node(
-                        element, "port-priority", config["port_priority"]
+                        element,
+                        "port-priority",
+                        config["port_priority"],
                     )
                 else:
                     build_child_xml_node(
-                        element, "port-priority", None, {"delete": "delete"}
+                        element,
+                        "port-priority",
+                        None,
+                        {"delete": "delete"},
                     )
                 if config["force_up"]:
                     build_child_xml_node(element, "force-up")
                 else:
                     build_child_xml_node(
-                        element, "force-up", None, {"delete": "delete"}
+                        element,
+                        "force-up",
+                        None,
+                        {"delete": "delete"},
                     )
                 intf_xml.append(lacp_intf_root)
 
@@ -280,29 +295,49 @@ class Lacp_interfaces(ConfigBase):
             build_child_xml_node(lacp_intf_root, "name", lacp_intf_name)
             if lacp_intf_name.startswith("ae"):
                 element = build_subtree(
-                    lacp_intf_root, "aggregated-ether-options/lacp"
+                    lacp_intf_root,
+                    "aggregated-ether-options/lacp",
                 )
                 build_child_xml_node(
-                    element, "periodic", None, {"delete": "delete"}
+                    element,
+                    "periodic",
+                    None,
+                    {"delete": "delete"},
                 )
                 build_child_xml_node(
-                    element, "sync-reset", None, {"delete": "delete"}
+                    element,
+                    "sync-reset",
+                    None,
+                    {"delete": "delete"},
                 )
                 build_child_xml_node(
-                    element, "system-id", None, {"delete": "delete"}
+                    element,
+                    "system-id",
+                    None,
+                    {"delete": "delete"},
                 )
                 build_child_xml_node(
-                    element, "system-priority", None, {"delete": "delete"}
+                    element,
+                    "system-priority",
+                    None,
+                    {"delete": "delete"},
                 )
             else:
                 element = build_subtree(
-                    lacp_intf_root, "ether-options/ieee-802.3ad/lacp"
+                    lacp_intf_root,
+                    "ether-options/ieee-802.3ad/lacp",
                 )
                 build_child_xml_node(
-                    element, "port-priority", None, {"delete": "delete"}
+                    element,
+                    "port-priority",
+                    None,
+                    {"delete": "delete"},
                 )
                 build_child_xml_node(
-                    element, "force-up", None, {"delete": "delete"}
+                    element,
+                    "force-up",
+                    None,
+                    {"delete": "delete"},
                 )
 
             intf_xml.append(lacp_intf_root)

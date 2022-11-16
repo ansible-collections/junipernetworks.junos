@@ -11,19 +11,20 @@ based on the configuration.
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
-    utils,
-)
+from ansible.module_utils.six import string_types
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.acl_interfaces.acl_interfaces import (
     Acl_interfacesArgs,
 )
-from ansible.module_utils.six import string_types
+
 
 try:
     from lxml import etree
@@ -77,7 +78,7 @@ class Acl_interfacesFacts(object):
 
         if isinstance(data, string_types):
             data = etree.fromstring(
-                to_bytes(data, errors="surrogate_then_replace")
+                to_bytes(data, errors="surrogate_then_replace"),
             )
 
         resources = data.xpath("configuration/interfaces/interface")
@@ -94,7 +95,8 @@ class Acl_interfacesFacts(object):
         if objs:
             facts["junos_acl_interfaces"] = []
             params = utils.validate_config(
-                self.argument_spec, {"config": objs}
+                self.argument_spec,
+                {"config": objs},
             )
             for cfg in params["config"]:
                 facts["junos_acl_interfaces"].append(utils.remove_empties(cfg))
@@ -107,7 +109,8 @@ class Acl_interfacesFacts(object):
             self._module.fail_json(msg=missing_required_lib("xmltodict"))
 
         xml_dict = xmltodict.parse(
-            etree.tostring(xml_root), dict_constructor=dict
+            etree.tostring(xml_root),
+            dict_constructor=dict,
         )
         return xml_dict
 
@@ -124,32 +127,23 @@ class Acl_interfacesFacts(object):
         config = deepcopy(spec)
         config["access_groups"] = []
 
-        if (
-            "unit" in conf["interface"]
-            and "family" in conf["interface"]["unit"]
-        ):
+        if "unit" in conf["interface"] and "family" in conf["interface"]["unit"]:
             for family in conf["interface"]["unit"]["family"].keys():
                 access_groups = {
                     "afi": "ipv6" if family == "inet6" else "ipv4",
                     "acls": [],
                 }
-                if conf["interface"]["unit"]["family"][
-                    family
-                ] is not None and conf["interface"]["unit"]["family"][
-                    family
-                ].get(
-                    "filter"
+                if conf["interface"]["unit"]["family"][family] is not None and conf["interface"][
+                    "unit"
+                ]["family"][family].get(
+                    "filter",
                 ):
                     for direction in ["input-list", "output-list"]:
-                        rendered_direction = (
-                            "in" if direction == "input-list" else "out"
-                        )
-                        if conf["interface"]["unit"]["family"][family][
-                            "filter"
-                        ].get(direction):
-                            acl_name = conf["interface"]["unit"]["family"][
-                                family
-                            ]["filter"][direction]
+                        rendered_direction = "in" if direction == "input-list" else "out"
+                        if conf["interface"]["unit"]["family"][family]["filter"].get(direction):
+                            acl_name = conf["interface"]["unit"]["family"][family]["filter"][
+                                direction
+                            ]
                             if not isinstance(acl_name, list):
                                 acl_name = [acl_name]
                             for filter_name in acl_name:
@@ -157,7 +151,7 @@ class Acl_interfacesFacts(object):
                                     {
                                         "name": filter_name,
                                         "direction": rendered_direction,
-                                    }
+                                    },
                                 )
                 if access_groups["acls"]:
                     config["name"] = conf["interface"]["name"]

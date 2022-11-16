@@ -17,9 +17,9 @@
         that: "{{ merged['after'] == result['gathered'] }}"
 
   always:
-
     - ansible.builtin.include_tasks: _reset_config.yaml
 
 - ansible.builtin.debug:
-    msg: END junos_ntp_global gathered integration tests on connection={{ ansible_connection
+    msg:
+      END junos_ntp_global gathered integration tests on connection={{ ansible_connection
       }}

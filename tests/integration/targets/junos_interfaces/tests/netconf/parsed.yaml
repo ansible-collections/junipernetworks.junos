@@ -1,11 +1,11 @@
 ---
 - ansible.builtin.debug:
-    msg: START junos_interfaces parsed integration tests on connection={{ ansible_connection
+    msg:
+      START junos_interfaces parsed integration tests on connection={{ ansible_connection
       }}
 
 - ansible.builtin.set_fact:
     expected_parsed_output:
-
       - description: Configured by Ansible
         duplex: full-duplex
         enabled: false
@@ -37,5 +37,6 @@
       - "{{ expected_parsed_output | symmetric_difference(result['parsed']) |length ==\
         \ 0 }}"
 - ansible.builtin.debug:
-    msg: END junos_interfaces parsed integration tests on connection={{ ansible_connection
+    msg:
+      END junos_interfaces parsed integration tests on connection={{ ansible_connection
       }}

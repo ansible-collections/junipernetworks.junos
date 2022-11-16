@@ -17,7 +17,6 @@
         that: "{{ merged['after'] == result['gathered'] }}"
 
   always:
-
     - ansible.builtin.include_tasks: _reset_config.yaml
 
 - ansible.builtin.debug:

@@ -12,28 +12,30 @@ created
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    locked_config,
-    load_config,
-    commit_configuration,
-    discard_changes,
-    tostring,
-)
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
     ConfigBase,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    to_list,
-    remove_empties,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
+    build_child_xml_node,
+    build_root_xml_node,
 )
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
+    remove_empties,
+    to_list,
+)
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
     Facts,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
-    build_root_xml_node,
-    build_child_xml_node,
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
+    commit_configuration,
+    discard_changes,
+    load_config,
+    locked_config,
+    tostring,
 )
 
 
@@ -55,7 +57,9 @@ class Bgp_global(ConfigBase):
         :returns: The current configuration as a dictionary
         """
         facts, _warnings = Facts(self._module).get_facts(
-            self.gather_subset, self.gather_network_resources, data=data
+            self.gather_subset,
+            self.gather_network_resources,
+            data=data,
         )
         bgp_facts = facts["ansible_network_resources"].get("bgp_global")
         if not bgp_facts:
@@ -83,7 +87,7 @@ class Bgp_global(ConfigBase):
             running_config = self._module.params["running_config"]
             if not running_config:
                 self._module.fail_json(
-                    msg="value of running_config parameter must not be empty for state parsed"
+                    msg="value of running_config parameter must not be empty for state parsed",
                 )
             result["parsed"] = self.get_bgp_global_facts(data=running_config)
         elif self.state == "rendered":
@@ -146,14 +150,15 @@ class Bgp_global(ConfigBase):
         self.root = build_root_xml_node("configuration")
         self.protocols = build_child_xml_node(self.root, "protocols")
         self.routing_options = build_child_xml_node(
-            self.root, "routing-options"
+            self.root,
+            "routing-options",
         )
         state = self._module.params["state"]
         if state in ("merged", "replaced", "rendered") and not want:
             self._module.fail_json(
                 msg="value of config parameter must not be empty for state {0}".format(
-                    state
-                )
+                    state,
+                ),
             )
         config_xmls = []
         temp_lst = []
@@ -258,12 +263,19 @@ class Bgp_global(ConfigBase):
             ]
             for item in bool_parser:
                 bgp_root = self._add_node(
-                    want, item, item.replace("-", "_"), bgp_root
+                    want,
+                    item,
+                    item.replace("-", "_"),
+                    bgp_root,
                 )
 
             for item in cfg_parser:
                 bgp_root = self._add_node(
-                    want, item, item.replace("-", "_"), bgp_root, True
+                    want,
+                    item,
+                    item.replace("-", "_"),
+                    bgp_root,
+                    True,
                 )
 
             # Generate xml node for autonomous-system
@@ -295,7 +307,10 @@ class Bgp_global(ConfigBase):
                     # Parse the boolean value attributes
                     for item in bool_parser:
                         groups_node = self._add_node(
-                            group, item, item.replace("-", "_"), groups_node
+                            group,
+                            item,
+                            item.replace("-", "_"),
+                            groups_node,
                         )
 
                     # Parse the non-boolean leaf attributes
@@ -317,7 +332,8 @@ class Bgp_global(ConfigBase):
                         # Generate commands for each neighbor in neighbors list
                         for neighbor in neighbors:
                             neighbors_node = build_child_xml_node(
-                                groups_node, "neighbor"
+                                groups_node,
+                                "neighbor",
                             )
                             build_child_xml_node(
                                 neighbors_node,
@@ -354,12 +370,15 @@ class Bgp_global(ConfigBase):
         # Generate config commands for advertise-bgp-static
         if want.get("advertise_bgp_static"):
             ad_bgp_static_node = build_child_xml_node(
-                bgp_root, "advertise-bgp-static"
+                bgp_root,
+                "advertise-bgp-static",
             )
             ad_bgp_static = want.get("advertise_bgp_static")
             if "policy" in ad_bgp_static.keys():
                 build_child_xml_node(
-                    ad_bgp_static_node, "policy", ad_bgp_static["policy"]
+                    ad_bgp_static_node,
+                    "policy",
+                    ad_bgp_static["policy"],
                 )
 
         # Generate config commands for advertise-external
@@ -372,7 +391,8 @@ class Bgp_global(ConfigBase):
         # Generate config commands for bfd-liveness-detection
         if want.get("bfd_liveness_detection"):
             bfd_live_node = build_child_xml_node(
-                bgp_root, "bfd-liveness-detection"
+                bgp_root,
+                "bfd-liveness-detection",
             )
             bfd_live_detect = want.get("bfd_liveness_detection")
 
@@ -381,17 +401,22 @@ class Bgp_global(ConfigBase):
             if "authentication" in bfd_live_detect.keys():
                 bld_auth = bfd_live_detect["authentication"]
                 bld_auth_node = build_child_xml_node(
-                    bfd_live_node, "authentication"
+                    bfd_live_node,
+                    "authentication",
                 )
                 # Add node for algorithm
                 if "algorithm" in bld_auth.keys():
                     build_child_xml_node(
-                        bld_auth_node, "algorithm", bld_auth["algorithm"]
+                        bld_auth_node,
+                        "algorithm",
+                        bld_auth["algorithm"],
                     )
                 # Add node for key-chain
                 if "key_chain" in bld_auth.keys():
                     build_child_xml_node(
-                        bld_auth_node, "key-chain", bld_auth["key_chain"]
+                        bld_auth_node,
+                        "key-chain",
+                        bld_auth["key_chain"],
                     )
                 # Add node for loose-check
                 if "loose_check" in bld_auth.keys():
@@ -403,18 +428,22 @@ class Bgp_global(ConfigBase):
             if "detection_time" in bfd_live_detect.keys():
                 d_time = bfd_live_detect["detection_time"]
                 bld_dtime_node = build_child_xml_node(
-                    bfd_live_node, "detection-time"
+                    bfd_live_node,
+                    "detection-time",
                 )
                 # Add node for threshold
                 if "threshold" in d_time.keys():
                     build_child_xml_node(
-                        bld_dtime_node, "threshold", d_time["threshold"]
+                        bld_dtime_node,
+                        "threshold",
+                        d_time["threshold"],
                     )
             # Add node for transmit-interval
             if "transmit_interval" in bfd_live_detect.keys():
                 t_int = bfd_live_detect["transmit_interval"]
                 t_int_node = build_child_xml_node(
-                    bfd_live_node, "transmit-interval"
+                    bfd_live_node,
+                    "transmit-interval",
                 )
                 # Add node for minimum-interval
                 if "minimum_interval" in t_int.keys():
@@ -447,7 +476,9 @@ class Bgp_global(ConfigBase):
             # Add node for multiplier
             if "multiplier" in bfd_live_detect.keys():
                 build_child_xml_node(
-                    bfd_live_node, "multiplier", bfd_live_detect["multiplier"]
+                    bfd_live_node,
+                    "multiplier",
+                    bfd_live_detect["multiplier"],
                 )
             # Add node for no-adaptation
             if "no_adaptation" in bfd_live_detect.keys():
@@ -465,12 +496,15 @@ class Bgp_global(ConfigBase):
             # Add node for version
             if "version" in bfd_live_detect.keys():
                 build_child_xml_node(
-                    bfd_live_node, "version", bfd_live_detect["version"]
+                    bfd_live_node,
+                    "version",
+                    bfd_live_detect["version"],
                 )
         # Generate config commands for bgp-error-tolerance
         if want.get("bgp_error_tolerance"):
             bgp_err_tol_node = build_child_xml_node(
-                bgp_root, "bgp-error-tolerance"
+                bgp_root,
+                "bgp-error-tolerance",
             )
             bgp_err_tol = want.get("bgp_error_tolerance")
             # Add node for malformed-route-limit"
@@ -493,7 +527,8 @@ class Bgp_global(ConfigBase):
                 if b_val is not None:
                     if b_val is True:
                         build_child_xml_node(
-                            bgp_err_tol_node, "no-malformed-route-limit"
+                            bgp_err_tol_node,
+                            "no-malformed-route-limit",
                         )
 
         # Generate config commands for bmp
@@ -525,10 +560,12 @@ class Bgp_global(ConfigBase):
                     if b_val is not None:
                         if b_val is True:
                             policy_node = build_child_xml_node(
-                                r_mon_node, "post-policy"
+                                r_mon_node,
+                                "post-policy",
                             )
                             build_child_xml_node(
-                                policy_node, "exclude-non-eligible"
+                                policy_node,
+                                "exclude-non-eligible",
                             )
                 elif "post_policy" in r_mon.keys():
                     b_val = r_mon.get("post_policy")
@@ -541,10 +578,12 @@ class Bgp_global(ConfigBase):
                     if b_val is not None:
                         if b_val is True:
                             policy_node = build_child_xml_node(
-                                r_mon_node, "pre-policy"
+                                r_mon_node,
+                                "pre-policy",
                             )
                             build_child_xml_node(
-                                policy_node, "exclude-non-eligible"
+                                policy_node,
+                                "exclude-non-eligible",
                             )
                 elif "pre-policy" in r_mon.keys():
                     b_val = r_mon.get("pre_policy")
@@ -558,13 +597,16 @@ class Bgp_global(ConfigBase):
             et = want.get("egress_te")
             if "backup_path" in et:
                 build_child_xml_node(
-                    et_node, "backup-path", et.get("backup_path")
+                    et_node,
+                    "backup-path",
+                    et.get("backup_path"),
                 )
 
         # Generate config commands for egress-te-backup-paths
         if want.get("egress_te_backup_paths"):
             etbp_node = build_child_xml_node(
-                bgp_root, "egress-te-backup-paths"
+                bgp_root,
+                "egress-te-backup-paths",
             )
             etbp = want.get("egress_te_backup_paths")
             # generate commands for templates
@@ -574,7 +616,9 @@ class Bgp_global(ConfigBase):
                 # add name node
                 if "path_name" in template.keys():
                     build_child_xml_node(
-                        template_node, "name", template.get("path_name")
+                        template_node,
+                        "name",
+                        template.get("path_name"),
                     )
                 # add peers
                 if "peers" in template.keys():
@@ -593,12 +637,15 @@ class Bgp_global(ConfigBase):
                 if "ip_forward" in template.keys():
                     ipf = template.get("ip_forward")
                     ipf_node = build_child_xml_node(
-                        template_node, "ip-forward"
+                        template_node,
+                        "ip-forward",
                     )
 
                     if "rti_name" not in ipf.keys():
                         build_child_xml_node(
-                            ipf_node, "name", ipf.get("rti_name")
+                            ipf_node,
+                            "name",
+                            ipf.get("rti_name"),
                         )
 
         # Generate config commands for allow
@@ -610,16 +657,21 @@ class Bgp_global(ConfigBase):
         # Generate config commands for optimal-route-reflection
         if want.get("optimal_route_reflection"):
             orr_node = build_child_xml_node(
-                bgp_root, "optimal-route-reflection"
+                bgp_root,
+                "optimal-route-reflection",
             )
             orr = want.get("optimal_route_reflection")
             if "igp_backup" in orr.keys():
                 build_child_xml_node(
-                    orr_node, "igp-backup", orr.get("igp_backup")
+                    orr_node,
+                    "igp-backup",
+                    orr.get("igp_backup"),
                 )
             if "igp_primary" in orr.keys():
                 build_child_xml_node(
-                    orr_node, "igp-primary", orr.get("igp_primary")
+                    orr_node,
+                    "igp-primary",
+                    orr.get("igp_primary"),
                 )
 
     def _state_deleted(self, want, have):
@@ -687,7 +739,10 @@ class Bgp_global(ConfigBase):
             bgp_root = build_root_xml_node("bgp")
             for attrib in parser:
                 build_child_xml_node(
-                    bgp_root, attrib, None, {"delete": "delete"}
+                    bgp_root,
+                    attrib,
+                    None,
+                    {"delete": "delete"},
                 )
             autonomous_system = have.get("as_number")
             if autonomous_system:

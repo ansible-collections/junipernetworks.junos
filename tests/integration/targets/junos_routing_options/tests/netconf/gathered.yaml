@@ -16,9 +16,9 @@
         that: "{{ merged['updated'] == result['gathered'] }}"
 
   always:
-
     - ansible.builtin.include_tasks: _reset_config.yaml
 
 - ansible.builtin.debug:
-    msg: END junos_routing_options gathered integration tests on connection={{ ansible_connection
+    msg:
+      END junos_routing_options gathered integration tests on connection={{ ansible_connection
       }}

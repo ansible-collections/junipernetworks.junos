@@ -1,7 +1,8 @@
 ---
 - name: Debug task
   ansible.builtin.debug:
-    msg: START junos_bgp_global parsed integration tests on connection={{ ansible_connection
+    msg:
+      START junos_bgp_global parsed integration tests on connection={{ ansible_connection
       }}
 
 - name: Set facts
@@ -33,7 +34,6 @@
       remove_private:
         set: true
 
-
 - name: Parse externally provided bgp_global config to agnostic model
   register: result
   junipernetworks.junos.junos_bgp_global:
@@ -47,5 +47,6 @@
 
 - name: Debug task
   ansible.builtin.debug:
-    msg: END junos_bgp_global parsed integration tests on connection={{ ansible_connection
+    msg:
+      END junos_bgp_global parsed integration tests on connection={{ ansible_connection
       }}

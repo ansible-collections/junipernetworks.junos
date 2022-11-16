@@ -1,6 +1,7 @@
 ---
 - ansible.builtin.debug:
-    msg: Start junos_static_routes teardown ansible_connection={{ ansible_connection
+    msg:
+      Start junos_static_routes teardown ansible_connection={{ ansible_connection
       }}
 
 - name: Remove static route config
@@ -12,5 +13,6 @@
     state: deleted
 
 - ansible.builtin.debug:
-    msg: End junos_static_routes teardown ansible_connection={{ ansible_connection
+    msg:
+      End junos_static_routes teardown ansible_connection={{ ansible_connection
       }}

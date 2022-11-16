@@ -9,24 +9,24 @@
     - ansible.builtin.set_fact:
         expected_config:
           - address_family:
-              - afi: 'ipv4'
+              - afi: "ipv4"
                 processes:
                   area:
-                    area_id: '0.0.0.2'
+                    area_id: "0.0.0.2"
                   priority: 3
                   metric: 5
-            name: 'ge-0/0/2.0'
-            router_id: '10.200.16.75'
+            name: "ge-0/0/2.0"
+            router_id: "10.200.16.75"
     - name: Merge the provided configuration with the exisiting running configuration
       junipernetworks.junos.junos_ospf_interfaces: &merged
         config:
-          - router_id: '10.200.16.75'
-            name: 'ge-0/0/3.0'
+          - router_id: "10.200.16.75"
+            name: "ge-0/0/3.0"
             address_family:
-              - afi: 'ipv4'
+              - afi: "ipv4"
                 processes:
                   area:
-                    area_id: '0.0.0.3'
+                    area_id: "0.0.0.3"
                   priority: 3
                   metric: 5
         state: merged
@@ -34,7 +34,7 @@
       junipernetworks.junos.junos_ospf_interfaces:
         config:
           - router_id: 10.200.16.75
-            name: 'ge-0/0/3.0'
+            name: "ge-0/0/3.0"
         state: deleted
       register: result
 

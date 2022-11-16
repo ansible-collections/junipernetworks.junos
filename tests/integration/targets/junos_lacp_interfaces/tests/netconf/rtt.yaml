@@ -1,6 +1,7 @@
 ---
 - ansible.builtin.debug:
-    msg: START junos_lacp_interfaces round trip integration tests on connection={{
+    msg:
+      START junos_lacp_interfaces round trip integration tests on connection={{
       ansible_connection }}
 
 - ansible.builtin.include_tasks: _remove_config.yaml
@@ -9,7 +10,6 @@
 
 - ansible.builtin.set_fact:
     expected_revert_output: &base_config
-
       - name: ae1
         period: slow
         sync_reset: disable
@@ -32,7 +32,6 @@
         force_up: true
 
 - block:
-
     - name: Apply the provided configuration (base config)
       register: base_config
       junipernetworks.junos.junos_lacp_interfaces:
@@ -50,7 +49,6 @@
       register: result
       junipernetworks.junos.junos_lacp_interfaces:
         config:
-
           - name: ae1
             period: fast
             sync_reset: enable
@@ -72,10 +70,10 @@
 
     - name: Assert that config was reverted
       ansible.builtin.assert:
-        that: "{{ expected_revert_output | symmetric_difference(revert['after'])\
+        that:
+          "{{ expected_revert_output | symmetric_difference(revert['after'])\
           \ |length == 0 }}"
   always:
-
     - ansible.builtin.include_tasks: _remove_config.yaml
 
 - ansible.builtin.debug:

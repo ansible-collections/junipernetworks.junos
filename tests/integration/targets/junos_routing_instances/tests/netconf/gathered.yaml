@@ -53,12 +53,13 @@
 
     - name: Assert that facts were correctly generated
       ansible.builtin.assert:
-        that: "{{ expected_gathered_output | symmetric_difference(result['gathered']) |length\
-            \ == 0 }}"
+        that:
+          "{{ expected_gathered_output | symmetric_difference(result['gathered']) |length\
+          \ == 0 }}"
   always:
-
     - ansible.builtin.include_tasks: _reset_config.yaml
 
 - ansible.builtin.debug:
-    msg: END junos_routing_instances gathered integration tests on connection={{ ansible_connection
+    msg:
+      END junos_routing_instances gathered integration tests on connection={{ ansible_connection
       }}

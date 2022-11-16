@@ -9,7 +9,6 @@
     expected_deleted_output: []
 
 - block:
-
     - name: Merge global LACP attributes
       register: result
       junipernetworks.junos.junos_lacp:
@@ -29,7 +28,8 @@
         that:
           - "{{ result['after'] == {} }}"
 
-    - name: Delete the provided interface configuration from running configuration
+    - name:
+        Delete the provided interface configuration from running configuration
         (IDEMPOTENT)
       register: result
       junipernetworks.junos.junos_lacp: *id001
@@ -39,9 +39,9 @@
         that:
           - result['changed'] == false
   always:
-
     - ansible.builtin.include_tasks: _remove_config.yaml
 
 - ansible.builtin.debug:
-    msg: END junos_lacp deleted lacp integration tests on connection={{ ansible_connection
+    msg:
+      END junos_lacp deleted lacp integration tests on connection={{ ansible_connection
       }}

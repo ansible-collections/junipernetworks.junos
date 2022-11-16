@@ -16,7 +16,7 @@
 
 - name: wait for netconf port tcp/830 to be open
   wait_for:
-    host: '{{ hostvars[item].ansible_host }}'
+    host: "{{ hostvars[item].ansible_host }}"
     port: 830
   with_inventory_hostnames: junos
 
@@ -24,7 +24,7 @@
   meta: reset_connection
 
 - name: Ensure we can communicate over netconf
-  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml'
+  ansible.builtin.include_tasks: "{{ role_path }}/tests/utils/junos_command.yaml"
   vars:
     ansible_connection: ansible.netcommon.netconf
     ansible_port: 830
@@ -42,7 +42,7 @@
 
 - name: wait for netconf port tcp/830 to be open
   wait_for:
-    host: '{{ hostvars[item].ansible_host }}'
+    host: "{{ hostvars[item].ansible_host }}"
     port: 830
   with_inventory_hostnames: junos
 
@@ -50,7 +50,7 @@
   meta: reset_connection
 
 - name: Ensure we can communicate over netconf
-  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml'
+  ansible.builtin.include_tasks: "{{ role_path }}/tests/utils/junos_command.yaml"
   vars:
     ansible_connection: ansible.netcommon.netconf
     ansible_port: 830
@@ -76,7 +76,7 @@
 
 - name: wait for netconf port tcp/830 to be closed
   wait_for:
-    host: '{{ hostvars[item].ansible_host }}'
+    host: "{{ hostvars[item].ansible_host }}"
     port: 830
     state: stopped
   with_inventory_hostnames: junos
@@ -85,7 +85,7 @@
   meta: reset_connection
 
 - name: Ensure we can NOT talk via netconf
-  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml'
+  ansible.builtin.include_tasks: "{{ role_path }}/tests/utils/junos_command.yaml"
   vars:
     ansible_connection: ansible.netcommon.netconf
     ansible_port: 830
@@ -107,7 +107,7 @@
 
 - name: wait for netconf port tcp/830 to be closed
   wait_for:
-    host: '{{ hostvars[item].ansible_host }}'
+    host: "{{ hostvars[item].ansible_host }}"
     port: 830
     state: stopped
   with_inventory_hostnames: junos
@@ -116,7 +116,7 @@
   meta: reset_connection
 
 - name: Ensure we can NOT talk via netconf
-  ansible.builtin.include_tasks: '{{ role_path }}/tests/utils/junos_command.yaml'
+  ansible.builtin.include_tasks: "{{ role_path }}/tests/utils/junos_command.yaml"
   vars:
     ansible_connection: ansible.netcommon.netconf
     ansible_port: 830

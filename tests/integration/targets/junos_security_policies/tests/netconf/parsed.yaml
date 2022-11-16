@@ -1,6 +1,7 @@
 ---
 - ansible.builtin.debug:
-    msg: START junos_security_policies parsed integration tests on connection={{ ansible_connection
+    msg:
+      START junos_security_policies parsed integration tests on connection={{ ansible_connection
       }}
 
 - name: Parse externally provided security_policies config to agnostic model
@@ -17,5 +18,6 @@
     that:
       - "{{ merged['after']  == result['parsed'] }}"
 - ansible.builtin.debug:
-    msg: END junos_security_policies parsed integration tests on connection={{ ansible_connection
+    msg:
+      END junos_security_policies parsed integration tests on connection={{ ansible_connection
       }}

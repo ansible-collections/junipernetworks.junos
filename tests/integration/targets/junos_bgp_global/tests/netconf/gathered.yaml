@@ -25,5 +25,6 @@
 
 - name: Debug task
   ansible.builtin.debug:
-    msg: END junos_bgp_global gathered integration tests on connection={{ ansible_connection
+    msg:
+      END junos_bgp_global gathered integration tests on connection={{ ansible_connection
       }}

@@ -1,6 +1,7 @@
 ---
 - ansible.builtin.debug:
-    msg: START junos_lacp parsed integration tests on connection={{ ansible_connection
+    msg:
+      START junos_lacp parsed integration tests on connection={{ ansible_connection
       }}
 
 - ansible.builtin.set_fact:
@@ -19,5 +20,6 @@
     that:
       - "{{ expected_parsed_output  == result['parsed'] }}"
 - ansible.builtin.debug:
-    msg: END junos_lacp parsed integration tests on connection={{ ansible_connection
+    msg:
+      END junos_lacp parsed integration tests on connection={{ ansible_connection
       }}

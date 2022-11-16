@@ -11,23 +11,26 @@ based on the configuration.
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
+from ansible.module_utils.six import string_types
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    remove_empties,
     generate_dict,
+    remove_empties,
+)
+
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.ospf_interfaces.ospf_interfaces import (
+    Ospf_interfacesArgs,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.utils.utils import (
     _validate_config,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.ospf_interfaces.ospf_interfaces import (
-    Ospf_interfacesArgs,
-)
-from ansible.module_utils.six import string_types
+
 
 try:
     from lxml import etree
@@ -96,7 +99,7 @@ class Ospf_interfacesFacts(object):
 
         if isinstance(data, string_types):
             data = etree.fromstring(
-                to_bytes(data, errors="surrogate_then_replace")
+                to_bytes(data, errors="surrogate_then_replace"),
             )
 
         resources = data.xpath("configuration/protocols/ospf")
@@ -117,7 +120,10 @@ class Ospf_interfacesFacts(object):
         if objs:
             facts["junos_ospf_interfaces"] = []
             params = _validate_config(
-                self._module, self.argument_spec, {"config": objs}, redact=True
+                self._module,
+                self.argument_spec,
+                {"config": objs},
+                redact=True,
             )
 
             for cfg in params["config"]:
@@ -131,7 +137,8 @@ class Ospf_interfacesFacts(object):
             self._module.fail_json(msg=missing_required_lib("xmltodict"))
 
         xml_dict = xmltodict.parse(
-            etree.tostring(xml_root), dict_constructor=dict
+            etree.tostring(xml_root),
+            dict_constructor=dict,
         )
         return xml_dict
 
@@ -170,19 +177,19 @@ class Ospf_interfacesFacts(object):
                     interface_dict["te_metric"] = interface.get("te-metric")
                     interface_dict["ipsec_sa"] = interface.get("ipsec-sa")
                     interface_dict["hello_interval"] = interface.get(
-                        "hello-interval"
+                        "hello-interval",
                     )
                     interface_dict["dead_interval"] = interface.get(
-                        "dead-interval"
+                        "dead-interval",
                     )
                     interface_dict["retransmit_interval"] = interface.get(
-                        "retransmit-interval"
+                        "retransmit-interval",
                     )
                     interface_dict["transit_delay"] = interface.get(
-                        "transit-delay"
+                        "transit-delay",
                     )
                     interface_dict["poll_interval"] = interface.get(
-                        "poll-interval"
+                        "poll-interval",
                     )
                     if "passive" in interface.keys():
                         interface_dict["passive"] = True
@@ -203,9 +210,7 @@ class Ospf_interfacesFacts(object):
                     if "node-link-protection" in interface.keys():
                         interface_dict["node_link_protection"] = True
                     if "bandwidth-based-metrics" in interface.keys():
-                        bandwidth_metrics = interface[
-                            "bandwidth-based-metrics"
-                        ].get("bandwidth")
+                        bandwidth_metrics = interface["bandwidth-based-metrics"].get("bandwidth")
                         if not isinstance(bandwidth_metrics, list):
                             bandwidth_metrics = [bandwidth_metrics]
                         interface_dict["bandwidth_based_metrics"] = []
@@ -215,7 +220,7 @@ class Ospf_interfacesFacts(object):
                                 {
                                     "metric": metric.get("metric"),
                                     "bandwidth": metric.get("name"),
-                                }
+                                },
                             )
 
                     if "authentication" in interface.keys():
@@ -223,7 +228,7 @@ class Ospf_interfacesFacts(object):
                         auth_dict = {}
                         if auth.get("simple-password"):
                             auth_dict["simple_password"] = auth.get(
-                                "simple-password"
+                                "simple-password",
                             )
                         elif auth.get("md5"):
                             auth_dict["type"] = {"md5": []}
@@ -237,7 +242,7 @@ class Ospf_interfacesFacts(object):
                                     {
                                         "key_id": md5_auth.get("name"),
                                         "key": md5_auth.get("key"),
-                                    }
+                                    },
                                 )
                         interface_dict["authentication"] = auth_dict
 

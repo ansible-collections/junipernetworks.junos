@@ -9,27 +9,24 @@
 
 - ansible.builtin.set_fact:
     expected_revert_output:
-
       - name: ge-0/0/2
         trunk:
           allowed_vlans:
             - vlan100
-          native_vlan: '200'
+          native_vlan: "200"
         enhanced_layer: true
         unit: 0
 
 - block:
-
     - name: Apply the provided configuration (base config)
       register: base_config
       junipernetworks.junos.junos_l2_interfaces:
         config:
-
           - name: ge-0/0/2
             trunk:
               allowed_vlans:
                 - vlan100
-              native_vlan: '200'
+              native_vlan: "200"
         state: merged
 
     - name: Gather interfaces facts
@@ -43,13 +40,12 @@
       register: result
       junipernetworks.junos.junos_l2_interfaces:
         config:
-
           - name: ge-0/0/1
             trunk:
               allowed_vlans:
                 - vlan100
                 - vlan300
-              native_vlan: '400'
+              native_vlan: "400"
 
           - name: ge-0/0/2
             access:
@@ -68,12 +64,13 @@
 
     - name: Assert that config was reverted
       ansible.builtin.assert:
-        that: "{{ expected_revert_output | symmetric_difference(revert['after'])\
+        that:
+          "{{ expected_revert_output | symmetric_difference(revert['after'])\
           \ |length == 0 }}"
   always:
-
     - ansible.builtin.include_tasks: _remove_config.yaml
 
 - ansible.builtin.debug:
-    msg: END junos_l2_interfaces round trip integration tests on connection={{ ansible_connection
+    msg:
+      END junos_l2_interfaces round trip integration tests on connection={{ ansible_connection
       }}

@@ -12,27 +12,27 @@ created
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
     ConfigBase,
 )
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
-    build_root_xml_node,
     build_child_xml_node,
+    build_root_xml_node,
     build_subtree,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    to_list,
-)
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import to_list
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
     Facts,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    locked_config,
-    load_config,
     commit_configuration,
     discard_changes,
+    load_config,
+    locked_config,
     tostring,
 )
 
@@ -56,7 +56,9 @@ class Lacp(ConfigBase):
         :returns: The current configuration as a dictionary
         """
         facts, _warnings = Facts(self._module).get_facts(
-            self.gather_subset, self.gather_network_resources, data=data
+            self.gather_subset,
+            self.gather_network_resources,
+            data=data,
         )
         lacp_facts = facts["ansible_network_resources"].get("lacp")
         if not lacp_facts:
@@ -84,7 +86,7 @@ class Lacp(ConfigBase):
             running_config = self._module.params["running_config"]
             if not running_config:
                 self._module.fail_json(
-                    msg="value of running_config parameter must not be empty for state parsed"
+                    msg="value of running_config parameter must not be empty for state parsed",
                 )
             result["parsed"] = self.get_lacp_facts(data=running_config)
         elif self.state == "rendered":
@@ -150,8 +152,8 @@ class Lacp(ConfigBase):
         if state in ("merged", "replaced", "rendered") and not want:
             self._module.fail_json(
                 msg="value of config parameter must not be empty for state {0}".format(
-                    state
-                )
+                    state,
+                ),
             )
         if state == "overridden":
             config_xmls = self._state_overridden(want, have)
@@ -203,14 +205,19 @@ class Lacp(ConfigBase):
 
         lacp_root = build_root_xml_node("lacp")
         build_child_xml_node(
-            lacp_root, "system-priority", want.get("system_priority")
+            lacp_root,
+            "system-priority",
+            want.get("system_priority"),
         )
         if want.get("link_protection") == "non-revertive":
             build_subtree(lacp_root, "link-protection/non-revertive")
         elif want.get("link_protection") == "revertive":
             link_root = build_child_xml_node(lacp_root, "link-protection")
             build_child_xml_node(
-                link_root, "non-revertive", None, {"delete": "delete"}
+                link_root,
+                "non-revertive",
+                None,
+                {"delete": "delete"},
             )
         lacp_xml.append(lacp_root)
         return lacp_xml
@@ -226,13 +233,22 @@ class Lacp(ConfigBase):
 
         lacp_root = build_root_xml_node("lacp")
         build_child_xml_node(
-            lacp_root, "system-priority", None, {"delete": "delete"}
+            lacp_root,
+            "system-priority",
+            None,
+            {"delete": "delete"},
         )
         element = build_child_xml_node(
-            lacp_root, "link-protection", None, {"delete": "delete"}
+            lacp_root,
+            "link-protection",
+            None,
+            {"delete": "delete"},
         )
         build_child_xml_node(
-            element, "non-revertive", None, {"delete": "delete"}
+            element,
+            "non-revertive",
+            None,
+            {"delete": "delete"},
         )
 
         lacp_xml.append(lacp_root)

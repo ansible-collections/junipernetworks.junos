@@ -1,6 +1,7 @@
 ---
 - ansible.builtin.debug:
-    msg: START junos_lldp_global round trip integration tests on connection={{ ansible_connection
+    msg:
+      START junos_lldp_global round trip integration tests on connection={{ ansible_connection
       }}
 
 - name: get supported protocols
@@ -20,12 +21,10 @@
   when: result.failed
 
 - block:
-
     - ansible.builtin.include_tasks: _remove_config.yaml
 
     - ansible.builtin.set_fact:
         expected_revert_output:
-
           - interval: 10000
             address: 10.1.1.1
             transmit_delay: 400
@@ -71,13 +70,14 @@
 
     - name: Assert that config was reverted
       ansible.builtin.assert:
-        that: "{{ expected_revert_output | symmetric_difference([revert['after']])\
-                        \ |length == 0 }}"
+        that:
+          "{{ expected_revert_output | symmetric_difference([revert['after']])\
+          \ |length == 0 }}"
   always:
-
     - ansible.builtin.include_tasks: _remove_config.yaml
   when: lldp_supported
 
 - ansible.builtin.debug:
-    msg: END junos_lldp_global round trip integration tests on connection={{ ansible_connection
+    msg:
+      END junos_lldp_global round trip integration tests on connection={{ ansible_connection
       }}

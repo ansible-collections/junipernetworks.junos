@@ -19,11 +19,11 @@
         that: "{{ merged['gathered'] == result['gathered'] }}"
 
   always:
-
     - name: Reset configuration
       ansible.builtin.include_tasks: _reset_config.yaml
 
 - name: Debug task
   ansible.builtin.debug:
-    msg: END junos_hostname gathered integration tests on connection={{ ansible_connection
+    msg:
+      END junos_hostname gathered integration tests on connection={{ ansible_connection
       }}
