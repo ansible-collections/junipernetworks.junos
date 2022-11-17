@@ -210,7 +210,7 @@ class Interfaces(ConfigBase):
                   the current configuration
         """
         intf_xml = []
-
+        have_dict = {interface["name"]: interface for interface in have}
         for config in want:
             intf = build_root_xml_node("interface")
             build_child_xml_node(intf, "name", config["name"])
@@ -225,8 +225,9 @@ class Interfaces(ConfigBase):
             if config.get("duplex"):
                 build_child_xml_node(intf, "link-mode", config["duplex"])
 
-            if config.get("enabled") is False:
-                build_child_xml_node(intf, "disable")
+            if config["name"] in have_dict and config.get("enabled") is not None:
+                if config["enabled"] != have_dict[config["name"]]["enabled"]:
+                    build_child_xml_node(intf, "enable" if config.get("enabled") else "disable")
 
             if config.get("units"):
                 units = config.get("units")
