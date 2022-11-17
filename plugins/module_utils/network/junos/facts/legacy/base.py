@@ -13,6 +13,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import platform
+
 import xmltodict
 
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
@@ -163,8 +164,10 @@ class Hardware(FactsBase):
             for child in obj:
                 if child.text != "\n":
                     mod.update({child.tag.replace("-", "_"): child.text})
-                if 'chassis-sub-module' in child.tag:
-                    mod['chassis_sub_module'] = (xmltodict.parse(tostring(obj))['chassis-module']['chassis-sub-module'])
+                if "chassis-sub-module" in child.tag:
+                    mod["chassis_sub_module"] = xmltodict.parse(tostring(obj))["chassis-module"][
+                        "chassis-sub-module"
+                    ]
             modules.append(mod)
 
         self.facts["modules"] = modules
