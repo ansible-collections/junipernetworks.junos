@@ -18,6 +18,7 @@
 # Make coding more python3-ish
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 try:
@@ -25,16 +26,12 @@ try:
 except ImportError:
     from xml.etree.ElementTree import fromstring
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
-    patch,
-)
-from ansible_collections.junipernetworks.junos.plugins.modules import (
-    junos_facts,
-)
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
-    set_module_args,
-)
+from ansible_collections.junipernetworks.junos.plugins.modules import junos_facts
+from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import patch
+from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
+
 from .junos_module import TestJunosModule, load_fixture
+
 
 RPC_CLI_MAP = {
     "get-software-information": "show version",
@@ -54,34 +51,32 @@ class TestJunosCommandModule(TestJunosModule):
         super(TestJunosCommandModule, self).setUp()
 
         self.mock_get_config = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.legacy.base.get_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.legacy.base.get_configuration",
         )
         self.get_config = self.mock_get_config.start()
 
         self.mock_netconf = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.NetconfConnection"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.NetconfConnection",
         )
         self.netconf_conn = self.mock_netconf.start()
 
         self.mock_exec_rpc = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.legacy.base.exec_rpc"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.legacy.base.exec_rpc",
         )
         self.exec_rpc = self.mock_exec_rpc.start()
 
         self.mock_netconf_rpc = patch(
-            "ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf.NetconfConnection"
+            "ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf.NetconfConnection",
         )
         self.netconf_rpc = self.mock_netconf_rpc.start()
 
         self.mock_get_resource_connection = patch(
-            "ansible_collections.ansible.netcommon.plugins.module_utils.network.common.facts.facts.get_resource_connection"
+            "ansible_collections.ansible.netcommon.plugins.module_utils.network.common.facts.facts.get_resource_connection",
         )
-        self.get_resource_connection = (
-            self.mock_get_resource_connection.start()
-        )
+        self.get_resource_connection = self.mock_get_resource_connection.start()
 
         self.mock_get_capabilities = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.legacy.base.get_capabilities"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.legacy.base.get_capabilities",
         )
         self.get_capabilities = self.mock_get_capabilities.start()
 
@@ -133,7 +128,7 @@ class TestJunosCommandModule(TestJunosModule):
 
     def test_junos_get_facts_subset_config_set(self):
         self.get_config.return_value = load_fixture(
-            "get_configuration_rpc_reply.txt"
+            "get_configuration_rpc_reply.txt",
         )
         set_module_args(dict(gather_subset="config", config_format="set"))
         result = self.execute_module(format="xml")
@@ -146,7 +141,7 @@ class TestJunosCommandModule(TestJunosModule):
 
     def test_junos_get_facts_subset_config_json(self):
         self.get_config.return_value = load_fixture(
-            "get_configuration_rpc_reply_json.txt"
+            "get_configuration_rpc_reply_json.txt",
         )
         set_module_args(dict(gather_subset="config", config_format="json"))
         result = self.execute_module(format="xml")
@@ -164,7 +159,8 @@ class TestJunosCommandModule(TestJunosModule):
 
         self.assertTrue("ansible_net_config" not in facts)
         self.assertEqual(
-            facts["ansible_net_interfaces"]["em0"]["oper-status"], "up"
+            facts["ansible_net_interfaces"]["em0"]["oper-status"],
+            "up",
         )
         self.assertEqual(facts["ansible_net_memfree_mb"], 200684)
 

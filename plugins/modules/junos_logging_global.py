@@ -28,6 +28,7 @@ The module file for junos_logging_global
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 DOCUMENTATION = """
@@ -83,7 +84,7 @@ options:
             type: bool
           file_size:
             description: Size of files to be archived (65536..1073741824 bytes).
-            type: int
+            type: str
           world_readable:
             description: Allow any user to read the log file.
             type: bool
@@ -205,7 +206,7 @@ options:
                 type: bool
               file_size:
                 description: Size of files to be archived (65536..1073741824 bytes).
-                type: int
+                type: str
               start_time:
                 description: Specify start time for file transmission (yyyy-mm-dd.hh:mm).
                 type: str
@@ -1708,6 +1709,7 @@ commands:
 
 
 from ansible.module_utils.basic import AnsibleModule
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.logging_global.logging_global import (
     Logging_globalArgs,
 )

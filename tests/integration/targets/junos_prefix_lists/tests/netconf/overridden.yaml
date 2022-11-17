@@ -1,11 +1,11 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_prefix_lists overridden integration tests on connection={{ ansible_connection }}"
 
 - block:
-    - include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
 
-    - set_fact:
+    - ansible.builtin.set_fact:
         expected_overridden_output:
           - address_prefixes:
               - 172.16.1.16/28
@@ -47,24 +47,24 @@
       register: result
 
     - name: Assert the correct configuration is reflected on host
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == True
           - "{{ expected_overridden_output | symmetric_difference(result['after']) |length\
-                        \ == 0 }}"
+            \ == 0 }}"
 
     - name: Override existing running prefix lists configuration with provided (IDEMPOTENT)
       junos_prefix_lists: *overridden
       register: result
 
     - name: Assert that the previous task was idempotent
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == False
 
   tags: overridden
   always:
-    - include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_prefix_lists overridden integration tests on connection={{ ansible_connection }}"

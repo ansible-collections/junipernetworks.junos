@@ -27,6 +27,7 @@ The arg spec for the junos_logging_global module
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -43,7 +44,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                 "archive": {
                     "options": {
                         "binary_data": {"type": "bool"},
-                        "file_size": {"type": "int"},
+                        "file_size": {"type": "str"},
                         "files": {"type": "int"},
                         "no_binary_data": {"type": "bool"},
                         "no_world_readable": {"type": "bool"},
@@ -70,7 +71,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -90,7 +91,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -110,7 +111,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -130,7 +131,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -150,7 +151,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -170,7 +171,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -190,7 +191,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -210,7 +211,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -230,7 +231,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -250,7 +251,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -270,7 +271,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -290,7 +291,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -310,7 +311,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -330,7 +331,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -350,7 +351,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -377,7 +378,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -388,7 +389,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     "type": "list",
                                 },
                                 "binary_data": {"type": "bool"},
-                                "file_size": {"type": "int"},
+                                "file_size": {"type": "str"},
                                 "files": {"type": "int"},
                                 "no_binary_data": {"type": "bool"},
                                 "no_world_readable": {"type": "bool"},
@@ -415,7 +416,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -435,7 +436,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -455,7 +456,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -475,7 +476,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -495,7 +496,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -516,7 +517,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -536,7 +537,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -556,7 +557,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -576,7 +577,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -596,7 +597,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -619,7 +620,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -639,7 +640,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -659,7 +660,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -686,7 +687,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -713,7 +714,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -733,7 +734,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -753,7 +754,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -773,7 +774,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -793,7 +794,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -813,7 +814,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -835,7 +836,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -856,7 +857,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -876,7 +877,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -896,7 +897,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -916,7 +917,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -940,7 +941,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -960,7 +961,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -982,7 +983,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -1010,7 +1011,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -1069,7 +1070,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -1089,7 +1090,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -1109,7 +1110,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -1129,7 +1130,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -1149,7 +1150,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -1169,7 +1170,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -1189,7 +1190,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -1209,7 +1210,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -1229,7 +1230,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -1249,7 +1250,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -1269,7 +1270,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -1292,7 +1293,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -1312,7 +1313,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -1332,7 +1333,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },
@@ -1352,7 +1353,7 @@ class Logging_globalArgs(object):  # pylint: disable=R0903
                                     ],
                                     "required": True,
                                     "type": "str",
-                                }
+                                },
                             },
                             "type": "dict",
                         },

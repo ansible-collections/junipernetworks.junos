@@ -1,5 +1,6 @@
 ---
-- debug: msg="START junos_logging netconf/basic.yaml on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg="START junos_logging netconf/basic.yaml on connection={{ ansible_connection
     }}"
 
 - name: setup - remove file logging
@@ -24,7 +25,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<name>test_file</name>' in config.xml"
@@ -40,7 +41,7 @@
     level: error
     state: present
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
@@ -59,11 +60,11 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
-      - "'<file inactive=\"inactive\">' in config.xml"
-      - "'<contents inactive=\"inactive\">' in config.xml"
+      - '''<file inactive="inactive">'' in config.xml'
+      - '''<contents inactive="inactive">'' in config.xml'
 
 - name: Activate logging configuration
   register: result
@@ -80,7 +81,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<name>test_file</name>' in config.xml"
@@ -101,7 +102,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<name>test_file</name>' not in config.xml"
@@ -120,7 +121,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<console>' in config.xml"
@@ -136,7 +137,7 @@
     state: present
     active: true
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
@@ -154,10 +155,10 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
-      - "'<console inactive=\"inactive\">' in config.xml"
+      - '''<console inactive="inactive">'' in config.xml'
 
 - name: Delete console logging
   register: result
@@ -172,7 +173,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<console>' not in config.xml"
@@ -190,7 +191,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<size>64k</size>' in config.xml"
@@ -206,7 +207,7 @@
     state: present
     active: true
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
@@ -224,11 +225,11 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
-      - "'<size inactive=\"inactive\">64k</size>' in config.xml"
-      - "'<files inactive=\"inactive\">40</files>' in config.xml"
+      - '''<size inactive="inactive">64k</size>'' in config.xml'
+      - '''<files inactive="inactive">40</files>'' in config.xml'
       - "'<log-rotate-frequency inactive=\"inactive\">20</log-rotate-frequency>'\
         \ in config.xml"
 
@@ -246,7 +247,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<size>64k</size>' in config.xml"
@@ -266,7 +267,7 @@
   junipernetworks.junos.junos_rpc:
     rpc: get-configuration
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - "'<size>64k</size>' not in config.xml"
@@ -277,7 +278,6 @@
   register: result
   junipernetworks.junos.junos_logging:
     aggregate:
-
       - dest: file
         name: test-1
         facility: pfe
@@ -294,7 +294,6 @@
   register: result
   junipernetworks.junos.junos_logging:
     aggregate:
-
       - dest: file
         name: test-1
         facility: pfe
@@ -307,7 +306,7 @@
         level: emergency
         active: true
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - result.diff.prepared is search("\+ *file test-1")
@@ -319,7 +318,6 @@
   register: result
   junipernetworks.junos.junos_logging:
     aggregate:
-
       - dest: file
         name: test-1
         facility: pfe
@@ -331,7 +329,7 @@
         level: emergency
     active: false
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - result.diff.prepared is search("! *inactive[:] file test-1")
@@ -343,7 +341,6 @@
   register: result
   junipernetworks.junos.junos_logging:
     aggregate:
-
       - dest: file
         name: test-1
         facility: pfe
@@ -355,7 +352,7 @@
         level: emergency
     active: true
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - result.diff.prepared is search("! *active[:] file test-1")
@@ -367,7 +364,6 @@
   register: result
   junipernetworks.junos.junos_logging:
     aggregate:
-
       - dest: file
         name: test-1
         facility: pfe
@@ -379,7 +375,7 @@
         level: emergency
     state: absent
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
       - result.diff.prepared is search("\- *file test-1")
@@ -391,7 +387,6 @@
   register: result
   junipernetworks.junos.junos_logging:
     aggregate:
-
       - dest: file
         name: test-1
         facility: pfe
@@ -403,9 +398,10 @@
         level: emergency
     state: absent
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
-- debug: msg="END junos_logging netconf/basic.yaml on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg="END junos_logging netconf/basic.yaml on connection={{ ansible_connection
     }}"

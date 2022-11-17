@@ -1,5 +1,5 @@
 ---
-- debug: msg="START netconf/netconf.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="START netconf/netconf.yaml on connection={{ ansible_connection }}"
 
 - name: Ensure netconf is enabled
   junipernetworks.junos.junos_netconf:
@@ -10,13 +10,13 @@
   junipernetworks.junos.junos_netconf:
     state: present
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
 - name: wait for netconf port tcp/830 to be open
   wait_for:
-    host: '{{ hostvars[item].ansible_host }}'
+    host: "{{ hostvars[item].ansible_host }}"
     port: 830
   with_inventory_hostnames: junos
 
@@ -24,8 +24,11 @@
   meta: reset_connection
 
 - name: Ensure we can communicate over netconf
-  include: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
-    ansible_port=830 is_ignore_errors=false'
+  ansible.builtin.include_tasks: "{{ role_path }}/tests/utils/junos_command.yaml"
+  vars:
+    ansible_connection: ansible.netcommon.netconf
+    ansible_port: 830
+    is_ignore_errors: false
 
 - name: Disable netconf (check mode)
   register: result
@@ -33,13 +36,13 @@
   junipernetworks.junos.junos_netconf:
     state: absent
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
 
 - name: wait for netconf port tcp/830 to be open
   wait_for:
-    host: '{{ hostvars[item].ansible_host }}'
+    host: "{{ hostvars[item].ansible_host }}"
     port: 830
   with_inventory_hostnames: junos
 
@@ -47,15 +50,18 @@
   meta: reset_connection
 
 - name: Ensure we can communicate over netconf
-  include: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
-    ansible_port=830 is_ignore_errors=false'
+  ansible.builtin.include_tasks: "{{ role_path }}/tests/utils/junos_command.yaml"
+  vars:
+    ansible_connection: ansible.netcommon.netconf
+    ansible_port: 830
+    is_ignore_errors: false
 
 - name: Disable netconf
   register: result
   junipernetworks.junos.junos_netconf:
     state: absent
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
 
@@ -64,13 +70,13 @@
   junipernetworks.junos.junos_netconf:
     state: absent
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
 
 - name: wait for netconf port tcp/830 to be closed
   wait_for:
-    host: '{{ hostvars[item].ansible_host }}'
+    host: "{{ hostvars[item].ansible_host }}"
     port: 830
     state: stopped
   with_inventory_hostnames: junos
@@ -79,10 +85,13 @@
   meta: reset_connection
 
 - name: Ensure we can NOT talk via netconf
-  include: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
-    ansible_port=830 is_ignore_errors=true'
+  ansible.builtin.include_tasks: "{{ role_path }}/tests/utils/junos_command.yaml"
+  vars:
+    ansible_connection: ansible.netcommon.netconf
+    ansible_port: 830
+    is_ignore_errors: true
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.failed == true
 
@@ -92,13 +101,13 @@
   junipernetworks.junos.junos_netconf:
     state: present
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == true
 
 - name: wait for netconf port tcp/830 to be closed
   wait_for:
-    host: '{{ hostvars[item].ansible_host }}'
+    host: "{{ hostvars[item].ansible_host }}"
     port: 830
     state: stopped
   with_inventory_hostnames: junos
@@ -107,10 +116,13 @@
   meta: reset_connection
 
 - name: Ensure we can NOT talk via netconf
-  include: '{{ role_path }}/tests/utils/junos_command.yaml ansible_connection=ansible.netcommon.netconf
-    ansible_port=830 is_ignore_errors=true'
+  ansible.builtin.include_tasks: "{{ role_path }}/tests/utils/junos_command.yaml"
+  vars:
+    ansible_connection: ansible.netcommon.netconf
+    ansible_port: 830
+    is_ignore_errors: true
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.failed == true
 
@@ -118,4 +130,4 @@
   junipernetworks.junos.junos_netconf:
     state: present
 
-- debug: msg="END netconf/netconfg.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="END netconf/netconfg.yaml on connection={{ ansible_connection }}"

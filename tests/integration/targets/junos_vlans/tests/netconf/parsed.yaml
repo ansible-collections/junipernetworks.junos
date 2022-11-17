@@ -1,9 +1,10 @@
 ---
-- debug:
-    msg: START junos_vlans parsed integration tests on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg:
+      START junos_vlans parsed integration tests on connection={{ ansible_connection
       }}
 
-- set_fact:
+- ansible.builtin.set_fact:
     expected_parsed_output:
       - name: vlan1
         vlan_id: 1
@@ -18,10 +19,11 @@
     state: parsed
 
 - name: Assert that config was correctly parsed
-  assert:
+  ansible.builtin.assert:
     that:
       - "{{ expected_parsed_output  == result['parsed'] }}"
       - result['changed'] == false
-- debug:
-    msg: END junos_vlans parsed integration tests on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg:
+      END junos_vlans parsed integration tests on connection={{ ansible_connection
       }}

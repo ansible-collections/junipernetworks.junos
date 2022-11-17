@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -232,20 +233,18 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
     remove_default_spec,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    tostring,
-)
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    load_config,
-    map_params_to_obj,
-    map_obj_to_ele,
-    to_param_list,
-)
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     commit_configuration,
     discard_changes,
+    load_config,
     locked_config,
+    map_obj_to_ele,
+    map_params_to_obj,
+    to_param_list,
+    tostring,
 )
+
 
 USE_PERSISTENT_CONNECTION = True
 
@@ -270,7 +269,7 @@ def main():
     remove_default_spec(aggregate_spec)
 
     argument_spec = dict(
-        aggregate=dict(type="list", elements="dict", options=aggregate_spec)
+        aggregate=dict(type="list", elements="dict", options=aggregate_spec),
     )
 
     argument_spec.update(element_spec)
@@ -303,7 +302,7 @@ def main():
             ("interfaces", "interface/name"),
             ("target", "vrf-target/community"),
             ("table_label", {"xpath": "vrf-table-label", "tag_only": True}),
-        ]
+        ],
     )
 
     params = to_param_list(module)

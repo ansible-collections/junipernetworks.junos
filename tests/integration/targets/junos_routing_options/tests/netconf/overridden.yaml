@@ -1,10 +1,10 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_routing_options overridden integration tests on connection={{ ansible_connection }}"
 
 - block:
-    - include_tasks: _reset_config.yaml
-    - include_tasks: _populate_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _populate_config.yaml
 
     - name: Override configuration
       junipernetworks.junos.junos_routing_options: &overridden
@@ -18,11 +18,11 @@
       register: result
 
     - name: Assert that before dicts were correctly generated
-      assert:
+      ansible.builtin.assert:
         that: "{{ merged['updated'] == result['before'] }}"
 
     - name: Assert configuration
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == True
           - "{{ replaced['after'] == result.after }}"
@@ -32,13 +32,13 @@
       register: result
 
     - name: Assert that the previous task was idempotent
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == False
 
   tags: overridden
   always:
-    - include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_routing_options overridden integration tests on connection={{ ansible_connection }}"

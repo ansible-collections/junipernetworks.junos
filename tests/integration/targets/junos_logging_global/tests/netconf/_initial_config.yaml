@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_logging_global initial config on connection={{ ansible_connection }}"
 
 - name: Configure basic config relevant to logging global
@@ -7,5 +7,5 @@
     lines:
       - set routing-instances inst11 description "inst11"
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_logging_global initial config on connection={{ ansible_connection }}"

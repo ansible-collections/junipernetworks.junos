@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_routing_instances reset config on connection={{ ansible_connection }}"
 
 - name: Reset the config releavent to bgp address family resource
@@ -8,5 +8,5 @@
       - delete routing-instances
       - delete policy-options
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_routing_instances reset config on connection={{ ansible_connection }}"

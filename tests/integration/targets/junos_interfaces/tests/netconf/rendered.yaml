@@ -1,10 +1,10 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: START junos_interfaces rendered integration tests on connection={{
       ansible_connection }}
 
-- set_fact:
-    expected_rendered_output: "<nc:interfaces xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"><nc:interface><nc:name>ge-0/0/2</nc:name><nc:description>Configured by Ansibull</nc:description><nc:speed>20m</nc:speed><nc:mtu>2048</nc:mtu><nc:hold-time><nc:up>3200</nc:up><nc:down>3200</nc:down></nc:hold-time></nc:interface></nc:interfaces>"
+- ansible.builtin.set_fact:
+    expected_rendered_output: '<nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:interface><nc:name>ge-0/0/2</nc:name><nc:description>Configured by Ansibull</nc:description><nc:speed>20m</nc:speed><nc:mtu>2048</nc:mtu><nc:hold-time><nc:up>3200</nc:up><nc:down>3200</nc:down></nc:hold-time></nc:interface></nc:interfaces>'
 
 - name: Render platform specific commands from task input using rendered state
   register: result
@@ -20,10 +20,10 @@
     state: rendered
 
 - name: Assert that correct set of commands were rendered
-  assert:
+  ansible.builtin.assert:
     that:
       - "{{ expected_rendered_output == result['rendered'] }}"
 
-- debug:
+- ansible.builtin.debug:
     msg: END junos_interfaces rendered integration tests on connection={{
       ansible_connection }}

@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_snmp_server reset config on connection={{ ansible_connection }}"
 
 - name: Reset the config releavent to ntp global resource
@@ -8,5 +8,5 @@
       - delete snmp
       - delete routing-instances
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_snmp_server reset config on connection={{ ansible_connection }}"

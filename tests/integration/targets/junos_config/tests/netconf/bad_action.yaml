@@ -1,5 +1,6 @@
 ---
-- debug: msg="START netconf/bad_action.yaml on connection={{ ansible_connection
+- ansible.builtin.debug:
+    msg="START netconf/bad_action.yaml on connection={{ ansible_connection
     }}"
 
 - name: configure single bad_action command
@@ -9,8 +10,8 @@
     lines:
       - invalid system foo
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.failed == true
 
-- debug: msg="END netconf/bad_action.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="END netconf/bad_action.yaml on connection={{ ansible_connection }}"

@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -98,11 +99,13 @@ changed:
   returned: always
   type: bool
 """
+from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     get_device,
 )
-from ansible.module_utils._text import to_native
+
 
 try:
     from jnpr.junos.utils.scp import SCP
@@ -136,13 +139,14 @@ def main():
     )
 
     module = AnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True
+        argument_spec=argument_spec,
+        supports_check_mode=True,
     )
 
     if not HAS_PYEZ:
         module.fail_json(
             msg="junos-eznc is required but does not appear to be installed. "
-            "It can be installed using `pip install junos-eznc`"
+            "It can be installed using `pip install junos-eznc`",
         )
 
     result = dict(changed=True)

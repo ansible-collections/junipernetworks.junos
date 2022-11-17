@@ -11,18 +11,20 @@ based on the configuration.
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 from copy import deepcopy
+
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
-    utils,
-)
+from ansible.module_utils.six import string_types
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.bgp_address_family.bgp_address_family import (
     Bgp_address_familyArgs,
 )
-from ansible.module_utils.six import string_types
+
 
 try:
     from lxml import etree
@@ -91,16 +93,16 @@ class Bgp_address_familyFacts(object):
 
         if isinstance(data, string_types):
             data = etree.fromstring(
-                to_bytes(data, errors="surrogate_then_replace")
+                to_bytes(data, errors="surrogate_then_replace"),
             )
         objs = {}
         resources = data.xpath("configuration/protocols/bgp")
         autonomous_system_path = data.xpath(
-            "configuration/routing-options/autonomous-system"
+            "configuration/routing-options/autonomous-system",
         )
         if autonomous_system_path:
             self.autonomous_system = self._get_xml_dict(
-                autonomous_system_path.pop()
+                autonomous_system_path.pop(),
             )
         else:
             self.autonomous_system = ""
@@ -113,11 +115,12 @@ class Bgp_address_familyFacts(object):
         if objs:
             facts["bgp_address_family"] = {}
             params = utils.validate_config(
-                self.argument_spec, {"config": objs}
+                self.argument_spec,
+                {"config": objs},
             )
 
             facts["bgp_address_family"] = utils.remove_empties(
-                params["config"]
+                params["config"],
             )
         ansible_facts["ansible_network_resources"].update(facts)
         return ansible_facts
@@ -126,7 +129,8 @@ class Bgp_address_familyFacts(object):
         if not HAS_XMLTODICT:
             self._module.fail_json(msg=missing_required_lib("xmltodict"))
         xml_dict = xmltodict.parse(
-            etree.tostring(xml_root), dict_constructor=dict
+            etree.tostring(xml_root),
+            dict_constructor=dict,
         )
         return xml_dict
 
@@ -167,9 +171,7 @@ class Bgp_address_familyFacts(object):
                                 naf_facts = self.parse_af_facts(neighbor)
                                 if naf_facts is not None:
                                     nh_af_dict["address_family"] = naf_facts
-                                    nh_af_dict[
-                                        "neighbor_address"
-                                    ] = neighbor.get("name")
+                                    nh_af_dict["neighbor_address"] = neighbor.get("name")
                                 if nh_af_dict:
                                     neighbors_af_lst.append(nh_af_dict)
                                     nh_af_dict = {}
@@ -178,7 +180,7 @@ class Bgp_address_familyFacts(object):
                             if naf_facts is not None:
                                 nh_af_dict["address_family"] = naf_facts
                                 nh_af_dict["neighbor_address"] = neighbors.get(
-                                    "name"
+                                    "name",
                                 )
                             if nh_af_dict:
                                 neighbors_af_lst.append(nh_af_dict)
@@ -204,7 +206,7 @@ class Bgp_address_familyFacts(object):
                             if naf_facts is not None:
                                 nh_af_dict["address_family"] = naf_facts
                                 nh_af_dict["neighbor_address"] = neighbor.get(
-                                    "name"
+                                    "name",
                                 )
                             if nh_af_dict:
                                 neighbors_af_lst.append(nh_af_dict)
@@ -214,7 +216,7 @@ class Bgp_address_familyFacts(object):
                         if naf_facts is not None:
                             nh_af_dict["address_family"] = naf_facts
                             nh_af_dict["neighbor_address"] = neighbors.get(
-                                "name"
+                                "name",
                             )
                         if nh_af_dict:
                             neighbors_af_lst.append(nh_af_dict)
@@ -376,7 +378,7 @@ class Bgp_address_familyFacts(object):
             # Parse local-ipv4-address
             if "local-ipv4-address" in nlri.keys():
                 nlri_dict["local_ipv4_address"] = nlri.get(
-                    "local-ipv4-address"
+                    "local-ipv4-address",
                 )
 
             # Parse loops
@@ -399,7 +401,7 @@ class Bgp_address_familyFacts(object):
                     nlri_dict["output_queue_priority_expedited"] = True
                 if "priority" in oqp.keys():
                     nlri_dict["output_queue_priority_priority"] = oqp.get(
-                        "priority"
+                        "priority",
                     )
 
             # Parse per-group-label
@@ -440,7 +442,7 @@ class Bgp_address_familyFacts(object):
                     nlri_dict["route_refresh_priority_expedited"] = True
                 if "priority" in oqp.keys():
                     nlri_dict["route_refresh_priority_priority"] = oqp.get(
-                        "priority"
+                        "priority",
                     )
 
             # Parse secondary-independent-resolution
@@ -472,7 +474,7 @@ class Bgp_address_familyFacts(object):
                     nlri_dict["withdraw_priority_expedited"] = True
                 if "priority" in oqp.keys():
                     nlri_dict["withdraw_priority_priority"] = oqp.get(
-                        "priority"
+                        "priority",
                     )
             return nlri_dict
 
@@ -501,9 +503,7 @@ class Bgp_address_familyFacts(object):
                     elif "forever" in td["idle-timeout"].keys():
                         apl_dict["forever"] = True
                     elif "timeout" in td["idle-timeout"].keys():
-                        apl_dict["idle_timeout_value"] = td[
-                            "idle-timeout"
-                        ].get("timeout")
+                        apl_dict["idle_timeout_value"] = td["idle-timeout"].get("timeout")
                 if "limit-threshold" in td.keys():
                     apl_dict["limit_threshold"] = td.get("limit-threshold")
         return apl_dict
@@ -623,17 +623,17 @@ class Bgp_address_familyFacts(object):
                     dra_dict["max_delay_route_age"] = mxd.get("route-age")
                 if "routing-uptime" in mxd.keys():
                     dra_dict["max_delay_routing_uptime"] = mxd.get(
-                        "routing-uptime"
+                        "routing-uptime",
                     )
             if "minimum-delay" in dra.keys():
                 mid = dra.get("minimum-delay")
                 if "inbound-convergence" in mid.keys():
                     dra_dict["min_delay_inbound_convergence"] = mid.get(
-                        "inbound-convergence"
+                        "inbound-convergence",
                     )
                 if "routing-uptime" in mid.keys():
                     dra_dict["min_delay_routing_uptime"] = mid.get(
-                        "routing-uptime"
+                        "routing-uptime",
                     )
         return dra_dict
 

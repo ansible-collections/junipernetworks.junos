@@ -1,9 +1,12 @@
 ---
-- debug:
-    msg: START junos_bgp_global parsed integration tests on connection={{ ansible_connection
+- name: Debug task
+  ansible.builtin.debug:
+    msg:
+      START junos_bgp_global parsed integration tests on connection={{ ansible_connection
       }}
 
-- set_fact:
+- name: Set facts
+  ansible.builtin.set_fact:
     expected_parsed_output:
       accept_remote_nexthop: true
       add_path_display_ipv4_address: true
@@ -31,7 +34,6 @@
       remove_private:
         set: true
 
-
 - name: Parse externally provided bgp_global config to agnostic model
   register: result
   junipernetworks.junos.junos_bgp_global:
@@ -39,9 +41,12 @@
     state: parsed
 
 - name: Assert that config was correctly parsed
-  assert:
+  ansible.builtin.assert:
     that:
       - "{{ expected_parsed_output  == result['parsed'] }}"
-- debug:
-    msg: END junos_bgp_global parsed integration tests on connection={{ ansible_connection
+
+- name: Debug task
+  ansible.builtin.debug:
+    msg:
+      END junos_bgp_global parsed integration tests on connection={{ ansible_connection
       }}

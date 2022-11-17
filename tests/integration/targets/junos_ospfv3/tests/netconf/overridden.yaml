@@ -1,12 +1,12 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_ospfv3 overridden integration tests on connection={{ ansible_connection }}"
 
 - block:
-    - include_tasks: _reset_config.yaml
-    - include_tasks: _initial_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _initial_config.yaml
 
-    - set_fact:
+    - ansible.builtin.set_fact:
         config:
           - router_id: 10.200.16.75
             areas:
@@ -48,17 +48,17 @@
       register: result
 
     - name: Assert changed
-      assert: &changed
+      ansible.builtin.assert: &changed
         that:
           - result.changed == True
           - "{{ config|symmetric_difference(result.after) == [] }}"
 
     - name: Assert changed
-      assert: *changed
+      ansible.builtin.assert: *changed
 
   tags: overridden
   always:
-    - include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_ospfv3 overridden integration tests on connection={{ ansible_connection }}"

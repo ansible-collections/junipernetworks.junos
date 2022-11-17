@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: "START junos_security_zones reset config on connection={{ ansible_connection }}"
 
 - name: Reset the config releavent to security zones resource
@@ -12,5 +12,5 @@
       - delete interfaces ge-0/0/3
       - delete interfaces ge-0/0/4
 
-- debug:
+- ansible.builtin.debug:
     msg: "END junos_security_zones reset config on connection={{ ansible_connection }}"

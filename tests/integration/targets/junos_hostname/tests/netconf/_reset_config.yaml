@@ -1,5 +1,6 @@
 ---
-- debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: "START junos_hostname reset config on connection={{ ansible_connection }}"
 
 - name: Reset the config releavent to ntp global resource
@@ -7,5 +8,6 @@
     lines:
       - delete system host-name
 
-- debug:
+- name: Debug task
+  ansible.builtin.debug:
     msg: "END junos_hostname reset config on connection={{ ansible_connection }}"

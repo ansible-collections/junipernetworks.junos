@@ -11,21 +11,22 @@ based on the configuration.
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
-    utils,
-)
+from ansible.module_utils.six import string_types
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.l2_interfaces.l2_interfaces import (
     L2_interfacesArgs,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.utils.utils import (
     get_resource_config,
 )
-from ansible.module_utils.six import string_types
+
 
 try:
     from lxml import etree
@@ -82,7 +83,7 @@ class L2_interfacesFacts(object):
 
         if isinstance(data, string_types):
             data = etree.fromstring(
-                to_bytes(data, errors="surrogate_then_replace")
+                to_bytes(data, errors="surrogate_then_replace"),
             )
         self._resources = data.xpath("configuration/interfaces/interface")
 
@@ -96,7 +97,8 @@ class L2_interfacesFacts(object):
         if objs:
             facts["l2_interfaces"] = []
             params = utils.validate_config(
-                self.argument_spec, {"config": objs}
+                self.argument_spec,
+                {"config": objs},
             )
             for cfg in params["config"]:
                 facts["l2_interfaces"].append(utils.remove_empties(cfg))
@@ -116,12 +118,14 @@ class L2_interfacesFacts(object):
 
         enhanced_layer = True
         mode = utils.get_xml_conf_arg(
-            conf, "unit/family/ethernet-switching/interface-mode"
+            conf,
+            "unit/family/ethernet-switching/interface-mode",
         )
 
         if mode is None:
             mode = utils.get_xml_conf_arg(
-                conf, "unit/family/ethernet-switching/port-mode"
+                conf,
+                "unit/family/ethernet-switching/port-mode",
             )
             enhanced_layer = False
 
@@ -135,22 +139,24 @@ class L2_interfacesFacts(object):
             if mode == "access":
                 config["access"] = {}
                 config["access"]["vlan"] = utils.get_xml_conf_arg(
-                    conf, "unit/family/ethernet-switching/vlan/members"
+                    conf,
+                    "unit/family/ethernet-switching/vlan/members",
                 )
             elif mode == "trunk":
                 config["trunk"] = {}
                 vlan_members = conf.xpath(
-                    "unit/family/ethernet-switching/vlan/members"
+                    "unit/family/ethernet-switching/vlan/members",
                 )
                 if vlan_members:
                     config["trunk"]["allowed_vlans"] = []
                     for vlan_member in vlan_members:
                         config["trunk"]["allowed_vlans"].append(
-                            vlan_member.text
+                            vlan_member.text,
                         )
 
                 config["trunk"]["native_vlan"] = utils.get_xml_conf_arg(
-                    conf, "native-vlan-id"
+                    conf,
+                    "native-vlan-id",
                 )
 
         return utils.remove_empties(config)

@@ -12,27 +12,27 @@ created
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    to_list,
-)
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
     ConfigBase,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    locked_config,
-    load_config,
-    commit_configuration,
-    discard_changes,
-    tostring,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
+    build_child_xml_node,
+    build_root_xml_node,
 )
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import to_list
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
     Facts,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
-    build_root_xml_node,
-    build_child_xml_node,
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
+    commit_configuration,
+    discard_changes,
+    load_config,
+    locked_config,
+    tostring,
 )
 
 
@@ -55,7 +55,9 @@ class Interfaces(ConfigBase):
         :returns: The current configuration as a dictionary
         """
         facts, _warnings = Facts(self._module).get_facts(
-            self.gather_subset, self.gather_network_resources, data=data
+            self.gather_subset,
+            self.gather_network_resources,
+            data=data,
         )
         interfaces_facts = facts["ansible_network_resources"].get("interfaces")
         if not interfaces_facts:
@@ -83,7 +85,7 @@ class Interfaces(ConfigBase):
             running_config = self._module.params["running_config"]
             if not running_config:
                 self._module.fail_json(
-                    msg="value of running_config parameter must not be empty for state parsed"
+                    msg="value of running_config parameter must not be empty for state parsed",
                 )
             result["parsed"] = self.get_interfaces_facts(data=running_config)
         elif self.state == "rendered":
@@ -144,14 +146,11 @@ class Interfaces(ConfigBase):
         """
         root = build_root_xml_node("interfaces")
         state = self._module.params["state"]
-        if (
-            state in ("merged", "replaced", "overridden", "rendered")
-            and not want
-        ):
+        if state in ("merged", "replaced", "overridden", "rendered") and not want:
             self._module.fail_json(
                 msg="value of config parameter must not be empty for state {0}".format(
-                    state
-                )
+                    state,
+                ),
             )
         if state == "overridden":
             config_xmls = self._state_overridden(want, have)
@@ -235,7 +234,9 @@ class Interfaces(ConfigBase):
                     unit_node = build_child_xml_node(intf, "unit")
                     build_child_xml_node(unit_node, "name", str(unit["name"]))
                     build_child_xml_node(
-                        unit_node, "description", unit["description"]
+                        unit_node,
+                        "description",
+                        unit["description"],
                     )
 
             holdtime = config.get("hold_time")
@@ -276,7 +277,7 @@ class Interfaces(ConfigBase):
                     [
                         config["name"].startswith("gr"),
                         config["name"].startswith("lo"),
-                    ]
+                    ],
                 ):
                     intf_fields.append("speed")
 
@@ -285,27 +286,36 @@ class Interfaces(ConfigBase):
                         config["name"].startswith("gr"),
                         config["name"].startswith("fxp"),
                         config["name"].startswith("lo"),
-                    ]
+                    ],
                 ):
                     intf_fields.append("mtu")
 
                 for field in intf_fields:
                     build_child_xml_node(
-                        intf, field, None, {"delete": "delete"}
+                        intf,
+                        field,
+                        None,
+                        {"delete": "delete"},
                     )
 
                 if not any(
                     [
                         config["name"].startswith("gr"),
                         config["name"].startswith("lo"),
-                    ]
+                    ],
                 ):
                     build_child_xml_node(
-                        intf, "link-mode", None, {"delete": "delete"}
+                        intf,
+                        "link-mode",
+                        None,
+                        {"delete": "delete"},
                     )
 
                 build_child_xml_node(
-                    intf, "disable", None, {"delete": "delete"}
+                    intf,
+                    "disable",
+                    None,
+                    {"delete": "delete"},
                 )
 
                 holdtime_ele = build_child_xml_node(intf, "hold-time")
@@ -319,7 +329,9 @@ class Interfaces(ConfigBase):
                     for unit in units:
                         unit_node = build_child_xml_node(intf, "unit")
                         build_child_xml_node(
-                            unit_node, "name", str(unit["name"])
+                            unit_node,
+                            "name",
+                            str(unit["name"]),
                         )
                         build_child_xml_node(
                             unit_node,

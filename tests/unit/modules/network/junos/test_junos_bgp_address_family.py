@@ -23,17 +23,13 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
-    patch,
-)
-from ansible_collections.junipernetworks.junos.plugins.modules import (
-    junos_bgp_address_family,
-)
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
-    set_module_args,
-)
+from ansible_collections.junipernetworks.junos.plugins.modules import junos_bgp_address_family
+from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import patch
+from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
+
 from .junos_module import TestJunosModule, load_fixture
 
 
@@ -43,26 +39,26 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
     def setUp(self):
         super(TestJunosBgp_address_familyModule, self).setUp()
         self.mock_lock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration",
         )
         self.lock_configuration = self.mock_lock_configuration.start()
         self.mock_unlock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration",
         )
         self.unlock_configuration = self.mock_unlock_configuration.start()
         self.mock_load_config = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.bgp_address_family.bgp_address_family.load_config"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.bgp_address_family.bgp_address_family.load_config",
         )
         self.load_config = self.mock_load_config.start()
 
         self.mock_commit_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.bgp_address_family.bgp_address_family.commit_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.bgp_address_family.bgp_address_family.commit_configuration",
         )
         self.mock_commit_configuration = self.mock_commit_configuration.start()
 
         self.mock_execute_show_command = patch(
             "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.bgp_address_family.bgp_address_family."
-            "Bgp_address_familyFacts.get_device_data"
+            "Bgp_address_familyFacts.get_device_data",
         )
         self.execute_show_command = self.mock_execute_show_command.start()
 
@@ -75,7 +71,11 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
         self.mock_execute_show_command.stop()
 
     def load_fixtures(
-        self, commands=None, format="text", changed=False, filename=None
+        self,
+        commands=None,
+        format="text",
+        changed=False,
+        filename=None,
     ):
         def load_from_file(*args, **kwargs):
             if filename:
@@ -222,10 +222,10 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                             },
                             "damping": True,
                             "defer_initial_multipath_build": {
-                                "maximum_delay": 2
+                                "maximum_delay": 2,
                             },
                             "type": "signaling",
-                        }
+                        },
                     ],
                     "afi": "evpn",
                 },
@@ -239,7 +239,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                             },
                             "damping": True,
                             "defer_initial_multipath_build": {
-                                "maximum_delay": 2
+                                "maximum_delay": 2,
                             },
                             "delay_route_advertisements": {
                                 "max_delay_route_age": 20,
@@ -285,7 +285,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                     ],
                     "afi": "inet",
                 },
-            ]
+            ],
         }
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
@@ -352,17 +352,17 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                     },
                                     "damping": True,
                                     "defer_initial_multipath_build": {
-                                        "maximum_delay": 2
+                                        "maximum_delay": 2,
                                     },
                                     "type": "signaling",
-                                }
+                                },
                             ],
                             "afi": "evpn",
-                        }
+                        },
                     ],
                     "name": "internal",
-                }
-            ]
+                },
+            ],
         }
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
@@ -452,13 +452,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                     },
                                     "damping": True,
                                     "defer_initial_multipath_build": {
-                                        "maximum_delay": 2
+                                        "maximum_delay": 2,
                                     },
                                     "type": "signaling",
-                                }
+                                },
                             ],
                             "afi": "evpn",
-                        }
+                        },
                     ],
                     "name": "internal",
                 },
@@ -474,17 +474,17 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                     },
                                     "damping": True,
                                     "defer_initial_multipath_build": {
-                                        "maximum_delay": 2
+                                        "maximum_delay": 2,
                                     },
                                     "type": "signaling",
-                                }
+                                },
                             ],
                             "afi": "evpn",
-                        }
+                        },
                     ],
                     "name": "external",
                 },
-            ]
+            ],
         }
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
@@ -591,13 +591,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                     },
                                     "damping": True,
                                     "defer_initial_multipath_build": {
-                                        "maximum_delay": 2
+                                        "maximum_delay": 2,
                                     },
                                     "type": "signaling",
-                                }
+                                },
                             ],
                             "afi": "evpn",
-                        }
+                        },
                     ],
                     "name": "internal",
                 },
@@ -613,13 +613,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                     },
                                     "damping": True,
                                     "defer_initial_multipath_build": {
-                                        "maximum_delay": 2
+                                        "maximum_delay": 2,
                                     },
                                     "type": "signaling",
-                                }
+                                },
                             ],
                             "afi": "evpn",
-                        }
+                        },
                     ],
                     "name": "external",
                     "neighbors": [
@@ -633,16 +633,16 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                                 "maximum": 20,
                                             },
                                             "type": "signaling",
-                                        }
+                                        },
                                     ],
                                     "afi": "evpn",
-                                }
+                                },
                             ],
                             "neighbor_address": "10.10.10.1",
-                        }
+                        },
                     ],
                 },
-            ]
+            ],
         }
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
@@ -764,13 +764,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                     },
                                     "damping": True,
                                     "defer_initial_multipath_build": {
-                                        "maximum_delay": 2
+                                        "maximum_delay": 2,
                                     },
                                     "type": "signaling",
-                                }
+                                },
                             ],
                             "afi": "evpn",
-                        }
+                        },
                     ],
                     "name": "internal",
                 },
@@ -786,13 +786,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                     },
                                     "damping": True,
                                     "defer_initial_multipath_build": {
-                                        "maximum_delay": 2
+                                        "maximum_delay": 2,
                                     },
                                     "type": "signaling",
-                                }
+                                },
                             ],
                             "afi": "evpn",
-                        }
+                        },
                     ],
                     "name": "external",
                     "neighbors": [
@@ -806,10 +806,10 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                                 "maximum": 20,
                                             },
                                             "type": "signaling",
-                                        }
+                                        },
                                     ],
                                     "afi": "evpn",
-                                }
+                                },
                             ],
                             "neighbor_address": "10.10.10.1",
                         },
@@ -823,16 +823,16 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                                 "maximum": 20,
                                             },
                                             "type": "signaling",
-                                        }
+                                        },
                                     ],
                                     "afi": "evpn",
-                                }
+                                },
                             ],
                             "neighbor_address": "10.10.10.10",
                         },
                     ],
                 },
-            ]
+            ],
         }
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
@@ -931,13 +931,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                     },
                                     "damping": True,
                                     "defer_initial_multipath_build": {
-                                        "maximum_delay": 2
+                                        "maximum_delay": 2,
                                     },
                                     "type": "signaling",
-                                }
+                                },
                             ],
                             "afi": "evpn",
-                        }
+                        },
                     ],
                     "name": "external",
                     "neighbors": [
@@ -951,10 +951,10 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                                 "maximum": 20,
                                             },
                                             "type": "signaling",
-                                        }
+                                        },
                                     ],
                                     "afi": "evpn",
-                                }
+                                },
                             ],
                             "neighbor_address": "10.10.10.1",
                         },
@@ -968,16 +968,16 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                                 "maximum": 20,
                                             },
                                             "type": "signaling",
-                                        }
+                                        },
                                     ],
                                     "afi": "evpn",
-                                }
+                                },
                             ],
                             "neighbor_address": "10.10.10.10",
                         },
                     ],
-                }
-            ]
+                },
+            ],
         }
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
@@ -1068,10 +1068,10 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                     },
                                     "damping": True,
                                     "defer_initial_multipath_build": {
-                                        "maximum_delay": 2
+                                        "maximum_delay": 2,
                                     },
                                     "type": "signaling",
-                                }
+                                },
                             ],
                             "afi": "evpn",
                         },
@@ -1080,7 +1080,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                 {
                                     "type": "any",
                                     "withdraw_priority_expedited": True,
-                                }
+                                },
                             ],
                             "afi": "inet",
                         },
@@ -1097,16 +1097,16 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                                 "maximum": 20,
                                             },
                                             "type": "signaling",
-                                        }
+                                        },
                                     ],
                                     "afi": "evpn",
-                                }
+                                },
                             ],
                             "neighbor_address": "10.10.10.1",
-                        }
+                        },
                     ],
-                }
-            ]
+                },
+            ],
         }
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
@@ -1197,10 +1197,10 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                     },
                                     "damping": True,
                                     "defer_initial_multipath_build": {
-                                        "maximum_delay": 2
+                                        "maximum_delay": 2,
                                     },
                                     "type": "signaling",
-                                }
+                                },
                             ],
                             "afi": "evpn",
                         },
@@ -1209,7 +1209,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                 {
                                     "type": "any",
                                     "withdraw_priority_priority": 13,
-                                }
+                                },
                             ],
                             "afi": "inet",
                         },
@@ -1226,16 +1226,16 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                                 "maximum": 20,
                                             },
                                             "type": "signaling",
-                                        }
+                                        },
                                     ],
                                     "afi": "evpn",
-                                }
+                                },
                             ],
                             "neighbor_address": "10.10.10.1",
-                        }
+                        },
                     ],
-                }
-            ]
+                },
+            ],
         }
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
@@ -1353,7 +1353,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                     },
                                     "damping": True,
                                     "defer_initial_multipath_build": {
-                                        "maximum_delay": 2
+                                        "maximum_delay": 2,
                                     },
                                     "add_path": {
                                         "receive": True,
@@ -1369,7 +1369,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                         },
                                     },
                                     "type": "signaling",
-                                }
+                                },
                             ],
                             "afi": "evpn",
                         },
@@ -1393,10 +1393,10 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                         {
                                             "community": ["cm123", "cm1123"],
                                             "name": "12",
-                                        }
+                                        },
                                     ],
                                     "type": "unicast",
-                                }
+                                },
                             ],
                             "afi": "inet6",
                         },
@@ -1413,16 +1413,16 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                                 "maximum": 20,
                                             },
                                             "type": "signaling",
-                                        }
+                                        },
                                     ],
                                     "afi": "evpn",
-                                }
+                                },
                             ],
                             "neighbor_address": "10.10.10.1",
-                        }
+                        },
                     ],
-                }
-            ]
+                },
+            ],
         }
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
@@ -1546,7 +1546,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                     },
                                     "damping": True,
                                     "defer_initial_multipath_build": {
-                                        "maximum_delay": 2
+                                        "maximum_delay": 2,
                                     },
                                     "add_path": {
                                         "receive": True,
@@ -1562,7 +1562,7 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                         },
                                     },
                                     "type": "signaling",
-                                }
+                                },
                             ],
                             "afi": "evpn",
                         },
@@ -1591,10 +1591,10 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                             "af_type": [
                                 {
                                     "topology": [
-                                        {"community": ["cm123"], "name": "12"}
+                                        {"community": ["cm123"], "name": "12"},
                                     ],
                                     "type": "unicast",
-                                }
+                                },
                             ],
                             "afi": "inet6",
                         },
@@ -1611,16 +1611,16 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                                 "maximum": 20,
                                             },
                                             "type": "signaling",
-                                        }
+                                        },
                                     ],
                                     "afi": "evpn",
-                                }
+                                },
                             ],
                             "neighbor_address": "10.10.10.1",
-                        }
+                        },
                     ],
-                }
-            ]
+                },
+            ],
         }
         self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
 
@@ -1637,11 +1637,11 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                         dict(
                             afi="evpn",
                             af_type=[dict(type="signaling", set=True)],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
 
         commands = [
@@ -1672,13 +1672,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                         idle_timeout_value=2001,
                                         maximum=20,
                                     ),
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -1712,13 +1712,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                         limit_threshold=98,
                                         forever=True,
                                     ),
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -1759,13 +1759,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                             ),
                                         ),
                                     ),
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -1796,15 +1796,16 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                 dict(
                                     type="signaling",
                                     aggregate_label=dict(
-                                        set=True, community="cuastomerapn1"
+                                        set=True,
+                                        community="cuastomerapn1",
                                     ),
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -1830,14 +1831,15 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                             afi="inet6",
                             af_type=[
                                 dict(
-                                    type="labeled-unicast", aigp=dict(set=True)
-                                )
+                                    type="labeled-unicast",
+                                    aigp=dict(set=True),
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -1865,13 +1867,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                 dict(
                                     type="labeled-unicast",
                                     aigp=dict(disable=True),
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -1897,13 +1899,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                         dict(
                             afi="inet6",
                             af_type=[
-                                dict(type="labeled-unicast", damping=True)
+                                dict(type="labeled-unicast", damping=True),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -1931,15 +1933,15 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                 dict(
                                     type="labeled-unicast",
                                     defer_initial_multipath_build=dict(
-                                        set=True
+                                        set=True,
                                     ),
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -1967,15 +1969,15 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                 dict(
                                     type="labeled-unicast",
                                     defer_initial_multipath_build=dict(
-                                        maximum_delay=1200
+                                        maximum_delay=1200,
                                     ),
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2009,13 +2011,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                         min_delay_inbound_convergence=8000,
                                         min_delay_routing_uptime=8000,
                                     ),
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2045,15 +2047,16 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                 dict(
                                     type="labeled-unicast",
                                     entropy_label=dict(
-                                        set=True, no_next_hop_validation=True
+                                        set=True,
+                                        no_next_hop_validation=True,
                                     ),
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2081,15 +2084,16 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                 dict(
                                     type="labeled-unicast",
                                     explicit_null=dict(
-                                        set=True, connected_only=True
+                                        set=True,
+                                        connected_only=True,
                                     ),
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2114,13 +2118,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                         dict(
                             afi="inet",
                             af_type=[
-                                dict(type="unicast", extended_nexthop=True)
+                                dict(type="unicast", extended_nexthop=True),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2145,14 +2149,15 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                             afi="inet6",
                             af_type=[
                                 dict(
-                                    type="unicast", extended_nexthop_color=True
-                                )
+                                    type="unicast",
+                                    extended_nexthop_color=True,
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2179,13 +2184,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                 dict(
                                     type="unicast",
                                     graceful_restart_forwarding_state_bit="from-fib",
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2213,13 +2218,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                 dict(
                                     type="unicast",
                                     graceful_restart_forwarding_state_bit="set",
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2247,13 +2252,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                 dict(
                                     type="unicast",
                                     local_ipv4_address="11.11.11.11",
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:bgp>'
@@ -2280,15 +2285,17 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                 dict(
                                     type="flow",
                                     legacy_redirect_ip_action=dict(
-                                        set=True, send=True, receive=True
+                                        set=True,
+                                        send=True,
+                                        receive=True,
                                     ),
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2310,11 +2317,11 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
             dict(
                 config=dict(
                     address_family=[
-                        dict(afi="inet", af_type=[dict(type="flow", loops=3)])
-                    ]
+                        dict(afi="inet", af_type=[dict(type="flow", loops=3)]),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2338,11 +2345,11 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                         dict(
                             afi="inet",
                             af_type=[dict(type="flow", no_install=True)],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2366,11 +2373,11 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                         dict(
                             afi="inet",
                             af_type=[dict(type="flow", no_validate="sample")],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2397,13 +2404,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                 dict(
                                     type="flow",
                                     output_queue_priority_expedited=True,
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:bgp>'
@@ -2430,13 +2437,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                 dict(
                                     type="flow",
                                     output_queue_priority_priority=15,
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2464,13 +2471,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                 dict(
                                     type="labeled-unicast",
                                     per_group_label=True,
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2497,13 +2504,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                 dict(
                                     type="labeled-unicast",
                                     per_prefix_label=True,
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2536,13 +2543,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                         idle_timeout=True,
                                         idle_timeout_value=2200,
                                     ),
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2572,15 +2579,16 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                 dict(
                                     type="labeled-unicast",
                                     prefix_limit=dict(
-                                        teardown=True, forever=True
+                                        teardown=True,
+                                        forever=True,
                                     ),
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2605,13 +2613,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                         dict(
                             afi="inet",
                             af_type=[
-                                dict(type="labeled-unicast", resolve_vpn=True)
+                                dict(type="labeled-unicast", resolve_vpn=True),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2635,13 +2643,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                         dict(
                             afi="inet6",
                             af_type=[
-                                dict(type="labeled-unicast", rib="inet.3")
+                                dict(type="labeled-unicast", rib="inet.3"),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2668,13 +2676,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                 dict(
                                     type="labeled-unicast",
                                     ribgroup_name="inet3",
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2701,13 +2709,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                 dict(
                                     type="labeled-unicast",
                                     route_refresh_priority_expedited=True,
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2735,13 +2743,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                 dict(
                                     type="labeled-unicast",
                                     route_refresh_priority_priority=15,
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2769,13 +2777,13 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                 dict(
                                     type="flow",
                                     secondary_independent_resolution=True,
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2810,17 +2818,17 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                                 dict(
                                                     name="voice",
                                                     community=["target:40:40"],
-                                                )
+                                                ),
                                             ],
-                                        )
+                                        ),
                                     ],
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2872,17 +2880,17 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                                 dict(
                                                     name="voice",
                                                     community=["target:40:40"],
-                                                )
+                                                ),
                                             ],
-                                        )
+                                        ),
                                     ],
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="overridden",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
@@ -2925,17 +2933,17 @@ class TestJunosBgp_address_familyModule(TestJunosModule):
                                                 dict(
                                                     type="unicast",
                                                     no_install=True,
-                                                )
+                                                ),
                                             ],
-                                        )
+                                        ),
                                     ],
-                                )
+                                ),
                             ],
-                        )
-                    ]
+                        ),
+                    ],
                 ),
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'

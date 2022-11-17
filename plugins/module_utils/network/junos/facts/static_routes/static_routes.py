@@ -11,18 +11,19 @@ based on the configuration.
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
-    utils,
-)
+from ansible.module_utils.six import string_types
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.static_routes.static_routes import (
     Static_routesArgs,
 )
-from ansible.module_utils.six import string_types
+
 
 try:
     from lxml import etree
@@ -79,7 +80,7 @@ class Static_routesFacts(object):
 
         if isinstance(data, string_types):
             data = etree.fromstring(
-                to_bytes(data, errors="surrogate_then_replace")
+                to_bytes(data, errors="surrogate_then_replace"),
             )
 
         resources = data.xpath("configuration/routing-options")
@@ -98,7 +99,8 @@ class Static_routesFacts(object):
         if objs:
             facts["static_routes"] = []
             params = utils.validate_config(
-                self.argument_spec, {"config": objs}
+                self.argument_spec,
+                {"config": objs},
             )
             for cfg in params["config"]:
                 facts["static_routes"].append(utils.remove_empties(cfg))
@@ -107,7 +109,8 @@ class Static_routesFacts(object):
 
     def _get_xml_dict(self, xml_root):
         xml_dict = xmltodict.parse(
-            etree.tostring(xml_root), dict_constructor=dict
+            etree.tostring(xml_root),
+            dict_constructor=dict,
         )
         return xml_dict
 
@@ -122,7 +125,7 @@ class Static_routesFacts(object):
                 route_dict["metric"] = route["metric"]["metric-value"]
             route_dict["next_hop"] = []
             route_dict["next_hop"].append(
-                {"forward_router_address": route["next-hop"]}
+                {"forward_router_address": route["next-hop"]},
             )
             routes_dict["routes"].append(route_dict)
         return routes_dict
@@ -145,11 +148,9 @@ class Static_routesFacts(object):
             if conf["routing-options"].get("rib"):
                 if conf["routing-options"].get("rib").get("name") == "inet6.0":
                     if conf["routing-options"].get("rib").get("static"):
-                        route_path = conf["routing-options"]["rib"][
-                            "static"
-                        ].get("route")
+                        route_path = conf["routing-options"]["rib"]["static"].get("route")
                         routes.append(
-                            self._create_route_dict("ipv6", route_path)
+                            self._create_route_dict("ipv6", route_path),
                         )
             if conf["routing-options"].get("static"):
                 route_path = conf["routing-options"]["static"].get("route")
@@ -165,22 +166,15 @@ class Static_routesFacts(object):
                 .get("name")
                 == config["vrf"] + ".inet6.0"
             ):
-                if conf["routing-instances"]["instance"]["routing-options"][
-                    "rib"
-                ].get("static"):
-                    route_path = conf["routing-instances"]["instance"][
-                        "routing-options"
-                    ]["rib"]["static"].get("route")
+                if conf["routing-instances"]["instance"]["routing-options"]["rib"].get("static"):
+                    route_path = conf["routing-instances"]["instance"]["routing-options"]["rib"][
+                        "static"
+                    ].get("route")
                     routes.append(self._create_route_dict("ipv6", route_path))
-            if (
-                conf["routing-instances"]
-                .get("instance")
-                .get("routing-options")
-                .get("static")
-            ):
-                route_path = conf["routing-instances"]["instance"][
-                    "routing-options"
-                ]["static"].get("route")
+            if conf["routing-instances"].get("instance").get("routing-options").get("static"):
+                route_path = conf["routing-instances"]["instance"]["routing-options"]["static"].get(
+                    "route",
+                )
                 routes.append(self._create_route_dict("ipv4", route_path))
         config["address_families"].extend(routes)
         return utils.remove_empties(config)

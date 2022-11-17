@@ -12,27 +12,27 @@ created
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
     ConfigBase,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    to_list,
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
+    build_child_xml_node,
+    build_root_xml_node,
 )
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import to_list
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
     Facts,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    locked_config,
-    load_config,
     commit_configuration,
     discard_changes,
+    load_config,
+    locked_config,
     tostring,
-)
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
-    build_root_xml_node,
-    build_child_xml_node,
 )
 
 
@@ -55,7 +55,9 @@ class Acls(ConfigBase):
         :returns: The current configuration as a dictionary
         """
         facts, _warnings = Facts(self._module).get_facts(
-            self.gather_subset, self.gather_network_resources, data=data
+            self.gather_subset,
+            self.gather_network_resources,
+            data=data,
         )
         acls_facts = facts["ansible_network_resources"].get("junos_acls")
         if not acls_facts:
@@ -84,7 +86,7 @@ class Acls(ConfigBase):
             running_config = self._module.params["running_config"]
             if not running_config:
                 self._module.fail_json(
-                    msg="value of running_config parameter must not be empty for state parsed"
+                    msg="value of running_config parameter must not be empty for state parsed",
                 )
             result["parsed"] = self.get_acls_facts(data=running_config)
         elif self.state == "rendered":
@@ -148,14 +150,11 @@ class Acls(ConfigBase):
         """
         root = build_root_xml_node("firewall")
         state = self._module.params["state"]
-        if (
-            state in ("merged", "replaced", "rendered", "overridden")
-            and not want
-        ):
+        if state in ("merged", "replaced", "rendered", "overridden") and not want:
             self._module.fail_json(
                 msg="value of config parameter must not be empty for state {0}".format(
-                    state
-                )
+                    state,
+                ),
             )
         config_xmls = []
         if state == "overridden":
@@ -270,11 +269,7 @@ class Acls(ConfigBase):
                     term_node = build_child_xml_node(filter_node, "term")
                     build_child_xml_node(term_node, "name", ace["name"])
 
-                    if (
-                        ace.get("source")
-                        or ace.get("destination")
-                        or ace.get("protocol")
-                    ):
+                    if ace.get("source") or ace.get("destination") or ace.get("protocol"):
                         from_node = build_child_xml_node(term_node, "from")
                         for direction in ("source", "destination"):
                             if ace.get(direction):
@@ -290,12 +285,12 @@ class Acls(ConfigBase):
                                         )
                                 if ace[direction].get("prefix_list"):
                                     for prefix in ace[direction].get(
-                                        "prefix_list"
+                                        "prefix_list",
                                     ):
                                         build_child_xml_node(
                                             from_node,
                                             "{0}-prefix-list".format(
-                                                direction
+                                                direction,
                                             ),
                                             prefix["name"],
                                         )
@@ -304,21 +299,12 @@ class Acls(ConfigBase):
                                         build_child_xml_node(
                                             from_node,
                                             "{0}-port".format(direction),
-                                            ace[direction]["port_protocol"][
-                                                "eq"
-                                            ],
+                                            ace[direction]["port_protocol"]["eq"],
                                         )
-                                    elif (
-                                        "range"
-                                        in ace[direction]["port_protocol"]
-                                    ):
+                                    elif "range" in ace[direction]["port_protocol"]:
                                         ports = "{0}-{1}".format(
-                                            ace[direction]["port_protocol"][
-                                                "start"
-                                            ],
-                                            ace[direction]["port_protocol"][
-                                                "end"
-                                            ],
+                                            ace[direction]["port_protocol"]["start"],
+                                            ace[direction]["port_protocol"]["end"],
                                         )
                                         build_child_xml_node(
                                             from_node,
@@ -327,15 +313,19 @@ class Acls(ConfigBase):
                                         )
                         if ace.get("protocol"):
                             build_child_xml_node(
-                                from_node, "protocol", ace["protocol"]
+                                from_node,
+                                "protocol",
+                                ace["protocol"],
                             )
                         if ace.get("protocol_options"):
                             if ace["protocol_options"].get("icmp"):
                                 icmp_code = build_child_xml_node(
-                                    from_node, "icmp-code"
+                                    from_node,
+                                    "icmp-code",
                                 )
                                 icmp_type = build_child_xml_node(
-                                    from_node, "icmp-type"
+                                    from_node,
+                                    "icmp-type",
                                 )
                                 icmp = ace["protocol_options"]["icmp"]
                                 if "dod_host_prohibited" in icmp:
@@ -350,39 +340,48 @@ class Acls(ConfigBase):
                                     )
                                 if "echo" in icmp:
                                     build_child_xml_node(
-                                        icmp_type, "echo-request"
+                                        icmp_type,
+                                        "echo-request",
                                     )
                                 if "echo_reply" in icmp:
                                     build_child_xml_node(
-                                        icmp_type, "echo-reply"
+                                        icmp_type,
+                                        "echo-reply",
                                     )
                                 if "host_tos_unreachable" in icmp:
                                     build_child_xml_node(
-                                        icmp_code, "host-unreachable-for-tos"
+                                        icmp_code,
+                                        "host-unreachable-for-tos",
                                     )
                                 if "host_redirect" in icmp:
                                     build_child_xml_node(
-                                        icmp_code, "redirect-for-host"
+                                        icmp_code,
+                                        "redirect-for-host",
                                     )
                                 if "host_tos_redirect" in icmp:
                                     build_child_xml_node(
-                                        icmp_code, "redirect-for-host-and-tos"
+                                        icmp_code,
+                                        "redirect-for-host-and-tos",
                                     )
                                 if "host_unknown" in icmp:
                                     build_child_xml_node(
-                                        icmp_code, "destination-host-unknown"
+                                        icmp_code,
+                                        "destination-host-unknown",
                                     )
                                 if "host_unreachable" in icmp:
                                     build_child_xml_node(
-                                        icmp_code, "host-unreachable"
+                                        icmp_code,
+                                        "host-unreachable",
                                     )
                                 if "net_redirect" in icmp:
                                     build_child_xml_node(
-                                        icmp_code, "redirect-for-network"
+                                        icmp_code,
+                                        "redirect-for-network",
                                     )
                                 if "net_tos_redirect" in icmp:
                                     build_child_xml_node(
-                                        icmp_code, "redirect-for-tos-and-net"
+                                        icmp_code,
+                                        "redirect-for-tos-and-net",
                                     )
                                 if "network_unknown" in icmp:
                                     build_child_xml_node(
@@ -391,11 +390,13 @@ class Acls(ConfigBase):
                                     )
                                 if "port_unreachable" in icmp:
                                     build_child_xml_node(
-                                        icmp_code, "port-unreachable"
+                                        icmp_code,
+                                        "port-unreachable",
                                     )
                                 if "protocol_unreachable" in icmp:
                                     build_child_xml_node(
-                                        icmp_code, "protocol-unreachable"
+                                        icmp_code,
+                                        "protocol-unreachable",
                                     )
                                 if "reassembly_timeout" in icmp:
                                     build_child_xml_node(
@@ -406,23 +407,28 @@ class Acls(ConfigBase):
                                     build_child_xml_node(icmp_type, "redirect")
                                 if "router_advertisement" in icmp:
                                     build_child_xml_node(
-                                        icmp_type, "router-advertisement"
+                                        icmp_type,
+                                        "router-advertisement",
                                     )
                                 if "router_solicitation" in icmp:
                                     build_child_xml_node(
-                                        icmp_type, "router-solicit"
+                                        icmp_type,
+                                        "router-solicit",
                                     )
                                 if "source_route_failed" in icmp:
                                     build_child_xml_node(
-                                        icmp_code, "source-route-failed"
+                                        icmp_code,
+                                        "source-route-failed",
                                     )
                                 if "time_exceeded" in icmp:
                                     build_child_xml_node(
-                                        icmp_type, "time-exceeded"
+                                        icmp_type,
+                                        "time-exceeded",
                                     )
                                 if "ttl_exceeded" in icmp:
                                     build_child_xml_node(
-                                        icmp_code, "ttl-eq-zero-during-transit"
+                                        icmp_code,
+                                        "ttl-eq-zero-during-transit",
                                     )
                     if ace.get("grant"):
                         then_node = build_child_xml_node(term_node, "then")

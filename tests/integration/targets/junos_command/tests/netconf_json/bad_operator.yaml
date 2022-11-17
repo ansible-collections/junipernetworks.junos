@@ -1,8 +1,10 @@
 ---
-- debug: msg="START netconf_json/bad_operator.yaml on connection={{ ansible_connection
+- name: Debug task
+  ansible.builtin.debug:
+    msg="START netconf_json/bad_operator.yaml on connection={{ ansible_connection
     }}"
 
-- name: test bad operator with json encoding
+- name: Run test bad operator with json encoding
   register: result
   ignore_errors: true
   junipernetworks.junos.junos_command:
@@ -13,10 +15,13 @@
       - result[0]['software-information'][0]['host-name'][0]['data'] foo lo0
     format: json
 
-- assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.failed == true
       - result.msg is defined
 
-- debug: msg="END netconf_json/bad_operator.yaml on connection={{ ansible_connection
+- name: Debug task
+  ansible.builtin.debug:
+    msg="END netconf_json/bad_operator.yaml on connection={{ ansible_connection
     }}"

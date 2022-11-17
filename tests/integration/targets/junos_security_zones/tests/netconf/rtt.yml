@@ -1,11 +1,11 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: >-
       START junos_security_zones round trip integration tests on connection={{
       ansible_connection }}
 - block:
-    - include_tasks: _reset_config.yaml
-    - include_tasks: _initial_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _initial_config.yaml
     - name: Apply the provided configuration (base config)
       register: base_config
       junipernetworks.junos.junos_security_zones:
@@ -159,26 +159,26 @@
               tcp_rst: true
         state: replaced
     - name: Assert that changes were applied
-      assert:
-        that: 'result[''changed''] == true'
+      ansible.builtin.assert:
+        that: "result['changed'] == true"
     - name: Revert back to base config using facts round trip
       register: revert
       junipernetworks.junos.junos_security_zones:
-        config: '{{ ansible_facts[''network_resources''][''security_zones''] }}'
+        config: "{{ ansible_facts['network_resources']['security_zones'] }}"
         state: replaced
     - name: Assert that before dicts are correct
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == True
-          - '{{ result[''after''] == revert[''before''] }}'
+          - "{{ result['after'] == revert['before'] }}"
     - name: Assert that config was reverted
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == True
-          - '{{ base_config[''after''] == revert[''after''] }}'
+          - "{{ base_config['after'] == revert['after'] }}"
   always:
-    - include_tasks: _reset_config.yaml
-- debug:
+    - ansible.builtin.include_tasks: _reset_config.yaml
+- ansible.builtin.debug:
     msg: >-
       END junos_security_zones round trip integration tests on connection={{
       ansible_connection }}

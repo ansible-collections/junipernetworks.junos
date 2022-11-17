@@ -26,6 +26,7 @@ The arg spec for the junos_bgp_global module
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -128,10 +129,10 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                 "none": {"type": "bool"},
                                 "post_policy": {"type": "bool"},
                                 "post_policy_exclude_non_eligible": {
-                                    "type": "bool"
+                                    "type": "bool",
                                 },
                                 "post_policy_exclude_non_feasible": {
-                                    "type": "bool"
+                                    "type": "bool",
                                 },
                                 "pre_policy": {"type": "bool"},
                             },
@@ -168,7 +169,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                 "remote_nexthop": {"type": "str"},
                             },
                             "type": "list",
-                        }
+                        },
                     },
                     "type": "dict",
                 },
@@ -308,7 +309,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                             "options": {
                                 "malformed_route_limit": {"type": "int"},
                                 "malformed_update_log_interval": {
-                                    "type": "int"
+                                    "type": "int",
                                 },
                                 "no_malformed_route_limit": {"type": "bool"},
                                 "set": {"type": "bool"},
@@ -323,10 +324,10 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                         "none": {"type": "bool"},
                                         "post_policy": {"type": "bool"},
                                         "post_policy_exclude_non_eligible": {
-                                            "type": "bool"
+                                            "type": "bool",
                                         },
                                         "post_policy_exclude_non_feasible": {
-                                            "type": "bool"
+                                            "type": "bool",
                                         },
                                         "pre_policy": {"type": "bool"},
                                     },
@@ -352,7 +353,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                             "options": {
                                 "disable": {"type": "bool"},
                                 "dont_help_shared_fate_bfd_down": {
-                                    "type": "bool"
+                                    "type": "bool",
                                 },
                                 "forwarding_state_bit": {
                                     "options": {
@@ -366,7 +367,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                         "advertise_to_non_llgr_neighbor": {
                                             "options": {
                                                 "omit_no_export": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "set": {"type": "bool"},
                                             },
@@ -453,7 +454,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                             "options": {
                                 "accept_remote_nexthop": {"type": "bool"},
                                 "add_path_display_ipv4_address": {
-                                    "type": "bool"
+                                    "type": "bool",
                                 },
                                 "advertise_bgp_static": {
                                     "options": {
@@ -507,21 +508,21 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                                     "no_log": False,
                                                 },
                                                 "loose_check": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                             },
                                             "type": "dict",
                                         },
                                         "detection_time": {
                                             "options": {
-                                                "threshold": {"type": "int"}
+                                                "threshold": {"type": "int"},
                                             },
                                             "type": "dict",
                                         },
                                         "holddown_interval": {"type": "int"},
                                         "minimum_interval": {"type": "int"},
                                         "minimum_receive_interval": {
-                                            "type": "int"
+                                            "type": "int",
                                         },
                                         "multiplier": {"type": "int"},
                                         "no_adaptation": {"type": "bool"},
@@ -536,7 +537,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                         "transmit_interval": {
                                             "options": {
                                                 "minimum_interval": {
-                                                    "type": "int"
+                                                    "type": "int",
                                                 },
                                                 "threshold": {"type": "int"},
                                             },
@@ -552,13 +553,13 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                 "bgp_error_tolerance": {
                                     "options": {
                                         "malformed_route_limit": {
-                                            "type": "int"
+                                            "type": "int",
                                         },
                                         "malformed_update_log_interval": {
-                                            "type": "int"
+                                            "type": "int",
                                         },
                                         "no_malformed_route_limit": {
-                                            "type": "bool"
+                                            "type": "bool",
                                         },
                                         "set": {"type": "bool"},
                                     },
@@ -571,13 +572,13 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                             "options": {
                                                 "none": {"type": "bool"},
                                                 "post_policy": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "post_policy_exclude_non_eligible": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "post_policy_exclude_non_feasible": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "pre_policy": {"type": "bool"},
                                             },
@@ -603,12 +604,12 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                     "options": {
                                         "disable": {"type": "bool"},
                                         "dont_help_shared_fate_bfd_down": {
-                                            "type": "bool"
+                                            "type": "bool",
                                         },
                                         "forwarding_state_bit": {
                                             "options": {
                                                 "as_rr_client": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "from_fib": {"type": "bool"},
                                             },
@@ -619,16 +620,16 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                                 "advertise_to_non_llgr_neighbor": {
                                                     "options": {
                                                         "omit_no_export": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "set": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
                                                 },
                                                 "receiver_disable": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                             },
                                             "type": "dict",
@@ -664,7 +665,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                         },
                                         "loops": {"type": "int"},
                                         "no_prepend_global_as": {
-                                            "type": "bool"
+                                            "type": "bool",
                                         },
                                         "private": {"type": "bool"},
                                     },
@@ -678,10 +679,10 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                         "igp": {
                                             "options": {
                                                 "delay_med_update": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "metric_offset": {
-                                                    "type": "int"
+                                                    "type": "int",
                                                 },
                                                 "set": {"type": "bool"},
                                             },
@@ -691,7 +692,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                         "minimum_igp": {
                                             "options": {
                                                 "metric_offset": {
-                                                    "type": "int"
+                                                    "type": "int",
                                                 },
                                                 "set": {"type": "bool"},
                                             },
@@ -714,7 +715,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                         "disable": {"type": "bool"},
                                         "multiple_as": {"type": "bool"},
                                         "multiple_as_disable": {
-                                            "type": "bool"
+                                            "type": "bool",
                                         },
                                         "set": {"type": "bool"},
                                     },
@@ -733,13 +734,13 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                                 "accept": {
                                                     "options": {
                                                         "inet": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "inet6": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "set": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
@@ -759,7 +760,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                         "all": {"type": "bool"},
                                         "all_replace": {"type": "bool"},
                                         "all_replace_nearest": {
-                                            "type": "bool"
+                                            "type": "bool",
                                         },
                                         "no_peer_loop_check": {"type": "bool"},
                                         "set": {"type": "bool"},
@@ -769,7 +770,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                 "rfc6514_compliant_safi129": {"type": "bool"},
                                 "route_server_client": {"type": "bool"},
                                 "tcp_aggressive_transmission": {
-                                    "type": "bool"
+                                    "type": "bool",
                                 },
                                 "tcp_mss": {"type": "int"},
                                 "traceoptions": {
@@ -782,11 +783,11 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                                 },
                                                 "files": {"type": "int"},
                                                 "no_world_readable": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "size": {"type": "int"},
                                                 "world_readable": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                             },
                                             "type": "dict",
@@ -799,13 +800,13 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                                 "filter": {
                                                     "options": {
                                                         "match_on_prefix": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                         "policy": {
-                                                            "type": "str"
+                                                            "type": "str",
                                                         },
                                                         "set": {
-                                                            "type": "bool"
+                                                            "type": "bool",
                                                         },
                                                     },
                                                     "type": "dict",
@@ -848,7 +849,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                 },
                                 "ttl": {"type": "int"},
                                 "unconfigured_peer_graceful_restart": {
-                                    "type": "bool"
+                                    "type": "bool",
                                 },
                                 "vpn_apply_export": {"type": "bool"},
                             },
@@ -925,7 +926,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                                         "filter": {
                                             "options": {
                                                 "match_on_prefix": {
-                                                    "type": "bool"
+                                                    "type": "bool",
                                                 },
                                                 "policy": {"type": "str"},
                                                 "set": {"type": "bool"},
@@ -1160,7 +1161,7 @@ class Bgp_globalArgs(object):  # pylint: disable=R0903
                 "snmp_options": {
                     "options": {
                         "backward_traps_only_from_established": {
-                            "type": "bool"
+                            "type": "bool",
                         },
                         "emit_inet_address_length_in_oid": {"type": "bool"},
                     },

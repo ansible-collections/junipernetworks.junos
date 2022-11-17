@@ -1,12 +1,12 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: >-
       START junos_security_zones replaced integration tests on connection={{
       ansible_connection }}
 - block:
-    - include_tasks: _reset_config.yaml
-    - include_tasks: _initial_config.yaml
-    - include_tasks: _populate_config.yaml
+    - ansible.builtin.include_tasks: _reset_config.yaml
+    - ansible.builtin.include_tasks: _initial_config.yaml
+    - ansible.builtin.include_tasks: _populate_config.yaml
     - name: Override configuration
       junipernetworks.junos.junos_security_zones: &ref_0
         config:
@@ -79,26 +79,26 @@
         state: replaced
       register: result
     - name: Assert that before dicts were correctly generated
-      assert:
-        that: '{{ merged[''after''] == result[''before''] }}'
+      ansible.builtin.assert:
+        that: "{{ merged['after'] == result['before'] }}"
     - name: Assert configuration
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == True
-          - '{{ replaced[''after''] == result.after }}'
+          - "{{ replaced['after'] == result.after }}"
     - name: >-
         Replaced the provided configuration with the existing running
         configuration (IDEMPOTENT)
       junipernetworks.junos.junos_security_zones: *ref_0
       register: result
     - name: Assert that the previous task was idempotent
-      assert:
+      ansible.builtin.assert:
         that:
           - result.changed == False
   tags: replaced
   always:
-    - include_tasks: _reset_config.yaml
-- debug:
+    - ansible.builtin.include_tasks: _reset_config.yaml
+- ansible.builtin.debug:
     msg: >-
       END junos_security_zones replaced integration tests on connection={{
       ansible_connection }}

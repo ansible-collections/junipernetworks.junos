@@ -1,8 +1,10 @@
 ---
-- debug: msg="START netconf_xml/contains.yaml on connection={{ ansible_connection
+- name: Debug task
+  ansible.builtin.debug:
+    msg="START netconf_xml/contains.yaml on connection={{ ansible_connection
     }}"
 
-- name: test contains operator with xml encoding
+- name: Test contains operator with xml encoding
   register: result
   junipernetworks.junos.junos_command:
     commands:
@@ -13,11 +15,14 @@
       - result[1].rpc-reply.interface-information.physical-interface.name contains
         lo0
 
-- assert:
+- name: Assertion
+  ansible.builtin.assert:
     that:
       - result.changed == false
       - result.stdout is defined
       - result.stdout_lines is defined
 
-- debug: msg="END netconf_xml/contains.yaml on connection={{ ansible_connection
+- name: Debug task
+  ansible.builtin.debug:
+    msg="END netconf_xml/contains.yaml on connection={{ ansible_connection
     }}"

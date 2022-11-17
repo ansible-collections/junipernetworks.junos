@@ -18,17 +18,13 @@
 # Make coding more python3-ish
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
-    patch,
-)
-from ansible_collections.junipernetworks.junos.plugins.modules import (
-    junos_netconf,
-)
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
-    set_module_args,
-)
+from ansible_collections.junipernetworks.junos.plugins.modules import junos_netconf
+from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import patch
+from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
+
 from .junos_module import TestJunosModule
 
 
@@ -40,12 +36,12 @@ class TestJunosCommandModule(TestJunosModule):
         super(TestJunosCommandModule, self).setUp()
 
         self.mock_lock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration",
         )
         self.lock_configuration = self.mock_lock_configuration.start()
 
         self.mock_unlock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration",
         )
         self.unlock_configuration = self.mock_unlock_configuration.start()
 
@@ -53,17 +49,17 @@ class TestJunosCommandModule(TestJunosModule):
         self.conn = self.mock_conn.start()
 
         self.mock_netconf = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.NetconfConnection"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.NetconfConnection",
         )
         self.netconf_conn = self.mock_netconf.start()
 
         self.mock_netconf_rpc = patch(
-            "ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf.NetconfConnection"
+            "ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf.NetconfConnection",
         )
         self.netconf_rpc = self.mock_netconf_rpc.start()
 
         self.mock_get_capabilities = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.get_capabilities"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.get_capabilities",
         )
         self.get_capabilities = self.mock_get_capabilities.start()
         self.get_capabilities.return_value = {"network_api": "netconf"}
@@ -82,7 +78,8 @@ class TestJunosCommandModule(TestJunosModule):
         set_module_args(dict(state="present"))
         result = self.execute_module(changed=True)
         self.assertEqual(
-            result["commands"], ["set system services netconf ssh port 830"]
+            result["commands"],
+            ["set system services netconf ssh port 830"],
         )
 
     def test_junos_netconf_disable(self):
@@ -95,7 +92,8 @@ class TestJunosCommandModule(TestJunosModule):
         set_module_args(dict(state="absent"))
         result = self.execute_module(changed=True)
         self.assertEqual(
-            result["commands"], ["delete system services netconf"]
+            result["commands"],
+            ["delete system services netconf"],
         )
 
     def test_junos_netconf_port_change(self):
@@ -108,7 +106,8 @@ class TestJunosCommandModule(TestJunosModule):
         set_module_args(dict(state="present", netconf_port=22))
         result = self.execute_module(changed=True)
         self.assertEqual(
-            result["commands"], ["set system services netconf ssh port 22"]
+            result["commands"],
+            ["set system services netconf ssh port 22"],
         )
 
     def test_junos_netconf_port_error(self):
@@ -121,7 +120,8 @@ class TestJunosCommandModule(TestJunosModule):
         set_module_args(dict(state="present", netconf_port=0))
         result = self.execute_module(changed=True, failed=True)
         self.assertEqual(
-            result["msg"], "netconf_port must be between 1 and 65535"
+            result["msg"],
+            "netconf_port must be between 1 and 65535",
         )
 
     def test_junos_netconf_config_error(self):

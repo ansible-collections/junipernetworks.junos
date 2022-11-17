@@ -11,19 +11,20 @@ based on the configuration.
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
+
+from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
-from copy import deepcopy
+from ansible.module_utils.six import string_types
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
 
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
-    utils,
-)
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.routing_options.routing_options import (
     Routing_optionsArgs,
 )
-from ansible.module_utils.six import string_types
+
 
 try:
     from lxml import etree
@@ -87,7 +88,7 @@ class Routing_optionsFacts(object):
 
         if isinstance(data, string_types):
             data = etree.fromstring(
-                to_bytes(data, errors="surrogate_then_replace")
+                to_bytes(data, errors="surrogate_then_replace"),
             )
         objs = {}
         resources = data.xpath("configuration/routing-options")
@@ -100,7 +101,8 @@ class Routing_optionsFacts(object):
         if objs:
             facts["routing_options"] = {}
             params = utils.validate_config(
-                self.argument_spec, {"config": objs}
+                self.argument_spec,
+                {"config": objs},
             )
 
             facts["routing_options"] = utils.remove_empties(params["config"])
@@ -111,7 +113,8 @@ class Routing_optionsFacts(object):
         if not HAS_XMLTODICT:
             self._module.fail_json(msg=missing_required_lib("xmltodict"))
         xml_dict = xmltodict.parse(
-            etree.tostring(xml_root), dict_constructor=dict
+            etree.tostring(xml_root),
+            dict_constructor=dict,
         )
         return xml_dict
 

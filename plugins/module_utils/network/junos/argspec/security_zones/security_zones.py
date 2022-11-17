@@ -28,6 +28,7 @@ The arg spec for the junos_security_zones module
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -119,7 +120,7 @@ class Security_zonesArgs(object):  # pylint: disable=R0903
                             "type": "dict",
                         },
                         "advance_policy_based_routing_profile": {
-                            "type": "str"
+                            "type": "str",
                         },
                         "advanced_connection_tracking": {
                             "options": {
@@ -133,7 +134,7 @@ class Security_zonesArgs(object):  # pylint: disable=R0903
                                 },
                                 "timeout": {"type": "int"},
                                 "track_all_policies_to_this_zone": {
-                                    "type": "bool"
+                                    "type": "bool",
                                 },
                             },
                             "type": "dict",

@@ -1,12 +1,12 @@
 ---
-- debug: msg="START netconf/rpc.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="START netconf/rpc.yaml on connection={{ ansible_connection }}"
 
 - name: Execute RPC on device
   register: result
   junipernetworks.junos.junos_rpc:
     rpc: get-interface-information
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - "'<interface-information' in result['xml']"
@@ -20,7 +20,7 @@
       interface-name: lo0
       media: true
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - "'<name>\nlo0\n</name>' in result['xml']"
@@ -33,7 +33,7 @@
     rpc: get-interface-information
     output: text
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - result.output is defined
@@ -49,7 +49,7 @@
       interface-name: lo0
       media: true
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.changed == false
       - result.output is defined
@@ -62,8 +62,8 @@
   junipernetworks.junos.junos_rpc:
     rpc: show-interface-information
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.failed == true
 
-- debug: msg="END netconf/rpc.yaml on connection={{ ansible_connection }}"
+- ansible.builtin.debug: msg="END netconf/rpc.yaml on connection={{ ansible_connection }}"

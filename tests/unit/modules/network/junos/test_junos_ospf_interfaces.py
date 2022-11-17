@@ -23,18 +23,13 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import (
-    patch,
-    MagicMock,
-)
-from ansible_collections.junipernetworks.junos.plugins.modules import (
-    junos_ospf_interfaces,
-)
-from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
-    set_module_args,
-)
+from ansible_collections.junipernetworks.junos.plugins.modules import junos_ospf_interfaces
+from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import MagicMock, patch
+from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
+
 from .junos_module import TestJunosModule, load_fixture
 
 
@@ -44,31 +39,31 @@ class TestJunosOspfv3Module(TestJunosModule):
     def setUp(self):
         super(TestJunosOspfv3Module, self).setUp()
         self.mock_lock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.lock_configuration",
         )
         self.lock_configuration = self.mock_lock_configuration.start()
         self.mock_unlock_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos.unlock_configuration",
         )
         self.unlock_configuration = self.mock_unlock_configuration.start()
         self.mock_load_config = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospf_interfaces.ospf_interfaces.load_config"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospf_interfaces.ospf_interfaces.load_config",
         )
         self.load_config = self.mock_load_config.start()
 
         self.mock_validate_config = patch(
-            "ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils.validate_config"
+            "ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils.validate_config",
         )
         self.validate_config = self.mock_validate_config.start()
 
         self.mock_commit_configuration = patch(
-            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospf_interfaces.ospf_interfaces.commit_configuration"
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.ospf_interfaces.ospf_interfaces.commit_configuration",
         )
         self.mock_commit_configuration = self.mock_commit_configuration.start()
 
         self.mock_get_connection = patch(
             "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.ospf_interfaces.ospf_interfaces."
-            "Ospf_interfacesFacts.get_connection"
+            "Ospf_interfacesFacts.get_connection",
         )
         self.get_connection = self.mock_get_connection.start()
 
@@ -77,7 +72,7 @@ class TestJunosOspfv3Module(TestJunosModule):
 
         self.mock_get_xml_dict = patch(
             "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts."
-            "ospf_interfaces.ospf_interfaces.Ospf_interfacesFacts._get_xml_dict"
+            "ospf_interfaces.ospf_interfaces.Ospf_interfacesFacts._get_xml_dict",
         )
         self._get_xml_dict = self.mock_get_xml_dict.start()
 
@@ -92,11 +87,11 @@ class TestJunosOspfv3Module(TestJunosModule):
 
     def load_fixtures(self, commands=None, format="text", changed=False):
         self.get_connection.return_value = load_fixture(
-            "junos_ospf_interfaces_config.cfg"
+            "junos_ospf_interfaces_config.cfg",
         )
         if changed:
             self.load_config.return_value = load_fixture(
-                "get_configuration_rpc_reply_diff.txt"
+                "get_configuration_rpc_reply_diff.txt",
             )
         else:
             self.load_config.return_value = None
@@ -116,12 +111,12 @@ class TestJunosOspfv3Module(TestJunosModule):
                                     priority=3,
                                     metric=5,
                                 ),
-                            )
+                            ),
                         ],
-                    )
+                    ),
                 ],
                 state="merged",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:ospf>'
@@ -135,7 +130,7 @@ class TestJunosOspfv3Module(TestJunosModule):
 
     def test_junos_ospf_interfaces_merged_idempotent(self):
         self.get_connection.return_value = load_fixture(
-            "junos_ospf_interfaces_config.cfg"
+            "junos_ospf_interfaces_config.cfg",
         )
         src = load_fixture("junos_ospf_interfaces.cfg", content="str")
         set_module_args(dict(src=src))
@@ -153,12 +148,12 @@ class TestJunosOspfv3Module(TestJunosModule):
                                     priority=3,
                                     metric=5,
                                 ),
-                            )
+                            ),
                         ],
-                    )
+                    ),
                 ],
                 state="merged",
-            )
+            ),
         )
         self.execute_module(changed=False, commands=[])
 
@@ -177,12 +172,12 @@ class TestJunosOspfv3Module(TestJunosModule):
                                     priority=6,
                                     metric=7,
                                 ),
-                            )
+                            ),
                         ],
-                    )
+                    ),
                 ],
                 state="replaced",
-            )
+            ),
         )
         result = self.execute_module(changed=True)
         commands = [
@@ -196,7 +191,7 @@ class TestJunosOspfv3Module(TestJunosModule):
 
     def test_junos_ospf_interfaces_replaced_idempotent(self):
         self.get_connection.return_value = load_fixture(
-            "junos_ospf_interfaces_config.cfg"
+            "junos_ospf_interfaces_config.cfg",
         )
         src = load_fixture("junos_ospf_interfaces.cfg", content="str")
         set_module_args(dict(src=src))
@@ -214,12 +209,12 @@ class TestJunosOspfv3Module(TestJunosModule):
                                     priority=6,
                                     metric=7,
                                 ),
-                            )
+                            ),
                         ],
-                    )
+                    ),
                 ],
                 state="replaced",
-            )
+            ),
         )
 
         self.execute_module(changed=False, commands=[])
@@ -239,12 +234,12 @@ class TestJunosOspfv3Module(TestJunosModule):
                                     priority=6,
                                     metric=7,
                                 ),
-                            )
+                            ),
                         ],
-                    )
+                    ),
                 ],
                 state="overridden",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:ospf/><nc:ospf>'
@@ -258,7 +253,7 @@ class TestJunosOspfv3Module(TestJunosModule):
 
     def test_junos_ospf_interfaces_overridden_idempotent(self):
         self.get_connection.return_value = load_fixture(
-            "junos_ospf_interfaces_config.cfg"
+            "junos_ospf_interfaces_config.cfg",
         )
         src = load_fixture("junos_ospf_interfaces.cfg", content="str")
         set_module_args(dict(src=src))
@@ -276,19 +271,19 @@ class TestJunosOspfv3Module(TestJunosModule):
                                     priority=6,
                                     metric=7,
                                 ),
-                            )
+                            ),
                         ],
-                    )
+                    ),
                 ],
                 state="overridden",
-            )
+            ),
         )
 
         self.execute_module(changed=False, commands=[])
 
     def test_junos_ospf_interfaces_delete(self):
         self.get_connection.return_value = load_fixture(
-            "junos_ospf_interfaces_config.cfg"
+            "junos_ospf_interfaces_config.cfg",
         )
         src = load_fixture("junos_ospf_interfaces.cfg", content="str")
         set_module_args(dict(src=src))
@@ -296,7 +291,7 @@ class TestJunosOspfv3Module(TestJunosModule):
             dict(
                 config=[dict(router_id="10.200.16.75", name="ge-0/0/2.0")],
                 state="deleted",
-            )
+            ),
         )
 
         commands = [
@@ -312,7 +307,7 @@ class TestJunosOspfv3Module(TestJunosModule):
             dict(
                 config=[dict(router_id="10.200.16.75", name="ge-0/0/2.0")],
                 state="deleted",
-            )
+            ),
         )
         self.execute_module(changed=False, commands=[])
 
@@ -331,12 +326,12 @@ class TestJunosOspfv3Module(TestJunosModule):
                                     priority=6,
                                     metric=7,
                                 ),
-                            )
+                            ),
                         ],
-                    )
+                    ),
                 ],
                 state="rendered",
-            )
+            ),
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:ospf/><nc:ospf>'

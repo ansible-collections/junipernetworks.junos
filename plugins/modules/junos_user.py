@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -201,29 +202,26 @@ diff.prepared:
           +        class read-only;
           +    }
 """
-from functools import partial
-
 from copy import deepcopy
+from functools import partial
 
 from ansible.module_utils._text import to_text
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import ConnectionError
+from ansible.module_utils.six import iteritems
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
     remove_default_spec,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    get_connection,
-    tostring,
-)
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     commit_configuration,
     discard_changes,
-)
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
+    get_connection,
     load_config,
     locked_config,
+    tostring,
 )
-from ansible.module_utils.six import iteritems
+
 
 try:
     from lxml.etree import Element, SubElement
@@ -242,7 +240,8 @@ def handle_purge(module, want):
     conn = get_connection(module)
     try:
         reply = conn.execute_rpc(
-            tostring(Element("get-configuration")), ignore_warning=False
+            tostring(Element("get-configuration")),
+            ignore_warning=False,
         )
     except ConnectionError as exc:
         module.fail_json(msg=to_text(exc, errors="surrogate_then_replace"))
@@ -275,15 +274,15 @@ def map_obj_to_ele(module, want):
             SubElement(user, "name").text = item["name"]
         else:
             user = auth = SubElement(
-                element, "root-authentication", {"operation": operation}
+                element,
+                "root-authentication",
+                {"operation": operation},
             )
 
         if operation == "merge":
-            if item["name"] == "root" and (
-                not item["active"] or item["role"] or item["full_name"]
-            ):
+            if item["name"] == "root" and (not item["active"] or item["role"] or item["full_name"]):
                 module.fail_json(
-                    msg="'root' account cannot be deactivated or be assigned a role and a full name"
+                    msg="'root' account cannot be deactivated or be assigned a role and a full name",
                 )
 
             if item["active"]:
@@ -311,9 +310,7 @@ def map_obj_to_ele(module, want):
 
             if item.get("encrypted_password"):
                 auth = SubElement(user, "authentication")
-                SubElement(auth, "encrypted-password").text = item[
-                    "encrypted_password"
-                ]
+                SubElement(auth, "encrypted-password").text = item["encrypted_password"]
 
     return element
 
@@ -369,7 +366,7 @@ def map_params_to_obj(module):
                 "sshkey": get_value("sshkey"),
                 "state": get_value("state"),
                 "active": get_value("active"),
-            }
+            },
         )
 
         for key, value in iteritems(item):
@@ -436,7 +433,10 @@ def main():
     with locked_config(module):
         if purge_request:
             load_config(
-                module, tostring(purge_request), warnings, action="replace"
+                module,
+                tostring(purge_request),
+                warnings,
+                action="replace",
             )
         diff = load_config(module, tostring(ele), warnings, action="merge")
 

@@ -11,20 +11,20 @@ based on the configuration.
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 from copy import deepcopy
+
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
+from ansible.module_utils.six import string_types
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
 
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
-    utils,
-)
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.security_policies_global.security_policies_global import (
     Security_policies_globalArgs,
 )
 
-from ansible.module_utils.six import string_types
 
 try:
     from lxml import etree
@@ -62,7 +62,8 @@ class Security_policies_globalFacts(object):
         if not HAS_XMLTODICT:
             self._module.fail_json(msg=missing_required_lib("xmltodict"))
         xml_dict = xmltodict.parse(
-            etree.tostring(xml_root), dict_constructor=dict
+            etree.tostring(xml_root),
+            dict_constructor=dict,
         )
         return xml_dict
 
@@ -99,7 +100,7 @@ class Security_policies_globalFacts(object):
         # split the config into instances of the resource
         if isinstance(data, string_types):
             data = etree.fromstring(
-                to_bytes(data, errors="surrogate_then_replace")
+                to_bytes(data, errors="surrogate_then_replace"),
             )
         objs = {}
         resources = data.xpath("configuration/security/policies")
@@ -112,11 +113,12 @@ class Security_policies_globalFacts(object):
         if objs:
             facts["security_policies_global"] = {}
             params = utils.validate_config(
-                self.argument_spec, {"config": objs}
+                self.argument_spec,
+                {"config": objs},
             )
 
             facts["security_policies_global"] = utils.remove_empties(
-                params["config"]
+                params["config"],
             )
 
         ansible_facts["ansible_network_resources"].update(facts)
@@ -141,51 +143,31 @@ class Security_policies_globalFacts(object):
             if "deny-all" in global_policies["default-policy"]:
                 security_policies_global_config["default_policy"] = "deny-all"
             elif "permit-all" in global_policies["default-policy"]:
-                security_policies_global_config[
-                    "default_policy"
-                ] = "permit-all"
+                security_policies_global_config["default_policy"] = "permit-all"
 
         if "policy-rematch" in global_policies:
             security_policies_global_config["policy_rematch"] = {}
             security_policies_global_config["policy_rematch"]["enable"] = True
 
-            global_policies["policy-rematch"] = (
-                global_policies["policy-rematch"] or {}
-            )
+            global_policies["policy-rematch"] = global_policies["policy-rematch"] or {}
             if "extensive" in global_policies["policy-rematch"]:
-                security_policies_global_config["policy_rematch"][
-                    "extensive"
-                ] = True
+                security_policies_global_config["policy_rematch"]["extensive"] = True
 
         if "policy-stats" in global_policies:
             security_policies_global_config["policy_stats"] = {}
             security_policies_global_config["policy_stats"]["enable"] = True
 
-            global_policies["policy-stats"] = (
-                global_policies["policy-stats"] or {}
-            )
+            global_policies["policy-stats"] = global_policies["policy-stats"] or {}
             if "system-wide" in global_policies["policy-stats"]:
                 if global_policies["policy-stats"]["system-wide"] == "enable":
-                    security_policies_global_config["policy_stats"][
-                        "system_wide"
-                    ] = True
-                elif (
-                    global_policies["policy-stats"]["system-wide"] == "disable"
-                ):
-                    security_policies_global_config["policy_stats"][
-                        "system_wide"
-                    ] = False
+                    security_policies_global_config["policy_stats"]["system_wide"] = True
+                elif global_policies["policy-stats"]["system-wide"] == "disable":
+                    security_policies_global_config["policy_stats"]["system_wide"] = False
 
         if "pre-id-default-policy" in global_policies:
-            security_policies_global_config[
-                "pre_id_default_policy_action"
-            ] = {}
-            pre_id_action = security_policies_global_config[
-                "pre_id_default_policy_action"
-            ]
-            policy_pre_id_action = global_policies["pre-id-default-policy"][
-                "then"
-            ]
+            security_policies_global_config["pre_id_default_policy_action"] = {}
+            pre_id_action = security_policies_global_config["pre_id_default_policy_action"]
+            policy_pre_id_action = global_policies["pre-id-default-policy"]["then"]
 
             if "log" in policy_pre_id_action:
                 pre_id_action["log"] = {}
@@ -197,29 +179,29 @@ class Security_policies_globalFacts(object):
             if "session-timeout" in policy_pre_id_action:
                 pre_id_action["session_timeout"] = {}
                 if "icmp" in policy_pre_id_action["session-timeout"]:
-                    pre_id_action["session_timeout"][
-                        "icmp"
-                    ] = policy_pre_id_action["session-timeout"]["icmp"]
+                    pre_id_action["session_timeout"]["icmp"] = policy_pre_id_action[
+                        "session-timeout"
+                    ]["icmp"]
                 if "icmp6" in policy_pre_id_action["session-timeout"]:
-                    pre_id_action["session_timeout"][
-                        "icmp6"
-                    ] = policy_pre_id_action["session-timeout"]["icmp6"]
+                    pre_id_action["session_timeout"]["icmp6"] = policy_pre_id_action[
+                        "session-timeout"
+                    ]["icmp6"]
                 if "ospf" in policy_pre_id_action["session-timeout"]:
-                    pre_id_action["session_timeout"][
-                        "ospf"
-                    ] = policy_pre_id_action["session-timeout"]["ospf"]
+                    pre_id_action["session_timeout"]["ospf"] = policy_pre_id_action[
+                        "session-timeout"
+                    ]["ospf"]
                 if "others" in policy_pre_id_action["session-timeout"]:
-                    pre_id_action["session_timeout"][
-                        "others"
-                    ] = policy_pre_id_action["session-timeout"]["others"]
+                    pre_id_action["session_timeout"]["others"] = policy_pre_id_action[
+                        "session-timeout"
+                    ]["others"]
                 if "tcp" in policy_pre_id_action["session-timeout"]:
-                    pre_id_action["session_timeout"][
-                        "tcp"
-                    ] = policy_pre_id_action["session-timeout"]["tcp"]
+                    pre_id_action["session_timeout"]["tcp"] = policy_pre_id_action[
+                        "session-timeout"
+                    ]["tcp"]
                 if "udp" in policy_pre_id_action["session-timeout"]:
-                    pre_id_action["session_timeout"][
-                        "udp"
-                    ] = policy_pre_id_action["session-timeout"]["udp"]
+                    pre_id_action["session_timeout"]["udp"] = policy_pre_id_action[
+                        "session-timeout"
+                    ]["udp"]
 
         if "traceoptions" in global_policies:
             security_policies_global_config["traceoptions"] = {}
@@ -229,17 +211,11 @@ class Security_policies_globalFacts(object):
             if "file" in policy_traceoptions:
                 traceoptions["file"] = {}
                 if "files" in policy_traceoptions["file"]:
-                    traceoptions["file"]["files"] = policy_traceoptions[
-                        "file"
-                    ]["files"]
+                    traceoptions["file"]["files"] = policy_traceoptions["file"]["files"]
                 if "match" in policy_traceoptions["file"]:
-                    traceoptions["file"]["match"] = policy_traceoptions[
-                        "file"
-                    ]["match"]
+                    traceoptions["file"]["match"] = policy_traceoptions["file"]["match"]
                 if "size" in policy_traceoptions["file"]:
-                    traceoptions["file"]["size"] = policy_traceoptions["file"][
-                        "size"
-                    ]
+                    traceoptions["file"]["size"] = policy_traceoptions["file"]["size"]
                 if "world-readable" in policy_traceoptions["file"]:
                     traceoptions["file"]["world_readable"] = True
                 if "no-world-readable" in policy_traceoptions["file"]:

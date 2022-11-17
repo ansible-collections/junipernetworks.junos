@@ -1,5 +1,5 @@
 ---
-- debug:
+- ansible.builtin.debug:
     msg: Start junos_vlans base config ansible_connection={{ ansible_connection
       }}
 
@@ -9,5 +9,5 @@
       - set vlans vlan1 vlan-id 1
       - set vlans vlan2 vlan-id 2
 
-- debug:
+- ansible.builtin.debug:
     msg: End junos_vlans base config ansible_connection={{ ansible_connection }}

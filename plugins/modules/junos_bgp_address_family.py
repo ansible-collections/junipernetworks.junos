@@ -28,6 +28,7 @@ The module file for junos_bgp_address_family
 
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
@@ -1615,6 +1616,7 @@ commands:
 
 
 from ansible.module_utils.basic import AnsibleModule
+
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.bgp_address_family.bgp_address_family import (
     Bgp_address_familyArgs,
 )
