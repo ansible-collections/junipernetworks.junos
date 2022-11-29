@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - "Fix to get the output in json format when command hasprefix show configuration"

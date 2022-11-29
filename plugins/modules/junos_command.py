@@ -212,14 +212,14 @@ def rpc(module, items):
         fetch_config = False
 
         args = item.get("args")
-        text = item.get("text")
+        text = item.get("text").rstrip()
 
         name = str(name).replace("_", "-")
 
         if all((module.check_mode, not name.startswith("get"))):
             module.fail_json(msg="invalid rpc for running in check_mode")
 
-        if name == "command" and text == "show configuration" or name == "get-configuration":
+        if name == "command" and text.startswith("show configuration") or name == "get-configuration":
             fetch_config = True
 
         element = Element(name, xattrs)
@@ -262,7 +262,15 @@ def rpc(module, items):
                 responses.append(reply.text.strip())
 
         elif xattrs["format"] == "json":
-            responses.append(module.from_json(reply.text.strip()))
+            if text.startswith("show configuration "):
+                config = module.from_json(reply.text.strip())['configuration']
+                tags = text.split(' ')
+                res = {}
+                for tag in range(2, len(tags)):
+                    res = config[tags[tag]]
+                responses.append(res)
+            else:
+                responses.append(module.from_json(reply.text.strip()))
 
         elif xattrs["format"] == "set":
             data = reply.find(".//configuration-set")
