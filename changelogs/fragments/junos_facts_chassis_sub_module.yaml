@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - "Used xmltodict to gather the sub-module chassis list and return it as a dictionary."
