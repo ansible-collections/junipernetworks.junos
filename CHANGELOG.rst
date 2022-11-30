@@ -11,7 +11,7 @@ v4.1.0
 Minor Changes
 -------------
 
-- Implement file_size as strng.
+- Implement file_size as string.
 - Used xmltodict to gather the sub-module chassis list and return it as a dictionary.
 
 v4.0.0
