@@ -212,7 +212,7 @@ def rpc(module, items):
         fetch_config = False
 
         args = item.get("args")
-        text = item.get("text").rstrip()
+        text = item.get("text")
 
         name = str(name).replace("_", "-")
 
@@ -225,6 +225,7 @@ def rpc(module, items):
         element = Element(name, xattrs)
 
         if text:
+            text = item.get("text").rstrip()
             element.text = text
 
         elif args:
