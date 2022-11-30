@@ -15,7 +15,11 @@ __metaclass__ = type
 
 import platform
 
-import xmltodict
+try:
+    import xmltodict
+    HAS_XMLTODICT = True
+except ImportError:
+    HAS_XMLTODICT = False
 
 from ansible.module_utils._text import to_text
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
