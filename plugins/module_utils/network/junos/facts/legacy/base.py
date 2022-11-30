@@ -15,8 +15,10 @@ __metaclass__ = type
 
 import platform
 
+
 try:
     import xmltodict
+
     HAS_XMLTODICT = True
 except ImportError:
     HAS_XMLTODICT = False
