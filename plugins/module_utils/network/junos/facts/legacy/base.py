@@ -22,6 +22,7 @@ except ImportError:
     HAS_XMLTODICT = False
 
 from ansible.module_utils._text import to_text
+from ansible.module_utils.basic import missing_required_lib
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
     exec_rpc,
 )
@@ -116,6 +117,15 @@ class Config(FactsBase):
 
 
 class Hardware(FactsBase):
+    def _get_xml_dict(self, xml_root):
+        if not HAS_XMLTODICT:
+            self._module.fail_json(msg=missing_required_lib("xmltodict"))
+        xml_dict = xmltodict.parse(
+            tostring(xml_root),
+            dict_constructor=dict,
+        )
+        return xml_dict
+
     def populate(self):
 
         reply = self.rpc("get-system-memory-information")
@@ -169,7 +179,7 @@ class Hardware(FactsBase):
                 if child.text != "\n":
                     mod.update({child.tag.replace("-", "_"): child.text})
                 if "chassis-sub-module" in child.tag:
-                    mod["chassis_sub_module"] = xmltodict.parse(tostring(obj))["chassis-module"][
+                    mod["chassis_sub_module"] = self._get_xml_dict(obj)["chassis-module"][
                         "chassis-sub-module"
                     ]
             modules.append(mod)
