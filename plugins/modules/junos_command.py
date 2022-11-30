@@ -263,7 +263,7 @@ def rpc(module, items):
                 responses.append(reply.text.strip())
 
         elif xattrs["format"] == "json":
-            if text.startswith("show configuration "):
+            if text and text.startswith("show configuration "):
                 config = module.from_json(reply.text.strip())['configuration']
                 tags = text.split(' ')
                 res = {}
