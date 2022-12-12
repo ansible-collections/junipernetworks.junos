@@ -27,11 +27,12 @@ from contextlib import contextmanager
 from copy import deepcopy
 
 from ansible.module_utils._text import to_text
+from ansible.module_utils.basic import env_fallback
 from ansible.module_utils.connection import Connection, ConnectionError
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
     NetconfConnection,
 )
-from ansible.module_utils.basic import env_fallback
+
 
 try:
     from lxml.etree import Element, SubElement
@@ -62,10 +63,12 @@ junos_provider_spec = {
     "port": dict(type="int"),
     "username": dict(fallback=(env_fallback, ["ANSIBLE_NET_USERNAME"])),
     "password": dict(
-        fallback=(env_fallback, ["ANSIBLE_NET_PASSWORD"]), no_log=True
+        fallback=(env_fallback, ["ANSIBLE_NET_PASSWORD"]),
+        no_log=True,
     ),
     "ssh_keyfile": dict(
-        fallback=(env_fallback, ["ANSIBLE_NET_SSH_KEYFILE"]), type="path"
+        fallback=(env_fallback, ["ANSIBLE_NET_SSH_KEYFILE"]),
+        type="path",
     ),
     "timeout": dict(type="int"),
     "transport": dict(default="netconf", choices=["cli", "netconf"]),
@@ -76,7 +79,7 @@ junos_argument_spec = {
         options=junos_provider_spec,
         removed_at_date="2022-06-01",
         removed_from_collection="junipernetworks.junos",
-    )
+    ),
 }
 
 

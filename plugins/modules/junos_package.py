@@ -185,8 +185,8 @@ EXAMPLES = """
 from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    junos_argument_spec,
     get_device,
+    junos_argument_spec,
 )
 
 
@@ -245,7 +245,8 @@ def main():
     argument_spec.update(junos_argument_spec)
 
     module = AnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True
+        argument_spec=argument_spec,
+        supports_check_mode=True,
     )
 
     if module.params["provider"] is None:

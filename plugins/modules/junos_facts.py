@@ -111,8 +111,8 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     FactsArgs,
 )
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.facts.facts import (
-    Facts,
     FACT_RESOURCE_SUBSETS,
+    Facts,
 )
 
 

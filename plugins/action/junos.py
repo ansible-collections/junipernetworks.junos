@@ -21,19 +21,21 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import sys
 import copy
+import sys
 
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    load_provider,
-)
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    junos_provider_spec,
-)
+from ansible.utils.display import Display
 from ansible_collections.ansible.netcommon.plugins.action.network import (
     ActionModule as ActionNetworkModule,
 )
-from ansible.utils.display import Display
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
+    load_provider,
+)
+
+from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
+    junos_provider_spec,
+)
+
 
 display = Display()
 
@@ -55,10 +57,7 @@ class ActionModule(ActionNetworkModule):
             pc.network_os = "junipernetworks.junos.junos"
             pc.remote_addr = provider["host"] or self._play_context.remote_addr
 
-            if (
-                provider["transport"] == "cli"
-                and module_name not in CLI_SUPPORTED_MODULES
-            ):
+            if provider["transport"] == "cli" and module_name not in CLI_SUPPORTED_MODULES:
                 return {
                     "failed": True,
                     "msg": "Transport type '%s' is not valid for '%s' module. "
@@ -67,26 +66,21 @@ class ActionModule(ActionNetworkModule):
                 }
 
             if module_name == "junos_netconf" or (
-                provider["transport"] == "cli"
-                and module_name == "junos_command"
+                provider["transport"] == "cli" and module_name == "junos_command"
             ):
                 pc.connection = "ansible.netcommon.network_cli"
                 pc.port = int(
-                    provider["port"] or self._play_context.port or 22
+                    provider["port"] or self._play_context.port or 22,
                 )
             else:
                 pc.connection = "ansible.netcommon.netconf"
                 pc.port = int(
-                    provider["port"] or self._play_context.port or 830
+                    provider["port"] or self._play_context.port or 830,
                 )
 
-            pc.remote_user = (
-                provider["username"] or self._play_context.connection_user
-            )
+            pc.remote_user = provider["username"] or self._play_context.connection_user
             pc.password = provider["password"] or self._play_context.password
-            pc.private_key_file = (
-                provider["ssh_keyfile"] or self._play_context.private_key_file
-            )
+            pc.private_key_file = provider["ssh_keyfile"] or self._play_context.private_key_file
 
             connection = self._shared_loader_obj.connection_loader.get(
                 "ansible.netcommon.persistent",
@@ -104,7 +98,10 @@ class ActionModule(ActionNetworkModule):
                     pc.connection = "network_cli"
 
                 connection = self._shared_loader_obj.connection_loader.get(
-                    "persistent", pc, sys.stdin, task_uuid=self._task._uuid
+                    "persistent",
+                    pc,
+                    sys.stdin,
+                    task_uuid=self._task._uuid,
                 )
 
             display.vvv(
@@ -118,7 +115,7 @@ class ActionModule(ActionNetworkModule):
                 else connection.get_option("persistent_command_timeout")
             )
             connection.set_options(
-                direct={"persistent_command_timeout": command_timeout}
+                direct={"persistent_command_timeout": command_timeout},
             )
 
             socket_path = connection.run()
@@ -134,8 +131,8 @@ class ActionModule(ActionNetworkModule):
             warnings.append(
                 [
                     "connection local support for this module is deprecated and will be removed in version 2.14, use connection %s"
-                    % pc.connection
-                ]
+                    % pc.connection,
+                ],
             )
         elif persistent_connection in ("netconf", "network_cli"):
             provider = self._task.args.get("provider", {})
@@ -149,17 +146,13 @@ class ActionModule(ActionNetworkModule):
                 ):
                     display.warning(
                         "provider is unnecessary when using %s and will be ignored"
-                        % self._play_context.connection
+                        % self._play_context.connection,
                     )
                     del self._task.args["provider"]
 
             if (
-                persistent_connection == "network_cli"
-                and module_name not in CLI_SUPPORTED_MODULES
-            ) or (
-                persistent_connection == "netconf"
-                and module_name in CLI_SUPPORTED_MODULES[0:2]
-            ):
+                persistent_connection == "network_cli" and module_name not in CLI_SUPPORTED_MODULES
+            ) or (persistent_connection == "netconf" and module_name in CLI_SUPPORTED_MODULES[0:2]):
                 return {
                     "failed": True,
                     "msg": "Connection type '%s' is not valid for '%s' module. "
