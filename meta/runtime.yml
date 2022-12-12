@@ -242,6 +242,9 @@ plugin_routing:
       redirect: junipernetworks.junos.junos_rpc
     scp:
       redirect: junipernetworks.junos.junos_scp
+      deprecation:
+        removal_date: "2025-01-01"
+        warning_text: See the plugin documentation for more details
     static_routes:
       redirect: junipernetworks.junos.junos_static_routes
     system:
