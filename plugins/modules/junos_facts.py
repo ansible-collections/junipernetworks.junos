@@ -114,9 +114,6 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     Facts,
     FACT_RESOURCE_SUBSETS,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
-    junos_argument_spec,
-)
 
 
 def main():
@@ -126,7 +123,6 @@ def main():
     :returns: ansible_facts
     """
     argument_spec = FactsArgs.argument_spec
-    argument_spec.update(junos_argument_spec)
 
     module = AnsibleModule(
         argument_spec=argument_spec,

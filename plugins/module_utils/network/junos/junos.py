@@ -33,7 +33,6 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.n
 )
 from ansible.module_utils.basic import env_fallback
 
-
 try:
     from lxml.etree import Element, SubElement
     from lxml.etree import tostring as xml_to_string
@@ -102,15 +101,12 @@ def get_provider_argspec():
 def get_connection(module):
     if hasattr(module, "_junos_connection"):
         return module._junos_connection
-  
     capabilities = get_capabilities(module)
     network_api = capabilities.get("network_api")
     if network_api == "cliconf":
         module._junos_connection = Connection(module._socket_path)
     elif network_api == "netconf":
         module._junos_connection = NetconfConnection(module._socket_path)
-        import q
-        q(module._junos_connection)
     else:
         module.fail_json(msg="Invalid connection type %s" % network_api)
 
@@ -130,7 +126,6 @@ def get_capabilities(module):
 
 
 def get_device(module):
-    conn = get_connection(module)
     provider = module.params.get("provider") or {}
     host = provider.get("host")
 

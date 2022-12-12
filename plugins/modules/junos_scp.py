@@ -20,7 +20,7 @@ version_added: 1.0.0
 deprecated:
   why: Updated modules released with more functionality
   alternative: Use M(ansible.netcommon.net_get), M(ansible.netcommon.net_put) instead.
-  removed_at_date: '2025-12-01'
+  removed_at_date: '2025-01-01'
 extends_documentation_fragment:
 - junipernetworks.junos.junos
 options:
