@@ -13,16 +13,16 @@ __metaclass__ = type
 DOCUMENTATION = """
 module: junos_scp
 author: Christian Giese (@GIC-de)
-short_description: (deprecated, removed after 2025-01-01) Transfer files from or to remote devices running Junos
+short_description: Transfer files from or to remote devices running Junos
 description:
 - This module transfers files via SCP from or to remote devices running Junos.
 version_added: 1.0.0
+extends_documentation_fragment:
+- junipernetworks.junos.junos
 deprecated:
   why: Updated modules released with more functionality
   alternative: Use M(ansible.netcommon.net_get), M(ansible.netcommon.net_put) instead.
   removed_at_date: '2025-01-01'
-extends_documentation_fragment:
-- junipernetworks.junos.junos
 options:
   src:
     description:

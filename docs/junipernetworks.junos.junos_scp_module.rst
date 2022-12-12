@@ -5,7 +5,7 @@
 junipernetworks.junos.junos_scp
 *******************************
 
-**(deprecated, removed after 2025-01-01) Transfer files from or to remote devices running Junos**
+**Transfer files from or to remote devices running Junos**
 
 
 Version added: 1.0.0
