@@ -13,9 +13,10 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import platform
 import json
+import platform
 import re
+
 
 try:
     import xmltodict
@@ -185,7 +186,11 @@ class Hardware(FactsBase):
                     mod["chassis_sub_module"] = self._get_xml_dict(obj)["chassis-module"][
                         "chassis-sub-module"
                     ]
-                    mod_key_rename = re.sub('("\S+-\S+":)', lambda m: m.group(1).replace('-', '_'), json.dumps(mod["chassis_sub_module"]))
+                    mod_key_rename = re.sub(
+                        '("\S+-\S+":)',
+                        lambda m: m.group(1).replace("-", "_"),
+                        json.dumps(mod["chassis_sub_module"]),
+                    )
                     mod["chassis_sub_module"] = json.loads(mod_key_rename)
             modules.append(mod)
 
