@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- This module manages the interfaces on Juniper Junos OS network devices.
+- This module manages the interfaces on Juniper Junos vSRX OS network devices.
 
 
 
