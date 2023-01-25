@@ -111,7 +111,7 @@
         expected_deleted_res_output: {}
 
     - name: Merge the existing config with provided configuration
-      junos_bgp_address_family: *merged
+      junipernetworks.junos.junos_bgp_address_family: *merged
       register: result
 
     - name: Delete complete existing bgp address family configuration
