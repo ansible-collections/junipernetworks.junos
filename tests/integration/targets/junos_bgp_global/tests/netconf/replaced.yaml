@@ -33,7 +33,7 @@
           - "{{ replaced['after'] == result.after }}"
 
     - name: Merge the provided configuration with the existing running configuration (IDEMPOTENT)
-      junos_bgp_global: *replaced
+      junipernetworks.junos.junos_bgp_global: *replaced
       register: result
 
     - name: Assert that the previous task was idempotent
