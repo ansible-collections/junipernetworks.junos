@@ -43,7 +43,6 @@ from ansible_collections.junipernetworks.junos.plugins.modules import junos_scp
 
 
 class TestJunosScpModule(TestJunosModule):
-
     module = junos_scp
 
     def setUp(self):

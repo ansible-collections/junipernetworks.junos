@@ -34,7 +34,6 @@ display = Display()
 
 
 class TerminalModule(TerminalBase):
-
     terminal_stdout_re = [
         re.compile(
             to_bytes(r"({primary:node\d+})?[\r\n]?[\w@+\-\.:\/\[\]]+[>#%] ?$"),

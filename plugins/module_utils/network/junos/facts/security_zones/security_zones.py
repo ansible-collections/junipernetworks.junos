@@ -226,7 +226,6 @@ class Security_zonesFacts(object):
                         temp_sec_zone["address_book"]["address_sets"] = []
 
                         for address_set in security_zone["address-book"]["address-set"]:
-
                             temp_address_set = {}
 
                             temp_address_set["name"] = address_set["name"]

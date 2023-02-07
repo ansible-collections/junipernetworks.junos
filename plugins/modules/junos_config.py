@@ -366,7 +366,6 @@ def filter_delete_statements(module, candidate):
 
 
 def configure_device(module, warnings, candidate):
-
     kwargs = {}
     config_format = None
 

@@ -32,7 +32,6 @@ from .junos_module import TestJunosModule, load_fixture
 
 
 class TestJunosConfigModule(TestJunosModule):
-
     module = junos_config
 
     def setUp(self):
