@@ -5,7 +5,7 @@
 junipernetworks.junos.junos_security_zones
 ******************************************
 
-**Manage security zones on Juniper JUNOS devices**
+**Manage security zones DNM on Juniper JUNOS devices**
 
 
 Version added: 2.9.0
