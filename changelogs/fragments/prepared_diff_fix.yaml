@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - fix diff to result when prepared diff exists.
