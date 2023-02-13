@@ -511,7 +511,7 @@ def main():
                         discard_changes(module)
                     result["changed"] = True
 
-                    if diff:
+                    if module._diff:
                         result["diff"] = {"prepared": diff}
 
         elif module.params["check_commit"]:
