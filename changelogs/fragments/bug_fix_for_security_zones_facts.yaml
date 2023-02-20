@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - fix junos_security_zones facts gathering when we have single interface configured.
