@@ -290,7 +290,7 @@ class Security_zonesFacts(object):
                     else:
                         temp_sec_zone["interfaces"] = [
                             interface["name"] for interface in security_zone["interfaces"]
-                            ]
+                        ]
                 if "screen" in security_zone:
                     temp_sec_zone["screen"] = security_zone["screen"]
                 if "source-identity-log" in security_zone:
