@@ -10,8 +10,8 @@
           - y
 
     - wait_for_connection:
-        delay: 30
-        sleep: 20
+        delay: 180
+        sleep: 60
 
     - ansible.netcommon.cli_command:
         command: show version
