@@ -9,9 +9,11 @@
         answer:
           - y
 
+      tags:
+        - reboot
     - wait_for_connection:
-        delay: 180
-        sleep: 60
+        delay: 60
+        sleep: 40
 
     - ansible.netcommon.cli_command:
         command: show version
