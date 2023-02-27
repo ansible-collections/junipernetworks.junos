@@ -8,7 +8,7 @@
           - Reboot the system?
         answer:
           - y
-     
+
       tags:
         - reboot
     - wait_for_connection:
