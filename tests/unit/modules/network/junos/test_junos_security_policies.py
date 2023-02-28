@@ -346,7 +346,6 @@ class TestJunosSecurity_policiesModule(TestJunosModule):
         )
 
     def test_junos_security_policies_merged_02(self):
-
         set_module_args(
             dict(
                 config={

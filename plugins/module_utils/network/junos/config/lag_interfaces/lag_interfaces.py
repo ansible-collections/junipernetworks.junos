@@ -245,7 +245,6 @@ class Lag_interfaces(ConfigBase):
                 "aggregated-ether-options",
             )
             if config["mode"]:
-
                 lacp_node = build_child_xml_node(ether_options_node, "lacp")
                 build_child_xml_node(lacp_node, config["mode"])
 

@@ -41,7 +41,6 @@ from ansible_collections.junipernetworks.junos.plugins.modules import junos_pack
 
 
 class TestJunosPackageModule(TestJunosModule):
-
     module = junos_package
 
     def setUp(self):

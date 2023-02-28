@@ -146,7 +146,6 @@ class Security_policiesFacts(object):
                 zone_pairs = []
                 zone_pairs.append(temp)
             for zone_pair_policies in zone_pairs:
-
                 if zone_pair_policies["from-zone-name"] not in from_zone_dict:
                     from_zone_dict[zone_pair_policies["from-zone-name"]] = {}
                     from_zone_dict[zone_pair_policies["from-zone-name"]][

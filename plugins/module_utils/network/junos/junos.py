@@ -181,7 +181,6 @@ def load_configuration(
     rollback=None,
     format="xml",
 ):
-
     if all((candidate is None, rollback is None)):
         module.fail_json(msg="one of candidate or rollback must be specified")
 

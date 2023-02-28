@@ -129,7 +129,6 @@ class Hardware(FactsBase):
         return xml_dict
 
     def populate(self):
-
         reply = self.rpc("get-system-memory-information")
         data = reply.find(
             ".//system-memory-information/system-memory-summary-information",
@@ -215,7 +214,6 @@ class Interfaces(FactsBase):
 
 class OFacts(FactsBase):
     def populate(self):
-
         device = get_device(self.module)
         facts = dict(device.facts)
 

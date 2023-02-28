@@ -136,7 +136,6 @@ class Cliconf(CliconfBase):
         replace=None,
         comment=None,
     ):
-
         operations = self.get_device_operations()
         self.check_edit_config_capability(
             operations,

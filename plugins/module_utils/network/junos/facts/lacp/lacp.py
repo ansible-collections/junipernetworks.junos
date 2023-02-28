@@ -90,7 +90,6 @@ class LacpFacts(object):
             "configuration/chassis/aggregated-devices/ethernet/lacp",
         )
         if resources:
-
             lacp_root = resources[0]
             config["system_priority"] = utils.get_xml_conf_arg(
                 lacp_root,
