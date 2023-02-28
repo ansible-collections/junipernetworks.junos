@@ -246,6 +246,256 @@ class TestJunosSecurity_zonesModule(TestJunosModule):
             self.sorted_xml(str(result["commands"])),
         )
 
+    def test_junos_security_zones_parsed(self):
+        parsed_str = """
+        <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
+            <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
+                <version>18.4R1-S2.4</version>
+                <security>
+                    <zones>
+                        <functional-zone>
+                            <management>
+                                <description>test description</description>
+                                <host-inbound-traffic>
+                                    <protocols>
+                                        <name>all</name>
+                                    </protocols>
+                                    <protocols>
+                                        <name>bgp</name>
+                                        <except />
+                                    </protocols>
+                                    <system-services>
+                                        <name>all</name>
+                                    </system-services>
+                                    <system-services>
+                                        <name>dhcp</name>
+                                        <except />
+                                    </system-services>
+                                </host-inbound-traffic>
+                                <interfaces>
+                                    <name>ge-0/0/1.0</name>
+                                </interfaces>
+                                <interfaces>
+                                    <name>ge-0/0/2.0</name>
+                                </interfaces>
+                                <screen>test_screen</screen>
+                            </management>
+                        </functional-zone>
+                        <security-zone>
+                            <name>test_sec_zone1</name>
+                            <address-book>
+                                <address>
+                                    <name>test_adr1</name>
+                                    <ip-prefix>10.0.0.0/24</ip-prefix>
+                                    <description>test desc</description>
+                                </address>
+                                <address>
+                                    <name>test_adr2</name>
+                                    <dns-name>
+                                        <name>1.1.1.1</name>
+                                        <ipv6-only />
+                                    </dns-name>
+                                </address>
+                                <address>
+                                    <name>test_adr3</name>
+                                    <range-address>
+                                        <name>10.2.0.1</name>
+                                        <to>
+                                            <range-high>10.2.0.2</range-high>
+                                        </to>
+                                    </range-address>
+                                </address>
+                                <address>
+                                    <name>test_adr4</name>
+                                    <wildcard-address>
+                                        <name>10.3.0.1/24</name>
+                                    </wildcard-address>
+                                </address>
+                                <address>
+                                    <name>test_adr5</name>
+                                    <ip-prefix>10.1.0.0/24</ip-prefix>
+                                    <description>test desc</description>
+                                </address>
+                                <address-set>
+                                    <name>test_adrset1</name>
+                                    <address>
+                                        <name>test_adr1</name>
+                                    </address>
+                                    <address>
+                                        <name>test_adr2</name>
+                                    </address>
+                                </address-set>
+                                <address-set>
+                                    <name>test_adrset2</name>
+                                    <address>
+                                        <name>test_adr3</name>
+                                    </address>
+                                    <address>
+                                        <name>test_adr4</name>
+                                    </address>
+                                </address-set>
+                                <address-set>
+                                    <name>test_adrset3</name>
+                                    <address>
+                                        <name>test_adr5</name>
+                                    </address>
+                                    <address-set>
+                                        <name>test_adrset1</name>
+                                    </address-set>
+                                    <address-set>
+                                        <name>test_adrset2</name>
+                                    </address-set>
+                                    <description>test description</description>
+                                </address-set>
+                            </address-book>
+                            <advance-policy-based-routing-profile>
+                                <profile>test_profile</profile>
+                            </advance-policy-based-routing-profile>
+                            <advanced-connection-tracking>
+                                <mode>allow-any-host</mode>
+                                <timeout>20</timeout>
+                                <track-all-policies-to-this-zone/>
+                            </advanced-connection-tracking>
+                            <application-tracking />
+                            <description>test description</description>
+                            <enable-reverse-reroute />
+                            <host-inbound-traffic>
+                                <protocols>
+                                    <name>all</name>
+                                </protocols>
+                                <protocols>
+                                    <name>bgp</name>
+                                    <except />
+                                </protocols>
+                                <system-services>
+                                    <name>all</name>
+                                </system-services>
+                                <system-services>
+                                    <name>dhcp</name>
+                                    <except />
+                                </system-services>
+                            </host-inbound-traffic>
+                            <interfaces>
+                                <name>ge-0/0/3.0</name>
+                            </interfaces>
+                            <screen>test_screen</screen>
+                            <source-identity-log />
+                            <tcp-rst />
+                            <unidirectional-session-refreshing />
+                        </security-zone>
+                    </zones>
+                </security>
+            </configuration>
+        </rpc-reply>
+        """
+        set_module_args(dict(running_config=parsed_str, state="parsed"))
+        result = self.execute_module(changed=False)
+        parsed_dict = {
+            "functional_zone_management": {
+                "description": "test description 2",
+                "host_inbound_traffic": {
+                    "protocols": [
+                        {"name": "all"},
+                        {"except": True, "name": "bgp"},
+                        {"except": True, "name": "bfd"},
+                    ],
+                    "system_services": [
+                        {"name": "all"},
+                        {"except": True, "name": "dhcp"},
+                        {"except": True, "name": "dhcpv6"},
+                    ],
+                },
+                "interfaces": ["ge-0/0/1.0", "ge-0/0/2.0"],
+                "screen": "test_screen",
+            },
+            "zones": [
+                {
+                    "address_book": {
+                        "address_sets": [
+                            {
+                                "addresses": ["test_adr1", "test_adr2"],
+                                "name": "test_adrset1",
+                            },
+                            {
+                                "addresses": ["test_adr3", "test_adr4"],
+                                "name": "test_adrset2",
+                            },
+                            {
+                                "address_sets": [
+                                    "test_adrset1",
+                                    "test_adrset2",
+                                ],
+                                "addresses": ["test_adr5"],
+                                "description": "test description",
+                                "name": "test_adrset3",
+                            },
+                        ],
+                        "addresses": [
+                            {
+                                "description": "test desc",
+                                "ip_prefix": "10.0.0.0/24",
+                                "name": "test_adr1",
+                            },
+                            {
+                                "dns_name": {
+                                    "ipv6_only": True,
+                                    "name": "1.1.1.1",
+                                },
+                                "name": "test_adr2",
+                            },
+                            {
+                                "name": "test_adr3",
+                                "range_address": {
+                                    "from": "10.2.0.1",
+                                    "to": "10.2.0.2",
+                                },
+                            },
+                            {
+                                "name": "test_adr4",
+                                "wildcard_address": "10.3.0.1/24",
+                            },
+                            {
+                                "description": "test desc",
+                                "ip_prefix": "10.1.0.0/24",
+                                "name": "test_adr5",
+                            },
+                        ],
+                    },
+                    "advance_policy_based_routing_profile": "test_profile",
+                    "advanced_connection_tracking": {
+                        "mode": "allow-any-host",
+                        "timeout": "20",
+                        "track_all_policies_to_this_zone": True,
+                    },
+                    "application_tracking": True,
+                    "description": "test description",
+                    "enable_reverse_reroute": True,
+                    "host_inbound_traffic": {
+                        "protocols": [
+                            {"name": "all"},
+                            {"except": True, "name": "bgp"},
+                        ],
+                        "system_services": [
+                            {"name": "all"},
+                            {"except": True, "name": "dhcp"},
+                        ],
+                    },
+                    "interfaces": {"ge-0/0/3.0"},
+                    "name": "test_sec_zone1",
+                    "screen": "test_screen",
+                    "source_identity_log": True,
+                    "tcp_rst": True,
+                    "unidirectional_session_refreshing": True,
+                },
+                {
+                    "name": "test_sec_zone2",
+                    "source_identity_log": True,
+                    "tcp_rst": True,
+                },
+            ],
+        }
+        self.assertEqual(sorted(parsed_dict), sorted(result["parsed"]))
+
     def test_junos_security_zones_parsed_01(self):
         parsed_str = """
         <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
