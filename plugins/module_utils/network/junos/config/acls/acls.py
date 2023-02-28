@@ -59,7 +59,7 @@ class Acls(ConfigBase):
             self.gather_network_resources,
             data=data,
         )
-        acls_facts = facts["ansible_network_resources"].get("junos_acls")
+        acls_facts = facts["ansible_network_resources"].get("acls")
         if not acls_facts:
             return []
         return acls_facts

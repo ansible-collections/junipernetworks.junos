@@ -98,13 +98,13 @@ class AclsFacts(object):
 
         facts = {}
         if objs:
-            facts["junos_acls"] = []
+            facts["acls"] = []
             params = utils.validate_config(
                 self.argument_spec,
                 {"config": objs},
             )
             for cfg in params["config"]:
-                facts["junos_acls"].append(utils.remove_empties(cfg))
+                facts["acls"].append(utils.remove_empties(cfg))
 
         ansible_facts["ansible_network_resources"].update(facts)
         return ansible_facts
