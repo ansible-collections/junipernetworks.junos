@@ -5,6 +5,22 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v5.0.0
+======
+
+Major Changes
+-------------
+
+- change gathered key from junos_acls to acls
+
+Bugfixes
+--------
+
+- enable provider support for junos_scp and junos_package.
+- fix diff to result when prepared diff exists.
+- fix junos_security_zones facts gathering when we have single interface configured.
+- revert diff mode to default.
+
 v4.1.0
 ======
 

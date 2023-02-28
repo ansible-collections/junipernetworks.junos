@@ -464,3 +464,23 @@ releases:
       - logging_global_size.yaml
       - update_trivial_changes.yaml
     release_date: "2022-11-30"
+  5.0.0:
+    changes:
+      bugfixes:
+        - enable provider support for junos_scp and junos_package.
+        - fix diff to result when prepared diff exists.
+        - fix junos_security_zones facts gathering when we have single interface configured.
+        - revert diff mode to default.
+      major_changes:
+        - change gathered key from junos_acls to acls
+    fragments:
+      - bug_fix_for_security_zones_facts.yaml
+      - fix_trivial_issues.yaml
+      - junos_acls_gathered_key_fix.yaml
+      - prepared_diff_fix.yaml
+      - provider_support_for_legacy_modules.yaml
+      - reboot_task_tag.yaml
+      - rollback_diffmode.yaml
+      - update_bgp_global_fqcn.yaml
+      - update_reboot_timer.yaml
+    release_date: "2023-02-28"
