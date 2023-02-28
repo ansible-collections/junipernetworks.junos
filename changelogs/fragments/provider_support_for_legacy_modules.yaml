@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - enable provider support for junos_scp and junos_package.

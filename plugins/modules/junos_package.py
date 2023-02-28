@@ -93,6 +93,64 @@ options:
       used to load SSH information from a configuration file. If this option is not
       given by default ~/.ssh/config is queried.
     type: path
+  provider:
+    description:
+    - B(Deprecated)
+    - 'Starting with Ansible 2.5 we recommend using C(connection: network_cli) or
+      C(connection: netconf).'
+    - For more information please see the L(Junos OS Platform Options guide, ../network/user_guide/platform_junos.html).
+    - HORIZONTALLINE
+    - A dict object containing connection details.
+    type: dict
+    suboptions:
+      host:
+        description:
+        - Specifies the DNS host name or address for connecting to the remote device
+          over the specified transport.  The value of host is used as the destination
+          address for the transport.
+        type: str
+      port:
+        description:
+        - Specifies the port to use when building the connection to the remote device.  The
+          port value will default to the well known SSH port of 22 (for C(transport=cli))
+          or port 830 (for C(transport=netconf)) device.
+        type: int
+      username:
+        description:
+        - Configures the username to use to authenticate the connection to the remote
+          device.  This value is used to authenticate the SSH session. If the value
+          is not specified in the task, the value of environment variable C(ANSIBLE_NET_USERNAME)
+          will be used instead.
+        type: str
+      password:
+        description:
+        - Specifies the password to use to authenticate the connection to the remote
+          device.   This value is used to authenticate the SSH session. If the value
+          is not specified in the task, the value of environment variable C(ANSIBLE_NET_PASSWORD)
+          will be used instead.
+        type: str
+      timeout:
+        description:
+        - Specifies the timeout in seconds for communicating with the network device
+          for either connecting or sending commands.  If the timeout is exceeded before
+          the operation is completed, the module will error.
+        type: int
+      ssh_keyfile:
+        description:
+        - Specifies the SSH key to use to authenticate the connection to the remote
+          device.   This value is the path to the key used to authenticate the SSH
+          session. If the value is not specified in the task, the value of environment
+          variable C(ANSIBLE_NET_SSH_KEYFILE) will be used instead.
+        type: path
+      transport:
+        description:
+        - Configures the transport connection to use when connecting to the remote
+          device.
+        type: str
+        default: netconf
+        choices:
+        - cli
+        - netconf
 requirements:
 - junos-eznc
 - ncclient (>=v0.5.2)
@@ -128,6 +186,7 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     get_device,
+    junos_argument_spec,
 )
 
 
@@ -183,10 +242,15 @@ def main():
         ssh_config=dict(type="path"),
     )
 
+    argument_spec.update(junos_argument_spec)
+
     module = AnsibleModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
     )
+
+    if module.params["provider"] is None:
+        module.params["provider"] = {}
 
     if not HAS_PYEZ:
         module.fail_json(
