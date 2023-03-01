@@ -9,7 +9,7 @@ v5.0.1
 ======
 
 Release Summary
--------------
+---------------
 
 Rereleased 5.0.0 with updated galaxy tag.
 
