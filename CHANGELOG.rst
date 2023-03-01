@@ -5,6 +5,14 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v5.0.1
+======
+
+Release Summary
+-------------
+
+Rereleased 5.0.0 with updated galaxy tag.
+
 v5.0.0
 ======
 
