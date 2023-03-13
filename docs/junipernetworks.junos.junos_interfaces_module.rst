@@ -882,28 +882,43 @@ Examples
     # Before state:
     # ------------
     # vagrant@vsrx# show interfaces
+    # ge-0/0/1 {
+    #     unit 0;
+    # }
     # fe-0/0/2 {
-    #     description "This is interface DESCRIPTION";
+    #     description "Configured by Ansible-2";
+    #     disable;
     #     vlan-tagging;
+    #     mtu 2800;
     #     unit 10 {
-    #         description "UNIT 10 DESCRIPTION";
     #         vlan-id 10;
     #     }
     #     unit 11 {
-    #         description "UNIT 11 DESCRIPTION";
     #         vlan-id 11;
     #     }
     # }
+    # ge-0/0/2 {
+    #     description "Configured by Ansible-2";
+    #     disable;
+    #     mtu 2800;
+    # }
+    # ge-0/0/3 {
+    #     description "Configured by Ansible-3";
+    # }
     # fxp0 {
-    #     description OUTER;
     #     unit 0 {
-    #         description "Sample config";
     #         family inet {
     #             dhcp;
     #         }
     #     }
     # }
-
+    # lo0 {
+    #     unit 0 {
+    #         family inet {
+    #             address 192.0.2.1/32;
+    #         }
+    #     }
+    # }
 
     - name: Gather junos interfaces as in given arguments
       junipernetworks.junos.junos_interfaces:
@@ -911,34 +926,24 @@ Examples
 
     # Task Output
     # -----------
-    # "gathered": [
-    #         {
-    #             "description": "This is interface DESCRIPTION",
-    #             "enabled": true,
-    #             "name": "fe-0/0/2",
-    #             "units": [
-    #                 {
-    #                     "description": "UNIT 10 DESCRIPTION",
-    #                     "name": 10
-    #                 },
-    #                 {
-    #                     "description": "UNIT 11 DESCRIPTION",
-    #                     "name": 11
-    #                 }
-    #             ]
-    #         },
-    #         {
-    #             "description": "OUTER",
-    #             "enabled": true,
-    #             "name": "fxp0",
-    #             "units": [
-    #                 {
-    #                     "description": "Sample config",
-    #                     "name": 0
-    #                 }
-    #             ]
-    #         }
-    #     ]
+    # gathered:
+    # - enabled: true
+    #   name: ge-0/0/1
+    # - description: Configured by Ansible-2
+    #   enabled: false
+    #   mtu: 2800
+    #   name: fe-0/0/2
+    # - description: Configured by Ansible-2
+    #   enabled: false
+    #   mtu: 2800
+    #   name: ge-0/0/2
+    # - description: Configured by Ansible-3
+    #   enabled: true
+    #   name: ge-0/0/3
+    # - enabled: true
+    #   name: fxp0
+    # - enabled: true
+    #   name: lo0
 
     # Using parsed
 
@@ -997,7 +1002,7 @@ Examples
     #             "speed": "100m"
     #         }
     #     ]
-    #
+
 
     # Using rendered
 
