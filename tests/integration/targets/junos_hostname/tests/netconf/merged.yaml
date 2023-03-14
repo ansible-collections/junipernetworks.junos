@@ -25,7 +25,7 @@
           - "{{ merged['after'] == result['after'] }}"
 
     - name: Merge the provided configuration with the existing running configuration (IDEMPOTENT)
-      junos_hostname: *merged
+      junipernetworks.junos.junos_hostname: *merged
       register: result
 
     - name: Assert that the previous task was idempotent
