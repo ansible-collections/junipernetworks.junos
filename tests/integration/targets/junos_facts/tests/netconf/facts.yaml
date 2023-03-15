@@ -31,6 +31,8 @@
   register: result
   junipernetworks.junos.junos_facts:
     gather_subset: "!hardware"
+  vars:
+    ansible_command_timeout: 100
 
 - name: Assertion
   ansible.builtin.assert:
