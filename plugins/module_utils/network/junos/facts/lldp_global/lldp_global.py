@@ -102,7 +102,7 @@ class Lldp_globalFacts(object):
                 "hold-multiplier",
             )
             if utils.get_xml_conf_arg(lldp_root, "disable", data="tag"):
-                config["enable"] = False
+                config["enabled"] = False
 
         params = utils.validate_config(
             self.argument_spec,
