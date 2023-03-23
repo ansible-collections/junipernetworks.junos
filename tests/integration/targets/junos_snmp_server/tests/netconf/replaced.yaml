@@ -37,7 +37,7 @@
           - "{{ replaced['after'] == result['after'] }}"
 
     - name: Replaced the provided configuration with the existing running configuration (IDEMPOTENT)
-      junos_snmp_server: *replaced
+      junipernetworks.junos.junos_snmp_server: *replaced
       register: result
 
     - name: Assert that the previous task was idempotent
