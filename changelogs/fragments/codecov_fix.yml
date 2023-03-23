@@ -1,0 +1,3 @@
+---
+trivial:
+  - Fixed codecov workflow syntax to correctly report code coverage
