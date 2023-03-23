@@ -1,17 +1,14 @@
 ---
 name: Test collection with codecoverage
-
 concurrency:
   group: ${{ github.head_ref }}
   cancel-in-progress: true
-
 on: # yamllint disable-line rule:truthy
   push:
     branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
-
 jobs:
   codecoverage:
     uses: ansible-network/github_actions/.github/workflows/coverage_network_devices.yml@main

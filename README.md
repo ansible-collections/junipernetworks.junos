@@ -2,6 +2,7 @@
 
 [![CI](https://zuul-ci.org/gated.svg)](https://dashboard.zuul.ansible.com/t/ansible/project/github.com/ansible-collections/junipernetworks.junos) <!--[![Codecov](https://img.shields.io/codecov/c/github/ansible-collections/vyos)](https://codecov.io/gh/ansible-collections/junipernetworks.junos)-->
 [![Codecov](https://codecov.io/gh/ansible-collections/junipernetworks.junos/branch/main/graph/badge.svg)](https://codecov.io/gh/ansible-collections/junipernetworks.junos)
+
 The Ansible Juniper Networks Junos collection includes a variety of Ansible content to help automate the management of Juniper Networks Junos network appliances.
 
 This collection has been tested against Juniper Networks Junos OS 18.4R1.
