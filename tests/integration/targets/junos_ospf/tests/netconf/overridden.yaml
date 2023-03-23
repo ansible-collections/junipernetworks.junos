@@ -26,7 +26,7 @@
                   - name: ge-2/2/0.0
 
     - name: Override Junos OSPF config
-      junos_ospfv2:
+      junipernetworks.junos.junos_ospfv2:
         config:
           - router_id: 10.200.16.75
             areas:

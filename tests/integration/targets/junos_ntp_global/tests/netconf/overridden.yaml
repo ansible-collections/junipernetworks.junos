@@ -31,7 +31,7 @@
           - "{{ replaced['after'] == result.after }}"
 
     - name: Replaced the provided configuration with the existing running configuration (IDEMPOTENT)
-      junos_ntp_global: *overridden
+      junipernetworks.junos.junos_ntp_global: *overridden
       register: result
 
     - name: Assert that the previous task was idempotent

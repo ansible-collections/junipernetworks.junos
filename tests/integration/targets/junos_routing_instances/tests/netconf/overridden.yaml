@@ -95,7 +95,7 @@
             \ == 0 }}"
 
     - name: Override the existing running configuration with the provided configuration (IDEMPOTENT)
-      junos_routing_instances: *overridden
+      junipernetworks.junos.junos_routing_instances: *overridden
       register: result
 
     - name: Assert that the previous task was idempotent

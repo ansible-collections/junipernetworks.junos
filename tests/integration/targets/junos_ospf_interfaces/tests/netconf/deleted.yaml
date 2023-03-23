@@ -38,12 +38,6 @@
         state: deleted
       register: result
 
-    - ansible.builtin.debug:
-        var: result.after
-
-    - ansible.builtin.debug:
-        var: config
-
     - name: Assert changed
       ansible.builtin.assert: &changed
         that:

@@ -12,12 +12,6 @@
       junipernetworks.junos.junos_security_policies:
         state: gathered
 
-    - ansible.builtin.debug:
-        msg: "{{ result['gathered'] }}"
-
-    - ansible.builtin.debug:
-        msg: "{{ merged['after'] }}"
-
     - name: Assert that facts were correctly generated
       ansible.builtin.assert:
         that: "{{ merged['after'] == result['gathered'] }}"

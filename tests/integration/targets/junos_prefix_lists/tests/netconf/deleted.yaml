@@ -42,7 +42,7 @@
             \ == 0 }}"
 
     - name: Delete the existing running configuration (IDEMPOTENT)
-      junos_prefix_lists: *deleted
+      junipernetworks.junos.junos_prefix_lists: *deleted
       register: result
 
     - name: Assert that the previous task was idempotent
@@ -54,7 +54,7 @@
         expected_deleted_output: []
 
     - name: Merge the existing config with provided configuration
-      junos_prefix_lists: *merged
+      junipernetworks.junos.junos_prefix_lists: *merged
       register: result
 
     - name: Delete complete existing bgp address family configuration
