@@ -39,6 +39,7 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
 )
 
 
+
 class Snmp_server(ConfigBase):
     """
     The junos_snmp_server class
@@ -609,11 +610,11 @@ class Snmp_server(ConfigBase):
                         build_child_xml_node(trap_node, "context-oid")
                     if "routing_instance" in options.keys():
                         inst = options.get("routing_instances")
-                        inst_node = build_child_xml_node(
+                        build_child_xml_node(
                             trap_node,
                             "routing-instance",
+                            inst
                         )
-                        build_child_xml_node(inst_node, "name", inst)
                     if "source_address" in options.keys():
                         address = options.get("source_address")
                         source_node = build_child_xml_node(
