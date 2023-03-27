@@ -123,11 +123,11 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             str(result["commands"]),
         )
         self.assertIn(
-            '<nc:view><nc:name>all</nc:name><nc:oid><nc:name>.1</nc:name>',
+            "<nc:view><nc:name>all</nc:name><nc:oid><nc:name>.1</nc:name>",
             str(result["commands"]),
         )
         self.assertIn(
-            '</nc:oid></nc:view></nc:snmp>',
+            "</nc:oid></nc:view></nc:snmp>",
             str(result["commands"]),
         )
 
@@ -137,10 +137,10 @@ class TestJunosSnmp_serverModule(TestJunosModule):
                 config=dict(
                     trap_options=dict(
                         agent_address=dict(
-                            outgoing_interface=True
+                            outgoing_interface=True,
                         ),
-                        context_oid=True
-                    ), 
+                        context_oid=True,
+                    ),
                 ),
                 state="merged",
             ),
@@ -151,11 +151,11 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             str(result["commands"]),
         )
         self.assertIn(
-            '<nc:trap-options><nc:agent-address>outgoing-interface</nc:agent-address><nc:context-oid/>',
+            "<nc:trap-options><nc:agent-address>outgoing-interface</nc:agent-address><nc:context-oid/>",
             str(result["commands"]),
         )
         self.assertIn(
-            '</nc:trap-options></nc:snmp>',
+            "</nc:trap-options></nc:snmp>",
             str(result["commands"]),
         )
 
@@ -163,13 +163,14 @@ class TestJunosSnmp_serverModule(TestJunosModule):
         set_module_args(
             dict(
                 config=dict(
-                    trap_groups=[dict(
-                        categories=dict(
-                            authentication=True
+                    trap_groups=[
+                        dict(
+                            categories=dict(
+                                authentication=True,
+                            ),
+                            name="egress",
                         ),
-                        name="egress"
-                    ), 
-                    ]
+                    ],
                 ),
                 state="merged",
             ),
@@ -180,11 +181,11 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             str(result["commands"]),
         )
         self.assertIn(
-            '<nc:trap-group><nc:categories><nc:authentication/></nc:categories><nc:name>egress</nc:name>',
+            "<nc:trap-group><nc:categories><nc:authentication/></nc:categories><nc:name>egress</nc:name>",
             str(result["commands"]),
         )
         self.assertIn(
-            '</nc:trap-group></nc:snmp>',
+            "</nc:trap-group></nc:snmp>",
             str(result["commands"]),
         )
 
@@ -192,17 +193,18 @@ class TestJunosSnmp_serverModule(TestJunosModule):
         set_module_args(
             dict(
                 config=dict(
-                    trap_groups=[dict(
-                        categories=dict(
-                            chassis=True,
-                            chassis_cluster=True,
-                            configuration=True,
-                            dot3oam_events=True,
-                            link=True,
+                    trap_groups=[
+                        dict(
+                            categories=dict(
+                                chassis=True,
+                                chassis_cluster=True,
+                                configuration=True,
+                                dot3oam_events=True,
+                                link=True,
+                            ),
+                            name="monitor",
                         ),
-                        name="monitor"
-                    ), 
-                    ]
+                    ],
                 ),
                 state="merged",
             ),
@@ -213,7 +215,7 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             str(result["commands"]),
         )
         self.assertIn(
-            '<nc:trap-group><nc:categories><nc:chassis/><nc:chassis-cluster/><nc:configuration/>',
+            "<nc:trap-group><nc:categories><nc:chassis/><nc:chassis-cluster/><nc:configuration/>",
             str(result["commands"]),
         )
 
@@ -221,17 +223,18 @@ class TestJunosSnmp_serverModule(TestJunosModule):
         set_module_args(
             dict(
                 config=dict(
-                    trap_groups=[dict(
-                        categories=dict(
-                            otn_alarms=dict(
-                                oc_lof=True,
-                                oc_lom=True,
-                                oc_los=True
+                    trap_groups=[
+                        dict(
+                            categories=dict(
+                                otn_alarms=dict(
+                                    oc_lof=True,
+                                    oc_lom=True,
+                                    oc_los=True,
+                                ),
                             ),
+                            name="monitor",
                         ),
-                        name="monitor"
-                    ), 
-                    ]
+                    ],
                 ),
                 state="merged",
             ),
@@ -242,11 +245,11 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             str(result["commands"]),
         )
         self.assertIn(
-            '<nc:trap-group><nc:categories><nc:otn-alarms><nc:oc-lof/><nc:oc-lom/><nc:oc-los/></nc:otn-alarms></nc:categories>',
+            "<nc:trap-group><nc:categories><nc:otn-alarms><nc:oc-lof/><nc:oc-lom/><nc:oc-los/></nc:otn-alarms></nc:categories>",
             str(result["commands"]),
         )
         self.assertIn(
-            '<nc:name>monitor</nc:name></nc:trap-group></nc:snmp>',
+            "<nc:name>monitor</nc:name></nc:trap-group></nc:snmp>",
             str(result["commands"]),
         )
 
@@ -255,9 +258,9 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             dict(
                 config=dict(
                     trap_options=dict(
-                            set=True
-                        ),
-                    ), 
+                        set=True,
+                    ),
+                ),
                 state="merged",
             ),
         )
@@ -270,13 +273,12 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             dict(
                 config=dict(
                     trap_options=dict(
-                            enterprise_oid=True,
-                            source_address=dict(
-                                address="192.168.2.0"
-                            ),
-
+                        enterprise_oid=True,
+                        source_address=dict(
+                            address="192.168.2.0",
                         ),
-                    ), 
+                    ),
+                ),
                 state="merged",
             ),
         )
@@ -286,11 +288,11 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             str(result["commands"]),
         )
         self.assertIn(
-            '<nc:trap-options><nc:source-address><nc:address>192.168.2.0</nc:address></nc:source-address>',
+            "<nc:trap-options><nc:source-address><nc:address>192.168.2.0</nc:address></nc:source-address>",
             str(result["commands"]),
         )
         self.assertIn(
-            '</nc:trap-options></nc:snmp>',
+            "</nc:trap-options></nc:snmp>",
             str(result["commands"]),
         )
 
