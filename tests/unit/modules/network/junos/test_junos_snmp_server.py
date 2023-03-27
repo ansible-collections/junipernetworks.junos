@@ -103,6 +103,199 @@ class TestJunosSnmp_serverModule(TestJunosModule):
             str(result["commands"]),
         )
 
+    def test_junos_snmp_server_merged_views(self):
+        set_module_args(
+            dict(
+                config=dict(
+                    views=[
+                        dict(
+                            name="all",
+                            oids=[dict(oid=".1")],
+                        ),
+                    ],
+                ),
+                state="merged",
+            ),
+        )
+        result = self.execute_module(changed=True)
+        self.assertIn(
+            '<nc:snmp xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:view><nc:name>all</nc:name><nc:oid><nc:name>.1</nc:name>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "</nc:oid></nc:view></nc:snmp>",
+            str(result["commands"]),
+        )
+
+    def test_junos_snmp_server_merged_trap_options(self):
+        set_module_args(
+            dict(
+                config=dict(
+                    trap_options=dict(
+                        agent_address=dict(
+                            outgoing_interface=True,
+                        ),
+                        context_oid=True,
+                    ),
+                ),
+                state="merged",
+            ),
+        )
+        result = self.execute_module(changed=True)
+        self.assertIn(
+            '<nc:snmp xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:trap-options><nc:agent-address>outgoing-interface</nc:agent-address><nc:context-oid/>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "</nc:trap-options></nc:snmp>",
+            str(result["commands"]),
+        )
+
+    def test_junos_snmp_server_merged_trap_groups(self):
+        set_module_args(
+            dict(
+                config=dict(
+                    trap_groups=[
+                        dict(
+                            categories=dict(
+                                authentication=True,
+                            ),
+                            name="egress",
+                        ),
+                    ],
+                ),
+                state="merged",
+            ),
+        )
+        result = self.execute_module(changed=True)
+        self.assertIn(
+            '<nc:snmp xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:trap-group><nc:categories><nc:authentication/></nc:categories><nc:name>egress</nc:name>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "</nc:trap-group></nc:snmp>",
+            str(result["commands"]),
+        )
+
+    def test_junos_snmp_server_merged_trap_groups_02(self):
+        set_module_args(
+            dict(
+                config=dict(
+                    trap_groups=[
+                        dict(
+                            categories=dict(
+                                chassis=True,
+                                chassis_cluster=True,
+                                configuration=True,
+                                dot3oam_events=True,
+                                link=True,
+                            ),
+                            name="monitor",
+                        ),
+                    ],
+                ),
+                state="merged",
+            ),
+        )
+        result = self.execute_module(changed=True)
+        self.assertIn(
+            '<nc:snmp xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:trap-group><nc:categories><nc:chassis/><nc:chassis-cluster/><nc:configuration/>",
+            str(result["commands"]),
+        )
+
+    def test_junos_snmp_server_merged_trap_groups_otn_alrams(self):
+        set_module_args(
+            dict(
+                config=dict(
+                    trap_groups=[
+                        dict(
+                            categories=dict(
+                                otn_alarms=dict(
+                                    oc_lof=True,
+                                    oc_lom=True,
+                                    oc_los=True,
+                                ),
+                            ),
+                            name="monitor",
+                        ),
+                    ],
+                ),
+                state="merged",
+            ),
+        )
+        result = self.execute_module(changed=True)
+        self.assertIn(
+            '<nc:snmp xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:trap-group><nc:categories><nc:otn-alarms><nc:oc-lof/><nc:oc-lom/><nc:oc-los/></nc:otn-alarms></nc:categories>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:name>monitor</nc:name></nc:trap-group></nc:snmp>",
+            str(result["commands"]),
+        )
+
+    def test_junos_snmp_server_merged_trap_options_set(self):
+        set_module_args(
+            dict(
+                config=dict(
+                    trap_options=dict(
+                        set=True,
+                    ),
+                ),
+                state="merged",
+            ),
+        )
+        result = self.execute_module(changed=True)
+        expected_commands = '<nc:snmp xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:trap-options/></nc:snmp>'
+        self.assertEquals(expected_commands, "/n".join(result["commands"]))
+
+    def test_junos_snmp_server_merged_trap_options_02(self):
+        set_module_args(
+            dict(
+                config=dict(
+                    trap_options=dict(
+                        enterprise_oid=True,
+                        source_address=dict(
+                            address="192.168.2.0",
+                        ),
+                    ),
+                ),
+                state="merged",
+            ),
+        )
+        result = self.execute_module(changed=True)
+        self.assertIn(
+            '<nc:snmp xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">',
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "<nc:trap-options><nc:source-address><nc:address>192.168.2.0</nc:address></nc:source-address>",
+            str(result["commands"]),
+        )
+        self.assertIn(
+            "</nc:trap-options></nc:snmp>",
+            str(result["commands"]),
+        )
+
     def test_junos_snmp_server_merged_client_02(self):
         set_module_args(
             dict(

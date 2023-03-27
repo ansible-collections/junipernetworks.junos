@@ -23,6 +23,10 @@
               - "eth1"
               - "eth2"
             set: true
+          views:
+            - name: "all"
+              oids:
+                - oid: ".1"
         state: overridden
       register: result
 

@@ -527,111 +527,134 @@ class Snmp_server(ConfigBase):
                     mem_node = build_child_xml_node(trace_node, "memory-trace")
                     build_child_xml_node(mem_node, "size", mem.get("size"))
 
-            if "trap_groups" in want.keys():
-                groups = want.get("trap_groups")
+        if "trap_groups" in want.keys():
+            groups = want.get("trap_groups")
 
-                for trap in groups:
-                    trap_node = build_child_xml_node(snmp_node, "trap-group")
-                    for key in trap.keys():
-                        if key == "name":
-                            build_child_xml_node(
-                                trap_node,
-                                "name",
-                                trap["name"],
-                            )
-                        if key == "destination_port":
-                            build_child_xml_node(
-                                trap_node,
-                                "destination-port",
-                                trap["destination_port"],
-                            )
-                        if key == "categories":
-                            cat_node = build_child_xml_node(
-                                trap_node,
-                                "categories",
-                            )
-                            categories = trap.get("categories")
-                            for key in categories:
-                                if key == "otn_alarms":
-                                    alarms = categories.get("otn_alarms")
-                                    alarm_node = build_child_xml_node(
-                                        cat_node,
-                                        "otn-alarms",
-                                    )
-                                    for key in alarms:
-                                        build_child_xml_node(
-                                            alarm_node,
-                                            key.replace("_", "-"),
-                                        )
-                                else:
+            for trap in groups:
+                trap_node = build_child_xml_node(snmp_node, "trap-group")
+                for key in trap.keys():
+                    if key == "name":
+                        build_child_xml_node(
+                            trap_node,
+                            "name",
+                            trap["name"],
+                        )
+                    if key == "destination_port":
+                        build_child_xml_node(
+                            trap_node,
+                            "destination-port",
+                            trap["destination_port"],
+                        )
+                    if key == "categories":
+                        cat_node = build_child_xml_node(
+                            trap_node,
+                            "categories",
+                        )
+                        categories = trap.get("categories")
+                        for key in categories:
+                            if key == "otn_alarms":
+                                alarms = categories.get("otn_alarms")
+                                alarm_node = build_child_xml_node(
+                                    cat_node,
+                                    "otn-alarms",
+                                )
+                                for key in alarms:
                                     build_child_xml_node(
-                                        cat_node,
+                                        alarm_node,
                                         key.replace("_", "-"),
                                     )
-                        if key == "routing_instance":
-                            build_child_xml_node(
-                                trap_node,
-                                "routing-instance",
-                                trap.get(key),
-                            )
-                        if key == "version":
-                            build_child_xml_node(
-                                trap_node,
-                                "version",
-                                trap.get(key),
-                            )
-                        if key == "targets":
-                            targets = trap.get("targets")
-                            for target in targets:
-                                tar_node = build_child_xml_node(
-                                    trap_node,
-                                    "targets",
+                            else:
+                                build_child_xml_node(
+                                    cat_node,
+                                    key.replace("_", "-"),
                                 )
-                                build_child_xml_node(tar_node, "name", target)
-
-            # trap_options
-            if "trap_options" in want.keys():
-                options = want.get("trap_options")
-
-                if options.keys() == {"set"}:
-                    build_child_xml_node(snmp_node, "trap-options")
-                else:
-                    trap_node = build_child_xml_node(snmp_node, "trap-options")
-                    if "agent_address" in options.keys():
-                        agent = options.get("agent_address")
-                        if agent.get("outgoing_interface"):
-                            build_child_xml_node(
-                                trap_node,
-                                "agent-address",
-                                "outgoing-interface",
-                            )
-                    if options.get("context_oid"):
-                        build_child_xml_node(trap_node, "context-id")
-                    # TODO logical_system
-                    if "routing_instance" in options.keys():
-                        inst = options.get("routing_instances")
-                        inst_node = build_child_xml_node(
+                    if key == "routing_instance":
+                        build_child_xml_node(
                             trap_node,
                             "routing-instance",
+                            trap.get(key),
                         )
-                        build_child_xml_node(inst_node, "name", inst)
-                    if "source_address" in options.keys():
-                        address = options.get("source_address")
-                        source_node = build_child_xml_node(
+                    if key == "version":
+                        build_child_xml_node(
                             trap_node,
-                            "source-address",
+                            "version",
+                            trap.get(key),
                         )
-                        if "address" in address.keys():
-                            build_child_xml_node(
-                                source_node,
-                                "address",
-                                address.get("address"),
+                    if key == "targets":
+                        targets = trap.get("targets")
+                        for target in targets:
+                            tar_node = build_child_xml_node(
+                                trap_node,
+                                "targets",
                             )
-                        if "lowest_loopback" in address.keys():
+                            build_child_xml_node(tar_node, "name", target)
+        # trap_options
+        if "trap_options" in want.keys():
+            options = want.get("trap_options")
+            if options.keys() == {"set"}:
+                build_child_xml_node(snmp_node, "trap-options")
+            else:
+                trap_node = build_child_xml_node(snmp_node, "trap-options")
+                if "agent_address" in options.keys():
+                    agent = options.get("agent_address")
+                    if agent.get("outgoing_interface"):
+                        agent_node = build_child_xml_node(
+                            trap_node,
+                            "agent-address",
+                            "outgoing-interface",
+                        )
+
+                if options.get("context_oid"):
+                    build_child_xml_node(trap_node, "context-oid")
+                if "routing_instance" in options.keys():
+                    inst = options.get("routing_instances")
+                    build_child_xml_node(
+                        trap_node,
+                        "routing-instance",
+                        inst,
+                    )
+                if "source_address" in options.keys():
+                    address = options.get("source_address")
+                    source_node = build_child_xml_node(
+                        trap_node,
+                        "source-address",
+                    )
+                    if "address" in address.keys():
+                        build_child_xml_node(
+                            source_node,
+                            "address",
+                            address.get("address"),
+                        )
+                    if "lowest_loopback" in address.keys():
+                        build_child_xml_node(
+                            source_node,
+                            "lowest-loopback",
+                        )
+        if "views" in want.keys():
+            views = want.get("views")
+            for view in views:
+                view_node = build_child_xml_node(snmp_node, "view")
+
+                if "name" in view.keys():
+                    build_child_xml_node(
+                        view_node,
+                        "name",
+                        view.get("name"),
+                    )
+                if "oids" in view.keys():
+                    oids = view.get("oids")
+                    for oid in oids:
+                        oids_node = build_child_xml_node(view_node, "oid")
+                        if "oid" in oid.keys():
                             build_child_xml_node(
-                                source_node,
-                                "lowest-loopback",
+                                oids_node,
+                                "name",
+                                oid["oid"],
                             )
+                        if "exclude" in oid.keys():
+                            build_child_xml_node(oids_node, "exclude")
+                        if "include" in oid.keys():
+                            build_child_xml_node(oids_node, "include")
         # snmp_v3
         if "snmp_v3" in want.keys():
             snmpv3 = want.get("snmp_v3")
@@ -859,31 +882,6 @@ class Snmp_server(ConfigBase):
                                                 "privacy-password",
                                                 sub_dict["password"],
                                             )
-            if "views" in want.keys():
-                views = want.get("views")
-                for view in views:
-                    view_node = build_child_xml_node(snmp_node, "view")
-
-                    if "name" in view.keys():
-                        build_child_xml_node(
-                            view_node,
-                            "name",
-                            view.get("name"),
-                        )
-                    if "oids" in view.keys():
-                        oids = view.get("oids")
-                        for oid in oids:
-                            oids_node = build_child_xml_node(view_node, "oid")
-                            if "oid" in oid.keys():
-                                build_child_xml_node(
-                                    oids_node,
-                                    "name",
-                                    oid["oid"],
-                                )
-                            if "exclude" in oid.keys():
-                                build_child_xml_node(oids_node, "exclude")
-                            if "include" in oid.keys():
-                                build_child_xml_node(oids_node, "include")
 
     def _state_deleted(self, want, have):
         """The command generator when state is deleted
