@@ -70,7 +70,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>This is a dict object containing configurable options related to backup file path. The value of this option is read only when <code>backup</code> is set to <em>yes</em>, if <code>backup</code> is set to <em>no</em> this option will be silently ignored.</div>
+                        <div>This is a dict object containing configurable options related to backup file path. The value of this option is read only when <code>backup</code> is set to <em>true</em>, if <code>backup</code> is set to <em>false</em> this option will be silently ignored.</div>
                 </td>
             </tr>
                                 <tr>
@@ -374,7 +374,7 @@ Examples
 
     - name: Check correctness of commit configuration
       junipernetworks.junos.junos_config:
-        check_commit: yes
+        check_commit: true
 
     - name: rollback the configuration to id 10
       junipernetworks.junos.junos_config:
@@ -382,7 +382,7 @@ Examples
 
     - name: zero out the current configuration
       junipernetworks.junos.junos_config:
-        zeroize: yes
+        zeroize: true
 
     - name: Set VLAN access and trunking
       junipernetworks.junos.junos_config:
@@ -395,7 +395,7 @@ Examples
 
     - name: confirm a previous commit
       junipernetworks.junos.junos_config:
-        confirm_commit: yes
+        confirm_commit: true
 
     - name: for idempotency, use full-form commands
       junipernetworks.junos.junos_config:
@@ -406,7 +406,7 @@ Examples
     - name: configurable backup path
       junipernetworks.junos.junos_config:
         src: srx.cfg
-        backup: yes
+        backup: true
         backup_options:
           filename: backup.cfg
           dir_path: /home/user
@@ -434,7 +434,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                       <span style="color: purple">string</span>
                     </div>
                 </td>
-                <td>when backup is yes</td>
+                <td>when backup is true</td>
                 <td>
                             <div>The full path to the backup file</div>
                     <br/>
@@ -451,7 +451,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                       <span style="color: purple">string</span>
                     </div>
                 </td>
-                <td>when backup is yes</td>
+                <td>when backup is true</td>
                 <td>
                             <div>The date extracted from the backup file name</div>
                     <br/>
@@ -468,7 +468,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                       <span style="color: purple">string</span>
                     </div>
                 </td>
-                <td>when backup is yes and filename is not specified in backup options</td>
+                <td>when backup is true and filename is not specified in backup options</td>
                 <td>
                             <div>The name of the backup file</div>
                     <br/>
@@ -485,7 +485,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                       <span style="color: purple">string</span>
                     </div>
                 </td>
-                <td>when backup is yes and filename is not specified in backup options</td>
+                <td>when backup is true and filename is not specified in backup options</td>
                 <td>
                             <div>The full path to the backup file excluding the timestamp</div>
                     <br/>
@@ -502,7 +502,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                       <span style="color: purple">string</span>
                     </div>
                 </td>
-                <td>when backup is yes</td>
+                <td>when backup is true</td>
                 <td>
                             <div>The time extracted from the backup file name</div>
                     <br/>
