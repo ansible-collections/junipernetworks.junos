@@ -272,7 +272,7 @@ Examples
     # Before state
     # ------------
     #
-    # ansible@10# show routing-options
+    # admin# show routing-options
     # static {
     #     route 192.168.47.0/24 next-hop 172.16.1.2;
     #     route 192.168.16.0/24 next-hop 172.16.1.2;
