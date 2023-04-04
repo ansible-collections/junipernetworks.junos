@@ -54,7 +54,7 @@ options:
     default: false
   unlink:
     description:
-    - The I(unlink) argument is responsible for instructing the remote device to 
+    - The I(unlink) argument is responsible for instructing the remote device to
       remove the installation packages after installation.
     type: bool
     default: false
