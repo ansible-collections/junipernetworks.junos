@@ -381,7 +381,7 @@ Examples
       junipernetworks.junos.junos_user:
         aggregate:
         - name: ansible
-        purge: yes
+        purge: true
 
     - name: set user password
       junipernetworks.junos.junos_user:

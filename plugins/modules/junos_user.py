@@ -124,7 +124,7 @@ options:
       absolute.  It will remove any previously configured users on the device with
       the exception of the current defined set of aggregate.
     type: bool
-    default: no
+    default: false
   state:
     description:
     - The C(state) argument configures the state of the user definitions as it relates
@@ -140,7 +140,7 @@ options:
     description:
     - Specifies whether or not the configuration is active or deactivated
     type: bool
-    default: yes
+    default: true
 requirements:
 - ncclient (>=v0.5.2)
 notes:
@@ -168,7 +168,7 @@ EXAMPLES = """
   junipernetworks.junos.junos_user:
     aggregate:
     - name: ansible
-    purge: yes
+    purge: true
 
 - name: set user password
   junipernetworks.junos.junos_user:

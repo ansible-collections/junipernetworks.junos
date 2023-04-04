@@ -385,7 +385,7 @@ Examples
     - name: install local package on remote device without rebooting
       junipernetworks.junos.junos_package:
         src: junos-vsrx-12.1X46-D10.2-domestic.tgz
-        reboot: no
+        reboot: false
 
     - name: install local package on remote device with jumpost
       junipernetworks.junos.junos_package:
