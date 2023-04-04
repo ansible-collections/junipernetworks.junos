@@ -383,10 +383,10 @@ Examples
     # ------------
     #
     # admin# show routing-options
-    static {
-        route 192.168.47.0/24 next-hop 172.16.1.2;
-        route 192.168.16.0/24 next-hop 172.16.1.2;
-    }
+    # static {
+    #     route 192.168.47.0/24 next-hop 172.16.1.2;
+    #     route 192.168.16.0/24 next-hop 172.16.1.2;
+    # }
 
     - name: Override provided configuration with device configuration (default operation
         is merge)
