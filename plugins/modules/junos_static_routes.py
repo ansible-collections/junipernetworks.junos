@@ -123,11 +123,10 @@ EXAMPLES = """
 # Before state
 # ------------
 #
-# admin# show routing-options
+# ansible@10# show routing-options
 # static {
 #     route 192.168.47.0/24 next-hop 172.16.1.2;
 #     route 192.168.16.0/24 next-hop 172.16.1.2;
-#     route 10.200.16.75/24 next-hop 10.200.16.2;
 # }
 
 - name: Delete provided configuration (default operation is merge)
@@ -136,10 +135,35 @@ EXAMPLES = """
     - address_families:
       - afi: ipv4
         routes:
-        - dest: 10.200.16.75/24
+        - dest: 192.168.16.0/24
           next_hop:
-          - forward_router_address: 10.200.16.2
+          - forward_router_address: 172.16.1.2
     state: deleted
+
+# Task Output
+# -----------
+# before:
+#   - address_families:
+#       - afi: ipv4
+#         routes:
+#           - dest: 192.168.47.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
+#           - dest: 192.168.16.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
+# commands:
+#   - '<nc:routing-options
+#     xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:static><nc:route
+#     delete="delete"><nc:name>192.168.16.0/24</nc:name></nc:route></nc:static></nc:routing-options>'
+#   - '<nc:routing-instances xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>'
+# after:
+#   - address_families:
+#       - afi: ipv4
+#         routes:
+#           - dest: 192.168.47.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
 
 # After state:
 # ------------
@@ -147,7 +171,6 @@ EXAMPLES = """
 # admin# show routing-options
 # static {
 #     route 192.168.47.0/24 next-hop 172.16.1.2;
-#     route 192.168.16.0/24 next-hop 172.16.1.2;
 # }
 
 # Using merged
@@ -158,7 +181,6 @@ EXAMPLES = """
 # admin# show routing-options
 # static {
 #     route 192.168.47.0/24 next-hop 172.16.1.2;
-#     route 192.168.16.0/24 next-hop 172.16.1.2;
 # }
 
 - name: Merge provided configuration with device configuration (default operation
@@ -168,11 +190,35 @@ EXAMPLES = """
     - address_families:
       - afi: ipv4
         routes:
-        - dest: 10.200.16.75/24
+        - dest: 192.168.16.0/24
           next_hop:
-          - forward_router_address: 10.200.16.2
+          - forward_router_address: 172.16.1.2
     state: merged
 
+# Task Output
+# -----------
+# before:
+#   - address_families:
+#       - afi: ipv4
+#         routes:
+#           - dest: 192.168.47.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
+# commands:
+#   - '<nc:routing-options
+#     xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:static><nc:route><nc:name>192.168.16.0/24</nc:name>
+#     <nc:next-hop>172.16.1.2</nc:next-hop></nc:route></nc:static></nc:routing-options>'
+#   - '<nc:routing-instances xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>'
+# after:
+#   - address_families:
+#       - afi: ipv4
+#         routes:
+#           - dest: 192.168.47.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
+#           - dest: 192.168.16.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
 # After state:
 # ------------
 #
@@ -180,7 +226,6 @@ EXAMPLES = """
 # static {
 #     route 192.168.47.0/24 next-hop 172.16.1.2;
 #     route 192.168.16.0/24 next-hop 172.16.1.2;
-#     route 10.200.16.75/24 next-hop 10.200.16.2;
 # }
 
 # Using overridden
@@ -189,10 +234,10 @@ EXAMPLES = """
 # ------------
 #
 # admin# show routing-options
-# static {
-#     route 192.168.47.0/24 next-hop 172.16.1.2;
-#     route 192.168.16.0/24 next-hop 172.16.0.1;
-# }
+static {
+    route 192.168.47.0/24 next-hop 172.16.1.2;
+    route 192.168.16.0/24 next-hop 172.16.1.2;
+}
 
 - name: Override provided configuration with device configuration (default operation
     is merge)
@@ -201,17 +246,43 @@ EXAMPLES = """
     - address_families:
       - afi: ipv4
         routes:
-        - dest: 10.200.16.75/24
+        - dest: 192.168.16.0/24
           next_hop:
-          - forward_router_address: 10.200.16.2
+          - forward_router_address: 172.16.0.1
     state: overridden
+# Task Output
+# -----------
+# before:
+#   - address_families:
+#       - afi: ipv4
+#         routes:
+#           - dest: 192.168.47.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
+#           - dest: 192.168.16.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
+# commands:
+#   - >-
+#     <nc:routing-options
+#     xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:static><nc:route
+#     delete="delete"><nc:name>192.168.47.0/24</nc:name></nc:route><nc:route
+#     delete="delete"><nc:name>192.168.16.0/24</nc:name></nc:route></nc:static><nc:static><nc:route><nc:name>192.168.16.0/24</nc:name><nc:next-hop>172.16.0.1</nc:next-hop></nc:route></nc:static></nc:routing-options>
+#   - '<nc:routing-instances xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>'
+# after:
+#   - address_families:
+#       - afi: ipv4
+#         routes:
+#           - dest: 192.168.16.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.0.1
 
 # After state:
 # ------------
 #
 # admin# show routing-options
 # static {
-#     route 10.200.16.75/24 next-hop 10.200.16.2;
+#     route 192.168.16.0/24 next-hop 172.16.0.1;
 # }
 
 # Using replaced
@@ -236,6 +307,35 @@ EXAMPLES = """
           next_hop:
           - forward_router_address: 10.200.16.2
     state: replaced
+
+# Task Output
+# -----------
+# before:
+#   - address_families:
+#       - afi: ipv4
+#         routes:
+#           - dest: 192.168.47.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
+#           - dest: 192.168.16.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
+# commands:
+#   - >-
+#     <nc:routing-options
+#     xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:static><nc:route
+#     delete="delete"><nc:name>192.168.47.0/24</nc:name></nc:route></nc:static><nc:static><nc:route><nc:name>192.168.47.0/24</nc:name><nc:next-hop>10.200.16.2</nc:next-hop></nc:route></nc:static></nc:routing-options>
+#   - '<nc:routing-instances xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>'
+# after:
+#   - address_families:
+#       - afi: ipv4
+#         routes:
+#           - dest: 192.168.16.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
+#           - dest: 192.168.47.0/24
+#             next_hop:
+#               - forward_router_address: 10.200.16.2
 
 # After state:
 # ------------
