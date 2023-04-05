@@ -956,8 +956,8 @@ options:
 EXAMPLES = """
 # Using merged
 #
-# Before state
-# ------------
+# Before state:
+# -------------
 #
 # vsrx# show bgp summary
 # BGP is not running
@@ -994,8 +994,8 @@ EXAMPLES = """
       preference: 2
     state: merged
 
-# Task Output
-# -------------------------
+# Task Output:
+# ------------
 # before: {}
 #
 # commands:
@@ -1031,8 +1031,8 @@ EXAMPLES = """
 #   precision_timers: true
 #   preference: '2'
 
-# After state
-# -----------
+# After state:
+# ------------
 #
 # vsrx# show routing-options autonomous-system
 # 65534 loops 3 asdot-notation;
@@ -1065,8 +1065,8 @@ EXAMPLES = """
 
 # Using replaced
 #
-# Before state
-# ------------
+# Before state:
+# -------------
 #
 # vsrx# show routing-options autonomous-system
 # [edit]
@@ -1118,7 +1118,7 @@ EXAMPLES = """
    state: replaced
 
 # Task Output:
-# ---------------
+# ------------
 #
 # before:
 #   accept_remote_nexthop: true
@@ -1175,8 +1175,8 @@ EXAMPLES = """
 #   out_delay: 10
 #   preference: '2'
 
-# After state
-# -----------
+# After state:
+# ------------
 #
 # varx# show protocols bgp
 # description "Replace running bgp config";
@@ -1233,7 +1233,7 @@ EXAMPLES = """
     state: deleted
 
 # Task Output:
-# ---------------
+# ------------
 
 # before:
 #   advertise_inactive: true
@@ -1263,16 +1263,16 @@ EXAMPLES = """
 
 # after: {}
 
-# After state
-# -----------
+# After state:
+# ------------
 # vsrx# show protocols bgp
 
 # vsrx# show routing-options autonomous-system
 
 # Using gathered
 #
-# Before state
-# ------------
+# Before state:
+# -------------
 #
 # vsrx# show protocols bgp
 # precision-timers;
@@ -1306,7 +1306,7 @@ EXAMPLES = """
     state: gathered
 
 # Task Output:
-# ---------------
+# ------------
 
 # gathered:
 #   accept_remote_nexthop: true
@@ -1338,8 +1338,8 @@ EXAMPLES = """
 # Using purged
 #"(NOTE: This WILL delete the configured global BGP, and BGP address family config)"
 
-# Before state
-# ------------
+# Before state:
+# -------------
 #
 # vsrx# show protocols bgp
 # precision-timers;
@@ -1373,7 +1373,7 @@ EXAMPLES = """
     state: purged
 
 # Task Output:
-# ---------------
+# ------------
 
 # before:
 #   accept_remote_nexthop: true
@@ -1409,15 +1409,15 @@ EXAMPLES = """
 
 # after: {}
 
-# After state
-# ----------
+# After state:
+# ------------
 # vsrx# show protocols bgp
 
 # vsrx# show routing-options autonomous-system
 
 # Using rendered
 
-- name: Render the commands for provided  configuration
+- name: Render the commands for provided configuration
   junipernetworks.junos.junos_bgp_global:
     config:
       as_number: "65534"
@@ -1448,7 +1448,7 @@ EXAMPLES = """
     state: rendered
 
 # Task Output:
-# ---------------
+# ------------
 
 # rendered:
 # <nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
@@ -1560,13 +1560,13 @@ EXAMPLES = """
 # </rpc-reply>
 
 
-- name: Parsed the device configuration to get output commands
+- name: Parsed the device configuration to get ansible facts
   junipernetworks.junos.junos_bgp_global:
     running_config: "{{ lookup('file', './parsed.cfg') }}"
     state: parsed
 
-    # Task Output:
-# ---------------
+# Task Output:
+# ------------
 
 # parsed:
 #   accept_remote_nexthop: true
