@@ -49,7 +49,7 @@ options:
     description:
     - Specifies whether or not the configuration is active or deactivated
     type: bool
-    default: yes
+    default: true
 requirements:
 - ncclient (>=v0.5.2)
 notes:
