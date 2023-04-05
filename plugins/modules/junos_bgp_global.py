@@ -1288,7 +1288,7 @@ EXAMPLES = """
 # out-delay 10;
 # log-updown;
 # damping;
-# bgp-error-tolerance {                   
+# bgp-error-tolerance {
 #     malformed-route-limit 20000000;
 # }
 # authentication-algorithm md5;
