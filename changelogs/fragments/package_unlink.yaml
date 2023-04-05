@@ -1,0 +1,3 @@
+---
+trivial:
+  - Adding unlink option to junos package installation.
