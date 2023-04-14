@@ -6147,6 +6147,89 @@ Examples
                     min_delay_routing_uptime: 23000
                   graceful_restart_forwarding_state_bit: 'from-fib'
         state: merged
+    # Task Output:
+    # ------------
+    #
+    # before: {}
+    #
+    # commands:
+    # - <nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:bgp><nc:family><nc:evpn><nc:signaling>
+    #   <nc:accepted-prefix-limit><nc:maximum>20</nc:maximum><nc:teardown><nc:limit-threshold>98</nc:limit-threshold>
+    #   <nc:idle-timeout><nc:timeout>2001</nc:timeout></nc:idle-timeout></nc:teardown></nc:accepted-prefix-limit>
+    #   <nc:damping/><nc:defer-initial-multipath-build><nc:maximum-delay>2</nc:maximum-delay>
+    #   </nc:defer-initial-multipath-build></nc:signaling></nc:evpn><nc:inet><nc:flow><nc:legacy-redirect-ip-action>
+    #   <nc:send/><nc:receive/></nc:legacy-redirect-ip-action><nc:loops>4</nc:loops><nc:no-install/>
+    #   <nc:output-queue-priority><nc:expedited/></nc:output-queue-priority><nc:secondary-independent-resolution/>
+    #   </nc:flow><nc:unicast><nc:extended-nexthop/><nc:extended-nexthop-color/><nc:local-ipv4-address>9.9.9.9</nc:local-ipv4-address>
+    #   </nc:unicast><nc:labeled-unicast><nc:entropy-label><nc:no-next-hop-validation/></nc:entropy-label>
+    #   <nc:explicit-null><nc:connected-only/></nc:explicit-null><nc:per-prefix-label/><nc:per-group-label/>
+    #   <nc:prefix-limit><nc:maximum>20</nc:maximum><nc:teardown>99<nc:idle-timeout><nc:forever/></nc:idle-timeout>
+    #   </nc:teardown></nc:prefix-limit><nc:resolve-vpn/><nc:rib><nc:inet.3/></nc:rib><nc:route-refresh-priority>
+    #   <nc:expedited/><nc:priority>3</nc:priority></nc:route-refresh-priority></nc:labeled-unicast><nc:any>
+    #   <nc:accepted-prefix-limit><nc:maximum>20</nc:maximum><nc:teardown><nc:limit-threshold>99</nc:limit-threshold>
+    #   <nc:idle-timeout><nc:timeout>2000</nc:timeout></nc:idle-timeout></nc:teardown></nc:accepted-prefix-limit>
+    #   <nc:damping/><nc:defer-initial-multipath-build><nc:maximum-delay>2</nc:maximum-delay></nc:defer-initial-multipath-build>
+    #   <nc:delay-route-advertisements><nc:maximum-delay><nc:route-age>20</nc:route-age><nc:routing-uptime>32000</nc:routing-uptime>
+    #   </nc:maximum-delay><nc:minimum-delay><nc:inbound-convergence>32000</nc:inbound-convergence>
+    #   <nc:routing-uptime>23000</nc:routing-uptime></nc:minimum-delay></nc:delay-route-advertisements><nc:graceful-restart>
+    #   <nc:forwarding-state-bit>from-fib</nc:forwarding-state-bit></nc:graceful-restart></nc:any></nc:inet></nc:family>
+    #   </nc:bgp></nc:protocols>
+    # - <nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>
+    #
+    # after:
+    #   address_family:
+    #   - af_type:
+    #     - accepted_prefix_limit:
+    #         idle_timeout_value: 2001
+    #         limit_threshold: 98
+    #         maximum: 20
+    #       damping: true
+    #       defer_initial_multipath_build:
+    #         maximum_delay: 2
+    #       type: signaling
+    #     afi: evpn
+    #   - af_type:
+    #     - accepted_prefix_limit:
+    #         idle_timeout_value: 2000
+    #         limit_threshold: 99
+    #         maximum: 20
+    #       damping: true
+    #       defer_initial_multipath_build:
+    #         maximum_delay: 2
+    #       delay_route_advertisements:
+    #         max_delay_route_age: 20
+    #         max_delay_routing_uptime: 32000
+    #         min_delay_inbound_convergence: 32000
+    #         min_delay_routing_uptime: 23000
+    #       graceful_restart_forwarding_state_bit: from-fib
+    #       type: any
+    #     - legacy_redirect_ip_action:
+    #         receive: true
+    #         send: true
+    #       loops: 4
+    #       no_install: true
+    #       output_queue_priority_expedited: true
+    #       secondary_independent_resolution: true
+    #       type: flow
+    #     - entropy_label:
+    #         no_next_hop_validation: true
+    #       explicit_null:
+    #         connected_only: true
+    #       per_group_label: true
+    #       per_prefix_label: true
+    #       prefix_limit:
+    #         forever: true
+    #         limit_threshold: 99
+    #         maximum: 20
+    #       resolve_vpn: true
+    #       rib: inet.3
+    #       route_refresh_priority_priority: 3
+    #       type: labeled-unicast
+    #     - extended_nexthop: true
+    #       extended_nexthop_color: true
+    #       local_ipv4_address: 9.9.9.9
+    #       type: unicast
+    #     afi: inet
 
     # After state
     # -----------
@@ -6221,6 +6304,7 @@ Examples
     #         }
     #     }
     # }
+    #
     # Using replaced
     #
     # Before state
@@ -6327,21 +6411,137 @@ Examples
                  damping: true
        state: replaced
 
+    # Task Output:
+    # ------------
+    #
+    #  before:
+    #   address_family:
+    #   - af_type:
+    #     - accepted_prefix_limit:
+    #         idle_timeout_value: 2001
+    #         limit_threshold: 98
+    #         maximum: 20
+    #       damping: true
+    #       defer_initial_multipath_build:
+    #         maximum_delay: 2
+    #       type: signaling
+    #     afi: evpn
+    #   - af_type:
+    #     - accepted_prefix_limit:
+    #         idle_timeout_value: 2000
+    #         limit_threshold: 99
+    #         maximum: 20
+    #       damping: true
+    #       defer_initial_multipath_build:
+    #         maximum_delay: 2
+    #       delay_route_advertisements:
+    #         max_delay_route_age: 20
+    #         max_delay_routing_uptime: 32000
+    #         min_delay_inbound_convergence: 32000
+    #         min_delay_routing_uptime: 23000
+    #       graceful_restart_forwarding_state_bit: from-fib
+    #       type: any
+    #     - legacy_redirect_ip_action:
+    #         receive: true
+    #         send: true
+    #       loops: 4
+    #       no_install: true
+    #       output_queue_priority_expedited: true
+    #       secondary_independent_resolution: true
+    #       type: flow
+    #     - entropy_label:
+    #         no_next_hop_validation: true
+    #       explicit_null:
+    #         connected_only: true
+    #       per_group_label: true
+    #       per_prefix_label: true
+    #       prefix_limit:
+    #         forever: true
+    #         limit_threshold: 99
+    #         maximum: 20
+    #       resolve_vpn: true
+    #       rib: inet.3
+    #       route_refresh_priority_priority: 3
+    #       type: labeled-unicast
+    #     - extended_nexthop: true
+    #       extended_nexthop_color: true
+    #       local_ipv4_address: 9.9.9.9
+    #       type: unicast
+    #     afi: inet
+    #
+    # commands:
+    # - <nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:bgp><nc:family>
+    #   <nc:evpn delete="delete"/></nc:family><nc:family><nc:evpn><nc:signaling><nc:accepted-prefix-limit>
+    #   <nc:maximum>21</nc:maximum><nc:teardown><nc:limit-threshold>99</nc:limit-threshold><nc:idle-timeout>
+    #   <nc:timeout>2002</nc:timeout></nc:idle-timeout></nc:teardown></nc:accepted-prefix-limit><nc:damping/>
+    #   <nc:delay-route-advertisements><nc:maximum-delay><nc:route-age>20</nc:route-age>
+    #   <nc:routing-uptime>32000</nc:routing-uptime></nc:maximum-delay><nc:minimum-delay>
+    #   <nc:inbound-convergence>32000</nc:inbound-convergence><nc:routing-uptime>23000</nc:routing-uptime>
+    #   </nc:minimum-delay></nc:delay-route-advertisements></nc:signaling></nc:evpn></nc:family></nc:bgp></nc:protocols>
+    # - <nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>
+    #
+    # after:
+    #   address_family:
+    #   - af_type:
+    #     - accepted_prefix_limit:
+    #         idle_timeout_value: 2002
+    #         limit_threshold: 99
+    #         maximum: 21
+    #       damping: true
+    #       delay_route_advertisements:
+    #         max_delay_route_age: 20
+    #         max_delay_routing_uptime: 32000
+    #         min_delay_inbound_convergence: 32000
+    #         min_delay_routing_uptime: 23000
+    #       type: signaling
+    #     afi: evpn
+    #   - af_type:
+    #     - accepted_prefix_limit:
+    #         idle_timeout_value: 2000
+    #         limit_threshold: 99
+    #         maximum: 20
+    #       damping: true
+    #       defer_initial_multipath_build:
+    #         maximum_delay: 2
+    #       delay_route_advertisements:
+    #         max_delay_route_age: 20
+    #         max_delay_routing_uptime: 32000
+    #         min_delay_inbound_convergence: 32000
+    #         min_delay_routing_uptime: 23000
+    #       graceful_restart_forwarding_state_bit: from-fib
+    #       type: any
+    #     - legacy_redirect_ip_action:
+    #         receive: true
+    #         send: true
+    #       loops: 4
+    #       no_install: true
+    #       output_queue_priority_expedited: true
+    #       secondary_independent_resolution: true
+    #       type: flow
+    #     - entropy_label:
+    #         no_next_hop_validation: true
+    #       explicit_null:
+    #         connected_only: true
+    #       per_group_label: true
+    #       per_prefix_label: true
+    #       prefix_limit:
+    #         forever: true
+    #         limit_threshold: 99
+    #         maximum: 20
+    #       resolve_vpn: true
+    #       rib: inet.3
+    #       route_refresh_priority_priority: 3
+    #       type: labeled-unicast
+    #     - extended_nexthop: true
+    #       extended_nexthop_color: true
+    #       local_ipv4_address: 9.9.9.9
+    #       type: unicast
+    #     afi: inet
+    #
     # After state
     # -----------
     #
     # admin# show protocols bgp
-    # preference 2;
-    # hold-time 5;
-    # advertise-inactive;
-    # out-delay 10;
-    # bgp-error-tolerance {
-    #     malformed-route-limit 40000000;
-    # }
-    # authentication-algorithm md5;
-    # advertise-bgp-static {
-    #     policy static-to-bgp;
-    # }
     # family inet {
     #     unicast {
     #         local-ipv4-address 9.9.9.9;
@@ -6418,6 +6618,7 @@ Examples
     #         }
     #     }
     # }
+    #
     # Using overridden
     #
     # Before state
@@ -6513,6 +6714,79 @@ Examples
                  damping: true
        state: overridden
 
+    # Task Output:
+    # ------------
+    #
+    # before:
+    #   address_family:
+    #   - af_type:
+    #     - accepted_prefix_limit:
+    #         idle_timeout_value: 2002
+    #         limit_threshold: 99
+    #         maximum: 21
+    #       damping: true
+    #       delay_route_advertisements:
+    #         max_delay_route_age: 20
+    #         max_delay_routing_uptime: 32000
+    #         min_delay_inbound_convergence: 32000
+    #         min_delay_routing_uptime: 23000
+    #       type: signaling
+    #     afi: evpn
+    #   - af_type:
+    #     - accepted_prefix_limit:
+    #         idle_timeout_value: 2000
+    #         limit_threshold: 99
+    #         maximum: 20
+    #       damping: true
+    #       defer_initial_multipath_build:
+    #         maximum_delay: 2
+    #       delay_route_advertisements:
+    #         max_delay_route_age: 20
+    #         max_delay_routing_uptime: 32000
+    #         min_delay_inbound_convergence: 32000
+    #         min_delay_routing_uptime: 23000
+    #       graceful_restart_forwarding_state_bit: from-fib
+    #       type: any
+    #     - legacy_redirect_ip_action:
+    #         receive: true
+    #         send: true
+    #       loops: 4
+    #       no_install: true
+    #       output_queue_priority_expedited: true
+    #       secondary_independent_resolution: true
+    #       type: flow
+    #     - entropy_label:
+    #         no_next_hop_validation: true
+    #       explicit_null:
+    #         connected_only: true
+    #       per_group_label: true
+    #       per_prefix_label: true
+    #       prefix_limit:
+    #         forever: true
+    #         limit_threshold: 99
+    #         maximum: 20
+    #       resolve_vpn: true
+    #       rib: inet.3
+    #       route_refresh_priority_priority: 3
+    #       type: labeled-unicast
+    #     - extended_nexthop: true
+    #       extended_nexthop_color: true
+    #       local_ipv4_address: 9.9.9.9
+    #       type: unicast
+    #     afi: inet
+    #
+    # commands:
+    # - <nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:bgp><nc:family>
+    #   <nc:evpn delete="delete"/><nc:inet delete="delete"/></nc:family><nc:family><nc:evpn delete="delete"/>
+    #   </nc:family><nc:family><nc:evpn><nc:signaling><nc:accepted-prefix-limit><nc:maximum>21</nc:maximum>
+    #   <nc:teardown><nc:limit-threshold>99</nc:limit-threshold><nc:idle-timeout><nc:timeout>2002</nc:timeout>
+    #   </nc:idle-timeout></nc:teardown></nc:accepted-prefix-limit><nc:damping/><nc:delay-route-advertisements>
+    #   <nc:maximum-delay><nc:route-age>20</nc:route-age><nc:routing-uptime>32000</nc:routing-uptime>
+    #   </nc:maximum-delay><nc:minimum-delay><nc:inbound-convergence>32000</nc:inbound-convergence>
+    #   <nc:routing-uptime>23000</nc:routing-uptime></nc:minimum-delay></nc:delay-route-advertisements>
+    #   </nc:signaling></nc:evpn></nc:family></nc:bgp></nc:protocols>
+    # - <nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>
+    #
     # After state
     # -----------
     #
@@ -6624,14 +6898,86 @@ Examples
           - afi: 'inet'
        state: deleted
 
+    # Task Output:
+    # ------------
+    #
+    # before:
+    #   address_family:
+    #   - af_type:
+    #     - accepted_prefix_limit:
+    #         idle_timeout_value: 2001
+    #         limit_threshold: 98
+    #         maximum: 20
+    #       damping: true
+    #       defer_initial_multipath_build:
+    #         maximum_delay: 2
+    #       type: signaling
+    #     afi: evpn
+    #   - af_type:
+    #     - accepted_prefix_limit:
+    #         idle_timeout_value: 2000
+    #         limit_threshold: 99
+    #         maximum: 20
+    #       damping: true
+    #       defer_initial_multipath_build:
+    #         maximum_delay: 2
+    #       delay_route_advertisements:
+    #         max_delay_route_age: 20
+    #         max_delay_routing_uptime: 32000
+    #         min_delay_inbound_convergence: 32000
+    #         min_delay_routing_uptime: 23000
+    #       graceful_restart_forwarding_state_bit: from-fib
+    #       type: any
+    #     - legacy_redirect_ip_action:
+    #         receive: true
+    #         send: true
+    #       loops: 4
+    #       no_install: true
+    #       output_queue_priority_expedited: true
+    #       secondary_independent_resolution: true
+    #       type: flow
+    #     - entropy_label:
+    #         no_next_hop_validation: true
+    #       explicit_null:
+    #         connected_only: true
+    #       per_group_label: true
+    #       per_prefix_label: true
+    #       prefix_limit:
+    #         forever: true
+    #         limit_threshold: 99
+    #         maximum: 20
+    #       resolve_vpn: true
+    #       rib: inet.3
+    #       route_refresh_priority_priority: 3
+    #       type: labeled-unicast
+    #     - extended_nexthop: true
+    #       extended_nexthop_color: true
+    #       local_ipv4_address: 9.9.9.9
+    #       type: unicast
+    #     afi: inet
+    #
+    # commands:
+    # - <nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:bgp>
+    #   <nc:family><nc:inet delete="delete"/></nc:family></nc:bgp></nc:protocols>
+    # - <nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>
+    #
+    # after:
+    #   address_family:
+    #   - af_type:
+    #     - accepted_prefix_limit:
+    #         idle_timeout_value: 2001
+    #         limit_threshold: 98
+    #         maximum: 20
+    #       damping: true
+    #       defer_initial_multipath_build:
+    #         maximum_delay: 2
+    #       type: signaling
+    #     afi: evpn
+    #
     # After state
     # -----------
     #
     # admin# show protocols bgp
-    # preference 2;
-    # hold-time 5;
-    # advertise-inactive;
-    # out-delay 10;
     # family evpn {
     #     signaling {
     #         accepted-prefix-limit {
@@ -6651,10 +6997,6 @@ Examples
     # ------------
     #
     # admin# show protocols bgp
-    # preference 2;
-    # hold-time 5;
-    # advertise-inactive;
-    # out-delay 10;
     # family inet {
     #     unicast {
     #         local-ipv4-address 9.9.9.9;
@@ -6730,15 +7072,77 @@ Examples
        config:
        state: deleted
 
+    #
+    # Task Output:
+    # ------------
+    #
+    # before:
+    #   address_family:
+    #   - af_type:
+    #     - accepted_prefix_limit:
+    #         idle_timeout_value: 2001
+    #         limit_threshold: 98
+    #         maximum: 20
+    #       damping: true
+    #       defer_initial_multipath_build:
+    #         maximum_delay: 2
+    #       type: signaling
+    #     afi: evpn
+    #   - af_type:
+    #     - accepted_prefix_limit:
+    #         idle_timeout_value: 2000
+    #         limit_threshold: 99
+    #         maximum: 20
+    #       damping: true
+    #       defer_initial_multipath_build:
+    #         maximum_delay: 2
+    #       delay_route_advertisements:
+    #         max_delay_route_age: 20
+    #         max_delay_routing_uptime: 32000
+    #         min_delay_inbound_convergence: 32000
+    #         min_delay_routing_uptime: 23000
+    #       graceful_restart_forwarding_state_bit: from-fib
+    #       type: any
+    #     - legacy_redirect_ip_action:
+    #         receive: true
+    #         send: true
+    #       loops: 4
+    #       no_install: true
+    #       output_queue_priority_expedited: true
+    #       secondary_independent_resolution: true
+    #       type: flow
+    #     - entropy_label:
+    #         no_next_hop_validation: true
+    #       explicit_null:
+    #         connected_only: true
+    #       per_group_label: true
+    #       per_prefix_label: true
+    #       prefix_limit:
+    #         forever: true
+    #         limit_threshold: 99
+    #         maximum: 20
+    #       resolve_vpn: true
+    #       rib: inet.3
+    #       route_refresh_priority_priority: 3
+    #       type: labeled-unicast
+    #     - extended_nexthop: true
+    #       extended_nexthop_color: true
+    #       local_ipv4_address: 9.9.9.9
+    #       type: unicast
+    #     afi: inet
+    # commands:
+    # - <nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+    #   <nc:bgp><nc:family><nc:evpn delete="delete"/><nc:inet delete="delete"/>
+    #   </nc:family></nc:bgp></nc:protocols>
+    # - <nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>
+    #
+    # after: {}
+
     # After state
     # -----------
     #
     # admin# show protocols bgp
-    # preference 2;
-    # hold-time 5;
-    # advertise-inactive;
-    # out-delay 10;
-
+    #
 
     # Using gathered
     #
@@ -6746,10 +7150,6 @@ Examples
     # ------------
     #
     # admin# show protocols bgp
-    # preference 2;
-    # hold-time 5;
-    # advertise-inactive;
-    # out-delay 10;
     # family inet {
     #     unicast {
     #         local-ipv4-address 9.9.9.9;
@@ -6826,92 +7226,64 @@ Examples
         state: gathered
     #
     #
-    # -------------------------
-    # Module Execution Result
-    # -------------------------
+    # Task Output:
+    # ------------
     #
-    #    "gathered": {
-    #         "address_family": [
-    #             {
-    #                 "af_type": [
-    #                     {
-    #                         "accepted_prefix_limit": {
-    #                             "idle_timeout_value": 2001,
-    #                             "limit_threshold": 98,
-    #                             "maximum": 20
-    #                         },
-    #                         "damping": true,
-    #                         "defer_initial_multipath_build": {
-    #                             "maximum_delay": 2
-    #                         },
-    #                         "type": "signaling"
-    #                     }
-    #                 ],
-    #                 "afi": "evpn"
-    #             },
-    #             {
-    #                 "af_type": [
-    #                     {
-    #                         "accepted_prefix_limit": {
-    #                             "idle_timeout_value": 2000,
-    #                             "limit_threshold": 99,
-    #                             "maximum": 20
-    #                         },
-    #                         "damping": true,
-    #                         "defer_initial_multipath_build": {
-    #                             "maximum_delay": 2
-    #                         },
-    #                         "delay_route_advertisements": {
-    #                             "max_delay_route_age": 20,
-    #                             "max_delay_routing_uptime": 32000,
-    #                             "min_delay_inbound_convergence": 32000,
-    #                             "min_delay_routing_uptime": 23000
-    #                         },
-    #                         "graceful_restart_forwarding_state_bit": "from-fib",
-    #                         "type": "any"
-    #                     },
-    #                     {
-    #                         "legacy_redirect_ip_action": {
-    #                             "receive": true,
-    #                             "send": true
-    #                         },
-    #                         "loops": 4,
-    #                         "no_install": true,
-    #                         "output_queue_priority_expedited": true,
-    #                         "secondary_independent_resolution": true,
-    #                         "type": "flow"
-    #                     },
-    #                     {
-    #                         "entropy_label": {
-    #                             "no_next_hop_validation": true
-    #                         },
-    #                         "explicit_null": {
-    #                             "connected_only": true
-    #                         },
-    #                         "per_group_label": true,
-    #                         "per_prefix_label": true,
-    #                         "prefix_limit": {
-    #                             "forever": true,
-    #                             "limit_threshold": 99,
-    #                             "maximum": 20
-    #                         },
-    #                         "resolve_vpn": true,
-    #                         "rib": "inet.3",
-    #                         "route_refresh_priority_priority": 3,
-    #                         "type": "labeled-unicast"
-    #                     },
-    #                     {
-    #                         "extended_nexthop": true,
-    #                         "extended_nexthop_color": true,
-    #                         "local_ipv4_address": "9.9.9.9",
-    #                         "type": "unicast"
-    #                     }
-    #                 ],
-    #                 "afi": "inet"
-    #             }
-    #         ]
-    #     }
-    #
+    # gathered:
+    #   address_family:
+    #   - af_type:
+    #     - accepted_prefix_limit:
+    #         idle_timeout_value: 2001
+    #         limit_threshold: 98
+    #         maximum: 20
+    #       damping: true
+    #       defer_initial_multipath_build:
+    #         maximum_delay: 2
+    #       type: signaling
+    #     afi: evpn
+    #   - af_type:
+    #     - accepted_prefix_limit:
+    #         idle_timeout_value: 2000
+    #         limit_threshold: 99
+    #         maximum: 20
+    #       damping: true
+    #       defer_initial_multipath_build:
+    #         maximum_delay: 2
+    #       delay_route_advertisements:
+    #         max_delay_route_age: 20
+    #         max_delay_routing_uptime: 32000
+    #         min_delay_inbound_convergence: 32000
+    #         min_delay_routing_uptime: 23000
+    #       graceful_restart_forwarding_state_bit: from-fib
+    #       type: any
+    #     - legacy_redirect_ip_action:
+    #         receive: true
+    #         send: true
+    #       loops: 4
+    #       no_install: true
+    #       output_queue_priority_expedited: true
+    #       secondary_independent_resolution: true
+    #       type: flow
+    #     - entropy_label:
+    #         no_next_hop_validation: true
+    #       explicit_null:
+    #         connected_only: true
+    #       per_group_label: true
+    #       per_prefix_label: true
+    #       prefix_limit:
+    #         forever: true
+    #         limit_threshold: 99
+    #         maximum: 20
+    #       resolve_vpn: true
+    #       rib: inet.3
+    #       route_refresh_priority_priority: 3
+    #       type: labeled-unicast
+    #     - extended_nexthop: true
+    #       extended_nexthop_color: true
+    #       local_ipv4_address: 9.9.9.9
+    #       type: unicast
+    #     afi: inet
+
     # Using parsed
     # parsed.cfg
     # ------------
@@ -7055,95 +7427,65 @@ Examples
         running_config: "{{ lookup('file', './parsed.cfg') }}"
         state: parsed
     #
+    # Task Output:
+    # ------------
     #
-    # -------------------------
-    # Module Execution Result
-    # -------------------------
+    # parsed:
+    #   address_family:
+    #   - af_type:
+    #     - accepted_prefix_limit:
+    #         idle_timeout_value: 2001
+    #         limit_threshold: 98
+    #         maximum: 20
+    #       damping: true
+    #       defer_initial_multipath_build:
+    #         maximum_delay: 2
+    #       type: signaling
+    #     afi: evpn
+    #   - af_type:
+    #     - accepted_prefix_limit:
+    #         idle_timeout_value: 2000
+    #         limit_threshold: 99
+    #         maximum: 20
+    #       damping: true
+    #       defer_initial_multipath_build:
+    #         maximum_delay: 2
+    #       delay_route_advertisements:
+    #         max_delay_route_age: 20
+    #         max_delay_routing_uptime: 32000
+    #         min_delay_inbound_convergence: 32000
+    #         min_delay_routing_uptime: 23000
+    #       graceful_restart_forwarding_state_bit: from-fib
+    #       type: any
+    #     - legacy_redirect_ip_action:
+    #         receive: true
+    #         send: true
+    #       loops: 4
+    #       no_install: true
+    #       output_queue_priority_expedited: true
+    #       secondary_independent_resolution: true
+    #       type: flow
+    #     - entropy_label:
+    #         no_next_hop_validation: true
+    #       explicit_null:
+    #         connected_only: true
+    #       per_group_label: true
+    #       per_prefix_label: true
+    #       prefix_limit:
+    #         forever: true
+    #         limit_threshold: 99
+    #         maximum: 20
+    #       resolve_vpn: true
+    #       rib: inet.3
+    #       route_refresh_priority_priority: 3
+    #       type: labeled-unicast
+    #     - extended_nexthop: true
+    #       extended_nexthop_color: true
+    #       local_ipv4_address: 9.9.9.9
+    #       type: unicast
+    #     afi: inet
     #
-    #
-    # "parsed":  {
-    #         "address_family": [
-    #             {
-    #                 "af_type": [
-    #                     {
-    #                         "accepted_prefix_limit": {
-    #                             "idle_timeout_value": 2001,
-    #                             "limit_threshold": 98,
-    #                             "maximum": 20
-    #                         },
-    #                         "damping": true,
-    #                         "defer_initial_multipath_build": {
-    #                             "maximum_delay": 2
-    #                         },
-    #                         "type": "signaling"
-    #                     }
-    #                 ],
-    #                 "afi": "evpn"
-    #             },
-    #             {
-    #                 "af_type": [
-    #                     {
-    #                         "accepted_prefix_limit": {
-    #                             "idle_timeout_value": 2000,
-    #                             "limit_threshold": 99,
-    #                             "maximum": 20
-    #                         },
-    #                         "damping": true,
-    #                         "defer_initial_multipath_build": {
-    #                             "maximum_delay": 2
-    #                         },
-    #                         "delay_route_advertisements": {
-    #                             "max_delay_route_age": 20,
-    #                             "max_delay_routing_uptime": 32000,
-    #                             "min_delay_inbound_convergence": 32000,
-    #                             "min_delay_routing_uptime": 23000
-    #                         },
-    #                         "graceful_restart_forwarding_state_bit": "from-fib",
-    #                         "type": "any"
-    #                     },
-    #                     {
-    #                         "legacy_redirect_ip_action": {
-    #                             "receive": true,
-    #                             "send": true
-    #                         },
-    #                         "loops": 4,
-    #                         "no_install": true,
-    #                         "output_queue_priority_expedited": true,
-    #                         "secondary_independent_resolution": true,
-    #                         "type": "flow"
-    #                     },
-    #                     {
-    #                         "entropy_label": {
-    #                             "no_next_hop_validation": true
-    #                         },
-    #                         "explicit_null": {
-    #                             "connected_only": true
-    #                         },
-    #                         "per_group_label": true,
-    #                         "per_prefix_label": true,
-    #                         "prefix_limit": {
-    #                             "forever": true,
-    #                             "limit_threshold": 99,
-    #                             "maximum": 20
-    #                         },
-    #                         "resolve_vpn": true,
-    #                         "rib": "inet.3",
-    #                         "route_refresh_priority_priority": 3,
-    #                         "type": "labeled-unicast"
-    #                     },
-    #                     {
-    #                         "extended_nexthop": true,
-    #                         "extended_nexthop_color": true,
-    #                         "local_ipv4_address": "9.9.9.9",
-    #                         "type": "unicast"
-    #                     }
-    #                 ],
-    #                 "afi": "inet"
-    #             }
-    #         ]
-    #     }
     # Using rendered
-    #
     #
     - name: Render the commands for provided  configuration
       junipernetworks.junos.junos_bgp_address_family:
@@ -7214,7 +7556,7 @@ Examples
     # -------------------------
     #
     #
-    # "rendered": "<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+    # rendered: "<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
     # <nc:bgp><nc:family><nc:evpn><nc:signaling><nc:accepted-prefix-limit><nc:maximum>20</nc:maximum>
     # <nc:teardown><nc:limit-threshold>98</nc:limit-threshold><nc:idle-timeout><nc:timeout>2001</nc:timeout>
     # </nc:idle-timeout></nc:teardown></nc:accepted-prefix-limit><nc:damping/><nc:defer-initial-multipath-build>
@@ -7306,6 +7648,57 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
                         <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[&#x27;&lt;nc:protocols xmlns:nc=&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot;&gt; &lt;nc:bgp&gt;&lt;nc:family&gt;&lt;nc:evpn&gt;&lt;nc:signaling&gt;&lt;nc:accepted-prefix-limit&gt; &lt;nc:maximum&gt;21&lt;/nc:maximum&gt;&lt;nc:teardown&gt;&lt;nc:limit-threshold&gt;99&lt;/nc:limit-threshold&gt; &lt;nc:idle-timeout&gt;&lt;nc:timeout&gt;2002&lt;/nc:timeout&gt;&lt;/nc:idle-timeout&gt; &lt;/nc:teardown&gt;&lt;/nc:accepted-prefix-limit&gt;&lt;nc:damping/&gt; &lt;nc:delay-route-advertisements&gt;&lt;nc:maximum-delay&gt; &lt;nc:route-age&gt;20&lt;/nc:route-age&gt;&lt;nc:routing-uptime&gt;32000&lt;/nc:routing-uptime&gt; &lt;/nc:maximum-delay&gt;&lt;nc:minimum-delay&gt;&lt;nc:inbound-convergence&gt;32000&lt;/nc:inbound-convergence&gt; &lt;nc:routing-uptime&gt;23000&lt;/nc:routing-uptime&gt;&lt;/nc:minimum-delay&gt;&lt;/nc:delay-route-advertisements&gt; &lt;/nc:signaling&gt;&lt;/nc:evpn&gt;&lt;/nc:family&gt;&lt;/nc:bgp&gt;&lt;/nc:protocols&gt;&#x27;, &#x27;xml 2&#x27;, &#x27;xml 3&#x27;]</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>gathered</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">list</span>
+                    </div>
+                </td>
+                <td>when <em>state</em> is <code>gathered</code></td>
+                <td>
+                            <div>Facts about the network resource gathered from the remote device as structured data.</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">This output will always be in the same format as the module argspec.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>parsed</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">list</span>
+                    </div>
+                </td>
+                <td>when <em>state</em> is <code>parsed</code></td>
+                <td>
+                            <div>The device native config provided in <em>running_config</em> option parsed into structured data as per module argspec.</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">This output will always be in the same format as the module argspec.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>rendered</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">list</span>
+                    </div>
+                </td>
+                <td>when <em>state</em> is <code>rendered</code></td>
+                <td>
+                            <div>The provided configuration in the task rendered in device-native format (offline).</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[&#x27;&lt;nc:protocols xmlns:nc=&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot;&gt;&#x27;]</div>
                 </td>
             </tr>
     </table>
