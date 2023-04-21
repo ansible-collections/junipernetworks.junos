@@ -5,6 +5,7 @@
 - name: Configure basic config relevant to logging global
   junipernetworks.junos.junos_config:
     lines:
+      - set routing-instances inst11 instance-type virtual-router
       - set routing-instances inst11 description "inst11"
 
 - ansible.builtin.debug:

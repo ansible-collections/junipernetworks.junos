@@ -24,7 +24,7 @@
           - "{{ merged['after'] == result['after'] }}"
 
     - name: Merge the provided configuration with the existing running configuration (IDEMPOTENT)
-      junos_routing_options: *merged
+      junipernetworks.junos.junos_routing_options: *merged
       register: result
 
     - name: Assert that the previous task was idempotent

@@ -56,7 +56,7 @@
             \ == 0 }}"
 
     - name: Replace existing running prefix lists configuration with provided (IDEMPOTENT)
-      junos_prefix_lists: *replaced
+      junipernetworks.junos.junos_prefix_lists: *replaced
       register: result
 
     - name: Assert that the previous task was idempotent

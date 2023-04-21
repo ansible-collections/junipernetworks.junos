@@ -95,3 +95,7 @@ replaced:
       interfaces:
         - "eth1"
         - "eth2"
+    views:
+      - name: "all"
+        oids:
+          - oid: ".1"
