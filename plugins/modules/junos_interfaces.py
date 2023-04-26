@@ -141,6 +141,7 @@ EXAMPLES = """
 
 # Before state:
 # -------------
+#
 # user@junos01# show interfaces
 # ge-0/0/1 {
 #     description "test interface";
@@ -190,7 +191,8 @@ EXAMPLES = """
     state: merged
 
 # Task Output
-# -------------
+# -----------
+#
 # before:
 # - description: test interface
 #   enabled: true
@@ -234,6 +236,7 @@ EXAMPLES = """
 
 # After state:
 # ------------
+#
 # user@junos01# show interfaces
 # ge-0/0/1 {
 #     description "Configured by Ansible-1";
@@ -278,6 +281,7 @@ EXAMPLES = """
 
 # Before state:
 # -------------
+#
 # ge-0/0/1 {
 #     description "Configured by Ansible-1";
 #     speed 1g;
@@ -329,7 +333,8 @@ EXAMPLES = """
     state: deleted
 
 # Task Output
-# -------------
+# -----------
+#
 # before:
 # - description: Configured by Ansible-1
 #   enabled: true
@@ -375,6 +380,7 @@ EXAMPLES = """
 
 # After state:
 # ------------
+#
 # user@junos01# show interfaces
 # ge-0/0/1 {
 #     unit 0;
@@ -406,11 +412,11 @@ EXAMPLES = """
 #     }
 # }
 
-
 # Using overridden
 
 # Before state:
 # -------------
+#
 # user@junos01# show interfaces
 # ge-0/0/1 {
 #     unit 0;
@@ -462,7 +468,8 @@ EXAMPLES = """
     state: overridden
 
 # Task Output
-# -------------
+# -----------
+#
 # before:
 # - enabled: true
 #   name: ge-0/0/1
@@ -516,6 +523,7 @@ EXAMPLES = """
 
 # After state:
 # ------------
+#
 # user@junos01# show interfaces
 # ge-0/0/1 {
 #     unit 0;
@@ -555,6 +563,7 @@ EXAMPLES = """
 
 # Before state:
 # -------------
+#
 # user@junos01# show interfaces
 # ge-0/0/1 {
 #     unit 0;
@@ -601,7 +610,8 @@ EXAMPLES = """
     state: replaced
 
 # Task Output
-# -------------
+# -----------
+#
 # before:
 # - enabled: true
 #   name: ge-0/0/1
@@ -647,6 +657,7 @@ EXAMPLES = """
 
 # After state:
 # ------------
+#
 # user@junos01# show interfaces
 # ge-0/0/1 {
 #     unit 0;
@@ -690,6 +701,7 @@ EXAMPLES = """
 
 # Before state:
 # ------------
+#
 # vagrant@vsrx# show interfaces
 # ge-0/0/1 {
 #     unit 0;
@@ -735,6 +747,7 @@ EXAMPLES = """
 
 # Task Output
 # -----------
+#
 # gathered:
 # - enabled: true
 #   name: ge-0/0/1
@@ -797,21 +810,17 @@ EXAMPLES = """
 
 # Task Output
 # -----------
-# "parsed": [
-#         {
-#             "description": "Configured by Ansible",
-#             "duplex": "full-duplex",
-#             "enabled": false,
-#             "hold_time": {
-#                 "down": 2200,
-#                 "up": 2000
-#             },
-#             "mtu": 1024,
-#             "name": "ge-0/0/1",
-#             "speed": "100m"
-#         }
-#     ]
-
+#
+# parsed:
+# - description: Configured by Ansible
+#   duplex: full-duplex
+#   enabled: false
+#   hold_time:
+#     down: 2200
+#     up: 2000
+#   mtu: 1024
+#   name: ge-0/0/1
+#   speed: 100m
 
 # Using rendered
 
@@ -829,7 +838,8 @@ EXAMPLES = """
 
 # Task Output
 # -----------
-# "rendered": <nc:interfaces
+#
+# rendered: <nc:interfaces
 #     xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
 #     <nc:interface>
 #         <nc:name>ge-0/0/2</nc:name>
@@ -842,7 +852,6 @@ EXAMPLES = """
 #         </nc:hold-time>
 #     </nc:interface>
 # </nc:interfaces>"
-
 """
 RETURN = """
 before:
