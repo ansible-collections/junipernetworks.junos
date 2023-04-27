@@ -6147,6 +6147,7 @@ Examples
                     min_delay_routing_uptime: 23000
                   graceful_restart_forwarding_state_bit: 'from-fib'
         state: merged
+
     # Task Output:
     # ------------
     #
@@ -6304,6 +6305,7 @@ Examples
     #         }
     #     }
     # }
+
     #
     # Using replaced
     #
@@ -6618,7 +6620,7 @@ Examples
     #         }
     #     }
     # }
-    #
+
     # Using overridden
     #
     # Before state
@@ -7072,7 +7074,6 @@ Examples
        config:
        state: deleted
 
-    #
     # Task Output:
     # ------------
     #
@@ -7484,7 +7485,7 @@ Examples
     #       local_ipv4_address: 9.9.9.9
     #       type: unicast
     #     afi: inet
-    #
+
     # Using rendered
     #
     - name: Render the commands for provided  configuration
@@ -7549,12 +7550,8 @@ Examples
                   graceful_restart_forwarding_state_bit: 'from-fib'
         state: rendered
 
-    #
-    #
-    # -------------------------
-    # Module Execution Result
-    # -------------------------
-    #
+    # Task Output:
+    # ------------
     #
     # rendered: "<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
     # <nc:bgp><nc:family><nc:evpn><nc:signaling><nc:accepted-prefix-limit><nc:maximum>20</nc:maximum>
