@@ -205,7 +205,7 @@ options:
     description:
     - This option is used only with state I(parsed).
     - The value of this option should be the output received from the Junos device
-      by executing the command B(show protocols ospf.
+      by executing the command B(show protocols ospf).
     - The state I(parsed) reads the configuration from C(running_config) option and
       transforms it into Ansible structured data as per the resource module's argspec
       and the value is then returned in the I(parsed) key within the result
