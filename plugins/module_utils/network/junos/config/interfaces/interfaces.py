@@ -225,7 +225,7 @@ class Interfaces(ConfigBase):
                 build_child_xml_node(intf, "link-mode", config["duplex"])
 
             if config.get("enabled") is not None:
-                    build_child_xml_node(intf, "enable" if config.get("enabled") else "disable")
+                build_child_xml_node(intf, "enable" if config.get("enabled") else "disable")
 
             if config.get("units"):
                 units = config.get("units")
