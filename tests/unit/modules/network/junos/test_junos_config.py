@@ -168,6 +168,16 @@ class TestJunosConfigModule(TestJunosModule):
         load_configuration_args = self.load_configuration.call_args
         self.assertEqual(rollback, load_configuration_args[1].get("rollback"))
 
+    def test_junos_config_rollback_0(self):
+        rollback = 0
+        set_module_args(dict(rollback=rollback))
+        self.execute_module(changed=True)
+        self.assertEqual(self.get_diff.call_count, 1)
+        self.assertEqual(self.load_configuration.call_count, 1)
+        self.assertEqual(self.commit_configuration.call_count, 1)
+        load_configuration_args = self.load_configuration.call_args
+        self.assertEqual(rollback, load_configuration_args[1].get("rollback"))
+
     def test_junos_config_src_text(self):
         src = load_fixture("junos_config.text", content="str")
         set_module_args(dict(src=src))
