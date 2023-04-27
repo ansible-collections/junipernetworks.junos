@@ -103,12 +103,10 @@ class TestJunosInterfacesModule(TestJunosModule):
         )
         commands = [
             '<nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
-            "<nc:interface><nc:name>ge-0/0/1</nc:name>"
-            "<nc:description>This is configured with ansible resource module</nc:description>"
-            "<nc:speed>100m</nc:speed>"
-            "<nc:mtu>1024</nc:mtu>"
-            "</nc:interface></nc:interfaces>",
+            "<nc:interface><nc:name>ge-0/0/1</nc:name><nc:description>This is configured with ansible resource module</nc:description>"
+            "<nc:speed>100m</nc:speed><nc:mtu>1024</nc:mtu><nc:enable/></nc:interface></nc:interfaces>",
         ]
+
         result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
 
@@ -146,12 +144,11 @@ class TestJunosInterfacesModule(TestJunosModule):
             ),
         )
         result = self.execute_module(changed=True)
-
         commands = [
             '<nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:interface><nc:name>ge-0/0/2</nc:name>"
             "<nc:description>This is configured with ansible</nc:description>"
-            "<nc:speed>100m</nc:speed><nc:mtu>1024</nc:mtu></nc:interface></nc:interfaces>",
+            "<nc:speed>100m</nc:speed><nc:mtu>1024</nc:mtu><nc:enable/></nc:interface></nc:interfaces>",
         ]
 
         self.assertEqual(sorted(result["commands"]), commands)
@@ -194,7 +191,7 @@ class TestJunosInterfacesModule(TestJunosModule):
             '<nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:interface><nc:name>ge-0/0/2</nc:name>"
             "<nc:description>This is configured with ansible</nc:description>"
-            "<nc:speed>100m</nc:speed><nc:mtu>1024</nc:mtu></nc:interface></nc:interfaces>",
+            "<nc:speed>100m</nc:speed><nc:mtu>1024</nc:mtu><nc:enable/></nc:interface></nc:interfaces>",
         ]
         result = self.execute_module(changed=True)
         self.assertEqual(sorted(result["commands"]), commands)
