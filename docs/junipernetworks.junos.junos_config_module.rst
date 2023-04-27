@@ -336,7 +336,7 @@ Notes
 
 .. note::
    - This module requires the netconf system service be enabled on the remote device being managed.
-   - Abbreviated commands are NOT idempotent, see L(Network FAQ,../network/user_guide/faq.html
+   - Abbreviated commands are NOT idempotent, see `Network FAQ <../network/user_guide/faq.html>`_
    - Loading JSON-formatted configuration *json* is supported starting in Junos OS Release 16.1 onwards.
    - Update ``override`` not currently compatible with ``set`` notation.
    - Tested against vSRX JUNOS version 15.1X49-D15.4, vqfx-10000 JUNOS Version 15.1X53-D60.4.
