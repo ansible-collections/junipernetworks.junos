@@ -466,7 +466,7 @@ def main():
             result["__backup__"] = reply
 
     rollback_id = module.params["rollback"]
-    if rollback_id:
+    if isinstance(rollback_id, int) and rollback_id >= 0:
         diff = rollback(module, rollback_id)
         if commit:
             kwargs = {"comment": module.params["comment"]}
