@@ -453,8 +453,7 @@ EXAMPLES = """
     config:
       - enabled: true
         name: ge-0/0/1
-      - enabled: true
-        name: fe-0/0/2
+      - name: fe-0/0/2
         description: Configured by Ansible-2
         enabled: false
         mtu: 2800
