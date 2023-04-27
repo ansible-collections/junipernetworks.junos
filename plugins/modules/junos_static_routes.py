@@ -374,7 +374,7 @@ EXAMPLES = """
 # Using rendered
 
 - name: Render platform specific commands (without connecting to the device)
-      junipernetworks.junos.junos_static_routes:
+  junipernetworks.junos.junos_static_routes:
         config:
         - address_families:
           - afi: ipv4
@@ -416,7 +416,7 @@ EXAMPLES = """
 # </rpc-reply>
 
 - name: Parsed running config (without connecting to the device)
-      junipernetworks.junos.junos_static_routes:
+  junipernetworks.junos.junos_static_routes:
         running_config: "{{ lookup('file', 'parsed.cfg') }}"
         state: parsed
 
@@ -432,6 +432,7 @@ EXAMPLES = """
 #           - dest: 192.168.47.0/24
 #             next_hop:
 #               - forward_router_address: 10.200.16.2
+
 """
 RETURN = """
 before:
@@ -453,6 +454,26 @@ commands:
   returned: always
   type: list
   sample: ['command 1', 'command 2', 'command 3']
+rendered:
+  description: The provided configuration in the task rendered in device-native format (offline).
+  returned: when I(state) is C(rendered)
+  type: list
+  sample:
+    - <nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+gathered:
+  description: Facts about the network resource gathered from the remote device as structured data.
+  returned: when I(state) is C(gathered)
+  type: list
+  sample: >
+    This output will always be in the same format as the
+    module argspec.
+parsed:
+  description: The device native config provided in I(running_config) option parsed into structured data as per module argspec.
+  returned: when I(state) is C(parsed)
+  type: list
+  sample: >
+    This output will always be in the same format as the
+    module argspec.
 """
 
 
