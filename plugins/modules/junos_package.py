@@ -52,6 +52,12 @@ options:
       to the remote device prior to installing.
     type: bool
     default: false
+  unlink:
+    description:
+    - The I(unlink) argument is responsible for instructing the remote device to
+      remove the installation packages after installation.
+    type: bool
+    default: false
   validate:
     description:
     - The I(validate) argument is responsible for instructing the remote device to
@@ -202,6 +208,7 @@ def install_package(module, device):
     junos = SW(device)
     package = module.params["src"]
     no_copy = module.params["no_copy"]
+    unlink = module.params["unlink"]
     validate = module.params["validate"]
     force_host = module.params["force_host"]
     issu = module.params["issu"]
@@ -214,6 +221,7 @@ def install_package(module, device):
         package,
         progress=progress_log,
         no_copy=no_copy,
+        unlink=unlink,
         validate=validate,
         force_host=force_host,
         issu=issu,
@@ -234,6 +242,7 @@ def main():
         version=dict(),
         reboot=dict(type="bool", default=True),
         no_copy=dict(default=False, type="bool"),
+        unlink=dict(default=False, type="bool"),
         validate=dict(default=True, type="bool"),
         force=dict(type="bool", default=False),
         force_host=dict(type="bool", default=False),
