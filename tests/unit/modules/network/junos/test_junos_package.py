@@ -78,3 +78,14 @@ class TestJunosPackageModule(TestJunosModule):
         args, kwargs = jnpr_mock.junos.utils.sw.SW().install.call_args
         self.assertEqual(args, ("junos-vsrx-12.1X46-D10.2-domestic.tgz",))
         self.assertEqual(kwargs["no_copy"], True)
+
+    def test_junos_package_src_unlink(self):
+        jnpr_mock.junos.utils.sw.SW().install.return_value = 1
+        set_module_args(
+            dict(src="junos-vsrx-12.1X46-D10.2-domestic.tgz", unlink=True),
+        )
+        self.execute_module(changed=True)
+
+        args, kwargs = jnpr_mock.junos.utils.sw.SW().install.call_args
+        self.assertEqual(args, ("junos-vsrx-12.1X46-D10.2-domestic.tgz",))
+        self.assertEqual(kwargs["unlink"], True)
