@@ -246,7 +246,8 @@ Notes
 .. note::
    - This module requires the netconf system service be enabled on the remote device being managed.
    - Tested against vSRX JUNOS version 18.4R1.
-   - This module works with connection ``netconf``. See `the Junos OS Platform Options <../network/user_guide/platform_junos.html>`_.
+   - This module works with connection ``netconf``. See https://docs.ansible.com/ansible/latest/network/user_guide/platform_junos.html
+   - The module examples uses callback plugin (stdout_callback = yaml) to generate task output in yaml format.
 
 
 
@@ -254,57 +255,6 @@ Examples
 --------
 
 .. code-block:: yaml
-
-    # Using deleted
-
-    # Before state:
-    # -------------
-    #
-    # ansible@junos01# show interfaces
-    # ge-0/0/1 {
-    #    description "L2 interface";
-    #    speed 1g;
-    #    unit 0 {
-    #        family ethernet-switching {
-    #            interface-mode access;
-    #            vlan {
-    #                members vlan30;
-    #            }
-    #        }
-    #    }
-    #}
-    #ge-0/0/2 {
-    #    description "non L2 interface";
-    #    unit 0 {
-    #        family inet {
-    #            address 192.168.56.14/24;
-    #        }
-    #    }
-
-    - name: "Delete L2 attributes of given interfaces (Note: This won't delete the
-        interface itself)."
-      junipernetworks.junos.junos_l2_interfaces:
-        config:
-        - name: ge-0/0/1
-        - name: ge-0/0/2
-        state: deleted
-
-    # After state:
-    # ------------
-    #
-    # ansible@junos01# show interfaces
-    # ge-0/0/1 {
-    #    description "L2 interface";
-    #    speed 1g;
-    # }
-    #ge-0/0/2 {
-    #    description "non L2 interface";
-    #    unit 0 {
-    #        family inet {
-    #            address 192.168.56.14/24;
-    #        }
-    #    }
-
 
     # Using merged
 
@@ -328,8 +278,7 @@ Examples
     #    }
     # }
 
-    - name: Merge provided configuration with device configuration (default operation
-        is merge)
+    - name: Merge provided configuration with device configuration
       junipernetworks.junos.junos_l2_interfaces:
         config:
         - name: ge-0/0/3
@@ -504,6 +453,57 @@ Examples
     #        }
     #    }
     # }
+
+    # Using deleted
+
+    # Before state:
+    # -------------
+    #
+    # ansible@junos01# show interfaces
+    # ge-0/0/1 {
+    #    description "L2 interface";
+    #    speed 1g;
+    #    unit 0 {
+    #        family ethernet-switching {
+    #            interface-mode access;
+    #            vlan {
+    #                members vlan30;
+    #            }
+    #        }
+    #    }
+    #}
+    #ge-0/0/2 {
+    #    description "non L2 interface";
+    #    unit 0 {
+    #        family inet {
+    #            address 192.168.56.14/24;
+    #        }
+    #    }
+
+    - name: "Delete L2 attributes of given interfaces (Note: This won't delete the
+        interface itself)."
+      junipernetworks.junos.junos_l2_interfaces:
+        config:
+        - name: ge-0/0/1
+        - name: ge-0/0/2
+        state: deleted
+
+    # After state:
+    # ------------
+    #
+    # ansible@junos01# show interfaces
+    # ge-0/0/1 {
+    #    description "L2 interface";
+    #    speed 1g;
+    # }
+    #ge-0/0/2 {
+    #    description "non L2 interface";
+    #    unit 0 {
+    #        family inet {
+    #            address 192.168.56.14/24;
+    #        }
+    #    }
+
     # Using gathered
     # Before state:
     # ------------
@@ -807,6 +807,57 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
                         <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[&#x27;&lt;nc:interfaces xmlns:nc=&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot;&gt; &lt;nc:interface&gt; &lt;nc:name&gt;ge-0/0/1&lt;/nc:name&gt; &lt;nc:unit&gt; &lt;nc:name&gt;0&lt;/nc:name&gt; &lt;nc:family&gt; &lt;nc:ethernet-switching&gt; &lt;nc:interface-mode&gt;access&lt;/nc:interface-mode&gt; &lt;nc:vlan&gt; &lt;nc:members&gt;vlan100&lt;/nc:members&gt; &lt;/nc:vlan&gt; &lt;/nc:ethernet-switching&gt; &lt;/nc:family&gt; &lt;/nc:unit&gt; &lt;/nc:interface&gt; &lt;nc:interface&gt; &lt;nc:name&gt;ge-0/0/2&lt;/nc:name&gt; &lt;nc:unit&gt; &lt;nc:name&gt;0&lt;/nc:name&gt; &lt;nc:family&gt; &lt;nc:ethernet-switching&gt; &lt;nc:interface-mode&gt;trunk&lt;/nc:interface-mode&gt; &lt;nc:vlan&gt; &lt;nc:members&gt;vlan200&lt;/nc:members&gt; &lt;nc:members&gt;vlan300&lt;/nc:members&gt; &lt;/nc:vlan&gt; &lt;/nc:ethernet-switching&gt; &lt;/nc:family&gt; &lt;/nc:unit&gt; &lt;nc:native-vlan-id&gt;400&lt;/nc:native-vlan-id&gt; &lt;/nc:interface&gt; &lt;/nc:interfaces&gt;&#x27;, &#x27;xml 2&#x27;, &#x27;xml 3&#x27;]</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>gathered</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">list</span>
+                    </div>
+                </td>
+                <td>when <em>state</em> is <code>gathered</code></td>
+                <td>
+                            <div>Facts about the network resource gathered from the remote device as structured data.</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">This output will always be in the same format as the module argspec.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>parsed</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">list</span>
+                    </div>
+                </td>
+                <td>when <em>state</em> is <code>parsed</code></td>
+                <td>
+                            <div>The device native config provided in <em>running_config</em> option parsed into structured data as per module argspec.</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">This output will always be in the same format as the module argspec.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>rendered</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">list</span>
+                    </div>
+                </td>
+                <td>when <em>state</em> is <code>rendered</code></td>
+                <td>
+                            <div>The provided configuration in the task rendered in device-native format (offline).</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[&#x27;&lt;nc:protocols xmlns:nc=&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot;&gt;&#x27;]</div>
                 </td>
             </tr>
     </table>

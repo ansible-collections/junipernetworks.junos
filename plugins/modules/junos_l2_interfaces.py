@@ -113,60 +113,13 @@ notes:
 - This module requires the netconf system service be enabled on the remote device
   being managed.
 - Tested against vSRX JUNOS version 18.4R1.
-- This module works with connection C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
+- This module works with connection C(netconf).
+  See U(https://docs.ansible.com/ansible/latest/network/user_guide/platform_junos.html)
+- The module examples uses callback plugin (stdout_callback = yaml) to generate task
+  output in yaml format.
 """
+
 EXAMPLES = """
-# Using deleted
-
-# Before state:
-# -------------
-#
-# ansible@junos01# show interfaces
-# ge-0/0/1 {
-#    description "L2 interface";
-#    speed 1g;
-#    unit 0 {
-#        family ethernet-switching {
-#            interface-mode access;
-#            vlan {
-#                members vlan30;
-#            }
-#        }
-#    }
-#}
-#ge-0/0/2 {
-#    description "non L2 interface";
-#    unit 0 {
-#        family inet {
-#            address 192.168.56.14/24;
-#        }
-#    }
-
-- name: "Delete L2 attributes of given interfaces (Note: This won't delete the
-    interface itself)."
-  junipernetworks.junos.junos_l2_interfaces:
-    config:
-    - name: ge-0/0/1
-    - name: ge-0/0/2
-    state: deleted
-
-# After state:
-# ------------
-#
-# ansible@junos01# show interfaces
-# ge-0/0/1 {
-#    description "L2 interface";
-#    speed 1g;
-# }
-#ge-0/0/2 {
-#    description "non L2 interface";
-#    unit 0 {
-#        family inet {
-#            address 192.168.56.14/24;
-#        }
-#    }
-
-
 # Using merged
 
 # Before state:
@@ -189,8 +142,7 @@ EXAMPLES = """
 #    }
 # }
 
-- name: Merge provided configuration with device configuration (default operation
-    is merge)
+- name: Merge provided configuration with device configuration
   junipernetworks.junos.junos_l2_interfaces:
     config:
     - name: ge-0/0/3
@@ -365,6 +317,57 @@ EXAMPLES = """
 #        }
 #    }
 # }
+
+# Using deleted
+
+# Before state:
+# -------------
+#
+# ansible@junos01# show interfaces
+# ge-0/0/1 {
+#    description "L2 interface";
+#    speed 1g;
+#    unit 0 {
+#        family ethernet-switching {
+#            interface-mode access;
+#            vlan {
+#                members vlan30;
+#            }
+#        }
+#    }
+#}
+#ge-0/0/2 {
+#    description "non L2 interface";
+#    unit 0 {
+#        family inet {
+#            address 192.168.56.14/24;
+#        }
+#    }
+
+- name: "Delete L2 attributes of given interfaces (Note: This won't delete the
+    interface itself)."
+  junipernetworks.junos.junos_l2_interfaces:
+    config:
+    - name: ge-0/0/1
+    - name: ge-0/0/2
+    state: deleted
+
+# After state:
+# ------------
+#
+# ansible@junos01# show interfaces
+# ge-0/0/1 {
+#    description "L2 interface";
+#    speed 1g;
+# }
+#ge-0/0/2 {
+#    description "non L2 interface";
+#    unit 0 {
+#        family inet {
+#            address 192.168.56.14/24;
+#        }
+#    }
+
 # Using gathered
 # Before state:
 # ------------
@@ -624,38 +627,61 @@ commands:
   returned: always
   type: list
   sample: ['<nc:interfaces
-                                   xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
-                                   <nc:interface>
-                                       <nc:name>ge-0/0/1</nc:name>
-                                       <nc:unit>
-                                           <nc:name>0</nc:name>
-                                           <nc:family>
-                                               <nc:ethernet-switching>
-                                                   <nc:interface-mode>access</nc:interface-mode>
-                                                   <nc:vlan>
-                                                       <nc:members>vlan100</nc:members>
-                                                   </nc:vlan>
-                                               </nc:ethernet-switching>
-                                           </nc:family>
-                                       </nc:unit>
-                                   </nc:interface>
-                                   <nc:interface>
-                                       <nc:name>ge-0/0/2</nc:name>
-                                       <nc:unit>
-                                           <nc:name>0</nc:name>
-                                           <nc:family>
-                                               <nc:ethernet-switching>
-                                                   <nc:interface-mode>trunk</nc:interface-mode>
-                                                   <nc:vlan>
-                                                       <nc:members>vlan200</nc:members>
-                                                       <nc:members>vlan300</nc:members>
-                                                   </nc:vlan>
-                                               </nc:ethernet-switching>
-                                           </nc:family>
-                                       </nc:unit>
-                                       <nc:native-vlan-id>400</nc:native-vlan-id>
-                                   </nc:interface>
-                               </nc:interfaces>', 'xml 2', 'xml 3']
+    xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
+    <nc:interface>
+        <nc:name>ge-0/0/1</nc:name>
+        <nc:unit>
+            <nc:name>0</nc:name>
+            <nc:family>
+                <nc:ethernet-switching>
+                    <nc:interface-mode>access</nc:interface-mode>
+                    <nc:vlan>
+                        <nc:members>vlan100</nc:members>
+                    </nc:vlan>
+                </nc:ethernet-switching>
+            </nc:family>
+        </nc:unit>
+    </nc:interface>
+    <nc:interface>
+        <nc:name>ge-0/0/2</nc:name>
+        <nc:unit>
+            <nc:name>0</nc:name>
+            <nc:family>
+                <nc:ethernet-switching>
+                    <nc:interface-mode>trunk</nc:interface-mode>
+                    <nc:vlan>
+                        <nc:members>vlan200</nc:members>
+                        <nc:members>vlan300</nc:members>
+                    </nc:vlan>
+                </nc:ethernet-switching>
+            </nc:family>
+        </nc:unit>
+        <nc:native-vlan-id>400</nc:native-vlan-id>
+    </nc:interface>
+</nc:interfaces>', 'xml 2', 'xml 3']
+rendered:
+  description: The provided configuration in the
+    task rendered in device-native format (offline).
+  returned: when I(state) is C(rendered)
+  type: list
+  sample:
+    - <nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+gathered:
+  description: Facts about the network resource gathered
+    from the remote device as structured data.
+  returned: when I(state) is C(gathered)
+  type: list
+  sample: >
+    This output will always be in the same format as the
+    module argspec.
+parsed:
+  description: The device native config provided in I(running_config) option parsed
+    into structured data as per module argspec.
+  returned: when I(state) is C(parsed)
+  type: list
+  sample: >
+    This output will always be in the same format as the
+    module argspec.
 """
 
 
