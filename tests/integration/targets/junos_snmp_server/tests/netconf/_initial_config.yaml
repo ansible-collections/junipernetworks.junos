@@ -5,7 +5,9 @@
 - name: Configure basic config relevant to ntp global
   junipernetworks.junos.junos_config:
     lines:
+      - set routing-instances clv1 instance-type virtual-router
       - set routing-instances clv1 description "clv1"
+      - set routing-instances clv2 instance-type virtual-router
       - set routing-instances clv2 description "clv2"
 
 - ansible.builtin.debug:

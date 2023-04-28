@@ -50,7 +50,7 @@
             \ == 0 }}"
 
     - name: Merge the provided configuration with the existing running configuration (IDEMPOTENT)
-      junos_ospf_interfaces: *merged
+      junipernetworks.junos.junos_ospf_interfaces: *merged
       register: result
 
     - name: Assert that the previous task was idempotent

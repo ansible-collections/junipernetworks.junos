@@ -32,7 +32,6 @@ from .junos_module import TestJunosModule, load_fixture
 
 
 class TestJunosConfigModule(TestJunosModule):
-
     module = junos_config
 
     def setUp(self):
@@ -161,6 +160,16 @@ class TestJunosConfigModule(TestJunosModule):
 
     def test_junos_config_rollback(self):
         rollback = 10
+        set_module_args(dict(rollback=rollback))
+        self.execute_module(changed=True)
+        self.assertEqual(self.get_diff.call_count, 1)
+        self.assertEqual(self.load_configuration.call_count, 1)
+        self.assertEqual(self.commit_configuration.call_count, 1)
+        load_configuration_args = self.load_configuration.call_args
+        self.assertEqual(rollback, load_configuration_args[1].get("rollback"))
+
+    def test_junos_config_rollback_0(self):
+        rollback = 0
         set_module_args(dict(rollback=rollback))
         self.execute_module(changed=True)
         self.assertEqual(self.get_diff.call_count, 1)

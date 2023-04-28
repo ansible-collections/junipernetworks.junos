@@ -616,7 +616,6 @@ class Bgp_globalFacts(object):
 
         # Read import value
         if "import" in conf.keys():
-
             imports = conf.get("import")
             import_lst = []
             if isinstance(imports, dict):

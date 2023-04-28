@@ -1,0 +1,6 @@
+---
+bugfixes:
+  - module should return with failure when rollback is 0
+    and device is not reachable.
+trivial:
+  - Add 2.16 sanity ignores.

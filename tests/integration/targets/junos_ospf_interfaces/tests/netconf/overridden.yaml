@@ -53,7 +53,7 @@
             \ == 0 }}"
 
     - name: Override the provided configuration with the existing running configuration (IDEMPOTENT)
-      junos_ospf_interfaces: *overridden
+      junipernetworks.junos.junos_ospf_interfaces: *overridden
       register: result
 
     - name: Assert that the previous task was idempotent

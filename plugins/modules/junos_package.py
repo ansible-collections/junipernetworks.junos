@@ -44,27 +44,33 @@ options:
       updated package has been installed. If disabled or the remote package does not
       need to be changed, the device will not be started.
     type: bool
-    default: yes
+    default: true
   no_copy:
     description:
     - The I(no_copy) argument is responsible for instructing the remote device on
       where to install the package from.  When enabled, the package is transferred
       to the remote device prior to installing.
     type: bool
-    default: no
+    default: false
+  unlink:
+    description:
+    - The I(unlink) argument is responsible for instructing the remote device to
+      remove the installation packages after installation.
+    type: bool
+    default: false
   validate:
     description:
     - The I(validate) argument is responsible for instructing the remote device to
       skip checking the current device configuration compatibility with the package
       being installed. When set to false validation is not performed.
     type: bool
-    default: yes
+    default: true
   force:
     description:
     - The I(force) argument instructs the module to bypass the package version check
       and install the packaged identified in I(src) on the remote device.
     type: bool
-    default: no
+    default: false
   force_host:
     description:
     - The I(force_host) argument controls the way software package or bundle is added
@@ -93,6 +99,64 @@ options:
       used to load SSH information from a configuration file. If this option is not
       given by default ~/.ssh/config is queried.
     type: path
+  provider:
+    description:
+    - B(Deprecated)
+    - 'Starting with Ansible 2.5 we recommend using C(connection: network_cli) or
+      C(connection: netconf).'
+    - For more information please see the L(Junos OS Platform Options guide, ../network/user_guide/platform_junos.html).
+    - HORIZONTALLINE
+    - A dict object containing connection details.
+    type: dict
+    suboptions:
+      host:
+        description:
+        - Specifies the DNS host name or address for connecting to the remote device
+          over the specified transport.  The value of host is used as the destination
+          address for the transport.
+        type: str
+      port:
+        description:
+        - Specifies the port to use when building the connection to the remote device.  The
+          port value will default to the well known SSH port of 22 (for C(transport=cli))
+          or port 830 (for C(transport=netconf)) device.
+        type: int
+      username:
+        description:
+        - Configures the username to use to authenticate the connection to the remote
+          device.  This value is used to authenticate the SSH session. If the value
+          is not specified in the task, the value of environment variable C(ANSIBLE_NET_USERNAME)
+          will be used instead.
+        type: str
+      password:
+        description:
+        - Specifies the password to use to authenticate the connection to the remote
+          device.   This value is used to authenticate the SSH session. If the value
+          is not specified in the task, the value of environment variable C(ANSIBLE_NET_PASSWORD)
+          will be used instead.
+        type: str
+      timeout:
+        description:
+        - Specifies the timeout in seconds for communicating with the network device
+          for either connecting or sending commands.  If the timeout is exceeded before
+          the operation is completed, the module will error.
+        type: int
+      ssh_keyfile:
+        description:
+        - Specifies the SSH key to use to authenticate the connection to the remote
+          device.   This value is the path to the key used to authenticate the SSH
+          session. If the value is not specified in the task, the value of environment
+          variable C(ANSIBLE_NET_SSH_KEYFILE) will be used instead.
+        type: path
+      transport:
+        description:
+        - Configures the transport connection to use when connecting to the remote
+          device.
+        type: str
+        default: netconf
+        choices:
+        - cli
+        - netconf
 requirements:
 - junos-eznc
 - ncclient (>=v0.5.2)
@@ -117,7 +181,7 @@ EXAMPLES = """
 - name: install local package on remote device without rebooting
   junipernetworks.junos.junos_package:
     src: junos-vsrx-12.1X46-D10.2-domestic.tgz
-    reboot: no
+    reboot: false
 
 - name: install local package on remote device with jumpost
   junipernetworks.junos.junos_package:
@@ -128,6 +192,7 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     get_device,
+    junos_argument_spec,
 )
 
 
@@ -143,6 +208,7 @@ def install_package(module, device):
     junos = SW(device)
     package = module.params["src"]
     no_copy = module.params["no_copy"]
+    unlink = module.params["unlink"]
     validate = module.params["validate"]
     force_host = module.params["force_host"]
     issu = module.params["issu"]
@@ -155,6 +221,7 @@ def install_package(module, device):
         package,
         progress=progress_log,
         no_copy=no_copy,
+        unlink=unlink,
         validate=validate,
         force_host=force_host,
         issu=issu,
@@ -175,6 +242,7 @@ def main():
         version=dict(),
         reboot=dict(type="bool", default=True),
         no_copy=dict(default=False, type="bool"),
+        unlink=dict(default=False, type="bool"),
         validate=dict(default=True, type="bool"),
         force=dict(type="bool", default=False),
         force_host=dict(type="bool", default=False),
@@ -183,10 +251,15 @@ def main():
         ssh_config=dict(type="path"),
     )
 
+    argument_spec.update(junos_argument_spec)
+
     module = AnsibleModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
     )
+
+    if module.params["provider"] is None:
+        module.params["provider"] = {}
 
     if not HAS_PYEZ:
         module.fail_json(

@@ -73,7 +73,6 @@ class TestJunosModule(ModuleTestCase):
         defaults=False,
         format="text",
     ):
-
         self.load_fixtures(commands, format, changed=changed)
 
         if failed:

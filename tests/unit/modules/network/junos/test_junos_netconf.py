@@ -29,7 +29,6 @@ from .junos_module import TestJunosModule
 
 
 class TestJunosCommandModule(TestJunosModule):
-
     module = junos_netconf
 
     def setUp(self):

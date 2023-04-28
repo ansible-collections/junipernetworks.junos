@@ -209,7 +209,7 @@ class Lldp_global(ConfigBase):
                 "hold-multiplier",
                 want["hold_multiplier"],
             )
-        enable = want.get("enable")
+        enable = want.get("enabled")
         if enable is not None:
             if enable is False:
                 build_child_xml_node(lldp_root, "disable")

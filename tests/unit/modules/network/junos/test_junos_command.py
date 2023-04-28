@@ -37,7 +37,6 @@ RPC_CLI_MAP = {"get-software-information": "show version"}
 
 
 class TestJunosCommandModule(TestJunosModule):
-
     module = junos_command
 
     def setUp(self):

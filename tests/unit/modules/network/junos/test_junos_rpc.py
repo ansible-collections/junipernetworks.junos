@@ -44,7 +44,6 @@ RPC_CLI_MAP = {
 
 
 class TestJunosCommandModule(TestJunosModule):
-
     module = junos_rpc
 
     def setUp(self):

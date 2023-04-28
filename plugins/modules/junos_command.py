@@ -204,7 +204,6 @@ USE_PERSISTENT_CONNECTION = True
 
 
 def rpc(module, items):
-
     responses = list()
     for item in items:
         name = item["name"]

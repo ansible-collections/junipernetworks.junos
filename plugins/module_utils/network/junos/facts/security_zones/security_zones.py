@@ -226,7 +226,6 @@ class Security_zonesFacts(object):
                         temp_sec_zone["address_book"]["address_sets"] = []
 
                         for address_set in security_zone["address-book"]["address-set"]:
-
                             temp_address_set = {}
 
                             temp_address_set["name"] = address_set["name"]
@@ -283,13 +282,14 @@ class Security_zonesFacts(object):
                         security_zone["host-inbound-traffic"],
                     )
                 if "interfaces" in security_zone:
-                    if isinstance(security_zone["interfaces"], string_types):
+                    if isinstance(security_zone["interfaces"], dict):
                         security_zone["interfaces"] = [
                             security_zone["interfaces"],
                         ]
-                    temp_sec_zone["interfaces"] = [
-                        interface["name"] for interface in security_zone["interfaces"]
-                    ]
+                    else:
+                        temp_sec_zone["interfaces"] = [
+                            interface["name"] for interface in security_zone["interfaces"]
+                        ]
                 if "screen" in security_zone:
                     temp_sec_zone["screen"] = security_zone["screen"]
                 if "source-identity-log" in security_zone:

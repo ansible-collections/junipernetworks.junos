@@ -34,7 +34,6 @@ except ImportError:
 
 
 def get_resource_config(connection, config_filter=None, attrib=None):
-
     if attrib is None:
         attrib = {"inherit": "inherit"}
 

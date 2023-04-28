@@ -62,7 +62,7 @@ options:
       back to initial defaults.  This argument will effectively remove all current
       configuration statements on the remote device.
     type: bool
-    default: no
+    default: false
   confirm:
     description:
     - The C(confirm) argument will configure a time out value in minutes for the commit
@@ -95,7 +95,7 @@ options:
       playbook root directory or role root directory, if playbook is part of an ansible
       role. If the directory does not exist, it is created.
     type: bool
-    default: no
+    default: false
   update:
     description:
     - This argument will decide how to load the configuration data particularly when
@@ -124,19 +124,19 @@ options:
     - This argument will execute commit operation on remote device. It can be used
       to confirm a previous commit.
     type: bool
-    default: no
+    default: false
   check_commit:
     description:
     - This argument will check correctness of syntax; do not apply changes.
     - Note that this argument can be used to confirm verified configuration done via
       commit confirmed operation
     type: bool
-    default: no
+    default: false
   backup_options:
     description:
     - This is a dict object containing configurable options related to backup file
-      path. The value of this option is read only when C(backup) is set to I(yes),
-      if C(backup) is set to I(no) this option will be silently ignored.
+      path. The value of this option is read only when C(backup) is set to I(true),
+      if C(backup) is set to I(false) this option will be silently ignored.
     suboptions:
       filename:
         description:
@@ -172,8 +172,7 @@ requirements:
 notes:
 - This module requires the netconf system service be enabled on the remote device
   being managed.
-- Abbreviated commands are NOT idempotent, see L(Network FAQ,../network/user_guide/faq.html
-  #why-do-the-config-modules-always-return-changed-true-with-abbreviated-commands).
+- Abbreviated commands are NOT idempotent, see L(Network FAQ,../network/user_guide/faq.html)
 - Loading JSON-formatted configuration I(json) is supported starting in Junos OS Release
   16.1 onwards.
 - Update C(override) not currently compatible with C(set) notation.
@@ -204,7 +203,7 @@ EXAMPLES = """
 
 - name: Check correctness of commit configuration
   junipernetworks.junos.junos_config:
-    check_commit: yes
+    check_commit: true
 
 - name: rollback the configuration to id 10
   junipernetworks.junos.junos_config:
@@ -212,7 +211,7 @@ EXAMPLES = """
 
 - name: zero out the current configuration
   junipernetworks.junos.junos_config:
-    zeroize: yes
+    zeroize: true
 
 - name: Set VLAN access and trunking
   junipernetworks.junos.junos_config:
@@ -225,7 +224,7 @@ EXAMPLES = """
 
 - name: confirm a previous commit
   junipernetworks.junos.junos_config:
-    confirm_commit: yes
+    confirm_commit: true
 
 - name: for idempotency, use full-form commands
   junipernetworks.junos.junos_config:
@@ -236,7 +235,7 @@ EXAMPLES = """
 - name: configurable backup path
   junipernetworks.junos.junos_config:
     src: srx.cfg
-    backup: yes
+    backup: true
     backup_options:
       filename: backup.cfg
       dir_path: /home/user
@@ -245,27 +244,27 @@ EXAMPLES = """
 RETURN = """
 backup_path:
   description: The full path to the backup file
-  returned: when backup is yes
+  returned: when backup is true
   type: str
   sample: /playbooks/ansible/backup/config.2016-07-16@22:28:34
 filename:
   description: The name of the backup file
-  returned: when backup is yes and filename is not specified in backup options
+  returned: when backup is true and filename is not specified in backup options
   type: str
   sample: junos01_config.2016-07-16@22:28:34
 shortname:
   description: The full path to the backup file excluding the timestamp
-  returned: when backup is yes and filename is not specified in backup options
+  returned: when backup is true and filename is not specified in backup options
   type: str
   sample: /playbooks/ansible/backup/junos01_config
 date:
   description: The date extracted from the backup file name
-  returned: when backup is yes
+  returned: when backup is true
   type: str
   sample: "2016-07-16"
 time:
   description: The time extracted from the backup file name
-  returned: when backup is yes
+  returned: when backup is true
   type: str
   sample: "22:28:34"
 """
@@ -366,7 +365,6 @@ def filter_delete_statements(module, candidate):
 
 
 def configure_device(module, warnings, candidate):
-
     kwargs = {}
     config_format = None
 
@@ -468,7 +466,7 @@ def main():
             result["__backup__"] = reply
 
     rollback_id = module.params["rollback"]
-    if rollback_id:
+    if isinstance(rollback_id, int) and rollback_id >= 0:
         diff = rollback(module, rollback_id)
         if commit:
             kwargs = {"comment": module.params["comment"]}

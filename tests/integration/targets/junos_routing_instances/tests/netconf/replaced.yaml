@@ -71,7 +71,7 @@
             \ == 0 }}"
 
     - name: Merge the provided configuration with the existing running configuration (IDEMPOTENT)
-      junos_routing_instances: *replaced
+      junipernetworks.junos.junos_routing_instances: *replaced
       register: result
 
     - name: Assert that the previous task was idempotent

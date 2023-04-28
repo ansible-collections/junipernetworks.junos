@@ -719,7 +719,7 @@ Parameters
                 </td>
                 <td>
                         <div>This option is used only with state <em>parsed</em>.</div>
-                        <div>The value of this option should be the output received from the Junos device by executing the command B(show protocols ospf.</div>
+                        <div>The value of this option should be the output received from the Junos device by executing the command <b>show protocols ospf</b>.</div>
                         <div>The state <em>parsed</em> reads the configuration from <code>running_config</code> option and transforms it into Ansible structured data as per the resource module&#x27;s argspec and the value is then returned in the <em>parsed</em> key within the result</div>
                 </td>
             </tr>
