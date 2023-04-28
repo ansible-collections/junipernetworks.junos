@@ -1,3 +1,0 @@
----
-doc_changes:
-  - junos_static_routes - add task output to module documentation examples. (https://github.com/ansible-collections/junipernetworks.junos/pull/402).

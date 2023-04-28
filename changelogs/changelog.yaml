@@ -484,3 +484,38 @@ releases:
       - update_bgp_global_fqcn.yaml
       - update_reboot_timer.yaml
     release_date: "2023-02-28"
+  5.1.0:
+    changes:
+      bugfixes:
+        - Fix enabled attribute implementation.
+        - Fix lldp_global_assertion.
+        - Fix sanity issues.
+        - Fix the snmp view and traps configuration.
+        - fix the implementation of disabling interface.
+        - module should return with failure when rollback is 0 and device is not reachable.
+      doc_changes:
+        - Update bgp_address_family docs with examples.
+        - Update bgp_global docs with examples.
+        - junos_interfaces - Updated documentation with examples and task output.
+        - junos_static_routes - add task output to module documentation examples. (https://github.com/ansible-collections/junipernetworks.junos/pull/402).
+      minor_changes:
+        - Adding unlink option to junos package installation.
+    fragments:
+      - boolean_normalization.yaml
+      - ci_codecov.yaml
+      - codecov_fix.yml
+      - fix_docs_static_route.yaml
+      - fix_downstream.yaml
+      - fix_downstream_testing_issues.yaml
+      - fix_enabling.yaml
+      - fix_lldp_global_assertion.yaml
+      - fix_snmp_traps_and_view.yaml
+      - gha_workflow_fix.yml
+      - junos_cofig_rollback_fix.yaml
+      - lldp_global_test_update.yaml
+      - package_unlink.yaml
+      - update_bgp_address_family_docs.yaml
+      - update_bgp_global_docs.yaml
+      - update_inft_docs.yaml
+      - update_timeout.yaml
+    release_date: "2023-04-28"
