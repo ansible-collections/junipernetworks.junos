@@ -5,6 +5,32 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v5.1.0
+======
+
+Minor Changes
+-------------
+
+- Adding unlink option to junos package installation.
+
+Bugfixes
+--------
+
+- Fix enabled attribute implementation.
+- Fix lldp_global_assertion.
+- Fix sanity issues.
+- Fix the snmp view and traps configuration.
+- fix the implementation of disabling interface.
+- module should return with failure when rollback is 0 and device is not reachable.
+
+Documentation Changes
+---------------------
+
+- Update bgp_address_family docs with examples.
+- Update bgp_global docs with examples.
+- junos_interfaces - Updated documentation with examples and task output.
+- junos_static_routes - add task output to module documentation examples. (https://github.com/ansible-collections/junipernetworks.junos/pull/402).
+
 v5.0.0
 ======
 
