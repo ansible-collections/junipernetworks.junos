@@ -106,7 +106,7 @@ class Cliconf(CliconfBase):
 
         return self._device_info
 
-    def get_config(self, source="running", format="text", flags=None):
+    def get_config(self, source="running", flags=None, format="text"):
         if source != "running":
             raise ValueError(
                 "fetching configuration from %s is not supported" % source,
@@ -187,8 +187,8 @@ class Cliconf(CliconfBase):
         prompt=None,
         answer=None,
         sendonly=False,
-        output=None,
         newline=True,
+        output=None,
         check_all=False,
     ):
         if output:
