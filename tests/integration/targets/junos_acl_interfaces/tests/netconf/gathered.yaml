@@ -19,7 +19,7 @@
                     direction: out
 
     - name: Merge the provided configuration with the exisiting running configuration
-      junipernetworks.junos.junos_acl_interfaces: &merged
+      junipernetworks.junos.junos_acl_interfaces:
         config:
           - name: ge-1/0/0
             access_groups:
@@ -39,7 +39,7 @@
 
     - name: Assert that facts were correctly generated
       ansible.builtin.assert:
-        that: "{{ merged['after'] == expected_gathered_config }}"
+        that: "{{ result['gathered'] == expected_gathered_config }}"
 
   always:
     - ansible.builtin.include_tasks: _reset_config.yaml
