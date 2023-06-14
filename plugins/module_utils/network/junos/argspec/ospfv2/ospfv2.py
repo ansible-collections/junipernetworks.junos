@@ -39,6 +39,16 @@ class Ospfv2Args(object):  # pylint: disable=R0903
                     "options": {
                         "area_id": {"required": True, "type": "str"},
                         "area_range": {"type": "str"},
+                        "area_ranges": {
+                            "type": "list",
+                            "elements": "dict",
+                            "options":{
+                                "address": {"type": "str"},
+                                "exact": {"type": "bool"},
+                                "restrict": {"type": "bool"},
+                                "override_metric": {"type": "int"},
+                            },
+                            },
                         "stub": {
                             "type": "dict",
                             "options": {

@@ -48,6 +48,7 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     locked_config,
     tostring,
 )
+import q
 
 
 class Ospfv2(ConfigBase):
@@ -147,6 +148,8 @@ class Ospfv2(ConfigBase):
         """
         want = self._module.params["config"]
         have = existing_ospf_facts
+        q(want)
+        q(have)
         resp = self.set_state(want, have)
         return to_list(resp)
 
@@ -174,6 +177,7 @@ class Ospfv2(ConfigBase):
         if state == "overridden":
             config_xmls = self._state_overridden(want, have)
         elif state == "deleted":
+            q("inside deleted")
             config_xmls = self._state_deleted(want, have)
         elif state in ("merged", "rendered"):
             config_xmls = self._state_merged(want, have)
@@ -221,6 +225,7 @@ class Ospfv2(ConfigBase):
         """
         ospf_xml = []
         delete = {"delete": "delete"}
+        ospf_node = None
         if have:
             for have_ospf in have:
                 have_areas = have_ospf.get("areas") or []
@@ -232,7 +237,20 @@ class Ospfv2(ConfigBase):
                         area["area_id"],
                     )
                     area_node.attrib.update(delete)
-                    ospf_xml.append(ospf_node)
+                    # ospf_xml.append(ospf_node)
+            q(have)
+            if have.get("reference_bandwidth"):
+                if not ospf_node:
+                    ospf_node = build_child_xml_node(self.protocols, "ospf")
+                    ref_node = build_child_xml_node(
+                        ospf_node,
+                        "reference-bandwidth"
+                    )
+                    ref_node.attrib.update(delete)
+            
+            if ospf_node:
+                ospf_xml.append(ospf_node)
+
         return ospf_xml
 
     def _state_merged(self, want, have):
@@ -332,6 +350,7 @@ class Ospfv2(ConfigBase):
                     area_node = build_child_xml_node(protocol, "area")
                     area_id = area.get("area_id")
                     build_child_xml_node(area_node, "name", area_id)
+                    # Included for compatibility, remove after 2025-07-01
                     if area.get("area_range"):
                         area_range_node = build_child_xml_node(
                             area_node,
@@ -342,7 +361,30 @@ class Ospfv2(ConfigBase):
                             "name",
                             area["area_range"],
                         )
+                    for a_range in area.get("area_ranges"):
+                        range_node = build_child_xml_node(
+                            area_node,
+                            "area-range")
+                        
+                        node = build_child_xml_node(
+                            range_node,
+                            "name",
+                            a_range["address"]
+                        )
+                        if "exact" in a_range:
+                            build_child_xml_node(
+                                range_node, "exact")
 
+                        if "restrict" in a_range:
+                            build_child_xml_node(
+                                range_node, "restrict")
+                        if a_range.get("override_metric"):
+                            build_child_xml_node(
+                                range_node,
+                                "override-metric",
+                                a_range.get("override_metric")
+                            )
+                    
                     for intf in area.get("interfaces"):
                         intf_node = build_child_xml_node(
                             area_node,

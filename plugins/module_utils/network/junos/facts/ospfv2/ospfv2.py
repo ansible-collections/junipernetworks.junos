@@ -156,9 +156,9 @@ class Ospfv2Facts(object):
         :rtype: dictionary
         :returns: The generated config
         """
+        
         config = deepcopy(spec)
         ospf = conf.get("ospf")
-
         if ospf.get("area"):
             rendered_areas = []
             areas = ospf.get("area")
@@ -242,10 +242,22 @@ class Ospfv2Facts(object):
                     area_range = area["area-range"]
                     if not isinstance(area_range, list):
                         area_range = [area_range]
+                    # Included for compatibility, remove after 2025-07-01
                     rendered_area["area_range"] = []
                     for a_range in area_range:
                         rendered_area["area_range"].append(a_range["name"])
-
+                    
+                    rendered_area["area_ranges"] = []
+                    for a_range in area_range:
+                        range = {}
+                        range["address"] = a_range["name"]
+                        if a_range.get("override-metric"):
+                            range["override_metric"] = a_range.get("override-metric")
+                        if "exact" in a_range:
+                            range["exact"] = True
+                        if "restrict" in a_range:
+                            range["restrict"] = True
+                        rendered_area["area_ranges"].append(range)
                 if area.get("stub"):
                     rendered_area["stub"] = {"set": True}
                     if "no-summaries" in area.get("stub").keys():
@@ -261,26 +273,26 @@ class Ospfv2Facts(object):
                     if "default-lsa" in area.get("nssa").keys():
                         rendered_area["nssa"]["default-lsa"] = True
                 rendered_areas.append(rendered_area)
-
-            if "no-rfc-1583" in ospf.keys():
-                config["rfc1583compatibility"] = False
-            if ospf.get("spf-options"):
-                config["spf_options"] = {}
-                config["spf_options"]["delay"] = ospf["spf-options"].get(
-                    "delay",
-                )
-                config["spf_options"]["holddown"] = ospf["spf-options"].get(
-                    "holddown",
-                )
-                config["spf_options"]["rapid_runs"] = ospf["spf-options"].get(
-                    "rapid-runs",
-                )
-            config["overload"] = ospf.get("overload")
-            config["preference"] = ospf.get("preference")
-            config["external_preference"] = ospf.get("external-preference")
-            config["prefix_export_limit"] = ospf.get("prefix-export-limit")
-            config["reference_bandwidth"] = ospf.get("reference-bandwidth")
             config["areas"] = rendered_areas
-            if self.router_id != "":
-                config["router_id"] = self.router_id["router-id"]
+
+        if "no-rfc-1583" in ospf.keys():
+            config["rfc1583compatibility"] = False
+        if ospf.get("spf-options"):
+            config["spf_options"] = {}
+            config["spf_options"]["delay"] = ospf["spf-options"].get(
+                "delay",
+            )
+            config["spf_options"]["holddown"] = ospf["spf-options"].get(
+                "holddown",
+            )
+            config["spf_options"]["rapid_runs"] = ospf["spf-options"].get(
+                "rapid-runs",
+            )
+        config["overload"] = ospf.get("overload")
+        config["preference"] = ospf.get("preference")
+        config["external_preference"] = ospf.get("external-preference")
+        config["prefix_export_limit"] = ospf.get("prefix-export-limit")
+        config["reference_bandwidth"] = ospf.get("reference-bandwidth")
+        if self.router_id != "":
+            config["router_id"] = self.router_id["router-id"]
         return utils.remove_empties(config)
