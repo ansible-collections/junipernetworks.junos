@@ -34,7 +34,7 @@
 
     - name: Gather security policies facts using gathered state
       register: result
-      junipernetworks.junos.junos_security_policies:
+      junipernetworks.junos.junos_acl_interfaces:
         state: gathered
 
     - name: Assert that facts were correctly generated
