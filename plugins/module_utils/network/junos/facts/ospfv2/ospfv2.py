@@ -116,14 +116,14 @@ class Ospfv2Facts(object):
             self.router_id = ""
         objs = []
         for resource in resources:
-            if resource:
+            if resource is not None:
                 xml = self._get_xml_dict(resource)
                 obj = self.render_config(self.generated_spec, xml)
                 if obj:
                     objs.append(obj)
 
         facts = {}
-        if objs:
+        if objs is not None:
             facts["ospfv2"] = []
             params = utils.validate_config(
                 self.argument_spec,
@@ -274,7 +274,6 @@ class Ospfv2Facts(object):
                         rendered_area["nssa"]["default-lsa"] = True
                 rendered_areas.append(rendered_area)
             config["areas"] = rendered_areas
-
         if "no-rfc-1583" in ospf.keys():
             config["rfc1583compatibility"] = False
         if ospf.get("spf-options"):

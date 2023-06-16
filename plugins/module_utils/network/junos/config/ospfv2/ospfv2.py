@@ -48,7 +48,6 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     locked_config,
     tostring,
 )
-import q
 
 
 class Ospfv2(ConfigBase):
@@ -148,8 +147,6 @@ class Ospfv2(ConfigBase):
         """
         want = self._module.params["config"]
         have = existing_ospf_facts
-        q(want)
-        q(have)
         resp = self.set_state(want, have)
         return to_list(resp)
 
@@ -177,7 +174,6 @@ class Ospfv2(ConfigBase):
         if state == "overridden":
             config_xmls = self._state_overridden(want, have)
         elif state == "deleted":
-            q("inside deleted")
             config_xmls = self._state_deleted(want, have)
         elif state in ("merged", "rendered"):
             config_xmls = self._state_merged(want, have)
@@ -227,28 +223,30 @@ class Ospfv2(ConfigBase):
         delete = {"delete": "delete"}
         ospf_node = None
         if have:
+            ospf_node = build_child_xml_node(self.protocols, "ospf")
             for have_ospf in have:
                 have_areas = have_ospf.get("areas") or []
                 for area in have_areas:
-                    ospf_node = build_child_xml_node(self.protocols, "ospf")
                     area_node = build_child_xml_node(
                         ospf_node,
                         "area",
                         area["area_id"],
                     )
                     area_node.attrib.update(delete)
-                    # ospf_xml.append(ospf_node)
-            q(have)
-            if have.get("reference_bandwidth"):
-                if not ospf_node:
-                    ospf_node = build_child_xml_node(self.protocols, "ospf")
+            for item in have:
+                if item.get("reference_bandwidth"):
                     ref_node = build_child_xml_node(
                         ospf_node,
                         "reference-bandwidth"
                     )
                     ref_node.attrib.update(delete)
-            
-            if ospf_node:
+                if item.get("rfc1583compatibility") == False:
+                    rfc_node = build_child_xml_node(
+                        ospf_node,
+                        "no-rfc-1583"
+                    )
+                    rfc_node.attrib.update(delete)
+            if ospf_node is not None:
                 ospf_xml.append(ospf_node)
 
         return ospf_xml
