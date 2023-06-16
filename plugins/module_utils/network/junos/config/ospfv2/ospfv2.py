@@ -240,7 +240,7 @@ class Ospfv2(ConfigBase):
                         "reference-bandwidth"
                     )
                     ref_node.attrib.update(delete)
-                if item.get("rfc1583compatibility") == False:
+                if item.get("rfc1583compatibility") is False:
                     rfc_node = build_child_xml_node(
                         ospf_node,
                         "no-rfc-1583"
