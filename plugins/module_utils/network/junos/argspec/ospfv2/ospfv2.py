@@ -98,7 +98,12 @@ class Ospfv2Args(object):  # pylint: disable=R0903
                 "external_preference": {"type": "int"},
                 "overload": {
                     "type": "dict",
-                    "options": {"timeout": {"type": "int"}},
+                    "options": {
+                        "timeout": {"type": "int"},
+                        "allow_route_leaking": {"type": "bool"},
+                        "as_external": {"type": "bool"},
+                        "stub_network": {"type": "bool"},
+                        },
                 },
                 "preference": {"type": "int"},
                 "prefix_export_limit": {"type": "int"},
@@ -113,6 +118,7 @@ class Ospfv2Args(object):  # pylint: disable=R0903
                         "delay": {"type": "int"},
                         "holddown": {"type": "int"},
                         "rapid_runs": {"type": "int"},
+                        "no_ignore_our_externals": {"type": "bool"},
                     },
                 },
             },

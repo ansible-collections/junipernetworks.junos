@@ -287,7 +287,22 @@ class Ospfv2Facts(object):
             config["spf_options"]["rapid_runs"] = ospf["spf-options"].get(
                 "rapid-runs",
             )
-        config["overload"] = ospf.get("overload")
+            if "no-ignore-our-externals" in ospf["spf-options"]:
+                config["spf_options"]["no_ignore_our_externals"] = True
+        if "overload" in ospf.keys():
+            overload = ospf.get("overload")
+            cfg = {}
+            # overload={'allow-route-leaking': None, 'as-external': None, 'stub-network': None, 'timeout': '1200'}
+            if 'allow-route-leaking' in overload:
+                cfg["allow_route_leaking"] = True
+            if 'as-external' in overload:
+                cfg["as_external"] = True
+            if 'stub-network' in overload:
+                cfg["stub_network"] = True
+            if overload.get("timeout"):
+                cfg['timeout'] = overload.get('timeout')
+
+            config["overload"] = cfg
         config["preference"] = ospf.get("preference")
         config["external_preference"] = ospf.get("external-preference")
         config["prefix_export_limit"] = ospf.get("prefix-export-limit")

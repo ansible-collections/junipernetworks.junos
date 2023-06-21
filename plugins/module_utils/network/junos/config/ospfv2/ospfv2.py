@@ -234,6 +234,18 @@ class Ospfv2(ConfigBase):
                     )
                     area_node.attrib.update(delete)
             for item in have:
+                if item.get("spf_options"):
+                    spf_node = build_child_xml_node(
+                        ospf_node,
+                        "spf-options"
+                    )
+                    spf_node.attrib.update(delete)
+                if item.get("external_preference"):
+                    ref_node = build_child_xml_node(
+                        ospf_node,
+                        "external-preference"
+                    )
+                    ref_node.attrib.update(delete)
                 if item.get("reference_bandwidth"):
                     ref_node = build_child_xml_node(
                         ospf_node,
@@ -246,6 +258,13 @@ class Ospfv2(ConfigBase):
                         "no-rfc-1583"
                     )
                     rfc_node.attrib.update(delete)
+                if item.get("overload"):
+                    over_node = build_child_xml_node(
+                        ospf_node,
+                        "overload"
+                    )
+                    over_node.attrib.update(delete)
+
             if ospf_node is not None:
                 ospf_xml.append(ospf_node)
 
@@ -301,6 +320,12 @@ class Ospfv2(ConfigBase):
                         "rapid-runs",
                         ospf["spf_options"].get("rapid_runs"),
                     )
+                if ospf["spf_options"].get("no_ignore_our_externals"):
+                    build_child_xml_node(
+                        spf_options_node,
+                        "no-ignore-our-externals",
+                    )
+
 
             if ospf.get("overload"):
                 overload_node = build_child_xml_node(protocol, "overload")
@@ -309,6 +334,22 @@ class Ospfv2(ConfigBase):
                         overload_node,
                         "timeout",
                         ospf["overload"].get("timeout"),
+                    )
+                if ospf["overload"].get("allow_route_leaking"):
+                    build_child_xml_node(
+                        overload_node,
+                        "allow-route-leaking",
+                    )
+                if ospf["overload"].get("as_external"):
+                    build_child_xml_node(
+                        overload_node,
+                        "as-external",
+                    )
+
+                if ospf["overload"].get("stub_network"):
+                    build_child_xml_node(
+                        overload_node,
+                        "stub-network",
                     )
 
             if ospf.get("external_preference"):
@@ -359,111 +400,112 @@ class Ospfv2(ConfigBase):
                             "name",
                             area["area_range"],
                         )
-                    for a_range in area.get("area_ranges"):
-                        range_node = build_child_xml_node(
-                            area_node,
-                            "area-range")
+                    if "area_ranges" in area:
+                        for a_range in area.get("area_ranges"):
+                            range_node = build_child_xml_node(
+                                area_node,
+                                "area-range")
                         
-                        node = build_child_xml_node(
-                            range_node,
-                            "name",
-                            a_range["address"]
-                        )
-                        if "exact" in a_range:
-                            build_child_xml_node(
-                                range_node, "exact")
-
-                        if "restrict" in a_range:
-                            build_child_xml_node(
-                                range_node, "restrict")
-                        if a_range.get("override_metric"):
                             build_child_xml_node(
                                 range_node,
-                                "override-metric",
-                                a_range.get("override_metric")
+                                "name",
+                                a_range["address"]
                             )
-                    
-                    for intf in area.get("interfaces"):
-                        intf_node = build_child_xml_node(
-                            area_node,
-                            "interface",
-                        )
-                        build_child_xml_node(
-                            intf_node,
-                            "name",
-                            intf.get("name"),
-                        )
-
-                        if intf.get("priority"):
-                            build_child_xml_node(
-                                intf_node,
-                                "priority",
-                                intf.get("priority"),
-                            )
-
-                        if intf.get("flood_reduction"):
-                            build_child_xml_node(
-                                intf_node,
-                                "flood-reduction",
-                                None,
-                            )
-
-                        if intf.get("metric"):
-                            build_child_xml_node(
-                                intf_node,
-                                "metric",
-                                intf["metric"],
-                            )
-
-                        if intf.get("passive"):
-                            build_child_xml_node(intf_node, "passive")
-
-                        if intf.get("bandwidth_based_metrics"):
-                            bw_metrics_node = build_child_xml_node(
-                                intf_node,
-                                "bandwidth-based-metrics",
-                            )
-                            bw_metrics = intf.get("bandwidth_based_metrics")
-                            for bw_metric in bw_metrics:
-                                bw_metric_node = build_child_xml_node(
-                                    bw_metrics_node,
-                                    "bandwidth",
-                                )
+                            if "exact" in a_range:
                                 build_child_xml_node(
-                                    bw_metric_node,
-                                    "name",
-                                    bw_metric.get("bandwidth"),
-                                )
+                                    range_node, "exact")
+
+                            if "restrict" in a_range:
                                 build_child_xml_node(
-                                    bw_metric_node,
+                                    range_node, "restrict")
+                            if a_range.get("override_metric"):
+                                build_child_xml_node(
+                                    range_node,
+                                    "override-metric",
+                                    a_range.get("override_metric")
+                                )
+                    if "interfaces" in area:
+                        for intf in area.get("interfaces"):
+                            intf_node = build_child_xml_node(
+                                area_node,
+                                "interface",
+                            )
+                            build_child_xml_node(
+                                intf_node,
+                                "name",
+                                intf.get("name"),
+                            )
+
+                            if intf.get("priority"):
+                                build_child_xml_node(
+                                    intf_node,
+                                    "priority",
+                                    intf.get("priority"),
+                                )
+
+                            if intf.get("flood_reduction"):
+                                build_child_xml_node(
+                                    intf_node,
+                                    "flood-reduction",
+                                    None,
+                                )
+
+                            if intf.get("metric"):
+                                build_child_xml_node(
+                                    intf_node,
                                     "metric",
-                                    bw_metric.get("metric"),
+                                    intf["metric"],
                                 )
-                        if intf.get("timers"):
-                            if intf["timers"].get("dead_interval"):
-                                build_child_xml_node(
+
+                            if intf.get("passive"):
+                                build_child_xml_node(intf_node, "passive")
+
+                            if intf.get("bandwidth_based_metrics"):
+                                bw_metrics_node = build_child_xml_node(
                                     intf_node,
-                                    "dead-interval",
-                                    intf["timers"].get("dead_interval"),
+                                    "bandwidth-based-metrics",
                                 )
-                            if intf["timers"].get("hello_interval"):
-                                build_child_xml_node(
-                                    intf_node,
-                                    "hello-interval",
-                                    intf["timers"].get("hello_interval"),
-                                )
-                            if intf["timers"].get("poll_interval"):
-                                build_child_xml_node(
-                                    intf_node,
-                                    "poll-interval",
-                                    intf["timers"].get("poll_interval"),
-                                )
-                            if intf["timers"].get("retransmit_interval"):
-                                build_child_xml_node(
-                                    intf_node,
-                                    "retransmit-interval",
-                                    intf["timers"].get("retransmit_interval"),
-                                )
+                                bw_metrics = intf.get("bandwidth_based_metrics")
+                                for bw_metric in bw_metrics:
+                                    bw_metric_node = build_child_xml_node(
+                                        bw_metrics_node,
+                                        "bandwidth",
+                                    )
+                                    build_child_xml_node(
+                                        bw_metric_node,
+                                        "name",
+                                        bw_metric.get("bandwidth"),
+                                    )
+                                    build_child_xml_node(
+                                        bw_metric_node,
+                                        "metric",
+                                        bw_metric.get("metric"),
+                                    )
+                            if intf.get("timers"):
+                                if intf["timers"].get("dead_interval"):
+                                    build_child_xml_node(
+                                        intf_node,
+                                        "dead-interval",
+                                        intf["timers"].get("dead_interval"),
+                                    )
+                                if intf["timers"].get("hello_interval"):
+                                    build_child_xml_node(
+                                        intf_node,
+                                        "hello-interval",
+                                        intf["timers"].get("hello_interval"),
+                                    )
+                                if intf["timers"].get("poll_interval"):
+                                    build_child_xml_node(
+                                        intf_node,
+                                        "poll-interval",
+                                        intf["timers"].get("poll_interval"),
+                                    )
+                                if intf["timers"].get("retransmit_interval"):
+                                    build_child_xml_node(
+                                        intf_node,
+                                        "retransmit-interval",
+                                        intf["timers"].get("retransmit_interval"),
+                                    )
 
                     if area.get("stub"):
                         if area["stub"]["set"]:

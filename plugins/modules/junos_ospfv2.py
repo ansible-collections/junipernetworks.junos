@@ -189,6 +189,15 @@ options:
         description: Specify time for overload mode reset
         type: dict
         suboptions:
+          allow_route_leaking:
+            description: Allow routes to be leaked when overload is configured.
+            type: bool
+          as_external:
+            description: Advertise As External with maximum usable metric.
+            type: bool
+          stub_network:
+            description: Advertise Stub Network with maximum metric.
+            type: bool
           timeout:
             description:
             - Time after which overload mode is reset (seconds).
@@ -227,6 +236,9 @@ options:
             description:
             - Number of maximum rapid SPF runs before holddown (seconds).
             type: int
+          no_ignore_our_externals:
+            description: Do not ignore self-generated external and NSSA LSAs.
+            type: bool
   running_config:
     description:
     - This option is used only with state I(parsed).
