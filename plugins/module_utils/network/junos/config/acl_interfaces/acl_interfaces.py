@@ -60,7 +60,7 @@ class Acl_interfaces(ConfigBase):
             data=data,
         )
         acl_interfaces_facts = facts["ansible_network_resources"].get(
-            "junos_acl_interfaces",
+            "acl_interfaces",
         )
         if not acl_interfaces_facts:
             return []
