@@ -156,7 +156,7 @@ class Ospfv2Facts(object):
         :rtype: dictionary
         :returns: The generated config
         """
-        
+
         config = deepcopy(spec)
         ospf = conf.get("ospf")
         if ospf.get("area"):
@@ -258,7 +258,7 @@ class Ospfv2Facts(object):
                     rendered_area["area_range"] = []
                     for a_range in area_range:
                         rendered_area["area_range"].append(a_range["name"])
-                    
+
                     rendered_area["area_ranges"] = []
                     for a_range in area_range:
                         range = {}
@@ -305,14 +305,14 @@ class Ospfv2Facts(object):
             overload = ospf.get("overload")
             cfg = {}
             # overload={'allow-route-leaking': None, 'as-external': None, 'stub-network': None, 'timeout': '1200'}
-            if 'allow-route-leaking' in overload:
+            if "allow-route-leaking" in overload:
                 cfg["allow_route_leaking"] = True
-            if 'as-external' in overload:
+            if "as-external" in overload:
                 cfg["as_external"] = True
-            if 'stub-network' in overload:
+            if "stub-network" in overload:
                 cfg["stub_network"] = True
             if overload.get("timeout"):
-                cfg['timeout'] = overload.get('timeout')
+                cfg["timeout"] = overload.get("timeout")
 
             config["overload"] = cfg
         config["preference"] = ospf.get("preference")

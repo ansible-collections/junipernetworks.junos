@@ -662,7 +662,7 @@ EXAMPLES = """
           - bandwidth: 1g
             metric: 5
           - bandwidth: 10g
-            metric: 40  
+            metric: 40
     state: overridden
 
 # Task Output:

@@ -237,40 +237,39 @@ class Ospfv2(ConfigBase):
                 if item.get("spf_options"):
                     spf_node = build_child_xml_node(
                         ospf_node,
-                        "spf-options"
+                        "spf-options",
                     )
                     spf_node.attrib.update(delete)
                 if item.get("external_preference"):
                     ref_node = build_child_xml_node(
                         ospf_node,
-                        "external-preference"
+                        "external-preference",
                     )
                     ref_node.attrib.update(delete)
                 if item.get("reference_bandwidth"):
                     ref_node = build_child_xml_node(
                         ospf_node,
-                        "reference-bandwidth"
+                        "reference-bandwidth",
                     )
                     ref_node.attrib.update(delete)
                 if item.get("rfc1583compatibility") is False:
                     rfc_node = build_child_xml_node(
                         ospf_node,
-                        "no-rfc-1583"
+                        "no-rfc-1583",
                     )
                     rfc_node.attrib.update(delete)
                 if item.get("overload"):
                     over_node = build_child_xml_node(
                         ospf_node,
-                        "overload"
+                        "overload",
                     )
                     over_node.attrib.update(delete)
                 if item.get("prefix_export_limit"):
                     pel_node = build_child_xml_node(
                         ospf_node,
-                        "prefix-export-limit"
+                        "prefix-export-limit",
                     )
                     pel_node.attrib.update(delete)
-
 
             if ospf_node is not None:
                 ospf_xml.append(ospf_node)
@@ -332,7 +331,6 @@ class Ospfv2(ConfigBase):
                         spf_options_node,
                         "no-ignore-our-externals",
                     )
-
 
             if ospf.get("overload"):
                 overload_node = build_child_xml_node(protocol, "overload")
@@ -411,25 +409,30 @@ class Ospfv2(ConfigBase):
                         for a_range in area.get("area_ranges"):
                             range_node = build_child_xml_node(
                                 area_node,
-                                "area-range")
-                        
+                                "area-range",
+                            )
+
                             build_child_xml_node(
                                 range_node,
                                 "name",
-                                a_range["address"]
+                                a_range["address"],
                             )
                             if "exact" in a_range:
                                 build_child_xml_node(
-                                    range_node, "exact")
+                                    range_node,
+                                    "exact",
+                                )
 
                             if "restrict" in a_range:
                                 build_child_xml_node(
-                                    range_node, "restrict")
+                                    range_node,
+                                    "restrict",
+                                )
                             if a_range.get("override_metric"):
                                 build_child_xml_node(
                                     range_node,
                                     "override-metric",
-                                    a_range.get("override_metric")
+                                    a_range.get("override_metric"),
                                 )
                     if "interfaces" in area:
                         for intf in area.get("interfaces"):
@@ -492,37 +495,37 @@ class Ospfv2(ConfigBase):
                                 auth = intf.get("authentication")
                                 auth_node = build_child_xml_node(
                                     intf_node,
-                                    "authentication"
+                                    "authentication",
                                 )
                                 if "password" in auth.keys():
                                     build_child_xml_node(
                                         auth_node,
                                         "simple-password",
-                                        auth.get("password")
+                                        auth.get("password"),
                                     )
                                 elif "md5" in auth.keys():
                                     md5 = auth.get("md5")
                                     md_node = build_child_xml_node(
                                         auth_node,
-                                        "md5"
+                                        "md5",
                                     )
                                     for item in md5:
                                         build_child_xml_node(
                                             md_node,
                                             "name",
-                                            item["key_id"]
+                                            item["key_id"],
                                         )
                                         build_child_xml_node(
                                             md_node,
                                             "key",
-                                            item["key"]
+                                            item["key"],
                                         )
 
                                         if "start_time" in item:
                                             build_child_xml_node(
                                                 md_node,
                                                 "start-time",
-                                                item["start_time"]
+                                                item["start_time"],
                                             )
                             if intf.get("timers"):
                                 if intf["timers"].get("dead_interval"):
