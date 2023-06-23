@@ -1,0 +1,10 @@
+---
+deprecated_features:
+  - "`junos_ospfv2` - add deprecate warning for area_range."
+minor_changes:
+  - "`junos_ospfv2` - add area_ranges attribute which supports list of dict attributes."
+  - "`junos_ospfv2` - Rename key ospf to ospfv2 in facts."
+  - "`junos_ospfv2` - fix to gather reference_bandwidth and rfc1583compatibility."
+  - "`junos_ospfv2` - add attributes `allow_route_leaking`, `stub_network` and `as-external` to overload dict."
+  - "`junos_ospfv2` - add attributes `no_ignore_out_externals` to spf_options dict."
+  - "`junos_ospfv2` - Fix the authentication config when password is configured"

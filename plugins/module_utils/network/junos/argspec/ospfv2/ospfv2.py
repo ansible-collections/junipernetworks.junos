@@ -39,6 +39,16 @@ class Ospfv2Args(object):  # pylint: disable=R0903
                     "options": {
                         "area_id": {"required": True, "type": "str"},
                         "area_range": {"type": "str"},
+                        "area_ranges": {
+                            "type": "list",
+                            "elements": "dict",
+                            "options": {
+                                "address": {"type": "str"},
+                                "exact": {"type": "bool"},
+                                "restrict": {"type": "bool"},
+                                "override_metric": {"type": "int"},
+                            },
+                        },
                         "stub": {
                             "type": "dict",
                             "options": {
@@ -51,7 +61,25 @@ class Ospfv2Args(object):  # pylint: disable=R0903
                             "options": {
                                 "authentication": {
                                     "type": "dict",
-                                    "options": {"type": {"type": "dict"}},
+                                    "options": {
+                                        "type": {"type": "dict"},
+                                        "password": {
+                                            "type": "str",
+                                            "no_log": False,
+                                        },
+                                        "md5": {
+                                            "type": "list",
+                                            "elements": "dict",
+                                            "options": {
+                                                "key_id": {"type": "int"},
+                                                "key": {
+                                                    "type": "str",
+                                                    "no_log": False,
+                                                },
+                                                "start_time": {"type": "str"},
+                                            },
+                                        },
+                                    },
                                 },
                                 "bandwidth_based_metrics": {
                                     "elements": "dict",
@@ -88,7 +116,12 @@ class Ospfv2Args(object):  # pylint: disable=R0903
                 "external_preference": {"type": "int"},
                 "overload": {
                     "type": "dict",
-                    "options": {"timeout": {"type": "int"}},
+                    "options": {
+                        "timeout": {"type": "int"},
+                        "allow_route_leaking": {"type": "bool"},
+                        "as_external": {"type": "bool"},
+                        "stub_network": {"type": "bool"},
+                    },
                 },
                 "preference": {"type": "int"},
                 "prefix_export_limit": {"type": "int"},
@@ -103,6 +136,7 @@ class Ospfv2Args(object):  # pylint: disable=R0903
                         "delay": {"type": "int"},
                         "holddown": {"type": "int"},
                         "rapid_runs": {"type": "int"},
+                        "no_ignore_our_externals": {"type": "bool"},
                     },
                 },
             },
