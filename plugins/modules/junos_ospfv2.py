@@ -40,6 +40,7 @@ description:
 version_added: 1.0.0
 author:
 - Daniel Mellado (@dmellado)
+- Rohit Thakur (@rohitthakur2590)
 requirements:
 - ncclient (>=v0.6.4)
 - xmltodict (>=0.12.0)
@@ -123,7 +124,26 @@ options:
                   type:
                     description:
                     - Type of authentication to use.
+                    - Included for compatibility, remove/deprecate after 2025-07-01.
                     type: dict
+                  password:
+                    description: Specify authentication key.
+                    type: str
+                  md5:
+                    description: MD5 authentication keys
+                    type: list
+                    elements: dict
+                    suboptions:
+                      key_id:
+                        description: Specify the key identity
+                        type: int
+                      key:
+                        description: Specify key value
+                        type: str
+                      start_time:
+                        description: Specify Start time for key transmission (YYYY-MM-DD.HH:MM)
+                        type: str
+
               bandwidth_based_metrics:
                 description: Specify list of bandwidth based metrics
                 type: list

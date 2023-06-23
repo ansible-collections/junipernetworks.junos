@@ -213,27 +213,39 @@ class Ospfv2Facts(object):
                                     "bandwidth": metric.get("name"),
                                 },
                             )
-
                     if "authentication" in interface.keys():
                         auth = interface["authentication"]
                         auth_dict = {}
                         if auth.get("simple-password"):
-                            auth_dict["type"] = "simple_password"
+                            auth_dict["type"] = {"simple_password": auth.get("simple-password")}
                             auth_dict["password"] = auth.get("simple-password")
                         elif auth.get("md5"):
                             auth_dict["type"] = {"md5": []}
                             md5_list = auth.get("md5")
-
+                            key_lst = []
                             if not isinstance(md5_list, list):
+                                key_dict = {}
+                                key_dict["key_id"] = md5_list.get("name")
+                                key_dict["key"] = md5_list.get("key")
+                                key_dict["start_time"] = md5_list.get("start_time")
+                                key_lst.append(key_dict)
                                 md5_list = [md5_list]
+                            else:
+                                for md5_auth in md5_list:
+                                    key_dict = {}
+                                    key_dict["key_id"] = md5_auth.get("name")
+                                    key_dict["key"] = md5_auth.get("key")
+                                    key_dict["start_time"] = md5_auth.get("start_time")
 
-                            for md5_auth in md5_list:
-                                auth_dict["type"]["md5"].append(
-                                    {
-                                        "key_id": md5_auth.get("name"),
-                                        "key": md5_auth.get("key"),
-                                    },
-                                )
+                                    auth_dict["type"]["md5"].append(
+                                        {
+                                            "key_id": md5_auth.get("name"),
+                                            "key": md5_auth.get("key"),
+                                        },
+                                    )
+                                    key_lst.append(key_dict)
+                            if key_lst:
+                                auth_dict["md5"] = key_lst
                         interface_dict["authentication"] = auth_dict
 
                     rendered_area["interfaces"].append(interface_dict)

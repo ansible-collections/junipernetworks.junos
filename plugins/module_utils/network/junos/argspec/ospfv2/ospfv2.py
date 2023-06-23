@@ -61,7 +61,22 @@ class Ospfv2Args(object):  # pylint: disable=R0903
                             "options": {
                                 "authentication": {
                                     "type": "dict",
-                                    "options": {"type": {"type": "dict"}},
+                                    "options": {
+                                        "type": {"type": "dict"},
+                                        "password": {
+                                            "type": "str",
+                                            "no_log": False},
+                                        "md5": {
+                                            "type": "list",
+                                            "elements": "dict",
+                                            "options": {
+                                                "key_id": {"type": "int"},
+                                                "key": {"type": "str",
+                                                        "no_log": False},
+                                                "start_time": {"type": "str"}
+                                            }
+                                            }
+                                        },
                                 },
                                 "bandwidth_based_metrics": {
                                     "elements": "dict",

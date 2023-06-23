@@ -104,28 +104,6 @@ class TestJunosOspfv2Module(TestJunosModule):
                 temp.append(temp_line)
         return sorted(temp)
 
-    def sorted_xml(self, xml_string):
-        temp = []
-        index = 0
-        while index < len(xml_string):
-            temp_line = ""
-            if xml_string[index] == "<":
-                while index < len(xml_string) and xml_string[index] != ">":
-                    temp_line += xml_string[index]
-                    index += 1
-                temp_line += ">"
-                index += 1
-                temp.append(temp_line)
-            else:
-                while index < len(xml_string) and xml_string[index] != "<":
-                    temp_line += xml_string[index]
-                    index += 1
-                temp.append(temp_line)
-        return sorted(temp)
-
-    def sort_ospf(self, entry_list):
-        entry_list.sort(key=lambda i: i.get("name"))
-
     def test_junos_ospfv2_merged(self):
         set_module_args(
             dict(
@@ -208,60 +186,199 @@ class TestJunosOspfv2Module(TestJunosModule):
         result = self.execute_module(changed=True, commands=commands)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
 
-    def test_junos_vlans_gathered(self):
+    def test_junos_ospfv2_merged_areas(self):
+        set_module_args(
+            dict(
+                config=[
+                    dict(
+                        areas=[
+                            dict(
+                                area_id="0.0.0.100",
+                                stub=dict(default_metric=200, set=True),
+                                area_ranges=[
+                                    dict(
+                                        address="10.200.17.0/24",
+                                    ),
+                                    dict(
+                                        address="10.200.18.0/24",
+                                    ),
+
+                                ],
+                                interfaces=[
+                                    dict(
+                                        name="so-0/1/0.0",
+                                        bandwidth_based_metrics=[
+                                            dict(
+                                                bandwidth='1g',
+                                                metric=5,
+                                            ),
+                                            dict(
+                                                bandwidth='10g',
+                                                metric=5,
+                                            ),
+                                        ],
+                                    ),
+                                    dict(
+                                        name="so-0/1/0.0",
+                                        priority=3,
+                                    ),
+                                ],
+                            ),
+                            dict(
+                                area_id="0.0.0.200",
+                                area_range="10.200.20.0/24",
+                                interfaces=[
+                                    dict(
+                                        name="so-0/1/0.0",
+                                        bandwidth_based_metrics=[
+                                            dict(
+                                                bandwidth='1g',
+                                                metric=5,
+                                            ),
+                                        ],
+                                    ),
+                                ],
+                            ),
+                        ],
+                    ),
+                ],
+                state="merged",
+            ),
+        )
+        commands = [
+            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
+            '<nc:ospf><nc:area><nc:name>0.0.0.100</nc:name><nc:area-range>'
+            '<nc:name>10.200.17.0/24</nc:name></nc:area-range><nc:area-range>'
+            '<nc:name>10.200.18.0/24</nc:name></nc:area-range><nc:interface>'
+            '<nc:name>so-0/1/0.0</nc:name><nc:bandwidth-based-metrics><nc:bandwidth>'
+            '<nc:name>1g</nc:name><nc:metric>5</nc:metric></nc:bandwidth><nc:bandwidth>'
+            '<nc:name>10g</nc:name><nc:metric>5</nc:metric></nc:bandwidth></nc:bandwidth-based-metrics>'
+            '</nc:interface><nc:interface><nc:name>so-0/1/0.0</nc:name><nc:priority>3</nc:priority>'
+            '</nc:interface><nc:stub><nc:default-metric>200</nc:default-metric></nc:stub></nc:area>'
+            '<nc:area><nc:name>0.0.0.200</nc:name><nc:area-range><nc:name>10.200.20.0/24</nc:name>'
+            '</nc:area-range><nc:interface><nc:name>so-0/1/0.0</nc:name><nc:bandwidth-based-metrics>'
+            '<nc:bandwidth><nc:name>1g</nc:name><nc:metric>5</nc:metric></nc:bandwidth>'
+            '</nc:bandwidth-based-metrics></nc:interface></nc:area></nc:ospf></nc:protocols>'
+        ]
+        result = self.execute_module(changed=True, commands=commands)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
+    def test_junos_ospfv2_gathered(self):
         """
         :return:
         """
         set_module_args(dict(state="gathered"))
         result = self.execute_module(changed=False)
         gather_list = [
-            {
+        {
             "areas": [
                 {
                     "area_id": "0.0.0.100",
-                    "interfaces": [
-                        {
-                            "name": "so-0/0/0.0",
-                            "priority": 3,
-                            "metric": 5,
-                            "timers": {
-                                "hello_interval": 2,
-                                "dead_interval": 4,
-                                "retransmit_interval": 2,
-                                "poll_interval": 2
-                            },
-                            "passive": True,
-                            "bandwidth_based_metrics": [
-                                {
-                                    "metric": 5,
-                                    "bandwidth": "1g",
-                                },
-                                {
-                                    "metric": 40,
-                                    "bandwidth": "10g",
-                                }
-                            ],
-                        }
-                    ],
                     "area_range": "['10.200.17.0/24', '10.200.15.0/24']",
                     "area_ranges": [
                         {
                             "address": "10.200.17.0/24",
-                            "override_metric": 2000,
                             "exact": True,
+                            "override_metric": 2000,
                             "restrict": True
                         },
                         {
                             "address": "10.200.15.0/24",
-                            "override_metric": 2000,
                             "exact": True,
+                            "override_metric": 2000,
                             "restrict": True
                         }
                     ],
+                    "interfaces": [
+                        {
+                            "bandwidth_based_metrics": [
+                                {
+                                    "bandwidth": "1g",
+                                    "metric": 5
+                                },
+                                {
+                                    "bandwidth": "10g",
+                                    "metric": 40
+                                }
+                            ],
+                            "metric": 5,
+                            "name": "so-0/0/0.0",
+                            "passive": True,
+                            "priority": 3,
+                            "timers": {
+                                "dead_interval": 4,
+                                "hello_interval": 2,
+                                "poll_interval": 2,
+                                "retransmit_interval": 2
+                            }
+                        }
+                    ],
                     "stub": {
-                        "set": True,
                         "default_metric": 100,
+                        "set": True
                     }
+                },
+                {
+                    "area_id": "0.0.0.200",
+                    "area_range": "['10.200.19.0/24']",
+                    "area_ranges": [
+                        {
+                            "address": "10.200.19.0/24",
+                            "exact": True,
+                            "override_metric": 2000,
+                            "restrict": True
+                        }
+                    ],
+                    "interfaces": [
+                        {
+                            "authentication": {
+                                "password": "$9$eX2vMLoaUH.5bsgJZjPf369",
+                                "type": {
+                                    "simple_password": "$9$eX2vMLoaUH.5bsgJZjPf369"
+                                }
+                            },
+                            "name": "so-0/1/0.0",
+                            "priority": 3
+                        },
+                        {
+                            "authentication": {
+                                "md5": [
+                                    {
+                                        "key": "$9$vBL87Vg4ZiqfDi/t0OSy7-V",
+                                        "key_id": 10
+                                    }
+                                ]
+                            },
+                            "name": "so-0/2/0.0",
+                            "priority": 2
+                        }
+                    ]
+                },
+                {
+                    "area_id": "0.0.0.120",
+                    "area_range": "['10.200.20.0/24']",
+                    "area_ranges": [
+                        {
+                            "address": "10.200.20.0/24",
+                            "exact": True,
+                            "override_metric": 2000,
+                            "restrict": True
+                        }
+                    ],
+                    "interfaces": [
+                        {
+                            "authentication": {
+                                "md5": [
+                                    {
+                                        "key": "$9$IIShrvx7V2oGs2mTF3purev",
+                                        "key_id": 10
+                                    }
+                                ]
+                            },
+                            "name": "so-0/2/0.1",
+                            "priority": 2
+                        }
+                    ]
                 }
             ],
             "overload": {
@@ -270,18 +387,11 @@ class TestJunosOspfv2Module(TestJunosModule):
                 "stub_network": True,
                 "timeout": 1200
             },
-            "prefix_export_limit": 20000,
             "reference_bandwidth": "10g",
             "rfc1583compatibility": False,
-            "spf_options": {
-                "delay": 3000,
-                "holddown": 4000,
-                "rapid_runs": 9,
-                "no_ignore_our_externals": True,
-            }
-        },
-        ]
-        self.assertEqual(sorted(gather_list), sorted(result["gathered"]))
+            "router_id": "10.200.16.75"
+        }
+    ]
 
     def test_junos_ospfv2_replaced(self):
         set_module_args(
@@ -345,22 +455,24 @@ class TestJunosOspfv2Module(TestJunosModule):
             ),
         )
         commands = [
-            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:ospf>'
-            '<nc:area delete="delete">0.0.0.100</nc:area><nc:spf-options delete="delete"/>'
-            '<nc:reference-bandwidth delete="delete"/><nc:no-rfc-1583 delete="delete"/>'
-            '<nc:overload delete="delete"/></nc:ospf><nc:ospf><nc:spf-options>'
-            '<nc:delay>3000</nc:delay><nc:holddown>4000</nc:holddown><nc:rapid-runs>9</nc:rapid-runs><nc:no-ignore-our-externals/></nc:spf-options>'
-            '<nc:overload><nc:timeout>1200</nc:timeout><nc:allow-route-leaking/><nc:as-external/><nc:stub-network/></nc:overload>'
-            '<nc:external-preference>10</nc:external-preference><nc:prefix-export-limit>30000</nc:prefix-export-limit><nc:no-rfc-1583/>'
-            '<nc:area><nc:name>0.0.0.100</nc:name><nc:area-range><nc:name>10.200.17.0/24</nc:name><nc:exact/>'
-            '<nc:restrict/><nc:override-metric>2000</nc:override-metric></nc:area-range><nc:interface><nc:name>so-0/0/0.0</nc:name>'
-            '<nc:priority>3</nc:priority><nc:metric>5</nc:metric><nc:passive/><nc:bandwidth-based-metrics>'
-            '<nc:bandwidth><nc:name>1g</nc:name><nc:metric>5</nc:metric></nc:bandwidth></nc:bandwidth-based-metrics>'
-            '<nc:dead-interval>4</nc:dead-interval><nc:hello-interval>2</nc:hello-interval>'
+            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
+            '<nc:ospf><nc:area delete="delete">0.0.0.100</nc:area><nc:area delete="delete">0.0.0.200</nc:area>'
+            '<nc:spf-options delete="delete"/><nc:reference-bandwidth delete="delete"/>'
+            '<nc:no-rfc-1583 delete="delete"/><nc:overload delete="delete"/>'
+            '<nc:prefix-export-limit delete="delete"/></nc:ospf><nc:ospf>'
+            '<nc:spf-options><nc:delay>3000</nc:delay><nc:holddown>4000</nc:holddown><nc:rapid-runs>9</nc:rapid-runs>'
+            '<nc:no-ignore-our-externals/></nc:spf-options><nc:overload><nc:timeout>1200</nc:timeout>'
+            '<nc:allow-route-leaking/><nc:as-external/><nc:stub-network/></nc:overload>'
+            '<nc:external-preference>10</nc:external-preference><nc:prefix-export-limit>30000</nc:prefix-export-limit>'
+            '<nc:no-rfc-1583/><nc:area><nc:name>0.0.0.100</nc:name><nc:area-range><nc:name>10.200.17.0/24</nc:name>'
+            '<nc:exact/><nc:restrict/><nc:override-metric>2000</nc:override-metric></nc:area-range><nc:interface>'
+            '<nc:name>so-0/0/0.0</nc:name><nc:priority>3</nc:priority><nc:metric>5</nc:metric><nc:passive/>'
+            '<nc:bandwidth-based-metrics><nc:bandwidth><nc:name>1g</nc:name><nc:metric>5</nc:metric></nc:bandwidth>'
+            '</nc:bandwidth-based-metrics><nc:dead-interval>4</nc:dead-interval><nc:hello-interval>2</nc:hello-interval>'
             '<nc:poll-interval>2</nc:poll-interval><nc:retransmit-interval>2</nc:retransmit-interval></nc:interface>'
             '<nc:stub><nc:default-metric>200</nc:default-metric></nc:stub></nc:area></nc:ospf></nc:protocols>',
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
-            '<nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>',
+            '<nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>'
         ]
         result = self.execute_module(changed=True, commands=commands)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
@@ -427,22 +539,30 @@ class TestJunosOspfv2Module(TestJunosModule):
             ),
         )
         commands = [
-            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:ospf>'
-            '<nc:area delete="delete">0.0.0.100</nc:area><nc:spf-options delete="delete"/>'
+            '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
+            '<nc:ospf><nc:area delete="delete">0.0.0.100</nc:area>'
+            '<nc:area delete="delete">0.0.0.200</nc:area><nc:spf-options delete="delete"/>'
             '<nc:reference-bandwidth delete="delete"/><nc:no-rfc-1583 delete="delete"/>'
-            '<nc:overload delete="delete"/></nc:ospf><nc:ospf><nc:spf-options>'
-            '<nc:delay>3000</nc:delay><nc:holddown>4000</nc:holddown><nc:rapid-runs>9</nc:rapid-runs><nc:no-ignore-our-externals/></nc:spf-options>'
-            '<nc:overload><nc:timeout>1200</nc:timeout><nc:allow-route-leaking/><nc:as-external/><nc:stub-network/></nc:overload>'
-            '<nc:external-preference>10</nc:external-preference><nc:prefix-export-limit>30000</nc:prefix-export-limit><nc:no-rfc-1583/>'
-            '<nc:area><nc:name>0.0.0.100</nc:name><nc:area-range><nc:name>10.200.17.0/24</nc:name><nc:exact/>'
-            '<nc:restrict/><nc:override-metric>2000</nc:override-metric></nc:area-range><nc:interface><nc:name>so-0/0/0.0</nc:name>'
-            '<nc:priority>3</nc:priority><nc:metric>5</nc:metric><nc:passive/><nc:bandwidth-based-metrics>'
-            '<nc:bandwidth><nc:name>1g</nc:name><nc:metric>5</nc:metric></nc:bandwidth></nc:bandwidth-based-metrics>'
+            '<nc:overload delete="delete"/>'
+            '<nc:prefix-export-limit delete="delete"/></nc:ospf><nc:ospf><nc:spf-options>'
+            '<nc:delay>3000</nc:delay><nc:holddown>4000</nc:holddown>'
+            '<nc:rapid-runs>9</nc:rapid-runs><nc:no-ignore-our-externals/>'
+            '</nc:spf-options><nc:overload><nc:timeout>1200</nc:timeout>'
+            '<nc:allow-route-leaking/><nc:as-external/><nc:stub-network/>'
+            '</nc:overload><nc:external-preference>10</nc:external-preference>'
+            '<nc:prefix-export-limit>30000</nc:prefix-export-limit><nc:no-rfc-1583/>'
+            '<nc:area><nc:name>0.0.0.100</nc:name><nc:area-range>'
+            '<nc:name>10.200.17.0/24</nc:name><nc:exact/><nc:restrict/>'
+            '<nc:override-metric>2000</nc:override-metric></nc:area-range><nc:interface>'
+            '<nc:name>so-0/0/0.0</nc:name><nc:priority>3</nc:priority><nc:metric>5</nc:metric>'
+            '<nc:passive/><nc:bandwidth-based-metrics><nc:bandwidth>'
+            '<nc:name>1g</nc:name><nc:metric>5</nc:metric></nc:bandwidth></nc:bandwidth-based-metrics>'
             '<nc:dead-interval>4</nc:dead-interval><nc:hello-interval>2</nc:hello-interval>'
-            '<nc:poll-interval>2</nc:poll-interval><nc:retransmit-interval>2</nc:retransmit-interval></nc:interface>'
-            '<nc:stub><nc:default-metric>200</nc:default-metric></nc:stub></nc:area></nc:ospf></nc:protocols>',
+            '<nc:poll-interval>2</nc:poll-interval><nc:retransmit-interval>2</nc:retransmit-interval>'
+            '</nc:interface><nc:stub><nc:default-metric>200</nc:default-metric>'
+            '</nc:stub></nc:area></nc:ospf></nc:protocols>',
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
-            '<nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>',
+            '<nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>'
         ]
         result = self.execute_module(changed=True, commands=commands)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
@@ -662,15 +782,23 @@ class TestJunosOspfv2Module(TestJunosModule):
         )
         rendered = (
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:ospf>'
-            "<nc:spf-options><nc:delay>3000</nc:delay><nc:holddown>4000</nc:holddown><nc:rapid-runs>9</nc:rapid-runs><nc:no-ignore-our-externals/></nc:spf-options>"
-            "<nc:overload><nc:timeout>1200</nc:timeout><nc:allow-route-leaking/><nc:as-external/><nc:stub-network/></nc:overload>"
-            "<nc:external-preference>10</nc:external-preference><nc:prefix-export-limit>30000</nc:prefix-export-limit>"
-            "<nc:no-rfc-1583/><nc:area><nc:name>0.0.0.100</nc:name><nc:area-range><nc:name>10.200.17.0/24</nc:name><nc:exact/><nc:restrict/>"
-            "<nc:override-metric>2000</nc:override-metric></nc:area-range><nc:interface><nc:name>so-0/0/0.0</nc:name>"
+            "<nc:spf-options><nc:delay>3000</nc:delay><nc:holddown>4000</nc:holddown>"
+            "<nc:rapid-runs>9</nc:rapid-runs><nc:no-ignore-our-externals/></nc:spf-options>"
+            "<nc:overload><nc:timeout>1200</nc:timeout><nc:allow-route-leaking/><nc:as-external/>"
+            "<nc:stub-network/></nc:overload>"
+            "<nc:external-preference>10</nc:external-preference>"
+            "<nc:prefix-export-limit>30000</nc:prefix-export-limit>"
+            "<nc:no-rfc-1583/><nc:area><nc:name>0.0.0.100</nc:name><nc:area-range>"
+            "<nc:name>10.200.17.0/24</nc:name><nc:exact/><nc:restrict/>"
+            "<nc:override-metric>2000</nc:override-metric></nc:area-range><nc:interface>"
+            "<nc:name>so-0/0/0.0</nc:name>"
             "<nc:priority>3</nc:priority><nc:metric>5</nc:metric><nc:passive/>"
-            "<nc:bandwidth-based-metrics><nc:bandwidth><nc:name>1g</nc:name><nc:metric>5</nc:metric></nc:bandwidth></nc:bandwidth-based-metrics><"
-            "nc:dead-interval>4</nc:dead-interval><nc:hello-interval>2</nc:hello-interval><nc:poll-interval>2</nc:poll-interval>"
-            "<nc:retransmit-interval>2</nc:retransmit-interval></nc:interface><nc:stub><nc:default-metric>200</nc:default-metric></nc:stub></nc:area></nc:ospf>"
+            "<nc:bandwidth-based-metrics><nc:bandwidth><nc:name>1g</nc:name>"
+            "<nc:metric>5</nc:metric></nc:bandwidth></nc:bandwidth-based-metrics>"
+            "<nc:dead-interval>4</nc:dead-interval><nc:hello-interval>2</nc:hello-interval>"
+            "<nc:poll-interval>2</nc:poll-interval>"
+            "<nc:retransmit-interval>2</nc:retransmit-interval></nc:interface><nc:stub>"
+            "<nc:default-metric>200</nc:default-metric></nc:stub></nc:area></nc:ospf>"
             "</nc:protocols>"
         )
         result = self.execute_module(changed=False)

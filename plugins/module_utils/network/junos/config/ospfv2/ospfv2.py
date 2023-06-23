@@ -264,6 +264,13 @@ class Ospfv2(ConfigBase):
                         "overload"
                     )
                     over_node.attrib.update(delete)
+                if item.get("prefix_export_limit"):
+                    pel_node = build_child_xml_node(
+                        ospf_node,
+                        "prefix-export-limit"
+                    )
+                    pel_node.attrib.update(delete)
+
 
             if ospf_node is not None:
                 ospf_xml.append(ospf_node)
@@ -481,6 +488,42 @@ class Ospfv2(ConfigBase):
                                         "metric",
                                         bw_metric.get("metric"),
                                     )
+                            if intf.get("authentication"):
+                                auth = intf.get("authentication")
+                                auth_node = build_child_xml_node(
+                                    intf_node,
+                                    "authentication"
+                                )
+                                if "password" in auth.keys():
+                                    build_child_xml_node(
+                                        auth_node,
+                                        "simple-password",
+                                        auth.get("password")
+                                    )
+                                elif "md5" in auth.keys():
+                                    md5 = auth.get("md5")
+                                    md_node = build_child_xml_node(
+                                        auth_node,
+                                        "md5"
+                                    )
+                                    for item in md5:
+                                        build_child_xml_node(
+                                            md_node,
+                                            "name",
+                                            item["key_id"]
+                                        )
+                                        build_child_xml_node(
+                                            md_node,
+                                            "key",
+                                            item["key"]
+                                        )
+
+                                        if "start_time" in item:
+                                            build_child_xml_node(
+                                                md_node,
+                                                "start-time",
+                                                item["start_time"]
+                                            )
                             if intf.get("timers"):
                                 if intf["timers"].get("dead_interval"):
                                     build_child_xml_node(
