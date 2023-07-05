@@ -305,6 +305,7 @@ Security Fixes
 New Modules
 -----------
 
+- junos_prefix_lists - Manage prefix-lists attributes of interfaces on Junos devices.
 - junos_routing_instances - Manage routing instances on Junos devices.
 
 v2.0.1

@@ -241,6 +241,9 @@ releases:
       - junos_vlans.yaml
       - no_log_sanity_fixes.yaml
     modules:
+      - description: Manage prefix-lists attributes of interfaces on Junos devices.
+        name: junos_prefix_lists
+        namespace: ""
       - description: Manage routing instances on Junos devices.
         name: junos_routing_instances
         namespace: ""
