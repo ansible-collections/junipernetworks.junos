@@ -227,20 +227,43 @@ releases:
     release_date: "2021-03-29"
   2.1.0:
     changes:
+      deprecated_features:
+        - "`junos_ospfv2` - add deprecate warning for area_range."
+        - add deprecate warning for junos_acl_interfaces key for junos facts results.
+      doc_changes:
+        - Update examples for junos_ospfv3
       minor_changes:
         - Add junos_routing_instances Resource Module.
         - Add support for available_network_resources key, which allows to fetch the
           available resources for a platform (https://github.com/ansible-collections/junipernetworks.junos/issues/160).
         - Replace unsupported parameter `vlan-id` in junipernetworks.junos.junos_vlans
           module with `vlan_id`
+        - "`junos_ospfv2` - Fix the authentication config when password is configured"
+        - "`junos_ospfv2` - Rename key ospf to ospfv2 in facts."
+        - "`junos_ospfv2` - add area_ranges attribute which supports list of dict attributes."
+        - "`junos_ospfv2` - add attributes `allow_route_leaking`, `stub_network` and
+          `as-external` to overload dict."
+        - "`junos_ospfv2` - add attributes `no_ignore_out_externals` to spf_options
+          dict."
+        - "`junos_ospfv2` - fix to gather reference_bandwidth and rfc1583compatibility."
+        - add acl_interfaces key for junos_facts output.
       security_fixes:
         - Mask values of sensitive keys in module result(https://github.com/ansible-collections/junipernetworks.junos/issues/165).
     fragments:
       - 117_junos_routing_instances_resource_module.yaml
+      - add_gha_periodic.yaml
       - ansible_networl_resources_facts.yaml
+      - deprecate_junos_acl_interafaces_facts_key.yaml
+      - gha_release.yml
+      - junos_ospfv2_fixes.yaml
+      - junos_ospfv3_health_check.yaml
       - junos_vlans.yaml
+      - lint.yaml
       - no_log_sanity_fixes.yaml
     modules:
+      - description: Manage prefix-lists attributes of interfaces on Junos devices.
+        name: junos_prefix_lists
+        namespace: ""
       - description: Manage routing instances on Junos devices.
         name: junos_routing_instances
         namespace: ""
