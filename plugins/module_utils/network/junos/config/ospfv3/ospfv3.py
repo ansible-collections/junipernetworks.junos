@@ -73,7 +73,7 @@ class Ospfv3(ConfigBase):
             self.gather_network_resources,
             data=data,
         )
-        ospfv3_facts = facts["ansible_network_resources"].get("junos_ospfv3")
+        ospfv3_facts = facts["ansible_network_resources"].get("ospfv3")
         if not ospfv3_facts:
             return []
         return ospfv3_facts
