@@ -304,7 +304,6 @@ class Ospfv2Facts(object):
         if "overload" in ospf.keys():
             overload = ospf.get("overload")
             cfg = {}
-            # overload={'allow-route-leaking': None, 'as-external': None, 'stub-network': None, 'timeout': '1200'}
             if "allow-route-leaking" in overload:
                 cfg["allow_route_leaking"] = True
             if "as-external" in overload:

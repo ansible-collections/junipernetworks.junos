@@ -571,7 +571,7 @@ EXAMPLES = """
 # After state
 # -----------
 #
-# admin# show protocols bgp
+# admin# show protocols ospf
 # reference-bandwidth 10g;
 # no-rfc-1583;
 # area 0.0.0.100 {
@@ -857,7 +857,7 @@ EXAMPLES = """
 # Before state
 # ------------
 #
-# admin# show protocols bgp
+# admin# show protocols ospf
 # reference-bandwidth 10g;
 # no-rfc-1583;
 # area 0.0.0.100 {
@@ -887,7 +887,7 @@ EXAMPLES = """
 #     }
 # }
 
-- name: Gather Junos BGP OSPFv2 running-configuration
+- name: Gather Junos OSPFv2 running-configuration
   junipernetworks.junos.junos_ospfv2:
     config:
     state: gathered
