@@ -218,11 +218,28 @@ releases:
     release_date: "2021-02-25"
   2.0.1:
     changes:
+      deprecated_features:
+        - "`junos_ospfv2` - add deprecate warning for area_range."
+        - add deprecate warning for junos_acl_interfaces key for junos facts results.
       minor_changes:
         - Add support df_bit and size option for junos_ping (https://github.com/ansible-collections/junipernetworks.junos/pull/136).
+        - "`junos_ospfv2` - Fix the authentication config when password is configured"
+        - "`junos_ospfv2` - Rename key ospf to ospfv2 in facts."
+        - "`junos_ospfv2` - add area_ranges attribute which supports list of dict attributes."
+        - "`junos_ospfv2` - add attributes `allow_route_leaking`, `stub_network` and
+          `as-external` to overload dict."
+        - "`junos_ospfv2` - add attributes `no_ignore_out_externals` to spf_options
+          dict."
+        - "`junos_ospfv2` - fix to gather reference_bandwidth and rfc1583compatibility."
+        - add acl_interfaces key for junos_facts output.
     fragments:
+      - add_gha_periodic.yaml
+      - deprecate_junos_acl_interafaces_facts_key.yaml
+      - gha_release.yml
       - int-test-fix.yaml
+      - junos_ospfv2_fixes.yaml
       - junos_ping_df_rapid.yaml
+      - lint.yaml
       - remove-check_required.yaml
     release_date: "2021-03-29"
   2.1.0:
