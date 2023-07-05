@@ -230,43 +230,24 @@ EXAMPLES = """
 # Before state
 # ------------
 #
-# admin# show protocols ospf
+# admin# show protocols ospf3
 
-- name: Merge provided OSPFv2 configuration into running config.
-  junipernetworks.junos.junos_ospfv2:
+- name: Merge Junos OSPFv3 config
+  junipernetworks.junos.junos_ospfv3:
     config:
-     - reference_bandwidth: 10g
-       areas:
-       - area_id: 0.0.0.100
-         area_ranges:
-         - address: 10.200.17.0/24
-           exact: true
-           restrict: true
-           override_metric: 2000
-         - address: 10.200.15.0/24
-           exact: true
-           restrict: true
-           override_metric: 2000
-         stub:
-           default_metric: 100
-           set: true
-         interfaces:
-         - name: so-0/0/0.0
-           priority: 3
-           metric: 5
-           flood_reduction: false
-           passive: true
-           bandwidth_based_metrics:
-           - bandwidth: 1g
-             metric: 5
-           - bandwidth: 10g
-             metric: 40
-           timers:
-             dead_interval: 4
-             hello_interval: 2
-             poll_interval: 2
-             retransmit_interval: 2
-       rfc1583compatibility: false
+      - router_id: 10.200.16.75
+        areas:
+          - area_id: 0.0.0.100
+            interfaces:
+              - metric: 5
+                name: so-0/0/0.0
+                priority: 3
+              - metric: 6
+                name: so-0/0/1.0
+                priority: 2
+            stub:
+              default_metric: 200
+              set: true
     state: merged
 
 # Task Output:
@@ -276,82 +257,41 @@ EXAMPLES = """
 #
 # commands:
 # - <nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
-#   <nc:ospf><nc:reference-bandwidth>10g</nc:reference-bandwidth><nc:no-rfc-1583/>
-#   <nc:area><nc:name>0.0.0.100</nc:name><nc:area-range><nc:name>10.200.17.0/24</nc:name><nc:exact/>
-#   <nc:restrict/><nc:override-metric>2000</nc:override-metric></nc:area-range><nc:area-range>
-#   <nc:name>10.200.15.0/24</nc:name><nc:exact/><nc:restrict/><nc:override-metric>2000</nc:override-metric>
-#   </nc:area-range><nc:interface><nc:name>so-0/0/0.0</nc:name><nc:priority>3</nc:priority>
-#   <nc:metric>5</nc:metric><nc:passive/><nc:bandwidth-based-metrics><nc:bandwidth><nc:name>1g</nc:name>
-#   <nc:metric>5</nc:metric></nc:bandwidth><nc:bandwidth><nc:name>10g</nc:name><nc:metric>40</nc:metric>
-#   </nc:bandwidth></nc:bandwidth-based-metrics><nc:dead-interval>4</nc:dead-interval>
-#   <nc:hello-interval>2</nc:hello-interval><nc:poll-interval>2</nc:poll-interval>
-#   <nc:retransmit-interval>2</nc:retransmit-interval></nc:interface><nc:stub>
-#   <nc:default-metric>100</nc:default-metric></nc:stub></nc:area></nc:ospf></nc:protocols>
+#   <nc:ospf3><nc:area><nc:name>0.0.0.100</nc:name><nc:interface><nc:name>so-0/0/0.0</nc:name>
+#   <nc:priority>3</nc:priority><nc:metric>5</nc:metric></nc:interface><nc:interface>
+#   <nc:name>so-0/0/1.0</nc:name><nc:priority>2</nc:priority><nc:metric>6</nc:metric>
+#   </nc:interface><nc:stub><nc:default-metric>200</nc:default-metric></nc:stub></nc:area></nc:ospf3></nc:protocols>
+# - <nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+#   <nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>
 #
 # after:
 # - areas:
-#   - area_id: 0.0.0.100
-#     area_range: '[''10.200.17.0/24'', ''10.200.15.0/24'']'
-#     area_ranges:
-#     - address: 10.200.17.0/24
-#       exact: true
-#       override_metric: 2000
-#       restrict: true
-#     - address: 10.200.15.0/24
-#       exact: true
-#       override_metric: 2000
-#       restrict: true
-#     interfaces:
-#     - bandwidth_based_metrics:
-#       - bandwidth: 1g
-#         metric: 5
-#       - bandwidth: 10g
-#         metric: 40
-#       metric: 5
-#       name: so-0/0/0.0
-#       passive: true
-#       priority: 3
-#       timers:
-#         dead_interval: 4
-#         hello_interval: 2
-#         poll_interval: 2
-#         retransmit_interval: 2
-#     stub:
-#       default_metric: 100
-#       set: true
-#   reference_bandwidth: 10g
-#   rfc1583compatibility: false
+#     - area_id: 0.0.0.100
+#       interfaces:
+#       - metric: 5
+#         name: so-0/0/0.0
+#         priority: 3
+#       - metric: 6
+#         name: so-0/0/1.0
+#         priority: 2
+#       stub:
+#         default_metric: 200
+#         set: true
+#     router_id: 10.200.16.75
 
 # After state
 # -----------
 #
-# admin# show protocols ospf
-# reference-bandwidth 10g;
-# no-rfc-1583;
+# admin# show protocols ospf3
 # area 0.0.0.100 {
-#     stub default-metric 100;
-#     area-range 10.200.17.0/24 {
-#         restrict;
-#         exact;
-#         override-metric 2000;
-#     }
-#     area-range 10.200.15.0/24 {
-#         restrict;
-#         exact;
-#         override-metric 2000;
-#     }
+#     stub default-metric 200;
 #     interface so-0/0/0.0 {
-#         passive;
-#         bandwidth-based-metrics {
-#             bandwidth 1g metric 5;
-#             bandwidth 10g metric 40;
-#         }
 #         metric 5;
 #         priority 3;
-#         retransmit-interval 2;
-#         hello-interval 2;
-#         dead-interval 4;
-#         poll-interval 2;
+#     }
+#     interface so-0/0/1.0 {
+#         metric 6;
+#         priority 2;
 #     }
 # }
 #
@@ -360,186 +300,81 @@ EXAMPLES = """
 # Before state
 # ------------
 #
-# admin# show protocols ospf
-# reference-bandwidth 10g;
-# no-rfc-1583;
+# admin# show protocols ospf3
+# admin# show protocols ospf3
 # area 0.0.0.100 {
-#     stub default-metric 100;
-#     area-range 10.200.17.0/24 {
-#         restrict;
-#         exact;
-#         override-metric 2000;
-#     }
-#     area-range 10.200.15.0/24 {
-#         restrict;
-#         exact;
-#         override-metric 2000;
-#     }
+#     stub default-metric 200;
 #     interface so-0/0/0.0 {
-#         passive;
-#         bandwidth-based-metrics {
-#             bandwidth 1g metric 5;
-#             bandwidth 10g metric 40;
-#         }
 #         metric 5;
 #         priority 3;
-#         retransmit-interval 2;
-#         hello-interval 2;
-#         dead-interval 4;
-#         poll-interval 2;
+#     }
+#     interface so-0/0/1.0 {
+#         metric 6;
+#         priority 2;
 #     }
 # }
 
-- name: Replace existing Junos OSPFv2 config with provided config
-  junipernetworks.junos.junos_ospfv2:
-   config:
-   - reference_bandwidth: 10g
-     areas:
-     - area_id: 0.0.0.100
-       area_ranges:
-       - address: 10.200.17.0/24
-         exact: true
-         restrict: true
-       - address: 10.200.16.0/24
-         exact: true
-         restrict: true
-         override_metric: 1000
-       stub:
-         default_metric: 100
-         set: true
-       interfaces:
-       - name: so-0/0/0.0
-         priority: 3
-         metric: 5
-         flood_reduction: false
-         passive: true
-         bandwidth_based_metrics:
-         - bandwidth: 1g
-           metric: 5
-         - bandwidth: 10g
-           metric: 40
-         timers:
-           dead_interval: 4
-           hello_interval: 2
-           poll_interval: 2
-           retransmit_interval: 2
-     rfc1583compatibility: false
-   state: replacedd
+- name: Replace existing Junos OSPFv3 config with provided config
+  junipernetworks.junos.junos_ospfv3:
+    config:
+      - router_id: 10.200.16.75
+        areas:
+          - area_id: 0.0.0.100
+            interfaces:
+              - name: so-0/0/0.0
+    state: replaced
 
 # Task Output:
 # ------------
 #
 # before:
-#   - areas:
+# - areas:
 #     - area_id: 0.0.0.100
-#       area_range: '[''10.200.17.0/24'', ''10.200.15.0/24'']'
-#       area_ranges:
-#       - address: 10.200.17.0/24
-#         exact: true
-#         override_metric: 2000
-#         restrict: true
-#       - address: 10.200.15.0/24
-#         exact: true
-#         override_metric: 2000
-#         restrict: true
 #       interfaces:
-#       - bandwidth_based_metrics:
-#         - bandwidth: 1g
-#           metric: 5
-#         - bandwidth: 10g
-#           metric: 40
-#         metric: 5
+#       - metric: 5
 #         name: so-0/0/0.0
-#         passive: true
 #         priority: 3
-#         timers:
-#           dead_interval: 4
-#           hello_interval: 2
-#           poll_interval: 2
-#           retransmit_interval: 2
+#       - metric: 6
+#         name: so-0/0/1.0
+#         priority: 2
 #       stub:
-#         default_metric: 100
+#         default_metric: 200
 #         set: true
-#     reference_bandwidth: 10g
-#     rfc1583compatibility: false
+#     router_id: 10.200.16.75
 #
 # commands:
 # - <nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
-#   <nc:ospf><nc:area delete="delete">0.0.0.100</nc:area></nc:ospf><nc:ospf>
-#   <nc:reference-bandwidth>10g</nc:reference-bandwidth><nc:no-rfc-1583/><nc:area>
-#   <nc:name>0.0.0.100</nc:name><nc:area-range><nc:name>10.200.17.0/24</nc:name><nc:exact/>
-#   <nc:restrict/></nc:area-range><nc:area-range><nc:name>10.200.16.0/24</nc:name><nc:exact/>
-#   <nc:restrict/><nc:override-metric>1000</nc:override-metric></nc:area-range><nc:interface>
-#   <nc:name>so-0/0/0.0</nc:name><nc:priority>3</nc:priority><nc:metric>5</nc:metric><nc:passive/>
-#   <nc:bandwidth-based-metrics><nc:bandwidth><nc:name>1g</nc:name><nc:metric>5</nc:metric>
-#   </nc:bandwidth><nc:bandwidth><nc:name>10g</nc:name><nc:metric>40</nc:metric></nc:bandwidth>
-#   </nc:bandwidth-based-metrics><nc:dead-interval>4</nc:dead-interval><nc:hello-interval>2</nc:hello-interval>
-#   <nc:poll-interval>2</nc:poll-interval><nc:retransmit-interval>2</nc:retransmit-interval></nc:interface>
-#   <nc:stub><nc:default-metric>100</nc:default-metric></nc:stub></nc:area></nc:ospf></nc:protocols>
+#   <nc:ospf3><nc:area><nc:name>0.0.0.100</nc:name><nc:interface delete="delete">
+#   <nc:name>so-0/0/0.0</nc:name></nc:interface></nc:area></nc:ospf3><nc:ospf3>
+#   <nc:area><nc:name>0.0.0.100</nc:name><nc:interface><nc:name>so-0/0/0.0</nc:name>
+#   </nc:interface></nc:area></nc:ospf3></nc:protocols>
+# - <nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+#   <nc:router-id>10.200.16.75</nc:router-id><nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>
 #
 # after:
-#   - areas:
+# - areas:
 #     - area_id: 0.0.0.100
-#       area_range: '[''10.200.17.0/24'', ''10.200.16.0/24'']'
-#       area_ranges:
-#       - address: 10.200.17.0/24
-#         exact: true
-#         restrict: true
-#       - address: 10.200.16.0/24
-#         exact: true
-#         override_metric: 1000
-#         restrict: true
 #       interfaces:
-#       - bandwidth_based_metrics:
-#         - bandwidth: 1g
-#           metric: 5
-#         - bandwidth: 10g
-#           metric: 40
-#         metric: 5
-#         name: so-0/0/0.0
-#         passive: true
-#         priority: 3
-#         timers:
-#           dead_interval: 4
-#           hello_interval: 2
-#           poll_interval: 2
-#           retransmit_interval: 2
+#       - metric: 6
+#         name: so-0/0/1.0
+#         priority: 2
+#       - name: so-0/0/0.0
 #       stub:
-#         default_metric: 100
+#         default_metric: 200
 #         set: true
-#     reference_bandwidth: 10g
-#     rfc1583compatibility: false
+#     router_id: 10.200.16.75
 #
 # After state
 # -----------
 #
-# admin# show protocols bgp
-# reference-bandwidth 10g;
-# no-rfc-1583;
+# admin# show protocols ospf3
 # area 0.0.0.100 {
-#     stub default-metric 100;
-#     area-range 10.200.17.0/24 {
-#         restrict;
-#         exact;
+#     stub default-metric 200;
+#     interface so-0/0/1.0 {
+#         metric 6;
+#         priority 2;
 #     }
-#     area-range 10.200.16.0/24 {
-#         restrict;
-#         exact;
-#         override-metric 1000;
-#     }
-#     interface so-0/0/0.0 {
-#         passive;
-#         bandwidth-based-metrics {
-#             bandwidth 1g metric 5;
-#             bandwidth 10g metric 40;
-#         }
-#         metric 5;
-#         priority 3;
-#         retransmit-interval 2;
-#         hello-interval 2;
-#         dead-interval 4;
-#         poll-interval 2;
-#     }
+#     interface so-0/0/0.0;
 # }
 #
 # Using overridden
@@ -547,64 +382,35 @@ EXAMPLES = """
 # Before state
 # ------------
 #
-# admin# show protocols ospf
-# reference-bandwidth 10g;
-# no-rfc-1583;
+# admin# show protocols ospf3
 # area 0.0.0.100 {
-#     stub default-metric 100;
-#     area-range 10.200.17.0/24 {
-#         restrict;
-#         exact;
+#     stub default-metric 200;
+#     interface so-0/0/1.0 {
+#         metric 6;
+#         priority 2;
 #     }
-#     area-range 10.200.16.0/24 {
-#         restrict;
-#         exact;
-#         override-metric 1000;
-#     }
-#     interface so-0/0/0.0 {
-#         passive;
-#         bandwidth-based-metrics {
-#             bandwidth 1g metric 5;
-#             bandwidth 10g metric 40;
-#         }
-#         metric 5;
-#         priority 3;
-#         retransmit-interval 2;
-#         hello-interval 2;
-#         dead-interval 4;
-#         poll-interval 2;
-#     }
+#     interface so-0/0/0.0;
 # }
 
-- name: Override runnig OSPFv2 config with provided config
-  junipernetworks.junos.junos_ospfv2:
+- name: Override runnig OSPFv3 config with provided config
+  junipernetworks.junos.junos_ospfv3:
     config:
-    - reference_bandwidth: 10g
-      areas:
-      - area_id: 0.0.0.110
-        area_ranges:
-        - address: 20.200.17.0/24
-          exact: true
-          restrict: true
-          override_metric: 2000
-        - address: 20.200.15.0/24
-          exact: true
-          restrict: true
-          override_metric: 2000
-        stub:
-          default_metric: 200
-          set: true
-        interfaces:
-        - name: so-0/0/0.0
-          priority: 3
-          metric: 5
-          flood_reduction: false
-          passive: true
-          bandwidth_based_metrics:
-          - bandwidth: 1g
-            metric: 5
-          - bandwidth: 10g
-            metric: 40
+      - router_id: 10.200.16.75
+        areas:
+          - area_id: 0.0.0.100
+            stub:
+              default_metric: 200
+              set: true
+            interfaces:
+              - name: so-0/0/0.0
+                priority: 3
+                metric: 5
+                flood_reduction: true
+                passive: true
+          - area_id: 0.0.0.200
+            interfaces:
+              - name: ge-1/1/0.0
+              - name: ge-2/2/0.0
     state: overridden
 
 # Task Output:
@@ -612,69 +418,34 @@ EXAMPLES = """
 #
 # before:
 # - areas:
-#   - area_id: 0.0.0.100
-#     area_range: '[''10.200.17.0/24'', ''10.200.16.0/24'']'
-#     area_ranges:
-#     - address: 10.200.17.0/24
-#       exact: true
-#       restrict: true
-#     - address: 10.200.16.0/24
-#       exact: true
-#       override_metric: 1000
-#       restrict: true
-#     interfaces:
-#     - bandwidth_based_metrics:
-#       - bandwidth: 1g
-#         metric: 5
-#       - bandwidth: 10g
-#         metric: 40
-#       metric: 5
-#       name: so-0/0/0.0
-#       passive: true
-#       priority: 3
-#       timers:
-#         dead_interval: 4
-#         hello_interval: 2
-#         poll_interval: 2
-#         retransmit_interval: 2
-#     stub:
-#       default_metric: 100
-#       set: true
-#   reference_bandwidth: 10g
-#   rfc1583compatibility: false
+#     - area_id: 0.0.0.100
+#       interfaces:
+#       - metric: 6
+#         name: so-0/0/1.0
+#         priority: 2
+#       - name: so-0/0/0.0
+#       stub:
+#         default_metric: 200
+#         set: true
+#     router_id: 10.200.16.75
 #
 # commands:
 # - <nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
-#   <nc:ospf><nc:area delete="delete">0.0.0.100</nc:area></nc:ospf><nc:ospf>
-#   <nc:reference-bandwidth>10g</nc:reference-bandwidth><nc:area><nc:name>0.0.0.110</nc:name>
-#   <nc:area-range><nc:name>20.200.17.0/24</nc:name><nc:exact/><nc:restrict/>
-#   <nc:override-metric>2000</nc:override-metric></nc:area-range><nc:area-range>
-#   <nc:name>20.200.15.0/24</nc:name><nc:exact/><nc:restrict/><nc:override-metric>2000</nc:override-metric>
-#   </nc:area-range><nc:interface><nc:name>so-0/0/0.0</nc:name><nc:priority>3</nc:priority>
-#   <nc:metric>5</nc:metric><nc:passive/><nc:bandwidth-based-metrics><nc:bandwidth><nc:name>1g</nc:name>
-#   <nc:metric>5</nc:metric></nc:bandwidth><nc:bandwidth><nc:name>10g</nc:name><nc:metric>40</nc:metric>
-#   </nc:bandwidth></nc:bandwidth-based-metrics></nc:interface><nc:stub>
-#   <nc:default-metric>200</nc:default-metric></nc:stub></nc:area></nc:ospf></nc:protocols>
+#   <nc:ospf3 delete="delete"/><nc:ospf3><nc:area><nc:name>0.0.0.100</nc:name>
+#   <nc:interface><nc:name>so-0/0/0.0</nc:name><nc:priority>3</nc:priority><nc:flood-reduction/>
+#   <nc:metric>5</nc:metric><nc:passive/></nc:interface>
+#   <nc:stub><nc:default-metric>200</nc:default-metric></nc:stub></nc:area>
+#   <nc:area><nc:name>0.0.0.200</nc:name><nc:interface><nc:name>ge-1/1/0.0</nc:name>
+#   </nc:interface><nc:interface><nc:name>ge-2/2/0.0</nc:name></nc:interface></nc:area>
+#   </nc:ospf3></nc:protocols>
+# - <nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+#   <nc:router-id delete="delete"/><nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>
 #
 # after:
-#   - areas:
-#     - area_id: 0.0.0.110
-#       area_range: '[''20.200.17.0/24'', ''20.200.15.0/24'']'
-#       area_ranges:
-#       - address: 20.200.17.0/24
-#         exact: true
-#         override_metric: 2000
-#         restrict: true
-#       - address: 20.200.15.0/24
-#         exact: true
-#         override_metric: 2000
-#         restrict: true
+# - areas:
+#     - area_id: 0.0.0.100
 #       interfaces:
-#       - bandwidth_based_metrics:
-#         - bandwidth: 1g
-#           metric: 5
-#         - bandwidth: 10g
-#           metric: 40
+#       - flood_reduction: true
 #         metric: 5
 #         name: so-0/0/0.0
 #         passive: true
@@ -682,70 +453,51 @@ EXAMPLES = """
 #       stub:
 #         default_metric: 200
 #         set: true
-#     reference_bandwidth: 10g
-#     rfc1583compatibility: false
+#     - area_id: 0.0.0.200
+#       interfaces:
+#       - name: ge-1/1/0.0
+#       - name: ge-2/2/0.0
+#     router_id: 10.200.16.75
 
 # After state
 # -----------
 #
-# admin# show protocols ospf
-# reference-bandwidth 10g;
-# no-rfc-1583;
-# area 0.0.0.110 {
+# admin# show protocols ospf3
+# area 0.0.0.100 {
 #     stub default-metric 200;
-#     area-range 20.200.17.0/24 {
-#         restrict;
-#         exact;
-#         override-metric 2000;
-#     }
-#     area-range 20.200.15.0/24 {
-#         restrict;
-#         exact;
-#         override-metric 2000;
-#     }
 #     interface so-0/0/0.0 {
 #         passive;
-#         bandwidth-based-metrics {
-#             bandwidth 1g metric 5;
-#             bandwidth 10g metric 40;
-#         }
 #         metric 5;
 #         priority 3;
+#         flood-reduction;
 #     }
+# }
+# area 0.0.0.200 {
+#     interface ge-1/1/0.0;
+#     interface ge-2/2/0.0;
 # }
 # Using deleted
 #
 # Before state
 # ------------
 #
-# admin# show protocols ospf
-# reference-bandwidth 10g;
-# no-rfc-1583;
-# area 0.0.0.110 {
+# admin# show protocols ospf3
+# area 0.0.0.100 {
 #     stub default-metric 200;
-#     area-range 20.200.17.0/24 {
-#         restrict;
-#         exact;
-#         override-metric 2000;
-#     }
-#     area-range 20.200.15.0/24 {
-#         restrict;
-#         exact;
-#         override-metric 2000;
-#     }
 #     interface so-0/0/0.0 {
 #         passive;
-#         bandwidth-based-metrics {
-#             bandwidth 1g metric 5;
-#             bandwidth 10g metric 40;
-#         }
 #         metric 5;
 #         priority 3;
+#         flood-reduction;
 #     }
 # }
+# area 0.0.0.200 {
+#     interface ge-1/1/0.0;
+#     interface ge-2/2/0.0;
+# }
 
-- name: Delete OSPFv2 running config.
-  junipernetworks.junos.junos_ospfv2:
+- name: Delete OSPFv3 running config.
+  junipernetworks.junos.junos_ospfv3:
    config:
    state: deleted
 
@@ -753,24 +505,10 @@ EXAMPLES = """
 # ------------
 #
 # before:
-#   - areas:
-#     - area_id: 0.0.0.110
-#       area_range: '[''20.200.17.0/24'', ''20.200.15.0/24'']'
-#       area_ranges:
-#       - address: 20.200.17.0/24
-#         exact: true
-#         override_metric: 2000
-#         restrict: true
-#       - address: 20.200.15.0/24
-#         exact: true
-#         override_metric: 2000
-#         restrict: true
+# - areas:
+#     - area_id: 0.0.0.100
 #       interfaces:
-#       - bandwidth_based_metrics:
-#         - bandwidth: 1g
-#           metric: 5
-#         - bandwidth: 10g
-#           metric: 40
+#       - flood_reduction: true
 #         metric: 5
 #         name: so-0/0/0.0
 #         passive: true
@@ -778,13 +516,17 @@ EXAMPLES = """
 #       stub:
 #         default_metric: 200
 #         set: true
-#     reference_bandwidth: 10g
-#     rfc1583compatibility: false
+#     - area_id: 0.0.0.200
+#       interfaces:
+#       - name: ge-1/1/0.0
+#       - name: ge-2/2/0.0
+#     router_id: 10.200.16.75
 #
 # commands:
 # - <nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
-#   <nc:ospf><nc:area delete="delete">0.0.0.100</nc:area><nc:reference-bandwidth delete="delete"/>
-#   <nc:no-rfc-1583 delete="delete"/></nc:ospf></nc:protocols>
+#   <nc:ospf3 delete="delete"/></nc:protocols>
+# - <nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+#   <nc:router-id delete="delete"/></nc:routing-options>
 #
 # after: []
 #
@@ -792,45 +534,27 @@ EXAMPLES = """
 # After state
 # -----------
 #
-# admin# show protocols ospf
+# admin# show protocols ospf3
 
 # Using gathered
 #
 # Before state
 # ------------
 #
-# admin# show protocols bgp
-# reference-bandwidth 10g;
-# no-rfc-1583;
+# admin# show protocols ospf3
 # area 0.0.0.100 {
-#     stub default-metric 100;
-#     area-range 10.200.17.0/24 {
-#         restrict;
-#         exact;
-#         override-metric 2000;
-#     }
-#     area-range 10.200.15.0/24 {
-#         restrict;
-#         exact;
-#         override-metric 2000;
-#     }
+#     stub default-metric 200;
 #     interface so-0/0/0.0 {
-#         passive;
-#         bandwidth-based-metrics {
-#             bandwidth 1g metric 5;
-#             bandwidth 10g metric 40;
-#         }
 #         metric 5;
 #         priority 3;
-#         retransmit-interval 2;
-#         hello-interval 2;
-#         dead-interval 4;
-#         poll-interval 2;
 #     }
-# }
+#     interface so-0/0/1.0 {
+#         metric 6;
+#         priority 2;
+#     }
 
-- name: Gather Junos BGP OSPFv2 running-configuration
-  junipernetworks.junos.junos_ospfv2:
+- name: Gather Junos OSPFv3 running-configuration
+  junipernetworks.junos.junos_ospfv3:
     config:
     state: gathered
 #
@@ -840,38 +564,19 @@ EXAMPLES = """
 #
 # gathered:
 #
-#  - areas:
-# - area_id: 0.0.0.100
-#   area_range: '[''10.200.17.0/24'', ''10.200.15.0/24'']'
-#   area_ranges:
-#   - address: 10.200.17.0/24
-#     exact: true
-#     override_metric: 2000
-#     restrict: true
-#   - address: 10.200.15.0/24
-#     exact: true
-#     override_metric: 2000
-#     restrict: true
-#   interfaces:
-#   - bandwidth_based_metrics:
-#     - bandwidth: 1g
-#       metric: 5
-#     - bandwidth: 10g
-#       metric: 40
-#     metric: 5
-#     name: so-0/0/0.0
-#     passive: true
-#     priority: 3
-#     timers:
-#       dead_interval: 4
-#       hello_interval: 2
-#       poll_interval: 2
-#       retransmit_interval: 2
-#   stub:
-#     default_metric: 100
-#     set: true
-# reference_bandwidth: 10g
-# rfc1583compatibility: false
+# - areas:
+#     - area_id: 0.0.0.100
+#       interfaces:
+#       - metric: 5
+#         name: so-0/0/0.0
+#         priority: 3
+#       - metric: 6
+#         name: so-0/0/1.0
+#         priority: 2
+#       stub:
+#         default_metric: 200
+#         set: true
+#     router_id: 10.200.16.75
 
 # Using parsed
 # parsed.cfg
@@ -879,68 +584,41 @@ EXAMPLES = """
 # <?xml version="1.0" encoding="UTF-8"?>
 # <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
 #     <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
-#         <version>18.4R1-S2.4</version>
 #         <protocols>
-#             <ospf>
-#             <reference-bandwidth>10g</reference-bandwidth>
-#             <no-rfc-1583/>
-#             <area>
-#                 <name>0.0.0.100</name>
-#                 <stub>
-#                     <default-metric>100</default-metric>
-#                 </stub>
-#                 <area-range>
-#                     <name>10.200.16.0/24</name>
-#                     <exact/>
-#                     <override-metric>10000</override-metric>
-#                 </area-range>
-#                 <area-range>
-#                     <name>10.200.11.0/24</name>
-#                     <restrict/>
-#                     <exact/>
-#                 </area-range>
-#                 <interface>
-#                     <name>so-0/0/0.0</name>
-#                     <passive>
-#                     </passive>
-#                     <bandwidth-based-metrics>
-#                         <bandwidth>
-#                             <name>1g</name>
-#                             <metric>5</metric>
-#                         </bandwidth>
-#                         <bandwidth>
-#                             <name>10g</name>
-#                             <metric>40</metric>
-#                         </bandwidth>
-#                     </bandwidth-based-metrics>
-#                     <metric>5</metric>
-#                     <priority>3</priority>
-#                     <retransmit-interval>2</retransmit-interval>
-#                     <hello-interval>2</hello-interval>
-#                     <dead-interval>4</dead-interval>
-#                     <poll-interval>2</poll-interval>
-#                 </interface>
-#             </area>
-#         </ospf>
+#             <ospf3>
+#                 <area>
+#                     <name>0.0.0.100</name>
+#                     <stub>
+#                         <default-metric>200</default-metric>
+#                     </stub>
+#                     <interface>
+#                         <name>so-0/0/0.0</name>
+#                         <passive></passive>
+#                         <metric>5</metric>
+#                         <priority>3</priority>
+#                         <flood-reduction/>
+#                     </interface>
+#                 </area>
+#                 <area>
+#                     <name>0.0.0.200</name>
+#                     <interface>
+#                         <name>ge-1/1/0.0</name>
+#                     </interface>
+#                     <interface>
+#                         <name>ge-2/2/0.0</name>
+#                     </interface>
+#                 </area>
+#             </ospf3>
 #         </protocols>
 #         <routing-options>
-#             <static>
-#                 <route>
-#                     <name>172.16.17.0/24</name>
-#                     <discard />
-#                 </route>
-#             </static>
 #             <router-id>10.200.16.75</router-id>
-#             <autonomous-system>
-#                 <as-number>65432</as-number>
-#             </autonomous-system>
 #         </routing-options>
 #     </configuration>
 # </rpc-reply>
 
 
-- name: Parsed the ospfv2 config into structured ansible resource facts.
-  junipernetworks.junos.junos_ospfv2:
+- name: Parsed the ospfv3 config into structured ansible resource facts.
+  junipernetworks.junos.junos_ospfv3:
     running_config: "{{ lookup('file', './parsed.cfg') }}"
     state: parsed
 #
@@ -948,91 +626,52 @@ EXAMPLES = """
 # ------------
 #
 # parsed:
-# - areas:
-#     - area_id: 0.0.0.100
-#       area_range: '[''10.200.16.0/24'', ''10.200.11.0/24'']'
-#       area_ranges:
-#       - address: 10.200.16.0/24
-#         exact: true
-#         override_metric: 10000
-#       - address: 10.200.11.0/24
-#         exact: true
-#         restrict: true
-#       interfaces:
-#       - bandwidth_based_metrics:
-#         - bandwidth: 1g
-#           metric: 5
-#         - bandwidth: 10g
-#           metric: 40
-#         metric: 5
-#         name: so-0/0/0.0
-#         passive: true
-#         priority: 3
-#         timers:
-#           dead_interval: 4
-#           hello_interval: 2
-#           poll_interval: 2
-#           retransmit_interval: 2
-#       stub:
-#         default_metric: 100
-#         set: true
-#     reference_bandwidth: 10g
-#     rfc1583compatibility: false
-#     router_id: 10.200.16.75
+# - router_id: 10.200.16.75
+#         areas:
+#           - area_id: 0.0.0.100
+#             stub:
+#               default_metric: 200
+#               set: true
+#             interfaces:
+#               - name: so-0/0/0.0
+#                 priority: 3
+#                 metric: 5
+#                 flood_reduction: true
+#                 passive: true
+#           - area_id: 0.0.0.200
+#             interfaces:
+#               - name: ge-1/1/0.0
+#               - name: ge-2/2/0.0
 
 # Using rendered
 #
 - name: Render the commands for provided  configuration
-  junipernetworks.junos.junos_ospfv2:
+  junipernetworks.junos.junos_ospfv3:
     config:
-    - reference_bandwidth: 10g
-      areas:
-      - area_id: 0.0.0.100
-        area_ranges:
-        - address: 10.200.17.0/24
-          exact: true
-          restrict: true
-          override_metric: 2000
-        - address: 10.200.15.0/24
-          exact: true
-          restrict: true
-          override_metric: 2000
-        stub:
-          default_metric: 100
-          set: true
-        interfaces:
-        - name: so-0/0/0.0
-          priority: 3
-          metric: 5
-          flood_reduction: false
-          passive: true
-          bandwidth_based_metrics:
-          - bandwidth: 1g
-            metric: 5
-          - bandwidth: 10g
-            metric: 40
-          timers:
-            dead_interval: 4
-            hello_interval: 2
-            poll_interval: 2
-            retransmit_interval: 2
-      rfc1583compatibility: false
+      - router_id: 10.200.16.75
+        areas:
+          - area_id: 0.0.0.100
+            interfaces:
+              - metric: 5
+                name: so-0/0/0.0
+                priority: 3
+              - metric: 6
+                name: so-0/0/1.0
+                priority: 2
+            stub:
+              default_metric: 200
+              set: true
     state: rendered
 
 # Task Output:
 # ------------
 #
 # rendered: "<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
-# <nc:ospf><nc:reference-bandwidth>10g</nc:reference-bandwidth><nc:no-rfc-1583/><nc:area><nc:name>0.0.0.100</nc:name>
-# <nc:area-range><nc:name>10.200.17.0/24</nc:name><nc:exact/><nc:restrict/><nc:override-metric>2000</nc:override-metric>
-# </nc:area-range><nc:area-range><nc:name>10.200.15.0/24</nc:name><nc:exact/><nc:restrict/>
-# <nc:override-metric>2000</nc:override-metric></nc:area-range><nc:interface><nc:name>so-0/0/0.0</nc:name>
-# <nc:priority>3</nc:priority><nc:metric>5</nc:metric><nc:passive/><nc:bandwidth-based-metrics><nc:bandwidth>
-# <nc:name>1g</nc:name><nc:metric>5</nc:metric></nc:bandwidth><nc:bandwidth><nc:name>10g</nc:name>
-# <nc:metric>40</nc:metric></nc:bandwidth></nc:bandwidth-based-metrics><nc:dead-interval>4</nc:dead-interval>
-# <nc:hello-interval>2</nc:hello-interval><nc:poll-interval>2</nc:poll-interval>
-# <nc:retransmit-interval>2</nc:retransmit-interval></nc:interface><nc:stub>
-# <nc:default-metric>100</nc:default-metric></nc:stub></nc:area></nc:ospf></nc:protocols>"
+# <nc:ospf3><nc:area><nc:name>0.0.0.100</nc:name><nc:interface>
+# <nc:name>so-0/0/0.0</nc:name><nc:priority>3</nc:priority>
+# <nc:metric>5</nc:metric></nc:interface><nc:interface><nc:name>so-0/0/1.0</nc:name>
+# <nc:priority>2</nc:priority><nc:metric>6</nc:metric></nc:interface><nc:stub>
+# <nc:default-metric>200</nc:default-metric></nc:stub></nc:area></nc:ospf3></nc:protocols>"
 """
 RETURN = """
 before:
@@ -1054,8 +693,7 @@ commands:
   returned: always
   type: list
   sample: ['<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><
-  nc:ospf><nc:area delete="delete">0.0.0.100</nc:area><nc:reference-bandwidth delete="delete"/>
-  <nc:no-rfc-1583 delete="delete"/></nc:ospf></nc:protocols>', 'xml 2', 'xml 3']
+  nc:ospf3><nc:area><nc:name>0.0.0.100</nc:name><nc:interface>', 'xml 2', 'xml 3']
 rendered:
   description: The provided configuration in the task rendered in device-native format (offline).
   returned: when I(state) is C(rendered)

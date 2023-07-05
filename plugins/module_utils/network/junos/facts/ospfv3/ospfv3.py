@@ -117,7 +117,7 @@ class Ospfv3Facts(object):
 
         objs = []
         for resource in resources:
-            if resource:
+            if resource is not None:
                 xml = self._get_xml_dict(resource)
                 obj = self.render_config(self.generated_spec, xml)
                 if obj:
@@ -125,14 +125,14 @@ class Ospfv3Facts(object):
 
         facts = {}
         if objs:
-            facts["junos_ospfv3"] = []
+            facts["ospfv3"] = []
             params = utils.validate_config(
                 self.argument_spec,
                 {"config": objs},
             )
 
             for cfg in params["config"]:
-                facts["junos_ospfv3"].append(utils.remove_empties(cfg))
+                facts["ospfv3"].append(utils.remove_empties(cfg))
 
         ansible_facts["ansible_network_resources"].update(facts)
         return ansible_facts
