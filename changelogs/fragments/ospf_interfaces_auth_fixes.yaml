@@ -1,3 +1,9 @@
 ---
 bugfixes:
-  - fix md5 authentication which allows list of keys to be configured. 
+  - fix md5 authentication which allows list of keys to be configured.
+  - fix `node_link_protection` implementation.
+  - fix `no_advertise_adjacency_segment` config implementation.
+  - fix `no_neighbor_down_notification` config implementation.
+  - fix `no_interface_state_traps` config implementation.
+  - fix `no_eligible_remote_backup` config implementation.
+  - fix `no_eligible_backup` config implementation.

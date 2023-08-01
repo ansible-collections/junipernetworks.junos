@@ -112,7 +112,7 @@ class Ospf_interfacesFacts(object):
 
         objs = []
         for resource in resources:
-            if resource:
+            if resource is not None:
                 xml = self._get_xml_dict(resource)
                 objs = self.render_config(self.generated_spec, xml)
 

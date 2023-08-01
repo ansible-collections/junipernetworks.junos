@@ -107,7 +107,7 @@ options:
                     suboptions:
                       key_id:
                         description: Specify md5 key-id
-                        type: str
+                        type: int
                       key_value:
                         description: Specify key value
                         type: str
@@ -190,7 +190,7 @@ options:
               node_link_protection:
                 description:
                   - Protect interface from both link and node faults.
-                type: str
+                type: bool
               dead_interval:
                 description:
                   - Dead interval (seconds).
