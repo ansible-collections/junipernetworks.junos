@@ -102,7 +102,8 @@ options:
                   md5:
                     description:
                       - Specify md5 based authentication.
-                    type: dict
+                    type: list
+                    elements: dict
                     suboptions:
                       key_id:
                         description: Specify md5 key-id

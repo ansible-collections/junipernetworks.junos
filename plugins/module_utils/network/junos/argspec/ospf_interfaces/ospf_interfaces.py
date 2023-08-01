@@ -58,6 +58,7 @@ class Ospf_interfacesArgs(object):  # pylint: disable=R0903
                                 "authentication": {
                                     "options": {
                                         "md5": {
+                                            "elements": "dict",
                                             "options": {
                                                 "key_id": {"type": "str"},
                                                 "key_value": {
@@ -66,7 +67,7 @@ class Ospf_interfacesArgs(object):  # pylint: disable=R0903
                                                 },
                                                 "start_time": {"type": "str"},
                                             },
-                                            "type": "dict",
+                                            "type": "list",
                                         },
                                         "simple_password": {
                                             "type": "str",

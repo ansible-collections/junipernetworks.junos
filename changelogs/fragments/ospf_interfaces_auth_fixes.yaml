@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - fix md5 authentication which allows list of keys to be configured. 
