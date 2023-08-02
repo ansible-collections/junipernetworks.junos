@@ -5,6 +5,14 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v5.3.0
+======
+
+Minor Changes
+-------------
+
+- Add Overridden operation support (https://github.com/ansible-collections/junipernetworks.junos/pull/430)
+
 v5.2.0
 ======
 
