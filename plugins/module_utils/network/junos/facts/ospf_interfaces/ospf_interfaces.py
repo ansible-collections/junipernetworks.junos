@@ -235,16 +235,16 @@ class Ospf_interfacesFacts(object):
                             md5_lst = []
                             if isinstance(md5_cfg, dict):
                                 md5_dict = {}
-                                md5_dict['key_id'] = md5_cfg.get("name")
-                                md5_dict['key_value'] = md5_cfg.get("key")
-                                md5_dict['start_time'] = md5_cfg.get("start-time")
+                                md5_dict["key_id"] = md5_cfg.get("name")
+                                md5_dict["key_value"] = md5_cfg.get("key")
+                                md5_dict["start_time"] = md5_cfg.get("start-time")
                                 md5_lst.append(md5_dict)
                             else:
                                 for md5 in md5_cfg:
                                     md5_dict = {}
-                                    md5_dict['key_id'] = md5.get("name")
-                                    md5_dict['key_value'] = md5.get("key")
-                                    md5_dict['start_time'] = md5.get("start-time")
+                                    md5_dict["key_id"] = md5.get("name")
+                                    md5_dict["key_value"] = md5.get("key")
+                                    md5_dict["start_time"] = md5.get("start-time")
                                     md5_lst.append(md5_dict)
                             auth_dict["md5"] = md5_lst
                         interface_dict["authentication"] = auth_dict

@@ -386,49 +386,48 @@ class Ospf_interfaces(ConfigBase):
                         "retransmit-interval",
                         processes.get("retransmit_interval"),
                     )
-                if "node_link_protection" in  processes:
+                if "node_link_protection" in processes:
                     if processes.get("node_link_protection"):
                         build_child_xml_node(
                             intf_node,
                             "node-link-protection",
                         )
-                if "no_advertise_adjacency_segment" in  processes:
+                if "no_advertise_adjacency_segment" in processes:
                     if processes.get("no_advertise_adjacency_segment"):
                         build_child_xml_node(
                             intf_node,
                             "no-advertise-adjacency-segment",
                         )
-                if "no_neighbor_down_notification" in  processes:
+                if "no_neighbor_down_notification" in processes:
                     if processes.get("no_neighbor_down_notification"):
                         build_child_xml_node(
                             intf_node,
                             "no-neighbor-down-notification",
                         )
-                if "no_interface_state_traps" in  processes:
+                if "no_interface_state_traps" in processes:
                     if processes.get("no_interface_state_traps"):
                         build_child_xml_node(
                             intf_node,
                             "no-interface-state-traps",
                         )
-                if "no_eligible_remote_backup" in  processes:
+                if "no_eligible_remote_backup" in processes:
                     if processes.get("no_eligible_remote_backup"):
                         build_child_xml_node(
                             intf_node,
                             "no-eligible-remote-backup",
                         )
-                if "no_eligible_backup" in  processes:
+                if "no_eligible_backup" in processes:
                     if processes.get("no_eligible_backup"):
                         build_child_xml_node(
                             intf_node,
                             "no-eligible-backup",
                         )
-                if "demand_circuit" in  processes:
+                if "demand_circuit" in processes:
                     if processes.get("demand_circuit"):
                         build_child_xml_node(
                             intf_node,
                             "demand-circuit",
                         )
-
 
         ospf_interfaces_xml.append(protocol)
         return ospf_interfaces_xml
