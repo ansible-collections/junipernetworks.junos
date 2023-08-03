@@ -108,3 +108,12 @@ replaced:
       monitor: true
     damping: true
     description: "This is configured with Junos_bgp resource module"
+
+overridden:
+  after:
+    bgp_error_tolerance:
+      malformed_route_limit: 20000000
+    bmp:
+      monitor: true
+    damping: true
+    description: "This is configured with Junos_bgp resource module"
