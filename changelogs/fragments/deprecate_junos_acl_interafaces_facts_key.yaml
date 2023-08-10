@@ -1,5 +1,0 @@
----
-deprecated_features:
-  - add deprecate warning for junos_acl_interfaces key for junos facts results.
-minor_changes:
-  - add acl_interfaces key for junos_facts output.

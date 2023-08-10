@@ -5,6 +5,31 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v5.2.0
+======
+
+Minor Changes
+-------------
+
+- `junos_ospfv2` - Fix the authentication config when password is configured
+- `junos_ospfv2` - Rename key ospf to ospfv2 in facts.
+- `junos_ospfv2` - add area_ranges attribute which supports list of dict attributes.
+- `junos_ospfv2` - add attributes `allow_route_leaking`, `stub_network` and `as-external` to overload dict.
+- `junos_ospfv2` - add attributes `no_ignore_out_externals` to spf_options dict.
+- `junos_ospfv2` - fix to gather reference_bandwidth and rfc1583compatibility.
+- add acl_interfaces key for junos_facts output.
+
+Deprecated Features
+-------------------
+
+- `junos_ospfv2` - add deprecate warning for area_range.
+- add deprecate warning for junos_acl_interfaces key for junos facts results.
+
+Documentation Changes
+---------------------
+
+- Update examples for junos_ospfv3
+
 v5.1.0
 ======
 
