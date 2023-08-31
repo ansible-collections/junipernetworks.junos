@@ -117,10 +117,9 @@ EXAMPLES = """
           - 172.16.7.32
           - 172.16.9.32
     state: merged
-#
-# -------------------------
-# Module Execution Result
-# -------------------------
+
+# Task Output
+# -------------
 #
 #    "before": []
 #    "commands": [
@@ -156,6 +155,8 @@ EXAMPLES = """
 #             "name": "Test2"
 #         }
 #     ]
+
+
 # After state
 # -----------
 #
@@ -172,7 +173,8 @@ EXAMPLES = """
 #     172.16.7.32/32;
 #     172.16.9.32/32;
 # }
-#
+
+
 # Using gathered
 #
 # Before state
@@ -195,11 +197,10 @@ EXAMPLES = """
 - name: Gather Junos prefix-lists
   junipernetworks.junos.junos_prefix_lists:
     state: gathered
-#
-#
-# -------------------------
-# Module Execution Result
-# -------------------------
+
+
+# Task Output
+# -------------
 #
 #    "gathered": [
 #         {
@@ -222,9 +223,11 @@ EXAMPLES = """
 #             "name": "Test2"
 #         }
 #     ]
-#
+
+
 # Using replaced
-#
+
+
 # Before state
 # ------------
 #
@@ -241,6 +244,8 @@ EXAMPLES = """
 #     172.16.7.32/32;
 #     172.16.9.32/32;
 # }
+
+
 - name: Replace existing Junos prefix-lists configuration with provided config
   junipernetworks.junos.junos_prefix_lists:
    config:
@@ -250,9 +255,10 @@ EXAMPLES = """
          - 172.16.8.32
          - 172.16.9.32"
    state: replaced
-# -------------------------
-# Module Execution Result
-# -------------------------
+
+
+# Task Output
+# -------------
 #
 #    "before": [
 #         {
@@ -305,6 +311,8 @@ EXAMPLES = """
 #             "name": "Test2"
 #         }
 #     ]
+
+
 # After state
 # -----------
 #
@@ -321,8 +329,10 @@ EXAMPLES = """
 #     172.16.8.32/32;
 #     172.16.9.32/32;
 # }
+
+
 # Using overridden
-#
+
 # Before state
 # ------------
 #
@@ -339,6 +349,8 @@ EXAMPLES = """
 #     172.16.8.32/32;
 #     172.16.9.32/32;
 # }
+
+
 - name: Override Junos prefix-lists configuration with provided configuration
   junipernetworks.junos.junos_prefix_lists:
    config:
@@ -349,9 +361,9 @@ EXAMPLES = """
          - 172.16.9.32/28
    state: overridden
 
-# -------------------------
-# Module Execution Result
-# -------------------------
+   
+# Task Output
+# -------------
 #
 #    "before": [
 #         {
@@ -395,6 +407,8 @@ EXAMPLES = """
 #             "name": "Test2"
 #         }
 #     ]
+
+
 # After state
 # -----------
 #
@@ -404,8 +418,11 @@ EXAMPLES = """
 #     172.16.8.32/28;
 #     172.16.9.32/28;
 # }
+
+
 # Using deleted
-#
+
+
 # Before state
 # ------------
 #
@@ -423,15 +440,17 @@ EXAMPLES = """
 #     172.16.9.32/32;
 # }
 
+
 - name: Delete provided prefix-lists
   junipernetworks.junos.junos_prefix_lists:
    config:
      - name: "Test1"
      - name: "Test2"
    state: deleted
-# ------------------------
-# Module Execution Results
-# ------------------------
+
+
+# Task Output
+# -------------
 #
 #    "before": [
 #         {
@@ -469,6 +488,8 @@ EXAMPLES = """
 #             "name": "Internal"
 #         }
 #     ]
+
+
 # After state
 # -----------
 #
@@ -478,8 +499,11 @@ EXAMPLES = """
 #     172.16.3.32/32;
 # }
 #
+
+
 # Using deleted without specifying config
-#
+
+
 # Before state
 # ------------
 #
@@ -497,13 +521,14 @@ EXAMPLES = """
 #     172.16.9.32/32;
 # }
 
+
 - name: Delete complete Junos prefix-lists configuration
   junipernetworks.junos.junos_prefix_lists:
    state: deleted
 
-# ------------------------
-# Module Execution Results
-# ------------------------
+   
+# Task Output
+# -------------
 #
 #    "before": [
 #         {
@@ -531,6 +556,8 @@ EXAMPLES = """
 #                ]
 #
 # "after": []
+
+
 # After state
 # -----------
 #
@@ -538,8 +565,10 @@ EXAMPLES = """
 #
 # [edit]
 
-#
+
 # Using parsed
+
+
 # parsed.cfg
 # ------------
 # <?xml version="1.0" encoding="UTF-8"?>
@@ -563,15 +592,16 @@ EXAMPLES = """
 #     </policy-options>
 #     </configuration>
 # </rpc-reply>
+
+
 - name: Parse running prefix-lists configuration
   junipernetworks.junos.junos_prefix_lists:
     running_config: "{{ lookup('file', './parsed.cfg') }}"
     state: parsed
-#
-#
-# -------------------------
-# Module Execution Result
-# -------------------------
+
+
+# Task Output
+# -------------
 #
 #
 # "parsed":  [
@@ -589,8 +619,11 @@ EXAMPLES = """
 #     ]
 #
 #
+
+
 # Using rendered
-#
+
+
 - name: Render the xml for provided  configuration
   junipernetworks.junos.junos_prefix_lists:
     config:
@@ -606,11 +639,10 @@ EXAMPLES = """
           - 172.16.7.32
           - 172.16.9.32
     state: rendered
-#
-#
-# -------------------------
-# Module Execution Result
-# -------------------------
+    
+
+# Task Output
+# -------------
 #
 #
 # "rendered": "<nc:policy-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
