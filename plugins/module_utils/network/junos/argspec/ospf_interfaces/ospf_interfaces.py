@@ -58,15 +58,16 @@ class Ospf_interfacesArgs(object):  # pylint: disable=R0903
                                 "authentication": {
                                     "options": {
                                         "md5": {
+                                            "elements": "dict",
                                             "options": {
-                                                "key_id": {"type": "str"},
+                                                "key_id": {"type": "int"},
                                                 "key_value": {
                                                     "type": "str",
                                                     "no_log": True,
                                                 },
                                                 "start_time": {"type": "str"},
                                             },
-                                            "type": "dict",
+                                            "type": "list",
                                         },
                                         "simple_password": {
                                             "type": "str",
@@ -106,7 +107,7 @@ class Ospf_interfacesArgs(object):  # pylint: disable=R0903
                                 "no_neighbor_down_notification": {
                                     "type": "bool",
                                 },
-                                "node_link_protection": {"type": "str"},
+                                "node_link_protection": {"type": "bool"},
                                 "poll_interval": {"type": "int"},
                                 "priority": {"type": "int"},
                                 "passive": {"type": "bool"},

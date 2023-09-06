@@ -484,3 +484,63 @@ releases:
       - update_bgp_global_fqcn.yaml
       - update_reboot_timer.yaml
     release_date: "2023-02-28"
+  5.1.0:
+    changes:
+      bugfixes:
+        - Fix enabled attribute implementation.
+        - Fix lldp_global_assertion.
+        - Fix sanity issues.
+        - Fix the snmp view and traps configuration.
+        - fix the implementation of disabling interface.
+        - module should return with failure when rollback is 0 and device is not reachable.
+      doc_changes:
+        - Update bgp_address_family docs with examples.
+        - Update bgp_global docs with examples.
+        - junos_interfaces - Updated documentation with examples and task output.
+        - junos_static_routes - add task output to module documentation examples. (https://github.com/ansible-collections/junipernetworks.junos/pull/402).
+      minor_changes:
+        - Adding unlink option to junos package installation.
+    fragments:
+      - boolean_normalization.yaml
+      - ci_codecov.yaml
+      - codecov_fix.yml
+      - fix_docs_static_route.yaml
+      - fix_downstream.yaml
+      - fix_downstream_testing_issues.yaml
+      - fix_enabling.yaml
+      - fix_lldp_global_assertion.yaml
+      - fix_snmp_traps_and_view.yaml
+      - gha_workflow_fix.yml
+      - junos_cofig_rollback_fix.yaml
+      - lldp_global_test_update.yaml
+      - package_unlink.yaml
+      - update_bgp_address_family_docs.yaml
+      - update_bgp_global_docs.yaml
+      - update_inft_docs.yaml
+      - update_timeout.yaml
+    release_date: "2023-04-28"
+  5.2.0:
+    changes:
+      deprecated_features:
+        - "`junos_ospfv2` - add deprecate warning for area_range."
+        - add deprecate warning for junos_acl_interfaces key for junos facts results.
+      doc_changes:
+        - Update examples for junos_ospfv3
+      minor_changes:
+        - "`junos_ospfv2` - Fix the authentication config when password is configured"
+        - "`junos_ospfv2` - Rename key ospf to ospfv2 in facts."
+        - "`junos_ospfv2` - add area_ranges attribute which supports list of dict attributes."
+        - "`junos_ospfv2` - add attributes `allow_route_leaking`, `stub_network` and
+          `as-external` to overload dict."
+        - "`junos_ospfv2` - add attributes `no_ignore_out_externals` to spf_options
+          dict."
+        - "`junos_ospfv2` - fix to gather reference_bandwidth and rfc1583compatibility."
+        - add acl_interfaces key for junos_facts output.
+    fragments:
+      - add_gha_periodic.yaml
+      - deprecate_junos_acl_interafaces_facts_key.yaml
+      - gha_release.yml
+      - junos_ospfv2_fixes.yaml
+      - junos_ospfv3_health_check.yaml
+      - lint.yaml
+    release_date: "2023-07-05"

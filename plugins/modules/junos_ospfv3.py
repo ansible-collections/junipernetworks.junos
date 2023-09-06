@@ -235,57 +235,148 @@ EXAMPLES = """
 - name: Merge Junos OSPFv3 config
   junipernetworks.junos.junos_ospfv3:
     config:
-    - areas:
-        - area_id: 0.0.0.100
-          stub:
-            default_metric: 200
-            set: true
-          interfaces:
-            - name: so-0/0/0.0
-              priority: 3
-              metric: 5
+      - router_id: 10.200.16.75
+        areas:
+          - area_id: 0.0.0.100
+            interfaces:
+              - metric: 5
+                name: so-0/0/0.0
+                priority: 3
+              - metric: 6
+                name: so-0/0/1.0
+                priority: 2
+            stub:
+              default_metric: 200
+              set: true
     state: merged
 
-# After state
-# -----------
-#
-# adimn# show protocols ospf3
-# area 0.0.0.100 {
-#     stub default-metric 200;
-#     interface so-0/0/0.0 {
-#         metric 5;
-#         priority 3;
-#     }
-# }
-# Using replaced
-#
-# Before state
+# Task Output:
 # ------------
 #
-# adimn# show protocols ospf3
-# area 0.0.0.100 {
-#     stub default-metric 200;
-#     interface so-0/0/0.0 {
-#         metric 5;
-#         priority 3;
-#     }
-# }
-- name: Replace Junos OSPFv3 config
-  junipernetworks.junos.junos_ospfv3:
-   config:
-     - areas:
-         - area_id: 0.0.0.100
-           interfaces:
-             - name: so-0/0/0.0
-   state: replaced
+# before: []
+#
+# commands:
+# - <nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+#   <nc:ospf3><nc:area><nc:name>0.0.0.100</nc:name><nc:interface><nc:name>so-0/0/0.0</nc:name>
+#   <nc:priority>3</nc:priority><nc:metric>5</nc:metric></nc:interface><nc:interface>
+#   <nc:name>so-0/0/1.0</nc:name><nc:priority>2</nc:priority><nc:metric>6</nc:metric>
+#   </nc:interface><nc:stub><nc:default-metric>200</nc:default-metric></nc:stub></nc:area></nc:ospf3></nc:protocols>
+# - <nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+#   <nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>
+#
+# after:
+# - areas:
+#     - area_id: 0.0.0.100
+#       interfaces:
+#       - metric: 5
+#         name: so-0/0/0.0
+#         priority: 3
+#       - metric: 6
+#         name: so-0/0/1.0
+#         priority: 2
+#       stub:
+#         default_metric: 200
+#         set: true
+#     router_id: 10.200.16.75
 
 # After state
 # -----------
 #
 # admin# show protocols ospf3
 # area 0.0.0.100 {
+#     stub default-metric 200;
+#     interface so-0/0/0.0 {
+#         metric 5;
+#         priority 3;
+#     }
+#     interface so-0/0/1.0 {
+#         metric 6;
+#         priority 2;
+#     }
+# }
+#
+# Using replaced
+#
+# Before state
+# ------------
+#
+# admin# show protocols ospf3
+# admin# show protocols ospf3
+# area 0.0.0.100 {
+#     stub default-metric 200;
+#     interface so-0/0/0.0 {
+#         metric 5;
+#         priority 3;
+#     }
+#     interface so-0/0/1.0 {
+#         metric 6;
+#         priority 2;
+#     }
+# }
+
+- name: Replace existing Junos OSPFv3 config with provided config
+  junipernetworks.junos.junos_ospfv3:
+    config:
+      - router_id: 10.200.16.75
+        areas:
+          - area_id: 0.0.0.100
+            interfaces:
+              - name: so-0/0/0.0
+    state: replaced
+
+# Task Output:
+# ------------
+#
+# before:
+# - areas:
+#     - area_id: 0.0.0.100
+#       interfaces:
+#       - metric: 5
+#         name: so-0/0/0.0
+#         priority: 3
+#       - metric: 6
+#         name: so-0/0/1.0
+#         priority: 2
+#       stub:
+#         default_metric: 200
+#         set: true
+#     router_id: 10.200.16.75
+#
+# commands:
+# - <nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+#   <nc:ospf3><nc:area><nc:name>0.0.0.100</nc:name><nc:interface delete="delete">
+#   <nc:name>so-0/0/0.0</nc:name></nc:interface></nc:area></nc:ospf3><nc:ospf3>
+#   <nc:area><nc:name>0.0.0.100</nc:name><nc:interface><nc:name>so-0/0/0.0</nc:name>
+#   </nc:interface></nc:area></nc:ospf3></nc:protocols>
+# - <nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+#   <nc:router-id>10.200.16.75</nc:router-id><nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>
+#
+# after:
+# - areas:
+#     - area_id: 0.0.0.100
+#       interfaces:
+#       - metric: 6
+#         name: so-0/0/1.0
+#         priority: 2
+#       - name: so-0/0/0.0
+#       stub:
+#         default_metric: 200
+#         set: true
+#     router_id: 10.200.16.75
+#
+# After state
+# -----------
+#
+# admin# show protocols ospf3
+# area 0.0.0.100 {
+#     stub default-metric 200;
+#     interface so-0/0/1.0 {
+#         metric 6;
+#         priority 2;
+#     }
 #     interface so-0/0/0.0;
 # }
+#
 # Using overridden
 #
 # Before state
@@ -293,27 +384,80 @@ EXAMPLES = """
 #
 # admin# show protocols ospf3
 # area 0.0.0.100 {
+#     stub default-metric 200;
+#     interface so-0/0/1.0 {
+#         metric 6;
+#         priority 2;
+#     }
 #     interface so-0/0/0.0;
 # }
-- name: Override Junos OSPFv3 config
+
+- name: Override runnig OSPFv3 config with provided config
   junipernetworks.junos.junos_ospfv3:
-  config:
-    - areas:
-        - area_id: 0.0.0.100
-          stub:
-            default_metric: 200
-            set: true
-          interfaces:
-            - name: so-0/0/0.0
-              priority: 3
-              metric: 5
-              flood_reduction: true
-              passive: true
-        - area_id: 0.0.0.200
-          interfaces:
-            - name: ge-1/1/0.0
-            - name: ge-2/2/0.0
-  state: overridden
+    config:
+      - router_id: 10.200.16.75
+        areas:
+          - area_id: 0.0.0.100
+            stub:
+              default_metric: 200
+              set: true
+            interfaces:
+              - name: so-0/0/0.0
+                priority: 3
+                metric: 5
+                flood_reduction: true
+                passive: true
+          - area_id: 0.0.0.200
+            interfaces:
+              - name: ge-1/1/0.0
+              - name: ge-2/2/0.0
+    state: overridden
+
+# Task Output:
+# ------------
+#
+# before:
+# - areas:
+#     - area_id: 0.0.0.100
+#       interfaces:
+#       - metric: 6
+#         name: so-0/0/1.0
+#         priority: 2
+#       - name: so-0/0/0.0
+#       stub:
+#         default_metric: 200
+#         set: true
+#     router_id: 10.200.16.75
+#
+# commands:
+# - <nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+#   <nc:ospf3 delete="delete"/><nc:ospf3><nc:area><nc:name>0.0.0.100</nc:name>
+#   <nc:interface><nc:name>so-0/0/0.0</nc:name><nc:priority>3</nc:priority><nc:flood-reduction/>
+#   <nc:metric>5</nc:metric><nc:passive/></nc:interface>
+#   <nc:stub><nc:default-metric>200</nc:default-metric></nc:stub></nc:area>
+#   <nc:area><nc:name>0.0.0.200</nc:name><nc:interface><nc:name>ge-1/1/0.0</nc:name>
+#   </nc:interface><nc:interface><nc:name>ge-2/2/0.0</nc:name></nc:interface></nc:area>
+#   </nc:ospf3></nc:protocols>
+# - <nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+#   <nc:router-id delete="delete"/><nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>
+#
+# after:
+# - areas:
+#     - area_id: 0.0.0.100
+#       interfaces:
+#       - flood_reduction: true
+#         metric: 5
+#         name: so-0/0/0.0
+#         passive: true
+#         priority: 3
+#       stub:
+#         default_metric: 200
+#         set: true
+#     - area_id: 0.0.0.200
+#       interfaces:
+#       - name: ge-1/1/0.0
+#       - name: ge-2/2/0.0
+#     router_id: 10.200.16.75
 
 # After state
 # -----------
@@ -332,40 +476,12 @@ EXAMPLES = """
 #     interface ge-1/1/0.0;
 #     interface ge-2/2/0.0;
 # }
-#
 # Using deleted
 #
 # Before state
 # ------------
 #
-# adimn# show protocols ospf3
-# area 0.0.0.100 {
-#     stub default-metric 200;
-#     interface so-0/0/0.0 {
-#         metric 5;
-#         priority 3;
-#     }
-# }
-
-- name: Delete Junos OSPFv3 config
-  junipernetworks.junos.junos_ospfv3:
-    config:
-      - areas:
-          - area_id: 0.0.0.100
-            interfaces:
-              - name: so-0/0/0.0
-    state: deleted
-
-# After state
-# -----------
-#
 # admin# show protocols ospf3
-# Using gathered
-#
-# Before state
-# ------------
-#
-# adimn# show protocols ospf3
 # area 0.0.0.100 {
 #     stub default-metric 200;
 #     interface so-0/0/0.0 {
@@ -380,237 +496,193 @@ EXAMPLES = """
 #     interface ge-2/2/0.0;
 # }
 
-- name: Gather Junos OSPFv3 config
+- name: Delete OSPFv3 running config.
+  junipernetworks.junos.junos_ospfv3:
+   config:
+   state: deleted
+
+# Task Output:
+# ------------
+#
+# before:
+# - areas:
+#     - area_id: 0.0.0.100
+#       interfaces:
+#       - flood_reduction: true
+#         metric: 5
+#         name: so-0/0/0.0
+#         passive: true
+#         priority: 3
+#       stub:
+#         default_metric: 200
+#         set: true
+#     - area_id: 0.0.0.200
+#       interfaces:
+#       - name: ge-1/1/0.0
+#       - name: ge-2/2/0.0
+#     router_id: 10.200.16.75
+#
+# commands:
+# - <nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+#   <nc:ospf3 delete="delete"/></nc:protocols>
+# - <nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+#   <nc:router-id delete="delete"/></nc:routing-options>
+#
+# after: []
+#
+#
+# After state
+# -----------
+#
+# admin# show protocols ospf3
+
+# Using gathered
+#
+# Before state
+# ------------
+#
+# admin# show protocols ospf3
+# area 0.0.0.100 {
+#     stub default-metric 200;
+#     interface so-0/0/0.0 {
+#         metric 5;
+#         priority 3;
+#     }
+#     interface so-0/0/1.0 {
+#         metric 6;
+#         priority 2;
+#     }
+
+- name: Gather Junos OSPFv3 running-configuration
   junipernetworks.junos.junos_ospfv3:
     config:
     state: gathered
 #
 #
-# -------------------------
-# Module Execution Result
-# -------------------------
+# Task Output:
+# ------------
 #
-#    "gathered": {
-#             "areas": [
-#                 {
-#                     "area_id": "0.0.0.100",
-#                     "interfaces": [
-#                         {
-#                             "flood_reduction": true,
-#                             "metric": 5,
-#                             "name": "so-0/0/0.0",
-#                             "passive": true,
-#                             "priority": 3
-#                         }
-#                     ],
-#                     "stub": {
-#                         "default_metric": 200,
-#                         "set": true
-#                     }
-#                 },
-#                 {
-#                     "area_id": "0.0.0.200",
-#                     "interfaces": [
-#                         {
-#                             "name": "ge-1/1/0.0"
-#                         },
-#                         {
-#                             "name": "ge-2/2/0.0"
-#                         }
-#                     ]
-#                 }
-#             ],
-#         }
+# gathered:
 #
-# Using rendered
-#
-#
-- name: Render the commands for provided  configuration
-  junipernetworks.junos.junos_ospfv3:
-    config:
-    - areas:
-        - area_id: 0.0.0.100
-          stub:
-            default_metric: 200
-            set: true
-          interfaces:
-            - name: so-0/0/0.0
-              priority: 3
-              metric: 5
-              flood_reduction: true
-              passive: true
-        - area_id: 0.0.0.200
-          interfaces:
-            - name: ge-1/1/0.0
-            - name: ge-2/2/0.0
-    state: rendered
+# - areas:
+#     - area_id: 0.0.0.100
+#       interfaces:
+#       - metric: 5
+#         name: so-0/0/0.0
+#         priority: 3
+#       - metric: 6
+#         name: so-0/0/1.0
+#         priority: 2
+#       stub:
+#         default_metric: 200
+#         set: true
+#     router_id: 10.200.16.75
 
-#
-#
-# -------------------------
-# Module Execution Result
-# -------------------------
-#
-#
-# "rendered": "
-# <nc:protocols
-#     xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
-#     <nc:ospf3>
-#         <nc:area>
-#             <nc:name>0.0.0.100</nc:name>
-#             <nc:interface>
-#                 <nc:name>so-0/0/0.0</nc:name>
-#                 <nc:priority>3</nc:priority>
-#                 <nc:flood-reduction/>
-#                 <nc:metric>5</nc:metric>
-#                 <nc:passive/>
-#             </nc:interface>
-#             <nc:stub>
-#                 <nc:default-metric>200</nc:default-metric>
-#             </nc:stub>
-#         </nc:area>
-#         <nc:area>
-#             <nc:name>0.0.0.200</nc:name>
-#             <nc:interface>
-#                 <nc:name>ge-1/1/0.0</nc:name>
-#             </nc:interface>
-#             <nc:interface>
-#                 <nc:name>ge-2/2/0.0</nc:name>
-#             </nc:interface>
-#         </nc:area>
-#     </nc:ospf3>
-# </nc:protocols>"
-#
 # Using parsed
 # parsed.cfg
 # ------------
-# <rpc-reply xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns:junos="http://xml.juniper.net/junos/18.4R1/junos">
-# <data>
-# <configuration xmlns="http://xml.juniper.net/xnm/1.1/xnm"
-#      junos:commit-seconds="1601355317" junos:commit-localtime="2020-09-29 04:55:17 UTC" junos:commit-user="rohit">
-#     <version>18.4R1-S2.4</version>
-#     <interfaces>
-#         <interface>
-#             <name>ge-0/0/0</name>
-#             <description>Configured by Ansi-Team</description>
-#         </interface>
-#         <interface>
-#             <name>gr-0/0/0</name>
-#             <description>Configured Manually</description>
-#         </interface>
-#         <interface>
-#             <name>fxp0</name>
-#             <unit>
-#                 <name>0</name>
-#                 <family>
-#                     <inet>
-#                         <dhcp>
-#                         </dhcp>
-#                     </inet>
-#                 </family>
-#             </unit>
-#         </interface>
-#     </interfaces>
-#     <protocols>
-#         <ospf3>
-#             <area>
-#                 <name>0.0.0.100</name>
-#                 <stub>
-#                     <default-metric>200</default-metric>
-#                 </stub>
-#                 <interface>
-#                     <name>so-0/0/0.0</name>
-#                     <passive>
-#                     </passive>
-#                     <metric>5</metric>
-#                     <priority>3</priority>
-#                     <flood-reduction/>
-#                 </interface>
-#             </area>
-#             <area>
-#                 <name>0.0.0.200</name>
-#                 <interface>
-#                     <name>ge-1/1/0.0</name>
-#                 </interface>
-#                 <interface>
-#                     <name>ge-2/2/0.0</name>
-#                 </interface>
-#             </area>
-#         </ospf3>
-#     </protocols>
-#     <routing-options>
-#         <router-id>10.200.16.75</router-id>
-#     </routing-options>
-# </configuration>
-# <database-status-information>
-# <database-status>
-# <user>rohit</user>
-# <terminal>pts/0</terminal>
-# <pid>38210</pid>
-# <start-time junos:seconds="1601354977">2020-09-29 04:49:37 UTC</start-time>
-# <idle-time junos:seconds="546">00:09:06</idle-time>
-# <edit-path>[edit]</edit-path>
-# </database-status>
-# </database-status-information>
-# </data>
+# <?xml version="1.0" encoding="UTF-8"?>
+# <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
+#     <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
+#         <protocols>
+#             <ospf3>
+#                 <area>
+#                     <name>0.0.0.100</name>
+#                     <stub>
+#                         <default-metric>200</default-metric>
+#                     </stub>
+#                     <interface>
+#                         <name>so-0/0/0.0</name>
+#                         <passive></passive>
+#                         <metric>5</metric>
+#                         <priority>3</priority>
+#                         <flood-reduction/>
+#                     </interface>
+#                 </area>
+#                 <area>
+#                     <name>0.0.0.200</name>
+#                     <interface>
+#                         <name>ge-1/1/0.0</name>
+#                     </interface>
+#                     <interface>
+#                         <name>ge-2/2/0.0</name>
+#                     </interface>
+#                 </area>
+#             </ospf3>
+#         </protocols>
+#         <routing-options>
+#             <router-id>10.200.16.75</router-id>
+#         </routing-options>
+#     </configuration>
 # </rpc-reply>
 
-- name: Parsed the device configuration to get output commands
+
+- name: Parsed the ospfv3 config into structured ansible resource facts.
   junipernetworks.junos.junos_ospfv3:
     running_config: "{{ lookup('file', './parsed.cfg') }}"
     state: parsed
 #
+# Task Output:
+# ------------
 #
-# -------------------------
-# Module Execution Result
-# -------------------------
+# parsed:
+# - router_id: 10.200.16.75
+#         areas:
+#           - area_id: 0.0.0.100
+#             stub:
+#               default_metric: 200
+#               set: true
+#             interfaces:
+#               - name: so-0/0/0.0
+#                 priority: 3
+#                 metric: 5
+#                 flood_reduction: true
+#                 passive: true
+#           - area_id: 0.0.0.200
+#             interfaces:
+#               - name: ge-1/1/0.0
+#               - name: ge-2/2/0.0
+
+# Using rendered
 #
+- name: Render the commands for provided  configuration
+  junipernetworks.junos.junos_ospfv3:
+    config:
+      - router_id: 10.200.16.75
+        areas:
+          - area_id: 0.0.0.100
+            interfaces:
+              - metric: 5
+                name: so-0/0/0.0
+                priority: 3
+              - metric: 6
+                name: so-0/0/1.0
+                priority: 2
+            stub:
+              default_metric: 200
+              set: true
+    state: rendered
+
+# Task Output:
+# ------------
 #
-# "parsed": [
-#         {
-#             "areas": [
-#                 {
-#                     "area_id": "0.0.0.100",
-#                     "interfaces": [
-#                         {
-#                             "flood_reduction": true,
-#                             "metric": 5,
-#                             "name": "so-0/0/0.0",
-#                             "passive": true,
-#                             "priority": 3
-#                         }
-#                     ],
-#                     "stub": {
-#                         "default_metric": 200,
-#                         "set": true
-#                     }
-#                 },
-#                 {
-#                     "area_id": "0.0.0.200",
-#                     "interfaces": [
-#                         {
-#                             "name": "ge-1/1/0.0"
-#                         },
-#                         {
-#                             "name": "ge-2/2/0.0"
-#                         }
-#                     ]
-#                 }
-#             ],
-#         }
-#     ]
-#
+# rendered: "<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+# <nc:ospf3><nc:area><nc:name>0.0.0.100</nc:name><nc:interface>
+# <nc:name>so-0/0/0.0</nc:name><nc:priority>3</nc:priority>
+# <nc:metric>5</nc:metric></nc:interface><nc:interface><nc:name>so-0/0/1.0</nc:name>
+# <nc:priority>2</nc:priority><nc:metric>6</nc:metric></nc:interface><nc:stub>
+# <nc:default-metric>200</nc:default-metric></nc:stub></nc:area></nc:ospf3></nc:protocols>"
 """
 RETURN = """
 before:
-  description: The configuration prior to the model invocation.
+  description: The configuration prior to the module invocation.
   returned: always
   type: dict
   sample: >
     The configuration returned will always be in the same format
      of the parameters above.
 after:
-  description: The resulting configuration model invocation.
+  description: The resulting configuration module invocation.
   returned: when changed
   type: dict
   sample: >
@@ -620,40 +692,28 @@ commands:
   description: The set of commands pushed to the remote device.
   returned: always
   type: list
-  sample: ['<nc:protocols
-    xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
-    <nc:ospf3 delete=\"delete\"/>
-    <nc:ospf3>
-        <nc:area>
-            <nc:name>0.0.0.100</nc:name>
-            <nc:interface>
-                <nc:name>so-0/0/0.0</nc:name>
-                <nc:priority>3</nc:priority>
-                <nc:flood-reduction/>
-                <nc:metric>5</nc:metric>
-                <nc:passive/>
-            </nc:interface>
-            <nc:stub>
-                <nc:default-metric>200</nc:default-metric>
-            </nc:stub>
-        </nc:area>
-        <nc:area>
-            <nc:name>0.0.0.200</nc:name>
-            <nc:interface>
-                <nc:name>ge-1/1/0.0</nc:name>
-            </nc:interface>
-            <nc:interface>
-                <nc:name>ge-2/2/0.0</nc:name>
-            </nc:interface>
-        </nc:area>
-    </nc:ospf3>
-</nc:protocols>",
-        "
-<nc:routing-options
-    xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
-    <nc:router-id delete=\"delete\"/>
-    <nc:router-id>10.200.16.75</nc:router-id>
-</nc:routing-options>', 'xml 2', 'xml 3']
+  sample: ['<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><
+  nc:ospf3><nc:area><nc:name>0.0.0.100</nc:name><nc:interface>', 'xml 2', 'xml 3']
+rendered:
+  description: The provided configuration in the task rendered in device-native format (offline).
+  returned: when I(state) is C(rendered)
+  type: list
+  sample:
+    - <nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+gathered:
+  description: Facts about the network resource gathered from the remote device as structured data.
+  returned: when I(state) is C(gathered)
+  type: list
+  sample: >
+    This output will always be in the same format as the
+    module argspec.
+parsed:
+  description: The device native config provided in I(running_config) option parsed into structured data as per module argspec.
+  returned: when I(state) is C(parsed)
+  type: list
+  sample: >
+    This output will always be in the same format as the
+    module argspec.
 """
 
 

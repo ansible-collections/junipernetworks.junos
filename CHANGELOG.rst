@@ -5,6 +5,57 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v5.2.0
+======
+
+Minor Changes
+-------------
+
+- `junos_ospfv2` - Fix the authentication config when password is configured
+- `junos_ospfv2` - Rename key ospf to ospfv2 in facts.
+- `junos_ospfv2` - add area_ranges attribute which supports list of dict attributes.
+- `junos_ospfv2` - add attributes `allow_route_leaking`, `stub_network` and `as-external` to overload dict.
+- `junos_ospfv2` - add attributes `no_ignore_out_externals` to spf_options dict.
+- `junos_ospfv2` - fix to gather reference_bandwidth and rfc1583compatibility.
+- add acl_interfaces key for junos_facts output.
+
+Deprecated Features
+-------------------
+
+- `junos_ospfv2` - add deprecate warning for area_range.
+- add deprecate warning for junos_acl_interfaces key for junos facts results.
+
+Documentation Changes
+---------------------
+
+- Update examples for junos_ospfv3
+
+v5.1.0
+======
+
+Minor Changes
+-------------
+
+- Adding unlink option to junos package installation.
+
+Bugfixes
+--------
+
+- Fix enabled attribute implementation.
+- Fix lldp_global_assertion.
+- Fix sanity issues.
+- Fix the snmp view and traps configuration.
+- fix the implementation of disabling interface.
+- module should return with failure when rollback is 0 and device is not reachable.
+
+Documentation Changes
+---------------------
+
+- Update bgp_address_family docs with examples.
+- Update bgp_global docs with examples.
+- junos_interfaces - Updated documentation with examples and task output.
+- junos_static_routes - add task output to module documentation examples. (https://github.com/ansible-collections/junipernetworks.junos/pull/402).
+
 v5.0.0
 ======
 

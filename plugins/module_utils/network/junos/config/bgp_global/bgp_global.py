@@ -168,7 +168,7 @@ class Bgp_global(ConfigBase):
             config_xmls = self._state_purged(want, have)
         elif state in ("merged", "rendered"):
             config_xmls = self._state_merged(want, have)
-        elif state == "replaced":
+        elif state in ("replaced", "overridden"):
             config_xmls = self._state_replaced(want, have)
 
         if config_xmls:

@@ -28,7 +28,7 @@
         gather_subset:
           - default
         gather_network_resources:
-          - ospf
+          - ospfv2
 
     - name: Apply the provided configuration (config to be reverted)
       register: result
