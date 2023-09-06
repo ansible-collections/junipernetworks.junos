@@ -11,18 +11,12 @@ v5.3.0
 Minor Changes
 -------------
 
-- add overridden state opperation support.
+- Add Overridden operation support (https://github.com/ansible-collections/junipernetworks.junos/pull/430)
 
 Bugfixes
 --------
 
-- fix `no_advertise_adjacency_segment` config implementation.
-- fix `no_eligible_backup` config implementation.
-- fix `no_eligible_remote_backup` config implementation.
-- fix `no_interface_state_traps` config implementation.
-- fix `no_neighbor_down_notification` config implementation.
-- fix `node_link_protection` implementation.
-- fix md5 authentication which allows list of keys to be configured.
+- Update BGP tests (https://github.com/ansible-collections/junipernetworks.junos/pull/434)
 
 v5.2.0
 ======
