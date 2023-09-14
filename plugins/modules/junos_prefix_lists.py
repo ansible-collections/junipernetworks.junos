@@ -320,7 +320,7 @@ EXAMPLES = """
          - 172.16.9.32/28
    state: overridden
 
-   
+
 # Task Output
 # -------------
 #
@@ -454,7 +454,7 @@ EXAMPLES = """
   junipernetworks.junos.junos_prefix_lists:
    state: deleted
 
-   
+
 # Task Output
 # -------------
 #
@@ -547,7 +547,7 @@ EXAMPLES = """
           - 172.16.7.32
           - 172.16.9.32
     state: rendered
-    
+
 
 # Task Output
 # -------------
@@ -581,7 +581,7 @@ commands:
   description: The set of commands pushed to the remote device.
   returned: always
   type: list
-  sample: 
+  sample:
     - <nc:policy-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
     - "<nc:prefix-list><nc:name>Internal</nc:name><nc:prefix-list-item><nc:name>172.16.1.32</nc:name>"
     - "</nc:prefix-list-item><nc:prefix-list-item><nc:name>172.16.3.32</nc:name>"
