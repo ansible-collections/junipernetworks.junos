@@ -121,40 +121,29 @@ EXAMPLES = """
 # Task Output
 # -------------
 #
-#    "before": []
-#    "commands": [
-#         "<nc:policy-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
-#         "<nc:prefix-list><nc:name>Internal</nc:name><nc:prefix-list-item><nc:name>172.16.1.32</nc:name>"
-#         "</nc:prefix-list-item><nc:prefix-list-item><nc:name>172.16.3.32</nc:name>"
-#         "</nc:prefix-list-item></nc:prefix-list><nc:prefix-list><nc:name>Test1</nc:name>"
-#         "<nc:dynamic-db/></nc:prefix-list><nc:prefix-list><nc:name>Test2</nc:name>"
-#         "<nc:prefix-list-item><nc:name>172.16.2.32</nc:name></nc:prefix-list-item>"
-#         "<nc:prefix-list-item><nc:name>172.16.7.32</nc:name></nc:prefix-list-item>"
-#         "<nc:prefix-list-item><nc:name>172.16.9.32</nc:name></nc:prefix-list-item>"
-#         "</nc:prefix-list></nc:policy-options>"
-#     ]
-#
-# "after": [
-#         {
-#             "address_prefixes": [
-#                 "172.16.1.32/32",
-#                 "172.16.3.32/32"
-#             ],
-#             "name": "Internal"
-#         },
-#         {
-#             "dynamic_db": true,
-#             "name": "Test1"
-#         },
-#         {
-#             "address_prefixes": [
-#                 "172.16.2.32/32",
-#                 "172.16.7.32/32",
-#                 "172.16.9.32/32"
-#             ],
-#             "name": "Test2"
-#         }
-#     ]
+# before: []
+# commands:
+# - <nc:policy-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+# - "<nc:prefix-list><nc:name>Internal</nc:name><nc:prefix-list-item><nc:name>172.16.1.32</nc:name>"
+# - "</nc:prefix-list-item><nc:prefix-list-item><nc:name>172.16.3.32</nc:name>"
+# - "</nc:prefix-list-item></nc:prefix-list><nc:prefix-list><nc:name>Test1</nc:name>"
+# - "<nc:dynamic-db/></nc:prefix-list><nc:prefix-list><nc:name>Test2</nc:name>"
+# - "<nc:prefix-list-item><nc:name>172.16.2.32</nc:name></nc:prefix-list-item>"
+# - "<nc:prefix-list-item><nc:name>172.16.7.32</nc:name></nc:prefix-list-item>"
+# - "<nc:prefix-list-item><nc:name>172.16.9.32</nc:name></nc:prefix-list-item>"
+# - "</nc:prefix-list></nc:policy-options>"
+# after:
+# - address_prefixes:
+#   - 172.16.1.32/32
+#   - 172.16.3.32/32
+#   name: Internal
+# - dynamic_db: true
+#   name: Test1
+# - address_prefixes:
+#   - 172.16.2.32/32
+#   - 172.16.7.32/32
+#   - 172.16.9.32/32
+#   name: Test2
 
 
 # After state
@@ -202,27 +191,18 @@ EXAMPLES = """
 # Task Output
 # -------------
 #
-#    "gathered": [
-#         {
-#             "address_prefixes": [
-#                 "172.16.1.32/32",
-#                 "172.16.3.32/32"
-#             ],
-#             "name": "Internal"
-#         },
-#         {
-#             "dynamic_db": true,
-#             "name": "Test1"
-#         },
-#         {
-#             "address_prefixes": [
-#                 "172.16.2.32/32",
-#                 "172.16.7.32/32",
-#                 "172.16.9.32/32"
-#             ],
-#             "name": "Test2"
-#         }
-#     ]
+# gathered:
+# - address_prefixes:
+#   - 172.16.1.32/32
+#   - 172.16.3.32/32
+#   name: Internal
+# - dynamic_db: true
+#   name: Test1
+# - address_prefixes:
+#   - 172.16.2.32/32
+#   - 172.16.7.32/32
+#   - 172.16.9.32/32
+#   name: Test2
 
 
 # Using replaced
@@ -260,58 +240,37 @@ EXAMPLES = """
 # Task Output
 # -------------
 #
-#    "before": [
-#         {
-#             "address_prefixes": [
-#                 "172.16.1.32/32",
-#                 "172.16.3.32/32"
-#             ],
-#             "name": "Internal"
-#         },
-#         {
-#             "dynamic_db": true,
-#             "name": "Test1"
-#         },
-#         {
-#             "address_prefixes": [
-#                 "172.16.2.32/32",
-#                 "172.16.7.32/32",
-#                 "172.16.9.32/32"
-#             ],
-#             "name": "Test2"
-#         }
-#     ]
-#    "commands": [
-#         "<nc:policy-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
-#         "<nc:prefix-list delete=\"delete\"><nc:name>Test2</nc:name></nc:prefix-list>"
-#         "<nc:prefix-list><nc:name>Test2</nc:name><nc:prefix-list-item><nc:name>172.16.4.32</nc:name>"
-#         "</nc:prefix-list-item><nc:prefix-list-item><nc:name>172.16.8.32</nc:name>"
-#         "</nc:prefix-list-item><nc:prefix-list-item><nc:name>172.16.9.32</nc:name>"
-#         "</nc:prefix-list-item></nc:prefix-list></nc:policy-options>"
-#     ]
-#
-# "after": [
-#         {
-#             "address_prefixes": [
-#                 "172.16.1.32/32",
-#                 "172.16.3.32/32"
-#             ],
-#             "name": "Internal"
-#         },
-#         {
-#             "dynamic_db": true,
-#             "name": "Test1"
-#         },
-#         {
-#             "address_prefixes": [
-#                 "172.16.4.32/32",
-#                 "172.16.8.32/32",
-#                 "172.16.9.32/32"
-#             ],
-#             "name": "Test2"
-#         }
-#     ]
-
+# before:
+# - address_prefixes:
+#   - 172.16.1.32/32
+#   - 172.16.3.32/32
+#   name: Internal
+# - dynamic_db: true
+#   name: Test1
+# - address_prefixes:
+#   - 172.16.2.32/32
+#   - 172.16.7.32/32
+#   - 172.16.9.32/32
+#   name: Test2
+# commands:
+# - <nc:policy-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+# - <nc:prefix-list delete="delete"><nc:name>Test2</nc:name></nc:prefix-list>
+# - "<nc:prefix-list><nc:name>Test2</nc:name><nc:prefix-list-item><nc:name>172.16.4.32</nc:name>"
+# - "</nc:prefix-list-item><nc:prefix-list-item><nc:name>172.16.8.32</nc:name>"
+# - "</nc:prefix-list-item><nc:prefix-list-item><nc:name>172.16.9.32</nc:name>"
+# - "</nc:prefix-list-item></nc:prefix-list></nc:policy-options>"
+# after:
+# - address_prefixes:
+#   - 172.16.1.32/32
+#   - 172.16.3.32/32
+#   name: Internal
+# - dynamic_db: true
+#   name: Test1
+# - address_prefixes:
+#   - 172.16.4.32/32
+#   - 172.16.8.32/32
+#   - 172.16.9.32/32
+#   name: Test2
 
 # After state
 # -----------
@@ -365,49 +324,33 @@ EXAMPLES = """
 # Task Output
 # -------------
 #
-#    "before": [
-#         {
-#             "address_prefixes": [
-#                 "172.16.1.32/32",
-#                 "172.16.3.32/32"
-#             ],
-#             "name": "Internal"
-#         },
-#         {
-#             "dynamic_db": true,
-#             "name": "Test1"
-#         },
-#         {
-#             "address_prefixes": [
-#                 "172.16.4.32/32",
-#                 "172.16.8.32/32",
-#                 "172.16.9.32/32"
-#             ],
-#             "name": "Test2"
-#         }
-#     ]
-#    "commands": [
-#         "<nc:policy-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
-#         "<nc:prefix-list delete=\"delete\"><nc:name>Internal</nc:name>"
-#         "</nc:prefix-list><nc:prefix-list delete=\"delete\"><nc:name>Test1</nc:name>"
-#         "</nc:prefix-list><nc:prefix-list delete=\"delete\"><nc:name>Test2</nc:name>"
-#         "</nc:prefix-list><nc:prefix-list><nc:name>Test2</nc:name><nc:prefix-list-item>"
-#         "<nc:name>172.16.4.32/28</nc:name></nc:prefix-list-item><nc:prefix-list-item>"
-#         "<nc:name>172.16.8.32/28</nc:name></nc:prefix-list-item><nc:prefix-list-item>"
-#         "<nc:name>172.16.9.32/28</nc:name></nc:prefix-list-item></nc:prefix-list></nc:policy-options>"
-#     ]
-#
-# "after": [
-#         {
-#             "address_prefixes": [
-#                 "172.16.4.32/28",
-#                 "172.16.8.32/28",
-#                 "172.16.9.32/28"
-#             ],
-#             "name": "Test2"
-#         }
-#     ]
-
+# before:
+# - address_prefixes:
+#   - 172.16.1.32/32
+#   - 172.16.3.32/32
+#   name: Internal
+# - dynamic_db: true
+#   name: Test1
+# - address_prefixes:
+#   - 172.16.4.32/32
+#   - 172.16.8.32/32
+#   - 172.16.9.32/32
+#   name: Test2
+# commands:
+# - <nc:policy-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+# - <nc:prefix-list delete="delete"><nc:name>Internal</nc:name>
+# - </nc:prefix-list><nc:prefix-list delete="delete"><nc:name>Test1</nc:name>
+# - </nc:prefix-list><nc:prefix-list delete="delete"><nc:name>Test2</nc:name>
+# - "</nc:prefix-list><nc:prefix-list><nc:name>Test2</nc:name><nc:prefix-list-item>"
+# - "<nc:name>172.16.4.32/28</nc:name></nc:prefix-list-item><nc:prefix-list-item>"
+# - "<nc:name>172.16.8.32/28</nc:name></nc:prefix-list-item><nc:prefix-list-item>"
+# - "<nc:name>172.16.9.32/28</nc:name></nc:prefix-list-item></nc:prefix-list></nc:policy-options>"
+# after:
+# - address_prefixes:
+#   - 172.16.4.32/28
+#   - 172.16.8.32/28
+#   - 172.16.9.32/28
+#   name: Test2
 
 # After state
 # -----------
@@ -452,42 +395,27 @@ EXAMPLES = """
 # Task Output
 # -------------
 #
-#    "before": [
-#         {
-#             "address_prefixes": [
-#                 "172.16.1.32/32",
-#                 "172.16.3.32/32"
-#             ],
-#             "name": "Internal"
-#         },
-#         {
-#             "dynamic_db": true,
-#             "name": "Test1"
-#         },
-#         {
-#             "address_prefixes": [
-#                 "172.16.2.32/32",
-#                 "172.16.7.32/32",
-#                 "172.16.9.32/32"
-#             ],
-#             "name": "Test2"
-#         }
-#     ]
-#    "commands": [
-#         "<nc:policy-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
-#         "<nc:prefix-list delete=\"delete\"><nc:name>Test1</nc:name></nc:prefix-list>"
-#         "<nc:prefix-list delete=\"delete\"><nc:name>Test2</nc:name></nc:prefix-list></nc:policy-options>"
-#     ]
-#
-# "after": [
-#         {
-#             "address_prefixes": [
-#                 "172.16.1.32/32",
-#                 "172.16.3.32/32"
-#             ],
-#             "name": "Internal"
-#         }
-#     ]
+# before:
+# - address_prefixes:
+#   - 172.16.1.32/32
+#   - 172.16.3.32/32
+#   name: Internal
+# - dynamic_db: true
+#   name: Test1
+# - address_prefixes:
+#   - 172.16.2.32/32
+#   - 172.16.7.32/32
+#   - 172.16.9.32/32
+#   name: Test2
+# commands:
+# - <nc:policy-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+# - <nc:prefix-list delete="delete"><nc:name>Test1</nc:name></nc:prefix-list>
+# - <nc:prefix-list delete="delete"><nc:name>Test2</nc:name></nc:prefix-list></nc:policy-options>
+# after:
+# - address_prefixes:
+#   - 172.16.1.32/32
+#   - 172.16.3.32/32
+#   name: Internal
 
 
 # After state
@@ -530,32 +458,22 @@ EXAMPLES = """
 # Task Output
 # -------------
 #
-#    "before": [
-#         {
-#             "address_prefixes": [
-#                 "172.16.1.32/32",
-#                 "172.16.3.32/32"
-#             ],
-#             "name": "Internal"
-#         },
-#         {
-#             "dynamic_db": true,
-#             "name": "Test1"
-#         },
-#         {
-#             "address_prefixes": [
-#                 "172.16.2.32/32",
-#                 "172.16.7.32/32",
-#                 "172.16.9.32/32"
-#             ],
-#             "name": "Test2"
-#         }
-#     ]
-#    "commands": ["<nc:policy-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
-#                 "<nc:prefix-list delete=\"delete\"/></nc:policy-options>"
-#                ]
-#
-# "after": []
+# before:
+# - address_prefixes:
+#   - 172.16.1.32/32
+#   - 172.16.3.32/32
+#   name: Internal
+# - dynamic_db: true
+#   name: Test1
+# - address_prefixes:
+#   - 172.16.2.32/32
+#   - 172.16.7.32/32
+#   - 172.16.9.32/32
+#   name: Test2
+# commands:
+# - <nc:policy-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+# - <nc:prefix-list delete="delete"/></nc:policy-options>
+# after: []
 
 
 # After state
