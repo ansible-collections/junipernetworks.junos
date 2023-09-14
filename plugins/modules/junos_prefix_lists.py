@@ -520,23 +520,13 @@ EXAMPLES = """
 
 # Task Output
 # -------------
-#
-#
-# "parsed":  [
-#         {
-#             "name": "64510"
-#         },
-#         {
-#             "address_prefixes": [
-#                 "172.16.1.16/28",
-#                 "172.16.1.32/28"
-#             ],
-#             "dynamic_db": true,
-#             "name": "64500"
-#         }
-#     ]
-#
-#
+# parsed:
+# - name: '64510'
+# - address_prefixes:
+#   - 172.16.1.16/28
+#   - 172.16.1.32/28
+#   dynamic_db: true
+#   name: '64500'
 
 
 # Using rendered
@@ -561,38 +551,74 @@ EXAMPLES = """
 
 # Task Output
 # -------------
-#
-#
-# "rendered": "<nc:policy-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
-#             "<nc:prefix-list><nc:name>Internal</nc:name><nc:prefix-list-item><nc:name>172.16.1.32</nc:name>"
-#             "</nc:prefix-list-item><nc:prefix-list-item><nc:name>172.16.3.32</nc:name></nc:prefix-list-item>"
-#             "</nc:prefix-list><nc:prefix-list><nc:name>Test1</nc:name><nc:dynamic-db/></nc:prefix-list>"
-#             "<nc:prefix-list><nc:name>Test2</nc:name><nc:prefix-list-item><nc:name>172.16.2.32</nc:name>"
-#             "</nc:prefix-list-item><nc:prefix-list-item><nc:name>172.16.7.32</nc:name></nc:prefix-list-item>"
-#             "<nc:prefix-list-item><nc:name>172.16.9.32</nc:name></nc:prefix-list-item>"
-#             "</nc:prefix-list></nc:policy-options>"
+# rendered:
+# - <nc:policy-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+# - "<nc:prefix-list><nc:name>Internal</nc:name><nc:prefix-list-item><nc:name>172.16.1.32</nc:name>"
+# - "</nc:prefix-list-item><nc:prefix-list-item><nc:name>172.16.3.32</nc:name>"
+# - "</nc:prefix-list-item></nc:prefix-list><nc:prefix-list><nc:name>Test1</nc:name>"
+# - "<nc:dynamic-db/></nc:prefix-list><nc:prefix-list><nc:name>Test2</nc:name>"
+# - "<nc:prefix-list-item><nc:name>172.16.2.32</nc:name></nc:prefix-list-item>"
+# - "<nc:prefix-list-item><nc:name>172.16.7.32</nc:name></nc:prefix-list-item>"
+# - "<nc:prefix-list-item><nc:name>172.16.9.32</nc:name></nc:prefix-list-item>"
+# - "</nc:prefix-list></nc:policy-options>"
 """
-RETURN = """
+RRETURN = """
 before:
   description: The configuration prior to the model invocation.
   returned: always
+  type: str
   sample: >
     The configuration returned will always be in the same format
      of the parameters above.
-  type: list
 after:
   description: The resulting configuration model invocation.
   returned: when changed
+  type: str
   sample: >
     The configuration returned will always be in the same format
      of the parameters above.
-  type: list
 commands:
   description: The set of commands pushed to the remote device.
   returned: always
   type: list
-  sample: ['<nc:policy-options xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
-            "<nc:prefix-list delete=\"delete\"/></nc:policy-options>"', 'xml 2', 'command 3']
+  sample: 
+    - <nc:policy-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+    - "<nc:prefix-list><nc:name>Internal</nc:name><nc:prefix-list-item><nc:name>172.16.1.32</nc:name>"
+    - "</nc:prefix-list-item><nc:prefix-list-item><nc:name>172.16.3.32</nc:name>"
+    - "</nc:prefix-list-item></nc:prefix-list><nc:prefix-list><nc:name>Test1</nc:name>"
+    - "<nc:dynamic-db/></nc:prefix-list><nc:prefix-list><nc:name>Test2</nc:name>"
+    - "<nc:prefix-list-item><nc:name>172.16.2.32</nc:name></nc:prefix-list-item>"
+    - "<nc:prefix-list-item><nc:name>172.16.7.32</nc:name></nc:prefix-list-item>"
+    - "<nc:prefix-list-item><nc:name>172.16.9.32</nc:name></nc:prefix-list-item>"
+    - "</nc:prefix-list></nc:policy-options>"
+rendered:
+  description: The provided configuration in the task rendered in device-native format (offline).
+  returned: when I(state) is C(rendered)
+  type: list
+  sample:
+    - <nc:policy-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+    - "<nc:prefix-list><nc:name>Internal</nc:name><nc:prefix-list-item><nc:name>172.16.1.32</nc:name>"
+    - "</nc:prefix-list-item><nc:prefix-list-item><nc:name>172.16.3.32</nc:name>"
+    - "</nc:prefix-list-item></nc:prefix-list><nc:prefix-list><nc:name>Test1</nc:name>"
+    - "<nc:dynamic-db/></nc:prefix-list><nc:prefix-list><nc:name>Test2</nc:name>"
+    - "<nc:prefix-list-item><nc:name>172.16.2.32</nc:name></nc:prefix-list-item>"
+    - "<nc:prefix-list-item><nc:name>172.16.7.32</nc:name></nc:prefix-list-item>"
+    - "<nc:prefix-list-item><nc:name>172.16.9.32</nc:name></nc:prefix-list-item>"
+    - "</nc:prefix-list></nc:policy-options>"
+gathered:
+  description: Facts about the network resource gathered from the remote device as structured data.
+  returned: when I(state) is C(gathered)
+  type: list
+  sample: >
+    This output will always be in the same format as the
+    module argspec.
+parsed:
+  description: The device native config provided in I(running_config) option parsed into structured data as per module argspec.
+  returned: when I(state) is C(parsed)
+  type: list
+  sample: >
+    This output will always be in the same format as the
+    module argspec.
 """
 
 
