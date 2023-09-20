@@ -544,3 +544,20 @@ releases:
       - junos_ospfv3_health_check.yaml
       - lint.yaml
     release_date: "2023-07-05"
+  5.3.0:
+    changes:
+      bugfixes:
+        - fix `no_advertise_adjacency_segment` config implementation.
+        - fix `no_eligible_backup` config implementation.
+        - fix `no_eligible_remote_backup` config implementation.
+        - fix `no_interface_state_traps` config implementation.
+        - fix `no_neighbor_down_notification` config implementation.
+        - fix `node_link_protection` implementation.
+        - fix md5 authentication which allows list of keys to be configured.
+      minor_changes:
+        - add overridden state opperation support.
+    fragments:
+      - bgp_global_tests_fix.yaml
+      - codecov_pr.yml
+      - overridden_support.yaml
+    release_date: "2023-09-06"
