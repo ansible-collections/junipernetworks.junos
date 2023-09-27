@@ -226,7 +226,9 @@ class Security_zonesFacts(object):
                         temp_sec_zone["address_book"]["address_sets"] = []
 
                         if isinstance(security_zone["address-book"]["address-set"], dict):
-                            security_zone["address-book"]["address-set"] = [security_zone["address-book"]["address-set"]]
+                            security_zone["address-book"]["address-set"] = [
+                                security_zone["address-book"]["address-set"]
+                            ]
 
                         for address_set in security_zone["address-book"]["address-set"]:
                             temp_address_set = {}
