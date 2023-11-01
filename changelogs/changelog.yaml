@@ -561,3 +561,11 @@ releases:
       - codecov_pr.yml
       - overridden_support.yaml
     release_date: "2023-09-06"
+  5.3.1:
+    changes:
+      doc_changes:
+        - Improve docs of prefix-lists RM.
+    fragments:
+      - fix_prefix_lists_docs.yaml
+      - sanity_job_fix.yaml
+    release_date: "2023-11-01"
