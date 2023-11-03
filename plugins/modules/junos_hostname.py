@@ -300,7 +300,6 @@ EXAMPLES = """
 #         "hostname": "vsrx-18.4R1"
 #     }
 #
-
 """
 RETURN = """
 before:

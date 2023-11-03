@@ -307,13 +307,13 @@ Examples
 
     - name: Replace existing Junos prefix-lists configuration with provided config
       junipernetworks.junos.junos_prefix_lists:
-       config:
-         - name: Test2
-           address_prefixes:
-             - 172.16.4.32
-             - 172.16.8.32
-             - 172.16.9.32"
-       state: replaced
+        config:
+          - name: Test2
+            address_prefixes:
+              - 172.16.4.32
+              - 172.16.8.32
+              - 172.16.9.32"
+        state: replaced
 
 
     # Task Output
@@ -391,13 +391,13 @@ Examples
 
     - name: Override Junos prefix-lists configuration with provided configuration
       junipernetworks.junos.junos_prefix_lists:
-       config:
-         - name: Test2
-           address_prefixes:
-             - 172.16.4.32/28
-             - 172.16.8.32/28
-             - 172.16.9.32/28
-       state: overridden
+        config:
+          - name: Test2
+            address_prefixes:
+              - 172.16.4.32/28
+              - 172.16.8.32/28
+              - 172.16.9.32/28
+        state: overridden
 
 
     # Task Output
@@ -465,10 +465,10 @@ Examples
 
     - name: Delete provided prefix-lists
       junipernetworks.junos.junos_prefix_lists:
-       config:
-         - name: "Test1"
-         - name: "Test2"
-       state: deleted
+        config:
+          - name: "Test1"
+          - name: "Test2"
+        state: deleted
 
 
     # Task Output
@@ -531,7 +531,7 @@ Examples
 
     - name: Delete complete Junos prefix-lists configuration
       junipernetworks.junos.junos_prefix_lists:
-       state: deleted
+        state: deleted
 
 
     # Task Output

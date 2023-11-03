@@ -231,7 +231,6 @@ EXAMPLES = """
 #         "link_protection": "revertive",
 #         "system_priority": 63
 #     }
-
 """
 RETURN = """
 before:

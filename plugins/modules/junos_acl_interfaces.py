@@ -131,15 +131,15 @@ EXAMPLES = """
 - name: Delete JUNOS L3 interface filter
   junipernetworks.junos.junos_acl_interfaces:
     config:
-    - name: ge-1/0/0
-      access_groups:
-      - afi: ipv4
-        acls:
-        - name: inbound_acl
-          direction: in
-        - name: outbound_acl
-          direction: out
-      state: deleted
+      - name: ge-1/0/0
+        access_groups:
+          - afi: ipv4
+            acls:
+              - name: inbound_acl
+                direction: in
+              - name: outbound_acl
+                direction: out
+    state: deleted
 
 # After state:
 # -------------
@@ -175,15 +175,15 @@ EXAMPLES = """
 - name: Merge JUNOS L3 interface filter
   junipernetworks.junos.junos_acl_interfaces:
     config:
-    - name: ge-1/0/0
-      access_groups:
-      - afi: ipv4
-        acls:
-        - name: inbound_acl
-          direction: in
-        - name: outbound_acl
-          direction: out
-      state: merged
+      - name: ge-1/0/0
+        access_groups:
+          - afi: ipv4
+            acls:
+              - name: inbound_acl
+                direction: in
+              - name: outbound_acl
+                direction: out
+    state: merged
 
 # After state:
 # -------------
@@ -226,15 +226,15 @@ EXAMPLES = """
 - name: Override JUNOS L3 interface filter
   junipernetworks.junos.junos_acl_interfaces:
     config:
-    - name: ge-1/0/0
-      access_groups:
-      - afi: ipv4
-        acls:
-        - name: inbound_acl
-          direction: in
-        - name: outbound_acl
-          direction: out
-      state: overridden
+      - name: ge-1/0/0
+        access_groups:
+          - afi: ipv4
+            acls:
+              - name: inbound_acl
+                direction: in
+              - name: outbound_acl
+                direction: out
+    state: overridden
 
 # After state:
 # -------------
@@ -278,13 +278,13 @@ EXAMPLES = """
 - name: Replace JUNOS L3 interface filter
   junipernetworks.junos.junos_acl_interfaces:
     config:
-    - name: ge-1/0/0
-      access_groups:
-      - afi: ipv4
-        acls:
-        - name: inbound_acl
-          direction: in
-      state: replaced
+      - name: ge-1/0/0
+        access_groups:
+          - afi: ipv4
+            acls:
+              - name: inbound_acl
+                direction: in
+    state: replaced
 
 # After state:
 # -------------
@@ -303,8 +303,6 @@ EXAMPLES = """
 #         }
 #         family inet6;
 #     }
-
-
 """
 RETURN = """
 before:
