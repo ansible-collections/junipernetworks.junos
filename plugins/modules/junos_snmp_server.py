@@ -887,15 +887,15 @@ EXAMPLES = """
         set: true
         host_name_resolution: true
       client_lists:   # ATTR-----2
-         - name: cl1
-           addresses:
-             - address: "192.16.1.0/24"
-             - address: "192.16.2.0/24"
-             - address: "11.11.11.11"
-               restrict: true
-         - name: cl2
-           addresses:
-             - address: "192.16.4.0/24"
+        - name: cl1
+          addresses:
+            - address: "192.16.1.0/24"
+            - address: "192.16.2.0/24"
+            - address: "11.11.11.11"
+              restrict: true
+        - name: cl2
+          addresses:
+            - address: "192.16.4.0/24"
       routing_instance_access:  # ATTR-----3
         set: true
         access_lists:
@@ -1022,16 +1022,16 @@ EXAMPLES = """
     config:
       contact: "ansiblesupport11@redhat.com"
       customization:
-        ether_stats_ifd_only: True
+        ether_stats_ifd_only: true
       description: "Local SNMP Server"
       engine_id:
         local: "local1"
-        use_default_ip_address: True
-        use_mac_address: True
-      filter_duplicates: True
+        use_default_ip_address: true
+        use_mac_address: true
+      filter_duplicates: true
       filter_interfaces:
-        set: True
-        all_internal_interfaces: True
+        set: true
+        all_internal_interfaces: true
         interfaces:
           - "eth1"
           - "eth2"
@@ -1172,20 +1172,20 @@ EXAMPLES = """
     config:
       contact: "ansiblesupport11@redhat.com"
       customization:
-        ether_stats_ifd_only: True
+        ether_stats_ifd_only: true
       description: "Local SNMP Server"
       engine_id:
         local: "local1"
-        use_default_ip_address: True
-        use_mac_address: True
-      filter_duplicates: True
+        use_default_ip_address: true
+        use_mac_address: true
+      filter_duplicates: true
       filter_interfaces:
-        set: True
-        all_internal_interfaces: True
+        set: true
+        all_internal_interfaces: true
         interfaces:
           - "eth1"
           - "eth2"
-    state:  overridden
+    state: overridden
 #
 # -------------------------
 # Module Execution Result
