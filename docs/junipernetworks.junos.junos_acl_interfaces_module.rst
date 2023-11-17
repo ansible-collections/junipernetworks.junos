@@ -254,15 +254,15 @@ Examples
     - name: Delete JUNOS L3 interface filter
       junipernetworks.junos.junos_acl_interfaces:
         config:
-        - name: ge-1/0/0
-          access_groups:
-          - afi: ipv4
-            acls:
-            - name: inbound_acl
-              direction: in
-            - name: outbound_acl
-              direction: out
-          state: deleted
+          - name: ge-1/0/0
+            access_groups:
+              - afi: ipv4
+                acls:
+                  - name: inbound_acl
+                    direction: in
+                  - name: outbound_acl
+                    direction: out
+        state: deleted
 
     # After state:
     # -------------
@@ -298,15 +298,15 @@ Examples
     - name: Merge JUNOS L3 interface filter
       junipernetworks.junos.junos_acl_interfaces:
         config:
-        - name: ge-1/0/0
-          access_groups:
-          - afi: ipv4
-            acls:
-            - name: inbound_acl
-              direction: in
-            - name: outbound_acl
-              direction: out
-          state: merged
+          - name: ge-1/0/0
+            access_groups:
+              - afi: ipv4
+                acls:
+                  - name: inbound_acl
+                    direction: in
+                  - name: outbound_acl
+                    direction: out
+        state: merged
 
     # After state:
     # -------------
@@ -349,15 +349,15 @@ Examples
     - name: Override JUNOS L3 interface filter
       junipernetworks.junos.junos_acl_interfaces:
         config:
-        - name: ge-1/0/0
-          access_groups:
-          - afi: ipv4
-            acls:
-            - name: inbound_acl
-              direction: in
-            - name: outbound_acl
-              direction: out
-          state: overridden
+          - name: ge-1/0/0
+            access_groups:
+              - afi: ipv4
+                acls:
+                  - name: inbound_acl
+                    direction: in
+                  - name: outbound_acl
+                    direction: out
+        state: overridden
 
     # After state:
     # -------------
@@ -401,13 +401,13 @@ Examples
     - name: Replace JUNOS L3 interface filter
       junipernetworks.junos.junos_acl_interfaces:
         config:
-        - name: ge-1/0/0
-          access_groups:
-          - afi: ipv4
-            acls:
-            - name: inbound_acl
-              direction: in
-          state: replaced
+          - name: ge-1/0/0
+            access_groups:
+              - afi: ipv4
+                acls:
+                  - name: inbound_acl
+                    direction: in
+        state: replaced
 
     # After state:
     # -------------

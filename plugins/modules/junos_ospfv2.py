@@ -293,38 +293,38 @@ EXAMPLES = """
 - name: Merge provided OSPFv2 configuration into running config.
   junipernetworks.junos.junos_ospfv2:
     config:
-     - reference_bandwidth: 10g
-       areas:
-       - area_id: 0.0.0.100
-         area_ranges:
-         - address: 10.200.17.0/24
-           exact: true
-           restrict: true
-           override_metric: 2000
-         - address: 10.200.15.0/24
-           exact: true
-           restrict: true
-           override_metric: 2000
-         stub:
-           default_metric: 100
-           set: true
-         interfaces:
-         - name: so-0/0/0.0
-           priority: 3
-           metric: 5
-           flood_reduction: false
-           passive: true
-           bandwidth_based_metrics:
-           - bandwidth: 1g
-             metric: 5
-           - bandwidth: 10g
-             metric: 40
-           timers:
-             dead_interval: 4
-             hello_interval: 2
-             poll_interval: 2
-             retransmit_interval: 2
-       rfc1583compatibility: false
+      - reference_bandwidth: 10g
+        areas:
+          - area_id: 0.0.0.100
+            area_ranges:
+              - address: 10.200.17.0/24
+                exact: true
+                restrict: true
+                override_metric: 2000
+              - address: 10.200.15.0/24
+                exact: true
+                restrict: true
+                override_metric: 2000
+                stub:
+                  default_metric: 100
+                  set: true
+                interfaces:
+                  - name: so-0/0/0.0
+                    priority: 3
+                    metric: 5
+                    flood_reduction: false
+                    passive: true
+                    bandwidth_based_metrics:
+                      - bandwidth: 1g
+                        metric: 5
+                      - bandwidth: 10g
+                        metric: 40
+                    timers:
+                      dead_interval: 4
+                      hello_interval: 2
+                      poll_interval: 2
+                      retransmit_interval: 2
+        rfc1583compatibility: false
     state: merged
 
 # Task Output:
@@ -450,39 +450,39 @@ EXAMPLES = """
 
 - name: Replace existing Junos OSPFv2 config with provided config
   junipernetworks.junos.junos_ospfv2:
-   config:
-   - reference_bandwidth: 10g
-     areas:
-     - area_id: 0.0.0.100
-       area_ranges:
-       - address: 10.200.17.0/24
-         exact: true
-         restrict: true
-       - address: 10.200.16.0/24
-         exact: true
-         restrict: true
-         override_metric: 1000
-       stub:
-         default_metric: 100
-         set: true
-       interfaces:
-       - name: so-0/0/0.0
-         priority: 3
-         metric: 5
-         flood_reduction: false
-         passive: true
-         bandwidth_based_metrics:
-         - bandwidth: 1g
-           metric: 5
-         - bandwidth: 10g
-           metric: 40
-         timers:
-           dead_interval: 4
-           hello_interval: 2
-           poll_interval: 2
-           retransmit_interval: 2
-     rfc1583compatibility: false
-   state: replacedd
+    config:
+      - reference_bandwidth: 10g
+        areas:
+          - area_id: 0.0.0.100
+            area_ranges:
+              - address: 10.200.17.0/24
+                exact: true
+                restrict: true
+              - address: 10.200.16.0/24
+                exact: true
+                restrict: true
+                override_metric: 1000
+            stub:
+              default_metric: 100
+              set: true
+            interfaces:
+              - name: so-0/0/0.0
+                priority: 3
+                metric: 5
+                flood_reduction: false
+                passive: true
+                bandwidth_based_metrics:
+                  - bandwidth: 1g
+                    metric: 5
+                  - bandwidth: 10g
+                    metric: 40
+                timers:
+                  dead_interval: 4
+                  hello_interval: 2
+                  poll_interval: 2
+                  retransmit_interval: 2
+        rfc1583compatibility: false
+    state: replacedd
 
 # Task Output:
 # ------------
@@ -637,32 +637,32 @@ EXAMPLES = """
 - name: Override runnig OSPFv2 config with provided config
   junipernetworks.junos.junos_ospfv2:
     config:
-    - reference_bandwidth: 10g
-      areas:
-      - area_id: 0.0.0.110
-        area_ranges:
-        - address: 20.200.17.0/24
-          exact: true
-          restrict: true
-          override_metric: 2000
-        - address: 20.200.15.0/24
-          exact: true
-          restrict: true
-          override_metric: 2000
-        stub:
-          default_metric: 200
-          set: true
-        interfaces:
-        - name: so-0/0/0.0
-          priority: 3
-          metric: 5
-          flood_reduction: false
-          passive: true
-          bandwidth_based_metrics:
-          - bandwidth: 1g
-            metric: 5
-          - bandwidth: 10g
-            metric: 40
+      - reference_bandwidth: 10g
+        areas:
+          - area_id: 0.0.0.110
+            area_ranges:
+              - address: 20.200.17.0/24
+                exact: true
+                restrict: true
+                override_metric: 2000
+              - address: 20.200.15.0/24
+                exact: true
+                restrict: true
+                override_metric: 2000
+            stub:
+              default_metric: 200
+              set: true
+            interfaces:
+              - name: so-0/0/0.0
+                priority: 3
+                metric: 5
+                flood_reduction: false
+                passive: true
+                bandwidth_based_metrics:
+                  - bandwidth: 1g
+                    metric: 5
+                  - bandwidth: 10g
+                    metric: 40
     state: overridden
 
 # Task Output:
@@ -804,8 +804,8 @@ EXAMPLES = """
 
 - name: Delete OSPFv2 running config.
   junipernetworks.junos.junos_ospfv2:
-   config:
-   state: deleted
+    config:
+    state: deleted
 
 # Task Output:
 # ------------
@@ -1043,38 +1043,38 @@ EXAMPLES = """
 - name: Render the commands for provided  configuration
   junipernetworks.junos.junos_ospfv2:
     config:
-    - reference_bandwidth: 10g
-      areas:
-      - area_id: 0.0.0.100
-        area_ranges:
-        - address: 10.200.17.0/24
-          exact: true
-          restrict: true
-          override_metric: 2000
-        - address: 10.200.15.0/24
-          exact: true
-          restrict: true
-          override_metric: 2000
-        stub:
-          default_metric: 100
-          set: true
-        interfaces:
-        - name: so-0/0/0.0
-          priority: 3
-          metric: 5
-          flood_reduction: false
-          passive: true
-          bandwidth_based_metrics:
-          - bandwidth: 1g
-            metric: 5
-          - bandwidth: 10g
-            metric: 40
-          timers:
-            dead_interval: 4
-            hello_interval: 2
-            poll_interval: 2
-            retransmit_interval: 2
-      rfc1583compatibility: false
+      - reference_bandwidth: 10g
+        areas:
+          - area_id: 0.0.0.100
+            area_ranges:
+              - address: 10.200.17.0/24
+                exact: true
+                restrict: true
+                override_metric: 2000
+              - address: 10.200.15.0/24
+                exact: true
+                restrict: true
+                override_metric: 2000
+            stub:
+              default_metric: 100
+              set: true
+            interfaces:
+              - name: so-0/0/0.0
+                priority: 3
+                metric: 5
+                flood_reduction: false
+                passive: true
+                bandwidth_based_metrics:
+                  - bandwidth: 1g
+                    metric: 5
+                  - bandwidth: 10g
+                    metric: 40
+                timers:
+                  dead_interval: 4
+                  hello_interval: 2
+                  poll_interval: 2
+                  retransmit_interval: 2
+        rfc1583compatibility: false
     state: rendered
 
 # Task Output:
