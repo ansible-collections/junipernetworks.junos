@@ -107,8 +107,8 @@ EXAMPLES = """
 - name: Test reachability to 10.50.50.50 using do-not-fragment and rapid
   junipernetworks.junos.junos_ping:
     dest: 10.50.50.50
-    df_bit: True
-    rapid: True
+    df_bit: true
+    rapid: true
 """
 
 RETURN = """

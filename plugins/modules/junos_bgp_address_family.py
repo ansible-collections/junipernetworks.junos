@@ -737,22 +737,22 @@ EXAMPLES = """
 
 - name: Replace existing Junos BGP address family config with provided config
   junipernetworks.junos.junos_bgp_address_family:
-   config:
-     address_family:
-       - afi: 'evpn'
-         af_type:
-           - type: 'signaling'
-             accepted_prefix_limit:
-               maximum: 21
-               limit_threshold: 99
-               idle_timeout_value: 2002
-             delay_route_advertisements:
-               max_delay_route_age: 20
-               max_delay_routing_uptime: 32000
-               min_delay_inbound_convergence: 32000
-               min_delay_routing_uptime: 23000
-             damping: true
-   state: replaced
+    config:
+      address_family:
+        - afi: 'evpn'
+          af_type:
+            - type: 'signaling'
+              accepted_prefix_limit:
+                maximum: 21
+                limit_threshold: 99
+                idle_timeout_value: 2002
+              delay_route_advertisements:
+                max_delay_route_age: 20
+                max_delay_routing_uptime: 32000
+                min_delay_inbound_convergence: 32000
+                min_delay_routing_uptime: 23000
+              damping: true
+    state: replaced
 
 # Task Output:
 # ------------
@@ -1040,22 +1040,22 @@ EXAMPLES = """
 
 - name: Override Junos BGP address family config
   junipernetworks.junos.junos_bgp_address_family:
-   config:
-     address_family:
-       - afi: 'evpn'
-         af_type:
-           - type: 'signaling'
-             accepted_prefix_limit:
-               maximum: 21
-               limit_threshold: 99
-               idle_timeout_value: 2002
-             delay_route_advertisements:
-               max_delay_route_age: 20
-               max_delay_routing_uptime: 32000
-               min_delay_inbound_convergence: 32000
-               min_delay_routing_uptime: 23000
-             damping: true
-   state: overridden
+    config:
+      address_family:
+        - afi: 'evpn'
+          af_type:
+            - type: 'signaling'
+              accepted_prefix_limit:
+                maximum: 21
+                limit_threshold: 99
+                idle_timeout_value: 2002
+              delay_route_advertisements:
+                max_delay_route_age: 20
+                max_delay_routing_uptime: 32000
+                min_delay_inbound_convergence: 32000
+                min_delay_routing_uptime: 23000
+              damping: true
+    state: overridden
 
 # Task Output:
 # ------------
@@ -1236,10 +1236,10 @@ EXAMPLES = """
 
 - name: Delete Junos BGP address family config based on the afi
   junipernetworks.junos.junos_bgp_address_family:
-   config:
-    address_family:
-      - afi: 'inet'
-   state: deleted
+    config:
+      address_family:
+        - afi: 'inet'
+    state: deleted
 
 # Task Output:
 # ------------
@@ -1412,8 +1412,8 @@ EXAMPLES = """
 
 - name: Delete complete Junos BGP address family config
   junipernetworks.junos.junos_bgp_address_family:
-   config:
-   state: deleted
+    config:
+    state: deleted
 
 # Task Output:
 # ------------
@@ -1920,7 +1920,6 @@ EXAMPLES = """
 # <nc:routing-uptime>23000</nc:routing-uptime></nc:minimum-delay></nc:delay-route-advertisements>
 # <nc:graceful-restart><nc:forwarding-state-bit>from-fib</nc:forwarding-state-bit>
 # </nc:graceful-restart></nc:any></nc:inet></nc:family></nc:bgp></nc:protocols>"
-
 """
 RETURN = """
 before:

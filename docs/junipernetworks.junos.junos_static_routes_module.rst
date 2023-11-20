@@ -281,12 +281,12 @@ Examples
     - name: Delete provided configuration (default operation is merge)
       junipernetworks.junos.junos_static_routes:
         config:
-        - address_families:
-          - afi: ipv4
-            routes:
-            - dest: 192.168.16.0/24
-              next_hop:
-              - forward_router_address: 172.16.1.2
+          - address_families:
+              - afi: ipv4
+                routes:
+                  - dest: 192.168.16.0/24
+                    next_hop:
+                      - forward_router_address: 172.16.1.2
         state: deleted
 
     # Task Output
@@ -336,12 +336,12 @@ Examples
         is merge)
       junipernetworks.junos.junos_static_routes:
         config:
-        - address_families:
-          - afi: ipv4
-            routes:
-            - dest: 192.168.16.0/24
-              next_hop:
-              - forward_router_address: 172.16.1.2
+          - address_families:
+              - afi: ipv4
+                routes:
+                  - dest: 192.168.16.0/24
+                    next_hop:
+                      - forward_router_address: 172.16.1.2
         state: merged
 
     # Task Output
@@ -392,12 +392,12 @@ Examples
         is merge)
       junipernetworks.junos.junos_static_routes:
         config:
-        - address_families:
-          - afi: ipv4
-            routes:
-            - dest: 192.168.16.0/24
-              next_hop:
-              - forward_router_address: 172.16.0.1
+          - address_families:
+              - afi: ipv4
+                routes:
+                  - dest: 192.168.16.0/24
+                    next_hop:
+                      - forward_router_address: 172.16.0.1
         state: overridden
     # Task Output:
     # ------------
@@ -449,12 +449,12 @@ Examples
         is merge)
       junipernetworks.junos.junos_static_routes:
         config:
-        - address_families:
-          - afi: ipv4
-            routes:
-            - dest: 192.168.47.0/24
-              next_hop:
-              - forward_router_address: 10.200.16.2
+          - address_families:
+              - afi: ipv4
+                routes:
+                  - dest: 192.168.47.0/24
+                    next_hop:
+                      - forward_router_address: 10.200.16.2
         state: replaced
 
     # Task Output:
@@ -524,14 +524,14 @@ Examples
 
     - name: Render platform specific commands (without connecting to the device)
       junipernetworks.junos.junos_static_routes:
-            config:
-            - address_families:
+        config:
+          - address_families:
               - afi: ipv4
                 routes:
-                - dest: 192.168.16.0/24
-                  next_hop:
-                  - forward_router_address: 172.16.1.2
-            state: rendered
+                  - dest: 192.168.16.0/24
+                    next_hop:
+                      - forward_router_address: 172.16.1.2
+        state: rendered
 
     # Task output:
     # ------------
@@ -566,8 +566,8 @@ Examples
 
     - name: Parsed running config (without connecting to the device)
       junipernetworks.junos.junos_static_routes:
-            running_config: "{{ lookup('file', 'parsed.cfg') }}"
-            state: parsed
+        running_config: "{{ lookup('file', 'parsed.cfg') }}"
+        state: parsed
 
     # Task output:
     # ------------

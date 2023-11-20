@@ -1171,16 +1171,16 @@ Examples
     - name: Merge JUNOS acl
       junipernetworks.junos.junos_acls:
         config:
-        - afi: ipv4
-          acls:
-          - name: allow_ssh_acl
-            aces:
-            - name: ssh_rule
-              source:
-                port_protocol:
-                  eq: ssh
-              protocol: tcp
-          state: merged
+          - afi: ipv4
+            acls:
+              - name: allow_ssh_acl
+                aces:
+                  - name: ssh_rule
+                    source:
+                      port_protocol:
+                        eq: ssh
+                    protocol: tcp
+        state: merged
 
     # After state:
     # -------------

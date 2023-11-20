@@ -7225,18 +7225,18 @@ Examples
     - junipernetworks.junos.junos_security_policies:
         config:
           global:
-              policies:
-                - description: test update
-                  match:
-                    application:
-                      any: true
-                    destination_address:
-                      any_ipv6: true
-                    source_address:
-                      any: true
-                  name: test_glob_3
-                  then:
-                    deny: true
+            policies:
+              - description: test update
+                match:
+                  application:
+                    any: true
+                  destination_address:
+                    any_ipv6: true
+                  source_address:
+                    any: true
+                name: test_glob_3
+                then:
+                  deny: true
         state: rendered
     #
     # -------------------------

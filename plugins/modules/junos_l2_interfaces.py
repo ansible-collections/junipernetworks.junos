@@ -133,8 +133,8 @@ EXAMPLES = """
 #            }
 #        }
 #    }
-#}
-#ge-0/0/2 {
+# }
+# ge-0/0/2 {
 #    description "non L2 interface";
 #    unit 0 {
 #        family inet {
@@ -146,8 +146,8 @@ EXAMPLES = """
     interface itself)."
   junipernetworks.junos.junos_l2_interfaces:
     config:
-    - name: ge-0/0/1
-    - name: ge-0/0/2
+      - name: ge-0/0/1
+      - name: ge-0/0/2
     state: deleted
 
 # After state:
@@ -158,7 +158,7 @@ EXAMPLES = """
 #    description "L2 interface";
 #    speed 1g;
 # }
-#ge-0/0/2 {
+# ge-0/0/2 {
 #    description "non L2 interface";
 #    unit 0 {
 #        family inet {
@@ -175,7 +175,7 @@ EXAMPLES = """
 # ge-0/0/3 {
 #    description "test interface";
 #    speed 1g;
-#}
+# }
 # ge-0/0/4 {
 #    description interface-trunk;
 #    native-vlan-id 100;
@@ -193,14 +193,14 @@ EXAMPLES = """
     is merge)
   junipernetworks.junos.junos_l2_interfaces:
     config:
-    - name: ge-0/0/3
-      access:
-        vlan: v101
-    - name: ge-0/0/4
-      trunk:
-        allowed_vlans:
-        - vlan30
-        native_vlan: 50
+      - name: ge-0/0/3
+        access:
+          vlan: v101
+      - name: ge-0/0/4
+        trunk:
+          allowed_vlans:
+            - vlan30
+          native_vlan: 50
     state: merged
 
 # After state:
@@ -240,7 +240,7 @@ EXAMPLES = """
 # ge-0/0/3 {
 #    description "test interface";
 #    speed 1g;
-#}
+# }
 # ge-0/0/4 {
 #    description interface-trunk;
 #    native-vlan-id 100;
@@ -268,14 +268,14 @@ EXAMPLES = """
 - name: Override provided configuration with device configuration
   junipernetworks.junos.junos_l2_interfaces:
     config:
-    - name: ge-0/0/3
-      access:
-        vlan: v101
-    - name: ge-0/0/4
-      trunk:
-        allowed_vlans:
-        - vlan30
-        native_vlan: 50
+      - name: ge-0/0/3
+        access:
+          vlan: v101
+      - name: ge-0/0/4
+        trunk:
+          allowed_vlans:
+            - vlan30
+          native_vlan: 50
     state: overridden
 
 # After state:
@@ -313,7 +313,7 @@ EXAMPLES = """
 # ge-0/0/3 {
 #    description "test interface";
 #    speed 1g;
-#}
+# }
 # ge-0/0/4 {
 #    description interface-trunk;
 #    native-vlan-id 100;
@@ -330,14 +330,14 @@ EXAMPLES = """
 - name: Replace provided configuration with device configuration
   junipernetworks.junos.junos_l2_interfaces:
     config:
-    - name: ge-0/0/3
-      access:
-        vlan: v101
-    - name: ge-0/0/4
-      trunk:
-        allowed_vlans:
-        - vlan30
-        native_vlan: 50
+      - name: ge-0/0/3
+        access:
+          vlan: v101
+      - name: ge-0/0/4
+        trunk:
+          allowed_vlans:
+            - vlan30
+          native_vlan: 50
     state: replaced
 
 # After state:
@@ -602,7 +602,6 @@ EXAMPLES = """
 #         <nc:native-vlan-id>400</nc:native-vlan-id>
 #     </nc:interface>
 # </nc:interfaces>"
-
 """
 RETURN = """
 before:
