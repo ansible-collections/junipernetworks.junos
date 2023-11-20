@@ -35,7 +35,6 @@ try:
 except ImportError:
     HAS_LXML = False
 
-
 class L2_interfacesFacts(object):
     """The junos l2_interfaces fact class"""
 
@@ -130,33 +129,31 @@ class L2_interfacesFacts(object):
             enhanced_layer = False
 
         # Layer 2 is configured on interface
-        if mode:
-            config["name"] = utils.get_xml_conf_arg(conf, "name")
-            unit = utils.get_xml_conf_arg(conf, "unit/name")
-            config["unit"] = unit if unit else 0
-            config["enhanced_layer"] = enhanced_layer
+        config["name"] = utils.get_xml_conf_arg(conf, "name")
+        unit = utils.get_xml_conf_arg(conf, "unit/name")
+        config["unit"] = unit if unit else 0
+        config["enhanced_layer"] = enhanced_layer
 
-            if mode == "access":
-                config["access"] = {}
-                config["access"]["vlan"] = utils.get_xml_conf_arg(
-                    conf,
-                    "unit/family/ethernet-switching/vlan/members",
-                )
-            elif mode == "trunk":
-                config["trunk"] = {}
-                vlan_members = conf.xpath(
-                    "unit/family/ethernet-switching/vlan/members",
-                )
-                if vlan_members:
-                    config["trunk"]["allowed_vlans"] = []
-                    for vlan_member in vlan_members:
-                        config["trunk"]["allowed_vlans"].append(
-                            vlan_member.text,
-                        )
+        if mode == "access" or not mode:
+            config["access"] = {}
+            config["access"]["vlan"] = utils.get_xml_conf_arg(
+                conf,
+                "unit/family/ethernet-switching/vlan/members",
+            )
+        elif mode == "trunk":
+            config["trunk"] = {}
+            vlan_members = conf.xpath(
+                "unit/family/ethernet-switching/vlan/members",
+            )
+            if vlan_members:
+                config["trunk"]["allowed_vlans"] = []
+                for vlan_member in vlan_members:
+                    config["trunk"]["allowed_vlans"].append(
+                        vlan_member.text,
+                    )
 
-                config["trunk"]["native_vlan"] = utils.get_xml_conf_arg(
-                    conf,
-                    "native-vlan-id",
-                )
-
+            config["trunk"]["native_vlan"] = utils.get_xml_conf_arg(
+                conf,
+                "native-vlan-id",
+            )
         return utils.remove_empties(config)

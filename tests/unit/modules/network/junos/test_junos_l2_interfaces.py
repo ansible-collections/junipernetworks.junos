@@ -219,6 +219,65 @@ class TestJunosL2InterfacesModule(TestJunosModule):
         set_module_args(dict(config=[dict(name="ge-0/0/4")], state="deleted"))
         self.execute_module(changed=False, commands=[])
 
+    def test_junos_l2_interfaces_parsed(self):
+        parsed_str = """
+            <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
+                <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
+                    <interfaces>
+                        <interface>
+                            <name>ge-0/0/6</name>
+                            <unit>
+                                <name>0</name>
+                                <family>
+                                    <ethernet-switching>
+                                        <interface-mode>trunk</interface-mode>
+                                        <vlan>
+                                            <members>vlan02</members>
+                                        </vlan>
+                                    </ethernet-switching>
+                                </family>
+                            </unit>
+                        </interface>
+
+                        <interface>
+                            <name>ge-0/0/37</name>
+                            <unit>
+                            <name>0</name>
+                                <family>
+                                    <ethernet-switching>
+                                        <vlan>
+                                            <members>vlan31</members>
+                                        </vlan>
+                                    </ethernet-switching>
+                                </family>
+                            </unit>
+                        </interface>
+                    </interfaces>
+                </configuration>
+            </rpc-reply>
+        """
+        set_module_args(dict(running_config=parsed_str, state="parsed"))
+        result = self.execute_module(changed=False)
+        parsed_list = [
+            {
+                "enhanced_layer:": True,
+                "name": "ge-0/0/6",
+                "trunk": {
+                    "allowed_vlans": ["vlan02"]
+                },
+                "unit": 0
+            },
+            {
+                "access": {
+                    "vlan": "vlan31"
+                    },
+                "enhanced_layer:": False,
+                "name": "ge-0/0/37",
+                "unit": 0
+            },
+        ]
+        self.assertEqual(result["parsed"], [])
+
     def test_junos_l2_interfaces_rendered(self):
         set_module_args(
             dict(
