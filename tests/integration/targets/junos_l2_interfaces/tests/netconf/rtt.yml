@@ -54,8 +54,7 @@
 
     - name: Assert that config was reverted
       ansible.builtin.assert:
-        that:
-          "{{ base_config['after'] | symmetric_difference(revert['after'])\
+        that: "{{ base_config['after'] | symmetric_difference(revert['after'])\
           \ |length == 0 }}"
   always:
     - ansible.builtin.include_tasks: _remove_config.yaml

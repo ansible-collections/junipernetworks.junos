@@ -24,12 +24,14 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     L2_interfacesArgs,
 )
 
+
 try:
     from lxml import etree
 
     HAS_LXML = True
 except ImportError:
     HAS_LXML = False
+
 
 class L2_interfacesFacts(object):
     """The junos l2_interfaces fact class"""

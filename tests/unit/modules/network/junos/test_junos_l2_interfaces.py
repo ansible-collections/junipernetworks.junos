@@ -59,9 +59,9 @@ class TestJunosL2InterfacesModule(TestJunosModule):
             "L2_interfacesFacts.get_device_data",
         )
         self.mock_get_res_config = patch(
-             "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.l2_interfaces.l2_interfaces."
-             "L2_interfaces.get_res_config",
-         )
+            "ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.config.l2_interfaces.l2_interfaces."
+            "L2_interfaces.get_res_config",
+        )
         self.get_res_config = self.mock_get_res_config.start()
         self.execute_show_command = self.mock_execute_show_command.start()
 
@@ -130,8 +130,15 @@ class TestJunosL2InterfacesModule(TestJunosModule):
     def test_junos_l2_interfaces_merged_idempotent(self):
         set_module_args(
             dict(
-                config=[dict(name="ge-0/0/1", access=dict(vlan="vlan100"), unit=0, enhanced_layer=True),
-                        dict(name="ge-0/0/2", trunk=dict(allowed_vlans=["vlan200", "vlan300"], native_vlan='400'), unit=0, enhanced_layer=True)],
+                config=[
+                    dict(name="ge-0/0/1", access=dict(vlan="vlan100"), unit=0, enhanced_layer=True),
+                    dict(
+                        name="ge-0/0/2",
+                        trunk=dict(allowed_vlans=["vlan200", "vlan300"], native_vlan="400"),
+                        unit=0,
+                        enhanced_layer=True,
+                    ),
+                ],
                 state="merged",
             ),
         )
@@ -159,8 +166,15 @@ class TestJunosL2InterfacesModule(TestJunosModule):
     def test_junos_l2_interfaces_replaced_idempotent(self):
         set_module_args(
             dict(
-                config=[dict(name="ge-0/0/1", access=dict(vlan="vlan100"), unit=0, enhanced_layer=True),
-                        dict(name="ge-0/0/2", trunk=dict(allowed_vlans=["vlan200", "vlan300"], native_vlan='400'), unit=0, enhanced_layer=True)],
+                config=[
+                    dict(name="ge-0/0/1", access=dict(vlan="vlan100"), unit=0, enhanced_layer=True),
+                    dict(
+                        name="ge-0/0/2",
+                        trunk=dict(allowed_vlans=["vlan200", "vlan300"], native_vlan="400"),
+                        unit=0,
+                        enhanced_layer=True,
+                    ),
+                ],
                 state="replaced",
             ),
         )
@@ -187,8 +201,15 @@ class TestJunosL2InterfacesModule(TestJunosModule):
     def test_junos_l2_interfaces_overridden_idempotent(self):
         set_module_args(
             dict(
-                config=[dict(name="ge-0/0/1", access=dict(vlan="vlan100"), unit=0, enhanced_layer=True),
-                        dict(name="ge-0/0/2", trunk=dict(allowed_vlans=["vlan200", "vlan300"], native_vlan='400'), unit=0, enhanced_layer=True)],
+                config=[
+                    dict(name="ge-0/0/1", access=dict(vlan="vlan100"), unit=0, enhanced_layer=True),
+                    dict(
+                        name="ge-0/0/2",
+                        trunk=dict(allowed_vlans=["vlan200", "vlan300"], native_vlan="400"),
+                        unit=0,
+                        enhanced_layer=True,
+                    ),
+                ],
                 state="overridden",
             ),
         )
@@ -260,15 +281,15 @@ class TestJunosL2InterfacesModule(TestJunosModule):
             {
                 "name": "ge-0/0/6",
                 "trunk": {
-                    "allowed_vlans": ["vlan02"]
+                    "allowed_vlans": ["vlan02"],
                 },
                 "unit": 0,
                 "enhanced_layer": True,
             },
             {
                 "access": {
-                    "vlan": "vlan31"
-                    },
+                    "vlan": "vlan31",
+                },
                 "name": "ge-0/0/37",
                 "unit": 0,
                 "enhanced_layer": False,
