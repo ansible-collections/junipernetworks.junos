@@ -5,6 +5,14 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v5.3.1
+======
+
+Documentation Changes
+---------------------
+
+- Improve docs of prefix-lists RM.
+
 v5.3.0
 ======
 
