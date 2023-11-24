@@ -7,16 +7,6 @@
 
 - ansible.builtin.include_tasks: _base_config.yaml
 
-- ansible.builtin.set_fact:
-    expected_revert_output:
-      - name: ge-0/0/2
-        trunk:
-          allowed_vlans:
-            - vlan100
-          native_vlan: "200"
-        enhanced_layer: true
-        unit: 0
-
 - block:
     - name: Apply the provided configuration (base config)
       register: base_config
@@ -65,7 +55,7 @@
     - name: Assert that config was reverted
       ansible.builtin.assert:
         that:
-          "{{ expected_revert_output | symmetric_difference(revert['after'])\
+          "{{ base_config['after'] | symmetric_difference(revert['after'])\
           \ |length == 0 }}"
   always:
     - ansible.builtin.include_tasks: _remove_config.yaml
