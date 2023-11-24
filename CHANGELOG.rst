@@ -5,6 +5,19 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v5.3.1
+======
+
+Bugfixes
+--------
+
+- fix to gather l2_interfaces facts with default port-mode access.
+
+Documentation Changes
+---------------------
+
+- Improve docs of prefix-lists RM.
+
 v5.3.0
 ======
 

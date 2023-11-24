@@ -561,3 +561,15 @@ releases:
       - codecov_pr.yml
       - overridden_support.yaml
     release_date: "2023-09-06"
+  5.3.1:
+    changes:
+      bugfixes:
+        - fix to gather l2_interfaces facts with default port-mode access.
+      doc_changes:
+        - Improve docs of prefix-lists RM.
+    fragments:
+      - default_mode_l2_interfaces.yaml
+      - fix_prefix_lists_docs.yaml
+      - lint_fixtures.yaml
+      - sanity_job_fix.yaml
+    release_date: "2023-11-24"
