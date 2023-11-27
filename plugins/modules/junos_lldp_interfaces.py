@@ -89,9 +89,9 @@ EXAMPLES = """
 - name: Merge provided configuration with device configuration
   junipernetworks.junos.junos_lldp_interfaces:
     config:
-    - name: ge-0/0/1
-    - name: ge-0/0/2
-      enabled: false
+      - name: ge-0/0/1
+      - name: ge-0/0/2
+        enabled: false
     state: merged
 
 # After state:
@@ -118,10 +118,10 @@ EXAMPLES = """
 - name: Replace provided configuration with device configuration
   junipernetworks.junos.junos_lldp_interfaces:
     config:
-    - name: ge-0/0/2
-      disable: false
-    - name: ge-0/0/3
-      enabled: false
+      - name: ge-0/0/2
+        disable: false
+      - name: ge-0/0/3
+        enabled: false
     state: replaced
 
 # After state:
@@ -149,8 +149,8 @@ EXAMPLES = """
 - name: Override provided configuration with device configuration
   junipernetworks.junos.junos_lldp_interfaces:
     config:
-    - name: ge-0/0/2
-      enabled: false
+      - name: ge-0/0/2
+        enabled: false
     state: overridden
 
 # After state:
@@ -176,8 +176,8 @@ EXAMPLES = """
 - name: Delete lldp interface configuration (this will not delete other lldp configuration)
   junipernetworks.junos.junos_lldp_interfaces:
     config:
-    - name: ge-0/0/1
-    - name: ge-0/0/3
+      - name: ge-0/0/1
+      - name: ge-0/0/3
     state: deleted
 
 # After state:
@@ -191,7 +191,7 @@ EXAMPLES = """
 # Before state:
 # ------------
 #
-#ansible@cm123456tr21# show protocols lldp
+# ansible@cm123456tr21# show protocols lldp
 # interface ge-0/0/1;
 # interface ge-0/0/2 {
 #     disable;
@@ -214,7 +214,7 @@ EXAMPLES = """
 # After state:
 # ------------
 #
-#ansible@cm123456tr21# show protocols lldp
+# ansible@cm123456tr21# show protocols lldp
 # interface ge-0/0/1;
 # interface ge-0/0/2 {
 #     disable;

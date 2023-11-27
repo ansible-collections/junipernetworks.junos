@@ -1099,24 +1099,24 @@ EXAMPLES = """
 
 - name: Replace running config with provided config
   junipernetworks.junos.junos_bgp_global:
-   config:
-     advertise_inactive: true
-     authentication_algorithm: "md5"
-     bfd_liveness_detection:
-       minimum_receive_interval: 8
-       multiplier: 30
-       no_adaptation: true
-       transmit_interval:
-         minimum_interval: 4
-       version: "automatic"
-     bgp_error_tolerance:
-       malformed_route_limit: 40000000
-     description: "Replace running bgp config"
-     egress_te_sid_stats: true
-     hold_time: 5
-     out_delay: 10
-     preference: "2"
-   state: replaced
+    config:
+      advertise_inactive: true
+      authentication_algorithm: "md5"
+      bfd_liveness_detection:
+        minimum_receive_interval: 8
+        multiplier: 30
+        no_adaptation: true
+        transmit_interval:
+          minimum_interval: 4
+        version: "automatic"
+      bgp_error_tolerance:
+        malformed_route_limit: 40000000
+      description: "Replace running bgp config"
+      egress_te_sid_stats: true
+      hold_time: 5
+      out_delay: 10
+      preference: "2"
+    state: replaced
 
 # Task Output:
 # ------------
@@ -1238,24 +1238,24 @@ EXAMPLES = """
 
 - name: Override running config with provided config
   junipernetworks.junos.junos_bgp_global:
-   config:
-     advertise_inactive: true
-     authentication_algorithm: "md5"
-     bfd_liveness_detection:
-       minimum_receive_interval: 8
-       multiplier: 30
-       no_adaptation: true
-       transmit_interval:
-         minimum_interval: 4
-       version: "automatic"
-     bgp_error_tolerance:
-       malformed_route_limit: 40000000
-     description: "Replace running bgp config"
-     egress_te_sid_stats: true
-     hold_time: 5
-     out_delay: 10
-     preference: "2"
-   state: overridden
+    config:
+      advertise_inactive: true
+      authentication_algorithm: "md5"
+      bfd_liveness_detection:
+        minimum_receive_interval: 8
+        multiplier: 30
+        no_adaptation: true
+        transmit_interval:
+          minimum_interval: 4
+        version: "automatic"
+      bgp_error_tolerance:
+        malformed_route_limit: 40000000
+      description: "Replace running bgp config"
+      egress_te_sid_stats: true
+      hold_time: 5
+      out_delay: 10
+      preference: "2"
+    state: overridden
 
 # Task Output:
 # ------------
@@ -1342,7 +1342,7 @@ EXAMPLES = """
 # vsrx# show routing-options autonomous-system
 
 # Using deleted
-#"(NOTE: This WILL delete the bgp global attributes)"
+# "(NOTE: This WILL delete the bgp global attributes)"
 # Before state
 # ------------
 #
@@ -1476,7 +1476,7 @@ EXAMPLES = """
 #   preference: '2'
 
 # Using purged
-#"(NOTE: This WILL delete the configured global BGP, and BGP address family config)"
+# "(NOTE: This WILL delete the configured global BGP, and BGP address family config)"
 
 # Before state:
 # -------------

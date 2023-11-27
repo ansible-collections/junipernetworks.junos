@@ -828,13 +828,13 @@ EXAMPLES = """
 - name: Render platform specific xml from task input using rendered state
   junipernetworks.junos.junos_interfaces:
     config:
-    - name: ge-0/0/2
-      description: Configured by Ansible
-      mtu: 2048
-      speed: 20m
-      hold_time:
-        up: 3200
-        down: 3200
+      - name: ge-0/0/2
+        description: Configured by Ansible
+        mtu: 2048
+        speed: 20m
+        hold_time:
+          up: 3200
+          down: 3200
     state: rendered
 
 # Task Output

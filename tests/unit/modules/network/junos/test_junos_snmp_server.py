@@ -266,7 +266,7 @@ class TestJunosSnmp_serverModule(TestJunosModule):
         )
         result = self.execute_module(changed=True)
         expected_commands = '<nc:snmp xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:trap-options/></nc:snmp>'
-        self.assertEquals(expected_commands, "/n".join(result["commands"]))
+        self.assertEqual(expected_commands, "/n".join(result["commands"]))
 
     def test_junos_snmp_server_merged_trap_options_02(self):
         set_module_args(
