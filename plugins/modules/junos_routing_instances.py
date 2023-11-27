@@ -312,21 +312,21 @@ EXAMPLES = """
 
 - name: Replace existing Junos routing instance config with provided config
   junipernetworks.junos.junos_routing_instances:
-   config:
-     address_family:
-       - name: "test"
-         type: "vrf"
-         route_distinguisher: "10.57.255.1:37"
-         vrf_imports:
-           - "test-policy"
-         vrf_exports:
-           - "test-policy"
-         interfaces:
-           - name: "sp-0/0/0.0"
-           - name: "gr-0/0/0.0"
-         connector_id_advertise: false
-         description: "Configured by Ansible Content Team"
-   state: replaced
+    config:
+      address_family:
+        - name: "test"
+          type: "vrf"
+          route_distinguisher: "10.57.255.1:37"
+          vrf_imports:
+            - "test-policy"
+          vrf_exports:
+            - "test-policy"
+          interfaces:
+            - name: "sp-0/0/0.0"
+            - name: "gr-0/0/0.0"
+          connector_id_advertise: false
+          description: "Configured by Ansible Content Team"
+    state: replaced
 
 # After state
 # -----------
@@ -368,25 +368,25 @@ EXAMPLES = """
 
 - name: Override Junos routing-instances configuration
   junipernetworks.junos.junos_routing_instances:
-   config:
-     - name: "test"
-       type: "vrf"
-       route_distinguisher: "10.58.255.1:37"
-       vrf_imports:
-         - "test-policy"
-       vrf_exports:
-         - "test-policy"
-         - "test-policy-1"
-       interfaces:
-         - name: "sp-0/0/0.0"
-         - name: "gr-0/0/0.0"
-       connector_id_advertise: true
-     - name: "forwardinst"
-       type: "forwarding"
-       description: "Configured by Ansible Content Team"
-     - name: "vtest1"
-       type: "virtual-router"
-   state: overridden
+    config:
+      - name: "test"
+        type: "vrf"
+        route_distinguisher: "10.58.255.1:37"
+        vrf_imports:
+          - "test-policy"
+        vrf_exports:
+          - "test-policy"
+          - "test-policy-1"
+        interfaces:
+          - name: "sp-0/0/0.0"
+          - name: "gr-0/0/0.0"
+        connector_id_advertise: true
+      - name: "forwardinst"
+        type: "forwarding"
+        description: "Configured by Ansible Content Team"
+      - name: "vtest1"
+        type: "virtual-router"
+    state: overridden
 
 # After state
 # -----------
@@ -432,9 +432,9 @@ EXAMPLES = """
 
 - name: Delete provided junos routing-instamce
   junipernetworks.junos.junos_routing_instances:
-   config:
-     - name: "test"
-   state: deleted
+    config:
+      - name: "test"
+    state: deleted
 
 # After state
 # -----------
@@ -470,8 +470,8 @@ EXAMPLES = """
 
 - name: Delete complete Junos routing-instances config
   junipernetworks.junos.junos_routing_instances:
-   config:
-   state: deleted
+    config:
+    state: deleted
 
 # After state
 # -----------

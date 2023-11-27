@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - fix to gather l2_interfaces facts with default port-mode access.

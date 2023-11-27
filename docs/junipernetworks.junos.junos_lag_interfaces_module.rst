@@ -256,8 +256,8 @@ Examples
     - name: "Delete LAG attributes of given interfaces (Note: This won't delete the interface itself)"
       junipernetworks.junos.junos_lag_interfaces:
         config:
-        - name: ae0
-        - name: ae1
+          - name: ae0
+          - name: ae1
         state: deleted
 
     # After state:
@@ -286,12 +286,12 @@ Examples
     - name: Merge provided configuration with device configuration
       junipernetworks.junos.junos_lag_interfaces:
         config:
-        - name: ae0
-          members:
-          - member: ge-0/0/1
-            link_type: primary
-          - member: ge-0/0/2
-            link_type: backup
+          - name: ae0
+            members:
+              - member: ge-0/0/1
+                link_type: primary
+              - member: ge-0/0/2
+                link_type: backup
         state: merged
 
     # After state:
@@ -344,13 +344,13 @@ Examples
     - name: Overrides all device LAG configuration with provided configuration
       junipernetworks.junos.junos_lag_interfaces:
         config:
-        - name: ae0
-          members:
-          - member: ge-0/0/2
-        - name: ae1
-          members:
-          - member: ge-0/0/1
-          mode: passive
+          - name: ae0
+            members:
+              - member: ge-0/0/2
+          - name: ae1
+            members:
+              - member: ge-0/0/1
+            mode: passive
         state: overridden
 
     # After state:
@@ -398,10 +398,10 @@ Examples
     - name: Replace device LAG configuration with provided configuration
       junipernetworks.junos.junos_lag_interfaces:
         config:
-        - name: ae0
-          members:
-          - member: ge-0/0/1
-          mode: active
+          - name: ae0
+            members:
+              - member: ge-0/0/1
+            mode: active
         state: replaced
 
     # After state:
@@ -814,20 +814,20 @@ Examples
     - name: Render platform specific xml from task input using rendered state
       junipernetworks.junos.junos_lag_interfaces:
         config:
-        - name: ae1
-          members:
-            - member: ge-0/0/1
-            - member: ge-0/0/2
-          mode: active
+          - name: ae1
+            members:
+              - member: ge-0/0/1
+              - member: ge-0/0/2
+            mode: active
 
-        - name: ae2
-          link_protection: true
-          members:
-            - member: ge-0/0/3
-              link_type: primary
-            - member: ge-0/0/4
-              link_type: backup
-          mode: passive
+          - name: ae2
+            link_protection: true
+            members:
+              - member: ge-0/0/3
+                link_type: primary
+              - member: ge-0/0/4
+                link_type: backup
+            mode: passive
     # Task Output (redacted)
     # -----------------------
     # "rendered": "<nc:interfaces

@@ -860,14 +860,14 @@ Examples
     - name: Merge Junos OSPF interfaces config
       junipernetworks.junos.junos_ospf_interfaces:
         config:
-        - name: 'ge-0/0/2.0'
-          address_family:
-            - afi: 'ipv4'
-              processes:
-                area:
-                  area_id: '0.0.0.2'
-                priority: 3
-                metric: 5
+          - name: 'ge-0/0/2.0'
+            address_family:
+              - afi: 'ipv4'
+                processes:
+                  area:
+                    area_id: '0.0.0.2'
+                  priority: 3
+                  metric: 5
         state: merged
 
     # After state
@@ -895,16 +895,16 @@ Examples
     # }
     - name: Replace Junos OSPF interfaces config
       junipernetworks.junos.junos_ospf_interfaces:
-       config:
-         - name: 'ge-0/0/2.0'
-           address_family:
-             - afi: 'ipv4'
-               processes:
-                 area:
-                   area_id: '0.0.0.1'
-                 priority: 6
-                 metric: 6
-       state: replaced
+        config:
+          - name: 'ge-0/0/2.0'
+            address_family:
+              - afi: 'ipv4'
+                processes:
+                  area:
+                    area_id: '0.0.0.1'
+                  priority: 6
+                  metric: 6
+        state: replaced
 
     # After state
     # -----------
@@ -1052,14 +1052,14 @@ Examples
     - name: Render the commands for provided  configuration
       junipernetworks.junos.junos_ospf_interfaces:
         config:
-        - name: 'ge-0/0/2.0'
-          address_family:
-            - afi: 'ipv4'
-              processes:
-                area:
-                  area_id: '0.0.0.2'
-                priority: 3
-                metric: 5
+          - name: 'ge-0/0/2.0'
+            address_family:
+              - afi: 'ipv4'
+                processes:
+                  area:
+                    area_id: '0.0.0.2'
+                  priority: 3
+                  metric: 5
         state: rendered
 
     #

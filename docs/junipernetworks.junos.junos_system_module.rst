@@ -167,9 +167,9 @@ Examples
         hostname: junos01
         domain_name: test.example.com
         domain-search:
-        - ansible.com
-        - redhat.com
-        - juniper.net
+          - ansible.com
+          - redhat.com
+          - juniper.net
 
     - name: remove configuration
       junipernetworks.junos.junos_system:
@@ -178,8 +178,8 @@ Examples
     - name: configure name servers
       junipernetworks.junos.junos_system:
         name_servers:
-        - 8.8.8.8
-        - 8.8.4.4
+          - 8.8.8.8
+          - 8.8.4.4
 
 
 

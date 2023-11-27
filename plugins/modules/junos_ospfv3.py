@@ -498,8 +498,8 @@ EXAMPLES = """
 
 - name: Delete OSPFv3 running config.
   junipernetworks.junos.junos_ospfv3:
-   config:
-   state: deleted
+    config:
+    state: deleted
 
 # Task Output:
 # ------------
