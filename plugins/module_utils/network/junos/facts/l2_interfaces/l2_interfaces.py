@@ -23,9 +23,6 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common i
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.l2_interfaces.l2_interfaces import (
     L2_interfacesArgs,
 )
-from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.utils.utils import (
-    get_resource_config,
-)
 
 
 try:
@@ -53,14 +50,14 @@ class L2_interfacesFacts(object):
 
         self.generated_spec = utils.generate_dict(facts_argument_spec)
 
-    def get_config(self, connection, config_filter):
+    def get_device_data(self, connection, config_filter):
         """
 
         :param connection:
         :param config_filter:
         :return:
         """
-        return get_resource_config(connection, config_filter=config_filter)
+        return connection.get_configuration(filter=config_filter)
 
     def populate_facts(self, connection, ansible_facts, data=None):
         """Populate the facts for interfaces
@@ -79,7 +76,7 @@ class L2_interfacesFacts(object):
                     <interfaces/>
                 </configuration>
                 """
-            data = self.get_config(connection, config_filter=config_filter)
+            data = self.get_device_data(connection, config_filter)
 
         if isinstance(data, string_types):
             data = etree.fromstring(
@@ -130,33 +127,31 @@ class L2_interfacesFacts(object):
             enhanced_layer = False
 
         # Layer 2 is configured on interface
-        if mode:
-            config["name"] = utils.get_xml_conf_arg(conf, "name")
-            unit = utils.get_xml_conf_arg(conf, "unit/name")
-            config["unit"] = unit if unit else 0
-            config["enhanced_layer"] = enhanced_layer
+        config["name"] = utils.get_xml_conf_arg(conf, "name")
+        unit = utils.get_xml_conf_arg(conf, "unit/name")
+        config["unit"] = unit if unit else 0
+        config["enhanced_layer"] = enhanced_layer
 
-            if mode == "access":
-                config["access"] = {}
-                config["access"]["vlan"] = utils.get_xml_conf_arg(
-                    conf,
-                    "unit/family/ethernet-switching/vlan/members",
-                )
-            elif mode == "trunk":
-                config["trunk"] = {}
-                vlan_members = conf.xpath(
-                    "unit/family/ethernet-switching/vlan/members",
-                )
-                if vlan_members:
-                    config["trunk"]["allowed_vlans"] = []
-                    for vlan_member in vlan_members:
-                        config["trunk"]["allowed_vlans"].append(
-                            vlan_member.text,
-                        )
+        if mode == "access" or not mode:
+            config["access"] = {}
+            config["access"]["vlan"] = utils.get_xml_conf_arg(
+                conf,
+                "unit/family/ethernet-switching/vlan/members",
+            )
+        elif mode == "trunk":
+            config["trunk"] = {}
+            vlan_members = conf.xpath(
+                "unit/family/ethernet-switching/vlan/members",
+            )
+            if vlan_members:
+                config["trunk"]["allowed_vlans"] = []
+                for vlan_member in vlan_members:
+                    config["trunk"]["allowed_vlans"].append(
+                        vlan_member.text,
+                    )
 
-                config["trunk"]["native_vlan"] = utils.get_xml_conf_arg(
-                    conf,
-                    "native-vlan-id",
-                )
-
+            config["trunk"]["native_vlan"] = utils.get_xml_conf_arg(
+                conf,
+                "native-vlan-id",
+            )
         return utils.remove_empties(config)
