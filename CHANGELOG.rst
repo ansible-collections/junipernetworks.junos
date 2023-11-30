@@ -5,6 +5,9 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v6.0.0
+======
+
 v5.3.1
 ======
 
