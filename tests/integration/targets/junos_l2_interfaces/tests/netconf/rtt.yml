@@ -16,7 +16,6 @@
             trunk:
               allowed_vlans:
                 - vlan100
-              native_vlan: "200"
         state: merged
 
     - name: Gather interfaces facts
@@ -30,17 +29,12 @@
       register: result
       junipernetworks.junos.junos_l2_interfaces:
         config:
-          - name: ge-0/0/1
+          - name: ge-0/0/2
             trunk:
               allowed_vlans:
                 - vlan100
-                - vlan300
-              native_vlan: "400"
-
-          - name: ge-0/0/2
-            access:
-              vlan: vlan200
-        state: replaced
+              native_vlan: "200"
+        state: overridden
 
     - name: Assert that changes were applied
       ansible.builtin.assert:
