@@ -434,14 +434,14 @@ EXAMPLES = """
 - name: Replace provided configuration with device configuration
   junipernetworks.junos.junos_l3_interfaces:
     config:
-    - name: ge-0/0/1
-      ipv4:
-      - address: 192.168.1.10/24
-      ipv6:
-      - address: 8d8d:8d01::1/64
-    - name: ge-0/0/2
-      ipv4:
-      - address: dhcp
+      - name: ge-0/0/1
+        ipv4:
+          - address: 192.168.1.10/24
+        ipv6:
+          - address: 8d8d:8d01::1/64
+      - name: ge-0/0/2
+        ipv4:
+          - address: dhcp
     state: replaced
 
 # Task Output
@@ -603,8 +603,8 @@ EXAMPLES = """
 - name: Delete L3 logical interface
   junipernetworks.junos.junos_l3_interfaces:
     config:
-    - name: ge-0/0/1
-    - name: ge-0/0/2
+      - name: ge-0/0/1
+      - name: ge-0/0/2
     state: deleted
 
 # Task Output
