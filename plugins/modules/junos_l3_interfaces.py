@@ -132,14 +132,14 @@ EXAMPLES = """
 - name: Merge provided configuration with device configuration
   junipernetworks.junos.junos_l3_interfaces:
     config:
-    - name: ge-0/0/1
-      ipv4:
-      - address: 192.168.1.10/24
-      ipv6:
-      - address: 8d8d:8d01::1/64
-    - name: ge-0/0/2
-      ipv4:
-      - address: dhcp
+      - name: ge-0/0/1
+        ipv4:
+          - address: 192.168.1.10/24
+        ipv6:
+          - address: 8d8d:8d01::1/64
+      - name: ge-0/0/2
+        ipv4:
+          - address: dhcp
     state: merged
 
 # Task Output
@@ -265,13 +265,13 @@ EXAMPLES = """
 - name: Override provided configuration with device configuration
   junipernetworks.junos.junos_l3_interfaces:
     config:
-    - name: ge-0/0/1
-      ipv4:
-      - address: 192.168.1.10/24
-    - ipv4:
-      - address: dhcp
-      name: fxp0
-      unit: '0'
+      - name: ge-0/0/1
+        ipv4:
+          - address: 192.168.1.10/24
+      - ipv4:
+          - address: dhcp
+        name: fxp0
+        unit: '0'
     state: overridden
 
 # Task Output
