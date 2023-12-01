@@ -330,11 +330,11 @@ EXAMPLES = """
 - name: Override provided configuration with device configuration
   junipernetworks.junos.junos_l2_interfaces:
     config:
-    - name: ge-0/0/4
-      trunk:
-        allowed_vlans:
-        - v101
-        native_vlan: 30
+      - name: ge-0/0/4
+        trunk:
+          allowed_vlans:
+            - v101
+          native_vlan: 30
     state: overridden
 
 # Task Output
@@ -494,14 +494,14 @@ EXAMPLES = """
 - name: Replace provided configuration with device configuration
   junipernetworks.junos.junos_l2_interfaces:
     config:
-    - name: ge-0/0/3
-      access:
-        vlan: v101
-    - name: ge-0/0/4
-      trunk:
-        allowed_vlans:
-        - vlan30
-        native_vlan: 50
+      - name: ge-0/0/3
+        access:
+          vlan: v101
+      - name: ge-0/0/4
+        trunk:
+          allowed_vlans:
+            - vlan30
+          native_vlan: 50
     state: replaced
 
 # Task Output
@@ -674,8 +674,8 @@ EXAMPLES = """
     interface itself)."
   junipernetworks.junos.junos_l2_interfaces:
     config:
-    - name: ge-0/0/1
-    - name: ge-0/0/2
+      - name: ge-0/0/1
+      - name: ge-0/0/2
     state: deleted
 
 # Task Output
