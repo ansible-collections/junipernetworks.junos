@@ -37,6 +37,45 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>commit_confirmed</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                    </div>
+                </td>
+                <td>
+                        <b>Default:</b><br/><div style="color: blue">"no"</div>
+                </td>
+                    <td>
+                                <div>env:ANSIBLE_JUNOS_COMMIT_CONFIRMED</div>
+                                <div>var: ansible_junos_commit_confirmed</div>
+                    </td>
+                <td>
+                        <div>enable or disable commit confirmed mode</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>commit_confirmed_timeout</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">integer</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                    <td>
+                                <div>env:ANSIBLE_JUNOS_COMMIT_CONFIRMED_TIMEOUT</div>
+                                <div>var: ansible_junos_commit_confirmed_timeout</div>
+                    </td>
+                <td>
+                        <div>Commits the configuration on a trial basis for the time specified in minutes.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>ncclient_device_handler</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">

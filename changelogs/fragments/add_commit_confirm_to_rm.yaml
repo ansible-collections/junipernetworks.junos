@@ -1,0 +1,5 @@
+---
+minor_changes:
+  - add commit confirm support to resource modules.
+  - this will provide the ability to rollback when results are undesired.
+  - in some cases this helps to reduce CPU consumption.

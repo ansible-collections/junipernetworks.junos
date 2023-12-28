@@ -31,6 +31,23 @@ description:
   netconf commands from Juniper JUNOS network devices.
 version_added: 1.0.0
 options:
+  commit_confirmed:
+    type: boolean
+    default: false
+    description:
+    - enable or disable commit confirmed mode
+    env:
+    - name: ANSIBLE_JUNOS_COMMIT_CONFIRMED
+    vars:
+    - name: ansible_junos_commit_confirmed
+  commit_confirmed_timeout:
+    type: int
+    description:
+    - Commits the configuration on a trial basis for the time specified in minutes.
+    env:
+    - name: ANSIBLE_JUNOS_COMMIT_CONFIRMED_TIMEOUT
+    vars:
+    - name: ansible_junos_commit_confirmed_timeout
   ncclient_device_handler:
     type: str
     default: junos
@@ -267,6 +284,8 @@ class Netconf(NetconfBase):
         obj = new_ele("commit-configuration")
         if confirmed:
             sub_ele(obj, "confirmed")
+        elif self.get_option("commit_confirmed"):
+            sub_ele(obj, "confirmed")
         if check:
             sub_ele(obj, "check")
         if synchronize:
@@ -277,7 +296,11 @@ class Netconf(NetconfBase):
         if comment:
             subele = sub_ele(obj, "log")
             subele.text = str(comment)
-        if timeout:
+        if self.get_option("commit_confirmed_timeout"):
             subele = sub_ele(obj, "confirm-timeout")
-            subele.text = str(timeout)
+            subele.text = str(self.get_option("commit_confirmed_timeout"))
+        else:
+            if timeout:
+                subele = sub_ele(obj, "confirm-timeout")
+                subele.text = str(timeout)
         return self.rpc(obj)
