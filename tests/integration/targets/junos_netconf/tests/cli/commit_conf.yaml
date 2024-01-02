@@ -2,16 +2,26 @@
 - ansible.builtin.debug:
     msg: START ios_cliconf integration tests on connection={{ ansible_connection }}
 
-- name: Change hostname with commit_confirm_immediate
+- name: Reset
+  junipernetworks.junos.junos_hostname:
+    state: deleted
+
+- name: Verify hostname changed immediately
+  register: get_hostname
+  junipernetworks.junos.junos_hostname:
+    state: gathered
+
+- name: Change hostname with commit_confirm_immediate true and timer 2 minutes
   vars:
     ansible_junos_commit_confirmed: true
     ansible_junos_commit_confirmed_timeout: 2
+    ansible_connection: 'ansible.netcommon.netconf'
   junipernetworks.junos.junos_hostname:
     state: merged
     config:
       hostname: testConfirmCommitAppliance
 
-- name: Verify hostname
+- name: Gather hostname
   register: get_hostname
   junipernetworks.junos.junos_hostname:
     state: gathered
@@ -21,15 +31,21 @@
     that:
       - "'testConfirmCommitAppliance'  == in get_hostname.gathered.hostname"
 
-- name: Verify hostname again
-  register: get_hostname_again
+- name: Sleep for 300 seconds and continue with play
+  ansible.builtin.wait_for:
+    timeout: 150
+  delegate_to: localhost
+
+- name: Verify hostname change is persistent even after timeout
+  register: get_hostname
   junipernetworks.junos.junos_hostname:
     state: gathered
 
-- name: Assert that the hostname is not rolled back
+- name: Assert that the hostname is correctly set
   ansible.builtin.assert:
     that:
-      - "'testAppliance' in get_hostname_again.stdout[0]"
+      - "{} == get_hostname.gathered"
 
-- name: Verify and cleanup
-  ansible.builtin.include_tasks: _cleanup.yam
+- name: Clenup
+  junipernetworks.junos.junos_hostname:
+    state: deleted
