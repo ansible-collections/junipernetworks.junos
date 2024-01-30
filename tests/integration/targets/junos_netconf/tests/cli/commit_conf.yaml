@@ -3,10 +3,14 @@
     msg: START ios_cliconf integration tests on connection={{ ansible_connection }}
 
 - name: Reset
+  vars:
+    ansible_connection: 'ansible.netcommon.netconf'
   junipernetworks.junos.junos_hostname:
     state: deleted
 
 - name: Verify hostname changed immediately
+  vars:
+    ansible_connection: 'ansible.netcommon.netconf'
   register: get_hostname
   junipernetworks.junos.junos_hostname:
     state: gathered
@@ -22,6 +26,8 @@
       hostname: testConfirmCommitAppliance
 
 - name: Gather hostname
+  vars:
+    ansible_connection: 'ansible.netcommon.netconf'
   register: get_hostname
   junipernetworks.junos.junos_hostname:
     state: gathered
@@ -37,6 +43,8 @@
   delegate_to: localhost
 
 - name: Verify hostname change is persistent even after timeout
+  vars:
+    ansible_connection: 'ansible.netcommon.netconf'
   register: get_hostname
   junipernetworks.junos.junos_hostname:
     state: gathered
@@ -47,5 +55,7 @@
       - "{} == get_hostname.gathered"
 
 - name: Clenup
+  vars:
+    ansible_connection: 'ansible.netcommon.netconf'
   junipernetworks.junos.junos_hostname:
     state: deleted
