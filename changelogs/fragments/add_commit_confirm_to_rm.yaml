@@ -1,5 +1,7 @@
 ---
 minor_changes:
-  - add commit confirm support to resource modules.
-  - this will provide the ability to rollback when results are undesired.
-  - in some cases this helps to reduce CPU consumption.
+  - check out the full motivation behind this enhancement(https://github.com/ansible-collections/junipernetworks.junos/issues/384).
+  - ability to revert changes if the playbook executes multiple Junos modules in a row and results are undesired.
+  - with task level var `ansible_junos_commit_confirmed` leverage upon confirm commit feature supported by junos.
+    timer can be set with var `commit_confirmed_timeout`
+  - it can also help to reduce large CPU utilization when using single commit for mulitple tasks.
