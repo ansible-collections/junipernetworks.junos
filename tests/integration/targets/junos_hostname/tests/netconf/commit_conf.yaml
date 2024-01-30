@@ -28,7 +28,7 @@
 - name: Assert that the hostname is correctly set
   ansible.builtin.assert:
     that:
-      - "'testConfirmCommitAppliance'  == in get_hostname.gathered.hostname"
+      - "'testConfirmCommitAppliance' == get_hostname.gathered.hostname"
 
 - name: Sleep for 300 seconds and continue with play
   ansible.builtin.wait_for:
@@ -36,8 +36,6 @@
   delegate_to: localhost
 
 - name: Verify hostname change is persistent even after timeout
-  vars:
-    ansible_connection: 'ansible.netcommon.netconf'
   register: get_hostname
   junipernetworks.junos.junos_hostname:
     state: gathered
