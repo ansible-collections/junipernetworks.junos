@@ -5,6 +5,14 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v6.0.1
+======
+
+Bugfixes
+--------
+
+- Prevents module_defaults from were being incorrectly applied to the platform action, instead of the concerned module.
+
 v6.0.0
 ======
 
