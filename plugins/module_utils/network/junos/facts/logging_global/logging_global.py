@@ -99,7 +99,7 @@ class Logging_globalFacts(object):
                 xml = self._get_xml_dict(resource)
                 objs = self.render_config(self.generated_spec, xml)
 
-        facts = {}
+        facts = {"logging_global": {}}
         if objs:
             facts["logging_global"] = {}
             params = utils.validate_config(

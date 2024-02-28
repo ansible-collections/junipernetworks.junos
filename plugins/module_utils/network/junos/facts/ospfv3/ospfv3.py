@@ -123,9 +123,8 @@ class Ospfv3Facts(object):
                 if obj:
                     objs.append(obj)
 
-        facts = {}
+        facts = {"ospfv3": []}
         if objs:
-            facts["ospfv3"] = []
             params = utils.validate_config(
                 self.argument_spec,
                 {"config": objs},
