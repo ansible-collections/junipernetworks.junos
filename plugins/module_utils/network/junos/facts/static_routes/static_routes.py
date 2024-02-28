@@ -95,7 +95,7 @@ class Static_routesFacts(object):
                 if obj:
                     objs.append(obj)
 
-        facts = {'static_routes': []}
+        facts = {"static_routes": []}
         if objs:
             params = utils.validate_config(
                 self.argument_spec,
