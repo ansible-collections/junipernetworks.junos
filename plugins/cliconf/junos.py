@@ -53,8 +53,12 @@ from itertools import chain
 from ansible.errors import AnsibleConnectionFailure
 from ansible.module_utils._text import to_text
 from ansible.module_utils.common._collections_compat import Mapping
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import to_list
-from ansible_collections.ansible.netcommon.plugins.plugin_utils.cliconf_base import CliconfBase
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
+    to_list,
+)
+from ansible_collections.ansible.netcommon.plugins.plugin_utils.cliconf_base import (
+    CliconfBase,
+)
 
 
 def configure(func):
@@ -256,7 +260,12 @@ class Cliconf(CliconfBase):
         resp = self.send_command(command)
 
         r = resp.splitlines()
-        if len(r) == 1 and "[edit]" in r[0] or len(r) == 4 and r[1].startswith("- version"):
+        if (
+            len(r) == 1
+            and "[edit]" in r[0]
+            or len(r) == 4
+            and r[1].startswith("- version")
+        ):
             resp = ""
 
         return resp
@@ -273,7 +282,7 @@ class Cliconf(CliconfBase):
         return resp
 
     @configure
-    def restore(self, filename=None, path=""):
+    def restore(self, filename=None, path="", force=None):
         if not filename:
             raise ValueError("'file_name' value is required for restore")
         cmd = f"load override {path}{filename}"
