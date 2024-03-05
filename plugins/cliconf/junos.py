@@ -273,7 +273,7 @@ class Cliconf(CliconfBase):
         return resp
 
     @configure
-    def restore(self, filename=None, path="", force=None):
+    def restore(self, filename=None, path=""):
         if not filename:
             raise ValueError("'file_name' value is required for restore")
         cmd = f"load override {path}{filename}"
