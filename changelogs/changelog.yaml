@@ -597,3 +597,34 @@ releases:
       - module_defaults.yaml
       - trivial_lint.yaml
     release_date: "2024-01-31"
+  6.0.2:
+    changes:
+      bugfixes:
+        - acls
+        - initialize facts dictionary with empty containers for respective resources
+          mentioned below
+        - lldp_global
+        - lldp_interfaces
+        - logging_global
+        - ntp_global
+        - ospf_interfaces
+        - ospfv2
+        - ospfv3
+        - prefix_lists
+        - routing_instances
+        - routing_options
+        - security_policies
+        - security_policies_global
+        - security_zones
+        - snmp_server
+        - static_routes
+        - vlans
+      doc_changes:
+        - Remove the part of the description which incorrectly describes the behavior
+          and type of confirm attribute.
+        - Update example performing `confirm_commit`.
+        - Update with more examples using the `confirm` option to set a timer.
+    fragments:
+      - empty_facts.yaml
+      - update_junos_config_docs.yaml
+    release_date: "2024-03-06"
