@@ -1,0 +1,5 @@
+---
+doc_changes:
+  - Remove the part of the description which incorrectly describes the behavior and type of confirm attribute.
+  - Update with more examples using the `confirm` option to set a timer.
+  - Update example performing `confirm_commit`.

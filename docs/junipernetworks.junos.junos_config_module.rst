@@ -177,7 +177,7 @@ Parameters
                         <b>Default:</b><br/><div style="color: blue">0</div>
                 </td>
                 <td>
-                        <div>The <code>confirm</code> argument will configure a time out value in minutes for the commit to be confirmed before it is automatically rolled back.  If the <code>confirm</code> argument is set to False, this argument is silently ignored.  If the value for this argument is set to 0, the commit is confirmed immediately.</div>
+                        <div>The <code>confirm</code> argument will configure a time out value in minutes for the commit to be confirmed before it is automatically rolled back. If the value for this argument is set to 0, the commit is confirmed immediately which is also the default behaviour.</div>
                 </td>
             </tr>
             <tr>
@@ -409,6 +409,16 @@ Examples
         backup_options:
           filename: backup.cfg
           dir_path: /home/user
+
+    - name: Set description with timer to confirm commit
+      junipernetworks.junos.junos_config:
+        lines:
+          - set interfaces fxp0 description "wait for a commit confirmation for 3 minutes; otherwise, it will be rolled back."
+        confirm: 3
+
+    - name: Perform confirm commit
+      junipernetworks.junos.junos_config:
+        confirm_commit: true
 
 
 

@@ -66,9 +66,8 @@ options:
   confirm:
     description:
     - The C(confirm) argument will configure a time out value in minutes for the commit
-      to be confirmed before it is automatically rolled back.  If the C(confirm) argument
-      is set to False, this argument is silently ignored.  If the value for this argument
-      is set to 0, the commit is confirmed immediately.
+      to be confirmed before it is automatically rolled back. If the value for this argument
+      is set to 0, the commit is confirmed immediately which is also the default behaviour.
     type: int
     default: 0
   comment:
@@ -238,6 +237,16 @@ EXAMPLES = """
     backup_options:
       filename: backup.cfg
       dir_path: /home/user
+
+- name: Set description with timer to confirm commit
+  junipernetworks.junos.junos_config:
+    lines:
+      - set interfaces fxp0 description "wait for a commit confirmation for 3 minutes; otherwise, it will be rolled back."
+    confirm: 3
+
+- name: Perform confirm commit
+  junipernetworks.junos.junos_config:
+    confirm_commit: true
 """
 
 RETURN = """
