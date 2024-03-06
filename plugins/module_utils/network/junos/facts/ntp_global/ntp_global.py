@@ -99,9 +99,8 @@ class Ntp_globalFacts(object):
                 xml = self._get_xml_dict(resource)
                 objs = self.render_config(self.generated_spec, xml)
 
-        facts = {}
+        facts = {"ntp_global": {}}
         if objs:
-            facts["ntp_global"] = {}
             params = utils.validate_config(
                 self.argument_spec,
                 {"config": objs},

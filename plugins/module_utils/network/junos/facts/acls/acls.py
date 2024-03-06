@@ -85,7 +85,7 @@ class AclsFacts(object):
 
         objs = []
         for resource in resources:
-            if resource:
+            if resource is not None:
                 xml = self._get_xml_dict(resource)
                 for family, sub_dict in xml["firewall"]["family"].items():
                     sub_dict["family"] = family

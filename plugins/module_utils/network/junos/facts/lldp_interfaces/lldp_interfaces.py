@@ -87,7 +87,7 @@ class Lldp_interfacesFacts(object):
                 obj = self.render_config(self.generated_spec, resource)
                 if obj:
                     objs.append(obj)
-        facts = {}
+        facts = {"lldp_interfaces": []}
         if objs:
             facts["lldp_interfaces"] = []
             params = utils.validate_config(
