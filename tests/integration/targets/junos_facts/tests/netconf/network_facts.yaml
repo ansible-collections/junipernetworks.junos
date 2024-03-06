@@ -1,0 +1,56 @@
+---
+- ansible.builtin.debug:
+    msg="START cli_config/cli_basic.yaml on connection={{ ansible_connection
+    }}"
+
+- name: Gather junipernetworks junos facts
+  junipernetworks.junos.junos_facts:
+    gather_subset: config
+    gather_network_resources:
+      - acls
+      - lldp_global
+      - lldp_interfaces
+      - logging_global
+      - ntp_global
+      - ospf_interfaces
+      - ospfv2
+      - ospfv3
+      - prefix_lists
+      - routing_instances
+      - routing_options
+      - security_policies
+      - security_policies_global
+      - security_zones
+      - snmp_server
+      - static_routes
+      - vlans
+  register: find_the_routes
+
+- name: Display Facts
+  ansible.builtin.debug:
+    msg: "{{ find_the_routes }}"
+
+- name: Assert that empty facts was generated
+  ansible.builtin.assert:
+    that:
+      - " find_the_routes['ansible_facts']['ansible_network_resources']['acls'] == []"
+      - " find_the_routes['ansible_facts']['ansible_network_resources']['lldp_global'] == []"
+      - " find_the_routes['ansible_facts']['ansible_network_resources']['lldp_interfaces'] == []"
+      - " find_the_routes['ansible_facts']['ansible_network_resources']['logging_global'] == []"
+      - " find_the_routes['ansible_facts']['ansible_network_resources']['ntp_global'] == []"
+      - " find_the_routes['ansible_facts']['ansible_network_resources']['ospf_interfaces'] == []"
+      - " find_the_routes['ansible_facts']['ansible_network_resources']['ospfv2'] == []"
+      - " find_the_routes['ansible_facts']['ansible_network_resources']['ospfv3'] == []"
+      - " find_the_routes['ansible_facts']['ansible_network_resources']['prefix_lists'] == []"
+      - " find_the_routes['ansible_facts']['ansible_network_resources']['routing_instances'] == []"
+      - " find_the_routes['ansible_facts']['ansible_network_resources']['routing_options'] == []"
+      - " find_the_routes['ansible_facts']['ansible_network_resources']['security_policies'] == []"
+      - " find_the_routes['ansible_facts']['ansible_network_resources']['security_policies_global'] == []"
+      - " find_the_routes['ansible_facts']['ansible_network_resources']['security_zones'] == []"
+      - " find_the_routes['ansible_facts']['ansible_network_resources']['snmp_server'] == []"
+      - " find_the_routes['ansible_facts']['ansible_network_resources']['static_routes'] == []"
+      - " find_the_routes['ansible_facts']['ansible_network_resources']['vlans'] == []"
+
+- ansible.builtin.debug:
+    msg="END cli_config/cli_basic.yaml on connection={{ ansible_connection
+    }}"

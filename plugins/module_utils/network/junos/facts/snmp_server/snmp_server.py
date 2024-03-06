@@ -97,9 +97,8 @@ class Snmp_serverFacts(object):
                 xml = self._get_xml_dict(resource)
                 objs = self.render_config(self.generated_spec, xml)
 
-        facts = {}
+        facts = {"snmp_server": {}}
         if objs:
-            facts["snmp_server"] = {}
             params = utils.validate_config(
                 self.argument_spec,
                 {"config": objs},
