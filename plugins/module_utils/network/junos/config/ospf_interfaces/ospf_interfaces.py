@@ -64,7 +64,7 @@ class Ospf_interfaces(ConfigBase):
             data=data,
         )
         ospf_interfaces_facts = facts["ansible_network_resources"].get(
-            "junos_ospf_interfaces",
+            "ospf_interfaces",
         )
         if not ospf_interfaces_facts:
             return []

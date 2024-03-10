@@ -3,6 +3,74 @@
     msg="START cli_config/cli_basic.yaml on connection={{ ansible_connection
     }}"
 
+- name: Reset acls
+  junipernetworks.junos.junos_acls:
+    state: deleted
+
+- name: Reset vlans
+  junipernetworks.junos.junos_vlans:
+    state: deleted
+
+- name: Reset lldp_global
+  junipernetworks.junos.junos_lldp_global:
+    state: deleted
+
+- name: Reset lldp_interfaces
+  junipernetworks.junos.junos_lldp_interfaces:
+    state: deleted
+
+- name: Reset logging_global
+  junipernetworks.junos.junos_logging_global:
+    state: deleted
+
+- name: Reset ntp_global
+  junipernetworks.junos.junos_ntp_global:
+    state: deleted
+
+- name: Reset ospf_interfaces
+  junipernetworks.junos.junos_ospf_interfaces:
+    state: deleted
+
+- name: Reset ospfv2
+  junipernetworks.junos.junos_ospfv2:
+    state: deleted
+
+- name: Reset ospfv3
+  junipernetworks.junos.junos_ospfv3:
+    state: deleted
+
+- name: Reset prefix_lists
+  junipernetworks.junos.junos_prefix_lists:
+    state: deleted
+
+- name: Reset routing_instances
+  junipernetworks.junos.junos_routing_instances:
+    state: deleted
+
+- name: Reset routing_options
+  junipernetworks.junos.junos_routing_options:
+    state: deleted
+
+- name: Reset security_policies
+  junipernetworks.junos.junos_security_policies:
+    state: deleted
+
+- name: Reset security_policies_global
+  junipernetworks.junos.junos_security_policies_global:
+    state: deleted
+
+- name: Reset security_zones
+  junipernetworks.junos.junos_security_zones:
+    state: deleted
+
+- name: Reset snmp_server
+  junipernetworks.junos.junos_snmp_server:
+    state: deleted
+
+- name: Reset static_routes
+  junipernetworks.junos.junos_static_routes:
+    state: deleted
+
 - name: Gather junipernetworks junos facts
   junipernetworks.junos.junos_facts:
     gather_subset: config
