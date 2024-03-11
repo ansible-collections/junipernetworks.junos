@@ -239,31 +239,32 @@ class Lldp_global(ConfigBase):
         """
         lldp_xml = []
 
-        lldp_root = build_root_xml_node("lldp")
-        build_child_xml_node(
-            lldp_root,
-            "management-address",
-            None,
-            {"delete": "delete"},
-        )
-        build_child_xml_node(
-            lldp_root,
-            "advertisement-interval",
-            None,
-            {"delete": "delete"},
-        )
-        build_child_xml_node(
-            lldp_root,
-            "transmit-delay",
-            None,
-            {"delete": "delete"},
-        )
-        build_child_xml_node(
-            lldp_root,
-            "hold-multiplier",
-            None,
-            {"delete": "delete"},
-        )
-        build_child_xml_node(lldp_root, "disable", None, {"delete": "delete"})
-        lldp_xml.append(lldp_root)
+        if have:
+            lldp_root = build_root_xml_node("lldp")
+            build_child_xml_node(
+                lldp_root,
+                "management-address",
+                None,
+                {"delete": "delete"},
+            )
+            build_child_xml_node(
+                lldp_root,
+                "advertisement-interval",
+                None,
+                {"delete": "delete"},
+            )
+            build_child_xml_node(
+                lldp_root,
+                "transmit-delay",
+                None,
+                {"delete": "delete"},
+            )
+            build_child_xml_node(
+                lldp_root,
+                "hold-multiplier",
+                None,
+                {"delete": "delete"},
+            )
+            build_child_xml_node(lldp_root, "disable", None, {"delete": "delete"})
+            lldp_xml.append(lldp_root)
         return lldp_xml
