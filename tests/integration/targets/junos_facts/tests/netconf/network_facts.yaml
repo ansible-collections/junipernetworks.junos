@@ -92,32 +92,32 @@
       - snmp_server
       - static_routes
       - vlans
-  register: find_the_routes
+  register: gather_resources
 
 - name: Display Facts
   ansible.builtin.debug:
-    msg: "{{ find_the_routes }}"
+    msg: "{{ gather_resources }}"
 
 - name: Assert that empty facts was generated
   ansible.builtin.assert:
     that:
-      - " find_the_routes['ansible_facts']['ansible_network_resources']['acls'] == []"
-      - " find_the_routes['ansible_facts']['ansible_network_resources']['lldp_global'] == []"
-      - " find_the_routes['ansible_facts']['ansible_network_resources']['lldp_interfaces'] == []"
-      - " find_the_routes['ansible_facts']['ansible_network_resources']['logging_global'] == []"
-      - " find_the_routes['ansible_facts']['ansible_network_resources']['ntp_global'] == []"
-      - " find_the_routes['ansible_facts']['ansible_network_resources']['ospf_interfaces'] == []"
-      - " find_the_routes['ansible_facts']['ansible_network_resources']['ospfv2'] == []"
-      - " find_the_routes['ansible_facts']['ansible_network_resources']['ospfv3'] == []"
-      - " find_the_routes['ansible_facts']['ansible_network_resources']['prefix_lists'] == []"
-      - " find_the_routes['ansible_facts']['ansible_network_resources']['routing_instances'] == []"
-      - " find_the_routes['ansible_facts']['ansible_network_resources']['routing_options'] == []"
-      - " find_the_routes['ansible_facts']['ansible_network_resources']['security_policies'] == []"
-      - " find_the_routes['ansible_facts']['ansible_network_resources']['security_policies_global'] == []"
-      - " find_the_routes['ansible_facts']['ansible_network_resources']['security_zones'] == []"
-      - " find_the_routes['ansible_facts']['ansible_network_resources']['snmp_server'] == []"
-      - " find_the_routes['ansible_facts']['ansible_network_resources']['static_routes'] == []"
-      - " find_the_routes['ansible_facts']['ansible_network_resources']['vlans'] == []"
+      - " gather_resources['ansible_facts']['ansible_network_resources']['acls'] == []"
+      - " gather_resources['ansible_facts']['ansible_network_resources']['lldp_global'] == {}"
+      - " gather_resources['ansible_facts']['ansible_network_resources']['lldp_interfaces'] == []"
+      - " gather_resources['ansible_facts']['ansible_network_resources']['logging_global'] == {}"
+      - " gather_resources['ansible_facts']['ansible_network_resources']['ntp_global'] == {}"
+      - " gather_resources['ansible_facts']['ansible_network_resources']['ospf_interfaces'] == []"
+      - " gather_resources['ansible_facts']['ansible_network_resources']['ospfv2'] == []"
+      - " gather_resources['ansible_facts']['ansible_network_resources']['ospfv3'] == []"
+      - " gather_resources['ansible_facts']['ansible_network_resources']['prefix_lists'] == []"
+      - " gather_resources['ansible_facts']['ansible_network_resources']['routing_instances'] == []"
+      - " gather_resources['ansible_facts']['ansible_network_resources']['routing_options'] == []"
+      - " gather_resources['ansible_facts']['ansible_network_resources']['security_policies'] == {}"
+      - " gather_resources['ansible_facts']['ansible_network_resources']['security_policies_global'] == {}"
+      - " gather_resources['ansible_facts']['ansible_network_resources']['security_zones'] == {}"
+      - " gather_resources['ansible_facts']['ansible_network_resources']['snmp_server'] == {}"
+      - " gather_resources['ansible_facts']['ansible_network_resources']['static_routes'] == []"
+      - " gather_resources['ansible_facts']['ansible_network_resources']['vlans'] == []"
 
 - ansible.builtin.debug:
     msg="END cli_config/cli_basic.yaml on connection={{ ansible_connection
