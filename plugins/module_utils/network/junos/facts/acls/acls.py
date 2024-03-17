@@ -96,9 +96,8 @@ class AclsFacts(object):
                     if obj:
                         objs.append(obj)
 
-        facts = {}
+        facts = {"acls": []}
         if objs:
-            facts["acls"] = []
             params = utils.validate_config(
                 self.argument_spec,
                 {"config": objs},

@@ -1,0 +1,6 @@
+---
+bugfixes:
+  - Fix the empty facts list placement
+trivial:
+  - Update tests for junos_ospf_interfaces resource module
+  - Perform config reset for specific resources before performing gathered operation

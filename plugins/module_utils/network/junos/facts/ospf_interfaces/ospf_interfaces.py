@@ -118,7 +118,6 @@ class Ospf_interfacesFacts(object):
 
         facts = {"ospf_interfaces": []}
         if objs:
-            facts["ospf_interfaces"] = []
             params = _validate_config(
                 self._module,
                 self.argument_spec,
