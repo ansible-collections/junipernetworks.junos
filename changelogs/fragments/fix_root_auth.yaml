@@ -1,0 +1,4 @@
+---
+bugfixes:
+  - This fix provide the fucationality to
+    configure root-authentication->enrypted_password when user is root.
