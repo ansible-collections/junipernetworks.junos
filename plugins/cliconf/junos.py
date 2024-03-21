@@ -272,6 +272,15 @@ class Cliconf(CliconfBase):
             self.discard_changes()
         return resp
 
+    @configure
+    def restore(self, filename=None, path=""):
+        if not filename:
+            raise ValueError("'file_name' value is required for restore")
+        cmd = f"load override {path}{filename}"
+        resp = self.send_command(cmd)
+        self.commit()
+        return resp
+
     def get_diff(self, rollback_id=None):
         diff = {"config_diff": None}
         response = self.compare_configuration(rollback_id=rollback_id)
