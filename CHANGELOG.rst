@@ -5,6 +5,38 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v6.0.2
+======
+
+Bugfixes
+--------
+
+- acls
+- initialize facts dictionary with empty containers for respective resources mentioned below
+- lldp_global
+- lldp_interfaces
+- logging_global
+- ntp_global
+- ospf_interfaces
+- ospfv2
+- ospfv3
+- prefix_lists
+- routing_instances
+- routing_options
+- security_policies
+- security_policies_global
+- security_zones
+- snmp_server
+- static_routes
+- vlans
+
+Documentation Changes
+---------------------
+
+- Remove the part of the description which incorrectly describes the behavior and type of confirm attribute.
+- Update example performing `confirm_commit`.
+- Update with more examples using the `confirm` option to set a timer.
+
 v6.0.1
 ======
 

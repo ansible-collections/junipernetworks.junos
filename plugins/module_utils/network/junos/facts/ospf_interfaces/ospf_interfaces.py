@@ -116,9 +116,8 @@ class Ospf_interfacesFacts(object):
                 xml = self._get_xml_dict(resource)
                 objs = self.render_config(self.generated_spec, xml)
 
-        facts = {}
+        facts = {"ospf_interfaces": []}
         if objs:
-            facts["junos_ospf_interfaces"] = []
             params = _validate_config(
                 self._module,
                 self.argument_spec,
@@ -127,7 +126,7 @@ class Ospf_interfacesFacts(object):
             )
 
             for cfg in params["config"]:
-                facts["junos_ospf_interfaces"].append(remove_empties(cfg))
+                facts["ospf_interfaces"].append(remove_empties(cfg))
 
         ansible_facts["ansible_network_resources"].update(facts)
         return ansible_facts

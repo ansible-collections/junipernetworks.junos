@@ -122,9 +122,8 @@ class Ospfv2Facts(object):
                 if obj:
                     objs.append(obj)
 
-        facts = {}
+        facts = {"ospfv2": []}
         if objs is not None:
-            facts["ospfv2"] = []
             params = utils.validate_config(
                 self.argument_spec,
                 {"config": objs},
