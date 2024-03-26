@@ -1,0 +1,4 @@
+---
+major_changes:
+  - Remove deprected junos_logging module which is replaced by junos_logging_global resource module.
+
