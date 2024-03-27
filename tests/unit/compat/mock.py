@@ -69,6 +69,7 @@ if sys.version_info >= (3,) and sys.version_info < (3, 4, 4):
             # emulated doesn't have a newline to end the last line  remove the
             # newline that our naive format() added
             data_as_list[-1] = data_as_list[-1][:-1]
+
         for line in data_as_list:
             yield line
 
