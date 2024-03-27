@@ -69,8 +69,8 @@ if sys.version_info >= (3,) and sys.version_info < (3, 4, 4):
             # emulated doesn't have a newline to end the last line  remove the
             # newline that our naive format() added
             data_as_list[-1] = data_as_list[-1][:-1]
-
-        yield from data_as_list
+        for line in data_as_list:
+            yield line
 
     def mock_open(mock=None, read_data=""):
         """
@@ -99,7 +99,8 @@ if sys.version_info >= (3,) and sys.version_info < (3, 4, 4):
             if handle.readline.return_value is not None:
                 while True:
                     yield handle.readline.return_value
-            yield from _data
+            for line in _data:
+                yield line
 
         global file_spec
         if file_spec is None:
