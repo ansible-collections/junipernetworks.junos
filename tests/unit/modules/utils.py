@@ -7,8 +7,8 @@ import json
 from ansible.module_utils import basic
 from ansible.module_utils._text import to_bytes
 
-from ansible_collections.junipernetworks.junos.tests.unit.compat import unittest
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import patch
+from unittest import TestCase
+from unittest.mock import patch
 
 
 def set_module_args(args):
@@ -40,7 +40,7 @@ def fail_json(*args, **kwargs):
     raise AnsibleFailJson(kwargs)
 
 
-class ModuleTestCase(unittest.TestCase):
+class ModuleTestCase(TestCase):
     def setUp(self):
         self.mock_module = patch.multiple(
             basic.AnsibleModule,

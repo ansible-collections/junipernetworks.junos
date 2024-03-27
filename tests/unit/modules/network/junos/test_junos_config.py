@@ -25,7 +25,7 @@ __metaclass__ = type
 from ansible.module_utils._text import to_text
 
 from ansible_collections.junipernetworks.junos.plugins.modules import junos_config
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import patch
+from unittest.mock import patch
 from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
 
 from .junos_module import TestJunosModule, load_fixture
