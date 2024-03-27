@@ -1,0 +1,5 @@
+---
+major_changes:
+  - "This release removes previously deprecated modules from this collection. Please refer to the **Removed Features** section for details."
+removed_features:
+  - Remove deprected junos_logging module which is replaced by junos_logging_global resource module.
