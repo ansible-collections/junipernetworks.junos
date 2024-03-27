@@ -57,7 +57,6 @@ Name | Description
 [junipernetworks.junos.junos_lag_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_lag_interfaces_module.rst)|Link Aggregation Juniper JUNOS resource module
 [junipernetworks.junos.junos_lldp_global](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_lldp_global_module.rst)|LLDP resource module
 [junipernetworks.junos.junos_lldp_interfaces](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_lldp_interfaces_module.rst)|LLDP interfaces resource module
-[junipernetworks.junos.junos_logging](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_logging_module.rst)|Manage logging on network devices
 [junipernetworks.junos.junos_logging_global](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_logging_global_module.rst)|Manage logging configuration on Junos devices.
 [junipernetworks.junos.junos_netconf](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_netconf_module.rst)|Configures the Junos Netconf system service
 [junipernetworks.junos.junos_ntp_global](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_ntp_global_module.rst)|Manage NTP configuration on Junos devices.
