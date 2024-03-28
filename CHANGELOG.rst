@@ -5,6 +5,24 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v7.0.0
+======
+
+Major Changes
+-------------
+
+- This release removes previously deprecated modules from this collection. Please refer to the **Removed Features** section for details.
+
+Removed Features (previously deprecated)
+----------------------------------------
+
+- Remove deprected junos_logging module which is replaced by junos_logging_global resource module.
+
+Bugfixes
+--------
+
+- Fix the empty facts list placement
+
 v6.0.2
 ======
 

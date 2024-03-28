@@ -1,4 +1,0 @@
----
-trivial:
-  - remove compat files as we stopped testing against python 2.7.
-  - update direct imports for patch and MagicMock from unittest.
