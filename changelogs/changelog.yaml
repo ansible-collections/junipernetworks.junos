@@ -628,3 +628,18 @@ releases:
       - empty_facts.yaml
       - update_junos_config_docs.yaml
     release_date: "2024-03-06"
+  7.0.0:
+    changes:
+      bugfixes:
+        - Fix the empty facts list placement
+      major_changes:
+        - This release removes previously deprecated modules from this collection. Please
+          refer to the **Removed Features** section for details.
+      removed_features:
+        - Remove deprected junos_logging module which is replaced by junos_logging_global
+          resource module.
+    fragments:
+      - fix_upstream_tetst.yaml
+      - remove_deprecated.yaml
+      - trivial_tests_updates.yaml
+    release_date: "2024-03-27"
