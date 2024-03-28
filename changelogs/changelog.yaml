@@ -46,8 +46,8 @@ releases:
       name: junos_lldp_interfaces
       namespace: ''
     - description: Manage logging on network devices
-        name: junos_logging
-        namespace: ""
+      name: junos_logging
+      namespace: ""
     - description: Configures the Junos Netconf system service
       name: junos_netconf
       namespace: ''
