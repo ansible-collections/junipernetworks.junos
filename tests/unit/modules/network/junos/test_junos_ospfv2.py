@@ -580,7 +580,7 @@ class TestJunosOspfv2Module(TestJunosModule):
             '<nc:area delete="delete">0.0.0.100</nc:area><nc:area delete="delete">0.0.0.200</nc:area>'
             '<nc:spf-options delete="delete"/><nc:reference-bandwidth delete="delete"/>'
             '<nc:no-rfc-1583 delete="delete"/><nc:overload delete="delete"/>'
-            '<nc:prefix-export-limit delete="delete"/></nc:ospf></nc:protocols>'
+            '<nc:prefix-export-limit delete="delete"/></nc:ospf></nc:protocols>',
         ]
         result = self.execute_module(changed=True, commands=commands)
         print(result["commands"])
