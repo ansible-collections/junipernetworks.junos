@@ -720,7 +720,7 @@ class TestJunosOspfv2Module(TestJunosModule):
             },
         ]
 
-    def test_junos_ospfv2_rendered(self):
+    def test_junos_ospfv2_rendered_2(self):
         set_module_args(
             dict(
                 config=[
