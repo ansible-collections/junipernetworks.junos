@@ -568,7 +568,7 @@ class TestJunosOspfv2Module(TestJunosModule):
         result = self.execute_module(changed=True, commands=commands)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
 
-    def test_junos_ospfv2_rendered(self):
+    def test_junos_ospfv2_deleted(self):
         set_module_args(
             dict(
                 config=[],
@@ -583,7 +583,7 @@ class TestJunosOspfv2Module(TestJunosModule):
             '<nc:prefix-export-limit delete="delete"/></nc:ospf></nc:protocols>',
         ]
         result = self.execute_module(changed=True, commands=commands)
-        print(result["commands"])
+
         self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_ospfv2_parsed(self):
@@ -722,7 +722,7 @@ class TestJunosOspfv2Module(TestJunosModule):
             },
         ]
 
-    def test_junos_ospfv2_rendered_2(self):
+    def test_junos_ospfv2_rendered(self):
         set_module_args(
             dict(
                 config=[
