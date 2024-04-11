@@ -1,0 +1,4 @@
+---
+trivial:
+  - Add sanity ignore file for 2.18
+  - Change github actions workflow to content-actions
