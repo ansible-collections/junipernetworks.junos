@@ -574,6 +574,7 @@ New Modules
 - junos_lag_interfaces - Link Aggregation Juniper JUNOS resource module
 - junos_lldp_global - LLDP resource module
 - junos_lldp_interfaces - LLDP interfaces resource module
+- junos_logging - Manage logging on network devices
 - junos_netconf - Configures the Junos Netconf system service
 - junos_ospfv2 - OSPFv2 resource module
 - junos_package - Installs packages on remote devices running Junos
