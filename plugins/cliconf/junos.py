@@ -271,7 +271,7 @@ class Cliconf(CliconfBase):
         else:
             self.discard_changes()
         return resp
-    
+
     @configure
     def restore(self, filename=None, path=""):
         if not filename:
