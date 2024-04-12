@@ -48,7 +48,7 @@ releases:
         namespace: ""
       - description: Manage logging on network devices
         name: junos_logging
-        namespace: ""  
+        namespace: ""
       - description: Configures the Junos Netconf system service
         name: junos_netconf
         namespace: ""
