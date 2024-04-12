@@ -5,6 +5,21 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v8.0.0
+======
+
+Major Changes
+-------------
+
+- Update the netcommon base version 6.1.0 to support cli_restore plugin.
+
+Minor Changes
+-------------
+
+- Add support for cli_restore functionality.
+- Please refer the PR to know more about core changes (https://github.com/ansible-collections/ansible.netcommon/pull/618).
+- cli_restore module is part of netcommon.
+
 v7.0.0
 ======
 
