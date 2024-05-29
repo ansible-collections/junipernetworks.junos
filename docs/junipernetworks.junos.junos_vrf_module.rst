@@ -363,8 +363,8 @@ Examples
         name: test-1
         description: test-vrf-1
         interfaces:
-        - ge-0/0/3
-        - ge-0/0/2
+          - ge-0/0/3
+          - ge-0/0/2
         rd: 192.0.2.1:10
         target: target:65514:113
         state: present
@@ -374,8 +374,8 @@ Examples
         name: test-1
         description: test-vrf-1
         interfaces:
-        - ge-0/0/3
-        - ge-0/0/2
+          - ge-0/0/3
+          - ge-0/0/2
         rd: 192.0.2.1:10
         target: target:65514:113
         state: absent
@@ -385,8 +385,8 @@ Examples
         name: test-1
         description: test-vrf-1
         interfaces:
-        - ge-0/0/3
-        - ge-0/0/2
+          - ge-0/0/3
+          - ge-0/0/2
         rd: 192.0.2.1:10
         target: target:65514:113
         active: false
@@ -396,8 +396,8 @@ Examples
         name: test-1
         description: test-vrf-1
         interfaces:
-        - ge-0/0/3
-        - ge-0/0/2
+          - ge-0/0/3
+          - ge-0/0/2
         rd: 192.0.2.1:10
         target: target:65514:113
         active: true
@@ -405,19 +405,19 @@ Examples
     - name: Create vrf using aggregate
       junipernetworks.junos.junos_vrf:
         aggregate:
-        - name: test-1
-          description: test-vrf-1
-          interfaces:
-          - ge-0/0/3 - ge-0/0/2
-          rd: 192.0.2.1:10
-          target: target:65514:113
-        - name: test-2
-          description: test-vrf-2
-          interfaces:
-          - ge-0/0/4
-          - ge-0/0/5
-          rd: 192.0.2.2:10
-          target: target:65515:114
+          - name: test-1
+            description: test-vrf-1
+            interfaces:
+              - ge-0/0/3 - ge-0/0/2
+            rd: 192.0.2.1:10
+            target: target:65514:113
+          - name: test-2
+            description: test-vrf-2
+            interfaces:
+              - ge-0/0/4
+              - ge-0/0/5
+            rd: 192.0.2.2:10
+            target: target:65515:114
       state: present
 
 

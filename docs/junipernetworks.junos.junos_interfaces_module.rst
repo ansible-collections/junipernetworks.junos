@@ -318,8 +318,8 @@ Notes
 .. note::
    - This module requires the netconf system service be enabled on the remote device being managed.
    - Tested against vSRX JUNOS version 18.4R1.
-   - This module works with connection ``netconf``.
-   - See `the Junos OS Platform Options <https://docs.ansible.com/ansible/latest/network/user_guide/platform_junos.html>`_.
+   - This module works with connection ``netconf``. See https://docs.ansible.com/ansible/latest/network/user_guide/platform_junos.html
+   - The module examples uses callback plugin (stdout_callback = yaml) to generate task output in yaml format.
 
 
 
@@ -1017,13 +1017,13 @@ Examples
     - name: Render platform specific xml from task input using rendered state
       junipernetworks.junos.junos_interfaces:
         config:
-        - name: ge-0/0/2
-          description: Configured by Ansible
-          mtu: 2048
-          speed: 20m
-          hold_time:
-            up: 3200
-            down: 3200
+          - name: ge-0/0/2
+            description: Configured by Ansible
+            mtu: 2048
+            speed: 20m
+            hold_time:
+              up: 3200
+              down: 3200
         state: rendered
 
     # Task Output

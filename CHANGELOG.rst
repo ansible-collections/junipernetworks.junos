@@ -5,6 +5,107 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v8.0.0
+======
+
+Major Changes
+-------------
+
+- Update the netcommon base version 6.1.0 to support cli_restore plugin.
+
+Minor Changes
+-------------
+
+- Add support for cli_restore functionality.
+- Please refer the PR to know more about core changes (https://github.com/ansible-collections/ansible.netcommon/pull/618).
+- cli_restore module is part of netcommon.
+
+v7.0.0
+======
+
+Major Changes
+-------------
+
+- This release removes previously deprecated modules from this collection. Please refer to the **Removed Features** section for details.
+
+Removed Features (previously deprecated)
+----------------------------------------
+
+- Remove deprected junos_logging module which is replaced by junos_logging_global resource module.
+
+Bugfixes
+--------
+
+- Fix the empty facts list placement
+
+v6.0.2
+======
+
+Bugfixes
+--------
+
+- acls
+- initialize facts dictionary with empty containers for respective resources mentioned below
+- lldp_global
+- lldp_interfaces
+- logging_global
+- ntp_global
+- ospf_interfaces
+- ospfv2
+- ospfv3
+- prefix_lists
+- routing_instances
+- routing_options
+- security_policies
+- security_policies_global
+- security_zones
+- snmp_server
+- static_routes
+- vlans
+
+Documentation Changes
+---------------------
+
+- Remove the part of the description which incorrectly describes the behavior and type of confirm attribute.
+- Update example performing `confirm_commit`.
+- Update with more examples using the `confirm` option to set a timer.
+
+v6.0.1
+======
+
+Bugfixes
+--------
+
+- Prevents module_defaults from were being incorrectly applied to the platform action, instead of the concerned module.
+
+v6.0.0
+======
+
+Release Summary
+---------------
+
+Starting from this release, the minimum `ansible-core` version this collection requires is `2.14.0`. That last known version compatible with ansible-core<2.14 is `v5.3.1`.
+
+Major Changes
+-------------
+
+- Bumping `requires_ansible` to `>=2.14.0`, since previous ansible-core versions are EoL now.
+
+v5.3.1
+======
+
+Bugfixes
+--------
+
+- fix to gather l2_interfaces facts with default port-mode access.
+
+Documentation Changes
+---------------------
+
+- Improve docs of prefix-lists RM.
+- ios_l2_interfaces - Fixed module documentation and examples.
+- ios_l3_interfaces - Fixed module documentation and examples.
+
 v5.3.0
 ======
 

@@ -26,8 +26,9 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+from unittest.mock import patch
+
 from ansible_collections.junipernetworks.junos.plugins.modules import junos_ospfv2
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import patch
 from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
 
 from .junos_module import TestJunosModule, load_fixture
@@ -567,7 +568,7 @@ class TestJunosOspfv2Module(TestJunosModule):
         result = self.execute_module(changed=True, commands=commands)
         self.assertEqual(sorted(result["commands"]), sorted(commands))
 
-    def test_junos_ospfv2_rendered(self):
+    def test_junos_ospfv2_deleted(self):
         set_module_args(
             dict(
                 config=[],
@@ -576,11 +577,13 @@ class TestJunosOspfv2Module(TestJunosModule):
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:ospf>'
-            '<nc:area delete="delete">0.0.0.100</nc:area><nc:spf-options delete="delete"/>'
-            '<nc:reference-bandwidth delete="delete"/><nc:no-rfc-1583 delete="delete"/>'
-            '<nc:overload delete="delete"/></nc:ospf></nc:protocols>',
+            '<nc:area delete="delete">0.0.0.100</nc:area><nc:area delete="delete">0.0.0.200</nc:area>'
+            '<nc:spf-options delete="delete"/><nc:reference-bandwidth delete="delete"/>'
+            '<nc:no-rfc-1583 delete="delete"/><nc:overload delete="delete"/>'
+            '<nc:prefix-export-limit delete="delete"/></nc:ospf></nc:protocols>',
         ]
         result = self.execute_module(changed=True, commands=commands)
+
         self.assertEqual(sorted(result["commands"]), sorted(commands))
 
     def test_junos_ospfv2_parsed(self):
