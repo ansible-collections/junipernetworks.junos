@@ -1,3 +1,0 @@
-plugins/action/junos.py action-plugin-docs # base class for deprecated network platform modules using `connection: local`
-plugins/cliconf/junos.py pylint:arguments-renamed
-tests/unit/mock/loader.py pylint:arguments-renamed

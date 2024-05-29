@@ -1,4 +1,0 @@
----
-bugfixes:
-  - Fix lldp_global_assertion.
-  - Fix enabled attribute implementation.

@@ -97,9 +97,8 @@ class Routing_instancesFacts(object):
                 xml = self._get_xml_dict(resource)
                 objs = self.render_config(self.generated_spec, xml)
 
-        facts = {}
+        facts = {"routing_instances": []}
         if objs:
-            facts["routing_instances"] = []
             params = utils.validate_config(
                 self.argument_spec,
                 {"config": objs},

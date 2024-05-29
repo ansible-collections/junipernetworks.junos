@@ -112,13 +112,12 @@ class Ospf_interfacesFacts(object):
 
         objs = []
         for resource in resources:
-            if resource:
+            if resource is not None:
                 xml = self._get_xml_dict(resource)
                 objs = self.render_config(self.generated_spec, xml)
 
-        facts = {}
+        facts = {"ospf_interfaces": []}
         if objs:
-            facts["junos_ospf_interfaces"] = []
             params = _validate_config(
                 self._module,
                 self.argument_spec,
@@ -127,7 +126,7 @@ class Ospf_interfacesFacts(object):
             )
 
             for cfg in params["config"]:
-                facts["junos_ospf_interfaces"].append(remove_empties(cfg))
+                facts["ospf_interfaces"].append(remove_empties(cfg))
 
         ansible_facts["ansible_network_resources"].update(facts)
         return ansible_facts
@@ -230,20 +229,23 @@ class Ospf_interfacesFacts(object):
                             auth_dict["simple_password"] = auth.get(
                                 "simple-password",
                             )
-                        elif auth.get("md5"):
-                            auth_dict["type"] = {"md5": []}
-                            md5_list = auth.get("md5")
-
-                            if not isinstance(md5_list, list):
-                                md5_list = [md5_list]
-
-                            for md5_auth in md5_list:
-                                auth_dict["type"]["md5"].append(
-                                    {
-                                        "key_id": md5_auth.get("name"),
-                                        "key": md5_auth.get("key"),
-                                    },
-                                )
+                        if "md5" in auth.keys():
+                            md5_cfg = auth.get("md5")
+                            md5_lst = []
+                            if isinstance(md5_cfg, dict):
+                                md5_dict = {}
+                                md5_dict["key_id"] = md5_cfg.get("name")
+                                md5_dict["key_value"] = md5_cfg.get("key")
+                                md5_dict["start_time"] = md5_cfg.get("start-time")
+                                md5_lst.append(md5_dict)
+                            else:
+                                for md5 in md5_cfg:
+                                    md5_dict = {}
+                                    md5_dict["key_id"] = md5.get("name")
+                                    md5_dict["key_value"] = md5.get("key")
+                                    md5_dict["start_time"] = md5.get("start-time")
+                                    md5_lst.append(md5_dict)
+                            auth_dict["md5"] = md5_lst
                         interface_dict["authentication"] = auth_dict
 
                     rendered_area["interfaces"].append(interface_dict)

@@ -178,7 +178,8 @@ Parameters
                     <b>md5</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">dictionary</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=dictionary</span>
                     </div>
                 </td>
                 <td>
@@ -198,7 +199,7 @@ Parameters
                     <b>key_id</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">integer</span>
                     </div>
                 </td>
                 <td>
@@ -606,10 +607,14 @@ Parameters
                     <b>node_link_protection</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">boolean</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>no</li>
+                                    <li>yes</li>
+                        </ul>
                 </td>
                 <td>
                         <div>Protect interface from both link and node faults.</div>
@@ -855,14 +860,14 @@ Examples
     - name: Merge Junos OSPF interfaces config
       junipernetworks.junos.junos_ospf_interfaces:
         config:
-        - name: 'ge-0/0/2.0'
-          address_family:
-            - afi: 'ipv4'
-              processes:
-                area:
-                  area_id: '0.0.0.2'
-                priority: 3
-                metric: 5
+          - name: 'ge-0/0/2.0'
+            address_family:
+              - afi: 'ipv4'
+                processes:
+                  area:
+                    area_id: '0.0.0.2'
+                  priority: 3
+                  metric: 5
         state: merged
 
     # After state
@@ -890,16 +895,16 @@ Examples
     # }
     - name: Replace Junos OSPF interfaces config
       junipernetworks.junos.junos_ospf_interfaces:
-       config:
-         - name: 'ge-0/0/2.0'
-           address_family:
-             - afi: 'ipv4'
-               processes:
-                 area:
-                   area_id: '0.0.0.1'
-                 priority: 6
-                 metric: 6
-       state: replaced
+        config:
+          - name: 'ge-0/0/2.0'
+            address_family:
+              - afi: 'ipv4'
+                processes:
+                  area:
+                    area_id: '0.0.0.1'
+                  priority: 6
+                  metric: 6
+        state: replaced
 
     # After state
     # -----------
@@ -1047,14 +1052,14 @@ Examples
     - name: Render the commands for provided  configuration
       junipernetworks.junos.junos_ospf_interfaces:
         config:
-        - name: 'ge-0/0/2.0'
-          address_family:
-            - afi: 'ipv4'
-              processes:
-                area:
-                  area_id: '0.0.0.2'
-                priority: 3
-                metric: 5
+          - name: 'ge-0/0/2.0'
+            address_family:
+              - afi: 'ipv4'
+                processes:
+                  area:
+                    area_id: '0.0.0.2'
+                  priority: 3
+                  metric: 5
         state: rendered
 
     #

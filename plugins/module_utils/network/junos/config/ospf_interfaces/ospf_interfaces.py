@@ -64,7 +64,7 @@ class Ospf_interfaces(ConfigBase):
             data=data,
         )
         ospf_interfaces_facts = facts["ansible_network_resources"].get(
-            "junos_ospf_interfaces",
+            "ospf_interfaces",
         )
         if not ospf_interfaces_facts:
             return []
@@ -179,7 +179,6 @@ class Ospf_interfaces(ConfigBase):
 
         for xml in config_xmls:
             self.protocols.append(xml)
-
         return [tostring(xml) for xml in self.root.getchildren()]
 
     def _state_replaced(self, want, have):
@@ -293,6 +292,36 @@ class Ospf_interfaces(ConfigBase):
                         existing_config = have[0]
                         if existing_config["name"] == ospf_interfaces["name"]:
                             intf_node.attrib.update(delete)
+
+                if "authentication" in processes:
+                    auth = processes.get("authentication")
+                    auth_node = build_child_xml_node(intf_node, "authentication")
+                    if "simple_password" in auth:
+                        build_child_xml_node(
+                            auth_node,
+                            "simple-password",
+                            auth.get("simple_password"),
+                        )
+                    if "md5" in auth:
+                        md5_lst = auth.get("md5")
+                        for md5 in md5_lst:
+                            md5_node = build_child_xml_node(auth_node, "md5")
+                            build_child_xml_node(
+                                md5_node,
+                                "name",
+                                md5.get("key_id"),
+                            )
+                            build_child_xml_node(
+                                md5_node,
+                                "key",
+                                md5.get("key_value"),
+                            )
+                            if "start_time" in md5:
+                                build_child_xml_node(
+                                    md5_node,
+                                    "start-time",
+                                    md5.get("start_time"),
+                                )
                 if processes.get("priority"):
                     build_child_xml_node(
                         intf_node,
@@ -357,6 +386,48 @@ class Ospf_interfaces(ConfigBase):
                         "retransmit-interval",
                         processes.get("retransmit_interval"),
                     )
+                if "node_link_protection" in processes:
+                    if processes.get("node_link_protection"):
+                        build_child_xml_node(
+                            intf_node,
+                            "node-link-protection",
+                        )
+                if "no_advertise_adjacency_segment" in processes:
+                    if processes.get("no_advertise_adjacency_segment"):
+                        build_child_xml_node(
+                            intf_node,
+                            "no-advertise-adjacency-segment",
+                        )
+                if "no_neighbor_down_notification" in processes:
+                    if processes.get("no_neighbor_down_notification"):
+                        build_child_xml_node(
+                            intf_node,
+                            "no-neighbor-down-notification",
+                        )
+                if "no_interface_state_traps" in processes:
+                    if processes.get("no_interface_state_traps"):
+                        build_child_xml_node(
+                            intf_node,
+                            "no-interface-state-traps",
+                        )
+                if "no_eligible_remote_backup" in processes:
+                    if processes.get("no_eligible_remote_backup"):
+                        build_child_xml_node(
+                            intf_node,
+                            "no-eligible-remote-backup",
+                        )
+                if "no_eligible_backup" in processes:
+                    if processes.get("no_eligible_backup"):
+                        build_child_xml_node(
+                            intf_node,
+                            "no-eligible-backup",
+                        )
+                if "demand_circuit" in processes:
+                    if processes.get("demand_circuit"):
+                        build_child_xml_node(
+                            intf_node,
+                            "demand-circuit",
+                        )
 
         ospf_interfaces_xml.append(protocol)
         return ospf_interfaces_xml

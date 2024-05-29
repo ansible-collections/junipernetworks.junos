@@ -106,7 +106,7 @@ class Cliconf(CliconfBase):
 
         return self._device_info
 
-    def get_config(self, source="running", format="text", flags=None):
+    def get_config(self, source="running", flags=None, format="text"):
         if source != "running":
             raise ValueError(
                 "fetching configuration from %s is not supported" % source,
@@ -187,8 +187,8 @@ class Cliconf(CliconfBase):
         prompt=None,
         answer=None,
         sendonly=False,
-        output=None,
         newline=True,
+        output=None,
         check_all=False,
     ):
         if output:
@@ -270,6 +270,15 @@ class Cliconf(CliconfBase):
             self.commit()
         else:
             self.discard_changes()
+        return resp
+
+    @configure
+    def restore(self, filename=None, path=""):
+        if not filename:
+            raise ValueError("'file_name' value is required for restore")
+        cmd = f"load override {path}{filename}"
+        resp = self.send_command(cmd)
+        self.commit()
         return resp
 
     def get_diff(self, rollback_id=None):

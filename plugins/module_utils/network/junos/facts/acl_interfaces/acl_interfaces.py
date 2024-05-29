@@ -93,12 +93,16 @@ class Acl_interfacesFacts(object):
 
         facts = {}
         if objs:
+            facts["acl_interfaces"] = []
+            # Included for compatibility, remove after 2025-07-01
             facts["junos_acl_interfaces"] = []
             params = utils.validate_config(
                 self.argument_spec,
                 {"config": objs},
             )
             for cfg in params["config"]:
+                facts["acl_interfaces"].append(utils.remove_empties(cfg))
+                # Included for compatibility, remove after 2025-07-01
                 facts["junos_acl_interfaces"].append(utils.remove_empties(cfg))
 
         ansible_facts["ansible_network_resources"].update(facts)

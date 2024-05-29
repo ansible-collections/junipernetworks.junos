@@ -947,6 +947,7 @@ options:
       - purged
       - merged
       - replaced
+      - overridden
       - deleted
       - gathered
       - parsed
@@ -1098,24 +1099,163 @@ EXAMPLES = """
 
 - name: Replace running config with provided config
   junipernetworks.junos.junos_bgp_global:
-   config:
-     advertise_inactive: true
-     authentication_algorithm: "md5"
-     bfd_liveness_detection:
-       minimum_receive_interval: 8
-       multiplier: 30
-       no_adaptation: true
-       transmit_interval:
-         minimum_interval: 4
-       version: "automatic"
-     bgp_error_tolerance:
-       malformed_route_limit: 40000000
-     description: "Replace running bgp config"
-     egress_te_sid_stats: true
-     hold_time: 5
-     out_delay: 10
-     preference: "2"
-   state: replaced
+    config:
+      advertise_inactive: true
+      authentication_algorithm: "md5"
+      bfd_liveness_detection:
+        minimum_receive_interval: 8
+        multiplier: 30
+        no_adaptation: true
+        transmit_interval:
+          minimum_interval: 4
+        version: "automatic"
+      bgp_error_tolerance:
+        malformed_route_limit: 40000000
+      description: "Replace running bgp config"
+      egress_te_sid_stats: true
+      hold_time: 5
+      out_delay: 10
+      preference: "2"
+    state: replaced
+
+# Task Output:
+# ------------
+#
+# before:
+#   accept_remote_nexthop: true
+#   add_path_display_ipv4_address: true
+#   advertise_from_main_vpn_tables: true
+#   advertise_inactive: true
+#   as_number: '65534'
+#   asdot_notation: true
+#   authentication_algorithm: md5
+#   bgp_error_tolerance:
+#     malformed_route_limit: 20000000
+#   bmp:
+#     monitor: true
+#   damping: true
+#   description: This is configured with Junos_bgp resource module
+#   egress_te_sid_stats: true
+#   hold_time: 5
+#   holddown_all_stale_labels: true
+#   include_mp_next_hop: true
+#   log_updown: true
+#   loops: 3
+#   no_advertise_peer_as: true
+#   no_aggregator_id: true
+#   no_client_reflect: true
+#   out_delay: 10
+#   precision_timers: true
+#   preference: '2'
+
+# commands:
+# - <nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:bgp>
+#   <nc:accept-remote-nexthop delete="delete"/><nc:add-path-display-ipv4-address delete="delete"/><nc:advertise-bgp-t
+#   delete="delete"/><nc:include-mp-next-hop delete="delete"/><nc:ipsec-sa delete="delete"/><nc:keep delete="delete"/>
+#   <nc:local-address delete="delete"/><nc:local-interface delete="delete"/t
+#   delete="delete"/></nc:bgp><nc:bgp><nc:advertise-inactive/><nc:egress-te-sid-stats/>
+#   <nc:authentication-algorithm>md5</nc:authentication-algorithm><nc:description>Replace running bgp conf>
+# - <nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:autonomous-system delete="delete"/></nc:routing-options>
+
+#
+# after:
+#   advertise_inactive: true
+#   authentication_algorithm: md5
+#   bfd_liveness_detection:
+#     minimum_receive_interval: 8
+#     multiplier: 30
+#     no_adaptation: true
+#     transmit_interval:
+#       minimum_interval: 4
+#     version: automatic
+#   bgp_error_tolerance:
+#     malformed_route_limit: 40000000
+#   description: Replace running bgp config
+#   egress_te_sid_stats: true
+#   hold_time: 5
+#   out_delay: 10
+#   preference: '2'
+
+# After state:
+# ------------
+#
+# varx# show protocols bgp
+# description "Replace running bgp config";
+# preference 2;
+# hold-time 5;
+# advertise-inactive;
+# out-delay 10;
+# bgp-error-tolerance {
+#     malformed-route-limit 40000000;
+# }
+# authentication-algorithm md5;
+# bfd-liveness-detection {
+#     version automatic;
+#     minimum-receive-interval 8;
+#     multiplier 30;
+#     no-adaptation;
+#     transmit-interval {
+#         minimum-interval 4;
+#     }
+# }
+# egress-te-sid-stats;
+
+# vsrx# show routing-options autonomous-system
+
+# Using overridden
+# "(NOTE: This will work same as replaced operation)"
+#
+# Before state:
+# -------------
+#
+# vsrx# show routing-options autonomous-system
+# [edit]
+# vsrx# show protocols bgp
+# precision-timers;
+# advertise-from-main-vpn-tables;
+# holddown-all-stale-labels;
+# description "This is configured with Junos_bgp resource module";
+# accept-remote-nexthop;
+# preference 2;
+# hold-time 5;
+# advertise-inactive;
+# no-advertise-peer-as;
+# no-aggregator-id;
+# out-delay 10;
+# log-updown;
+# damping;
+# bgp-error-tolerance {
+#     malformed-route-limit 20000000;
+# }
+# authentication-algorithm md5;
+# no-client-reflect;
+# include-mp-next-hop;
+# bmp {
+#     monitor enable;
+# }
+# add-path-display-ipv4-address;
+# egress-te-sid-stats;
+
+- name: Override running config with provided config
+  junipernetworks.junos.junos_bgp_global:
+    config:
+      advertise_inactive: true
+      authentication_algorithm: "md5"
+      bfd_liveness_detection:
+        minimum_receive_interval: 8
+        multiplier: 30
+        no_adaptation: true
+        transmit_interval:
+          minimum_interval: 4
+        version: "automatic"
+      bgp_error_tolerance:
+        malformed_route_limit: 40000000
+      description: "Replace running bgp config"
+      egress_te_sid_stats: true
+      hold_time: 5
+      out_delay: 10
+      preference: "2"
+    state: overridden
 
 # Task Output:
 # ------------
@@ -1202,7 +1342,7 @@ EXAMPLES = """
 # vsrx# show routing-options autonomous-system
 
 # Using deleted
-#"(NOTE: This WILL delete the bgp global attributes)"
+# "(NOTE: This WILL delete the bgp global attributes)"
 # Before state
 # ------------
 #
@@ -1336,7 +1476,7 @@ EXAMPLES = """
 #   preference: '2'
 
 # Using purged
-#"(NOTE: This WILL delete the configured global BGP, and BGP address family config)"
+# "(NOTE: This WILL delete the configured global BGP, and BGP address family config)"
 
 # Before state:
 # -------------
@@ -1708,6 +1848,7 @@ def main():
     required_if = [
         ("state", "merged", ("config",)),
         ("state", "replaced", ("config",)),
+        ("state", "overridden", ("config",)),
         ("state", "rendered", ("config",)),
         ("state", "parsed", ("running_config",)),
     ]

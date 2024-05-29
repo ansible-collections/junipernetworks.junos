@@ -5,6 +5,177 @@ Junipernetworks Junos Collection Release Notes
 .. contents:: Topics
 
 
+v8.0.0
+======
+
+Major Changes
+-------------
+
+- Update the netcommon base version 6.1.0 to support cli_restore plugin.
+
+Minor Changes
+-------------
+
+- Add support for cli_restore functionality.
+- Please refer the PR to know more about core changes (https://github.com/ansible-collections/ansible.netcommon/pull/618).
+- cli_restore module is part of netcommon.
+
+v7.0.0
+======
+
+Major Changes
+-------------
+
+- This release removes previously deprecated modules from this collection. Please refer to the **Removed Features** section for details.
+
+Removed Features (previously deprecated)
+----------------------------------------
+
+- Remove deprected junos_logging module which is replaced by junos_logging_global resource module.
+
+Bugfixes
+--------
+
+- Fix the empty facts list placement
+
+v6.0.2
+======
+
+Bugfixes
+--------
+
+- acls
+- initialize facts dictionary with empty containers for respective resources mentioned below
+- lldp_global
+- lldp_interfaces
+- logging_global
+- ntp_global
+- ospf_interfaces
+- ospfv2
+- ospfv3
+- prefix_lists
+- routing_instances
+- routing_options
+- security_policies
+- security_policies_global
+- security_zones
+- snmp_server
+- static_routes
+- vlans
+
+Documentation Changes
+---------------------
+
+- Remove the part of the description which incorrectly describes the behavior and type of confirm attribute.
+- Update example performing `confirm_commit`.
+- Update with more examples using the `confirm` option to set a timer.
+
+v6.0.1
+======
+
+Bugfixes
+--------
+
+- Prevents module_defaults from were being incorrectly applied to the platform action, instead of the concerned module.
+
+v6.0.0
+======
+
+Release Summary
+---------------
+
+Starting from this release, the minimum `ansible-core` version this collection requires is `2.14.0`. That last known version compatible with ansible-core<2.14 is `v5.3.1`.
+
+Major Changes
+-------------
+
+- Bumping `requires_ansible` to `>=2.14.0`, since previous ansible-core versions are EoL now.
+
+v5.3.1
+======
+
+Bugfixes
+--------
+
+- fix to gather l2_interfaces facts with default port-mode access.
+
+Documentation Changes
+---------------------
+
+- Improve docs of prefix-lists RM.
+- ios_l2_interfaces - Fixed module documentation and examples.
+- ios_l3_interfaces - Fixed module documentation and examples.
+
+v5.3.0
+======
+
+Minor Changes
+-------------
+
+- add overridden state opperation support.
+
+Bugfixes
+--------
+
+- fix `no_advertise_adjacency_segment` config implementation.
+- fix `no_eligible_backup` config implementation.
+- fix `no_eligible_remote_backup` config implementation.
+- fix `no_interface_state_traps` config implementation.
+- fix `no_neighbor_down_notification` config implementation.
+- fix `node_link_protection` implementation.
+- fix md5 authentication which allows list of keys to be configured.
+
+v5.2.0
+======
+
+Minor Changes
+-------------
+
+- `junos_ospfv2` - Fix the authentication config when password is configured
+- `junos_ospfv2` - Rename key ospf to ospfv2 in facts.
+- `junos_ospfv2` - add area_ranges attribute which supports list of dict attributes.
+- `junos_ospfv2` - add attributes `allow_route_leaking`, `stub_network` and `as-external` to overload dict.
+- `junos_ospfv2` - add attributes `no_ignore_out_externals` to spf_options dict.
+- `junos_ospfv2` - fix to gather reference_bandwidth and rfc1583compatibility.
+- add acl_interfaces key for junos_facts output.
+
+Deprecated Features
+-------------------
+
+- `junos_ospfv2` - add deprecate warning for area_range.
+- add deprecate warning for junos_acl_interfaces key for junos facts results.
+
+Documentation Changes
+---------------------
+
+- Update examples for junos_ospfv3
+
+v5.1.0
+======
+
+Minor Changes
+-------------
+
+- Adding unlink option to junos package installation.
+
+Bugfixes
+--------
+
+- Fix enabled attribute implementation.
+- Fix lldp_global_assertion.
+- Fix sanity issues.
+- Fix the snmp view and traps configuration.
+- fix the implementation of disabling interface.
+- module should return with failure when rollback is 0 and device is not reachable.
+
+Documentation Changes
+---------------------
+
+- Update bgp_address_family docs with examples.
+- Update bgp_global docs with examples.
+- junos_interfaces - Updated documentation with examples and task output.
+- junos_static_routes - add task output to module documentation examples. (https://github.com/ansible-collections/junipernetworks.junos/pull/402).
+
 v5.0.0
 ======
 

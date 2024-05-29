@@ -113,122 +113,169 @@ notes:
 - This module requires the netconf system service be enabled on the remote device
   being managed.
 - Tested against vSRX JUNOS version 18.4R1.
-- This module works with connection C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
+- This module works with connection C(netconf).
+  See U(https://docs.ansible.com/ansible/latest/network/user_guide/platform_junos.html)
+- The module examples uses callback plugin (stdout_callback = yaml) to generate task
+  output in yaml format.
 """
+
 EXAMPLES = """
-# Using deleted
-
-# Before state:
-# -------------
-#
-# ansible@junos01# show interfaces
-# ge-0/0/1 {
-#    description "L2 interface";
-#    speed 1g;
-#    unit 0 {
-#        family ethernet-switching {
-#            interface-mode access;
-#            vlan {
-#                members vlan30;
-#            }
-#        }
-#    }
-#}
-#ge-0/0/2 {
-#    description "non L2 interface";
-#    unit 0 {
-#        family inet {
-#            address 192.168.56.14/24;
-#        }
-#    }
-
-- name: "Delete L2 attributes of given interfaces (Note: This won't delete the
-    interface itself)."
-  junipernetworks.junos.junos_l2_interfaces:
-    config:
-    - name: ge-0/0/1
-    - name: ge-0/0/2
-    state: deleted
-
-# After state:
-# ------------
-#
-# ansible@junos01# show interfaces
-# ge-0/0/1 {
-#    description "L2 interface";
-#    speed 1g;
-# }
-#ge-0/0/2 {
-#    description "non L2 interface";
-#    unit 0 {
-#        family inet {
-#            address 192.168.56.14/24;
-#        }
-#    }
-
-
 # Using merged
 
 # Before state:
 # -------------
+#
 # ansible@junos01# show interfaces
+# ge-0/0/1 {
+#     unit 0 {
+#         family inet;
+#         family inet6;
+#     }
+# }
+# ge-0/0/2 {
+#     unit 0 {
+#         family inet;
+#         family inet6;
+#     }
+# }
 # ge-0/0/3 {
-#    description "test interface";
-#    speed 1g;
-#}
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode access;
+#         }
+#     }
+# }
 # ge-0/0/4 {
-#    description interface-trunk;
-#    native-vlan-id 100;
-#    unit 0 {
-#        family ethernet-switching {
-#            interface-mode trunk;
-#            vlan {
-#                members [ vlan40 ];
-#            }
-#        }
-#    }
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode access;
+#         }
+#     }
+# }
+# fxp0 {
+#     enable;
+#     unit 0 {
+#         family inet {
+#             dhcp;
+#         }
+#         family inet6;
+#     }
 # }
 
-- name: Merge provided configuration with device configuration (default operation
-    is merge)
+- name: Merge provided configuration with device configuration
   junipernetworks.junos.junos_l2_interfaces:
     config:
-    - name: ge-0/0/3
-      access:
-        vlan: v101
-    - name: ge-0/0/4
-      trunk:
-        allowed_vlans:
-        - vlan30
-        native_vlan: 50
+      - name: ge-0/0/3
+        access:
+          vlan: v101
+      - name: ge-0/0/4
+        trunk:
+          allowed_vlans:
+            - vlan30
+          native_vlan: 50
     state: merged
+
+# Task Output
+# -----------
+#
+# before:
+# - enhanced_layer: true
+#   name: ge-0/0/3
+#   unit: 0
+# - enhanced_layer: true
+#   name: ge-0/0/4
+#   unit: 0
+# commands:
+# - <nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+# 	<nc:interface>
+# 		<nc:name>ge-0/0/3</nc:name>
+# 		<nc:unit>
+# 			<nc:name>0</nc:name>
+# 			<nc:family>
+# 				<nc:ethernet-switching>
+# 					<nc:interface-mode>access</nc:interface-mode>
+# 					<nc:vlan>
+# 						<nc:members>v101</nc:members>
+# 					</nc:vlan>
+# 				</nc:ethernet-switching>
+# 			</nc:family>
+# 		</nc:unit>
+# 	</nc:interface>
+# 	<nc:interface>
+# 		<nc:name>ge-0/0/4</nc:name>
+# 		<nc:unit>
+# 			<nc:name>0</nc:name>
+# 			<nc:family>
+# 				<nc:ethernet-switching>
+# 					<nc:interface-mode>trunk</nc:interface-mode>
+# 					<nc:vlan>
+# 						<nc:members>vlan30</nc:members>
+# 					</nc:vlan>
+# 				</nc:ethernet-switching>
+# 			</nc:family>
+# 		</nc:unit>
+# 		<nc:native-vlan-id>50</nc:native-vlan-id>
+# 	</nc:interface>
+# </nc:interfaces>
+# after:
+# - access:
+#     vlan: v101
+#   enhanced_layer: true
+#   name: ge-0/0/3
+#   unit: 0
+# - enhanced_layer: true
+#   name: ge-0/0/4
+#   trunk:
+#     allowed_vlans:
+#     - vlan30
+#     native_vlan: '50'
+#   unit: 0
 
 # After state:
 # ------------
+#
 # user@junos01# show interfaces
+# ge-0/0/1 {
+#     unit 0 {
+#         family inet;
+#         family inet6;
+#     }
+# }
+# ge-0/0/2 {
+#     unit 0 {
+#         family inet;
+#         family inet6;
+#     }
+# }
 # ge-0/0/3 {
-#    description "test interface";
-#    speed 1g;
-#    unit 0 {
-#        family ethernet-switching {
-#            interface-mode access;
-#            vlan {
-#                members v101;
-#            }
-#        }
-#    }
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode access;
+#             vlan {
+#                 members v101;
+#             }
+#         }
+#     }
 # }
 # ge-0/0/4 {
-#    description interface-trunk;
-#    native-vlan-id 50;
-#    unit 0 {
-#        family ethernet-switching {
-#            interface-mode trunk;
-#            vlan {
-#                members [ vlan40 vlan30 ];
-#            }
-#        }
-#    }
+#     native-vlan-id 50;
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode trunk;
+#             vlan {
+#                 members vlan30;
+#             }
+#         }
+#     }
+# }
+# fxp0 {
+#     enable;
+#     unit 0 {
+#         family inet {
+#             dhcp;
+#         }
+#         family inet6;
+#     }
 # }
 
 
@@ -237,214 +284,488 @@ EXAMPLES = """
 # Before state:
 # -------------
 # ansible@junos01# show interfaces
-# ge-0/0/3 {
-#    description "test interface";
-#    speed 1g;
-#}
-# ge-0/0/4 {
-#    description interface-trunk;
-#    native-vlan-id 100;
-#    unit 0 {
-#        family ethernet-switching {
-#            interface-mode trunk;
-#            vlan {
-#                members [ vlan40 ];
-#            }
-#        }
-#    }
+# ge-0/0/1 {
+#     unit 0 {
+#         family inet;
+#         family inet6;
+#     }
 # }
-# ge-0/0/5 {
-#    description "Configured by Ansible-11";
-#    unit 0 {
-#        family ethernet-switching {
-#            interface-mode access;
-#            vlan {
-#                members v101;
-#            }
-#        }
-#    }
+# ge-0/0/2 {
+#     unit 0 {
+#         family inet;
+#         family inet6;
+#     }
+# }
+# ge-0/0/3 {
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode access;
+#             vlan {
+#                 members v101;
+#             }
+#         }
+#     }
+# }
+# ge-0/0/4 {
+#     native-vlan-id 50;
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode trunk;
+#             vlan {
+#                 members vlan30;
+#             }
+#         }
+#     }
+# }
+# fxp0 {
+#     enable;
+#     unit 0 {
+#         family inet {
+#             dhcp;
+#         }
+#         family inet6;
+#     }
 # }
 
 - name: Override provided configuration with device configuration
   junipernetworks.junos.junos_l2_interfaces:
     config:
-    - name: ge-0/0/3
-      access:
-        vlan: v101
-    - name: ge-0/0/4
-      trunk:
-        allowed_vlans:
-        - vlan30
-        native_vlan: 50
+      - name: ge-0/0/4
+        trunk:
+          allowed_vlans:
+            - v101
+          native_vlan: 30
     state: overridden
+
+# Task Output
+# -----------
+#
+# before:
+# - access:
+#     vlan: v101
+#   enhanced_layer: true
+#   name: ge-0/0/3
+#   unit: 0
+# - enhanced_layer: true
+#   name: ge-0/0/4
+#   trunk:
+#     allowed_vlans:
+#     - vlan30
+#     native_vlan: '50'
+#   unit: 0
+# commands:
+# - <nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+#   <nc:interface>
+#     <nc:name>ge-0/0/4</nc:name>
+#     <nc:unit>
+#       <nc:name>0</nc:name>
+#       <nc:family>
+#         <nc:ethernet-switching>
+#           <nc:interface-mode delete="delete"/>
+#           <nc:vlan delete="delete"/>
+#         </nc:ethernet-switching>
+#       </nc:family>
+#     </nc:unit>
+#     <nc:native-vlan-id delete="delete"/>
+#   </nc:interface>
+#   <nc:interface>
+#     <nc:name>ge-0/0/4</nc:name>
+#     <nc:unit>
+#       <nc:name>0</nc:name>
+#       <nc:family>
+#         <nc:ethernet-switching>
+#           <nc:interface-mode>trunk</nc:interface-mode>
+#           <nc:vlan>
+#             <nc:members>v101</nc:members>
+#           </nc:vlan>
+#         </nc:ethernet-switching>
+#       </nc:family>
+#     </nc:unit>
+#     <nc:native-vlan-id>30</nc:native-vlan-id>
+#   </nc:interface>
+#   <nc:interface>
+#     <nc:name>ge-0/0/3</nc:name>
+#     <nc:unit>
+#       <nc:name>0</nc:name>
+#       <nc:family>
+#         <nc:ethernet-switching>
+#           <nc:interface-mode delete="delete"/>
+#           <nc:vlan delete="delete"/>
+#         </nc:ethernet-switching>
+#       </nc:family>
+#     </nc:unit>
+#     <nc:native-vlan-id delete="delete"/>
+#   </nc:interface>
+# </nc:interfaces>
+# after:
+# - enhanced_layer: true
+#   name: ge-0/0/4
+#   trunk:
+#     allowed_vlans:
+#     - v101
+#     native_vlan: '30'
+#   unit: 0
 
 # After state:
 # ------------
 # user@junos01# show interfaces
+# ge-0/0/1 {
+#     unit 0 {
+#         family inet;
+#         family inet6;
+#     }
+# }
+# ge-0/0/2 {
+#     unit 0 {
+#         family inet;
+#         family inet6;
+#     }
+# }
 # ge-0/0/3 {
-#    unit 0 {
-#        family ethernet-switching {
-#            interface-mode access;
-#            vlan {
-#                members v101;
-#            }
-#        }
-#    }
+#     unit 0 {
+#         family ethernet-switching;
+#     }
 # }
 # ge-0/0/4 {
-#    description interface-trunk;
-#    native-vlan-id 50;
-#    unit 0 {
-#        family ethernet-switching {
-#            interface-mode trunk;
-#            vlan {
-#                members [ vlan30 ];
-#            }
-#        }
-#    }
+#     native-vlan-id 30;
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode trunk;
+#             vlan {
+#                 members v101;
+#             }
+#         }
+#     }
 # }
-
+# fxp0 {
+#     enable;
+#     unit 0 {
+#         family inet {
+#             dhcp;
+#         }
+#         family inet6;
+#     }
+# }
 
 # Using replaced
 
 # Before state:
 # -------------
+#
 # ansible@junos01# show interfaces
+# ge-0/0/1 {
+#     unit 0 {
+#         family inet;
+#         family inet6;
+#     }
+# }
+# ge-0/0/2 {
+#     unit 0 {
+#         family inet;
+#         family inet6;
+#     }
+# }
 # ge-0/0/3 {
-#    description "test interface";
-#    speed 1g;
-#}
+#     unit 0 {
+#         family ethernet-switching;
+#     }
+# }
 # ge-0/0/4 {
-#    description interface-trunk;
-#    native-vlan-id 100;
-#    unit 0 {
-#        family ethernet-switching {
-#            interface-mode trunk;
-#            vlan {
-#                members [ vlan40 ];
-#            }
-#        }
-#    }
+#     native-vlan-id 30;
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode trunk;
+#             vlan {
+#                 members v101;
+#             }
+#         }
+#     }
+# }
+# fxp0 {
+#     enable;
+#     unit 0 {
+#         family inet {
+#             dhcp;
+#         }
+#         family inet6;
+#     }
 # }
 
 - name: Replace provided configuration with device configuration
   junipernetworks.junos.junos_l2_interfaces:
     config:
-    - name: ge-0/0/3
-      access:
-        vlan: v101
-    - name: ge-0/0/4
-      trunk:
-        allowed_vlans:
-        - vlan30
-        native_vlan: 50
+      - name: ge-0/0/3
+        access:
+          vlan: v101
+      - name: ge-0/0/4
+        trunk:
+          allowed_vlans:
+            - vlan30
+          native_vlan: 50
     state: replaced
+
+# Task Output
+# -----------
+#
+# before:
+# - enhanced_layer: true
+#   name: ge-0/0/4
+#   trunk:
+#     allowed_vlans:
+#     - v101
+#     native_vlan: '30'
+#   unit: 0
+# commands:
+# - <nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+#   <nc:interface>
+#     <nc:name>ge-0/0/4</nc:name>
+#     <nc:unit>
+#       <nc:name>0</nc:name>
+#       <nc:family>
+#         <nc:ethernet-switching>
+#           <nc:interface-mode delete="delete"/>
+#           <nc:vlan delete="delete"/>
+#         </nc:ethernet-switching>
+#       </nc:family>
+#     </nc:unit>
+#     <nc:native-vlan-id delete="delete"/>
+#   </nc:interface>
+#   <nc:interface>
+#     <nc:name>ge-0/0/3</nc:name>
+#     <nc:unit>
+#       <nc:name>0</nc:name>
+#       <nc:family>
+#         <nc:ethernet-switching>
+#           <nc:interface-mode>access</nc:interface-mode>
+#           <nc:vlan>
+#             <nc:members>v101</nc:members>
+#           </nc:vlan>
+#         </nc:ethernet-switching>
+#       </nc:family>
+#     </nc:unit>
+#   </nc:interface>
+#   <nc:interface>
+#     <nc:name>ge-0/0/4</nc:name>
+#     <nc:unit>
+#       <nc:name>0</nc:name>
+#       <nc:family>
+#         <nc:ethernet-switching>
+#           <nc:interface-mode>trunk</nc:interface-mode>
+#           <nc:vlan>
+#             <nc:members>vlan30</nc:members>
+#           </nc:vlan>
+#         </nc:ethernet-switching>
+#       </nc:family>
+#     </nc:unit>
+#     <nc:native-vlan-id>50</nc:native-vlan-id>
+#   </nc:interface>
+# </nc:interfaces>
+# after:
+# - access:
+#     vlan: v101
+#   enhanced_layer: true
+#   name: ge-0/0/3
+#   unit: 0
+# - enhanced_layer: true
+#   name: ge-0/0/4
+#   trunk:
+#     allowed_vlans:
+#     - vlan30
+#     native_vlan: '50'
+#   unit: 0
 
 # After state:
 # ------------
-# user@junos01# show interfaces
-# ge-0/0/3 {
-#    unit 0 {
-#        family ethernet-switching {
-#            interface-mode access;
-#            vlan {
-#                members v101;
-#            }
-#        }
-#    }
-# }
-# ge-0/0/4 {
-#    description interface-trunk;
-#    native-vlan-id 50;
-#    unit 0 {
-#        family ethernet-switching {
-#            interface-mode trunk;
-#            vlan {
-#                members [ vlan30 ];
-#            }
-#        }
-#    }
-# }
-# Using gathered
-# Before state:
-# ------------
 #
 # user@junos01# show interfaces
 # ge-0/0/1 {
-#     description "Configured by Ansible";
-#     disable;
-#     speed 100m;
-#     mtu 1024;
-#     hold-time up 2000 down 2200;
-#     link-mode full-duplex;
+#     unit 0 {
+#         family inet;
+#         family inet6;
+#     }
+# }
+# ge-0/0/2 {
+#     unit 0 {
+#         family inet;
+#         family inet6;
+#     }
+# }
+# ge-0/0/3 {
 #     unit 0 {
 #         family ethernet-switching {
 #             interface-mode access;
 #             vlan {
-#                 members vlan100;
+#                 members v101;
 #             }
 #         }
 #     }
 # }
-# ge-0/0/2 {
-#     description "Configured by Ansible";
-#     native-vlan-id 400;
-#     speed 10m;
-#     mtu 2048;
-#     hold-time up 3000 down 3200;
+# ge-0/0/4 {
+#     native-vlan-id 50;
 #     unit 0 {
 #         family ethernet-switching {
 #             interface-mode trunk;
 #             vlan {
-#                 members [ vlan200 vlan300 ];
+#                 members vlan30;
 #             }
 #         }
 #     }
 # }
-# em1 {
-#     description TEST;
-# }
 # fxp0 {
-#     description ANSIBLE;
-#     speed 1g;
-#     link-mode automatic;
+#     enable;
 #     unit 0 {
 #         family inet {
-#             address 10.8.38.38/24;
+#             dhcp;
+#         }
+#         family inet6;
+#     }
+# }
+
+# Using deleted
+
+# Before state:
+# -------------
+#
+# ansible@junos01# show interfaces
+# ge-0/0/1 {
+#     unit 0 {
+#         family inet;
+#         family inet6;
+#     }
+# }
+# ge-0/0/2 {
+#     unit 0 {
+#         family inet;
+#         family inet6;
+#     }
+# }
+# ge-0/0/3 {
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode access;
+#             vlan {
+#                 members v101;
+#             }
 #         }
 #     }
 # }
-- name: Gather junos layer 2 interfaces as in given arguments
-  junipernetworks.junos.junos_l2_interfaces:
-    state: gathered
-# Task Output (redacted)
-# -----------------------
-#
-# "gathered": [
-#         {
-#             "access": {
-#                 "vlan": "vlan100"
-#             },
-#             "enhanced_layer": true,
-#             "name": "ge-0/0/1",
-#             "unit": 0
-#         },
-#         {
-#             "enhanced_layer": true,
-#             "name": "ge-0/0/2",
-#             "trunk": {
-#                 "allowed_vlans": [
-#                     "vlan200",
-#                     "vlan300"
-#                 ],
-#                 "native_vlan": "400"
-#             },
-#             "unit": 0
+# ge-0/0/4 {
+#     native-vlan-id 50;
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode trunk;
+#             vlan {
+#                 members vlan30;
+#             }
 #         }
-#     ]
+#     }
+# }
+# fxp0 {
+#     enable;
+#     unit 0 {
+#         family inet {
+#             dhcp;
+#         }
+#         family inet6;
+#     }
+# }
+
+- name: "Delete L2 attributes of given interfaces (Note: This won't delete the
+    interface itself)."
+  junipernetworks.junos.junos_l2_interfaces:
+    config:
+      - name: ge-0/0/1
+      - name: ge-0/0/2
+    state: deleted
+
+# Task Output
+# -----------
+#
+# before:
+# - access:
+#     vlan: v101
+#   enhanced_layer: true
+#   name: ge-0/0/3
+#   unit: 0
+# - enhanced_layer: true
+#   name: ge-0/0/4
+#   trunk:
+#     allowed_vlans:
+#     - vlan30
+#     native_vlan: '50'
+#   unit: 0
+# commands:
+# - <nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+#   <nc:interface>
+#     <nc:name>ge-0/0/3</nc:name>
+#     <nc:unit>
+#       <nc:name>0</nc:name>
+#       <nc:family>
+#         <nc:ethernet-switching>
+#           <nc:interface-mode delete="delete"/>
+#           <nc:vlan delete="delete"/>
+#         </nc:ethernet-switching>
+#       </nc:family>
+#     </nc:unit>
+#     <nc:native-vlan-id delete="delete"/>
+#   </nc:interface>
+# </nc:interfaces>
+# after:
+# - enhanced_layer: true
+#   name: ge-0/0/4
+#   trunk:
+#     allowed_vlans:
+#     - vlan30
+#     native_vlan: '50'
+#   unit: 0
+
 # After state:
 # ------------
 #
+# ansible@junos01# show interfaces
+# ge-0/0/1 {
+#     unit 0 {
+#         family inet;
+#         family inet6;
+#     }
+# }
+# ge-0/0/2 {
+#     unit 0 {
+#         family inet;
+#         family inet6;
+#     }
+# }
+# ge-0/0/3 {
+#     unit 0 {
+#         family ethernet-switching;
+#     }
+# }
+# ge-0/0/4 {
+#     native-vlan-id 50;
+#     unit 0 {
+#         family ethernet-switching {
+#             interface-mode trunk;
+#             vlan {
+#                 members vlan30;
+#             }
+#         }
+#     }
+# }
+# fxp0 {
+#     enable;
+#     unit 0 {
+#         family inet {
+#             dhcp;
+#         }
+#         family inet6;
+#     }
+# }
+
+# Using gathered
+
+# Before state:
+# -------------
+#
 # user@junos01# show interfaces
 # ge-0/0/1 {
 #     description "Configured by Ansible";
@@ -490,7 +811,31 @@ EXAMPLES = """
 #         }
 #     }
 # }
+
+- name: Gather junos layer 2 interfaces facts
+  junipernetworks.junos.junos_l2_interfaces:
+    state: gathered
+
+# Task Output
+# -----------
+#
+# gathered:
+# - access:
+#     vlan: vlan100
+#   enhanced_layer: true
+#   name: ge-0/0/1
+#   unit: 0
+# - enhanced_layer: true
+#   name: ge-0/0/2
+#   trunk:
+#     allowed_vlans:
+#     - vlan200
+#     - vlan300
+#     native_vlan: '400'
+#   unit: 0
+
 # Using parsed
+
 # parsed.cfg
 # ------------
 #
@@ -524,36 +869,32 @@ EXAMPLES = """
 #         </interfaces>
 #     </configuration>
 # </rpc-reply>
-# - name: Convert interfaces config to argspec without connecting to the appliance
-#   junipernetworks.junos.junos_l2_interfaces:
-#     running_config: "{{ lookup('file', './parsed.cfg') }}"
-#     state: parsed
-# Task Output (redacted)
-# -----------------------
-# "parsed": [
-#         {
-#             "access": {
-#                 "vlan": "vlan100"
-#             },
-#             "enhanced_layer": true,
-#             "name": "ge-0/0/1",
-#             "unit": 0
-#         },
-#         {
-#             "enhanced_layer": true,
-#             "name": "ge-0/0/2",
-#             "trunk": {
-#                 "allowed_vlans": [
-#                     "vlan200",
-#                     "vlan300"
-#                 ],
-#                 "native_vlan": "400"
-#             },
-#             "unit": 0
-#         }
-#     ]
+
+- name: Convert interfaces config to argspec without connecting to the appliance
+  junipernetworks.junos.junos_l2_interfaces:
+    running_config: "{{ lookup('file', './parsed.cfg') }}"
+    state: parsed
+
+# Task Output
+# -----------
 #
+# parsed:
+# - access:
+#     vlan: vlan100
+#   enhanced_layer: true
+#   name: ge-0/0/1
+#   unit: 0
+# - enhanced_layer: true
+#   name: ge-0/0/2
+#   trunk:
+#     allowed_vlans:
+#     - vlan200
+#     - vlan300
+#     native_vlan: '400'
+#   unit: 0
+
 # Using rendered
+
 - name: Render platform specific xml from task input using rendered state
   junipernetworks.junos.junos_l2_interfaces:
     config:
@@ -567,10 +908,11 @@ EXAMPLES = """
             - vlan300
           native_vlan: '400'
     state: rendered
-# Task Output (redacted)
-# -----------------------
-# "rendered": "<nc:interfaces
-#     xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
+
+# Task Output
+# -----------
+#
+# "rendered": "<nc:interfaces xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
 #     <nc:interface>
 #         <nc:name>ge-0/0/1</nc:name>
 #         <nc:unit>
@@ -602,8 +944,8 @@ EXAMPLES = """
 #         <nc:native-vlan-id>400</nc:native-vlan-id>
 #     </nc:interface>
 # </nc:interfaces>"
-
 """
+
 RETURN = """
 before:
   description: The configuration as structured data prior to module invocation.
@@ -624,38 +966,61 @@ commands:
   returned: always
   type: list
   sample: ['<nc:interfaces
-                                   xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
-                                   <nc:interface>
-                                       <nc:name>ge-0/0/1</nc:name>
-                                       <nc:unit>
-                                           <nc:name>0</nc:name>
-                                           <nc:family>
-                                               <nc:ethernet-switching>
-                                                   <nc:interface-mode>access</nc:interface-mode>
-                                                   <nc:vlan>
-                                                       <nc:members>vlan100</nc:members>
-                                                   </nc:vlan>
-                                               </nc:ethernet-switching>
-                                           </nc:family>
-                                       </nc:unit>
-                                   </nc:interface>
-                                   <nc:interface>
-                                       <nc:name>ge-0/0/2</nc:name>
-                                       <nc:unit>
-                                           <nc:name>0</nc:name>
-                                           <nc:family>
-                                               <nc:ethernet-switching>
-                                                   <nc:interface-mode>trunk</nc:interface-mode>
-                                                   <nc:vlan>
-                                                       <nc:members>vlan200</nc:members>
-                                                       <nc:members>vlan300</nc:members>
-                                                   </nc:vlan>
-                                               </nc:ethernet-switching>
-                                           </nc:family>
-                                       </nc:unit>
-                                       <nc:native-vlan-id>400</nc:native-vlan-id>
-                                   </nc:interface>
-                               </nc:interfaces>', 'xml 2', 'xml 3']
+    xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
+    <nc:interface>
+        <nc:name>ge-0/0/1</nc:name>
+        <nc:unit>
+            <nc:name>0</nc:name>
+            <nc:family>
+                <nc:ethernet-switching>
+                    <nc:interface-mode>access</nc:interface-mode>
+                    <nc:vlan>
+                        <nc:members>vlan100</nc:members>
+                    </nc:vlan>
+                </nc:ethernet-switching>
+            </nc:family>
+        </nc:unit>
+    </nc:interface>
+    <nc:interface>
+        <nc:name>ge-0/0/2</nc:name>
+        <nc:unit>
+            <nc:name>0</nc:name>
+            <nc:family>
+                <nc:ethernet-switching>
+                    <nc:interface-mode>trunk</nc:interface-mode>
+                    <nc:vlan>
+                        <nc:members>vlan200</nc:members>
+                        <nc:members>vlan300</nc:members>
+                    </nc:vlan>
+                </nc:ethernet-switching>
+            </nc:family>
+        </nc:unit>
+        <nc:native-vlan-id>400</nc:native-vlan-id>
+    </nc:interface>
+</nc:interfaces>', 'xml 2', 'xml 3']
+rendered:
+  description: The provided configuration in the
+    task rendered in device-native format (offline).
+  returned: when I(state) is C(rendered)
+  type: list
+  sample:
+    - <nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+gathered:
+  description: Facts about the network resource gathered
+    from the remote device as structured data.
+  returned: when I(state) is C(gathered)
+  type: list
+  sample: >
+    This output will always be in the same format as the
+    module argspec.
+parsed:
+  description: The device native config provided in I(running_config) option parsed
+    into structured data as per module argspec.
+  returned: when I(state) is C(parsed)
+  type: list
+  sample: >
+    This output will always be in the same format as the
+    module argspec.
 """
 
 

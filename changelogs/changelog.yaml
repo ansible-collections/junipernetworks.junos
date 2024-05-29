@@ -484,3 +484,174 @@ releases:
       - update_bgp_global_fqcn.yaml
       - update_reboot_timer.yaml
     release_date: "2023-02-28"
+  5.1.0:
+    changes:
+      bugfixes:
+        - Fix enabled attribute implementation.
+        - Fix lldp_global_assertion.
+        - Fix sanity issues.
+        - Fix the snmp view and traps configuration.
+        - fix the implementation of disabling interface.
+        - module should return with failure when rollback is 0 and device is not reachable.
+      doc_changes:
+        - Update bgp_address_family docs with examples.
+        - Update bgp_global docs with examples.
+        - junos_interfaces - Updated documentation with examples and task output.
+        - junos_static_routes - add task output to module documentation examples. (https://github.com/ansible-collections/junipernetworks.junos/pull/402).
+      minor_changes:
+        - Adding unlink option to junos package installation.
+    fragments:
+      - boolean_normalization.yaml
+      - ci_codecov.yaml
+      - codecov_fix.yml
+      - fix_docs_static_route.yaml
+      - fix_downstream.yaml
+      - fix_downstream_testing_issues.yaml
+      - fix_enabling.yaml
+      - fix_lldp_global_assertion.yaml
+      - fix_snmp_traps_and_view.yaml
+      - gha_workflow_fix.yml
+      - junos_cofig_rollback_fix.yaml
+      - lldp_global_test_update.yaml
+      - package_unlink.yaml
+      - update_bgp_address_family_docs.yaml
+      - update_bgp_global_docs.yaml
+      - update_inft_docs.yaml
+      - update_timeout.yaml
+    release_date: "2023-04-28"
+  5.2.0:
+    changes:
+      deprecated_features:
+        - "`junos_ospfv2` - add deprecate warning for area_range."
+        - add deprecate warning for junos_acl_interfaces key for junos facts results.
+      doc_changes:
+        - Update examples for junos_ospfv3
+      minor_changes:
+        - "`junos_ospfv2` - Fix the authentication config when password is configured"
+        - "`junos_ospfv2` - Rename key ospf to ospfv2 in facts."
+        - "`junos_ospfv2` - add area_ranges attribute which supports list of dict attributes."
+        - "`junos_ospfv2` - add attributes `allow_route_leaking`, `stub_network` and
+          `as-external` to overload dict."
+        - "`junos_ospfv2` - add attributes `no_ignore_out_externals` to spf_options
+          dict."
+        - "`junos_ospfv2` - fix to gather reference_bandwidth and rfc1583compatibility."
+        - add acl_interfaces key for junos_facts output.
+    fragments:
+      - add_gha_periodic.yaml
+      - deprecate_junos_acl_interafaces_facts_key.yaml
+      - gha_release.yml
+      - junos_ospfv2_fixes.yaml
+      - junos_ospfv3_health_check.yaml
+      - lint.yaml
+    release_date: "2023-07-05"
+  5.3.0:
+    changes:
+      bugfixes:
+        - fix `no_advertise_adjacency_segment` config implementation.
+        - fix `no_eligible_backup` config implementation.
+        - fix `no_eligible_remote_backup` config implementation.
+        - fix `no_interface_state_traps` config implementation.
+        - fix `no_neighbor_down_notification` config implementation.
+        - fix `node_link_protection` implementation.
+        - fix md5 authentication which allows list of keys to be configured.
+      minor_changes:
+        - add overridden state opperation support.
+    fragments:
+      - bgp_global_tests_fix.yaml
+      - codecov_pr.yml
+      - overridden_support.yaml
+    release_date: "2023-09-06"
+  5.3.1:
+    changes:
+      bugfixes:
+        - fix to gather l2_interfaces facts with default port-mode access.
+      doc_changes:
+        - Improve docs of prefix-lists RM.
+        - ios_l2_interfaces - Fixed module documentation and examples.
+        - ios_l3_interfaces - Fixed module documentation and examples.
+    fragments:
+      - default_mode_l2_interfaces.yaml
+      - fix_prefix_lists_docs.yaml
+      - lint_fixtures.yaml
+      - sanity_job_fix.yaml
+      - update_l2_3_docs.yaml
+    release_date: "2023-11-27"
+  6.0.0:
+    changes:
+      major_changes:
+        - Bumping `requires_ansible` to `>=2.14.0`, since previous ansible-core versions
+          are EoL now.
+      release_summary:
+        Starting from this release, the minimum `ansible-core` version
+        this collection requires is `2.14.0`. That last known version compatible with
+        ansible-core<2.14 is `v5.3.1`.
+    fragments:
+      - update_l2_interfaces_tests.yaml
+    release_date: "2023-11-30"
+  6.0.1:
+    changes:
+      bugfixes:
+        - Prevents module_defaults from were being incorrectly applied to the platform
+          action, instead of the concerned module.
+    fragments:
+      - module_defaults.yaml
+      - trivial_lint.yaml
+    release_date: "2024-01-31"
+  6.0.2:
+    changes:
+      bugfixes:
+        - acls
+        - initialize facts dictionary with empty containers for respective resources
+          mentioned below
+        - lldp_global
+        - lldp_interfaces
+        - logging_global
+        - ntp_global
+        - ospf_interfaces
+        - ospfv2
+        - ospfv3
+        - prefix_lists
+        - routing_instances
+        - routing_options
+        - security_policies
+        - security_policies_global
+        - security_zones
+        - snmp_server
+        - static_routes
+        - vlans
+      doc_changes:
+        - Remove the part of the description which incorrectly describes the behavior
+          and type of confirm attribute.
+        - Update example performing `confirm_commit`.
+        - Update with more examples using the `confirm` option to set a timer.
+    fragments:
+      - empty_facts.yaml
+      - update_junos_config_docs.yaml
+    release_date: "2024-03-06"
+  7.0.0:
+    changes:
+      bugfixes:
+        - Fix the empty facts list placement
+      major_changes:
+        - This release removes previously deprecated modules from this collection. Please
+          refer to the **Removed Features** section for details.
+      removed_features:
+        - Remove deprected junos_logging module which is replaced by junos_logging_global
+          resource module.
+    fragments:
+      - fix_upstream_tetst.yaml
+      - remove_deprecated.yaml
+      - trivial_tests_updates.yaml
+    release_date: "2024-03-27"
+  8.0.0:
+    changes:
+      major_changes:
+        - Update the netcommon base version 6.1.0 to support cli_restore plugin.
+      minor_changes:
+        - Add support for cli_restore functionality.
+        - Please refer the PR to know more about core changes (https://github.com/ansible-collections/ansible.netcommon/pull/618).
+        - cli_restore module is part of netcommon.
+    fragments:
+      - 218sanity.yml
+      - add_restore_implementation.yaml
+    release_date: "2024-04-13"

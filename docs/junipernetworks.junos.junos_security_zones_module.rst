@@ -1141,72 +1141,72 @@ Examples
             description: test description
             host_inbound_traffic:
               protocols:
-              - name: all
-              - name: bgp
-                except: true
+                - name: all
+                - name: bgp
+                  except: true
               system_services:
-              - name: all
-              - except: true
-                name: dhcp
+                - name: all
+                - except: true
+                  name: dhcp
             interfaces:
               - ge-0/0/1.0
               - ge-0/0/2.0
             screen: test_screen
           security_zones:
-          - address_book:
-              address_sets:
-              - addresses:
-                - test_adr1
-                - test_adr2
-                name: test_adrset1
-              - addresses:
-                - test_adr3
-                - test_adr4
-                name: test_adrset2
-              - address_sets:
-                - test_adrset1
-                - test_adrset2
+            - address_book:
+                address_sets:
+                  - addresses:
+                      - test_adr1
+                      - test_adr2
+                    name: test_adrset1
+                  - addresses:
+                      - test_adr3
+                      - test_adr4
+                    name: test_adrset2
+                  - address_sets:
+                      - test_adrset1
+                      - test_adrset2
+                    addresses:
+                      - test_adr5
+                    description: test description
+                    name: test_adrset3
                 addresses:
-                - test_adr5
-                description: test description
-                name: test_adrset3
-              addresses:
-              - description: test desc
-                ip_prefix: 10.0.0.0/24
-                name: test_adr1
-              - dns_name:
-                  ipv6_only: true
-                  name: 1.1.1.1
-                name: test_adr2
-              - name: test_adr3
-                range_address:
-                  from: 10.2.0.1
-                  to: 10.2.0.2
-              - name: test_adr4
-                wildcard_address: 10.3.0.1/24
-              - description: test desc
-                ip_prefix: 10.1.0.0/24
-                name: test_adr5
-            advance_policy_based_routing_profile: test_profile
-            application_tracking: true
-            description: test description
-            enable_reverse_reroute: true
-            host_inbound_traffic:
-              protocols:
-              - name: all
-              - except: true
-                name: bgp
-              system_services:
-              - name: all
-              - except: true
-                name: dhcp
-            interfaces:
-            - ge-0/0/3.0
-            - ge-0/0/4.0
-            name: test_sec_zone1
-            screen: test_screen
-            source_identity_log: true
-            tcp_rst: true
+                  - description: test desc
+                    ip_prefix: 10.0.0.0/24
+                    name: test_adr1
+                  - dns_name:
+                      ipv6_only: true
+                      name: 1.1.1.1
+                    name: test_adr2
+                  - name: test_adr3
+                    range_address:
+                      from: 10.2.0.1
+                      to: 10.2.0.2
+                  - name: test_adr4
+                    wildcard_address: 10.3.0.1/24
+                  - description: test desc
+                    ip_prefix: 10.1.0.0/24
+                    name: test_adr5
+              advance_policy_based_routing_profile: test_profile
+              application_tracking: true
+              description: test description
+              enable_reverse_reroute: true
+              host_inbound_traffic:
+                protocols:
+                  - name: all
+                  - except: true
+                    name: bgp
+                system_services:
+                  - name: all
+                  - except: true
+                    name: dhcp
+              interfaces:
+                - ge-0/0/3.0
+                - ge-0/0/4.0
+              name: test_sec_zone1
+              screen: test_screen
+              source_identity_log: true
+              tcp_rst: true
         state: merged
     #
     # -------------------------
@@ -1565,16 +1565,16 @@ Examples
             description: test description
             host_inbound_traffic:
               protocols:
-              - name: all
-              - name: bgp
-                except: true
+                - name: all
+                - name: bgp
+                  except: true
               system_services:
-              - name: all
-              - except: true
-                name: dhcp
-            interfaces:
-              - ge-0/0/1.0
-              - ge-0/0/2.0
+                - name: all
+                - except: true
+                  name: dhcp
+              interfaces:
+                - ge-0/0/1.0
+                - ge-0/0/2.0
             screen: test_screen
         state: replaced
     #
@@ -1880,13 +1880,13 @@ Examples
             description: test description
             host_inbound_traffic:
               protocols:
-              - name: all
-              - name: bgp
-                except: true
+                - name: all
+                - name: bgp
+                  except: true
               system_services:
-              - name: all
-              - except: true
-                name: dhcp
+                - name: all
+                - except: true
+                  name: dhcp
             interfaces:
               - ge-0/0/1.0
               - ge-0/0/2.0
@@ -2413,72 +2413,72 @@ Examples
             description: test description
             host_inbound_traffic:
               protocols:
-              - name: all
-              - name: bgp
-                except: true
+                - name: all
+                - name: bgp
+                  except: true
               system_services:
-              - name: all
-              - except: true
-                name: dhcp
+                - name: all
+                - except: true
+                  name: dhcp
             interfaces:
               - ge-0/0/1.0
               - ge-0/0/2.0
             screen: test_screen
           security_zones:
-          - address_book:
-              address_sets:
-              - addresses:
-                - test_adr1
-                - test_adr2
-                name: test_adrset1
-              - addresses:
-                - test_adr3
-                - test_adr4
-                name: test_adrset2
-              - address_sets:
-                - test_adrset1
-                - test_adrset2
+            - address_book:
+                address_sets:
+                  - addresses:
+                      - test_adr1
+                      - test_adr2
+                    name: test_adrset1
+                  - addresses:
+                      - test_adr3
+                      - test_adr4
+                    name: test_adrset2
+                  - address_sets:
+                      - test_adrset1
+                      - test_adrset2
+                  - addresses:
+                      - test_adr5
+                    description: test description
+                    name: test_adrset3
                 addresses:
-                - test_adr5
-                description: test description
-                name: test_adrset3
-              addresses:
-              - description: test desc
-                ip_prefix: 10.0.0.0/24
-                name: test_adr1
-              - dns_name:
-                  ipv6_only: true
-                  name: 1.1.1.1
-                name: test_adr2
-              - name: test_adr3
-                range_address:
-                  from: 10.2.0.1
-                  to: 10.2.0.2
-              - name: test_adr4
-                wildcard_address: 10.3.0.1/24
-              - description: test desc
-                ip_prefix: 10.1.0.0/24
-                name: test_adr5
-            advance_policy_based_routing_profile: test_profile
-            application_tracking: true
-            description: test description
-            enable_reverse_reroute: true
-            host_inbound_traffic:
-              protocols:
-              - name: all
-              - except: true
-                name: bgp
-              system_services:
-              - name: all
-              - except: true
-                name: dhcp
-            interfaces:
-            - ge-0/0/3.0
-            - ge-0/0/4.0
-            name: test_sec_zone1
-            screen: test_screen
-            source_identity_log: true
-            tcp_rst: true
+                  - description: test desc
+                    ip_prefix: 10.0.0.0/24
+                    name: test_adr1
+                  - dns_name:
+                      ipv6_only: true
+                      name: 1.1.1.1
+                    name: test_adr2
+                  - name: test_adr3
+                    range_address:
+                      from: 10.2.0.1
+                      to: 10.2.0.2
+                  - name: test_adr4
+                    wildcard_address: 10.3.0.1/24
+                  - description: test desc
+                    ip_prefix: 10.1.0.0/24
+                    name: test_adr5
+              advance_policy_based_routing_profile: test_profile
+              application_tracking: true
+              description: test description
+              enable_reverse_reroute: true
+              host_inbound_traffic:
+                protocols:
+                  - name: all
+                  - except: true
+                    name: bgp
+                system_services:
+                  - name: all
+                  - except: true
+                    name: dhcp
+              interfaces:
+                - ge-0/0/3.0
+                - ge-0/0/4.0
+              name: test_sec_zone1
+              screen: test_screen
+              source_identity_log: true
+              tcp_rst: true
         state: rendered
     #
     # -------------------------

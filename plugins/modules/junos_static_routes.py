@@ -127,19 +127,43 @@ EXAMPLES = """
 # static {
 #     route 192.168.47.0/24 next-hop 172.16.1.2;
 #     route 192.168.16.0/24 next-hop 172.16.1.2;
-#     route 10.200.16.75/24 next-hop 10.200.16.2;
 # }
 
 - name: Delete provided configuration (default operation is merge)
   junipernetworks.junos.junos_static_routes:
     config:
-    - address_families:
-      - afi: ipv4
-        routes:
-        - dest: 10.200.16.75/24
-          next_hop:
-          - forward_router_address: 10.200.16.2
+      - address_families:
+          - afi: ipv4
+            routes:
+              - dest: 192.168.16.0/24
+                next_hop:
+                  - forward_router_address: 172.16.1.2
     state: deleted
+
+# Task Output
+# -----------
+# before:
+#   - address_families:
+#       - afi: ipv4
+#         routes:
+#           - dest: 192.168.47.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
+#           - dest: 192.168.16.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
+# commands:
+#   - '<nc:routing-options
+#     xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:static><nc:route
+#     delete="delete"><nc:name>192.168.16.0/24</nc:name></nc:route></nc:static></nc:routing-options>'
+#   - '<nc:routing-instances xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>'
+# after:
+#   - address_families:
+#       - afi: ipv4
+#         routes:
+#           - dest: 192.168.47.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
 
 # After state:
 # ------------
@@ -147,7 +171,6 @@ EXAMPLES = """
 # admin# show routing-options
 # static {
 #     route 192.168.47.0/24 next-hop 172.16.1.2;
-#     route 192.168.16.0/24 next-hop 172.16.1.2;
 # }
 
 # Using merged
@@ -158,21 +181,44 @@ EXAMPLES = """
 # admin# show routing-options
 # static {
 #     route 192.168.47.0/24 next-hop 172.16.1.2;
-#     route 192.168.16.0/24 next-hop 172.16.1.2;
 # }
 
 - name: Merge provided configuration with device configuration (default operation
     is merge)
   junipernetworks.junos.junos_static_routes:
     config:
-    - address_families:
-      - afi: ipv4
-        routes:
-        - dest: 10.200.16.75/24
-          next_hop:
-          - forward_router_address: 10.200.16.2
+      - address_families:
+          - afi: ipv4
+            routes:
+              - dest: 192.168.16.0/24
+                next_hop:
+                  - forward_router_address: 172.16.1.2
     state: merged
 
+# Task Output
+# -----------
+# before:
+#   - address_families:
+#       - afi: ipv4
+#         routes:
+#           - dest: 192.168.47.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
+# commands:
+#   - '<nc:routing-options
+#     xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:static><nc:route><nc:name>192.168.16.0/24</nc:name>
+#     <nc:next-hop>172.16.1.2</nc:next-hop></nc:route></nc:static></nc:routing-options>'
+#   - '<nc:routing-instances xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>'
+# after:
+#   - address_families:
+#       - afi: ipv4
+#         routes:
+#           - dest: 192.168.47.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
+#           - dest: 192.168.16.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
 # After state:
 # ------------
 #
@@ -180,7 +226,6 @@ EXAMPLES = """
 # static {
 #     route 192.168.47.0/24 next-hop 172.16.1.2;
 #     route 192.168.16.0/24 next-hop 172.16.1.2;
-#     route 10.200.16.75/24 next-hop 10.200.16.2;
 # }
 
 # Using overridden
@@ -191,27 +236,53 @@ EXAMPLES = """
 # admin# show routing-options
 # static {
 #     route 192.168.47.0/24 next-hop 172.16.1.2;
-#     route 192.168.16.0/24 next-hop 172.16.0.1;
+#     route 192.168.16.0/24 next-hop 172.16.1.2;
 # }
 
-- name: Override provided configuration with device configuration (default operation
+- name: Override running configuration with provided configuration (default operation
     is merge)
   junipernetworks.junos.junos_static_routes:
     config:
-    - address_families:
-      - afi: ipv4
-        routes:
-        - dest: 10.200.16.75/24
-          next_hop:
-          - forward_router_address: 10.200.16.2
+      - address_families:
+          - afi: ipv4
+            routes:
+              - dest: 192.168.16.0/24
+                next_hop:
+                  - forward_router_address: 172.16.0.1
     state: overridden
+# Task Output:
+# ------------
+# before:
+#   - address_families:
+#       - afi: ipv4
+#         routes:
+#           - dest: 192.168.47.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
+#           - dest: 192.168.16.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
+# commands:
+#   - >-
+#     <nc:routing-options
+#     xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:static><nc:route
+#     delete="delete"><nc:name>192.168.47.0/24</nc:name></nc:route><nc:route
+#     delete="delete"><nc:name>192.168.16.0/24</nc:name></nc:route></nc:static><nc:static><nc:route><nc:name>192.168.16.0/24</nc:name><nc:next-hop>172.16.0.1</nc:next-hop></nc:route></nc:static></nc:routing-options>
+#   - '<nc:routing-instances xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>'
+# after:
+#   - address_families:
+#       - afi: ipv4
+#         routes:
+#           - dest: 192.168.16.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.0.1
 
 # After state:
 # ------------
 #
 # admin# show routing-options
 # static {
-#     route 10.200.16.75/24 next-hop 10.200.16.2;
+#     route 192.168.16.0/24 next-hop 172.16.0.1;
 # }
 
 # Using replaced
@@ -229,13 +300,42 @@ EXAMPLES = """
     is merge)
   junipernetworks.junos.junos_static_routes:
     config:
-    - address_families:
-      - afi: ipv4
-        routes:
-        - dest: 192.168.47.0/24
-          next_hop:
-          - forward_router_address: 10.200.16.2
+      - address_families:
+          - afi: ipv4
+            routes:
+              - dest: 192.168.47.0/24
+                next_hop:
+                  - forward_router_address: 10.200.16.2
     state: replaced
+
+# Task Output:
+# ------------
+# before:
+#   - address_families:
+#       - afi: ipv4
+#         routes:
+#           - dest: 192.168.47.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
+#           - dest: 192.168.16.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
+# commands:
+#   - >-
+#     <nc:routing-options
+#     xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:static><nc:route
+#     delete="delete"><nc:name>192.168.47.0/24</nc:name></nc:route></nc:static><nc:static><nc:route><nc:name>192.168.47.0/24</nc:name><nc:next-hop>10.200.16.2</nc:next-hop></nc:route></nc:static></nc:routing-options>
+#   - '<nc:routing-instances xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"/>'
+# after:
+#   - address_families:
+#       - afi: ipv4
+#         routes:
+#           - dest: 192.168.16.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
+#           - dest: 192.168.47.0/24
+#             next_hop:
+#               - forward_router_address: 10.200.16.2
 
 # After state:
 # ------------
@@ -246,7 +346,92 @@ EXAMPLES = """
 #     route 192.168.16.0/24 next-hop 172.16.1.2;
 # }
 
+# Using gathered to gather static route facts from the device
+# Before state
+# ------------
+# admin# show routing-options
+# static {
+#     route 192.168.16.0/24 next-hop 172.16.1.2;
+#     route 192.168.47.0/24 next-hop 10.200.16.2;
+# }
+- name: Gather static routes facts from the device using junos_static_routes module
+  junipernetworks.junos.junos_static_routes:
+    state: gathered
 
+# Task output:
+# ------------
+# gathered:
+#   - address_families:
+#       - afi: ipv4
+#         routes:
+#           - dest: 192.168.16.0/24
+#             next_hop:
+#               - forward_router_address: 172.16.1.2
+#           - dest: 192.168.47.0/24
+#             next_hop:
+#               - forward_router_address: 10.200.16.2
+
+# Using rendered
+
+- name: Render platform specific commands (without connecting to the device)
+  junipernetworks.junos.junos_static_routes:
+    config:
+      - address_families:
+          - afi: ipv4
+            routes:
+              - dest: 192.168.16.0/24
+                next_hop:
+                  - forward_router_address: 172.16.1.2
+    state: rendered
+
+# Task output:
+# ------------
+# rendered:
+#   - '<nc:routing-options
+#     xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:static><nc:route><nc:name>192.168.16.0/24</nc:name>
+#     <nc:next-hop>172.16.1.2</nc:next-hop></nc:route></nc:static></nc:routing-options>'
+
+# Using parsed
+
+# parsed.cfg
+# ------------
+# <?xml version="1.0" encoding="UTF-8"?>
+# <rpc-reply message-id="urn:uuid:0cadb4e8-5bba-47f4-986e-72906227007f">
+#     <configuration changed-seconds="1590139550" changed-localtime="2020-05-22 09:25:50 UTC">
+#         <version>18.4R1-S2.4</version>
+#         <routing-options>
+#         <static>
+#             <route>
+#                 <name>192.168.16.0/24</name>
+#                 <next-hop>172.16.1.2</next-hop>
+#                 <next-hop>172.16.1.3</next-hop>
+#             </route>
+#             <route>
+#                 <name>192.168.47.0/24</name>
+#                 <next-hop>10.200.16.2</next-hop>
+#             </route>
+#         </static>
+#     </routing-options>
+#     </configuration>
+# </rpc-reply>
+
+- name: Parsed running config (without connecting to the device)
+  junipernetworks.junos.junos_static_routes:
+    running_config: "{{ lookup('file', 'parsed.cfg') }}"
+    state: parsed
+
+# Task output:
+# ------------
+# parsed:
+#   - address_families:
+#       - afi: ipv4
+#         routes:
+#           - dest: 192.168.16.0/24
+#             next_hop:
+#               - forward_router_address: '[''172.16.1.2'', ''172.16.1.3'']'
+#           - dest: 192.168.47.0/24
+#             next_hop:
+#               - forward_router_address: 10.200.16.2
 """
 RETURN = """
 before:
@@ -268,6 +453,26 @@ commands:
   returned: always
   type: list
   sample: ['command 1', 'command 2', 'command 3']
+rendered:
+  description: The provided configuration in the task rendered in device-native format (offline).
+  returned: when I(state) is C(rendered)
+  type: list
+  sample:
+    - <nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+gathered:
+  description: Facts about the network resource gathered from the remote device as structured data.
+  returned: when I(state) is C(gathered)
+  type: list
+  sample: >
+    This output will always be in the same format as the
+    module argspec.
+parsed:
+  description: The device native config provided in I(running_config) option parsed into structured data as per module argspec.
+  returned: when I(state) is C(parsed)
+  type: list
+  sample: >
+    This output will always be in the same format as the
+    module argspec.
 """
 
 

@@ -80,7 +80,7 @@ class Lldp_globalFacts(object):
                 to_bytes(data, errors="surrogate_then_replace"),
             )
 
-        facts = {}
+        facts = {"lldp_global": {}}
         config = deepcopy(self.generated_spec)
         resources = data.xpath("configuration/protocols/lldp")
         if resources:

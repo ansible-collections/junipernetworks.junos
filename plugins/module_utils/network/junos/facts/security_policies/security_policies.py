@@ -109,9 +109,8 @@ class Security_policiesFacts(object):
                 xml = self._get_xml_dict(resource)
                 objs = self.render_config(self.generated_spec, xml)
 
-        facts = {}
+        facts = {"security_policies": {}}
         if objs:
-            facts["security_policies"] = {}
             params = utils.validate_config(
                 self.argument_spec,
                 {"config": objs},

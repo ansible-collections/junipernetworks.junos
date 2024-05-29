@@ -102,11 +102,12 @@ options:
                   md5:
                     description:
                       - Specify md5 based authentication.
-                    type: dict
+                    type: list
+                    elements: dict
                     suboptions:
                       key_id:
                         description: Specify md5 key-id
-                        type: str
+                        type: int
                       key_value:
                         description: Specify key value
                         type: str
@@ -189,7 +190,7 @@ options:
               node_link_protection:
                 description:
                   - Protect interface from both link and node faults.
-                type: str
+                type: bool
               dead_interval:
                 description:
                   - Dead interval (seconds).
@@ -244,14 +245,14 @@ EXAMPLES = """
 - name: Merge Junos OSPF interfaces config
   junipernetworks.junos.junos_ospf_interfaces:
     config:
-    - name: 'ge-0/0/2.0'
-      address_family:
-        - afi: 'ipv4'
-          processes:
-            area:
-              area_id: '0.0.0.2'
-            priority: 3
-            metric: 5
+      - name: 'ge-0/0/2.0'
+        address_family:
+          - afi: 'ipv4'
+            processes:
+              area:
+                area_id: '0.0.0.2'
+              priority: 3
+              metric: 5
     state: merged
 
 # After state
@@ -279,16 +280,16 @@ EXAMPLES = """
 # }
 - name: Replace Junos OSPF interfaces config
   junipernetworks.junos.junos_ospf_interfaces:
-   config:
-     - name: 'ge-0/0/2.0'
-       address_family:
-         - afi: 'ipv4'
-           processes:
-             area:
-               area_id: '0.0.0.1'
-             priority: 6
-             metric: 6
-   state: replaced
+    config:
+      - name: 'ge-0/0/2.0'
+        address_family:
+          - afi: 'ipv4'
+            processes:
+              area:
+                area_id: '0.0.0.1'
+              priority: 6
+              metric: 6
+    state: replaced
 
 # After state
 # -----------
@@ -436,14 +437,14 @@ EXAMPLES = """
 - name: Render the commands for provided  configuration
   junipernetworks.junos.junos_ospf_interfaces:
     config:
-    - name: 'ge-0/0/2.0'
-      address_family:
-        - afi: 'ipv4'
-          processes:
-            area:
-              area_id: '0.0.0.2'
-            priority: 3
-            metric: 5
+      - name: 'ge-0/0/2.0'
+        address_family:
+          - afi: 'ipv4'
+            processes:
+              area:
+                area_id: '0.0.0.2'
+              priority: 3
+              metric: 5
     state: rendered
 
 #

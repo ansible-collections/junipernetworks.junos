@@ -116,15 +116,14 @@ class Ospfv2Facts(object):
             self.router_id = ""
         objs = []
         for resource in resources:
-            if resource:
+            if resource is not None:
                 xml = self._get_xml_dict(resource)
                 obj = self.render_config(self.generated_spec, xml)
                 if obj:
                     objs.append(obj)
 
-        facts = {}
-        if objs:
-            facts["ospfv2"] = []
+        facts = {"ospfv2": []}
+        if objs is not None:
             params = utils.validate_config(
                 self.argument_spec,
                 {"config": objs},
@@ -156,9 +155,9 @@ class Ospfv2Facts(object):
         :rtype: dictionary
         :returns: The generated config
         """
+
         config = deepcopy(spec)
         ospf = conf.get("ospf")
-
         if ospf.get("area"):
             rendered_areas = []
             areas = ospf.get("area")
@@ -213,27 +212,39 @@ class Ospfv2Facts(object):
                                     "bandwidth": metric.get("name"),
                                 },
                             )
-
                     if "authentication" in interface.keys():
                         auth = interface["authentication"]
                         auth_dict = {}
                         if auth.get("simple-password"):
-                            auth_dict["type"] = "simple_password"
+                            auth_dict["type"] = {"simple_password": auth.get("simple-password")}
                             auth_dict["password"] = auth.get("simple-password")
                         elif auth.get("md5"):
                             auth_dict["type"] = {"md5": []}
                             md5_list = auth.get("md5")
-
+                            key_lst = []
                             if not isinstance(md5_list, list):
+                                key_dict = {}
+                                key_dict["key_id"] = md5_list.get("name")
+                                key_dict["key"] = md5_list.get("key")
+                                key_dict["start_time"] = md5_list.get("start_time")
+                                key_lst.append(key_dict)
                                 md5_list = [md5_list]
+                            else:
+                                for md5_auth in md5_list:
+                                    key_dict = {}
+                                    key_dict["key_id"] = md5_auth.get("name")
+                                    key_dict["key"] = md5_auth.get("key")
+                                    key_dict["start_time"] = md5_auth.get("start_time")
 
-                            for md5_auth in md5_list:
-                                auth_dict["type"]["md5"].append(
-                                    {
-                                        "key_id": md5_auth.get("name"),
-                                        "key": md5_auth.get("key"),
-                                    },
-                                )
+                                    auth_dict["type"]["md5"].append(
+                                        {
+                                            "key_id": md5_auth.get("name"),
+                                            "key": md5_auth.get("key"),
+                                        },
+                                    )
+                                    key_lst.append(key_dict)
+                            if key_lst:
+                                auth_dict["md5"] = key_lst
                         interface_dict["authentication"] = auth_dict
 
                     rendered_area["interfaces"].append(interface_dict)
@@ -242,10 +253,22 @@ class Ospfv2Facts(object):
                     area_range = area["area-range"]
                     if not isinstance(area_range, list):
                         area_range = [area_range]
+                    # Included for compatibility, remove after 2025-07-01
                     rendered_area["area_range"] = []
                     for a_range in area_range:
                         rendered_area["area_range"].append(a_range["name"])
 
+                    rendered_area["area_ranges"] = []
+                    for a_range in area_range:
+                        range = {}
+                        range["address"] = a_range["name"]
+                        if a_range.get("override-metric"):
+                            range["override_metric"] = a_range.get("override-metric")
+                        if "exact" in a_range:
+                            range["exact"] = True
+                        if "restrict" in a_range:
+                            range["restrict"] = True
+                        rendered_area["area_ranges"].append(range)
                 if area.get("stub"):
                     rendered_area["stub"] = {"set": True}
                     if "no-summaries" in area.get("stub").keys():
@@ -261,26 +284,39 @@ class Ospfv2Facts(object):
                     if "default-lsa" in area.get("nssa").keys():
                         rendered_area["nssa"]["default-lsa"] = True
                 rendered_areas.append(rendered_area)
-
-            if "no-rfc-1583" in ospf.keys():
-                config["rfc1583compatibility"] = False
-            if ospf.get("spf-options"):
-                config["spf_options"] = {}
-                config["spf_options"]["delay"] = ospf["spf-options"].get(
-                    "delay",
-                )
-                config["spf_options"]["holddown"] = ospf["spf-options"].get(
-                    "holddown",
-                )
-                config["spf_options"]["rapid_runs"] = ospf["spf-options"].get(
-                    "rapid-runs",
-                )
-            config["overload"] = ospf.get("overload")
-            config["preference"] = ospf.get("preference")
-            config["external_preference"] = ospf.get("external-preference")
-            config["prefix_export_limit"] = ospf.get("prefix-export-limit")
-            config["reference_bandwidth"] = ospf.get("reference-bandwidth")
             config["areas"] = rendered_areas
-            if self.router_id != "":
-                config["router_id"] = self.router_id["router-id"]
+        if "no-rfc-1583" in ospf.keys():
+            config["rfc1583compatibility"] = False
+        if ospf.get("spf-options"):
+            config["spf_options"] = {}
+            config["spf_options"]["delay"] = ospf["spf-options"].get(
+                "delay",
+            )
+            config["spf_options"]["holddown"] = ospf["spf-options"].get(
+                "holddown",
+            )
+            config["spf_options"]["rapid_runs"] = ospf["spf-options"].get(
+                "rapid-runs",
+            )
+            if "no-ignore-our-externals" in ospf["spf-options"]:
+                config["spf_options"]["no_ignore_our_externals"] = True
+        if "overload" in ospf.keys():
+            overload = ospf.get("overload")
+            cfg = {}
+            if "allow-route-leaking" in overload:
+                cfg["allow_route_leaking"] = True
+            if "as-external" in overload:
+                cfg["as_external"] = True
+            if "stub-network" in overload:
+                cfg["stub_network"] = True
+            if overload.get("timeout"):
+                cfg["timeout"] = overload.get("timeout")
+
+            config["overload"] = cfg
+        config["preference"] = ospf.get("preference")
+        config["external_preference"] = ospf.get("external-preference")
+        config["prefix_export_limit"] = ospf.get("prefix-export-limit")
+        config["reference_bandwidth"] = ospf.get("reference-bandwidth")
+        if self.router_id != "":
+            config["router_id"] = self.router_id["router-id"]
         return utils.remove_empties(config)

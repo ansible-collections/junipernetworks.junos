@@ -177,7 +177,7 @@ Parameters
                         <b>Default:</b><br/><div style="color: blue">0</div>
                 </td>
                 <td>
-                        <div>The <code>confirm</code> argument will configure a time out value in minutes for the commit to be confirmed before it is automatically rolled back.  If the <code>confirm</code> argument is set to False, this argument is silently ignored.  If the value for this argument is set to 0, the commit is confirmed immediately.</div>
+                        <div>The <code>confirm</code> argument will configure a time out value in minutes for the commit to be confirmed before it is automatically rolled back. If the value for this argument is set to 0, the commit is confirmed immediately which is also the default behaviour.</div>
                 </td>
             </tr>
             <tr>
@@ -361,16 +361,16 @@ Examples
     - name: load configure lines into device
       junipernetworks.junos.junos_config:
         lines:
-        - set interfaces ge-0/0/1 unit 0 description "Test interface"
-        - set vlans vlan01 description "Test vlan"
+          - set interfaces ge-0/0/1 unit 0 description "Test interface"
+          - set vlans vlan01 description "Test vlan"
         comment: update config
 
     - name: Set routed VLAN interface (RVI) IPv4 address
       junipernetworks.junos.junos_config:
         lines:
-        - set vlans vlan01 vlan-id 1
-        - set interfaces irb unit 10 family inet address 10.0.0.1/24
-        - set vlans vlan01 l3-interface irb.10
+          - set vlans vlan01 vlan-id 1
+          - set interfaces irb unit 10 family inet address 10.0.0.1/24
+          - set vlans vlan01 l3-interface irb.10
 
     - name: Check correctness of commit configuration
       junipernetworks.junos.junos_config:
@@ -387,11 +387,11 @@ Examples
     - name: Set VLAN access and trunking
       junipernetworks.junos.junos_config:
         lines:
-        - set vlans vlan02 vlan-id 6
-        - set interfaces ge-0/0/6.0 family ethernet-switching interface-mode access vlan
-          members vlan02
-        - set interfaces ge-0/0/6.0 family ethernet-switching interface-mode trunk vlan
-          members vlan02
+          - set vlans vlan02 vlan-id 6
+          - set interfaces ge-0/0/6.0 family ethernet-switching interface-mode access vlan
+            members vlan02
+          - set interfaces ge-0/0/6.0 family ethernet-switching interface-mode trunk vlan
+            members vlan02
 
     - name: confirm a previous commit
       junipernetworks.junos.junos_config:
@@ -400,8 +400,7 @@ Examples
     - name: for idempotency, use full-form commands
       junipernetworks.junos.junos_config:
         lines:
-          # - set int ge-0/0/1 unit 0 desc "Test interface"
-        - set interfaces ge-0/0/1 unit 0 description "Test interface"
+          - set interfaces ge-0/0/1 unit 0 description "Test interface"
 
     - name: configurable backup path
       junipernetworks.junos.junos_config:
@@ -410,6 +409,16 @@ Examples
         backup_options:
           filename: backup.cfg
           dir_path: /home/user
+
+    - name: Set description with timer to confirm commit
+      junipernetworks.junos.junos_config:
+        lines:
+          - set interfaces fxp0 description "wait for a commit confirmation for 3 minutes; otherwise, it will be rolled back."
+        confirm: 3
+
+    - name: Perform confirm commit
+      junipernetworks.junos.junos_config:
+        confirm_commit: true
 
 
 

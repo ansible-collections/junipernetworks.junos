@@ -94,9 +94,8 @@ class VlansFacts(object):
                 obj = self.render_config(self.generated_spec, resource)
                 if obj:
                     objs.append(obj)
-        facts = {}
+        facts = {"vlans": []}
         if objs:
-            facts["vlans"] = []
             params = utils.validate_config(
                 self.argument_spec,
                 {"config": objs},
