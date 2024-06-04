@@ -265,6 +265,20 @@ class Routing_instances(ConfigBase):
                             interface["protect-interface"],
                         )
                     build_child_xml_node(int_node, "name", interface["name"])
+            
+            # add child node bridge-domains
+            if instance.get("bridge_domains"):
+                br_domains = instance.get("bridge_domains")
+                for domain in br_domains:
+                    br_domain_node = build_child_xml_node(rinst_node, "bridge-domains")
+                    if interface.get("protect_interface"):
+                        build_child_xml_node(
+                            int_node,
+                            "protect-interface",
+                            interface["protect-interface"],
+                        )
+                    build_child_xml_node(int_node, "name", interface["name"])
+
 
             # add node l2vpn-id TODO
             if instance.get("l2vpn_id"):
