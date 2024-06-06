@@ -265,63 +265,23 @@ class Routing_instances(ConfigBase):
                             interface["protect-interface"],
                         )
                     build_child_xml_node(int_node, "name", interface["name"])
-            
+
             # add child node bridge-domains
             if instance.get("bridge_domains"):
-                br_domains = instance.get("bridge_domains")
+                br_domains = instance["bridge_domains"]
                 for domain in br_domains:
                     br_domain_node = build_child_xml_node(rinst_node, "bridge-domains")
                     domain_node = build_child_xml_node(br_domain_node, "domain")
-                    if domain.get("name"):
-                        build_child_xml_node(
-                            domain_node,
-                            "name",
-                            domain["name"],
-                        )
-                    if domain.get("description"):
-                        build_child_xml_node(
-                            domain_node,
-                            "description",
-                            domain["description"],
-                        )
-                    if domain.get("domain_id"):
-                        build_child_xml_node(
-                            domain_node,
-                            "domain-id",
-                            domain["domain_id"],
-                        )
-                    if domain.get("service_id"):
-                        build_child_xml_node(
-                            domain_node,
-                            "service-id",
-                            domain["service_id"],
-                        )
-                    if domain.get("vlan_id"):
-                        build_child_xml_node(
-                            domain_node,
-                            "vlan-id",
-                            domain["vlan_id"],
-                        )
-                    if domain.get("enable_mac_move_action"):
-                        build_child_xml_node(
-                            domain_node,
-                            "enable-mac-move-action",
-                        )
-                    if domain.get("mcae_mac_flush"):
-                        build_child_xml_node(
-                            domain_node,
-                            "mcae-mac-flush",
-                        )
-                    if domain.get("no_irb_layer_2_copy"):
-                        build_child_xml_node(
-                            domain_node,
-                            "no-irb-layer-2-copy",
-                        )
-                    if domain.get("no_local_switching"):
-                        build_child_xml_node(
-                            domain_node,
-                            "no-local-switching",
-                        )
+
+                    attributes = ["name", "description", "domain_id", "service_id", "vlan_id"]
+                    for attr in attributes:
+                        if domain.get(attr):
+                            build_child_xml_node(domain_node, attr.replace("_","-"), domain[attr])
+
+                    boolean_attributes = ["enable_mac_move_action", "mcae_mac_flush", "no_irb_layer_2_copy", "no_local_switching"]
+                    for attr in boolean_attributes:
+                        if domain.get(attr):
+                            build_child_xml_node(domain_node, attr.replace("_","-"))
 
             # add node l2vpn-id TODO
             if instance.get("l2vpn_id"):

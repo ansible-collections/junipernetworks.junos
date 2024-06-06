@@ -151,8 +151,6 @@ class Routing_instancesFacts(object):
         :param instance:
         :return:
         """
-        import q
-        q(instance)
         instance_dict = {}
         # read instance name
         instance_dict["name"] = instance["name"]
@@ -239,10 +237,10 @@ class Routing_instancesFacts(object):
             br_domains = instance.get("bridge-domains").get("domain")
             if isinstance(br_domains, list):
                 for domain in br_domains:
-                    br_item = {k.replace("-", "_"): v for k, v in domain.items()}
+                    br_item = {k.replace("-", "_"): (v if v is not None else True) for k, v in domain.items()}
                     br_domain_lst.append(br_item)
             else:
-                br_item = {k.replace("-", "_"): v for k, v in br_domains.items()}
+                br_item = {k.replace("-", "_"): (v if v is not None else True) for k, v in br_domains.items()}
                 br_domain_lst.append(br_item)
             instance_dict["bridge_domains"] = br_domain_lst
 
