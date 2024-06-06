@@ -276,12 +276,17 @@ class Routing_instances(ConfigBase):
                     attributes = ["name", "description", "domain_id", "service_id", "vlan_id"]
                     for attr in attributes:
                         if domain.get(attr):
-                            build_child_xml_node(domain_node, attr.replace("_","-"), domain[attr])
+                            build_child_xml_node(domain_node, attr.replace("_", "-"), domain[attr])
 
-                    boolean_attributes = ["enable_mac_move_action", "mcae_mac_flush", "no_irb_layer_2_copy", "no_local_switching"]
+                    boolean_attributes = [
+                        "enable_mac_move_action",
+                        "mcae_mac_flush",
+                        "no_irb_layer_2_copy",
+                        "no_local_switching",
+                    ]
                     for attr in boolean_attributes:
                         if domain.get(attr):
-                            build_child_xml_node(domain_node, attr.replace("_","-"))
+                            build_child_xml_node(domain_node, attr.replace("_", "-"))
 
             # add node l2vpn-id TODO
             if instance.get("l2vpn_id"):
