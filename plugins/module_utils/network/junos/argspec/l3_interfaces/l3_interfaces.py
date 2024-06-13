@@ -34,6 +34,7 @@ class L3_interfacesArgs(object):  # pylint: disable=R0903
                 },
                 "name": {"required": True, "type": "str"},
                 "unit": {"type": "int", "default": 0},
+                "mtu": {"type": "int"},
             },
             "type": "list",
         },

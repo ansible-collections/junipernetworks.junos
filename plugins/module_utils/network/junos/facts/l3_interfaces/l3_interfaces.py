@@ -94,6 +94,7 @@ class L3_interfacesFacts(object):
                 </configuration>
                 """
             data = self.get_config(connection, config_filter)
+        data_string = etree.tostring(data, pretty_print=True).decode()
 
         if isinstance(data, string_types):
             data = etree.fromstring(
@@ -101,6 +102,7 @@ class L3_interfacesFacts(object):
             )
         resources = data.xpath("configuration/interfaces/interface")
         config = []
+
         if resources:
             config = self.parse_l3_if_resources(resources)
         facts = {}
@@ -152,29 +154,34 @@ class L3_interfacesFacts(object):
                             addr = {}
                             addr["address"] = ip["name"]
                             ipv4.append(addr)
-            if "inet" in unit["family"].keys():
+            if "inet" in unit["family"]:
                 interface["name"] = int_dict["name"]
                 interface["unit"] = unit["name"]
                 inet = unit["family"].get("inet")
-                if inet is not None and "dhcp" in inet.keys():
-                    addr = {}
-                    addr["address"] = "dhcp"
-                    ipv4.append(addr)
-            if "inet6" in unit["family"].keys():
+                if inet:
+                    if mtu := int(inet.get("mtu")):
+                        interface["mtu"] = mtu
+                    if "dhcp" in inet:
+                        ipv4.append({"address": "dhcp"})
+
+            if "inet6" in unit["family"]:
                 interface["name"] = int_dict["name"]
                 interface["unit"] = unit["name"]
+
                 inet6 = unit["family"].get("inet6")
-                if inet6 is not None and "address" in inet6.keys():
-                    if isinstance(inet6["address"], dict):
-                        for key, value in iteritems(inet6["address"]):
-                            addr = {}
-                            addr["address"] = value
-                            ipv6.append(addr)
-                    else:
-                        for ip in inet6["address"]:
-                            addr = {}
-                            addr["address"] = ip["name"]
-                            ipv4.append(addr)
+                if inet6:
+                    if mtu := int(inet6.get("mtu")):
+                        interface["mtu"] = mtu
+
+                    addresses = inet6.get("address")
+                    if addresses:
+                        if isinstance(addresses, dict):
+                            for value in addresses.values():
+                                ipv6.append({"address": value})
+                        else:
+                            for ip in addresses:
+                                ipv6.append({"address": ip["name"]})
+
             interface["ipv4"] = ipv4
             interface["ipv6"] = ipv6
         return utils.remove_empties(interface)
