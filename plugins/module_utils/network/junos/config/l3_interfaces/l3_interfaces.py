@@ -167,7 +167,6 @@ class L3_interfaces(ConfigBase):
             config_xmls = self._state_merged(want, have)
         elif state == "replaced":
             config_xmls = self._state_replaced(want, have)
-
         for xml in config_xmls:
             root.append(xml)
 
@@ -233,6 +232,8 @@ class L3_interfaces(ConfigBase):
         if protocol == "ipv6":
             inet = "inet6"
         ip_protocol = build_child_xml_node(family, inet)
+        if config.get("mtu"):
+            build_child_xml_node(ip_protocol, "mtu", int(config.get("mtu")))
         for ip_addr in config[protocol]:
             if ip_addr["address"] == "dhcp" and protocol == "ipv4":
                 build_child_xml_node(ip_protocol, "dhcp")
@@ -241,48 +242,45 @@ class L3_interfaces(ConfigBase):
                 build_child_xml_node(ip_addresses, "name", ip_addr["address"])
 
     def _state_deleted(self, want, have):
-        """The xml configuration generator when state is deleted
-
+        """Generate XML configuration to remove the current configuration of the provided objects.
         :rtype: A list
-        :returns: the xml configuration necessary to remove the current
-                  configuration of the provided objects
+        :returns: The XML configuration necessary to remove the current configuration of the provided objects.
         """
         intf_xml = []
-        existing_l3_intfs = [l3_intf["name"] for l3_intf in have]
-
+        existing_l3_intfs = {l3_intf["name"] for l3_intf in have}
         if not want:
             want = have
-
         for config in want:
             if config["name"] not in existing_l3_intfs:
                 continue
             root_node, unit_node = self._get_common_xml_node(config["name"])
             build_child_xml_node(unit_node, "name", str(config["unit"]))
             family = build_child_xml_node(unit_node, "family")
-            ipv4 = build_child_xml_node(family, "inet")
-            intf = next(
-                (intf for intf in have if intf["name"] == config["name"]),
-                None,
-            )
-            if "ipv4" in intf:
-                if "dhcp" in [
-                    x["address"] for x in intf.get("ipv4") if intf.get("ipv4") is not None
-                ]:
-                    build_child_xml_node(
-                        ipv4,
-                        "dhcp",
-                        None,
-                        {"delete": "delete"},
-                    )
-                else:
-                    build_child_xml_node(
-                        ipv4,
-                        "address",
-                        None,
-                        {"delete": "delete"},
-                    )
-            ipv6 = build_child_xml_node(family, "inet6")
-            build_child_xml_node(ipv6, "address", None, {"delete": "delete"})
+            intf = next((intf for intf in have if intf["name"] == config["name"]), None)
+            if intf:
+                if any(key in intf for key in ("ipv4", "mtu")):
+                    ipv4 = build_child_xml_node(family, "inet")
+                    self._delete_ipv4_config(intf, ipv4)
 
-            intf_xml.append(root_node)
+                if any(key in intf for key in ("ipv6", "mtu")):
+                    ipv6 = build_child_xml_node(family, "inet6")
+                    self._delete_ipv6_config(intf, ipv6)
+
+                intf_xml.append(root_node)
+
         return intf_xml
+
+    def _delete_ipv4_config(self, intf, ipv4_node):
+        """Helper method to delete IPv4 configuration."""
+        if "mtu" in intf:
+            build_child_xml_node(ipv4_node, "mtu", None, {"delete": "delete"})
+        if any(x.get("address") == "dhcp" for x in intf.get("ipv4", [])):
+            build_child_xml_node(ipv4_node, "dhcp", None, {"delete": "delete"})
+        else:
+            build_child_xml_node(ipv4_node, "address", None, {"delete": "delete"})
+
+    def _delete_ipv6_config(self, intf, ipv6_node):
+        """Helper method to delete IPv6 configuration."""
+        build_child_xml_node(ipv6_node, "address", None, {"delete": "delete"})
+        if "mtu" in intf:
+            build_child_xml_node(ipv6_node, "mtu", None, {"delete": "delete"})

@@ -159,8 +159,8 @@ class L3_interfacesFacts(object):
                 interface["unit"] = unit["name"]
                 inet = unit["family"].get("inet")
                 if inet:
-                    if mtu := int(inet.get("mtu")):
-                        interface["mtu"] = mtu
+                    if mtu := inet.get("mtu"):
+                        interface["mtu"] = int(mtu)
                     if "dhcp" in inet:
                         ipv4.append({"address": "dhcp"})
 
@@ -171,7 +171,7 @@ class L3_interfacesFacts(object):
                 inet6 = unit["family"].get("inet6")
                 if inet6:
                     if mtu := int(inet6.get("mtu")):
-                        interface["mtu"] = mtu
+                        interface["mtu"] = int(mtu)
 
                     addresses = inet6.get("address")
                     if addresses:
