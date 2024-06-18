@@ -76,7 +76,7 @@ class Lag_interfacesFacts(object):
             data = etree.fromstring(
                 to_bytes(data, errors="surrogate_then_replace"),
             )
-        data_string = etree.tostring(data, pretty_print=True, encoding='unicode')
+        data_string = etree.tostring(data, pretty_print=True, encoding="unicode")
         self._resources = data.xpath("configuration/interfaces/interface")
 
         objs = []
@@ -125,12 +125,18 @@ class Lag_interfacesFacts(object):
         )
         if lag_interface_member:
             member_config["member"] = lag_interface_member
-            if utils.get_xml_conf_arg(interface_obj, "ether-options/ieee-802.3ad/primary", data="tag") or \
-               utils.get_xml_conf_arg(interface_obj, "gigether-options/ieee-802.3ad/primary", data="tag"):
+            if utils.get_xml_conf_arg(
+                interface_obj, "ether-options/ieee-802.3ad/primary", data="tag"
+            ) or utils.get_xml_conf_arg(
+                interface_obj, "gigether-options/ieee-802.3ad/primary", data="tag"
+            ):
                 member_config["link_type"] = "primary"
                 member_config["ether_option_type"] = "ether"
-            elif utils.get_xml_conf_arg(interface_obj, "ether-options/ieee-802.3ad/backup", data="tag") or \
-                 utils.get_xml_conf_arg(interface_obj, "gigether-options/ieee-802.3ad/backup", data="tag"):
+            elif utils.get_xml_conf_arg(
+                interface_obj, "ether-options/ieee-802.3ad/backup", data="tag"
+            ) or utils.get_xml_conf_arg(
+                interface_obj, "gigether-options/ieee-802.3ad/backup", data="tag"
+            ):
                 member_config["link_type"] = "backup"
                 member_config["ether_option_type"] = "gigether"
         return member_config
@@ -155,7 +161,9 @@ class Lag_interfacesFacts(object):
                     config["members"].append(member_config)
 
             for mode in ["active", "passive"]:
-                if utils.get_xml_conf_arg(conf, "aggregated-ether-options/lacp/%s" % mode, data="tag"):
+                if utils.get_xml_conf_arg(
+                    conf, "aggregated-ether-options/lacp/%s" % mode, data="tag"
+                ):
                     config["mode"] = mode
                     break
 

@@ -270,9 +270,9 @@ class Lag_interfaces(ConfigBase):
                     member["member"],
                 )
                 if member.get("ether_option_type") == gigether:
-                    ether_x_path  = "gigether-options/ieee-802.3ad"
+                    ether_x_path = "gigether-options/ieee-802.3ad"
                 else:
-                    ether_x_path  = "ether-options/ieee-802.3ad"
+                    ether_x_path = "ether-options/ieee-802.3ad"
                 lag_node = build_subtree(
                     lag_member_intf_root,
                     ether_x_path,
