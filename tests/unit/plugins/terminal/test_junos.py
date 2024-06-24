@@ -7,10 +7,11 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+from unittest.mock import MagicMock, call
+
 import pytest
 
 from ansible.errors import AnsibleConnectionFailure
-from mock import MagicMock, call
 
 from ansible_collections.junipernetworks.junos.plugins.terminal import junos
 
