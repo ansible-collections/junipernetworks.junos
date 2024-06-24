@@ -655,3 +655,15 @@ releases:
       - 218sanity.yml
       - add_restore_implementation.yaml
     release_date: "2024-04-13"
+  9.0.0:
+    changes:
+      major_changes:
+        - Bumping `requires_ansible` to `>=2.15.0`, since previous ansible-core versions
+          are EoL now.
+      release_summary:
+        "Starting from this release, the minimum `ansible-core` version
+        this collection requires is `2.15.0`. The last known version compatible with
+        ansible-core<2.15 is v8.0.0."
+    fragments:
+      - bump_to_215.yaml
+    release_date: "2024-06-10"
