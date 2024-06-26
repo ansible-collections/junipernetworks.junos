@@ -46,7 +46,7 @@ class Lag_interfacesArgs(object):
                     "options": {
                         "link_type": {"choices": ["primary", "backup"]},
                         "member": {"type": "str"},
-                        "ether_option_type": {"choices": ["ether", "gigether"], "default": "ether"},
+                        "ether_option_type": {"choices": ["ether", "gigether"], "default": "ether", "type": "str"},
                     },
                     "type": "list",
                 },
