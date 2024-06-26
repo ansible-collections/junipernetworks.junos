@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - Implemented support for setting the Maximum Transmission Unit (MTU) in Layer 3 (L3) Internet Protocol (IP) interfaces.
