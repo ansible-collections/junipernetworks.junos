@@ -85,6 +85,13 @@ options:
             choices:
             - primary
             - backup
+          ether_option_type:
+            description: Specify the type of ethernet interface.
+            choices:
+              - ether
+              - gigether
+            default: ether
+            type: str
   running_config:
     description:
     - This option is used only with state I(parsed).

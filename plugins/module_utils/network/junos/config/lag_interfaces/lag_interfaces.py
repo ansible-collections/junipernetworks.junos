@@ -269,9 +269,13 @@ class Lag_interfaces(ConfigBase):
                     "name",
                     member["member"],
                 )
+                if member.get("ether_option_type") == "gigether":
+                    ether_x_path = "gigether-options/ieee-802.3ad"
+                else:
+                    ether_x_path = "ether-options/ieee-802.3ad"
                 lag_node = build_subtree(
                     lag_member_intf_root,
-                    "ether-options/ieee-802.3ad",
+                    ether_x_path,
                 )
                 build_child_xml_node(lag_node, "bundle", config["name"])
 
@@ -337,9 +341,13 @@ class Lag_interfaces(ConfigBase):
                             "name",
                             member["member"],
                         )
+                        if member.get("ether_option_type") == "gigether":
+                            ether_options_xpath = "gigether-options/ieee-802.3ad"
+                        else:
+                            ether_options_xpath = "ether-options/ieee-802.3ad"
                         lag_node = build_subtree(
                             lag_member_intf_root,
-                            "ether-options/ieee-802.3ad",
+                            ether_options_xpath,
                         )
                         build_child_xml_node(
                             lag_node,

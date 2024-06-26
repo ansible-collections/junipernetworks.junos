@@ -76,7 +76,7 @@ class Lag_interfacesFacts(object):
             data = etree.fromstring(
                 to_bytes(data, errors="surrogate_then_replace"),
             )
-
+        data_string = etree.tostring(data, pretty_print=True, encoding="unicode")
         self._resources = data.xpath("configuration/interfaces/interface")
 
         objs = []
@@ -97,6 +97,58 @@ class Lag_interfacesFacts(object):
         ansible_facts["ansible_network_resources"].update(facts)
         return ansible_facts
 
+    def get_member_config(self, interface_obj, intf_name):
+        """
+        Extract member configuration for a given interface object and interface name.
+
+        This function checks both `ether-options` and `gigether-options` for 802.3ad bundle configurations
+        and determines the link type (primary or backup) if applicable.
+
+        :param interface_obj: The ElementTree instance of an interface configuration object.
+        :param intf_name: The name of the aggregated Ethernet interface (e.g., "ae0").
+        :rtype: dictionary
+        :returns: A dictionary containing the member configuration with the following structure:
+                {
+                    "member": <interface_name>,
+                    "link_type": "primary" or "backup" (optional)
+                }
+                If no member configuration is found, an empty dictionary is returned.
+        """
+
+        member_config = {}
+        lag_interface_member = utils.get_xml_conf_arg(
+            interface_obj,
+            "ether-options/ieee-802.3ad[bundle='%s']/../../name" % intf_name,
+        ) or utils.get_xml_conf_arg(
+            interface_obj,
+            "gigether-options/ieee-802.3ad[bundle='%s']/../../name" % intf_name,
+        )
+        if lag_interface_member:
+            member_config["member"] = lag_interface_member
+            if utils.get_xml_conf_arg(
+                interface_obj,
+                "ether-options/ieee-802.3ad/primary",
+                data="tag",
+            ) or utils.get_xml_conf_arg(
+                interface_obj,
+                "gigether-options/ieee-802.3ad/primary",
+                data="tag",
+            ):
+                member_config["link_type"] = "primary"
+                member_config["ether_option_type"] = "ether"
+            elif utils.get_xml_conf_arg(
+                interface_obj,
+                "ether-options/ieee-802.3ad/backup",
+                data="tag",
+            ) or utils.get_xml_conf_arg(
+                interface_obj,
+                "gigether-options/ieee-802.3ad/backup",
+                data="tag",
+            ):
+                member_config["link_type"] = "backup"
+                member_config["ether_option_type"] = "gigether"
+        return member_config
+
     def render_config(self, spec, conf):
         """
         Render config as dictionary structure and delete keys
@@ -112,45 +164,21 @@ class Lag_interfacesFacts(object):
             config["name"] = intf_name
             config["members"] = []
             for interface_obj in self._resources:
-                lag_interface_member = utils.get_xml_conf_arg(
-                    interface_obj,
-                    "ether-options/ieee-802.3ad[bundle='%s']/../../name" % intf_name,
-                )
-                if lag_interface_member:
-                    member_config = {}
-                    member_config["member"] = lag_interface_member
-                    if utils.get_xml_conf_arg(
-                        interface_obj,
-                        "ether-options/ieee-802.3ad/primary",
-                        data="tag",
-                    ):
-                        member_config["link_type"] = "primary"
-                    elif utils.get_xml_conf_arg(
-                        interface_obj,
-                        "ether-options/ieee-802.3ad/backup",
-                        data="tag",
-                    ):
-                        member_config["link_type"] = "backup"
+                member_config = self.get_member_config(interface_obj, intf_name)
+                if member_config:
+                    config["members"].append(member_config)
 
-                    if member_config:
-                        config["members"].append(member_config)
-
-                for m in ["active", "passive"]:
-                    if utils.get_xml_conf_arg(
-                        conf,
-                        "aggregated-ether-options/lacp/%s" % m,
-                        data="tag",
-                    ):
-                        config["mode"] = m
-                        break
-
-                link_protection = utils.get_xml_conf_arg(
+            for mode in ["active", "passive"]:
+                if utils.get_xml_conf_arg(
                     conf,
-                    "aggregated-ether-options/link-protection",
+                    "aggregated-ether-options/lacp/%s" % mode,
                     data="tag",
-                )
-                if link_protection:
-                    config["link_protection"] = True
+                ):
+                    config["mode"] = mode
+                    break
+
+            if utils.get_xml_conf_arg(conf, "aggregated-ether-options/link-protection", data="tag"):
+                config["link_protection"] = True
 
         lag_intf_cfg = utils.remove_empties(config)
         # if lag interfaces config is not present return empty dict
