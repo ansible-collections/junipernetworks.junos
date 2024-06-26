@@ -108,7 +108,7 @@ Parameters
                                     <li>ether</li>
                                     <li>gigether</li>
                         </ul>
-                        <b>Default:</b><br/><div style="color: blue">"ether_option_type"</div>
+                        <b>Default:</b><br/><div style="color: blue">"ether-options"</div>
                 </td>
                 <td>
                         <div>Specify the type of ethernet interface.</div>
