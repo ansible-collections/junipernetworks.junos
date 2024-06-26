@@ -90,7 +90,8 @@ options:
             choices:
               - ether
               - gigether
-            default: ether-options
+            default: ether
+            type: str
   running_config:
     description:
     - This option is used only with state I(parsed).
