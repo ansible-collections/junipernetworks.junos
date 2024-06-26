@@ -126,16 +126,24 @@ class Lag_interfacesFacts(object):
         if lag_interface_member:
             member_config["member"] = lag_interface_member
             if utils.get_xml_conf_arg(
-                interface_obj, "ether-options/ieee-802.3ad/primary", data="tag"
+                interface_obj,
+                "ether-options/ieee-802.3ad/primary",
+                data="tag",
             ) or utils.get_xml_conf_arg(
-                interface_obj, "gigether-options/ieee-802.3ad/primary", data="tag"
+                interface_obj,
+                "gigether-options/ieee-802.3ad/primary",
+                data="tag",
             ):
                 member_config["link_type"] = "primary"
                 member_config["ether_option_type"] = "ether"
             elif utils.get_xml_conf_arg(
-                interface_obj, "ether-options/ieee-802.3ad/backup", data="tag"
+                interface_obj,
+                "ether-options/ieee-802.3ad/backup",
+                data="tag",
             ) or utils.get_xml_conf_arg(
-                interface_obj, "gigether-options/ieee-802.3ad/backup", data="tag"
+                interface_obj,
+                "gigether-options/ieee-802.3ad/backup",
+                data="tag",
             ):
                 member_config["link_type"] = "backup"
                 member_config["ether_option_type"] = "gigether"
@@ -162,7 +170,9 @@ class Lag_interfacesFacts(object):
 
             for mode in ["active", "passive"]:
                 if utils.get_xml_conf_arg(
-                    conf, "aggregated-ether-options/lacp/%s" % mode, data="tag"
+                    conf,
+                    "aggregated-ether-options/lacp/%s" % mode,
+                    data="tag",
                 ):
                     config["mode"] = mode
                     break
