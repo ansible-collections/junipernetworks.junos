@@ -7,6 +7,7 @@
 - ansible.builtin.set_fact:
     expected_parsed_output:
       - name: ge-1/0/0
+        mtu: 1500
         ipv4:
           - address: 192.168.100.1/24
 
