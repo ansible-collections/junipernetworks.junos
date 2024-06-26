@@ -100,15 +100,14 @@ Parameters
                     <b>ether_option_type</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">-</span>
+                        <span style="color: purple">string</span>
                     </div>
                 </td>
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>ether</li>
+                                    <li><div style="color: blue"><b>ether</b>&nbsp;&larr;</div></li>
                                     <li>gigether</li>
                         </ul>
-                        <b>Default:</b><br/><div style="color: blue">"ether-options"</div>
                 </td>
                 <td>
                         <div>Specify the type of ethernet interface.</div>
