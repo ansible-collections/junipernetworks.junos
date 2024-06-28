@@ -89,6 +89,40 @@ options:
         description: Primary role of L2Backhaul-vpn router.
         type: str
         choices: ['access', 'nni']
+      bridge_domains:
+        description:
+          - Bridge domain configuration.
+          - This has been tested for junos MX204.
+        type: list
+        elements: dict
+        suboptions:
+          name:
+            description: Specify the name of the bridge domain.
+            type: str
+          description:
+            description: Specify domain description.
+            type: str
+          domain_id:
+            description: Provide the domain ID.
+            type: int
+          enable_mac_move_action:
+            description: Enable blocking action due to mac-move in this Bridge Domain.
+            type: bool
+          vlan_id:
+            description: IEEE 802.1q VLAN identifier for bridging domain (1..4094)
+            type: int
+          mcae_mac_flush:
+            description: Enable IRB MAC synchronization in this bridge domain
+            type: bool
+          no_irb_layer_2_copy:
+            description: Disable transmission of layer-2 copy of packets of irb routing-interface.
+            type: bool
+          no_local_switching:
+            description: Disable local switching within CE-facing interfaces.
+            type: bool
+          service_id:
+            description: Specify service id.
+            type: int
       type:
         description: Specify instance type.
         type: str
@@ -104,6 +138,7 @@ options:
           - mpls-internet-multicast
           - no-forwarding
           - virtual-router
+          - virtual-switch
           - vpls
           - vrf
       interfaces:

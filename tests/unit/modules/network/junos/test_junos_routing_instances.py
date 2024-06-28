@@ -95,6 +95,56 @@ class TestJunosRouting_instancesModule(TestJunosModule):
             if entry.get("instance"):
                 entry["routing_instances"].sort(key=lambda i: i.get("name"))
 
+    def test_junos_routing_instances_domains_merged(self):
+        set_module_args(
+            dict(
+                config=[
+                    dict(
+                        name="EVPN",
+                        type="virtual-switch",
+                        route_distinguisher="10.0.0.21:444",
+                        bridge_domains=[
+                            dict(
+                                name="BD456",
+                                vlan_id=456,
+                                enable_mac_move_action=True,
+                                mcae_mac_flush=True,
+                                no_local_switching=True,
+                                service_id=20,
+                            ),
+                            dict(
+                                name="BD457",
+                                vlan_id=457,
+                            ),
+                        ],
+                    ),
+                    dict(
+                        name="mgmt_junos",
+                    ),
+                ],
+                state="merged",
+            ),
+        )
+        commands = [
+            '<nc:routing-instances xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
+            "<nc:instance><nc:name>EVPN</nc:name>"
+            "<nc:instance-type>virtual-switch</nc:instance-type>"
+            "<nc:bridge-domains><nc:domain>"
+            "<nc:name>BD456</nc:name>"
+            "<nc:service-id>20</nc:service-id>"
+            "<nc:vlan-id>456</nc:vlan-id>"
+            "<nc:enable-mac-move-action/>"
+            "<nc:mcae-mac-flush/>"
+            "<nc:no-local-switching/>"
+            "</nc:domain></nc:bridge-domains>"
+            "<nc:bridge-domains><nc:domain><nc:name>BD457</nc:name>"
+            "<nc:vlan-id>457</nc:vlan-id></nc:domain></nc:bridge-domains>"
+            "<nc:route-distinguisher><nc:rd-type>10.0.0.21:444</nc:rd-type></nc:route-distinguisher>"
+            "</nc:instance><nc:instance><nc:name>mgmt_junos</nc:name></nc:instance></nc:routing-instances>",
+        ]
+        result = self.execute_module(changed=True, commands=commands)
+        self.assertEqual(sorted(result["commands"]), sorted(commands))
+
     def test_junos_routing_instances_merged(self):
         set_module_args(
             dict(
