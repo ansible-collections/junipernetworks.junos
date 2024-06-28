@@ -90,8 +90,9 @@ options:
         type: str
         choices: ['access', 'nni']
       bridge_domains:
-        notes: This has been tested for junos MX204
-        description: Bridge domain configuration.
+        description:
+          - Bridge domain configuration.
+          - This has been tested for junos MX204.
         type: list
         elements: dict
         suboptions:
