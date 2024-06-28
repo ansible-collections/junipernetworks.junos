@@ -199,6 +199,16 @@
       - result.diff.prepared is search("\- *user test_user1")
       - result.diff.prepared is search("\- *user test_user2")
 
+- name: Change Admin user password
+  register: result
+  junipernetworks.junos.junos_user:
+    name: root
+    encrypted_password: "{{ 'test' | password_hash('sha512')}}"
+
+- ansible.builtin.assert:
+    that:
+      - result.changed == true
+
 - ansible.builtin.debug:
     msg="END junos_user netconf/basic.yaml on connection={{ ansible_connection
     }}"
