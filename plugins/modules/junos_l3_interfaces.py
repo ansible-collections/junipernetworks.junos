@@ -64,6 +64,10 @@ options:
         - Logical interface number. Value of C(unit) should be of type integer
         default: 0
         type: int
+      mtu:
+        description:
+        - Protocol family maximum transmission unit.
+        type: int
       ipv4:
         description:
         - IPv4 addresses to be set for the Layer 3 logical interface mentioned in

@@ -81,6 +81,7 @@
   junipernetworks.junos.junos_l3_interfaces:
     config:
       - name: ge-1/0/0
+        mtu: 1500
         ipv4:
           - address: 100.64.0.1/10
 
@@ -97,6 +98,7 @@
       - result.after[0].ipv4[1]['address'] == '10.200.16.20/24'
       - result.after[0].ipv4[2]['address'] == '100.64.0.1/10'
       - result.after[0].ipv4[3]['address'] == '100.64.0.2/10'
+      - result.after[0].mtu == '1500'
 
 - name: Delete ge-2/0/0 interface config
   register: result
