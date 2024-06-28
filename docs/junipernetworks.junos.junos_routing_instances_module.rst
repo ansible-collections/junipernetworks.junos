@@ -71,6 +71,7 @@ Parameters
                 </td>
                 <td>
                         <div>Bridge domain configuration.</div>
+                        <div>This has been tested for junos MX204.</div>
                 </td>
             </tr>
                                 <tr>
