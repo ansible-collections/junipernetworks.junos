@@ -129,18 +129,24 @@ class Lag_interfacesFacts(object):
                 interface_obj,
                 "ether-options/ieee-802.3ad/primary",
                 data="tag",
-            ) or utils.get_xml_conf_arg(
-                interface_obj,
-                "gigether-options/ieee-802.3ad/primary",
-                data="tag",
             ):
                 member_config["link_type"] = "primary"
                 member_config["ether_option_type"] = "ether"
             elif utils.get_xml_conf_arg(
                 interface_obj,
+                "gigether-options/ieee-802.3ad/primary",
+                data="tag",
+            ):
+                member_config["link_type"] = "primary"
+                member_config["ether_option_type"] = "gigether"
+            elif utils.get_xml_conf_arg(
+                interface_obj,
                 "ether-options/ieee-802.3ad/backup",
                 data="tag",
-            ) or utils.get_xml_conf_arg(
+            ):
+                member_config["link_type"] = "backup"
+                member_config["ether_option_type"] = "ether"
+            elif utils.get_xml_conf_arg(
                 interface_obj,
                 "gigether-options/ieee-802.3ad/backup",
                 data="tag",
