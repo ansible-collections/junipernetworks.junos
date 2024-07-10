@@ -13,8 +13,10 @@
       - name: ae1
         members:
           - member: ge-0/0/1
+            ether_option_type: "ether"
 
           - member: ge-0/0/2
+            ether_option_type: "ether"
         mode: active
     expected_deleted_2_output: []
 

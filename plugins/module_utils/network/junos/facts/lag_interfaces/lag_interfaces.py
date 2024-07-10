@@ -76,7 +76,6 @@ class Lag_interfacesFacts(object):
             data = etree.fromstring(
                 to_bytes(data, errors="surrogate_then_replace"),
             )
-        data_string = etree.tostring(data, pretty_print=True, encoding="unicode")
         self._resources = data.xpath("configuration/interfaces/interface")
 
         objs = []
