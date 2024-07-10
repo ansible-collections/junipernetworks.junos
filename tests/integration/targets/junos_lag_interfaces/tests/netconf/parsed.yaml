@@ -9,13 +9,17 @@
       - name: ae0
         members:
           - member: xe-0/1/0
-            ether_option_type: ether
+            ether_option_type: gigether
+            link_type: "primary"
           - member: xe-0/1/1
-            ether_option_type: ether
+            ether_option_type: gigether
+            link_type: "primary"
           - member: xe-0/1/4
-            ether_option_type: ether
+            ether_option_type: gigether
+            link_type: "primary"
           - member: xe-0/1/5
-            ether_option_type: ether
+            ether_option_type: gigether
+            link_type: "primary"
         mode: active
       - name: ae1
         members:
@@ -31,7 +35,7 @@
             ether_option_type: ether
             link_type: primary
           - member: ge-0/0/4
-            ether_option_type: gigether
+            ether_option_type: ether
             link_type: backup
         mode: passive
 

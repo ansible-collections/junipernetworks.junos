@@ -13,17 +13,21 @@
       - name: ae1
         members:
           - member: ge-0/0/1
+            ether_option_type: "ether"
 
           - member: ge-0/0/2
+            ether_option_type: "ether"
         mode: active
 
       - name: ae2
         link_protection: true
         members:
           - member: ge-0/0/3
+            ether_option_type: "ether"
             link_type: primary
 
           - member: ge-0/0/4
+            ether_option_type: "ether"
             link_type: backup
         mode: passive
 

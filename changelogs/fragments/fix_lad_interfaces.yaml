@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - Fix the lag_interfaces facts for gigether supported model.
