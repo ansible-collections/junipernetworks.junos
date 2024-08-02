@@ -4,6 +4,23 @@ Junipernetworks Junos Collection Release Notes
 
 .. contents:: Topics
 
+v9.1.0
+======
+
+Minor Changes
+-------------
+
+- Add implementation to gather ether-channels for gig-ether-options.
+- Added support for virtual-switch instances.
+- Based on ether-option-type create supported commands for config module.
+- Implemented bridge-domains configuration management for routing instances.
+- Implemented support for setting the Maximum Transmission Unit (MTU) in Layer 3 (L3) Internet Protocol (IP) interfaces.
+- Tested successfully on Junos MX204.
+
+Bugfixes
+--------
+
+- Fix the lag_interfaces facts for gigether supported model.
 
 v9.0.0
 ======
@@ -12,7 +29,6 @@ Release Summary
 ---------------
 
 Starting from this release, the minimum `ansible-core` version this collection requires is `2.15.0`. The last known version compatible with ansible-core<2.15 is v8.0.0.
-
 
 Major Changes
 -------------

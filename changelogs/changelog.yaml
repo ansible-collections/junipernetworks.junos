@@ -661,9 +661,27 @@ releases:
         - Bumping `requires_ansible` to `>=2.15.0`, since previous ansible-core versions
           are EoL now.
       release_summary:
-        "Starting from this release, the minimum `ansible-core` version
+        Starting from this release, the minimum `ansible-core` version
         this collection requires is `2.15.0`. The last known version compatible with
-        ansible-core<2.15 is v8.0.0."
+        ansible-core<2.15 is v8.0.0.
     fragments:
       - bump_to_215.yaml
     release_date: "2024-06-10"
+  9.1.0:
+    changes:
+      bugfixes:
+        - Fix the lag_interfaces facts for gigether supported model.
+      minor_changes:
+        - Add implementation to gather ether-channels for gig-ether-options.
+        - Added support for virtual-switch instances.
+        - Based on ether-option-type create supported commands for config module.
+        - Implemented bridge-domains configuration management for routing instances.
+        - Implemented support for setting the Maximum Transmission Unit (MTU) in Layer
+          3 (L3) Internet Protocol (IP) interfaces.
+        - Tested successfully on Junos MX204.
+    fragments:
+      - add_support_for_gig_ether_lag.yaml
+      - fix_lad_interfaces.yaml
+      - implement_bridge_domains.yaml
+      - support_l3_mtu.yaml
+    release_date: "2024-08-05"
