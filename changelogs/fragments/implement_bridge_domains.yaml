@@ -1,5 +1,0 @@
----
-minor_changes:
-  - Implemented bridge-domains configuration management for routing instances.
-  - Added support for virtual-switch instances.
-  - Tested successfully on Junos MX204.

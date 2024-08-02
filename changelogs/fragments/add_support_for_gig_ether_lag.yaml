@@ -1,4 +1,0 @@
----
-minor_changes:
-  - Add implementation to gather ether-channels for gig-ether-options.
-  - Based on ether-option-type create supported commands for config module.
