@@ -60,6 +60,194 @@ Parameters
                     <td class="elbow-placeholder"></td>
                 <td colspan="2">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>bridge_domains</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=dictionary</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Bridge domain configuration.</div>
+                        <div>This has been tested for junos MX204.</div>
+                </td>
+            </tr>
+                                <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>description</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Specify domain description.</div>
+                </td>
+            </tr>
+            <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>domain_id</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">integer</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Provide the domain ID.</div>
+                </td>
+            </tr>
+            <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>enable_mac_move_action</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                    </div>
+                </td>
+                <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>no</li>
+                                    <li>yes</li>
+                        </ul>
+                </td>
+                <td>
+                        <div>Enable blocking action due to mac-move in this Bridge Domain.</div>
+                </td>
+            </tr>
+            <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>mcae_mac_flush</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                    </div>
+                </td>
+                <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>no</li>
+                                    <li>yes</li>
+                        </ul>
+                </td>
+                <td>
+                        <div>Enable IRB MAC synchronization in this bridge domain</div>
+                </td>
+            </tr>
+            <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>name</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Specify the name of the bridge domain.</div>
+                </td>
+            </tr>
+            <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>no_irb_layer_2_copy</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                    </div>
+                </td>
+                <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>no</li>
+                                    <li>yes</li>
+                        </ul>
+                </td>
+                <td>
+                        <div>Disable transmission of layer-2 copy of packets of irb routing-interface.</div>
+                </td>
+            </tr>
+            <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>no_local_switching</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                    </div>
+                </td>
+                <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>no</li>
+                                    <li>yes</li>
+                        </ul>
+                </td>
+                <td>
+                        <div>Disable local switching within CE-facing interfaces.</div>
+                </td>
+            </tr>
+            <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>service_id</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">integer</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Specify service id.</div>
+                </td>
+            </tr>
+            <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>vlan_id</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">integer</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>IEEE 802.1q VLAN identifier for bridging domain (1..4094)</div>
+                </td>
+            </tr>
+
+            <tr>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>connector_id_advertise</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -427,6 +615,7 @@ Parameters
                                     <li>mpls-internet-multicast</li>
                                     <li>no-forwarding</li>
                                     <li>virtual-router</li>
+                                    <li>virtual-switch</li>
                                     <li>vpls</li>
                                     <li>vrf</li>
                         </ul>
@@ -674,21 +863,21 @@ Examples
 
     - name: Replace existing Junos routing instance config with provided config
       junipernetworks.junos.junos_routing_instances:
-       config:
-         address_family:
-           - name: "test"
-             type: "vrf"
-             route_distinguisher: "10.57.255.1:37"
-             vrf_imports:
-               - "test-policy"
-             vrf_exports:
-               - "test-policy"
-             interfaces:
-               - name: "sp-0/0/0.0"
-               - name: "gr-0/0/0.0"
-             connector_id_advertise: false
-             description: "Configured by Ansible Content Team"
-       state: replaced
+        config:
+          address_family:
+            - name: "test"
+              type: "vrf"
+              route_distinguisher: "10.57.255.1:37"
+              vrf_imports:
+                - "test-policy"
+              vrf_exports:
+                - "test-policy"
+              interfaces:
+                - name: "sp-0/0/0.0"
+                - name: "gr-0/0/0.0"
+              connector_id_advertise: false
+              description: "Configured by Ansible Content Team"
+        state: replaced
 
     # After state
     # -----------
@@ -730,25 +919,25 @@ Examples
 
     - name: Override Junos routing-instances configuration
       junipernetworks.junos.junos_routing_instances:
-       config:
-         - name: "test"
-           type: "vrf"
-           route_distinguisher: "10.58.255.1:37"
-           vrf_imports:
-             - "test-policy"
-           vrf_exports:
-             - "test-policy"
-             - "test-policy-1"
-           interfaces:
-             - name: "sp-0/0/0.0"
-             - name: "gr-0/0/0.0"
-           connector_id_advertise: true
-         - name: "forwardinst"
-           type: "forwarding"
-           description: "Configured by Ansible Content Team"
-         - name: "vtest1"
-           type: "virtual-router"
-       state: overridden
+        config:
+          - name: "test"
+            type: "vrf"
+            route_distinguisher: "10.58.255.1:37"
+            vrf_imports:
+              - "test-policy"
+            vrf_exports:
+              - "test-policy"
+              - "test-policy-1"
+            interfaces:
+              - name: "sp-0/0/0.0"
+              - name: "gr-0/0/0.0"
+            connector_id_advertise: true
+          - name: "forwardinst"
+            type: "forwarding"
+            description: "Configured by Ansible Content Team"
+          - name: "vtest1"
+            type: "virtual-router"
+        state: overridden
 
     # After state
     # -----------
@@ -794,9 +983,9 @@ Examples
 
     - name: Delete provided junos routing-instamce
       junipernetworks.junos.junos_routing_instances:
-       config:
-         - name: "test"
-       state: deleted
+        config:
+          - name: "test"
+        state: deleted
 
     # After state
     # -----------
@@ -832,8 +1021,8 @@ Examples
 
     - name: Delete complete Junos routing-instances config
       junipernetworks.junos.junos_routing_instances:
-       config:
-       state: deleted
+        config:
+        state: deleted
 
     # After state
     # -----------

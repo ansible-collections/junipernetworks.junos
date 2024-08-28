@@ -380,7 +380,7 @@ Examples
     - name: remove all user accounts except ansible
       junipernetworks.junos.junos_user:
         aggregate:
-        - name: ansible
+          - name: ansible
         purge: true
 
     - name: set user password
@@ -393,14 +393,14 @@ Examples
     - name: Create list of users
       junipernetworks.junos.junos_user:
         aggregate:
-        - {name: test_user1, full_name: test_user2, role: operator, state: present}
-        - {name: test_user2, full_name: test_user2, role: read-only, state: present}
+          - {name: test_user1, full_name: test_user2, role: operator, state: present}
+          - {name: test_user2, full_name: test_user2, role: read-only, state: present}
 
     - name: Delete list of users
       junipernetworks.junos.junos_user:
         aggregate:
-        - {name: test_user1, full_name: test_user2, role: operator, state: absent}
-        - {name: test_user2, full_name: test_user2, role: read-only, state: absent}
+          - {name: test_user1, full_name: test_user2, role: operator, state: absent}
+          - {name: test_user2, full_name: test_user2, role: read-only, state: absent}
 
 
 

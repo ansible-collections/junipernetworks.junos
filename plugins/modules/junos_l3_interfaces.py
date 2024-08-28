@@ -43,8 +43,11 @@ requirements:
 - ncclient (>=v0.6.4)
 notes:
 - This module requires the netconf system service be enabled on the device being managed.
-- This module works with connection C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).
 - Tested against JunOS v18.4R1
+- This module works with connection C(netconf).
+  See U(https://docs.ansible.com/ansible/latest/network/user_guide/platform_junos.html)
+- The module examples uses callback plugin (stdout_callback = yaml) to generate task
+  output in yaml format.
 options:
   config:
     description: A dictionary of Layer 3 interface options
@@ -60,6 +63,10 @@ options:
         description:
         - Logical interface number. Value of C(unit) should be of type integer
         default: 0
+        type: int
+      mtu:
+        description:
+        - Protocol family maximum transmission unit.
         type: int
       ipv4:
         description:
@@ -111,96 +118,99 @@ options:
     default: merged
 """
 EXAMPLES = """
-# Using deleted
-
-# Before state:
-# -------------
-#
-# admin# show interfaces
-# ge-0/0/1 {
-#     description "L3 interface";
-#     unit 0 {
-#         family inet {
-#             address 10.200.16.10/24;
-#         }
-#     }
-# }
-# ge-0/0/2 {
-#     description "non L3 interface";
-#     unit 0 {
-#         family ethernet-switching {
-#             interface-mode access;
-#             vlan {
-#                 members 2;
-#             }
-#         }
-#     }
-# }
-
-- name: Delete JUNOS L3 logical interface
-  junipernetworks.junos.junos_l3_interfaces:
-    config:
-    - name: ge-0/0/1
-    - name: ge-0/0/2
-  state: deleted
-
-# After state:
-# ------------
-#
-# admin# show interfaces
-# ge-0/0/1 {
-#     description "deleted L3 interface";
-# }
-# ge-0/0/2 {
-#     description "non L3 interface";
-#     unit 0 {
-#         family ethernet-switching {
-#             interface-mode access;
-#             vlan {
-#                 members 2;
-#             }
-#         }
-#     }
-# }
 # Using merged
+
 # Before state
 # ------------
 #
 # admin# show interfaces
-# ge-0/0/1 {
-#     description "L3 interface";
+# fxp0 {
+#     enable;
 #     unit 0 {
 #         family inet {
-#             address 10.200.16.10/24;
+#             dhcp;
 #         }
 #     }
 # }
-# ge-0/0/2 {
-#     description "non configured interface";
-#     unit 0;
-# }
-- name: Merge provided configuration with device configuration (default operation is merge)
+
+- name: Merge provided configuration with device configuration
   junipernetworks.junos.junos_l3_interfaces:
     config:
-    - name: ge-0/0/1
-      ipv4:
-      - address: 192.168.1.10/24
-      ipv6:
-      - address: 8d8d:8d01::1/64
-    - name: ge-0/0/2
-      ipv4:
-      - address: dhcp
+      - name: ge-0/0/1
+        ipv4:
+          - address: 192.168.1.10/24
+        ipv6:
+          - address: 8d8d:8d01::1/64
+      - name: ge-0/0/2
+        ipv4:
+          - address: dhcp
     state: merged
+
+# Task Output
+# -----------
+#
+# before:
+# - ipv4:
+#   - address: dhcp
+#   name: fxp0
+#   unit: '0'
+# commands:
+# - <nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+#     <nc:interface>
+#       <nc:name>ge-0/0/1</nc:name>
+#       <nc:unit>
+#         <nc:name>0</nc:name>
+#         <nc:family>
+#           <nc:inet>
+#             <nc:address>
+#               <nc:name>192.168.1.10/24</nc:name>
+#             </nc:address>
+#           </nc:inet>
+#         </nc:family>
+#         <nc:family>
+#           <nc:inet6>
+#             <nc:address>
+#               <nc:name>8d8d:8d01::1/64</nc:name>
+#             </nc:address>
+#           </nc:inet6>
+#         </nc:family>
+#       </nc:unit>
+#     </nc:interface>
+#     <nc:interface>
+#       <nc:name>ge-0/0/2</nc:name>
+#       <nc:unit>
+#         <nc:name>0</nc:name>
+#         <nc:family>
+#           <nc:inet>
+#             <nc:dhcp/>
+#           </nc:inet>
+#         </nc:family>
+#       </nc:unit>
+#     </nc:interface>
+#   </nc:interfaces>
+# after:
+# - ipv4:
+#   - address: 192.168.1.10/24
+#   ipv6:
+#   - address: 8d8d:8d01::1/64
+#   name: ge-0/0/1
+#   unit: '0'
+# - ipv4:
+#   - address: dhcp
+#   name: ge-0/0/2
+#   unit: '0'
+# - ipv4:
+#   - address: dhcp
+#   name: fxp0
+#   unit: '0'
 
 # After state:
 # ------------
 #
 # admin# show interfaces
 # ge-0/0/1 {
-#     description "L3 interface";
 #     unit 0 {
 #         family inet {
-#             address 10.200.16.10/24;
 #             address 192.168.1.10/24;
 #         }
 #         family inet6 {
@@ -209,14 +219,20 @@ EXAMPLES = """
 #     }
 # }
 # ge-0/0/2 {
-#     description "L3 interface with dhcp";
 #     unit 0 {
 #         family inet {
 #             dhcp;
 #         }
 #     }
 # }
-
+# fxp0 {
+#     enable;
+#     unit 0 {
+#         family inet {
+#             dhcp;
+#         }
+#     }
+# }
 
 # Using overridden
 
@@ -225,49 +241,6 @@ EXAMPLES = """
 #
 # admin# show interfaces
 # ge-0/0/1 {
-#     description "L3 interface";
-#     unit 0 {
-#         family inet {
-#             address 10.200.16.10/24;
-#         }
-#     }
-# }
-# ge-0/0/2 {
-#     description "L3 interface with dhcp";
-#     unit 0 {
-#         family inet {
-#             dhcp;
-#         }
-#     }
-# }
-# ge-0/0/3 {
-#     description "another L3 interface";
-#     unit 0 {
-#         family inet {
-#             address 192.168.1.10/24;
-#         }
-#     }
-# }
-
-- name: Override provided configuration with device configuration
-  junipernetworks.junos.junos_l3_interfaces:
-    config:
-    - name: ge-0/0/1
-      ipv4:
-      - address: 192.168.1.10/24
-      ipv6:
-      - address: 8d8d:8d01::1/64
-    - name: ge-0/0/2
-      ipv6:
-      - address: 2001:db8:3000::/64
-    state: overridden
-
-# After state:
-# ------------
-#
-# admin# show interfaces
-# ge-0/0/1 {
-#     description "L3 interface";
 #     unit 0 {
 #         family inet {
 #             address 192.168.1.10/24;
@@ -278,18 +251,159 @@ EXAMPLES = """
 #     }
 # }
 # ge-0/0/2 {
-#     description "L3 interface with ipv6";
 #     unit 0 {
-#         family inet6 {
-#             address 2001:db8:3000::/64;
+#         family inet {
+#             dhcp;
 #         }
 #     }
 # }
-# ge-0/0/3 {
-#     description "overridden L3 interface";
-#     unit 0;
+# fxp0 {
+#     enable;
+#     unit 0 {
+#         family inet {
+#             dhcp;
+#         }
+#     }
 # }
 
+- name: Override provided configuration with device configuration
+  junipernetworks.junos.junos_l3_interfaces:
+    config:
+      - name: ge-0/0/1
+        ipv4:
+          - address: 192.168.1.10/24
+      - ipv4:
+          - address: dhcp
+        name: fxp0
+        unit: '0'
+    state: overridden
+
+# Task Output
+# -----------
+#
+# before:
+# - ipv4:
+#   - address: 192.168.1.10/24
+#   ipv6:
+#   - address: 8d8d:8d01::1/64
+#   name: ge-0/0/1
+#   unit: '0'
+# - ipv4:
+#   - address: dhcp
+#   name: ge-0/0/2
+#   unit: '0'
+# - ipv4:
+#   - address: dhcp
+#   name: fxp0
+#   unit: '0'
+# commands:
+# - <nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+#   <nc:interface>
+#     <nc:name>ge-0/0/1</nc:name>
+#     <nc:unit>
+#       <nc:name>0</nc:name>
+#       <nc:family>
+#         <nc:inet>
+#           <nc:address delete="delete"/>
+#         </nc:inet>
+#         <nc:inet6>
+#           <nc:address delete="delete"/>
+#         </nc:inet6>
+#       </nc:family>
+#     </nc:unit>
+#   </nc:interface>
+#   <nc:interface>
+#     <nc:name>ge-0/0/2</nc:name>
+#     <nc:unit>
+#       <nc:name>0</nc:name>
+#       <nc:family>
+#         <nc:inet>
+#           <nc:dhcp delete="delete"/>
+#         </nc:inet>
+#         <nc:inet6>
+#           <nc:address delete="delete"/>
+#         </nc:inet6>
+#       </nc:family>
+#     </nc:unit>
+#   </nc:interface>
+#   <nc:interface>
+#     <nc:name>fxp0</nc:name>
+#     <nc:unit>
+#       <nc:name>0</nc:name>
+#       <nc:family>
+#         <nc:inet>
+#           <nc:dhcp delete="delete"/>
+#         </nc:inet>
+#         <nc:inet6>
+#           <nc:address delete="delete"/>
+#         </nc:inet6>
+#       </nc:family>
+#     </nc:unit>
+#   </nc:interface>
+#   <nc:interface>
+#     <nc:name>ge-0/0/1</nc:name>
+#     <nc:unit>
+#       <nc:name>0</nc:name>
+#       <nc:family>
+#         <nc:inet>
+#           <nc:address>
+#             <nc:name>192.168.1.10/24</nc:name>
+#           </nc:address>
+#         </nc:inet>
+#       </nc:family>
+#     </nc:unit>
+#   </nc:interface>
+#   <nc:interface>
+#     <nc:name>fxp0</nc:name>
+#     <nc:unit>
+#       <nc:name>0</nc:name>
+#       <nc:family>
+#         <nc:inet>
+#           <nc:dhcp/>
+#         </nc:inet>
+#       </nc:family>
+#     </nc:unit>
+#   </nc:interface>
+# </nc:interfaces>
+# after:
+# - ipv4:
+#   - address: 192.168.1.10/24
+#   name: ge-0/0/1
+#   unit: '0'
+# - name: ge-0/0/2
+#   unit: '0'
+# - ipv4:
+#   - address: dhcp
+#   name: fxp0
+#   unit: '0'
+
+# After state:
+# ------------
+#
+# admin# show interfaces
+# ge-0/0/1 {
+#     unit 0 {
+#         family inet {
+#             address 192.168.1.10/24;
+#         }
+#         family inet6;
+#     }
+# }
+# ge-0/0/2 {
+#     unit 0 {
+#         family inet;
+#         family inet6;
+#     }
+# }
+# fxp0 {
+#     enable;
+#     unit 0 {
+#         family inet {
+#             dhcp;
+#         }
+#         family inet6;
+#     }
+# }
 
 # Using replaced
 
@@ -298,45 +412,137 @@ EXAMPLES = """
 #
 # admin# show interfaces
 # ge-0/0/1 {
-#     description "L3 interface";
-#     unit 0 {
-#         family inet {
-#             address 10.200.16.10/24;
-#         }
-#     }
-# }
-# ge-0/0/2 {
-#     description "non configured interface";
-#     unit 0;
-# }
-# ge-0/0/3 {
-#     description "another L3 interface";
 #     unit 0 {
 #         family inet {
 #             address 192.168.1.10/24;
 #         }
+#         family inet6;
+#     }
+# }
+# ge-0/0/2 {
+#     unit 0 {
+#         family inet;
+#         family inet6;
+#     }
+# }
+# fxp0 {
+#     enable;
+#     unit 0 {
+#         family inet {
+#             dhcp;
+#         }
+#         family inet6;
 #     }
 # }
 
 - name: Replace provided configuration with device configuration
   junipernetworks.junos.junos_l3_interfaces:
     config:
-    - name: ge-0/0/1
-      ipv4:
-      - address: 192.168.1.10/24
-      ipv6:
-      - address: 8d8d:8d01::1/64
-    - name: ge-0/0/2
-      ipv4:
-      - address: dhcp
+      - name: ge-0/0/1
+        ipv4:
+          - address: 192.168.1.10/24
+        ipv6:
+          - address: 8d8d:8d01::1/64
+      - name: ge-0/0/2
+        ipv4:
+          - address: dhcp
     state: replaced
+
+# Task Output
+# -----------
+#
+# before:
+# - ipv4:
+#   - address: 192.168.1.10/24
+#   name: ge-0/0/1
+#   unit: '0'
+# - name: ge-0/0/2
+#   unit: '0'
+# - ipv4:
+#   - address: dhcp
+#   name: fxp0
+#   unit: '0'
+# commands:
+# - <nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+#   <nc:interface>
+#     <nc:name>ge-0/0/1</nc:name>
+#     <nc:unit>
+#       <nc:name>0</nc:name>
+#       <nc:family>
+#         <nc:inet>
+#           <nc:address delete="delete"/>
+#         </nc:inet>
+#         <nc:inet6>
+#           <nc:address delete="delete"/>
+#         </nc:inet6>
+#       </nc:family>
+#     </nc:unit>
+#   </nc:interface>
+#   <nc:interface>
+#     <nc:name>ge-0/0/2</nc:name>
+#     <nc:unit>
+#       <nc:name>0</nc:name>
+#       <nc:family>
+#         <nc:inet/>
+#         <nc:inet6>
+#           <nc:address delete="delete"/>
+#         </nc:inet6>
+#       </nc:family>
+#     </nc:unit>
+#   </nc:interface>
+#   <nc:interface>
+#     <nc:name>ge-0/0/1</nc:name>
+#     <nc:unit>
+#       <nc:name>0</nc:name>
+#       <nc:family>
+#         <nc:inet>
+#           <nc:address>
+#             <nc:name>192.168.1.10/24</nc:name>
+#           </nc:address>
+#         </nc:inet>
+#       </nc:family>
+#       <nc:family>
+#         <nc:inet6>
+#           <nc:address>
+#             <nc:name>8d8d:8d01::1/64</nc:name>
+#           </nc:address>
+#         </nc:inet6>
+#       </nc:family>
+#     </nc:unit>
+#   </nc:interface>
+#   <nc:interface>
+#     <nc:name>ge-0/0/2</nc:name>
+#     <nc:unit>
+#       <nc:name>0</nc:name>
+#       <nc:family>
+#         <nc:inet>
+#           <nc:dhcp/>
+#         </nc:inet>
+#       </nc:family>
+#     </nc:unit>
+#   </nc:interface>
+# </nc:interfaces>
+# after:
+# - ipv4:
+#   - address: 192.168.1.10/24
+#   ipv6:
+#   - address: 8d8d:8d01::1/64
+#   name: ge-0/0/1
+#   unit: '0'
+# - ipv4:
+#   - address: dhcp
+#   name: ge-0/0/2
+#   unit: '0'
+# - ipv4:
+#   - address: dhcp
+#   name: fxp0
+#   unit: '0'
 
 # After state:
 # ------------
 #
 # admin# show interfaces
 # ge-0/0/1 {
-#     description "L3 interface";
 #     unit 0 {
 #         family inet {
 #             address 192.168.1.10/24;
@@ -347,22 +553,151 @@ EXAMPLES = """
 #     }
 # }
 # ge-0/0/2 {
-#     description "L3 interface with dhcp";
 #     unit 0 {
 #         family inet {
 #             dhcp;
 #         }
+#         family inet6;
 #     }
 # }
-# ge-0/0/3 {
-#     description "another L3 interface";
+# fxp0 {
+#     enable;
+#     unit 0 {
+#         family inet {
+#             dhcp;
+#         }
+#         family inet6;
+#     }
+# }
+
+# Using deleted
+
+# Before state:
+# -------------
+#
+# admin# show interfaces
+# ge-0/0/1 {
 #     unit 0 {
 #         family inet {
 #             address 192.168.1.10/24;
 #         }
+#         family inet6 {
+#             address 8d8d:8d01::1/64;
+#         }
 #     }
 # }
+# ge-0/0/2 {
+#     unit 0 {
+#         family inet {
+#             dhcp;
+#         }
+#         family inet6;
+#     }
+# }
+# fxp0 {
+#     enable;
+#     unit 0 {
+#         family inet {
+#             dhcp;
+#         }
+#         family inet6;
+#     }
+# }
+
+- name: Delete L3 logical interface
+  junipernetworks.junos.junos_l3_interfaces:
+    config:
+      - name: ge-0/0/1
+      - name: ge-0/0/2
+    state: deleted
+
+# Task Output
+# -----------
+#
+# before:
+# - ipv4:
+#   - address: 192.168.1.10/24
+#   ipv6:
+#   - address: 8d8d:8d01::1/64
+#   name: ge-0/0/1
+#   unit: '0'
+# - ipv4:
+#   - address: dhcp
+#   name: ge-0/0/2
+#   unit: '0'
+# - ipv4:
+#   - address: dhcp
+#   name: fxp0
+#   unit: '0'
+# commands:
+# - <nc:interfaces xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+#     <nc:interface>
+#       <nc:name>ge-0/0/1</nc:name>
+#       <nc:unit>
+#         <nc:name>0</nc:name>
+#         <nc:family>
+#           <nc:inet>
+#             <nc:address delete="delete"/>
+#           </nc:inet>
+#           <nc:inet6>
+#             <nc:address delete="delete"/>
+#           </nc:inet6>
+#         </nc:family>
+#       </nc:unit>
+#     </nc:interface>
+#     <nc:interface>
+#       <nc:name>ge-0/0/2</nc:name>
+#       <nc:unit>
+#         <nc:name>0</nc:name>
+#         <nc:family>
+#           <nc:inet>
+#             <nc:dhcp delete="delete"/>
+#           </nc:inet>
+#           <nc:inet6>
+#             <nc:address delete="delete"/>
+#           </nc:inet6>
+#         </nc:family>
+#       </nc:unit>
+#     </nc:interface>
+#   </nc:interfaces>
+# after:
+# - name: ge-0/0/1
+#   unit: '0'
+# - name: ge-0/0/2
+#   unit: '0'
+# - ipv4:
+#   - address: dhcp
+#   name: fxp0
+#   unit: '0'
+
+# After state:
+# ------------
+#
+# admin# show interfaces
+# ge-0/0/1 {
+#     unit 0 {
+#         family inet;
+#         family inet6;
+#     }
+# }
+# ge-0/0/2 {
+#     unit 0 {
+#         family inet;
+#         family inet6;
+#     }
+# }
+# fxp0 {
+#     enable;
+#     unit 0 {
+#         family inet {
+#             dhcp;
+#         }
+#         family inet6;
+#     }
+# }
+
 # Using gathered
+
 # Before state:
 # ------------
 #
@@ -438,135 +773,37 @@ EXAMPLES = """
 #         }
 #     }
 # }
-- name: Gather junos layer3 interfaces as in given arguments
+
+- name: Gather layer3 interfaces facts
   junipernetworks.junos.junos_l3_interfaces:
     state: gathered
-# Task Output (redacted)
-# -----------------------
+
+# Task Output
+# -----------
 #
-# "gathered": [
-#             {
-#                 "ipv4": [
-#                     {
-#                         "address": "192.168.100.1/24"
-#                     },
-#                     {
-#                         "address": "10.200.16.20/24"
-#                     }
-#                 ],
-#                 "name": "ge-1/0/0",
-#                 "unit": "0"
-#             },
-#             {
-#                 "ipv4": [
-#                     {
-#                         "address": "192.168.100.2/24"
-#                     },
-#                     {
-#                         "address": "10.200.16.21/24"
-#                     }
-#                 ],
-#                 "name": "ge-2/0/0",
-#                 "unit": "0"
-#             },
-#             {
-#                 "ipv4": [
-#                     {
-#                         "address": "192.168.100.3/24"
-#                     },
-#                     {
-#                         "address": "10.200.16.22/24"
-#                     }
-#                 ],
-#                 "name": "ge-3/0/0",
-#                 "unit": "0"
-#             },
-#             {
-#                 "ipv4": [
-#                     {
-#                         "address": "10.8.38.38/24"
-#                     }
-#                 ],
-#                 "name": "fxp0",
-#                 "unit": "0"
-#             }
-#         ]
-# After state:
-# ------------
-#
-# user@junos01# show interfaces
-# ge-0/0/1 {
-#     description "Configured by Ansible";
-#     disable;
-#     speed 100m;
-#     mtu 1024;
-#     hold-time up 2000 down 2200;
-#     link-mode full-duplex;
-#     unit 0 {
-#         family ethernet-switching {
-#             interface-mode access;
-#             vlan {
-#                 members vlan100;
-#             }
-#         }
-#     }
-# }
-# ge-0/0/2 {
-#     description "Configured by Ansible";
-#     native-vlan-id 400;
-#     speed 10m;
-#     mtu 2048;
-#     hold-time up 3000 down 3200;
-#     unit 0 {
-#         family ethernet-switching {
-#             interface-mode trunk;
-#             vlan {
-#                 members [ vlan200 vlan300 ];
-#             }
-#         }
-#     }
-# }
-# ge-1/0/0 {
-#     unit 0 {
-#         family inet {
-#             address 192.168.100.1/24;
-#             address 10.200.16.20/24;
-#         }
-#         family inet6;
-#     }
-# }
-# ge-2/0/0 {
-#     unit 0 {
-#         family inet {
-#             address 192.168.100.2/24;
-#             address 10.200.16.21/24;
-#         }
-#         family inet6;
-#     }
-# }
-# ge-3/0/0 {
-#     unit 0 {
-#         family inet {
-#             address 192.168.100.3/24;
-#             address 10.200.16.22/24;
-#         }
-#         family inet6;
-#     }
-# }
-# em1 {
-#     description TEST;
-# }
-# fxp0 {
-#     description ANSIBLE;
-#     speed 1g;
-#     link-mode automatic;
-#     unit 0 {
-#         family inet {
-#             address 10.8.38.38/24;
-#         }
-#     }
-# }
+# gathered:
+# - ipv4:
+#   - address: 192.168.100.1/24
+#   - address: 10.200.16.20/24
+#   name: ge-1/0/0
+#   unit: '0'
+# - ipv4:
+#   - address: 192.168.100.2/24
+#   - address: 10.200.16.21/24
+#   name: ge-2/0/0
+#   unit: '0'
+# - ipv4:
+#   - address: 192.168.100.3/24
+#   - address: 10.200.16.22/24
+#   name: ge-3/0/0
+#   unit: '0'
+# - ipv4:
+#   - address: 10.8.38.38/24
+#   name: fxp0
+#   unit: '0'
+
 # Using parsed
+
 # parsed.cfg
 # ------------
 #
@@ -611,40 +848,29 @@ EXAMPLES = """
 #         </interfaces>
 #     </configuration>
 # </rpc-reply>
+
 # - name: Convert interfaces config to argspec without connecting to the appliance
 #   junipernetworks.junos.junos_l3_interfaces:
 #     running_config: "{{ lookup('file', './parsed.cfg') }}"
 #     state: parsed
-# Task Output (redacted)
-# -----------------------
-# "parsed": [
-#         {
-#             "ipv4": [
-#                 {
-#                     "address": "192.168.100.1/24"
-#                 },
-#                 {
-#                     "address": "10.200.16.20/24"
-#                 }
-#             ],
-#             "name": "ge-1/0/0",
-#             "unit": "0"
-#         },
-#         {
-#             "ipv4": [
-#                 {
-#                     "address": "192.168.100.2/24"
-#                 },
-#                 {
-#                     "address": "10.200.16.21/24"
-#                 }
-#             ],
-#             "name": "ge-2/0/0",
-#             "unit": "0"
-#         }
-#     ]
+
+# Task Output
+# -----------
 #
+# parsed:
+# - ipv4:
+#   - address: 192.168.100.1/24
+#   - address: 10.200.16.20/24
+#   name: ge-1/0/0
+#   unit: '0'
+# - ipv4:
+#   - address: 192.168.100.2/24
+#   - address: 10.200.16.21/24
+#   name: ge-2/0/0
+#   unit: '0'
+
 # Using rendered
+
 - name: Render platform specific xml from task input using rendered state
   junipernetworks.junos.junos_l3_interfaces:
     config:
@@ -653,17 +879,17 @@ EXAMPLES = """
           - address: 192.168.100.1/24
           - address: 10.200.16.20/24
         unit: 0
-
       - name: ge-2/0/0
         ipv4:
           - address: 192.168.100.2/24
           - address: 10.200.16.21/24
         unit: 0
     state: rendered
-# Task Output (redacted)
-# -----------------------
-# "rendered": "<nc:interfaces
-#     xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
+
+# Task Output
+# -----------
+#
+# "rendered": "<nc:interfaces xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\">
 #     <nc:interface>
 #         <nc:name>ge-1/0/0</nc:name>
 #         <nc:unit>
@@ -697,8 +923,8 @@ EXAMPLES = """
 #         </nc:unit>
 #     </nc:interface>
 # </nc:interfaces>"
-
 """
+
 RETURN = """
 before:
   description: The configuration as structured data prior to module invocation.
@@ -736,6 +962,29 @@ commands:
             </nc:family>
         </nc:unit>
 </nc:interfaces>', 'xml 2', 'xml 3']
+rendered:
+  description: The provided configuration in the
+    task rendered in device-native format (offline).
+  returned: when I(state) is C(rendered)
+  type: list
+  sample:
+    - <nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+gathered:
+  description: Facts about the network resource gathered
+    from the remote device as structured data.
+  returned: when I(state) is C(gathered)
+  type: list
+  sample: >
+    This output will always be in the same format as the
+    module argspec.
+parsed:
+  description: The device native config provided in I(running_config) option parsed
+    into structured data as per module argspec.
+  returned: when I(state) is C(parsed)
+  type: list
+  sample: >
+    This output will always be in the same format as the
+    module argspec.
 """
 
 

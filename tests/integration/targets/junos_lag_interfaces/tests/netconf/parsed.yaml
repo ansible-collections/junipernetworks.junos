@@ -6,18 +6,36 @@
 
 - ansible.builtin.set_fact:
     expected_parsed_output:
+      - name: ae0
+        members:
+          - member: xe-0/1/0
+            ether_option_type: gigether
+            link_type: "primary"
+          - member: xe-0/1/1
+            ether_option_type: gigether
+            link_type: "primary"
+          - member: xe-0/1/4
+            ether_option_type: gigether
+            link_type: "primary"
+          - member: xe-0/1/5
+            ether_option_type: gigether
+            link_type: "primary"
+        mode: active
       - name: ae1
         members:
           - member: ge-0/0/1
+            ether_option_type: ether
           - member: ge-0/0/2
+            ether_option_type: ether
         mode: active
       - name: ae2
         link_protection: true
         members:
           - member: ge-0/0/3
+            ether_option_type: ether
             link_type: primary
-
           - member: ge-0/0/4
+            ether_option_type: ether
             link_type: backup
         mode: passive
 

@@ -85,6 +85,13 @@ options:
             choices:
             - primary
             - backup
+          ether_option_type:
+            description: Specify the type of ethernet interface.
+            choices:
+              - ether
+              - gigether
+            default: ether
+            type: str
   running_config:
     description:
     - This option is used only with state I(parsed).
@@ -143,8 +150,8 @@ EXAMPLES = """
 - name: "Delete LAG attributes of given interfaces (Note: This won't delete the interface itself)"
   junipernetworks.junos.junos_lag_interfaces:
     config:
-    - name: ae0
-    - name: ae1
+      - name: ae0
+      - name: ae1
     state: deleted
 
 # After state:
@@ -173,12 +180,12 @@ EXAMPLES = """
 - name: Merge provided configuration with device configuration
   junipernetworks.junos.junos_lag_interfaces:
     config:
-    - name: ae0
-      members:
-      - member: ge-0/0/1
-        link_type: primary
-      - member: ge-0/0/2
-        link_type: backup
+      - name: ae0
+        members:
+          - member: ge-0/0/1
+            link_type: primary
+          - member: ge-0/0/2
+            link_type: backup
     state: merged
 
 # After state:
@@ -231,13 +238,13 @@ EXAMPLES = """
 - name: Overrides all device LAG configuration with provided configuration
   junipernetworks.junos.junos_lag_interfaces:
     config:
-    - name: ae0
-      members:
-      - member: ge-0/0/2
-    - name: ae1
-      members:
-      - member: ge-0/0/1
-      mode: passive
+      - name: ae0
+        members:
+          - member: ge-0/0/2
+      - name: ae1
+        members:
+          - member: ge-0/0/1
+        mode: passive
     state: overridden
 
 # After state:
@@ -285,10 +292,10 @@ EXAMPLES = """
 - name: Replace device LAG configuration with provided configuration
   junipernetworks.junos.junos_lag_interfaces:
     config:
-    - name: ae0
-      members:
-      - member: ge-0/0/1
-      mode: active
+      - name: ae0
+        members:
+          - member: ge-0/0/1
+        mode: active
     state: replaced
 
 # After state:
@@ -701,20 +708,20 @@ EXAMPLES = """
 - name: Render platform specific xml from task input using rendered state
   junipernetworks.junos.junos_lag_interfaces:
     config:
-    - name: ae1
-      members:
-        - member: ge-0/0/1
-        - member: ge-0/0/2
-      mode: active
+      - name: ae1
+        members:
+          - member: ge-0/0/1
+          - member: ge-0/0/2
+        mode: active
 
-    - name: ae2
-      link_protection: true
-      members:
-        - member: ge-0/0/3
-          link_type: primary
-        - member: ge-0/0/4
-          link_type: backup
-      mode: passive
+      - name: ae2
+        link_protection: true
+        members:
+          - member: ge-0/0/3
+            link_type: primary
+          - member: ge-0/0/4
+            link_type: backup
+        mode: passive
 # Task Output (redacted)
 # -----------------------
 # "rendered": "<nc:interfaces
@@ -771,7 +778,6 @@ EXAMPLES = """
 #         </nc:ether-options>
 #     </nc:interface>
 # </nc:interfaces>"
-
 """
 RETURN = """
 before:

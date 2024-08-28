@@ -194,11 +194,11 @@ Examples
     - name: Merge provided Junos vlans config with running-config
       junipernetworks.junos.junos_vlans:
         config:
-        - name: vlan1
-          vlan_id: 1
-        - name: vlan2
-          vlan_id: 2
-          l3_interface: irb.12
+          - name: vlan1
+            vlan_id: 1
+          - name: vlan2
+            vlan_id: 2
+            l3_interface: irb.12
         state: merged
     #
     # -------------------------
@@ -252,12 +252,12 @@ Examples
     - name: Replace Junos vlans running-config with the provided config
       junipernetworks.junos.junos_vlans:
         config:
-        - name: vlan1
-          vlan_id: 11
-          l3_interface: irb.10
+          - name: vlan1
+            vlan_id: 11
+            l3_interface: irb.10
 
-        - name: vlan2
-          vlan_id: 2
+          - name: vlan2
+            vlan_id: 2
         state: replaced
     # -------------------------
     # Module Execution Result
@@ -321,9 +321,9 @@ Examples
     - name: Override Junos running-config with provided config
       junipernetworks.junos.junos_vlans:
         config:
-        - name: vlan3
-          vlan_id: 3
-          l3_interface: irb.13
+          - name: vlan3
+            vlan_id: 3
+            l3_interface: irb.13
         state: overridden
     # -------------------------
     # Module Execution Result
@@ -375,7 +375,7 @@ Examples
     - name: Delete specific vlan
       junipernetworks.junos.junos_vlans:
         config:
-        - name: vlan3
+          - name: vlan3
         state: deleted
     # -------------------------
     # Module Execution Result
@@ -427,12 +427,12 @@ Examples
     - name: Render xml for provided facts.
       junipernetworks.junos.junos_vlans:
         config:
-        - name: vlan1
-          vlan_id: 1
+          - name: vlan1
+            vlan_id: 1
 
-        - name: vlan2
-          vlan_id: 2
-          l3_interface: irb.12
+          - name: vlan2
+            vlan_id: 2
+            l3_interface: irb.12
         state: rendered
     #
     # -------------------------

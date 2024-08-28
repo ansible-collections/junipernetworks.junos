@@ -301,16 +301,16 @@ Examples
     - name: Merge provided configuration with device configuration
       junipernetworks.junos.junos_lacp_interfaces:
         config:
-        - name: ae0
-          period: fast
-          sync_reset: enable
-          system:
-            priority: 100
-            mac:
-              address: 00:00:00:00:00:02
-        - name: ge-0/0/3
-          port_priority: 100
-          force_up: true
+          - name: ae0
+            period: fast
+            sync_reset: enable
+            system:
+              priority: 100
+              mac:
+                address: 00:00:00:00:00:02
+          - name: ge-0/0/3
+            port_priority: 100
+            force_up: true
         state: merged
 
     # After state:
@@ -399,8 +399,8 @@ Examples
     - name: Replace device LACP interfaces configuration with provided configuration
       junipernetworks.junos.junos_lacp_interfaces:
         config:
-        - name: ae0
-          period: slow
+          - name: ae0
+            period: slow
         state: replaced
 
     # After state:
@@ -483,14 +483,14 @@ Examples
     - name: Overrides all device LACP interfaces configuration with provided configuration
       junipernetworks.junos.junos_lacp_interfaces:
         config:
-        - name: ae0
-          system:
-            priority: 300
-            mac:
-              address: 00:00:00:00:00:03
-        - name: ge-0/0/2
-          port_priority: 200
-          force_up: false
+          - name: ae0
+            system:
+              priority: 300
+              mac:
+                address: 00:00:00:00:00:03
+          - name: ge-0/0/2
+            port_priority: 200
+            force_up: false
         state: overridden
 
     # After state:
@@ -585,9 +585,9 @@ Examples
     - name: "Delete LACP interfaces attributes of given interfaces (Note: This won't delete the interface itself)"
       junipernetworks.junos.junos_lacp_interfaces:
         config:
-        - name: ae0
-        - name: ge-0/0/3
-        - name: ge-0/0/2
+          - name: ae0
+          - name: ge-0/0/3
+          - name: ge-0/0/2
         state: deleted
 
     # After state:
@@ -979,17 +979,17 @@ Examples
     - name: Render platform specific xml from task input using rendered state
       junipernetworks.junos.junos_lacp_interfaces:
         config:
-         - name: ae1
-           period: fast
-           sync_reset: enable
-           system:
-             priority: 100
-             mac:
-               address: 00:00:00:00:00:02
+          - name: ae1
+            period: fast
+            sync_reset: enable
+            system:
+              priority: 100
+              mac:
+                address: 00:00:00:00:00:02
 
-         - name: ge-0/0/1
-           port_priority: 100
-           force_up: true
+          - name: ge-0/0/1
+            port_priority: 100
+            force_up: true
         state: rendered
     # Task Output (redacted)
     # -----------------------

@@ -26,8 +26,9 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+from unittest.mock import patch
+
 from ansible_collections.junipernetworks.junos.plugins.modules import junos_snmp_server
-from ansible_collections.junipernetworks.junos.tests.unit.compat.mock import patch
 from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
 
 from .junos_module import TestJunosModule, load_fixture
@@ -266,7 +267,7 @@ class TestJunosSnmp_serverModule(TestJunosModule):
         )
         result = self.execute_module(changed=True)
         expected_commands = '<nc:snmp xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:trap-options/></nc:snmp>'
-        self.assertEquals(expected_commands, "/n".join(result["commands"]))
+        self.assertEqual(expected_commands, "/n".join(result["commands"]))
 
     def test_junos_snmp_server_merged_trap_options_02(self):
         set_module_args(

@@ -101,9 +101,8 @@ class Prefix_listsFacts(object):
                 xml = self._get_xml_dict(resource)
                 objs = self.render_config(self.generated_spec, xml)
 
-        facts = {}
+        facts = {"prefix_lists": []}
         if objs:
-            facts["prefix_lists"] = []
             params = utils.validate_config(
                 self.argument_spec,
                 {"config": objs},

@@ -109,9 +109,8 @@ class Security_policiesFacts(object):
                 xml = self._get_xml_dict(resource)
                 objs = self.render_config(self.generated_spec, xml)
 
-        facts = {}
+        facts = {"security_policies": {}}
         if objs:
-            facts["security_policies"] = {}
             params = utils.validate_config(
                 self.argument_spec,
                 {"config": objs},
@@ -148,9 +147,9 @@ class Security_policiesFacts(object):
             for zone_pair_policies in zone_pairs:
                 if zone_pair_policies["from-zone-name"] not in from_zone_dict:
                     from_zone_dict[zone_pair_policies["from-zone-name"]] = {}
-                    from_zone_dict[zone_pair_policies["from-zone-name"]][
-                        "name"
-                    ] = zone_pair_policies["from-zone-name"]
+                    from_zone_dict[zone_pair_policies["from-zone-name"]]["name"] = (
+                        zone_pair_policies["from-zone-name"]
+                    )
                     from_zone_dict[zone_pair_policies["from-zone-name"]]["to_zones"] = {}
 
                 from_zone = from_zone_dict[zone_pair_policies["from-zone-name"]]
@@ -356,13 +355,13 @@ class Security_policiesFacts(object):
                     policy_application_services = policy_permit["application-services"] or {}
 
                     if "advanced-anti-malware-policy" in policy_application_services:
-                        application_services[
-                            "advanced_anti_malware_policy"
-                        ] = policy_application_services["advanced-anti-malware-policy"]
+                        application_services["advanced_anti_malware_policy"] = (
+                            policy_application_services["advanced-anti-malware-policy"]
+                        )
                     if "application-traffic-control" in policy_application_services:
-                        application_services[
-                            "application_traffic_control_rule_set"
-                        ] = policy_application_services["application-traffic-control"]["rule-set"]
+                        application_services["application_traffic_control_rule_set"] = (
+                            policy_application_services["application-traffic-control"]["rule-set"]
+                        )
                     if "gprs-gtp-profile" in policy_application_services:
                         application_services["gprs_gtp_profile"] = policy_application_services[
                             "gprs-gtp-profile"
@@ -386,9 +385,9 @@ class Security_policiesFacts(object):
                     if "reverse-redirect-wx" in policy_application_services:
                         application_services["reverse_redirect_wx"] = True
                     if "security-intelligence-policy" in policy_application_services:
-                        application_services[
-                            "security_intelligence_policy"
-                        ] = policy_application_services["security-intelligence-policy"]
+                        application_services["security_intelligence_policy"] = (
+                            policy_application_services["security-intelligence-policy"]
+                        )
                     if "ssl-proxy" in policy_application_services:
                         application_services["ssl_proxy"] = {}
                         application_services["ssl_proxy"]["enable"] = True
@@ -396,9 +395,9 @@ class Security_policiesFacts(object):
                             policy_application_services["ssl-proxy"]
                             and "profile-name" in policy_application_services["ssl-proxy"]
                         ):
-                            application_services["ssl_proxy"][
-                                "profile_name"
-                            ] = policy_application_services["ssl-proxy"]["profile-name"]
+                            application_services["ssl_proxy"]["profile_name"] = (
+                                policy_application_services["ssl-proxy"]["profile-name"]
+                            )
                     if "uac-policy" in policy_application_services:
                         application_services["uac_policy"] = {}
                         application_services["uac_policy"]["enable"] = True
@@ -406,9 +405,9 @@ class Security_policiesFacts(object):
                             policy_application_services["uac-policy"]
                             and "captive-portal" in policy_application_services["uac-policy"]
                         ):
-                            application_services["uac_policy"][
-                                "captive_portal"
-                            ] = policy_application_services["uac-policy"]["captive-portal"]
+                            application_services["uac_policy"]["captive_portal"] = (
+                                policy_application_services["uac-policy"]["captive-portal"]
+                            )
                     if "utm-policy" in policy_application_services:
                         application_services["utm_policy"] = policy_application_services[
                             "utm-policy"

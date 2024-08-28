@@ -109,9 +109,8 @@ class Security_zonesFacts(object):
                 xml = self._get_xml_dict(resource)
                 objs = self.render_config(self.generated_spec, xml)
 
-        facts = {}
+        facts = {"security_zones": {}}
         if objs:
-            facts["security_zones"] = {}
             params = utils.validate_config(
                 self.argument_spec,
                 {"config": objs},
@@ -142,15 +141,15 @@ class Security_zonesFacts(object):
             functional_zone_management = conf.get("functional-zone").get("management") or {}
 
             if "description" in functional_zone_management:
-                security_zones_config["functional_zone_management"][
-                    "description"
-                ] = functional_zone_management["description"]
+                security_zones_config["functional_zone_management"]["description"] = (
+                    functional_zone_management["description"]
+                )
 
             if "host-inbound-traffic" in functional_zone_management:
-                security_zones_config["functional_zone_management"][
-                    "host_inbound_traffic"
-                ] = self.parse_host_inbound_traffic(
-                    functional_zone_management["host-inbound-traffic"],
+                security_zones_config["functional_zone_management"]["host_inbound_traffic"] = (
+                    self.parse_host_inbound_traffic(
+                        functional_zone_management["host-inbound-traffic"],
+                    )
                 )
 
             if "interfaces" in functional_zone_management:
@@ -163,9 +162,9 @@ class Security_zonesFacts(object):
                 ]
 
             if "screen" in functional_zone_management:
-                security_zones_config["functional_zone_management"][
-                    "screen"
-                ] = functional_zone_management["screen"]
+                security_zones_config["functional_zone_management"]["screen"] = (
+                    functional_zone_management["screen"]
+                )
 
         if "security-zone" in conf:
             security_zones_list = conf.get("security-zone")

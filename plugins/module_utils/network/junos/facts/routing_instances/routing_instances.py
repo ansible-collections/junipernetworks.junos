@@ -97,9 +97,8 @@ class Routing_instancesFacts(object):
                 xml = self._get_xml_dict(resource)
                 objs = self.render_config(self.generated_spec, xml)
 
-        facts = {}
+        facts = {"routing_instances": []}
         if objs:
-            facts["routing_instances"] = []
             params = utils.validate_config(
                 self.argument_spec,
                 {"config": objs},
@@ -231,6 +230,25 @@ class Routing_instancesFacts(object):
             else:
                 vrf_exp_lst.append(vrf_exp)
             instance_dict["vrf_exports"] = vrf_exp_lst
+
+        # read bridge domains
+        if instance.get("bridge-domains"):
+            br_domain_lst = []
+            br_domains = instance.get("bridge-domains").get("domain")
+            if isinstance(br_domains, list):
+                for domain in br_domains:
+                    br_item = {
+                        k.replace("-", "_"): (v if v is not None else True)
+                        for k, v in domain.items()
+                    }
+                    br_domain_lst.append(br_item)
+            else:
+                br_item = {
+                    k.replace("-", "_"): (v if v is not None else True)
+                    for k, v in br_domains.items()
+                }
+                br_domain_lst.append(br_item)
+            instance_dict["bridge_domains"] = br_domain_lst
 
         return utils.remove_empties(instance_dict)
 

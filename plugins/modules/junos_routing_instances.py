@@ -89,6 +89,40 @@ options:
         description: Primary role of L2Backhaul-vpn router.
         type: str
         choices: ['access', 'nni']
+      bridge_domains:
+        description:
+          - Bridge domain configuration.
+          - This has been tested for junos MX204.
+        type: list
+        elements: dict
+        suboptions:
+          name:
+            description: Specify the name of the bridge domain.
+            type: str
+          description:
+            description: Specify domain description.
+            type: str
+          domain_id:
+            description: Provide the domain ID.
+            type: int
+          enable_mac_move_action:
+            description: Enable blocking action due to mac-move in this Bridge Domain.
+            type: bool
+          vlan_id:
+            description: IEEE 802.1q VLAN identifier for bridging domain (1..4094)
+            type: int
+          mcae_mac_flush:
+            description: Enable IRB MAC synchronization in this bridge domain
+            type: bool
+          no_irb_layer_2_copy:
+            description: Disable transmission of layer-2 copy of packets of irb routing-interface.
+            type: bool
+          no_local_switching:
+            description: Disable local switching within CE-facing interfaces.
+            type: bool
+          service_id:
+            description: Specify service id.
+            type: int
       type:
         description: Specify instance type.
         type: str
@@ -104,6 +138,7 @@ options:
           - mpls-internet-multicast
           - no-forwarding
           - virtual-router
+          - virtual-switch
           - vpls
           - vrf
       interfaces:
@@ -312,21 +347,21 @@ EXAMPLES = """
 
 - name: Replace existing Junos routing instance config with provided config
   junipernetworks.junos.junos_routing_instances:
-   config:
-     address_family:
-       - name: "test"
-         type: "vrf"
-         route_distinguisher: "10.57.255.1:37"
-         vrf_imports:
-           - "test-policy"
-         vrf_exports:
-           - "test-policy"
-         interfaces:
-           - name: "sp-0/0/0.0"
-           - name: "gr-0/0/0.0"
-         connector_id_advertise: false
-         description: "Configured by Ansible Content Team"
-   state: replaced
+    config:
+      address_family:
+        - name: "test"
+          type: "vrf"
+          route_distinguisher: "10.57.255.1:37"
+          vrf_imports:
+            - "test-policy"
+          vrf_exports:
+            - "test-policy"
+          interfaces:
+            - name: "sp-0/0/0.0"
+            - name: "gr-0/0/0.0"
+          connector_id_advertise: false
+          description: "Configured by Ansible Content Team"
+    state: replaced
 
 # After state
 # -----------
@@ -368,25 +403,25 @@ EXAMPLES = """
 
 - name: Override Junos routing-instances configuration
   junipernetworks.junos.junos_routing_instances:
-   config:
-     - name: "test"
-       type: "vrf"
-       route_distinguisher: "10.58.255.1:37"
-       vrf_imports:
-         - "test-policy"
-       vrf_exports:
-         - "test-policy"
-         - "test-policy-1"
-       interfaces:
-         - name: "sp-0/0/0.0"
-         - name: "gr-0/0/0.0"
-       connector_id_advertise: true
-     - name: "forwardinst"
-       type: "forwarding"
-       description: "Configured by Ansible Content Team"
-     - name: "vtest1"
-       type: "virtual-router"
-   state: overridden
+    config:
+      - name: "test"
+        type: "vrf"
+        route_distinguisher: "10.58.255.1:37"
+        vrf_imports:
+          - "test-policy"
+        vrf_exports:
+          - "test-policy"
+          - "test-policy-1"
+        interfaces:
+          - name: "sp-0/0/0.0"
+          - name: "gr-0/0/0.0"
+        connector_id_advertise: true
+      - name: "forwardinst"
+        type: "forwarding"
+        description: "Configured by Ansible Content Team"
+      - name: "vtest1"
+        type: "virtual-router"
+    state: overridden
 
 # After state
 # -----------
@@ -432,9 +467,9 @@ EXAMPLES = """
 
 - name: Delete provided junos routing-instamce
   junipernetworks.junos.junos_routing_instances:
-   config:
-     - name: "test"
-   state: deleted
+    config:
+      - name: "test"
+    state: deleted
 
 # After state
 # -----------
@@ -470,8 +505,8 @@ EXAMPLES = """
 
 - name: Delete complete Junos routing-instances config
   junipernetworks.junos.junos_routing_instances:
-   config:
-   state: deleted
+    config:
+    state: deleted
 
 # After state
 # -----------
