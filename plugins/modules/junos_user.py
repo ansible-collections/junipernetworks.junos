@@ -49,13 +49,9 @@ options:
       role:
         description:
         - The C(role) argument defines the role of the user account on the remote system.  User
-          accounts can have more than one role configured.
+          accounts can`t have more than one role configured. Juniper predefined roles are:
+          ["read-only", "operator", "super-user"]
         type: str
-        choices:
-        - operator
-        - read-only
-        - super-user
-        - unauthorized
       sshkey:
         description:
         - The C(sshkey) argument defines the public SSH key to be configured for the user
@@ -101,13 +97,9 @@ options:
   role:
     description:
     - The C(role) argument defines the role of the user account on the remote system.  User
-      accounts can have more than one role configured.
+      accounts can`t have more than one role configured. Juniper predefined roles are: 
+      ["read-only", "operator", "super-user"]
     type: str
-    choices:
-    - operator
-    - read-only
-    - super-user
-    - unauthorized
   sshkey:
     description:
     - The C(sshkey) argument defines the public SSH key to be configured for the user
