@@ -8,10 +8,6 @@
   connection: local
 
 - name: Set test_items
-  debug:
-    msg: "{{ test_cases }}"
-
-- name: Set test_items
   ansible.builtin.set_fact:
     test_items: "{{ test_cases.files | map(attribute='path') | list }}"
 
