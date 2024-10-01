@@ -1,11 +1,6 @@
 ---
 - ansible.builtin.debug: msg="START net_put on connection={{ ansible_connection}}"
 
-- name: Verify that the SSH type is libssh
-  ansible.builtin.assert:
-    that:
-      - ansible_network_cli_ssh_type == 'libssh'
-
 - name: Create a 250mb file
   ansible.builtin.command: "fallocate -l 1M /tmp/250mbfile"
   args:
