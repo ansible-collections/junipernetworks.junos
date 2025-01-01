@@ -59,8 +59,16 @@ options:
       sshkey:
         description:
         - The C(sshkey) argument defines the public SSH key to be configured for the user
-          account on the remote system.  This argument must be a valid SSH key
+          account on the remote system.  This argument must be a valid SSH key.
+          This argument is mutually exclusive with the C(sshkeys) argument.
         type: str
+      sshkeys:
+        description:
+        - The C(sshkeys) argument defines the public SSH keys to be configured for the user
+          account on the remote system.  This argument must be a list of valid SSH key.
+          This argument is mutually exclusive with the C(sshkey) argument.
+        type: list
+        elements: str
       encrypted_password:
         description:
         - The C(encrypted_password) argument set already hashed password for the user
@@ -111,8 +119,16 @@ options:
   sshkey:
     description:
     - The C(sshkey) argument defines the public SSH key to be configured for the user
-      account on the remote system.  This argument must be a valid SSH key
+      account on the remote system.  This argument must be a valid SSH key.
+      This argument is mutually exclusive with the C(sshkeys) argument.
     type: str
+  sshkeys:
+    description:
+    - The C(sshkeys) argument defines the public SSH keys to be configured for the user
+      account on the remote system.  This argument must be a list of valid SSH key.
+      This argument is mutually exclusive with the C(sshkey) argument.
+    type: list
+    elements: str
   encrypted_password:
     description:
     - The C(encrypted_password) argument set already hashed password for the user
@@ -296,16 +312,20 @@ def map_obj_to_ele(module, want):
                 SubElement(user, "full-name").text = item["full_name"]
 
             if item.get("sshkey"):
+                item["sshkeys"] = [item["sshkey"]]
+
+            if item.get("sshkeys"):
                 auth = SubElement(user, "authentication")
-                if "ssh-rsa" in item["sshkey"]:
-                    ssh_rsa = SubElement(auth, "ssh-rsa")
-                elif "ssh-dss" in item["sshkey"]:
-                    ssh_rsa = SubElement(auth, "ssh-dsa")
-                elif "ecdsa-sha2" in item["sshkey"]:
-                    ssh_rsa = SubElement(auth, "ssh-ecdsa")
-                elif "ssh-ed25519" in item["sshkey"]:
-                    ssh_rsa = SubElement(auth, "ssh-ed25519")
-                SubElement(ssh_rsa, "name").text = item["sshkey"]
+                for key in item.get("sshkeys"):
+                    if "ssh-rsa" in key:
+                        ssh_rsa = SubElement(auth, "ssh-rsa")
+                    elif "ssh-dss" in key:
+                        ssh_rsa = SubElement(auth, "ssh-dsa")
+                    elif "ecdsa-sha2" in key:
+                        ssh_rsa = SubElement(auth, "ssh-ecdsa")
+                    elif "ssh-ed25519" in key:
+                        ssh_rsa = SubElement(auth, "ssh-ed25519")
+                    SubElement(ssh_rsa, "name").text = key
 
             if item.get("encrypted_password"):
                 auth = SubElement(user, "authentication")
@@ -363,6 +383,7 @@ def map_params_to_obj(module):
                 "role": get_value("role"),
                 "encrypted_password": get_value("encrypted_password"),
                 "sshkey": get_value("sshkey"),
+                "sshkeys": get_value("sshkeys"),
                 "state": get_value("state"),
                 "active": get_value("active"),
             },
@@ -387,6 +408,7 @@ def main():
         role=dict(choices=ROLES),
         encrypted_password=dict(no_log=True),
         sshkey=dict(no_log=False),
+        sshkeys=dict(type="list", elements="str", no_log=False),
         state=dict(choices=["present", "absent"], default="present"),
         purge=dict(type="bool", default=False),
         active=dict(type="bool", default=True),
@@ -411,7 +433,7 @@ def main():
 
     argument_spec.update(element_spec)
 
-    mutually_exclusive = [["aggregate", "name"]]
+    mutually_exclusive = [["aggregate", "name"], ["sshkey", "sshkeys"]]
 
     module = AnsibleModule(
         argument_spec=argument_spec,
