@@ -199,7 +199,24 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The <code>sshkey</code> argument defines the public SSH key to be configured for the user account on the remote system.  This argument must be a valid SSH key</div>
+                        <div>The <code>sshkey</code> argument defines the public SSH key to be configured for the user account on the remote system.  This argument must be a valid SSH key. This argument is mutually exclusive with the <code>sshkeys</code> argument.</div>
+                </td>
+            </tr>
+            <tr>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>sshkeys</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>The <code>sshkeys</code> argument defines the public SSH keys to be configured for the user account on the remote system.  This argument must be a list of valid SSH key. This argument is mutually exclusive with the <code>sshkey</code> argument.</div>
                 </td>
             </tr>
             <tr>
@@ -320,7 +337,23 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The <code>sshkey</code> argument defines the public SSH key to be configured for the user account on the remote system.  This argument must be a valid SSH key</div>
+                        <div>The <code>sshkey</code> argument defines the public SSH key to be configured for the user account on the remote system.  This argument must be a valid SSH key. This argument is mutually exclusive with the <code>sshkeys</code> argument.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>sshkeys</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>The <code>sshkeys</code> argument defines the public SSH keys to be configured for the user account on the remote system.  This argument must be a list of valid SSH key. This argument is mutually exclusive with the <code>sshkey</code> argument.</div>
                 </td>
             </tr>
             <tr>
