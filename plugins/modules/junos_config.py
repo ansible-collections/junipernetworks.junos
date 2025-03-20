@@ -363,8 +363,20 @@ def filter_delete_statements(module, candidate):
     config = to_native(match.text, encoding="latin-1")
 
     modified_candidate = candidate[:]
-    for index, line in reversed(list(enumerate(candidate))):
-        if line.startswith("delete"):
+    for index, line in list(enumerate(candidate)):
+        if not line.startswith("delete"):
+            continue
+        re_match_set = re.compile("^set" + re.escape(line[6:]) + "($| )")
+        # Remove candidate set config lines which are later removed.
+        for index2 in range(0, index):
+            if re_match_set.match(candidate[index2]):
+                # We can't just remove the element, that would mess up the indexing.
+                modified_candidate[index2] = None
+
+    for index, line in reversed(list(enumerate(modified_candidate))):
+        if line is None:
+            del modified_candidate[index]
+        elif line.startswith("delete"):
             newline = re.sub("^delete", "set", line)
             if newline not in config:
                 del modified_candidate[index]
