@@ -34,7 +34,7 @@ For more information about communication, see the [Ansible communication guide](
 <!--start requires_ansible-->
 ## Ansible version compatibility
 
-This collection has been tested against following Ansible versions: **>=2.15.0**.
+This collection has been tested against following Ansible versions: **>=2.16.0**.
 
 For collections that support Ansible 2.9, please ensure you update your `network_os` to use the
 fully qualified collection name (for example, `cisco.ios.ios`).
@@ -92,7 +92,6 @@ Name | Description
 [junipernetworks.junos.junos_routing_instances](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_routing_instances_module.rst)|Manage routing instances on Junos devices.
 [junipernetworks.junos.junos_routing_options](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_routing_options_module.rst)|Manage routing-options configuration on Junos devices.
 [junipernetworks.junos.junos_rpc](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_rpc_module.rst)|Runs an arbitrary RPC over NetConf on an Juniper JUNOS device
-[junipernetworks.junos.junos_scp](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_scp_module.rst)|Transfer files from or to remote devices running Junos
 [junipernetworks.junos.junos_security_policies](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_security_policies_module.rst)|Create and manage security policies on Juniper JUNOS devices
 [junipernetworks.junos.junos_security_policies_global](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_security_policies_global_module.rst)|Manage global security policy settings on Juniper JUNOS devices
 [junipernetworks.junos.junos_security_zones](https://github.com/ansible-collections/junipernetworks.junos/blob/main/docs/junipernetworks.junos.junos_security_zones_module.rst)|Manage security zones on Juniper JUNOS devices
