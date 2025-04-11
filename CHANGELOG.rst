@@ -4,6 +4,14 @@ Junipernetworks Junos Collection Release Notes
 
 .. contents:: Topics
 
+v10.0.0
+=======
+
+Documentation Changes
+---------------------
+
+- Includes a new support related section in the README.
+
 v9.1.0
 ======
 

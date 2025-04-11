@@ -223,4 +223,4 @@ plugins:
   strategy: {}
   test: {}
   vars: {}
-version: 9.1.0
+version: 10.0.0

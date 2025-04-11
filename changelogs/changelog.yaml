@@ -685,3 +685,13 @@ releases:
       - implement_bridge_domains.yaml
       - support_l3_mtu.yaml
     release_date: "2024-08-05"
+  10.0.0:
+    changes:
+      doc_changes:
+        - Includes a new support related section in the README.
+    fragments:
+      - 0-readme.yml
+      - adds_support.yaml
+      - ignore_219.yaml
+      - libssh.yaml
+    release_date: "2025-04-11"
