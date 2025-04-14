@@ -7,6 +7,23 @@ Junipernetworks Junos Collection Release Notes
 v10.0.0
 =======
 
+Release Summary
+---------------
+
+With this release, the minimum required version of `ansible-core` for this collection is `2.16.0`. The last version known to be compatible with `ansible-core` versions below `2.16` is v9.1.0.
+
+Major Changes
+-------------
+
+- Bumping `requires_ansible` to `>=2.16.0`, since previous ansible-core versions are EoL now.
+
+Removed Features (previously deprecated)
+----------------------------------------
+
+- This includes the following modules:
+- This release removes all deprecated plugins that have reached their end-of-life.
+- junos_scp
+
 Documentation Changes
 ---------------------
 
