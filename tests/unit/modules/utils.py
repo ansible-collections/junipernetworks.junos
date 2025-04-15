@@ -13,6 +13,7 @@ from ansible.module_utils._text import to_bytes
 
 cur_context = None
 
+
 def set_module_args(args):
     global cur_context
 
