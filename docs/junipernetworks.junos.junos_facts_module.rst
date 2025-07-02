@@ -26,6 +26,7 @@ Requirements
 The below requirements are needed on the host that executes this module.
 
 - ncclient (>=v0.5.2)
+- xmltodict *(if gather_subset is all or hardware)*
 
 
 Parameters
