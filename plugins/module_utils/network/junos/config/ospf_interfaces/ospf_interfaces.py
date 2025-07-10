@@ -292,7 +292,9 @@ class Ospf_interfaces(ConfigBase):
                         existing_config = have[0]
                         if existing_config["name"] == ospf_interfaces["name"]:
                             intf_node.attrib.update(delete)
-
+                if "interface_type" in processes:
+                    iface_type = processes.get("interface_type")
+                    build_child_xml_node(intf_node, "interface-type", iface_type)
                 if "authentication" in processes:
                     auth = processes.get("authentication")
                     auth_node = build_child_xml_node(intf_node, "authentication")
