@@ -111,6 +111,7 @@ class TestJunosOspfv3Module(TestJunosModule):
                                     area=dict(area_id="0.0.0.2"),
                                     priority=3,
                                     metric=5,
+                                    interface_type="p2p"
                                 ),
                             ),
                         ],
@@ -121,7 +122,7 @@ class TestJunosOspfv3Module(TestJunosModule):
         )
         commands = [
             '<nc:protocols xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"><nc:ospf>'
-            "<nc:area><nc:name>0.0.0.2</nc:name><nc:interface><nc:name>ge-0/0/2.0</nc:name>"
+            "<nc:area><nc:name>0.0.0.2</nc:name><nc:interface><nc:name>ge-0/0/2.0</nc:name><nc:interface-type>p2p</nc:interface-type>"
             "<nc:priority>3</nc:priority><nc:metric>5</nc:metric></nc:interface></nc:area></nc:ospf></nc:protocols>",
             '<nc:routing-options xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">'
             "<nc:router-id>10.200.16.75</nc:router-id></nc:routing-options>",
