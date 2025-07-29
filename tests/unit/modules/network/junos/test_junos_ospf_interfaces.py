@@ -111,7 +111,7 @@ class TestJunosOspfv3Module(TestJunosModule):
                                     area=dict(area_id="0.0.0.2"),
                                     priority=3,
                                     metric=5,
-                                    interface_type="p2p"
+                                    interface_type="p2p",
                                 ),
                             ),
                         ],
