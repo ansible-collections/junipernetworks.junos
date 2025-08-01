@@ -190,6 +190,10 @@ class Ospf_interfacesFacts(object):
                     interface_dict["poll_interval"] = interface.get(
                         "poll-interval",
                     )
+                    interface_dict["interface_type"] = interface.get(
+                        "interface_type",
+                    )
+
                     if "passive" in interface.keys():
                         interface_dict["passive"] = True
                     if "flood-reduction" in interface.keys():

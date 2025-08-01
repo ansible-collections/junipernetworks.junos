@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - Fixes interface_type parameter in the proccesses block.
