@@ -22,6 +22,7 @@
                 processes:
                   area:
                     area_id: "0.0.0.3"
+                  interface_type: p2p
                   priority: 3
                   metric: 5
             name: "ge-0/0/3.0"
@@ -37,6 +38,7 @@
                 processes:
                   area:
                     area_id: "0.0.0.3"
+                  interface_type: p2p
                   priority: 3
                   metric: 5
         state: merged
