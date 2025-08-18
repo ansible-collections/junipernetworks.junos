@@ -2,7 +2,7 @@
 authors:
   - Ansible Network Community (ansible-network)
 dependencies:
-  "ansible.netcommon": ">=6.1.0"
+  "ansible.netcommon": ">=8.1.0"
 license_file: LICENSE
 name: junos
 namespace: junipernetworks
@@ -11,4 +11,4 @@ readme: README.md
 repository: https://github.com/ansible-collections/junipernetworks.junos
 issues: https://github.com/ansible-collections/junipernetworks.junos/issues
 tags: [juniper, junipernetworks, junos, networking, security, netconf]
-version: 10.0.0
+version: 11.0.0
