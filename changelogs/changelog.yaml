@@ -190,6 +190,37 @@ releases:
         name: junos_ospf_interfaces
         namespace: ""
     release_date: "2021-01-28"
+  10.0.0:
+    changes:
+      doc_changes:
+        - Includes a new support related section in the README.
+      major_changes:
+        - Bumping `requires_ansible` to `>=2.16.0`, since previous ansible-core versions
+          are EoL now.
+      release_summary:
+        With this release, the minimum required version of `ansible-core`
+        for this collection is `2.16.0`. The last version known to be compatible with
+        `ansible-core` versions below `2.16` is v9.1.0.
+      removed_features:
+        - "This includes the following modules:"
+        - This release removes all deprecated plugins that have reached their end-of-life.
+        - junos_scp
+    fragments:
+      - 0-readme.yml
+      - adds_support.yaml
+      - bump216.yml
+      - ignore_219.yaml
+      - libssh.yaml
+    release_date: "2025-04-11"
+  11.0.0:
+    changes:
+      bugfixes:
+        - Fixes interface_type parameter in the proccesses block.
+    fragments:
+      - fix_ospf_interface_type.yaml
+      - fix_sanity.yaml
+      - fix_tests.yml
+    release_date: "2025-08-19"
   2.0.0:
     changes:
       major_changes:
@@ -685,25 +716,3 @@ releases:
       - implement_bridge_domains.yaml
       - support_l3_mtu.yaml
     release_date: "2024-08-05"
-  10.0.0:
-    changes:
-      doc_changes:
-        - Includes a new support related section in the README.
-      major_changes:
-        - Bumping `requires_ansible` to `>=2.16.0`, since previous ansible-core versions
-          are EoL now.
-      release_summary:
-        "With this release, the minimum required version of `ansible-core`
-        for this collection is `2.16.0`. The last version known to be compatible with
-        `ansible-core` versions below `2.16` is v9.1.0."
-      removed_features:
-        - "This includes the following modules:"
-        - This release removes all deprecated plugins that have reached their end-of-life.
-        - junos_scp
-    fragments:
-      - 0-readme.yml
-      - adds_support.yaml
-      - bump216.yml
-      - ignore_219.yaml
-      - libssh.yaml
-    release_date: "2025-04-11"
