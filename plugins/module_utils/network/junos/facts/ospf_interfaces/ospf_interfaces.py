@@ -44,6 +44,8 @@ try:
 except ImportError:
     HAS_XMLTODICT = False
 
+string_types = (str,)
+
 
 class Ospf_interfacesFacts(object):
     """The junos ospf_interfaces fact class"""
@@ -96,7 +98,7 @@ class Ospf_interfacesFacts(object):
                 """
             data = self.get_connection(connection, config_filter)
 
-        if isinstance(data, str):
+        if isinstance(data, string_types):
             data = etree.fromstring(
                 to_bytes(data, errors="surrogate_then_replace"),
             )
