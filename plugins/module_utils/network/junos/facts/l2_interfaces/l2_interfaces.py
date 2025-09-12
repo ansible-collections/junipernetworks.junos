@@ -17,7 +17,6 @@ __metaclass__ = type
 from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
-from ansible.module_utils.six import string_types
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
 
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.l2_interfaces.l2_interfaces import (
@@ -31,6 +30,8 @@ try:
     HAS_LXML = True
 except ImportError:
     HAS_LXML = False
+
+string_types = (str,)
 
 
 class L2_interfacesFacts(object):

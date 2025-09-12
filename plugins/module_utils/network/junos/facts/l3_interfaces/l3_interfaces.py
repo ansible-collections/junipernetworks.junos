@@ -18,7 +18,6 @@ from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
-from ansible.module_utils.six import iteritems, string_types
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
 
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.l3_interfaces.l3_interfaces import (
@@ -39,6 +38,8 @@ try:
     HAS_XMLTODICT = True
 except ImportError:
     HAS_XMLTODICT = False
+
+string_types = (str,)
 
 
 class L3_interfacesFacts(object):
@@ -145,7 +146,7 @@ class L3_interfacesFacts(object):
                 inet = unit["family"].get("inet")
                 if inet is not None and "address" in inet.keys():
                     if isinstance(inet["address"], dict):
-                        for key, value in iteritems(inet["address"]):
+                        for key, value in inet["address"].items():
                             addr = {}
                             addr["address"] = value
                             ipv4.append(addr)

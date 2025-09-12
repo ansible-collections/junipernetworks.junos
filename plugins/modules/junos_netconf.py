@@ -78,7 +78,6 @@ import re
 from ansible.module_utils._text import to_text
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import ConnectionError
-from ansible.module_utils.six import iteritems
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import to_list
 
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
@@ -137,7 +136,7 @@ def map_params_to_obj(module):
         "state": module.params["state"],
     }
 
-    for key, value in iteritems(obj):
+    for key, value in obj.items():
         # validate the param value (if validator func exists)
         validator = globals().get("validate_%s" % key)
         if callable(validator):

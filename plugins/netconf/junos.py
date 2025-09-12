@@ -44,7 +44,6 @@ import re
 
 from ansible.errors import AnsibleConnectionFailure
 from ansible.module_utils._text import to_native, to_text
-from ansible.module_utils.six import string_types
 from ansible_collections.ansible.netcommon.plugins.plugin_utils.netconf_base import (
     NetconfBase,
     ensure_ncclient,
@@ -63,6 +62,8 @@ except (
     AttributeError,
 ):  # paramiko and gssapi are incompatible and raise AttributeError not ImportError
     HAS_NCCLIENT = False
+
+string_types = (str,)
 
 
 class Netconf(NetconfBase):

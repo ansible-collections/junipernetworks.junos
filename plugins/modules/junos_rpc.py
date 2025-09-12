@@ -93,7 +93,6 @@ output_lines:
   type: list
 """
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.six import iteritems
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
     exec_rpc,
 )
@@ -138,12 +137,12 @@ def main():
 
     xattrs = {"format": module.params["output"]}
 
-    for key, value in iteritems(attrs):
+    for key, value in attrs.items():
         xattrs.update({key: value})
 
     element = Element(module.params["rpc"], xattrs)
 
-    for key, value in iteritems(args):
+    for key, value in args.items():
         key = str(key).replace("_", "-")
         if isinstance(value, list):
             for item in value:
