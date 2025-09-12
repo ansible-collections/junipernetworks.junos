@@ -281,6 +281,7 @@ import re
 
 from ansible.module_utils._text import to_native, to_text
 
+
 # Python 3 compatibility
 string_types = (str,)
 from ansible.module_utils.basic import AnsibleModule

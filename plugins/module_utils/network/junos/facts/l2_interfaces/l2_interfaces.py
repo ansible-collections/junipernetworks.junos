@@ -17,8 +17,6 @@ __metaclass__ = type
 from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
-
-
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
 
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.l2_interfaces.l2_interfaces import (
