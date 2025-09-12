@@ -207,7 +207,7 @@ class Netconf(NetconfBase):
         :return: Received rpc response from remote host in string format
         """
         if filter is not None:
-            if not isinstance(filter, str):
+            if not isinstance(filter, string_types):
                 raise AnsibleConnectionFailure(
                     "get configuration filter should be of type string,"
                     " received value '%s' is of type '%s'" % (filter, type(filter)),

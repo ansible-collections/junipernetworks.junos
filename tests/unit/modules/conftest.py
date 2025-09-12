@@ -16,7 +16,7 @@ string_types = (str,)
 
 @pytest.fixture
 def patch_ansible_module(request, mocker):
-    if isinstance(request.param, str):
+    if isinstance(request.param, string_types):
         args = request.param
     elif isinstance(request.param, MutableMapping):
         if "ANSIBLE_MODULE_ARGS" not in request.param:
