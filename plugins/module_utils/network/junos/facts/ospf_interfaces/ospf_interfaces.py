@@ -18,7 +18,6 @@ from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.basic import missing_required_lib
-from ansible.module_utils.six import string_types
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
     generate_dict,
     remove_empties,
@@ -44,6 +43,8 @@ try:
     HAS_XMLTODICT = True
 except ImportError:
     HAS_XMLTODICT = False
+
+string_types = (str,)
 
 
 class Ospf_interfacesFacts(object):
@@ -97,7 +98,7 @@ class Ospf_interfacesFacts(object):
                 """
             data = self.get_connection(connection, config_filter)
 
-        if isinstance(data, string_types):
+        if isinstance(data, str):
             data = etree.fromstring(
                 to_bytes(data, errors="surrogate_then_replace"),
             )

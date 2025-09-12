@@ -17,8 +17,10 @@ __metaclass__ = type
 from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
+
+# Python 3 compatibility
+string_types = (str,)
 from ansible.module_utils.basic import missing_required_lib
-from ansible.module_utils.six import iteritems, string_types
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
 
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.l3_interfaces.l3_interfaces import (
@@ -145,7 +147,7 @@ class L3_interfacesFacts(object):
                 inet = unit["family"].get("inet")
                 if inet is not None and "address" in inet.keys():
                     if isinstance(inet["address"], dict):
-                        for key, value in iteritems(inet["address"]):
+                        for key, value in inet["address"].items():
                             addr = {}
                             addr["address"] = value
                             ipv4.append(addr)

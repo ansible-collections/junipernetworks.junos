@@ -11,12 +11,12 @@ import pytest
 
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.common._collections_compat import MutableMapping
-from ansible.module_utils.six import string_types
+string_types = (str,)
 
 
 @pytest.fixture
 def patch_ansible_module(request, mocker):
-    if isinstance(request.param, string_types):
+    if isinstance(request.param, str):
         args = request.param
     elif isinstance(request.param, MutableMapping):
         if "ANSIBLE_MODULE_ARGS" not in request.param:

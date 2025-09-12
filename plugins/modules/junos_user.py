@@ -207,7 +207,6 @@ from functools import partial
 from ansible.module_utils._text import to_text
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import ConnectionError
-from ansible.module_utils.six import iteritems
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
     remove_default_spec,
 )
@@ -368,7 +367,7 @@ def map_params_to_obj(module):
             },
         )
 
-        for key, value in iteritems(item):
+        for key, value in item.items():
             # validate the param value (if validator func exists)
             validator = globals().get("validate_%s" % key)
             if all((value, validator)):

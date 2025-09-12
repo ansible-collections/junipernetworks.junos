@@ -17,8 +17,10 @@ __metaclass__ = type
 from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
+
+# Python 3 compatibility
+string_types = (str,)
 from ansible.module_utils.basic import missing_required_lib
-from ansible.module_utils.six import string_types
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
 
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.interfaces.interfaces import (
@@ -42,6 +44,8 @@ try:
     HAS_XMLTODICT = True
 except ImportError:
     HAS_XMLTODICT = False
+
+string_types = (str,)
 
 
 class InterfacesFacts(object):

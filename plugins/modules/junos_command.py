@@ -170,7 +170,6 @@ import time
 from ansible.module_utils._text import to_text
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import ConnectionError
-from ansible.module_utils.six import iteritems
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
     exec_rpc,
 )
@@ -225,9 +224,8 @@ def rpc(module, items):
 
         if text:
             element.text = text
-
         elif args:
-            for key, value in iteritems(args):
+            for key, value in args.items():
                 key = str(key).replace("_", "-")
                 if isinstance(value, list):
                     for item in value:

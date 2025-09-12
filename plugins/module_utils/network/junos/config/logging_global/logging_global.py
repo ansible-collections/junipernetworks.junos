@@ -15,7 +15,6 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from ansible.module_utils.six import iteritems
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
     ConfigBase,
 )
@@ -228,7 +227,7 @@ class Logging_global(ConfigBase):
         if "console" in want.keys():
             console = want.get("console")
             # add any level node
-            for k, v in iteritems(console):
+            for k, v in console.items():
                 if v is not None:
                     console_node = build_child_xml_node(
                         logging_node,
@@ -254,7 +253,7 @@ class Logging_global(ConfigBase):
                 ):
                     build_child_xml_node(file_node, "allow-duplicates")
                 # add contents
-                for k, v in iteritems(file):
+                for k, v in file.items():
                     if k in level_parser and v is not None:
                         content_node = build_child_xml_node(
                             file_node,
@@ -305,7 +304,7 @@ class Logging_global(ConfigBase):
                 ):
                     build_child_xml_node(host_node, "allow-duplicates")
                 # add contents
-                for k, v in iteritems(host):
+                for k, v in host.items():
                     if k in level_parser and v is not None:
                         content_node = build_child_xml_node(
                             host_node,
@@ -447,7 +446,7 @@ class Logging_global(ConfigBase):
                 ):
                     build_child_xml_node(user_node, "allow-duplicates")
                 # add contents
-                for k, v in iteritems(user):
+                for k, v in user.items():
                     if k in level_parser and v is not None:
                         content_node = build_child_xml_node(
                             user_node,

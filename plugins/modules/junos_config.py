@@ -280,8 +280,10 @@ import json
 import re
 
 from ansible.module_utils._text import to_native, to_text
+
+# Python 3 compatibility
+string_types = (str,)
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.six import string_types
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
     exec_rpc,
 )
