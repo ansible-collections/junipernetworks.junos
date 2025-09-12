@@ -18,8 +18,6 @@ from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
 
-# Python 3 compatibility
-string_types = (str,)
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
 
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.vlans.vlans import (
@@ -36,6 +34,8 @@ try:
     HAS_LXML = True
 except ImportError:
     HAS_LXML = False
+
+string_types = (str,)
 
 
 class VlansFacts(object):

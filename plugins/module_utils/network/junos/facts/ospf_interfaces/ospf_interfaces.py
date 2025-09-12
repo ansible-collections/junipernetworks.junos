@@ -44,8 +44,6 @@ try:
 except ImportError:
     HAS_XMLTODICT = False
 
-string_types = (str,)
-
 
 class Ospf_interfacesFacts(object):
     """The junos ospf_interfaces fact class"""

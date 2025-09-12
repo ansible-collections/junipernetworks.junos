@@ -18,8 +18,6 @@ from copy import deepcopy
 
 from ansible.module_utils._text import to_bytes
 
-# Python 3 compatibility
-string_types = (str,)
 from ansible.module_utils.basic import missing_required_lib
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import utils
 
