@@ -1,0 +1,2 @@
+bugfixes:
+  - In junos_config, "delete" lines which only delete candidate config lines are no longer ignored.
