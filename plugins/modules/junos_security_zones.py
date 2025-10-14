@@ -41,6 +41,10 @@ DOCUMENTATION = """
 ---
 module: junos_security_zones
 version_added: 2.9.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_security_zones
+  removed_at_date: "2027-10-30"
 short_description: Manage security zones on Juniper JUNOS devices
 description: This module provides declarative management of security zones on Juniper JUNOS devices
 author: Pranav Bhatt (@pranav-bhatt)
