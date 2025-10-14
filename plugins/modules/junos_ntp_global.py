@@ -34,6 +34,10 @@ DOCUMENTATION = """
 ---
 module: junos_ntp_global
 version_added: 2.6.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_ntp_global
+  removed_at_date: "2027-10-30"
 short_description: Manage NTP configuration on Junos devices.
 description: This module manages NTP configuration on devices running Junos.
 author: Rohit Thakur (@rohitthakur2590)

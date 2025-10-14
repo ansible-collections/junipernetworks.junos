@@ -19,6 +19,10 @@ description:
   module will compare the specified package with the one running on the remote device
   and install the specified version if there is a mismatch
 version_added: 1.0.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_package
+  removed_at_date: "2027-10-30"
 extends_documentation_fragment:
 - junipernetworks.junos.junos
 options:

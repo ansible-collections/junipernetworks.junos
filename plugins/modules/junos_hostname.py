@@ -41,6 +41,10 @@ DOCUMENTATION = """
 ---
 module: junos_hostname
 version_added: 2.9.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_hostname
+  removed_at_date: "2027-10-30"
 short_description: Manage Hostname server configuration on Junos devices.
 description: This module manages hostname configuration on devices running Junos.
 author: Rohit Thakur (@rohitthakur2590)

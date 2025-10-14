@@ -19,6 +19,10 @@ description:
   JUNOS devices.  It provides an option to configure host system parameters or remove
   those parameters from the device active configuration.
 version_added: 1.0.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_system
+  removed_at_date: "2027-10-30"
 extends_documentation_fragment:
 - junipernetworks.junos.junos
 options:

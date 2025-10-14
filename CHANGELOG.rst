@@ -4,18 +4,33 @@ Junipernetworks Junos Collection Release Notes
 
 .. contents:: Topics
 
-v11.0.0
+v11.1.0
 =======
 
 Release Summary
 ---------------
 
-With this release, the minimum required version of `ansible.netcommon` for this collection is `>=8.1.0`. The last version known to be compatible with `ansible-core<=2.18.x` is ansible.netcommon `v8.0.1` and junipernetworks.junos `v10.0.0`.
+This release marks the deprecation of the entire `junipernetworks.junos` collection. All modules are now redirected to their equivalents in the `juniper.device` collection. Users should migrate to `juniper.device` as this collection will be removed in version 12.0.0 (2027-10-30). No breaking changes in this release - all existing playbooks will continue to work via automatic redirects.
 
-Major Changes
--------------
+Deprecated Features
+-------------------
 
-- Bumping `dependencies` of ansible.netcommon to `>=8.1.0`, since previous versions of the dependency had compatibility issues with `ansible-core>=2.19`.
+- **ENTIRE COLLECTION DEPRECATED**: The entire `junipernetworks.junos` collection is deprecated and will be removed in version 12.0.0 (scheduled for 2027-10-30). All modules now redirect to their equivalents in the `juniper.device` collection. Users should migrate to `juniper.device` as this collection will be removed.
+- **All modules (junos_*)**: All modules in this collection are deprecated and redirect to `juniper.device.junos_*` equivalents. The redirects will continue to work until the removal date to ensure backward compatibility.
+
+Migration Guide
+---------------
+
+All modules in this collection have direct equivalents in `juniper.device`:
+
+- Replace `junipernetworks.junos.junos_*` with `juniper.device.junos_*`
+- Update collection requirements to include `juniper.device`
+- Update playbook imports and task module references
+
+For detailed migration information, see the README.md file.
+
+v11.0.0
+=======
 
 Bugfixes
 --------

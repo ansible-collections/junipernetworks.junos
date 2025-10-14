@@ -21,6 +21,10 @@ description:
   and state resources as defined in RFC 6242. If the C(netconf_port) is not mentioned
   in the task by default netconf will be enabled on port 830 only.
 version_added: 1.0.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_netconf
+  removed_at_date: "2027-10-30"
 extends_documentation_fragment:
 - junipernetworks.junos.junos
 options:

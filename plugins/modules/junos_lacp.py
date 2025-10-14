@@ -39,6 +39,10 @@ short_description: Global Link Aggregation Control Protocol (LACP) Junos resourc
 description: This module provides declarative management of global LACP on Juniper
   Junos network devices.
 version_added: 1.0.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_lacp
+  removed_at_date: "2027-10-30"
 author: Ganesh Nalawade (@ganeshrn)
 options:
   config:

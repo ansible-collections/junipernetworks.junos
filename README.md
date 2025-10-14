@@ -1,5 +1,13 @@
 # Juniper Networks Junos Collection
 
+> **⚠️ DEPRECATION NOTICE ⚠️**
+>
+> **This collection is deprecated and will be removed in version 12.0.0 (scheduled for October 30, 2027).**
+>
+> **Please migrate to the [juniper.device](https://github.com/Juniper/ansible-junos-stdlib/tree/master/ansible_collections/juniper/device) collection.**
+>
+> All modules in this collection now redirect to their equivalents in `juniper.device`. The redirects will continue to work until the removal date to ensure backward compatibility.
+
 [![CI](https://zuul-ci.org/gated.svg)](https://dashboard.zuul.ansible.com/t/ansible/project/github.com/ansible-collections/junipernetworks.junos) <!--[![Codecov](https://img.shields.io/codecov/c/github/ansible-collections/vyos)](https://codecov.io/gh/ansible-collections/junipernetworks.junos)-->
 [![Codecov](https://codecov.io/gh/ansible-collections/junipernetworks.junos/branch/main/graph/badge.svg)](https://codecov.io/gh/ansible-collections/junipernetworks.junos)
 [![CI](https://github.com/ansible-collections/junipernetworks.junos/actions/workflows/tests.yml/badge.svg?branch=main&event=schedule)](https://github.com/ansible-collections/junipernetworks.junos/actions/workflows/tests.yml)
@@ -17,6 +25,73 @@ If a support case cannot be opened with Red Hat and the collection has been obta
 You can join us on [#network:ansible.com](https://matrix.to/#/#network:ansible.com) room or the [Ansible Forum Network Working Group](https://forum.ansible.com/g/network-wg).
 
 For more information you can check the communication section below.
+
+## Migration Guide
+
+### Module Migration Table
+
+The following table shows the mapping between deprecated modules in this collection and their replacements in `juniper.device`:
+
+| Deprecated Module (junipernetworks.junos) | New Module (juniper.device) |
+|-------------------------------------------|------------------------------|
+| `junipernetworks.junos.junos_acl_interfaces` | `juniper.device.junos_acl_interfaces` |
+| `junipernetworks.junos.junos_acls` | `juniper.device.junos_acls` |
+| `junipernetworks.junos.junos_banner` | `juniper.device.junos_banner` |
+| `junipernetworks.junos.junos_bgp_address_family` | `juniper.device.junos_bgp_address_family` |
+| `junipernetworks.junos.junos_bgp_global` | `juniper.device.junos_bgp_global` |
+| `junipernetworks.junos.junos_command` | `juniper.device.junos_command` |
+| `junipernetworks.junos.junos_config` | `juniper.device.junos_config` |
+| `junipernetworks.junos.junos_facts` | `juniper.device.junos_facts` |
+| `junipernetworks.junos.junos_hostname` | `juniper.device.junos_hostname` |
+| `junipernetworks.junos.junos_interfaces` | `juniper.device.junos_interfaces` |
+| `junipernetworks.junos.junos_l2_interfaces` | `juniper.device.junos_l2_interfaces` |
+| `junipernetworks.junos.junos_l3_interfaces` | `juniper.device.junos_l3_interfaces` |
+| `junipernetworks.junos.junos_lacp` | `juniper.device.junos_lacp` |
+| `junipernetworks.junos.junos_lacp_interfaces` | `juniper.device.junos_lacp_interfaces` |
+| `junipernetworks.junos.junos_lag_interfaces` | `juniper.device.junos_lag_interfaces` |
+| `junipernetworks.junos.junos_lldp_global` | `juniper.device.junos_lldp_global` |
+| `junipernetworks.junos.junos_lldp_interfaces` | `juniper.device.junos_lldp_interfaces` |
+| `junipernetworks.junos.junos_logging_global` | `juniper.device.junos_logging_global` |
+| `junipernetworks.junos.junos_netconf` | `juniper.device.junos_netconf` |
+| `junipernetworks.junos.junos_ntp_global` | `juniper.device.junos_ntp_global` |
+| `junipernetworks.junos.junos_ospf_interfaces` | `juniper.device.junos_ospf_interfaces` |
+| `junipernetworks.junos.junos_ospfv2` | `juniper.device.junos_ospfv2` |
+| `junipernetworks.junos.junos_ospfv3` | `juniper.device.junos_ospfv3` |
+| `junipernetworks.junos.junos_package` | `juniper.device.junos_package` |
+| `junipernetworks.junos.junos_ping` | `juniper.device.junos_ping` |
+| `junipernetworks.junos.junos_prefix_lists` | `juniper.device.junos_prefix_lists` |
+| `junipernetworks.junos.junos_routing_instances` | `juniper.device.junos_routing_instances` |
+| `junipernetworks.junos.junos_routing_options` | `juniper.device.junos_routing_options` |
+| `junipernetworks.junos.junos_rpc` | `juniper.device.junos_rpc` |
+| `junipernetworks.junos.junos_security_policies` | `juniper.device.junos_security_policies` |
+| `junipernetworks.junos.junos_security_policies_global` | `juniper.device.junos_security_policies_global` |
+| `junipernetworks.junos.junos_security_zones` | `juniper.device.junos_security_zones` |
+| `junipernetworks.junos.junos_snmp_server` | `juniper.device.junos_snmp_server` |
+| `junipernetworks.junos.junos_static_routes` | `juniper.device.junos_static_routes` |
+| `junipernetworks.junos.junos_system` | `juniper.device.junos_system` |
+| `junipernetworks.junos.junos_user` | `juniper.device.junos_user` |
+| `junipernetworks.junos.junos_vlans` | `juniper.device.junos_vlans` |
+| `junipernetworks.junos.junos_vrf` | `juniper.device.junos_vrf` |
+
+### Example Migration
+
+**Before (using deprecated collection):**
+```yaml
+- name: Run show version command
+  junipernetworks.junos.junos_command:
+    commands:
+      - show version
+```
+
+**After (using new collection):**
+```yaml
+- name: Run show version command
+  juniper.device.junos_command:
+    commands:
+      - show version
+```
+
+**Note:** The old FQCNs will continue to work via automatic redirects until version 12.0.0, but it's recommended to update your playbooks to use the new `juniper.device` collection.
 
 ## Communication
 

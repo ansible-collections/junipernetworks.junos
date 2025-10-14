@@ -20,6 +20,10 @@ description:
   with the hostvars. Additional fact information can be collected based on the configured
   set of arguments.
 version_added: 1.0.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_facts
+  removed_at_date: "2027-10-30"
 extends_documentation_fragment:
 - junipernetworks.junos.junos
 options:

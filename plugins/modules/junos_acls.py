@@ -38,6 +38,10 @@ short_description: ACLs resource module
 description: This module provides declarative management of acls/filters on Juniper
   JUNOS devices
 version_added: 1.0.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_acls
+  removed_at_date: "2027-10-30"
 author: Daniel Mellado (@dmellado)
 requirements:
 - ncclient (>=v0.6.4)

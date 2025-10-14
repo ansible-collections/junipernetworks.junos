@@ -41,6 +41,10 @@ DOCUMENTATION = """
 ---
 module: junos_bgp_global
 version_added: "1.3.0"
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_bgp_global
+  removed_at_date: "2027-10-30"
 short_description: Manages BGP Global configuration on devices running Juniper JUNOS.
 description:
   - This module manages global bgp configuration on devices running Juniper JUNOS.

@@ -19,6 +19,10 @@ description:
   the JUNOS operating system.  It provides a set of arguments for creating, removing
   and updating locally defined accounts
 version_added: 1.0.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_user
+  removed_at_date: "2027-10-30"
 extends_documentation_fragment:
 - junipernetworks.junos.junos
 options:

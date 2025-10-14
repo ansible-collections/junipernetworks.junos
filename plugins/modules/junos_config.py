@@ -19,6 +19,10 @@ description:
   running on Juniper JUNOS devices.  It provides a set of arguments for loading configuration,
   performing rollback operations and zeroing the active configuration on the device.
 version_added: 1.0.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_config
+  removed_at_date: "2027-10-30"
 extends_documentation_fragment:
 - junipernetworks.junos.junos
 options:

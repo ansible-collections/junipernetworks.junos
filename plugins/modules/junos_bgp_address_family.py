@@ -41,6 +41,10 @@ DOCUMENTATION = """
 ---
 module: junos_bgp_address_family
 version_added: 1.3.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_bgp_address_family
+  removed_at_date: "2027-10-30"
 short_description: Manage BGP Address Family attributes of interfaces on Junos devices.
 description: Manage BGP Address Family attributes of interfaces on Junos network devices.
 author: Rohit Thakur (@rohitthakur2590)

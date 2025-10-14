@@ -18,6 +18,10 @@ description:
 - This module provides declarative management of VRF definitions on Juniper JUNOS
   devices.  It allows playbooks to manage individual or the entire VRF collection.
 version_added: 1.0.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_vrf
+  removed_at_date: "2027-10-30"
 extends_documentation_fragment:
 - junipernetworks.junos.junos
 options:

@@ -37,6 +37,10 @@ module: junos_interfaces
 short_description: Junos Interfaces resource module
 description: This module manages the interfaces on Juniper Junos OS network devices.
 version_added: 1.0.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_interfaces
+  removed_at_date: "2027-10-30"
 author: Ganesh Nalawade (@ganeshrn)
 options:
   config:

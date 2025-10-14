@@ -38,6 +38,10 @@ short_description: L2 interfaces resource module
 description: This module provides declarative management of a Layer-2 interface on
   Juniper JUNOS devices.
 version_added: 1.0.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_l2_interfaces
+  removed_at_date: "2027-10-30"
 author: Ganesh Nalawade (@ganeshrn)
 options:
   config:

@@ -38,6 +38,10 @@ short_description: Link Aggregation Juniper JUNOS resource module
 description: This module manages properties of Link Aggregation Group on Juniper JUNOS
   devices.
 version_added: 1.0.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_lag_interfaces
+  removed_at_date: "2027-10-30"
 author: Ganesh Nalawade (@ganeshrn)
 options:
   config:

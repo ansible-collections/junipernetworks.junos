@@ -20,6 +20,10 @@ description:
   C(xml) key.  If an alternate output format is requested, the reply is transformed
   to the requested output.
 version_added: 1.0.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_rpc
+  removed_at_date: "2027-10-30"
 extends_documentation_fragment:
 - junipernetworks.junos.junos
 options:

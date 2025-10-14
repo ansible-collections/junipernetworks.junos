@@ -35,6 +35,10 @@ DOCUMENTATION = """
 ---
 module: junos_logging_global
 version_added: 2.4.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_logging_global
+  removed_at_date: "2027-10-30"
 short_description: Manage logging configuration on Junos devices.
 description: This module manages logging configuration on devices running Junos.
 author: Rohit Thakur (@rohitthakur2590)

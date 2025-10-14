@@ -18,6 +18,10 @@ description:
 - This will configure both login and motd banners on network devices. It allows playbooks
   to add or remote banner text from the active running configuration.
 version_added: 1.0.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_banner
+  removed_at_date: "2027-10-30"
 extends_documentation_fragment:
 - junipernetworks.junos.junos
 options:

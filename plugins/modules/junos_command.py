@@ -20,6 +20,10 @@ description:
   wait for a specific condition before returning or timing out if the condition is
   not met.
 version_added: 1.0.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_command
+  removed_at_date: "2027-10-30"
 extends_documentation_fragment:
 - junipernetworks.junos.junos
 options:

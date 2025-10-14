@@ -39,6 +39,10 @@ description:
 - This module manages Link Aggregation Control Protocol (LACP) attributes of interfaces
   on Juniper JUNOS devices.
 version_added: 1.0.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_lacp_interfaces
+  removed_at_date: "2027-10-30"
 author: Ganesh Nalawade (@ganeshrn)
 options:
   config:
