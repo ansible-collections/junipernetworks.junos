@@ -41,6 +41,10 @@ DOCUMENTATION = """
 ---
 module: junos_security_policies_global
 version_added: 2.9.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_security_policies_global
+  removed_at_date: "2027-10-30"
 short_description: Manage global security policy settings on Juniper JUNOS devices
 description: This module provides declarative management of global security policy settings on Juniper JUNOS devices
 author: Pranav Bhatt (@pranav-bhatt)

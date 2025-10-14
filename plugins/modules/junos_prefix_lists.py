@@ -41,6 +41,10 @@ DOCUMENTATION = """
 ---
 module: junos_prefix_lists
 version_added: 2.1.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_prefix_lists
+  removed_at_date: "2027-10-30"
 short_description: Manage prefix-lists attributes of interfaces on Junos devices.
 description: Manage prefix-lists attributes of interfaces on Junos network devices.
 author: Rohit Thakur (@rohitthakur2590)

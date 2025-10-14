@@ -38,6 +38,10 @@ short_description: OSPFv2 resource module
 description:
 - This module manages OSPFv2 configuration on devices running Juniper JUNOS.
 version_added: 1.0.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_ospfv2
+  removed_at_date: "2027-10-30"
 author:
 - Daniel Mellado (@dmellado)
 - Rohit Thakur (@rohitthakur2590)

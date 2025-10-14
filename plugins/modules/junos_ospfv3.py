@@ -38,6 +38,10 @@ short_description: OSPFv3 resource module
 description:
 - This module manages global OSPFv3 configuration on devices running Juniper JUNOS.
 version_added: 1.2.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_ospfv3
+  removed_at_date: "2027-10-30"
 author: Rohit Thakur (@rohitthakur2590)
 requirements:
 - ncclient (>=v0.6.4)

@@ -41,6 +41,10 @@ DOCUMENTATION = """
 ---
 module: junos_routing_instances
 version_added: 2.1.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_routing_instances
+  removed_at_date: "2027-10-30"
 short_description: Manage routing instances on Junos devices.
 description: Manage routing instances on Junos network devices.
 author: Rohit Thakur (@rohitthakur2590)

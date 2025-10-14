@@ -35,6 +35,10 @@ DOCUMENTATION = """
 ---
 module: junos_routing_options
 version_added: 2.8.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_routing_options
+  removed_at_date: "2027-10-30"
 short_description: Manage routing-options configuration on Junos devices.
 description: This module manages routing-options configuration on devices running Junos.
 author: Rohit Thakur (@rohitthakur2590)

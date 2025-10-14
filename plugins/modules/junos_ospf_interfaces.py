@@ -41,6 +41,10 @@ DOCUMENTATION = """
 ---
 module: junos_ospf_interfaces
 version_added: 1.3.0
+deprecated:
+  why: Module moved to 'juniper.device'.
+  alternative: juniper.device.junos_ospf_interfaces
+  removed_at_date: "2027-10-30"
 short_description:  OSPF Interfaces Resource Module.
 description:
   - This module manages OSPF(v2/v3) configuration of interfaces on devices running Juniper JUNOS.
