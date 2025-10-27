@@ -2,8 +2,8 @@
 requires_ansible: ">=2.16.0"
 plugin_routing:
   modules:
-    junos_acl_interfaces:
-      redirect: juniper.device.junos_acl_interfaces
+    acl_interfaces:
+      redirect: juniper.device.acl_interfaces
       deprecation:
         removal_date: "2027-10-30"
         warning_text: >
@@ -17,26 +17,26 @@ plugin_routing:
           The 'junipernetworks.junos.junos_banner' module is deprecated.
           Please migrate to 'juniper.device.junos_banner'.
     junos_command:
-      redirect: juniper.device.junos_command
+      redirect: juniper.device.command
       deprecation:
         removal_date: "2027-10-30"
         warning_text: >
           The 'junipernetworks.junos.junos_command' module is deprecated.
-          Please migrate to 'juniper.device.junos_command'.
+          Please migrate to 'juniper.device.command'.
     junos_config:
-      redirect: juniper.device.junos_config
+      redirect: juniper.device.config
       deprecation:
         removal_date: "2027-10-30"
         warning_text: >
           The 'junipernetworks.junos.junos_config' module is deprecated.
-          Please migrate to 'juniper.device.junos_config'.
+          Please migrate to 'juniper.device.config'.
     junos_facts:
-      redirect: juniper.device.junos_facts
+      redirect: juniper.device.facts
       deprecation:
         removal_date: "2027-10-30"
         warning_text: >
           The 'junipernetworks.junos.junos_facts' module is deprecated.
-          Please migrate to 'juniper.device.junos_facts'.
+          Please migrate to 'juniper.device.facts'.
     junos_interfaces:
       redirect: juniper.device.junos_interfaces
       deprecation:
@@ -220,19 +220,19 @@ plugin_routing:
           The 'junipernetworks.junos.junos_package' module is deprecated.
           Please migrate to 'juniper.device.junos_package'.
     junos_rpc:
-      redirect: juniper.device.junos_rpc
+      redirect: juniper.device.rpc
       deprecation:
         removal_date: "2027-10-30"
         warning_text: >
           The 'junipernetworks.junos.junos_rpc' module is deprecated.
-          Please migrate to 'juniper.device.junos_rpc'.
+          Please migrate to 'juniper.device.rpc'.
     junos_ping:
-      redirect: juniper.device.junos_ping
+      redirect: juniper.device.ping
       deprecation:
         removal_date: "2027-10-30"
         warning_text: >
           The 'junipernetworks.junos.junos_ping' module is deprecated.
-          Please migrate to 'juniper.device.junos_ping'.
+          Please migrate to 'juniper.device.ping'.
     junos_static_routes:
       redirect: juniper.device.junos_static_routes
       deprecation:
