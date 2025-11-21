@@ -177,27 +177,45 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
 
     <table border=0 cellpadding=0 class="documentation-table">
         <tr>
-            <th colspan="1">Key</th>
+            <th colspan="2">Key</th>
             <th>Returned</th>
             <th width="100%">Description</th>
         </tr>
             <tr>
+                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>diff</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>when configuration is changed and diff option is enabled.</td>
+                <td>
+                            <div>Dictionary containing configuration differences.</div>
+                    <br/>
+                </td>
+            </tr>
+                                <tr>
+                    <td class="elbow-placeholder">&nbsp;</td>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>diff.prepared</b>
+                    <b>prepared</b>
                     <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
                     <div style="font-size: small">
                       <span style="color: purple">string</span>
                     </div>
                 </td>
-                <td>when configuration is changed and diff option is enabled.</td>
+                <td></td>
                 <td>
                             <div>Configuration difference before and after applying change.</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[edit system login] +   message &quot;this is my login banner&quot;;</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[edit system login]
+    +   message &quot;this is my login banner&quot;;</div>
                 </td>
             </tr>
+
     </table>
     <br/><br/>
 
