@@ -30,7 +30,7 @@ jobs:
       - name: Install Python + testing dependencies
         run: |
           python3 -m pip install --upgrade pip
-          python3 -m pip install ansible-core pytest pytest-cov pytest-ansible-units pytest-forked pytest-xdist
+          python3 -m pip install ansible-core pytest pytest-cov pytest-ansible-units pytest-forked pytest-xdist lxml
 
       - name: Install ansible collection dependencies
         run: |
