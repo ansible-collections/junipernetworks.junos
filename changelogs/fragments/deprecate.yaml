@@ -1,0 +1,5 @@
+minor_changes:
+  - The junipernetworks.junos collection has been deprecated and will be removed in v12.0.0 (2027-10-30).
+  - All modules now redirect to their equivalents in the juniper.device collection for continued compatibility.
+  - Existing playbooks using junipernetworks.junos.* will continue to work, but users will see deprecation warnings encouraging migration.
+  - Users are advised to update playbooks to use juniper.device.* modules going forward.
