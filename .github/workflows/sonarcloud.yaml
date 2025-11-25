@@ -31,6 +31,7 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install ansible-core pytest pytest-cov pytest-ansible-units pytest-forked pytest-xdist lxml
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Install ansible collection dependencies
         run: |
