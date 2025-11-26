@@ -210,11 +210,15 @@ EXAMPLES = """
 """
 
 RETURN = """
-diff.prepared:
-  description: Configuration difference before and after applying change.
+diff:
+  description: Dictionary containing configuration differences.
   returned: when configuration is changed and diff option is enabled.
-  type: str
-  sample: >
+  type: dict
+  contains:
+    prepared:
+      description: Configuration difference before and after applying change.
+      type: str
+      sample: |
         [edit routing-instances]
         +   test-1 {
         +       description test-vrf-1;
