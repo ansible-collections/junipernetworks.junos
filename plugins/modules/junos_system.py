@@ -92,18 +92,22 @@ EXAMPLES = """
 """
 
 RETURN = """
-diff.prepared:
-  description: Configuration difference before and after applying change.
+diff:
+  description: Dictionary containing configuration differences.
   returned: when configuration is changed and diff option is enabled.
-  type: str
-  sample: >
-          [edit system]
-          +  host-name test;
-          +  domain-name ansible.com;
-          +  domain-search redhat.com;
-          [edit system name-server]
-              172.26.1.1 { ... }
-          +   8.8.8.8;
+  type: dict
+  contains:
+    prepared:
+      description: Configuration difference before and after applying change.
+      type: str
+      sample: |
+        [edit system]
+        +  host-name test;
+        +  domain-name ansible.com;
+        +  domain-search redhat.com;
+        [edit system name-server]
+            172.26.1.1 { ... }
+        +   8.8.8.8;
 """
 import collections
 
