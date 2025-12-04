@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - "Fix managment of security-zone address books with only one element"
