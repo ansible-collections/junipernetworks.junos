@@ -261,7 +261,6 @@ def handle_purge(module, want):
 
 def map_obj_to_ele(module, want):
     element = Element("system")
-    login = SubElement(element, "login")
 
     for item in want:
         if item["state"] != "present":
@@ -272,15 +271,15 @@ def map_obj_to_ele(module, want):
             operation = "merge"
 
         if item["name"] != "root":
+            login = SubElement(element, "login")
             user = SubElement(login, "user", {"operation": operation})
             SubElement(user, "name").text = item["name"]
         else:
-            user = auth = SubElement(
+            user = SubElement(
                 element,
                 "root-authentication",
                 {"operation": operation},
             )
-
         if operation == "merge":
             if item["name"] == "root" and (not item["active"] or item["role"] or item["full_name"]):
                 module.fail_json(
@@ -311,8 +310,12 @@ def map_obj_to_ele(module, want):
                 SubElement(ssh_rsa, "name").text = item["sshkey"]
 
             if item.get("encrypted_password"):
-                auth = SubElement(user, "authentication")
-                SubElement(auth, "encrypted-password").text = item["encrypted_password"]
+                if item["name"] == "root":
+                    if "encrypted_password" in item:
+                        SubElement(user, "encrypted-password").text = item["encrypted_password"]
+                else:
+                    auth = SubElement(user, "authentication")
+                    SubElement(auth, "encrypted-password").text = item["encrypted_password"]
 
     return element
 
