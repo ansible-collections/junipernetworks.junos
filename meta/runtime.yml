@@ -2,79 +2,155 @@
 requires_ansible: ">=2.16.0"
 plugin_routing:
   modules:
-    acl_interfaces:
-      redirect: junipernetworks.junos.junos_acl_interfaces
-    acls:
-      redirect: junipernetworks.junos.junos_acls
-    banner:
-      redirect: junipernetworks.junos.junos_banner
-    command:
-      redirect: junipernetworks.junos.junos_command
-    config:
-      redirect: junipernetworks.junos.junos_config
-    facts:
-      redirect: junipernetworks.junos.junos_facts
-    interfaces:
-      redirect: junipernetworks.junos.junos_interfaces
-    l2_interfaces:
-      redirect: junipernetworks.junos.junos_l2_interfaces
-    l3_interfaces:
-      redirect: junipernetworks.junos.junos_l3_interfaces
-    lacp:
-      redirect: junipernetworks.junos.junos_lacp
-    lacp_interfaces:
-      redirect: junipernetworks.junos.junos_lacp_interfaces
-    lag_interfaces:
-      redirect: junipernetworks.junos.junos_lag_interfaces
-    lldp_global:
-      redirect: junipernetworks.junos.junos_lldp_global
-    bgp_global:
-      redirect: junipernetworks.junos.junos_bgp_global
-    bgp_address_family:
-      redirect: junipernetworks.junos.junos_bgp_address_family
-    routing_instances:
-      redirect: junipernetworks.junos.junos_routing_instances
-    prefix_lists:
-      redirect: junipernetworks.junos.junos_prefix_lists
-    logging_global:
-      redirect: junipernetworks.junos.junos_logging_global
-    ntp_global:
-      redirect: junipernetworks.junos.junos_ntp_global
-    security_policies:
-      redirect: junipernetworks.junos.junos_security_policies
-    security_policies_global:
-      redirect: junipernetworks.junos.junos_security_policies_global
-    security_zones:
-      redirect: junipernetworks.junos.junos_security_zones
-    snmp_server:
-      redirect: junipernetworks.junos.junos_snmp_server
-    hostname:
-      redirect: junipernetworks.junos.junos_hostname
-    routing_options:
-      redirect: junipernetworks.junos.junos_routing_options
-    lldp_interfaces:
-      redirect: junipernetworks.junos.junos_lldp_interfaces
-    netconf:
-      redirect: junipernetworks.junos.junos_netconf
-    ospfv2:
-      redirect: junipernetworks.junos.junos_ospfv2
-    ospfv3:
-      redirect: junipernetworks.junos.junos_ospfv3
-    ospf_interfaces:
-      redirect: junipernetworks.junos.junos_ospf_interfaces
-    package:
-      redirect: junipernetworks.junos.junos_package
-    ping:
-      redirect: junipernetworks.junos.junos_ping
-    rpc:
-      redirect: junipernetworks.junos.junos_rpc
-    static_routes:
-      redirect: junipernetworks.junos.junos_static_routes
-    system:
-      redirect: junipernetworks.junos.junos_system
-    user:
-      redirect: junipernetworks.junos.junos_user
-    vlans:
-      redirect: junipernetworks.junos.junos_vlans
-    vrf:
-      redirect: junipernetworks.junos.junos_vrf
+    junos_acl_interfaces:
+      redirect: juniper.device.junos_acl_interfaces
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_banner:
+      redirect: juniper.device.junos_banner
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_command:
+      redirect: juniper.device.junos_command
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_config:
+      redirect: juniper.device.junos_config
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_facts:
+      redirect: juniper.device.junos_facts
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_interfaces:
+      redirect: juniper.device.junos_interfaces
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_acls:
+      redirect: juniper.device.junos_acls
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_hostname:
+      redirect: juniper.device.junos_hostname
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_l2_interfaces:
+      redirect: juniper.device.junos_l2_interfaces
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_l3_interfaces:
+      redirect: juniper.device.junos_l3_interfaces
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_lacp:
+      redirect: juniper.device.junos_lacp
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_lacp_interfaces:
+      redirect: juniper.device.junos_lacp_interfaces
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_lag_interfaces:
+      redirect: juniper.device.junos_lag_interfaces
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_lldp_global:
+      redirect: juniper.device.junos_lldp_global
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_bgp_global:
+      redirect: juniper.device.junos_bgp_global
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_bgp_address_family:
+      redirect: juniper.device.junos_bgp_address_family
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_routing_instances:
+      redirect: juniper.device.junos_routing_instances
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_prefix_lists:
+      redirect: juniper.device.junos_prefix_lists
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_logging_global:
+      redirect: juniper.device.junos_logging_global
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_ntp_global:
+      redirect: juniper.device.junos_ntp_global
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_security_policies:
+      redirect: juniper.device.junos_security_policies
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_security_policies_global:
+      redirect: juniper.device.junos_security_policies_global
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_security_zones:
+      redirect: juniper.device.junos_security_zones
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_snmp_server:
+      redirect: juniper.device.junos_snmp_server
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_routing_options:
+      redirect: juniper.device.junos_routing_options
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_lldp_interfaces:
+      redirect: juniper.device.junos_lldp_interfaces
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_netconf:
+      redirect: juniper.device.junos_netconf
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_ospfv2:
+      redirect: juniper.device.junos_ospfv2
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_ospfv3:
+      redirect: juniper.device.junos_ospfv3
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_ospf_interfaces:
+      redirect: juniper.device.junos_ospf_interfaces
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_package:
+      redirect: juniper.device.junos_package
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_rpc:
+      redirect: juniper.device.junos_rpc
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_ping:
+      redirect: juniper.device.junos_ping
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_static_routes:
+      redirect: juniper.device.junos_static_routes
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_system:
+      redirect: juniper.device.junos_system
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_user:
+      redirect: juniper.device.junos_user
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_vlans:
+      redirect: juniper.device.junos_vlans
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
+    junos_vrf:
+      redirect: juniper.device.junos_vrf
+      deprecation:
+        warning_text: Please migrate to juniper.device namespace
