@@ -48,8 +48,9 @@ options:
   no_copy:
     description:
     - The I(no_copy) argument is responsible for instructing the remote device on
-      where to install the package from.  When enabled, the package is transferred
-      to the remote device prior to installing.
+      where to install the package from. when this attribute is set to true, indicating
+      that Ansible should not copy the package file to the device.
+      Instead, it assumes that the package file is already present on the device.
     type: bool
     default: false
   unlink:
@@ -187,6 +188,13 @@ EXAMPLES = """
   junipernetworks.junos.junos_package:
     src: junos-vsrx-12.1X46-D10.2-domestic.tgz
     ssh_config: /home/user/customsshconfig
+
+ - name: Install Junos OS Package
+   junipernetworks.junos.junos_package:
+     package: junos-vsrx-x86-64-18.4R1.8.tgz
+     no_copy: true
+     reboot: true
+     validate: true
 """
 from ansible.module_utils.basic import AnsibleModule
 
