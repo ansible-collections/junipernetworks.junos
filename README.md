@@ -1,7 +1,6 @@
 # Juniper Networks Junos Collection
 
-[![CI](https://zuul-ci.org/gated.svg)](https://dashboard.zuul.ansible.com/t/ansible/project/github.com/ansible-collections/junipernetworks.junos) <!--[![Codecov](https://img.shields.io/codecov/c/github/ansible-collections/vyos)](https://codecov.io/gh/ansible-collections/junipernetworks.junos)-->
-[![Codecov](https://codecov.io/gh/ansible-collections/junipernetworks.junos/branch/main/graph/badge.svg)](https://codecov.io/gh/ansible-collections/junipernetworks.junos)
+<!--[![Codecov](https://img.shields.io/codecov/c/github/ansible-collections/vyos)](https://codecov.io/gh/ansible-collections/junipernetworks.junos)-->
 [![CI](https://github.com/ansible-collections/junipernetworks.junos/actions/workflows/tests.yml/badge.svg?branch=main&event=schedule)](https://github.com/ansible-collections/junipernetworks.junos/actions/workflows/tests.yml)
 
 The Ansible Juniper Networks Junos collection includes a variety of Ansible content to help automate the management of Juniper Networks Junos network appliances.
