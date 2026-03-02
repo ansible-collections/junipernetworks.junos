@@ -6,7 +6,6 @@
 
 from __future__ import absolute_import, division, print_function
 
-
 __metaclass__ = type
 
 
@@ -100,7 +99,6 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.n
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     tostring,
 )
-
 
 USE_PERSISTENT_CONNECTION = True
 

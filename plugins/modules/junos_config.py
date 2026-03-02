@@ -6,7 +6,6 @@
 
 from __future__ import absolute_import, division, print_function
 
-
 __metaclass__ = type
 
 
@@ -281,7 +280,6 @@ import re
 
 from ansible.module_utils._text import to_native, to_text
 
-
 # Python 3 compatibility
 string_types = (str,)
 from ansible.module_utils.basic import AnsibleModule
@@ -299,7 +297,6 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     locked_config,
     tostring,
 )
-
 
 try:
     from lxml.etree import Element, fromstring

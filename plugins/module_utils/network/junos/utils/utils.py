@@ -7,7 +7,6 @@
 # utils
 from __future__ import absolute_import, division, print_function
 
-
 __metaclass__ = type
 
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
@@ -17,7 +16,6 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.u
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     tostring,
 )
-
 
 try:
     from ncclient.xml_ import new_ele, to_ele

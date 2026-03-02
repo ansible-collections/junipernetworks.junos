@@ -8,8 +8,8 @@ The facts class for junos
 this file validates each subset of facts and selectively
 calls the appropriate facts gathering function
 """
-from __future__ import absolute_import, division, print_function
 
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -108,7 +108,6 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.junos import (
     HAS_PYEZ,
 )
-
 
 FACT_LEGACY_SUBSETS = dict(
     default=Default,

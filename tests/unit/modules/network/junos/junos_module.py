@@ -18,12 +18,10 @@
 # Make coding more python3-ish
 from __future__ import absolute_import, division, print_function
 
-
 __metaclass__ = type
 
 import json
 import os
-
 
 try:
     from lxml.etree import parse
@@ -35,7 +33,6 @@ from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import (
     AnsibleFailJson,
     ModuleTestCase,
 )
-
 
 fixture_path = os.path.join(os.path.dirname(__file__), "fixtures")
 fixture_data = {}

@@ -6,7 +6,6 @@
 
 from __future__ import absolute_import, division, print_function
 
-
 __metaclass__ = type
 
 
@@ -194,7 +193,6 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     get_device,
     junos_argument_spec,
 )
-
 
 try:
     from jnpr.junos.utils.sw import SW

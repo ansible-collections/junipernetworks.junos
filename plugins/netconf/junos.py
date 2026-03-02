@@ -18,7 +18,6 @@
 #
 from __future__ import absolute_import, division, print_function
 
-
 __metaclass__ = type
 
 DOCUMENTATION = """
@@ -48,7 +47,6 @@ from ansible_collections.ansible.netcommon.plugins.plugin_utils.netconf_base imp
     NetconfBase,
     ensure_ncclient,
 )
-
 
 try:
     from ncclient import manager

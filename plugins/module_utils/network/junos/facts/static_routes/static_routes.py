@@ -9,8 +9,8 @@ It is in this file the configuration is collected from the device
 for a given resource, parsed, and the facts tree is populated
 based on the configuration.
 """
-from __future__ import absolute_import, division, print_function
 
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -22,7 +22,6 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common i
 from ansible_collections.junipernetworks.junos.plugins.module_utils.network.junos.argspec.static_routes.static_routes import (
     Static_routesArgs,
 )
-
 
 try:
     from lxml import etree

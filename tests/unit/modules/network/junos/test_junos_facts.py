@@ -18,7 +18,6 @@
 # Make coding more python3-ish
 from __future__ import absolute_import, division, print_function
 
-
 __metaclass__ = type
 
 try:
@@ -32,7 +31,6 @@ from ansible_collections.junipernetworks.junos.plugins.modules import junos_fact
 from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
 
 from .junos_module import TestJunosModule, load_fixture
-
 
 RPC_CLI_MAP = {
     "get-software-information": "show version",

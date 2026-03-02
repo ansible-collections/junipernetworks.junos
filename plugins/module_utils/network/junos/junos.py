@@ -18,7 +18,6 @@
 #
 from __future__ import absolute_import, division, print_function
 
-
 __metaclass__ = type
 import collections
 import json
@@ -32,7 +31,6 @@ from ansible.module_utils.connection import Connection, ConnectionError
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
     NetconfConnection,
 )
-
 
 try:
     from lxml.etree import Element, SubElement

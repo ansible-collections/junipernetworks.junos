@@ -18,7 +18,6 @@
 # Make coding more python3-ish
 from __future__ import absolute_import, division, print_function
 
-
 __metaclass__ = type
 
 from unittest.mock import MagicMock, patch
@@ -26,7 +25,6 @@ from unittest.mock import MagicMock, patch
 from ansible_collections.junipernetworks.junos.tests.unit.modules.utils import set_module_args
 
 from .junos_module import TestJunosModule
-
 
 jnpr_mock = MagicMock()
 modules = {

@@ -6,7 +6,6 @@
 
 from __future__ import absolute_import, division, print_function
 
-
 __metaclass__ = type
 
 
@@ -185,7 +184,6 @@ from ansible_collections.junipernetworks.junos.plugins.module_utils.network.juno
     get_connection,
     tostring,
 )
-
 
 try:
     from lxml.etree import Element, SubElement
